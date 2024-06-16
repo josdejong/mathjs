@@ -1,6 +1,7 @@
 import { applyCallback } from '../../utils/applyCallback.js'
-import { broadcastArrays } from '../../utils/array.js'
+import { arraySize, broadcastSizes, broadcastTo } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
+import { isCollection } from '../../utils/is.js'
 
 const name = 'map'
 const dependencies = ['typed', 'subset', 'index']
@@ -49,22 +50,33 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
       return x.map(callback)
     },
 
-    'Array, Array, function':
-    function (X, Y, callback) {
-      return _mapArrays(X, Y, callback)
-    }
-
+    '...': _map
   })
-  /** Map for multiple arrays */
-  function _mapArrays (...args) {
+  /** Map for multiple arrays or matrices */
+  function _map (args) {
     const N = args.length - 1
-    const arrays = broadcastArrays(...args.slice(0, N))
+    const arrays = args.slice(0, N)
+    if (arrays.some(x => !isCollection(x))) {
+      throw new Error('All arguments must be collections except for the last one which must be a callback function')
+    }
     const callback = args[N]
-    const firstArray = arrays[0]
-    return _mapArray(firstArray, (x, idx) => {
-      const values = [x, ...arrays.slice(1).map(array => subset(array, index(...idx)))]
-      return callback(...values, idx, ...arrays)
-    })
+    if (typeof callback !== 'function') {
+      throw new Error('Last argument must be a callback function')
+    }
+    const newSize = broadcastSizes(...arrays.map(M => M.isMatrix ? M._size : arraySize(M)))
+    const broadcastedArrays = arrays.map(M => M.isMatrix
+      ? M.create(broadcastTo(M._data, newSize), M._datatype)
+      : broadcastTo(M, newSize))
+    const firstArray = broadcastedArrays[0]
+    if (firstArray.isMatrix) {
+      return firstArray.map(_multiCallback)
+    } else {
+      return _mapArray(firstArray, _multiCallback)
+    }
+    function _multiCallback (x, idx) {
+      const values = [x, ...broadcastedArrays.slice(1).map(array => subset(array, index(...idx)))]
+      return callback(...values, idx, ...broadcastedArrays)
+    }
   }
 })
 
