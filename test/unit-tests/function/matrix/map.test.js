@@ -24,6 +24,59 @@ describe('map', function () {
     assert.ok(Array.isArray(arr2))
   })
 
+  it('should map three arrays', function () {
+    const arrA = [[1, 2, 3], [4, 5, 6]]
+    const arrB = [[10, 20, 30], [40, 50, 60]]
+    const arrC = [[100, 200, 300], [400, 500, 600]]
+    const arr2 = math.map(arrA, arrB, arrC, function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC })
+    assert.deepStrictEqual(arr2, [[112, 224, 336], [448, 560, 672]])
+    assert.ok(Array.isArray(arr2))
+  })
+
+  it('should map three arrays with broadcasting', function () {
+    const arrA = [1, 2, 3]
+    const arrB = [[10], [20], [30]]
+    const arrC = [100, 200, 300]
+    const arr2 = math.map(arrA, arrB, arrC, function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC / 2 })
+    assert.deepStrictEqual(arr2, [[62, 114, 166], [72, 124, 176], [82, 134, 186]])
+    assert.ok(Array.isArray(arr2))
+  })
+
+  it('should map two matrices', function () {
+    const matA = math.matrix([[1, 2, 3], [4, 5, 6]])
+    const matB = math.matrix([[10, 20, 30], [40, 50, 60]])
+    const mat2 = math.map(matA, matB, function (valueA, valueB) { return valueA * 2 + valueB })
+    assert.deepStrictEqual(mat2, math.matrix([[12, 24, 36], [48, 60, 72]]))
+    assert.ok(mat2 instanceof math.Matrix)
+  })
+
+  it('should map three matrices', function () {
+    const matA = math.matrix([[1, 2, 3], [4, 5, 6]])
+    const matB = math.matrix([[10, 20, 30], [40, 50, 60]])
+    const matC = math.matrix([[100, 200, 300], [400, 500, 600]])
+    const mat2 = math.map(matA, matB, matC, function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC })
+    assert.deepStrictEqual(mat2, math.matrix([[112, 224, 336], [448, 560, 672]]))
+    assert.ok(mat2 instanceof math.Matrix)
+  })
+
+  it('should map three matrices with broadcasting', function () {
+    const matA = math.matrix([1, 2, 3])
+    const matB = math.matrix([[10], [20], [30]])
+    const matC = math.matrix([100, 200, 300])
+    const mat2 = math.map(matA, matB, matC, function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC / 2 })
+    assert.deepStrictEqual(mat2, math.matrix([[62, 114, 166], [72, 124, 176], [82, 134, 186]]))
+    assert.ok(mat2 instanceof math.Matrix)
+  })
+
+  it('should map three matrices or arrays with broadcasting', function () {
+    const matA = math.matrix([1, 2, 3])
+    const matB = [[10], [20], [30]]
+    const matC = math.matrix([100, 200, 300])
+    const mat2 = math.map(matA, matB, matC, function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC / 2 })
+    assert.deepStrictEqual(mat2, math.matrix([[62, 114, 166], [72, 124, 176], [82, 134, 186]]))
+    assert.ok(mat2 instanceof math.Matrix)
+  })
+
   it('should invoke callback with parameters value, index, obj', function () {
     const arr = [[1, 2, 3], [4, 5, 6]]
 

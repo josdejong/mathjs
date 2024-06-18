@@ -21,6 +21,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
    * Syntax:
    *
    *    math.map(x, callback)
+   *    math.map(x, y, callback)
    *
    * Examples:
    *
@@ -50,17 +51,28 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
       return x.map(callback)
     },
 
-    '...': _map
+    'Array|Matrix, Array|Matrix, ...Array|Matrix|function': (A, B, rest) => _map(A, B, ...rest)
   })
-  /** Map for multiple arrays or matrices */
-  function _map (args) {
+
+  /**
+ * Maps over multiple arrays or matrices.
+ *
+ * @param  {...any} args - The arrays or matrices to map over, followed by a callback function.
+ * @throws {Error} If any argument except the last one is not a collection.
+ * @throws {Error} If the last argument is not a callback function.
+ * @returns {Array|Matrix} A new array or matrix with each element being the result of the callback function.
+ *
+ * @example
+ * _map([1, 2, 3], [4, 5, 6], (a, b) => a + b); // Returns [5, 7, 9]
+ */
+  function _map (...args) {
     const N = args.length - 1
     const arrays = args.slice(0, N)
-    if (arrays.some(x => !isCollection(x))) {
+    if (!arrays.every(x => isCollection(x))) {
       throw new Error('All arguments must be collections except for the last one which must be a callback function')
     }
-    const callback = args[N]
-    if (typeof callback !== 'function') {
+    const multiCallback = args[N]
+    if (typeof multiCallback !== 'function') {
       throw new Error('Last argument must be a callback function')
     }
     const newSize = broadcastSizes(...arrays.map(M => M.isMatrix ? M._size : arraySize(M)))
@@ -69,13 +81,14 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
       : broadcastTo(M, newSize))
     const firstArray = broadcastedArrays[0]
     if (firstArray.isMatrix) {
-      return firstArray.map(_multiCallback)
+      return firstArray.map(_createCallback)
     } else {
-      return _mapArray(firstArray, _multiCallback)
+      return _mapArray(firstArray, _createCallback)
     }
-    function _multiCallback (x, idx) {
+    /** creates a callback function from a multiple callback function */
+    function _createCallback (x, idx) {
       const values = [x, ...broadcastedArrays.slice(1).map(array => subset(array, index(...idx)))]
-      return callback(...values, idx, ...broadcastedArrays)
+      return multiCallback(...values, idx, ...broadcastedArrays)
     }
   }
 })
