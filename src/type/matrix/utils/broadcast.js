@@ -12,13 +12,13 @@ import { deepStrictEqual } from '../../../utils/object.js'
 */
 
 export function broadcast (A, B) {
-  if (deepStrictEqual(A._size, B._size)) {
+  if (deepStrictEqual(A.size(), B.size())) {
     // If matrices have the same size return them
     return [A, B]
   }
 
   // calculate the broadcasted sizes
-  const newSize = broadcastSizes(A._size, B._size)
+  const newSize = broadcastSizes(A.size(), B.size())
 
   // return the array with the two broadcasted matrices
   return [A, B].map(M => _broadcastTo(M, newSize))
@@ -33,8 +33,8 @@ export function broadcast (A, B) {
  * @throws {Error} If the size parameter is not an array of numbers.
  */
 function _broadcastTo (M, size) {
-  if (deepStrictEqual(M._size, size)) {
+  if (deepStrictEqual(M.size(), size)) {
     return M
   }
-  return M.create(broadcastTo(M._data, size), M._datatype)
+  return M.create(broadcastTo(M.valueOf(), size), M.datatype())
 }
