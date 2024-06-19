@@ -77,7 +77,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
     }
     const newSize = broadcastSizes(...arrays.map(M => M.isMatrix ? M._size : arraySize(M)))
     const broadcastedArrays = arrays.map(M => M.isMatrix
-      ? M.create(broadcastTo(M._data, newSize), M._datatype)
+      ? M.create(broadcastTo(M.valueOf(), newSize), M.datatype())
       : broadcastTo(M, newSize))
     const firstArray = broadcastedArrays[0]
     if (firstArray.isMatrix) {
