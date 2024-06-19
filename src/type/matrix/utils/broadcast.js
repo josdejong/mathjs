@@ -1,4 +1,4 @@
-import { broadcastSizes, broadcastTo as broadcastArrayTo } from '../../../utils/array.js'
+import { broadcastSizes, broadcastTo } from '../../../utils/array.js'
 import { deepStrictEqual } from '../../../utils/object.js'
 
 /**
@@ -36,5 +36,5 @@ function _broadcastTo (M, size) {
   if (deepStrictEqual(M._size, size)) {
     return M
   }
-  return M.create(broadcastArrayTo(M._data, size), M._datatype)
+  return M.create(broadcastTo(M._data, size), M._datatype)
 }
