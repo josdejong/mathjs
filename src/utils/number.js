@@ -627,22 +627,22 @@ function zeros (length) {
 }
 
 /**
- * Count the number of significant digits of a number.
+ * Extract all significant digits of a number.
  *
  * For example:
- *   2.34 returns 3
- *   0.0034 returns 2
- *   120.5e+30 returns 4
+ *   2.34 returns '234'
+ *   0.0034 returns '34'
+ *   120.5e+30 returns '1205'
  *
  * @param {number} value
- * @return {number} digits   Number of significant digits
+ * @return {string} Returns a string with all digits
  */
 export function digits (value) {
   return value
     .toExponential()
+    .replace(/^-/, '') // remove sign
     .replace(/e.*$/, '') // remove exponential notation
     .replace(/^0\.?0*|\./, '') // remove decimal point and leading zeros
-    .length
 }
 
 /**

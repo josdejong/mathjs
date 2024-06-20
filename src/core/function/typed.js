@@ -36,6 +36,9 @@
  * @returns {function} The created typed-function.
  */
 
+import typedFunction from 'typed-function'
+import { convertNumberToBigNumber } from '../../utils/bignumber/convertNumberToBigNumber.js'
+import { factory } from '../../utils/factory.js'
 import {
   isAccessorNode,
   isArray,
@@ -68,8 +71,8 @@ import {
   isParenthesisNode,
   isRange,
   isRangeNode,
-  isRelationalNode,
   isRegExp,
+  isRelationalNode,
   isResultSet,
   isSparseMatrix,
   isString,
@@ -77,9 +80,6 @@ import {
   isUndefined,
   isUnit, isBigInt
 } from '../../utils/is.js'
-import typedFunction from 'typed-function'
-import { digits } from '../../utils/number.js'
-import { factory } from '../../utils/factory.js'
 import { isMap } from '../../utils/map.js'
 
 // returns a new instance of typed-function
@@ -174,13 +174,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
           throwNoBignumber(x)
         }
 
-        // note: conversion from number to BigNumber can fail if x has >15 digits
-        if (digits(x) > 15) {
-          throw new TypeError('Cannot implicitly convert a number with >15 significant digits to BigNumber ' +
-            '(value: ' + x + '). ' +
-            'Use function bignumber(x) to convert to BigNumber.')
-        }
-        return new BigNumber(x)
+        return convertNumberToBigNumber(x, BigNumber)
       }
     }, {
       from: 'number',
