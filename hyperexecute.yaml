@@ -1,0 +1,32 @@
+---
+version: 0.1
+runson: win  # defines the OS to test on
+
+concurrency: 1  # number of machines to execute the testcases
+autosplit: true
+
+# pre steps sets up the environment for testing
+pre:
+  - npm install
+  - npm install karma -g 
+  - npm install -g karma-jasmine
+  - npm install karma-safari-launcher -g
+  - npm install karma-webdriver-launcher -g
+  - npm i karma-mocha -g
+  - npm i karma-webpack -g
+  - npm i mocha -g
+
+
+# Smart cache
+cacheKey: '{{ checksum "package-lock.json" }}'
+cacheDirectories:
+  - node_modules
+
+  # testDiscovery is used to discover all the test cases in test/unit-tests folder
+testDiscovery:
+  type: raw
+  mode: dynamic
+  command: grep -nri 'describe' test/unit-tests -ir --include=*.test.js | sed 's/:.*//'
+
+# command to execute the test cases
+testRunnerCommand: karma start test/browser-test-config/lt_karma.js --spec= $test
