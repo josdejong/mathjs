@@ -2866,7 +2866,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   quantileSeq<T extends MathScalarType>(
     A: T[] | T[][],
-    prob: number | BigNumber | MathArray,
+    prob: number | BigNumber,
     sorted?: boolean
   ): T
   /**
