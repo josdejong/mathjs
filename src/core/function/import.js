@@ -162,7 +162,9 @@ export function importFactory (typed, load, math, importedFactories) {
       return
     }
 
-    if (math[name] === undefined || options.override) {
+    const isDefined = math[name] !== undefined
+    const isValuelessUnit = math.Unit?.isValuelessUnit(name)
+    if ((!isDefined && !isValuelessUnit) || options.override) {
       math[name] = value
       delete importedFactories[name]
 
