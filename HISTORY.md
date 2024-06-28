@@ -2,6 +2,7 @@
 
 # unpublished changes since 13.0.0
 
+- Fix: #3227 generated bundle containing `catch` blocks without parameters.
 - Fix an error in the type definitions of `quantileSeq` (#3223).
   Thanks @domdomegg.
 
