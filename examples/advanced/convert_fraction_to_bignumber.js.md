@@ -36,16 +36,14 @@ const allExceptLoaded = Object.keys(all)
 math.config({ number: 'Fraction' })
 
 // Add a conversion from Faction -> BigNumber
-// this conversion:
-// - must be inserted in the conversions list before the conversion Fraction -> number
-// - must be added to the conversions before loading functions into math.js
+// This conversion will to override the existing conversion from Fraction to 
+// BigNumber. It must be added *after* the default conversions are loaded
+// and *before* the actual functions are imported into math.js.
 math.typed.addConversion({
   from: 'Fraction',
   to: 'BigNumber',
-  convert: function (fraction) {
-    return new math.BigNumber(fraction.n).div(fraction.d)
-  }
-})
+  convert: (fraction) => new math.BigNumber(fraction.n).div(fraction.d)
+}, { override: true })
 
 // Import all data types, functions, constants, the expression parser, etc.
 math.import(allExceptLoaded)

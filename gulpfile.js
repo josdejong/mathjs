@@ -1,8 +1,8 @@
 var fs = require('fs');
 var path = require('path');
 var zlib = require('zlib');
-var glob = require('glob');
-var rimraf = require('rimraf');
+var { globSync } = require('glob');
+var { rimraf } = require('rimraf');
 var gulp = require('gulp');
 var log = require('fancy-log');
 var replace = require('gulp-replace');
@@ -196,37 +196,37 @@ gulp.task('markdownExamples', function (cb) {
   }
 
   function generate(pattern, callback) {
-    glob(EXAMPLES_DEST + '/' + pattern, function (err, files) {
-      files.sort();
+   const files = globSync(EXAMPLES_DEST + '/' + pattern)
 
-      var results = files.map(function (file) {
-        var isDir = fs.statSync(file).isDirectory();
-        var extension = path.extname(file);
-        var title = path.basename(file, extension)  // filename without extension
-            .replace(/^\w/g, function (c) { // replace first character with upper case letter
-              return c.toUpperCase();
-            })
-            .replace(/_/g, ' ');  // replace underscores with spaces
+    files.sort();
 
-        if (isDir) {
-          var files = fs.readdirSync(file).map(function (f) {
-            return file + '/' + f;
-          });
-          file = file + '/index';
-          createPage(files, title, file + '.md');
-        }
-        else {
-          createPage(file, title, file + '.md');
-        }
+    var results = files.map(function (file) {
+      var isDir = fs.statSync(file).isDirectory();
+      var extension = path.extname(file);
+      var title = path.basename(file, extension)  // filename without extension
+        .replace(/^\w/g, function (c) { // replace first character with upper case letter
+          return c.toUpperCase();
+        })
+        .replace(/_/g, ' ');  // replace underscores with spaces
 
-        return {
-          title: title,                                     // for example 'Basic usage'
-          url: path.relative(EXAMPLES_DEST, file + '.html') // for example 'basic_usage.js.html'
-        };
-      });
+      if (isDir) {
+        var files = fs.readdirSync(file).map(function (f) {
+          return file + '/' + f;
+        });
+        file = file + '/index';
+        createPage(files, title, file + '.md');
+      }
+      else {
+        createPage(file, title, file + '.md');
+      }
 
-      callback(results);
-    })
+      return {
+        title: title,                                     // for example 'Basic usage'
+        url: path.relative(EXAMPLES_DEST, file + '.html') // for example 'basic_usage.js.html'
+      };
+    });
+
+    callback(results);
   }
 
   // TODO: write a more generic script for this
