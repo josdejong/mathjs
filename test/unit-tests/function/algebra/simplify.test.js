@@ -306,7 +306,14 @@ describe('simplify', function () {
   })
 
   it('should simplify non-rational expressions with no symbols to number', function () {
+    // default turn all constants into decimals
     simplifyAndCompare('3+sin(4)', '2.2431975046920716')
+    // exactConstantFunctions lets sin, cos, log, etc stay in exact form
+    simplifyAndCompare('3+sin(4)', '3+sin(4)', {}, { exactConstantFunctions: true })
+    // but still make sure to consolidate the numeric constants
+    simplifyAndCompare('3+(4*3)', '15', {}, { exactConstantFunctions: true })
+    // when we say we want exact functions, abs is still exact
+    simplifyAndCompare('abs(-2)', '2', {}, { exactConstantFunctions: true })
   })
 
   it('should collect like terms', function () {
