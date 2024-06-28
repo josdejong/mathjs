@@ -4292,14 +4292,44 @@ export interface MathNode {
 }
 
 export interface Parser {
+  /**
+   * Evaluate an expression. Returns the result of the expression.
+   * @param expr The expression to evaluate
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   evaluate(expr: string | string[]): any
+  /**
+   * Retrieve a variable or function from the parser’s scope.
+   * @param name The name of the variable or function to be retrieved
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get(variable: string): any
+  get(name: string): any
+  /**
+   * Retrieve an object with all defined variables in the parser’s scope.
+   * @returns An object with all defined variables
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getAll(): { [key: string]: any }
+  /**
+   * Retrieve a map with all defined variables in the parser’s scope.
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  set: (variable: string, value: any) => void
+  getAllAsMap(): Map<string, any>
+  /**
+   * Set a variable or function in the parser’s scope.
+   * @param name The name of the variable or function to be set
+   * @param value The value of the variable or function to be set
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  set: (name: string, value: any) => void
+  /**
+   * Remove a variable or function from the parser’s scope.
+   * @param name The name of the variable or function to be removed
+   */
+  remove: (name: string) => void
+  /**
+   * Completely clear the parser’s scope.
+   */
   clear: () => void
 }
 
