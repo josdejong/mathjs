@@ -1,12 +1,15 @@
 # History
 
+# unpublished changes since 13.0.1
+
+- Fix an error in the type definitions of `quantileSeq` (#3223).
+  Thanks @domdomegg.
+
 # 2024-06-28, 13.0.1
 
 - Fix: #3227 generated bundle containing `catch` blocks without parameters.
 - Fix: #2348 update type definitions of the `Parser` methods (#3226).
   Thanks @orelbn.
-- Fix an error in the type definitions of `quantileSeq` (#3223).
-  Thanks @domdomegg.
 
 # 2024-05-31, 13.0.0
 
