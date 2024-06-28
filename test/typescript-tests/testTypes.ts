@@ -1119,10 +1119,15 @@ Expressions examples
     const _x = parser.get('x')
     const f = parser.get('f')
     const _y = parser.getAll()
+    const _z = parser.getAllAsMap()
     const _g = f(3, 3)
 
     parser.set('h', 500)
+    assert.strictEqual(parser.get('h'), 500)
+    assert.strictEqual(parser.evaluate('h'), 500)
     parser.set('hello', (name: string) => `hello, ${name}!`)
+    parser.remove('h')
+    assert.strictEqual(parser.get('h'), undefined)
   }
 
   // clear defined functions and variables
