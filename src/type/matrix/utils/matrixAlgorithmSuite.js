@@ -2,16 +2,15 @@ import { factory } from '../../../utils/factory.js'
 import { extend } from '../../../utils/object.js'
 import { createMatAlgo13xDD } from './matAlgo13xDD.js'
 import { createMatAlgo14xDs } from './matAlgo14xDs.js'
-import { createBroadcast } from './broadcast.js'
+import { broadcast } from './broadcast.js'
 
 const name = 'matrixAlgorithmSuite'
-const dependencies = ['typed', 'matrix', 'concat']
+const dependencies = ['typed', 'matrix']
 
 export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
-  name, dependencies, ({ typed, matrix, concat }) => {
+  name, dependencies, ({ typed, matrix }) => {
     const matAlgo13xDD = createMatAlgo13xDD({ typed })
     const matAlgo14xDs = createMatAlgo14xDs({ typed })
-    const broadcast = createBroadcast({ concat })
 
     /**
      * Return a signatures object with the usual boilerplate of
