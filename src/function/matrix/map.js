@@ -1,10 +1,12 @@
 import { applyCallback } from '../../utils/applyCallback.js'
+import { arraySize, broadcastSizes, broadcastTo } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
+import { isCollection } from '../../utils/is.js'
 
 const name = 'map'
-const dependencies = ['typed']
+const dependencies = ['typed', 'subset', 'index']
 
-export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, subset, index }) => {
   /**
    * Create a new matrix or array with the results of a callback function executed on
    * each entry of a given matrix/array.
@@ -19,6 +21,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * Syntax:
    *
    *    math.map(x, callback)
+   *    math.map(x, y, callback)
    *
    * Examples:
    *
@@ -42,12 +45,52 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *     Transformed map of x; always has the same type and shape as x
    */
   return typed(name, {
-    'Array, function': _map,
+    'Array, function': _mapArray,
 
     'Matrix, function': function (x, callback) {
       return x.map(callback)
-    }
+    },
+
+    'Array|Matrix, Array|Matrix, ...Array|Matrix|function': (A, B, rest) => _map(A, B, ...rest)
   })
+
+  /**
+ * Maps over multiple arrays or matrices.
+ *
+ * @param  {...any} args - The arrays or matrices to map over, followed by a callback function.
+ * @throws {Error} If any argument except the last one is not a collection.
+ * @throws {Error} If the last argument is not a callback function.
+ * @returns {Array|Matrix} A new array or matrix with each element being the result of the callback function.
+ *
+ * @example
+ * _map([1, 2, 3], [4, 5, 6], (a, b) => a + b); // Returns [5, 7, 9]
+ */
+  function _map (...args) {
+    const N = args.length - 1
+    const arrays = args.slice(0, N)
+    if (!arrays.every(x => isCollection(x))) {
+      throw new Error('All arguments must be collections except for the last one which must be a callback function')
+    }
+    const multiCallback = args[N]
+    if (typeof multiCallback !== 'function') {
+      throw new Error('Last argument must be a callback function')
+    }
+    const newSize = broadcastSizes(...arrays.map(M => M.isMatrix ? M._size : arraySize(M)))
+    const broadcastedArrays = arrays.map(M => M.isMatrix
+      ? M.create(broadcastTo(M.valueOf(), newSize), M.datatype())
+      : broadcastTo(M, newSize))
+    const firstArray = broadcastedArrays[0]
+    if (firstArray.isMatrix) {
+      return firstArray.map(_createCallback)
+    } else {
+      return _mapArray(firstArray, _createCallback)
+    }
+    /** creates a callback function from a multiple callback function */
+    function _createCallback (x, idx) {
+      const values = [x, ...broadcastedArrays.slice(1).map(array => subset(array, index(...idx)))]
+      return multiCallback(...values, idx, ...broadcastedArrays)
+    }
+  }
 })
 
 /**
@@ -57,18 +100,27 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
  * @return {Array}
  * @private
  */
-function _map (array, callback) {
-  const recurse = function (value, index) {
-    if (Array.isArray(value)) {
-      return value.map(function (child, i) {
-        // we create a copy of the index array and append the new index value
-        return recurse(child, index.concat(i))
-      })
-    } else {
-      // invoke the callback function with the right number of arguments
-      return applyCallback(callback, value, index, array, 'map')
-    }
-  }
+function _mapArray (array, callback) {
+  return _recurse(array, [], array, callback)
+}
 
-  return recurse(array, [])
+/**
+ * Recursive function to map a multi-dimensional array.
+ *
+ * @param {*} value - The current value being processed in the array.
+ * @param {Array} index - The index of the current value being processed in the array.
+ * @param {Array} array - The array being processed.
+ * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
+ * @returns {*} The new array with each element being the result of the callback function.
+ */
+function _recurse (value, index, array, callback) {
+  if (Array.isArray(value)) {
+    return value.map(function (child, i) {
+      // we create a copy of the index array and append the new index value
+      return _recurse(child, index.concat(i), array, callback)
+    })
+  } else {
+    // invoke the callback function with the right number of arguments
+    return applyCallback(callback, value, index, array, 'map')
+  }
 }
