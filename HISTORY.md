@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 13.0.1
+# 2024-07-04, 13.0.2
 
 - Fix an error in the type definitions of `quantileSeq` (#3223).
   Thanks @domdomegg.
