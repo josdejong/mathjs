@@ -76,7 +76,7 @@ See the [Getting Started](https://mathjs.org/docs/getting_started.html) for a mo
 
 ## Browser support
 
-Math.js works on any ES6 compatible JavaScript engine, including node.js, Chrome, Firefox, Safari, and Edge.
+Math.js works on any [ES2020](https://262.ecma-international.org/11.0/) compatible JavaScript engine, including node.js, Chrome, Firefox, Safari, and Edge.
 
 
 ## Documentation

@@ -2548,6 +2548,12 @@ Statistics functions' return types
   >()
 
   expectTypeOf(math.quantileSeq([1, 2, 3], 0.75)).toMatchTypeOf<number>()
+  expectTypeOf(math.quantileSeq([1, 2, 3, 4, 5], [0.25, 0.75])).toMatchTypeOf<
+    MathArray | MathScalarType
+  >()
+  expectTypeOf(
+    math.quantileSeq([1, 2, 3, 4, 5], [0.25, 0.75]) as number[]
+  ).toMatchTypeOf<number[]>()
   expectTypeOf(math.quantileSeq([[1, 2, 3]], 0.75)).toMatchTypeOf<number>()
   expectTypeOf(
     math.quantileSeq([math.bignumber('123')], 0.75)

@@ -1,12 +1,15 @@
 # History
 
+# 2024-07-04, 13.0.2
+
+- Fix an error in the type definitions of `quantileSeq` (#3223).
+  Thanks @domdomegg.
+
 # 2024-06-28, 13.0.1
 
 - Fix: #3227 generated bundle containing `catch` blocks without parameters.
 - Fix: #2348 update type definitions of the `Parser` methods (#3226).
   Thanks @orelbn.
-- Fix an error in the type definitions of `quantileSeq` (#3223).
-  Thanks @domdomegg.
 
 # 2024-05-31, 13.0.0
 
@@ -19,7 +22,8 @@ Breaking changes:
 - Upgrade to `fraction.js@4.3.7`,
   see <https://github.com/rawify/Fraction.js/issues/68>.
 - Dropped support for JavaScript engines that do not fully support ES6 or
-  `bigint`, or are not actively maintained.
+  `bigint`, or are not actively maintained. ES2020 is now the minimum required
+  EcmaScript version.
 
 Non-breaking changes:
 
