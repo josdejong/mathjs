@@ -9,14 +9,14 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "5.0.11"
+    "vite": "5.3.3"
   },
   "dependencies": {
-    "@codemirror/language": "6.10.0",
-    "@codemirror/state": "6.4.0",
+    "@codemirror/language": "6.10.2",
+    "@codemirror/state": "6.4.1",
     "codemirror": "6.0.1",
-    "github-markdown-css": "5.5.0",
-    "katex": "0.16.9",
-    "mathjs": "12.3.0"
+    "github-markdown-css": "5.6.1",
+    "katex": "0.16.11",
+    "mathjs": "13.0.2"
   }
 }
