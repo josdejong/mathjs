@@ -4,13 +4,16 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20240704-1302">2024-07-04, 13.0.2 <a href="#20240704-1302" title="Permalink">#</a></h1>
+
+- Fix an error in the type definitions of `quantileSeq` (<a href="https://github.com/josdejong/mathjs/issues/3223">#3223</a>).
+  Thanks <a href="https://github.com/domdomegg">@domdomegg</a>.
+
 <h1 id="20240628-1301">2024-06-28, 13.0.1 <a href="#20240628-1301" title="Permalink">#</a></h1>
 
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3227">#3227</a> generated bundle containing `catch` blocks without parameters.
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/2348">#2348</a> update type definitions of the `Parser` methods (<a href="https://github.com/josdejong/mathjs/issues/3226">#3226</a>).
   Thanks <a href="https://github.com/orelbn">@orelbn</a>.
-- Fix an error in the type definitions of `quantileSeq` (<a href="https://github.com/josdejong/mathjs/issues/3223">#3223</a>).
-  Thanks <a href="https://github.com/domdomegg">@domdomegg</a>.
 
 <h1 id="20240531-1300">2024-05-31, 13.0.0 <a href="#20240531-1300" title="Permalink">#</a></h1>
 
@@ -23,7 +26,8 @@ Breaking changes:
 - Upgrade to `fraction.js@4.3.7`,
   see <https://github.com/rawify/Fraction.js/issues/68>.
 - Dropped support for JavaScript engines that do not fully support ES6 or
-  `bigint`, or are not actively maintained.
+  `bigint`, or are not actively maintained. ES2020 is now the minimum required
+  EcmaScript version.
 
 Non-breaking changes:
 
