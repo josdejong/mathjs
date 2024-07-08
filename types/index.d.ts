@@ -4011,7 +4011,11 @@ export interface UnitPrefix {
   scientific: boolean
 }
 
-export interface Unit {
+export declare class Unit {
+  constructor(
+    value: number | BigNumber | Fraction | Complex | boolean,
+    name: string
+  )
   valueOf(): string
   clone(): Unit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -4038,6 +4042,19 @@ export interface Unit {
   value: number
   fixPrefix: boolean
   skipAutomaticSimplification: true
+  /**
+   * Parse a string into a unit. The value of the unit is parsed as number, BigNumber, or Fraction depending on the math.js config setting number.
+   *
+   * Throws an exception if the provided string does not contain a valid unit or cannot be parsed.
+   */
+  static parse: (str: string) => Unit
+  /** Test if the given expression is a unit.
+   *
+   * The unit can have a prefix but cannot have a value.
+   */
+  static isValuelessUnit: (name: string) => boolean
+  /** Instantiate a Unit from a JSON object */
+  static fromJSON: (json: object) => Unit
 }
 
 export interface CreateUnitOptions {

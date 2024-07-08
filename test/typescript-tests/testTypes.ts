@@ -308,6 +308,8 @@ Chaining examples
     )
   ).toMatchTypeOf<MathJsChain<Unit>>()
 
+  expectTypeOf(new Unit(15, 'cm')).toMatchTypeOf<Unit>()
+
   // fraction
   expectTypeOf(math.chain(math.fraction('123'))).toMatchTypeOf<
     MathJsChain<Fraction>
@@ -2563,6 +2565,12 @@ Statistics functions' return types
   >()
   expectTypeOf(
     math.quantileSeq([math.unit('5cm'), math.unit('10cm')], 0.75)
+  ).toMatchTypeOf<Unit>()
+
+  expectTypeOf(Unit.isValuelessUnit('cm')).toMatchTypeOf<boolean>()
+  expectTypeOf(Unit.parse('5cm')).toMatchTypeOf<Unit>()
+  expectTypeOf(
+    Unit.fromJSON({ value: 5.2, unit: 'inch' })
   ).toMatchTypeOf<Unit>()
 }
 
