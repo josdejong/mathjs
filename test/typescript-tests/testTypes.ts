@@ -43,6 +43,7 @@ import {
   SymbolNode,
   MathNodeCommon,
   Unit,
+  UnitPrefix,
   Node,
   isSymbolNode,
   MathScalarType
@@ -307,8 +308,6 @@ Chaining examples
       })
     )
   ).toMatchTypeOf<MathJsChain<Unit>>()
-
-  expectTypeOf(new Unit(15, 'cm')).toMatchTypeOf<Unit>()
 
   // fraction
   expectTypeOf(math.chain(math.fraction('123'))).toMatchTypeOf<
@@ -1615,11 +1614,15 @@ Units examples
  * Unit static methods and members
  */
 {
+  expectTypeOf(new Unit(15, 'cm')).toMatchTypeOf<Unit>()
+
   const prefixes = Unit.PREFIXES
   assert.ok(Object.keys(prefixes).length > 0)
+  expectTypeOf(Unit.PREFIXES).toMatchTypeOf<Record<string, UnitPrefix>>()
 
   const baseDimensions = Unit.BASE_DIMENSIONS
   assert.ok(baseDimensions.length > 0)
+  expectTypeOf(Unit.BASE_DIMENSIONS).toMatchTypeOf<string[]>()
 
   const baseUnits = Unit.BASE_UNITS
   assert.ok(Object.keys(baseUnits).length > 0)
@@ -1629,6 +1632,7 @@ Units examples
 
   const units = Unit.UNITS
   assert.ok(Object.keys(units).length > 0)
+
   expectTypeOf(Unit.isValuelessUnit('cm')).toMatchTypeOf<boolean>()
   expectTypeOf(Unit.parse('5cm')).toMatchTypeOf<Unit>()
   expectTypeOf(
