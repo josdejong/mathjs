@@ -4015,6 +4015,7 @@ export interface UnitPrefix {
 export interface Unit {
   valueOf(): string
   clone(): Unit
+  _isDerived(): boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   hasBase(base: any): boolean
   equalBase(unit: Unit): boolean
@@ -4041,14 +4042,25 @@ export interface Unit {
   skipAutomaticSimplification: true
 }
 
-export interface UnitCtor {
+export interface UnitStatic {
+  PREFIXES: Record<string, UnitPrefix>
+  BASE_DIMENSIONS: string[]
+  BASE_UNITS: Record<string, { dimensions: number[] }>
+  UNIT_SYSTEMS: Record<
+    string,
+    Record<string, { unit: Unit; prefix: UnitPrefix }>
+  >
+  UNITS: Record<string, Unit>
+  parse(str: string): Unit
+  isValuelessUnit(name: string): boolean
+  fromJSON(json: MathJSON): Unit
+}
+
+export interface UnitCtor extends UnitStatic {
   new (
     value: number | BigNumber | Fraction | Complex | boolean,
     name: string
   ): Unit
-  parse(str: string): Unit
-  isValuelessUnit(name: string): boolean
-  fromJSON(json: object): Unit
 }
 
 export interface CreateUnitOptions {

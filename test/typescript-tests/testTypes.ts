@@ -1612,6 +1612,31 @@ Units examples
 }
 
 /**
+ * Unit static methods and members
+ */
+{
+  const prefixes = Unit.PREFIXES
+  assert.ok(Object.keys(prefixes).length > 0)
+
+  const baseDimensions = Unit.BASE_DIMENSIONS
+  assert.ok(baseDimensions.length > 0)
+
+  const baseUnits = Unit.BASE_UNITS
+  assert.ok(Object.keys(baseUnits).length > 0)
+
+  const unitSystems = Unit.UNIT_SYSTEMS
+  assert.ok(Object.keys(unitSystems).length > 0)
+
+  const units = Unit.UNITS
+  assert.ok(Object.keys(units).length > 0)
+  expectTypeOf(Unit.isValuelessUnit('cm')).toMatchTypeOf<boolean>()
+  expectTypeOf(Unit.parse('5cm')).toMatchTypeOf<Unit>()
+  expectTypeOf(
+    Unit.fromJSON({ value: 5.2, unit: 'inch' })
+  ).toMatchTypeOf<Unit>()
+}
+
+/**
  * Example of custom fallback for onUndefinedSymbol & onUndefinedFunction
  */
 {
@@ -2565,12 +2590,6 @@ Statistics functions' return types
   >()
   expectTypeOf(
     math.quantileSeq([math.unit('5cm'), math.unit('10cm')], 0.75)
-  ).toMatchTypeOf<Unit>()
-
-  expectTypeOf(Unit.isValuelessUnit('cm')).toMatchTypeOf<boolean>()
-  expectTypeOf(Unit.parse('5cm')).toMatchTypeOf<Unit>()
-  expectTypeOf(
-    Unit.fromJSON({ value: 5.2, unit: 'inch' })
   ).toMatchTypeOf<Unit>()
 }
 
