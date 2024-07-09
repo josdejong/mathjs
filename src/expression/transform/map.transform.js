@@ -1,20 +1,21 @@
-import { applyCallback } from '../../utils/applyCallback.js'
-import { map } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
+import { createMap } from '../../function/matrix/map.js'
 import { compileInlineExpression } from './utils/compileInlineExpression.js'
 
 const name = 'map'
-const dependencies = ['typed']
+const dependencies = ['typed', 'subset', 'index']
 
-export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, subset, index }) => {
   /**
    * Attach a transform function to math.map
    * Adds a property transform containing the transform function.
    *
    * This transform creates a one-based index instead of a zero-based index
    */
-  function mapTransform (args, math, scope) {
+  const map = createMap({ typed, subset, index })
+
+  function mapTransform(args, math, scope) {
     let x, callback
 
     if (args[0]) {
@@ -30,45 +31,48 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
         callback = compileInlineExpression(args[1], math, scope)
       }
     }
-
-    return map(x, callback)
+    return map(x, fixFunction(callback))
   }
   mapTransform.rawArgs = true
 
-  // one-based version of map function
-  const map = typed('map', {
-    'Array, function': function (x, callback) {
-      return _map(x, callback, x)
-    },
-
-    'Matrix, function': function (x, callback) {
-      return x.create(_map(x.valueOf(), callback, x), x.datatype())
-    }
-  })
-
   return mapTransform
-}, { isTransformFunction: true })
 
-/**
- * Map for a multidimensional array. One-based indexes
- * @param {Array} array
- * @param {function} callback
- * @param {Array} orig
- * @return {Array}
- * @private
- */
-function _map (array, callback, orig) {
-  function recurse (value, index) {
-    if (Array.isArray(value)) {
-      return map(value, function (child, i) {
-        // we create a copy of the index array and append the new index value
-        return recurse(child, index.concat(i + 1)) // one based index, hence i + 1
-      })
-    } else {
-      // invoke the (typed) callback function with the right number of arguments
-      return applyCallback(callback, value, index, orig, 'map')
-    }
+  function fixFunction(callback) {
+    return typed.isTypedFunction(callback) ? fixTypedFunction(callback) : fixCallback(callback)
   }
 
-  return recurse(array, [])
+  function fixTypedFunction(typedFunction) {
+    //console.log(typedFunction.signatures)
+    const signatures = Object.fromEntries(
+      Object.entries(typedFunction.signatures)
+        //.filter(([signature, callbackFunction]) => (typeof signature === "string" && signature.length > 1) && (typeof callbackFunction === "function"))
+        .map(([signature, callbackFunction]) => [signature, fixFunction(callbackFunction)])
+    )
+
+    if (typeof typedFunction.name === 'string' && typedFunction.name.length > 0) {
+      return typed(
+        typedFunction.name,
+        signatures)
+    } else {
+      return typed(signatures)
+    }
+
+  }
+}, { isTransformFunction: true })
+
+function fixCallback(callbackFunction) {
+  const callbackLength = callbackFunction.length
+  if (callbackLength <= 1) {
+    return callbackFunction
+  } else if (callbackLength === 2) {
+    return function (val, idx){return callbackFunction(val, fixDims(idx))}
+  } else if (callbackLength === 3) {
+    return function (val, idx, array){return callbackFunction(val, fixDims(idx), array)}
+  } else {
+    return callbackFunction
+  }
+}
+
+function fixDims(dims) {
+  return dims.map(dim => dim.isBigNumber ? dim.plus(1) : dim + 1)
 }
