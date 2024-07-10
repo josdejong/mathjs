@@ -466,7 +466,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Return the type of the value of this unit
    *
    * @memberof Unit
-   * @ return {string} type of the value of the unit
+   * @return {string} type of the value of the unit
    */
   Unit.prototype.valueType = function () {
     return typeOf(this.value)
@@ -476,6 +476,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Return whether the unit is derived (such as m/s, or cm^2, but not N)
    * @memberof Unit
    * @return {boolean} True if the unit is derived
+   * @private
    */
   Unit.prototype._isDerived = function () {
     if (this.units.length === 0) {
@@ -585,7 +586,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * check if this unit has given base unit
    * If this unit is a derived unit, this will ALWAYS return false, since by definition base units are not derived.
    * @memberof Unit
-   * @param {BASE_UNITS | string | undefined} base
+   * @param {BASE_UNIT | string | undefined} base
    */
   Unit.prototype.hasBase = function (base) {
     if (typeof (base) === 'string') {
@@ -2975,6 +2976,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * Set a unit system for formatting derived units.
+   * @memberof Unit
    * @param {string} [name] The name of the unit system.
    */
   Unit.setUnitSystem = function (name) {
@@ -2987,6 +2989,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * Return the current unit system.
+   * @memberof Unit
    * @return {string} The current unit system.
    */
   Unit.getUnitSystem = function () {
@@ -3080,7 +3083,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * Checks if a character is a valid latin letter (upper or lower case).
    * Note that this function can be overridden, for example to allow support of other alphabets.
+   * @memberof Unit
    * @param {string} c Tested character
+   * @return {boolean} true if the character is a latin letter
    */
   Unit.isValidAlpha = function isValidAlpha (c) {
     return /^[a-zA-Z]$/.test(c)
@@ -3100,20 +3105,24 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * Wrapper around createUnitSingle.
    * Example:
-   *  createUnit({
-   *    foo: { },
-   *    bar: {
-   *      definition: 'kg/foo',
-   *      aliases: ['ba', 'barr', 'bars'],
-   *      offset: 200
-   *    },
-   *    baz: '4 bar'
-   *  },
-   *  {
-   *    override: true
-   *  })
+   *  createUnit( {
+   *     foo: {
+   *       prefixes: 'long',
+   *       baseName: 'essence-of-foo'
+   *     },
+   *     bar: '40 foo',
+   *     baz: {
+   *       definition: '1 bar/hour',
+   *       prefixes: 'long'
+   *     }
+   *   },
+   *   {
+   *     override: true
+   *   })
+   * @memberof Unit
    * @param {object} obj      Object map. Each key becomes a unit which is defined by its value.
    * @param {object} options
+   * @return {Unit} the last created unit
    */
   Unit.createUnit = function (obj, options) {
     if (typeof (obj) !== 'object') {
@@ -3148,13 +3157,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Create a user-defined unit and register it with the Unit type.
    * Example:
    *  createUnitSingle('knot', '0.514444444 m/s')
-   *  createUnitSingle('acre', new Unit(43560, 'ft^2'))
    *
+   * @memberof Unit
    * @param {string} name      The name of the new unit. Must be unique. Example: 'knot'
-   * @param {string, Unit, Object} definition      Definition of the unit in terms
+   * @param {string | Unit | object} definition      Definition of the unit in terms
    * of existing units. For example, '0.514444444 m / s'. Can be a Unit, a string,
    * or an Object. If an Object, may have the following properties:
-   *   - definition {string|Unit} The definition of this unit.
+   *   - definition {string | Unit} The definition of this unit.
    *   - prefixes {string} "none", "short", "long", "binary_short", or "binary_long".
    *     The default is "none".
    *   - aliases {Array} Array of strings. Example: ['knots', 'kt', 'kts']

@@ -1627,17 +1627,40 @@ Units examples
   const baseUnits = Unit.BASE_UNITS
   assert.ok(Object.keys(baseUnits).length > 0)
 
+  const units = Unit.UNITS
+  assert.ok(Object.keys(units).length > 0)
+
+  Unit.createUnit(
+    {
+      foo: {
+        prefixes: 'long',
+        baseName: 'essence-of-foo'
+      },
+      bar: '40 foo',
+      baz: {
+        definition: '1 bar/hour',
+        prefixes: 'long'
+      }
+    },
+    {
+      override: true
+    }
+  )
+
+  Unit.createUnitSingle('knot', '0.514444444 m/s')
+
   const unitSystems = Unit.UNIT_SYSTEMS
   assert.ok(Object.keys(unitSystems).length > 0)
 
-  const units = Unit.UNITS
-  assert.ok(Object.keys(units).length > 0)
+  Unit.setUnitSystem('si')
+  assert.strictEqual(Unit.getUnitSystem(), 'si')
 
   expectTypeOf(Unit.isValuelessUnit('cm')).toMatchTypeOf<boolean>()
   expectTypeOf(Unit.parse('5cm')).toMatchTypeOf<Unit>()
   expectTypeOf(
     Unit.fromJSON({ value: 5.2, unit: 'inch' })
   ).toMatchTypeOf<Unit>()
+  expectTypeOf(Unit.isValidAlpha('cm')).toMatchTypeOf<boolean>()
 }
 
 /**
