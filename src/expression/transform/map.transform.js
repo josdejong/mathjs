@@ -15,7 +15,7 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
    */
   const map = createMap({ typed, subset, index })
 
-  function mapTransform(args, math, scope) {
+  function mapTransform (args, math, scope) {
     let x, callback
 
     if (args[0]) {
@@ -37,16 +37,16 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
 
   return mapTransform
 
-  function fixFunction(callback) {
-    return typed.isTypedFunction(callback) ? fixTypedFunction(callback) : fixCallback(callback)
+  function fixFunction (callback) {
+    return typed.isTypedFunction(callback) ? fixTypedFunction(callback) : fixCallback(callback, callback.length)
   }
 
-  function fixTypedFunction(typedFunction) {
-    //console.log(typedFunction.signatures)
+  function fixTypedFunction (typedFunction) {
+    // console.log(typedFunction.signatures)
     const signatures = Object.fromEntries(
       Object.entries(typedFunction.signatures)
-        //.filter(([signature, callbackFunction]) => (typeof signature === "string" && signature.length > 1) && (typeof callbackFunction === "function"))
-        .map(([signature, callbackFunction]) => [signature, fixFunction(callbackFunction)])
+        // .filter(([signature, callbackFunction]) => (typeof signature === "string" && signature.length > 1) && (typeof callbackFunction === "function"))
+        .map(([signature, callbackFunction]) => [signature, fixCallback(callbackFunction, signature.split(',').length)])
     )
 
     if (typeof typedFunction.name === 'string' && typedFunction.name.length > 0) {
@@ -56,23 +56,21 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
     } else {
       return typed(signatures)
     }
-
   }
 }, { isTransformFunction: true })
 
-function fixCallback(callbackFunction) {
-  const callbackLength = callbackFunction.length
-  if (callbackLength <= 1) {
+function fixCallback (callbackFunction, callbackNumberOfInputs) {
+  if (callbackNumberOfInputs <= 1) {
     return callbackFunction
-  } else if (callbackLength === 2) {
-    return function (val, idx){return callbackFunction(val, fixDims(idx))}
-  } else if (callbackLength === 3) {
-    return function (val, idx, array){return callbackFunction(val, fixDims(idx), array)}
+  } else if (callbackNumberOfInputs === 2) {
+    return function (val, idx) { return callbackFunction(val, fixDims(idx)) }
+  } else if (callbackNumberOfInputs === 3) {
+    return function (val, idx, array) { return callbackFunction(val, fixDims(idx), array) }
   } else {
     return callbackFunction
   }
 }
 
-function fixDims(dims) {
+function fixDims (dims) {
   return dims.map(dim => dim.isBigNumber ? dim.plus(1) : dim + 1)
 }
