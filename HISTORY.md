@@ -4,6 +4,10 @@
 
 - Fix: #3232 fix type definitions of function `format` to support notations
   `hex`, `bin`, and `oct`.
+- Fix: use more precise definitions for US liquid volume units (#3229).
+  Thanks @Vistinum.
+- fix: #2286 types static methods and members for Unit class (#3230).
+  Thanks @orelbn.
 
 # 2024-07-04, 13.0.2
 
