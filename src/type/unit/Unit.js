@@ -1833,30 +1833,30 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'minim',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.00000006161152,
+      value: 0.000000061611519921875,
       offset: 0
-    }, // 0.06161152 mL
+    }, // 1/61440 gallons
     fluiddram: {
       name: 'fluiddram',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.0000036966911,
+      value: 0.0000036966911953125,
       offset: 0
-    }, // 3.696691 mL
+    }, // 1/1024 gallons
     fluidounce: {
       name: 'fluidounce',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.00002957353,
+      value: 0.0000295735295625,
       offset: 0
-    }, // 29.57353 mL
+    }, // 1/128 gallons
     gill: {
       name: 'gill',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.0001182941,
+      value: 0.00011829411825,
       offset: 0
-    }, // 118.2941 mL
+    }, // 1/32 gallons
     cc: {
       name: 'cc',
       base: BASE_UNITS.VOLUME,
@@ -1868,117 +1868,51 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'cup',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.0002365882,
+      value: 0.0002365882365,
       offset: 0
-    }, // 236.5882 mL
+    }, // 1/16 gallons
     pint: {
       name: 'pint',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.0004731765,
+      value: 0.000473176473,
       offset: 0
-    }, // 473.1765 mL
+    }, // 1/8 gallons
     quart: {
       name: 'quart',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.0009463529,
+      value: 0.000946352946,
       offset: 0
-    }, // 946.3529 mL
+    }, // 1/4 gallons
     gallon: {
       name: 'gallon',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.003785412,
+      value: 0.003785411784,
       offset: 0
-    }, // 3.785412 L
+    }, // 3.785411784 L
     beerbarrel: {
       name: 'beerbarrel',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.1173478,
+      value: 0.117347765304,
       offset: 0
-    }, // 117.3478 L
+    }, // 31 gallons
     oilbarrel: {
       name: 'oilbarrel',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.1589873,
+      value: 0.158987294928,
       offset: 0
-    }, // 158.9873 L
+    }, // 42 gallons
     hogshead: {
       name: 'hogshead',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.2384810,
+      value: 0.238480942392,
       offset: 0
-    }, // 238.4810 L
-
-    // {name: 'min', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.00000006161152, offset: 0}, // 0.06161152 mL // min is already in use as minute
-    fldr: {
-      name: 'fldr',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.0000036966911,
-      offset: 0
-    }, // 3.696691 mL
-    floz: {
-      name: 'floz',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.00002957353,
-      offset: 0
-    }, // 29.57353 mL
-    gi: {
-      name: 'gi',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.0001182941,
-      offset: 0
-    }, // 118.2941 mL
-    cp: {
-      name: 'cp',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.0002365882,
-      offset: 0
-    }, // 236.5882 mL
-    pt: {
-      name: 'pt',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.0004731765,
-      offset: 0
-    }, // 473.1765 mL
-    qt: {
-      name: 'qt',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.0009463529,
-      offset: 0
-    }, // 946.3529 mL
-    gal: {
-      name: 'gal',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.003785412,
-      offset: 0
-    }, // 3.785412 L
-    bbl: {
-      name: 'bbl',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.1173478,
-      offset: 0
-    }, // 117.3478 L
-    obl: {
-      name: 'obl',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.1589873,
-      offset: 0
-    }, // 158.9873 L
-    // {name: 'hogshead', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.2384810, offset: 0}, // 238.4810 L // TODO: hh?
+    }, // 63 gallons
 
     // Mass
     g: {
@@ -2786,14 +2720,23 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     teaspoons: 'teaspoon',
     tablespoons: 'tablespoon',
     minims: 'minim',
+    fldr: 'fluiddram',
     fluiddrams: 'fluiddram',
+    floz: 'fluidounce',
     fluidounces: 'fluidounce',
+    gi: 'gill',
     gills: 'gill',
+    cp: 'cup',
     cups: 'cup',
+    pt: 'pint',
     pints: 'pint',
+    qt: 'quart',
     quarts: 'quart',
+    gal: 'gallon',
     gallons: 'gallon',
+    bbl: 'beerbarrel',
     beerbarrels: 'beerbarrel',
+    obl: 'oilbarrel',
     oilbarrels: 'oilbarrel',
     hogsheads: 'hogshead',
     gtts: 'gtt',
