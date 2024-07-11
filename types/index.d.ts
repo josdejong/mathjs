@@ -508,6 +508,7 @@ export interface MathJsInstance extends MathJsFactory {
   RelationalNode: RelationalNodeCtor
   SymbolNode: SymbolNodeCtor
 
+  Unit: UnitCtor
   Matrix: MatrixCtor
 
   /**
@@ -3989,15 +3990,17 @@ export interface MathJSON {
   fixPrefix?: boolean
 }
 
+export interface BaseUnit {
+  dimensions: number[]
+  key: string
+}
+
 export interface UnitComponent {
   power: number
   prefix: string
   unit: {
     name: string
-    base: {
-      dimensions: number[]
-      key: string
-    }
+    base: BaseUnit
     prefixes: Record<string, UnitPrefix>
     value: number
     offset: number
@@ -4014,8 +4017,7 @@ export interface UnitPrefix {
 export interface Unit {
   valueOf(): string
   clone(): Unit
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  hasBase(base: any): boolean
+  hasBase(base: BaseUnit | string | undefined): boolean
   equalBase(unit: Unit): boolean
   equals(unit: Unit): boolean
   multiply(unit: Unit): Unit
@@ -4038,6 +4040,40 @@ export interface Unit {
   value: number
   fixPrefix: boolean
   skipAutomaticSimplification: true
+}
+
+export type UnitSystemName = 'si' | 'cgs' | 'us' | 'auto'
+
+export interface UnitStatic {
+  PREFIXES: Record<string, UnitPrefix>
+  BASE_DIMENSIONS: string[]
+  BASE_UNITS: Record<string, BaseUnit>
+  UNIT_SYSTEMS: Record<
+    UnitSystemName,
+    Record<string, { unit: Unit; prefix: UnitPrefix }>
+  >
+  UNITS: Record<string, Unit>
+  parse(str: string): Unit
+  isValuelessUnit(name: string): boolean
+  fromJSON(json: MathJSON): Unit
+  isValidAlpha(c: string): boolean
+  createUnit(
+    obj: Record<string, string | Unit | UnitDefinition>,
+    options?: { override: boolean }
+  ): Unit
+  createUnitSingle(
+    name: string,
+    definition: string | Unit | UnitDefinition
+  ): Unit
+  getUnitSystem(): UnitSystemName
+  setUnitSystem(name: UnitSystemName): void
+}
+
+export interface UnitCtor extends UnitStatic {
+  new (
+    value: number | BigNumber | Fraction | Complex | boolean,
+    name: string
+  ): Unit
 }
 
 export interface CreateUnitOptions {
@@ -6853,6 +6889,7 @@ export const {
   RelationalNode,
   SymbolNode,
   Matrix,
+  Unit,
 
   uninitialized,
   version,
