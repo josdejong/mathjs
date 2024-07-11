@@ -2222,6 +2222,9 @@ Factory Test
   const d = divide(a, b)
   assert.strictEqual(format(c), '16/21')
   assert.strictEqual(format(d), '7/9')
+  assert.strictEqual(format(255, { notation: 'bin' }), '0b11111111')
+  assert.strictEqual(format(255, { notation: 'hex' }), '0xff')
+  assert.strictEqual(format(255, { notation: 'oct' }), '0o377')
 }
 
 /**

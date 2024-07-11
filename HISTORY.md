@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 13.0.2
+
+- Fix: #3232 fix type definitions of function `format` to support notations
+  `hex`, `bin`, and `oct`.
+
 # 2024-07-04, 13.0.2
 
 - Fix an error in the type definitions of `quantileSeq` (#3223).
