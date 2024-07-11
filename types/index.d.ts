@@ -4352,7 +4352,14 @@ export interface FormatOptions {
    * elsewhere. Lower bound is included, upper bound is excluded. For
    * example '123.4' and '1.4e7'.
    */
-  notation?: 'fixed' | 'exponential' | 'engineering' | 'auto'
+  notation?:
+    | 'fixed'
+    | 'exponential'
+    | 'engineering'
+    | 'auto'
+    | 'hex'
+    | 'bin'
+    | 'oct'
 
   /**
    * A number between 0 and 16 to round the digits of the number. In case
