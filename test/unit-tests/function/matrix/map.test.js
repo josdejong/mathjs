@@ -195,6 +195,11 @@ describe('map', function () {
     )
   })
 
+  it('should operate from the parser with three arrays with broadcasting', function () {
+    const arr2 = math.evaluate('map([1, 2, 3], [[10], [20], [30]], [100, 200, 300], _(A, B, C) = A * 2 + B + C / 2)')
+    assert.deepStrictEqual(arr2, math.matrix([[62, 114, 166], [72, 124, 176], [82, 134, 186]]))
+  })
+
   it('should LaTeX map', function () {
     const expression = math.parse('map([1,2,3],callback)')
     assert.strictEqual(expression.toTex(), '\\mathrm{map}\\left(\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix}, callback\\right)')
