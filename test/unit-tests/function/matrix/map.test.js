@@ -114,33 +114,32 @@ describe('map', function () {
     }))
     assert.deepStrictEqual(output, [5, 7, 9])
   })
-  /*
+
   it('should invoke a typed function with correct number of arguments (2) for two matrices', function () {
     const output = math.map(math.matrix([1, 2, 3]), math.matrix([4, 5, 6]), math.typed('callback', {
-      number: function (a, b) {
+      'number, number': function (a, b) {
         return a + b
       }
     }))
-    assert.deepStrictEqual(output, [5, 7, 9])
+    assert.deepStrictEqual(output, math.matrix([5, 7, 9]))
   })
-  */
 
   it('should invoke a typed function with correct number of arguments (2)', function () {
     const output = math.map([1, 2, 3], math.typed('callback', {
       'number, Array': function (value, index) {
-        return value + 2
+        return value + 2 * index[0]
       }
     }))
-    assert.deepStrictEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [1, 4, 7])
   })
 
   it('should invoke a typed function with correct number of arguments (3)', function () {
     const output = math.map([1, 2, 3], math.typed('callback', {
       'number, Array, Array': function (value, index, array) {
-        return value + 2
+        return value + index[0] + array[1]
       }
     }))
-    assert.deepStrictEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [3, 5, 7])
   })
 
   it('should invoke a typed function with correct number of arguments (4)', function () {
