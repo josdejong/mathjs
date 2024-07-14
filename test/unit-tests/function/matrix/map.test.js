@@ -97,7 +97,7 @@ describe('map', function () {
     ])
   })
 
-  it('should invoke a typed function with correct number of arguments (1)', function () {
+  it('should invoke a typed function with the correct number of arguments (1)', function () {
     const output = math.map([1, 2, 3], math.typed('callback', {
       number: function (value) {
         return value + 2
@@ -105,6 +105,25 @@ describe('map', function () {
     }))
     assert.deepStrictEqual(output, [3, 4, 5])
   })
+
+  it('should invoke a typed function with the correct number of arguments (2) for two arrays', function () {
+    const output = math.map([1, 2, 3], [4, 5, 6], math.typed('callback', {
+      'number, number': function (a, b) {
+        return a + b
+      }
+    }))
+    assert.deepStrictEqual(output, [5, 7, 9])
+  })
+  /*
+  it('should invoke a typed function with correct number of arguments (2) for two matrices', function () {
+    const output = math.map(math.matrix([1, 2, 3]), math.matrix([4, 5, 6]), math.typed('callback', {
+      number: function (a, b) {
+        return a + b
+      }
+    }))
+    assert.deepStrictEqual(output, [5, 7, 9])
+  })
+  */
 
   it('should invoke a typed function with correct number of arguments (2)', function () {
     const output = math.map([1, 2, 3], math.typed('callback', {
@@ -160,6 +179,21 @@ describe('map', function () {
     assert.deepStrictEqual(
       math.evaluate('map([1,2,3], f(x) = format(x))'),
       math.matrix(['1', '2', '3']))
+  })
+
+  it('should operate from the parser with multiple inputs', function () {
+    assert.deepStrictEqual(
+      math.evaluate('map([1, 2], [3, 4], f)', { f: (a, b) => a + b }),
+      math.matrix([4, 6])
+    )
+    assert.deepStrictEqual(
+      math.evaluate('map([1, 2], [3, 4], _(a, b) = a + b)'),
+      math.matrix([4, 6])
+    )
+    assert.deepStrictEqual(
+      math.evaluate('map([[1, 2, 3], [4, 5, 6]], [[10, 20, 30], [40, 50, 60]], f(a, b) = a * 2 + b)'),
+      math.matrix([[12, 24, 36], [48, 60, 72]])
+    )
   })
 
   it('should LaTeX map', function () {

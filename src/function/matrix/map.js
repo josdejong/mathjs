@@ -11,9 +11,12 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
    * Create a new matrix or array with the results of a callback function executed on
    * each entry of a given matrix/array.
    *
-   * For each entry of the input, the callback is invoked with three arguments:
-   * the value of the entry, the index at which that entry occurs, and the full
-   * matrix/array being traversed. Note that because the matrix/array might be
+   * For each entry of the input,
+   *
+   * the callback is invoked with 2N + 1 arguments:
+   * the N values of the entry, the index at which that entry occurs, and the N full
+   * broadcasted matrix/array being traversed where N is the number of matrices being traversed.
+   * Note that because the matrix/array might be
    * multidimensional, the "index" argument is always an array of numbers giving
    * the index in each dimension. This is true even for vectors: the "index"
    * argument is an array of length 1, rather than simply a number.
@@ -28,11 +31,16 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
    *    math.map([1, 2, 3], function(value) {
    *      return value * value
    *    })  // returns [1, 4, 9]
+   *    math.map([1, 2], [3, 4], function(a, b) {
+   *     return a + b
+   *    })  // returns [4, 6]
    *
    *    // The callback is normally called with three arguments:
    *    //    callback(value, index, Array)
    *    // If you want to call with only one argument, use:
    *    math.map([1, 2, 3], x => math.format(x)) // returns ['1', '2', '3']
+   *    // It can also be called with 2N + 1 arguments: for N arrays
+   *    //    callback(value1, value2, index, BroadcastedArray1, BroadcastedArray2)
    *
    * See also:
    *
@@ -75,20 +83,49 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
     if (typeof multiCallback !== 'function') {
       throw new Error('Last argument must be a callback function')
     }
+
+    // skip multiple map logic
+    if (N === 1) {
+      if (multiCallback.isMatrix) {
+        return arrays[0].map(multiCallback)
+      } else {
+        return _mapArray(arrays[0], multiCallback)
+      }
+    }
+
     const newSize = broadcastSizes(...arrays.map(M => M.isMatrix ? M._size : arraySize(M)))
     const broadcastedArrays = arrays.map(M => M.isMatrix
       ? M.create(broadcastTo(M.valueOf(), newSize), M.datatype())
       : broadcastTo(M, newSize))
     const firstArray = broadcastedArrays[0]
     if (firstArray.isMatrix) {
-      return firstArray.map(_createCallback)
+      return firstArray.map((x, idx) => _createCallback(x, idx, broadcastedArrays, multiCallback))
     } else {
-      return _mapArray(firstArray, _createCallback)
+      return _mapArray(firstArray, (x, idx) => _createCallback(x, idx, broadcastedArrays, multiCallback))
     }
     /** creates a callback function from a multiple callback function */
-    function _createCallback (x, idx) {
+    function _createCallback (x, idx, broadcastedArrays, multiCallback) {
       const values = [x, ...broadcastedArrays.slice(1).map(array => subset(array, index(...idx)))]
-      return multiCallback(...values, idx, ...broadcastedArrays)
+      if (typed.isTypedFunction(multiCallback)) {
+        const foundArguments = _findArguments(multiCallback, values, idx, broadcastedArrays)
+        return multiCallback(...foundArguments)
+      } else {
+        return multiCallback(...values, idx, ...broadcastedArrays)
+      }
+    }
+
+    function _findArguments (typedCallback, values, idx, arrays) {
+      if (typed.resolve(typedCallback, [...values, idx, ...arrays]) !== null) {
+        return [...values, idx, ...arrays]
+      }
+      if (typed.resolve(typedCallback, [...values, idx]) !== null) {
+        return [...values, idx]
+      }
+      if (typed.resolve(typedCallback, values) !== null) {
+        return values
+      }
+      // this should never happen
+      return values
     }
   }
 })

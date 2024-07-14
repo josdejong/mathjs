@@ -30,7 +30,7 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
     X = X.map(arg => _compileAndEvaluate(arg, scope))
 
     if (callback) {
-      if (isSymbolNode(args[1]) || isFunctionAssignmentNode(args[1])) {
+      if (isSymbolNode(callback) || isFunctionAssignmentNode(callback)) {
         // a function pointer, like filter([3, -2, 5], myTestFunction)
         callback = _compileAndEvaluate(callback, scope)
       } else {
@@ -75,14 +75,16 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
       Object.entries(typedFunction.signatures)
         .map(([signature, callbackFunction]) => {
           const numberOfCallbackInputs = signature.split(',').length
-          return [signature, _transformCallbackFunction(callbackFunction, numberOfCallbackInputs, numberOfArrays)]
+          if (typed.isTypedFunction(callbackFunction)) {
+            return [signature, _transformTypedCallbackFunction(callbackFunction, numberOfArrays)]
+          } else {
+            return [signature, _transformCallbackFunction(callbackFunction, numberOfCallbackInputs, numberOfArrays)]
+          }
         })
     )
 
     if (typeof typedFunction.name === 'string') {
-      return typed(
-        typedFunction.name,
-        signatures)
+      return typed(typedFunction.name, signatures)
     } else {
       return typed(signatures)
     }
