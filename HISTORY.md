@@ -1,5 +1,14 @@
 # History
 
+# 2024-07-18, 13.0.3
+
+- Fix: #3232 fix type definitions of function `format` to support notations
+  `hex`, `bin`, and `oct`.
+- Fix: use more precise definitions for US liquid volume units (#3229).
+  Thanks @Vistinum.
+- Fix: #2286 types static methods and members for Unit class (#3230).
+  Thanks @orelbn.
+
 # 2024-07-04, 13.0.2
 
 - Fix an error in the type definitions of `quantileSeq` (#3223).

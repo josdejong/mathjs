@@ -158,8 +158,8 @@ describe('divide', function () {
   })
 
   it('should divide one valued unit by a valueless unit and vice-versa', function () {
-    assert.strictEqual(divide(math.unit('4 gal'), math.unit('L')).toString(), '15.141648')
-    assert.strictEqual(divide(math.unit('gal'), math.unit('4 L')).toString(), '0.946353')
+    assert.strictEqual(divide(math.unit('4 gal'), math.unit('L')).toString(), '15.141647136')
+    assert.strictEqual(divide(math.unit('gal'), math.unit('4 L')).toString(), '0.946352946')
 
     assert.strictEqual(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')).toFraction(), '127/50')
   })

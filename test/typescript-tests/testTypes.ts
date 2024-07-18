@@ -43,6 +43,7 @@ import {
   SymbolNode,
   MathNodeCommon,
   Unit,
+  UnitPrefix,
   Node,
   isSymbolNode,
   MathScalarType
@@ -1610,6 +1611,59 @@ Units examples
 }
 
 /**
+ * Unit static methods and members
+ */
+{
+  expectTypeOf(new Unit(15, 'cm')).toMatchTypeOf<Unit>()
+
+  const prefixes = Unit.PREFIXES
+  assert.ok(Object.keys(prefixes).length > 0)
+  expectTypeOf(Unit.PREFIXES).toMatchTypeOf<Record<string, UnitPrefix>>()
+
+  const baseDimensions = Unit.BASE_DIMENSIONS
+  assert.ok(baseDimensions.length > 0)
+  expectTypeOf(Unit.BASE_DIMENSIONS).toMatchTypeOf<string[]>()
+
+  const baseUnits = Unit.BASE_UNITS
+  assert.ok(Object.keys(baseUnits).length > 0)
+
+  const units = Unit.UNITS
+  assert.ok(Object.keys(units).length > 0)
+
+  Unit.createUnit(
+    {
+      foo: {
+        prefixes: 'long',
+        baseName: 'essence-of-foo'
+      },
+      bar: '40 foo',
+      baz: {
+        definition: '1 bar/hour',
+        prefixes: 'long'
+      }
+    },
+    {
+      override: true
+    }
+  )
+
+  Unit.createUnitSingle('knot', '0.514444444 m/s')
+
+  const unitSystems = Unit.UNIT_SYSTEMS
+  assert.ok(Object.keys(unitSystems).length > 0)
+
+  Unit.setUnitSystem('si')
+  assert.strictEqual(Unit.getUnitSystem(), 'si')
+
+  expectTypeOf(Unit.isValuelessUnit('cm')).toMatchTypeOf<boolean>()
+  expectTypeOf(Unit.parse('5cm')).toMatchTypeOf<Unit>()
+  expectTypeOf(
+    Unit.fromJSON({ value: 5.2, unit: 'inch' })
+  ).toMatchTypeOf<Unit>()
+  expectTypeOf(Unit.isValidAlpha('cm')).toMatchTypeOf<boolean>()
+}
+
+/**
  * Example of custom fallback for onUndefinedSymbol & onUndefinedFunction
  */
 {
@@ -2168,6 +2222,9 @@ Factory Test
   const d = divide(a, b)
   assert.strictEqual(format(c), '16/21')
   assert.strictEqual(format(d), '7/9')
+  assert.strictEqual(format(255, { notation: 'bin' }), '0b11111111')
+  assert.strictEqual(format(255, { notation: 'hex' }), '0xff')
+  assert.strictEqual(format(255, { notation: 'oct' }), '0o377')
 }
 
 /**
