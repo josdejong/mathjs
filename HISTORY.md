@@ -1,6 +1,6 @@
 # History
 
-# 2024-07-18, 13.0.3
+# 2024-07-19, 13.0.3
 
 - Fix: #3232 fix type definitions of function `format` to support notations
   `hex`, `bin`, and `oct`.
