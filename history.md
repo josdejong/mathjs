@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20240719-1303">2024-07-19, 13.0.3 <a href="#20240719-1303" title="Permalink">#</a></h1>
+
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3232">#3232</a> fix type definitions of function `format` to support notations
+  `hex`, `bin`, and `oct`.
+- Fix: use more precise definitions for US liquid volume units (<a href="https://github.com/josdejong/mathjs/issues/3229">#3229</a>).
+  Thanks <a href="https://github.com/Vistinum">@Vistinum</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/2286">#2286</a> types static methods and members for Unit class (<a href="https://github.com/josdejong/mathjs/issues/3230">#3230</a>).
+  Thanks <a href="https://github.com/orelbn">@orelbn</a>.
+
 <h1 id="20240704-1302">2024-07-04, 13.0.2 <a href="#20240704-1302" title="Permalink">#</a></h1>
 
 - Fix an error in the type definitions of `quantileSeq` (<a href="https://github.com/josdejong/mathjs/issues/3223">#3223</a>).
