@@ -42,7 +42,7 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
     },
 
     'Matrix, function': function (x, callback) {
-      return x.create(_map(x.valueOf(), callback, x))
+      return x.create(_map(x.valueOf(), callback, x), x.datatype())
     }
   })
 

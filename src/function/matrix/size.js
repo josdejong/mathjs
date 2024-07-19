@@ -31,7 +31,7 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   return typed(name, {
     Matrix: function (x) {
-      return x.create(x.size())
+      return x.create(x.size(), 'number')
     },
 
     Array: arraySize,
