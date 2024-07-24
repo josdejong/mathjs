@@ -1,6 +1,15 @@
 # History
 
-# unpublished changes since 13.0.1
+# 2024-07-19, 13.0.3
+
+- Fix: #3232 fix type definitions of function `format` to support notations
+  `hex`, `bin`, and `oct`.
+- Fix: use more precise definitions for US liquid volume units (#3229).
+  Thanks @Vistinum.
+- Fix: #2286 types static methods and members for Unit class (#3230).
+  Thanks @orelbn.
+
+# 2024-07-04, 13.0.2
 
 - Fix an error in the type definitions of `quantileSeq` (#3223).
   Thanks @domdomegg.
@@ -22,7 +31,8 @@ Breaking changes:
 - Upgrade to `fraction.js@4.3.7`,
   see <https://github.com/rawify/Fraction.js/issues/68>.
 - Dropped support for JavaScript engines that do not fully support ES6 or
-  `bigint`, or are not actively maintained.
+  `bigint`, or are not actively maintained. ES2020 is now the minimum required
+  EcmaScript version.
 
 Non-breaking changes:
 
