@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory.js'
 import { isCollection } from '../../utils/is.js'
 
 const name = 'map'
-const dependencies = ['typed', 'subset', 'index']
+const dependencies = ['typed']
 
-export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, subset, index }) => {
+export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Create a new matrix or array with the results of a callback function executed on
    * each entry of a given matrix/array.
@@ -105,7 +105,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
     }
     /** creates a callback function from a multiple callback function */
     function _createCallback (x, idx, broadcastedArrays, multiCallback) {
-      const values = [x, ...broadcastedArrays.slice(1).map(array => subset(array, index(...idx)))]
+      const values = [x, ...broadcastedArrays.slice(1).map(array => _get(array, idx))]
       if (typed.isTypedFunction(multiCallback)) {
         const foundArguments = _findArguments(multiCallback, values, idx, broadcastedArrays)
         return multiCallback(...foundArguments)
@@ -159,5 +159,40 @@ function _recurse (value, index, array, callback) {
   } else {
     // invoke the callback function with the right number of arguments
     return applyCallback(callback, value, index, array, 'map')
+  }
+}
+
+/**
+ * Retrieves a single element from a collection given an index.
+ *
+ * @param {Array|Object} collection - The collection (array or matrix) from which to retrieve the value.
+ * @param {Array<number>} idx - An array of indices specifying the position of the desired element in each dimension.
+ * @returns {*} - The value at the specified position in the collection.
+ * @throws {Error} - Throws an error if the input is not a collection.
+ *
+ * @example
+ * const arr = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]];
+ * const idx = [1, 0, 1];
+ * console.log(_get(arr, idx)); // 6
+ */
+function _get (collection, idx) {
+  if (!isCollection(collection)) {
+    throw new Error('should get from a collection')
+  }
+  if (collection.isMatrix) {
+    return collection.get(idx)
+  }
+  if (Array.isArray(collection)) {
+    return _getFromArray(collection, idx)
+  }
+  /**
+   * Retrieves a single element from an array given an index.
+   *
+   * @param {Array} arr - The array from which to retrieve the value.
+   * @param {Array<number>} idx - An array of indices specifying the position of the desired element in each dimension.
+   * @returns {*} - The value at the specified position in the array.
+   */
+  function _getFromArray (arr, idx) {
+    return idx.reduce((acc, curr) => acc[curr], arr)
   }
 }
