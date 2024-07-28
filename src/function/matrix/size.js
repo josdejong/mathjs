@@ -37,7 +37,7 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     Array: arraySize,
 
     string: function (x) {
-      return (config.matrix === 'Array') ? [x.length] : matrix([x.length])
+      return (config.matrix === 'Array') ? [x.length] : matrix([x.length], 'dense', 'number')
     },
 
     'number | Complex | BigNumber | Unit | boolean | null': function (x) {

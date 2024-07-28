@@ -53,8 +53,8 @@ describe('size', function () {
   })
 
   it('should calculate the size of a string', function () {
-    assert.deepStrictEqual(size('hello'), matrix([5]))
-    assert.deepStrictEqual(size(''), matrix([0]))
+    assert.deepStrictEqual(size('hello'), matrix([5], 'dense', 'number'))
+    assert.deepStrictEqual(size(''), matrix([0], 'dense', 'number'))
   })
 
   it('should throw an error if called with an invalid number of arguments', function () {
