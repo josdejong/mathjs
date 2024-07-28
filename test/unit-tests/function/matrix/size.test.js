@@ -37,11 +37,11 @@ describe('size', function () {
   })
 
   it('should calculate the size of a scalar', function () {
-    assert.deepStrictEqual(size(2), matrix([]))
-    assert.deepStrictEqual(size(math.bignumber(2)), matrix([]))
-    assert.deepStrictEqual(size(math.complex(2, 3)), matrix([]))
-    assert.deepStrictEqual(size(true), matrix([]))
-    assert.deepStrictEqual(size(null), matrix([]))
+    assert.deepStrictEqual(size(2), matrix([], 'dense', 'number'))
+    assert.deepStrictEqual(size(math.bignumber(2)), matrix([], 'dense', 'number'))
+    assert.deepStrictEqual(size(math.complex(2, 3)), matrix([], 'dense', 'number'))
+    assert.deepStrictEqual(size(true), matrix([], 'dense', 'number'))
+    assert.deepStrictEqual(size(null), matrix([], 'dense', 'number'))
   })
 
   it('should calculate the size of a scalar with setting matrix=="array"', function () {
