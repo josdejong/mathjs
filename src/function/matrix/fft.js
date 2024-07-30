@@ -55,7 +55,7 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
   return typed(name, {
     Array: _ndFft,
     Matrix: function (matrix) {
-      return matrix.create(_ndFft(matrix.toArray()))
+      return matrix.create(_ndFft(matrix.valueOf()), matrix.datatype())
     }
   })
 

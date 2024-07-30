@@ -81,7 +81,7 @@ export function reduce (mat, dim, callback) {
   }
 
   if (isMatrix(mat)) {
-    return mat.create(_reduce(mat.valueOf(), dim, callback))
+    return mat.create(_reduce(mat.valueOf(), dim, callback), mat.datatype())
   } else {
     return _reduce(mat, dim, callback)
   }
