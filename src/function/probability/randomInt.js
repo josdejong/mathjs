@@ -58,7 +58,7 @@ export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
   function _randomIntMatrix (size, min, max) {
     const res = randomMatrix(size.valueOf(), () => _randomInt(min, max))
-    return isMatrix(size) ? size.create(res) : res
+    return isMatrix(size) ? size.create(res, 'number') : res
   }
 
   function _randomInt (min, max) {

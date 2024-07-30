@@ -747,7 +747,7 @@ describe('parse', function () {
     it('should get/set the matrix correctly for 3d matrices', function () {
       const scope = {}
       assert.deepStrictEqual(parseAndEval('f=[1,2;3,4]', scope), math.matrix([[1, 2], [3, 4]]))
-      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2]))
+      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2], 'dense', 'number'))
 
       parseAndEval('f[:,:,2]=[5,6;7,8]', scope)
       assert.deepStrictEqual(scope.f, math.matrix([
@@ -761,7 +761,7 @@ describe('parse', function () {
         ]
       ]))
 
-      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2, 2]))
+      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2, 2], 'dense', 'number'))
       assert.deepStrictEqual(parseAndEval('f[:,:,1]', scope), math.matrix([[[1], [2]], [[3], [4]]]))
       assert.deepStrictEqual(parseAndEval('f[:,:,2]', scope), math.matrix([[[5], [6]], [[7], [8]]]))
       assert.deepStrictEqual(parseAndEval('f[:,2,:]', scope), math.matrix([[[2, 6]], [[4, 8]]]))
@@ -808,11 +808,11 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('d=1:3', scope), math.matrix([1, 2, 3]))
       assert.deepStrictEqual(parseAndEval('concat(d,d)', scope), math.matrix([1, 2, 3, 1, 2, 3]))
       assert.deepStrictEqual(parseAndEval('e=1+d', scope), math.matrix([2, 3, 4]))
-      assert.deepStrictEqual(parseAndEval('size(e)', scope), math.matrix([3]))
+      assert.deepStrictEqual(parseAndEval('size(e)', scope), math.matrix([3], 'dense', 'number'))
       assert.deepStrictEqual(parseAndEval('concat(e,e)', scope), math.matrix([2, 3, 4, 2, 3, 4]))
       assert.deepStrictEqual(parseAndEval('[[],[]]', scope), math.matrix([[], []]))
       assert.deepStrictEqual(parseAndEval('[[],[]]', scope).size(), [2, 0])
-      assert.deepStrictEqual(parseAndEval('size([[],[]])', scope), math.matrix([2, 0]))
+      assert.deepStrictEqual(parseAndEval('size([[],[]])', scope), math.matrix([2, 0], 'dense', 'number'))
     })
 
     it('should disable arrays as range in a matrix index', function () {
@@ -1831,7 +1831,7 @@ describe('parse', function () {
       assert.ok(parseAndEval('[1,2,3;4,5,6]\'') instanceof Matrix)
       assert.deepStrictEqual(parseAndEval('[1:5]'), math.matrix([[1, 2, 3, 4, 5]]))
       assert.deepStrictEqual(parseAndEval('[1:5]\''), math.matrix([[1], [2], [3], [4], [5]]))
-      assert.deepStrictEqual(parseAndEval('size([1:5])'), math.matrix([1, 5]))
+      assert.deepStrictEqual(parseAndEval('size([1:5])'), math.matrix([1, 5], 'dense', 'number'))
       assert.deepStrictEqual(parseAndEval('[1,2;3,4]\''), math.matrix([[1, 3], [2, 4]]))
     })
 

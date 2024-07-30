@@ -51,7 +51,7 @@ export const createApply = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
 
       if (isMatrix(mat)) {
-        return mat.create(_apply(mat.valueOf(), dim, callback))
+        return mat.create(_apply(mat.valueOf(), dim, callback), mat.datatype())
       } else {
         return _apply(mat, dim, callback)
       }

@@ -41,13 +41,13 @@ export const createFilterTransform = /* #__PURE__ */ factory(name, dependencies,
     'Array, function': _filter,
 
     'Matrix, function': function (x, test) {
-      return x.create(_filter(x.toArray(), test))
+      return x.create(_filter(x.toArray(), test), x.datatype())
     },
 
     'Array, RegExp': filterRegExp,
 
     'Matrix, RegExp': function (x, test) {
-      return x.create(filterRegExp(x.toArray(), test))
+      return x.create(filterRegExp(x.toArray(), test), x.datatype())
     }
   })
 

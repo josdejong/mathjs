@@ -15,12 +15,12 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * Examples:
    *
-   *     math.size(2.3)                  // returns []
-   *     math.size('hello world')        // returns [11]
+   *     math.size(2.3)                       // returns []
+   *     math.size('hello world')             // returns [11]
    *
    *     const A = [[1, 2, 3], [4, 5, 6]]
-   *     math.size(A)                    // returns [2, 3]
-   *     math.size(math.range(1,6))      // returns [5]
+   *     math.size(A)                         // returns [2, 3]
+   *     math.size(math.range(1,6).toArray()) // returns [5]
    *
    * See also:
    *
@@ -31,20 +31,20 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   return typed(name, {
     Matrix: function (x) {
-      return x.create(x.size())
+      return x.create(x.size(), 'number')
     },
 
     Array: arraySize,
 
     string: function (x) {
-      return (config.matrix === 'Array') ? [x.length] : matrix([x.length])
+      return (config.matrix === 'Array') ? [x.length] : matrix([x.length], 'dense', 'number')
     },
 
     'number | Complex | BigNumber | Unit | boolean | null': function (x) {
       // scalar
       return (config.matrix === 'Array')
         ? []
-        : matrix ? matrix([]) : noMatrix()
+        : matrix ? matrix([], 'dense', 'number') : noMatrix()
     }
   })
 })

@@ -128,7 +128,7 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
 function checkExpectation (want, got) {
   if (Array.isArray(want)) {
     if (!Array.isArray(got)) {
-      want = math.matrix(want)
+      got = want.valueOf()
     }
     return approxDeepEqual(got, want, 1e-9)
   }

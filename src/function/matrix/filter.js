@@ -39,13 +39,13 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
     'Array, function': _filterCallback,
 
     'Matrix, function': function (x, test) {
-      return x.create(_filterCallback(x.toArray(), test))
+      return x.create(_filterCallback(x.valueOf(), test), x.datatype())
     },
 
     'Array, RegExp': filterRegExp,
 
     'Matrix, RegExp': function (x, test) {
-      return x.create(filterRegExp(x.toArray(), test))
+      return x.create(filterRegExp(x.valueOf(), test), x.datatype())
     }
   })
 })
