@@ -66,6 +66,8 @@ describe('map', function () {
   it('should invoke a typed function with correct number of arguments (4)', function () {
     // cbrt has a syntax cbrt(x, allRoots), but it should invoke cbrt(x) here
     assert.deepStrictEqual(math.map([1, 8, 27], math.cbrt), [1, 2, 3])
+    assert.deepStrictEqual(math.map(math.matrix([1, 8, 27]), math.cbrt), math.matrix([1, 2, 3]))
+    assert.deepStrictEqual(math.map(math.matrix([1, 8, 27], 'sparse'), math.cbrt), math.matrix([1, 2, 3], 'sparse'))
   })
 
   it('should invoke a typed function with correct number of arguments (5)', function () {
