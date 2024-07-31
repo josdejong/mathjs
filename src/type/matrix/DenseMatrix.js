@@ -550,24 +550,26 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.map = function (callback) {
     // matrix instance
     const me = this
-    const recurse = function (value, index) {
+
+    // determine the new datatype when the original matrix has datatype defined
+    // TODO: should be done in matrix constructor instead
+    const data = _recurse(callback, this._data, [], me)
+    const datatype = this._datatype !== undefined
+      ? getArrayDataType(data, typeOf)
+      : undefined
+    return new DenseMatrix(data, datatype)
+
+    function _recurse (callback, value, index, me) {
       if (isArray(value)) {
-        return value.map(function (child, i) {
-          return recurse(child, index.concat(i))
-        })
+        return value.map((child, i) =>
+          // we create a copy of the index array and append the new index value
+          _recurse(callback, child, index.concat(i), me)
+        )
       } else {
         // invoke the callback function with the right number of arguments
         return applyCallback(callback, value, index, me, 'map')
       }
     }
-
-    // determine the new datatype when the original matrix has datatype defined
-    // TODO: should be done in matrix constructor instead
-    const data = recurse(this._data, [])
-    const datatype = this._datatype !== undefined
-      ? getArrayDataType(data, typeOf)
-      : undefined
-    return new DenseMatrix(data, datatype)
   }
 
   /**

@@ -44,9 +44,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
   return typed(name, {
     'Array, function': _map,
 
-    'Matrix, function': function (x, callback) {
-      return x.map(callback)
-    }
+    'Matrix, function': (x, callback) => x.map(callback)
   })
 })
 
@@ -58,17 +56,17 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
  * @private
  */
 function _map (array, callback) {
-  const recurse = function (value, index) {
-    if (Array.isArray(value)) {
-      return value.map(function (child, i) {
-        // we create a copy of the index array and append the new index value
-        return recurse(child, index.concat(i))
-      })
-    } else {
-      // invoke the callback function with the right number of arguments
-      return applyCallback(callback, value, index, array, 'map')
-    }
-  }
+  return _recurse(callback, array, [], array)
+}
 
-  return recurse(array, [])
+function _recurse (callback, value, index, array) {
+  if (Array.isArray(value)) {
+    return value.map((child, i) =>
+      // we create a copy of the index array and append the new index value
+      _recurse(callback, child, index.concat(i), array)
+    )
+  } else {
+    // invoke the callback function with the right number of arguments
+    return applyCallback(callback, value, index, array, 'map')
+  }
 }
