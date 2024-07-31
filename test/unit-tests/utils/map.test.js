@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { isMap } from '../../../src/index.js'
+import { isMap } from '../../../src/utils/is.js'
 import { assign, createMap, ObjectWrappingMap, PartitionedMap, toObject } from '../../../src/utils/map.js'
 
 describe('maps', function () {

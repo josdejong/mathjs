@@ -1,7 +1,7 @@
 // test parse
 import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
-import { isMap, isObjectWrappingMap, isPartitionedMap } from '../../../src/index.js'
+import { isMap, isObjectWrappingMap, isPartitionedMap } from '../../../src/utils/is.js'
 import { PartitionedMap } from '../../../src/utils/map.js'
 
 import { approxDeepEqual, approxEqual } from '../../../tools/approx.js'
