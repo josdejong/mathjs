@@ -36,11 +36,14 @@
  * @returns {function} The created typed-function.
  */
 
+import typedFunction from 'typed-function'
+import { factory } from '../../utils/factory.js'
 import {
   isAccessorNode,
   isArray,
   isArrayNode,
   isAssignmentNode,
+  isBigInt,
   isBigNumber,
   isBlockNode,
   isBoolean,
@@ -58,6 +61,7 @@ import {
   isHelp,
   isIndex,
   isIndexNode,
+  isMap,
   isMatrix,
   isNode,
   isNull,
@@ -68,19 +72,16 @@ import {
   isParenthesisNode,
   isRange,
   isRangeNode,
-  isRelationalNode,
   isRegExp,
+  isRelationalNode,
   isResultSet,
   isSparseMatrix,
   isString,
   isSymbolNode,
   isUndefined,
-  isUnit, isBigInt
+  isUnit
 } from '../../utils/is.js'
-import typedFunction from 'typed-function'
 import { digits } from '../../utils/number.js'
-import { factory } from '../../utils/factory.js'
-import { isMap } from '../../utils/map.js'
 
 // returns a new instance of typed-function
 let _createTyped = function () {

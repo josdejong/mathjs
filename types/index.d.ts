@@ -3381,6 +3381,14 @@ export interface MathJsInstance extends MathJsFactory {
 
   isObject(x: unknown): boolean
 
+  isMap<T, U>(x: unknown): x is Map<T, U>
+
+  isPartitionedMap<T, U>(x: unknown): x is PartitionedMap<T, U>
+
+  isObjectWrappingMap<T extends string | number | symbol, U>(
+    x: unknown
+  ): x is ObjectWrappingMap<T, U>
+
   isNull(x: unknown): x is null
 
   isUndefined(x: unknown): x is undefined
@@ -4156,6 +4164,15 @@ export interface UnitDefinition {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Index {}
+
+export interface PartitionedMap<T, U> {
+  a: Map<T, U>
+  b: Map<T, U>
+}
+
+export interface ObjectWrappingMap<T extends string | number | symbol, U> {
+  wrappedObject: Record<T, U>
+}
 
 export interface EvalFunction {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

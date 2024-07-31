@@ -1,8 +1,10 @@
 // test parse
 import assert from 'assert'
-
-import { approxEqual, approxDeepEqual } from '../../../tools/approx.js'
 import math from '../../../src/defaultInstance.js'
+import { isMap, isObjectWrappingMap, isPartitionedMap } from '../../../src/index.js'
+import { PartitionedMap } from '../../../src/utils/map.js'
+
+import { approxDeepEqual, approxEqual } from '../../../tools/approx.js'
 
 const parse = math.parse
 const ConditionalNode = math.ConditionalNode
@@ -1597,6 +1599,31 @@ describe('parse', function () {
       assert.deepStrictEqual(Object.keys(scope), ['f', 'a'])
       assert.strictEqual(scope.f, f)
       assert.strictEqual(scope.a, false)
+    })
+
+    it('should always pass a Map as scope to a rawArgs function', function () {
+      const myMath = math.create()
+      function myFunction (args, _math, _scope) {
+        return {
+          type: isObjectWrappingMap(_scope)
+            ? 'ObjectWrappingMap'
+            : isPartitionedMap(_scope)
+              ? 'PartitionedMap'
+              : isMap(_scope)
+                ? 'Map'
+                : 'unknown',
+          scope: _scope
+        }
+      }
+      myFunction.rawArgs = true
+      myMath.import({ myFunction })
+
+      assert.strictEqual(myMath.parse('myFunction()').evaluate({}).type, 'PartitionedMap')
+      const map = new Map()
+      assert.strictEqual(myMath.parse('myFunction()').evaluate(map).type, 'PartitionedMap')
+      assert.strictEqual(myMath.parse('myFunction()').evaluate(map).scope.a, map)
+      assert.strictEqual(myMath.parse('myFunction()').evaluate(new PartitionedMap(new Map(), new Map(), new Set('x'))).type, 'PartitionedMap')
+      assert.deepStrictEqual(myMath.parse('f(x) = myFunction(x); f(2)').evaluate(new Map()).entries[0].type, 'PartitionedMap')
     })
 
     it('should parse logical xor', function () {

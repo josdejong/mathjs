@@ -92,7 +92,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      * invoke a list with arguments on a node
      * @param {./Node | string} fn
      *     Item resolving to a function on which to invoke
-     *     the arguments, typically a SymboNode or AccessorNode
+     *     the arguments, typically a SymbolNode or AccessorNode
      * @param {./Node[]} args
      */
     constructor (fn, args) {
