@@ -46,7 +46,7 @@ Classes used internally that may be of use to developers:
 
 - [Index](classes/matrixindex.md)
 - [Range](classes/matrixrange.md)
-- [ResultSet](classes/matrixrange.md)
+- [ResultSet](classes/resultset.md)
 - [FibonacciHeap](classes/fibonacciheap.md)
 
 ## Complex

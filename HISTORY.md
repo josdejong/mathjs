@@ -3,8 +3,12 @@
 # unpublished changes since 13.0.3
 
 - Feat: add matrix datatypes in more cases (#3235). Thanks @dvd101x.
+- Feat: export util functions `isMap`, `isPartitionedMap`, and `isObjectWrappingMap`
 - Docs: add a link to the documentation page about the syntax expression
   from the function `evaluate` (see #3238).
+- Docs: improve the documentation of `scope` and fix the example 
+  `custom_scope_objects.js` (#3150)
+- Fix: #3244 fix broken link to `ResultSet` in the docs about classes.
 
 # 2024-07-19, 13.0.3
 
