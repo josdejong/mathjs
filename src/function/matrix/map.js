@@ -58,80 +58,78 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return x.map(callback)
     },
 
-    'Array|Matrix, Array|Matrix, ...Array|Matrix|function': (A, B, rest) => _map(A, B, ...rest)
+    'Array|Matrix, Array|Matrix, ...Array|Matrix|function': (A, B, rest) =>
+      _mapMultiple([A, B, ...rest.slice(0, rest.length - 1)], rest[rest.length - 1])
   })
 
   /**
  * Maps over multiple arrays or matrices.
  *
- * @param  {...any} args - The arrays or matrices to map over, followed by a callback function.
- * @throws {Error} If any argument except the last one is not a collection.
+ * @param {Array<Array|Matrix>} Arrays - An array of arrays or matrices to map over.
+ * @param {function} multiCallback - The callback function to apply to each element.
  * @throws {Error} If the last argument is not a callback function.
  * @returns {Array|Matrix} A new array or matrix with each element being the result of the callback function.
  *
  * @example
- * _map([1, 2, 3], [4, 5, 6], (a, b) => a + b); // Returns [5, 7, 9]
+ * _mapMultiple([[1, 2, 3], [4, 5, 6]], (a, b) => a + b); // Returns [5, 7, 9]
  */
-  function _map (...args) {
-    const N = args.length - 1
-    // const arrays = args.slice(0, N)
-    const multiCallback = args[N]
+  function _mapMultiple (Arrays, multiCallback) {
     if (typeof multiCallback !== 'function') {
       throw new Error('Last argument must be a callback function')
     }
-    //const firstArray = args[0]
-    const firstArrayIsMatrix = args[0].isMatrix
+    const N = Arrays.length
 
-    const newSize = broadcastSizes(...args.slice(0, N).map(M => M.isMatrix ? M.size() : arraySize(M)))
+    const firstArrayIsMatrix = Arrays[0].isMatrix
+
+    const newSize = broadcastSizes(...Arrays.map(M => M.isMatrix ? M.size() : arraySize(M)))
 
     const _get = firstArrayIsMatrix
       ? (matrix, idx) => matrix.get(idx)
       : (array, idx) => _getFromArray(array, idx)
 
     const broadcastedArrays = firstArrayIsMatrix
-      ? args.slice(0, N).map(M => M.isMatrix
-        ? M.create(broadcastTo(M.valueOf(), newSize), M.datatype())
-        : args[0].create(broadcastTo(M.valueOf(), newSize)))
-      : args.slice(0, N).map(M => M.isMatrix
-        ? broadcastTo(M.valueOf(), newSize)
+      ? Arrays.map(M => M.isMatrix
+        ? M.create(broadcastTo(M.toArray(), newSize), M.datatype())
+        : Arrays[0].create(broadcastTo(M.valueOf(), newSize)))
+      : Arrays.map(M => M.isMatrix
+        ? broadcastTo(M.toArray(), newSize)
         : broadcastTo(M, newSize))
 
-    // this is only to avoid mapping
-    const bcArraysObject = createBCarraysObject(broadcastedArrays)
+    const callback = (x, idx) => multiCallback(..._findArguments(multiCallback, x, idx, broadcastedArrays))
 
-    function createBCarraysObject (broadcastedArrays) {
-      const cb = (x, idx) => {
-        return { v: [x, ...broadcastedArrays.slice(1).map(array => _get(array, idx))] }
-      }
-      if (broadcastedArrays[0].isMatrix) {
-        return broadcastedArrays[0].map(cb)
-      } else {
-        return _mapArray(broadcastedArrays[0], cb)
-      }
-    }
-
-    const callback = typed.isTypedFunction(multiCallback)
-      ? (x, idx) => multiCallback(..._findArguments(multiCallback, x.v, idx, broadcastedArrays))
-      : (x, idx) => multiCallback(...x.v, idx, ...broadcastedArrays)
+    const broadcastedArraysCallback = (x, idx) =>
+      callback(
+        [x, ...broadcastedArrays.slice(1).map(Array => _get(Array, idx))],
+        idx)
 
     if (firstArrayIsMatrix) {
-      return bcArraysObject.map(callback)
+      return broadcastedArrays[0].map(broadcastedArraysCallback)
     } else {
-      return _mapArray(bcArraysObject, callback)
+      return _mapArray(broadcastedArrays[0], broadcastedArraysCallback)
     }
 
-    function _findArguments (typedCallback, values, idx, arrays) {
-      if (typed.resolve(typedCallback, [...values, idx, ...arrays]) !== null) {
-        return [...values, idx, ...arrays]
-      }
-      if (typed.resolve(typedCallback, [...values, idx]) !== null) {
-        return [...values, idx]
-      }
-      if (typed.resolve(typedCallback, values) !== null) {
+    function _findArguments (callback, values, idx, arrays) {
+      if (typed.isTypedFunction(multiCallback)) {
+        if (typed.resolve(callback, [...values, idx, ...arrays]) !== null) {
+          return [...values, idx, ...arrays]
+        }
+        if (typed.resolve(callback, [...values, idx]) !== null) {
+          return [...values, idx]
+        }
+        if (typed.resolve(callback, values) !== null) {
+          return values
+        }
+        // this should never happen
         return values
+      } else {
+        if (callback.length >= 2 * N + 1) {
+          return [...values, idx, ...arrays]
+        } else if (callback.length === N + 1) {
+          return [...values, idx]
+        } else {
+          return values
+        }
       }
-      // this should never happen
-      return values
     }
   }
 })

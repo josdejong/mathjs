@@ -4,16 +4,16 @@ import { createMap } from '../../function/matrix/map.js'
 import { compileInlineExpression } from './utils/compileInlineExpression.js'
 
 const name = 'map'
-const dependencies = ['typed', 'subset', 'index']
+const dependencies = ['typed']
 
-export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, subset, index }) => {
+export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Attach a transform function to math.map
    * Adds a property transform containing the transform function.
    *
    * This transform creates a one-based index instead of a zero-based index
    */
-  const map = createMap({ typed, subset, index })
+  const map = createMap({ typed })
 
   function mapTransform (args, math, scope) {
     if (args.length === 0) {
