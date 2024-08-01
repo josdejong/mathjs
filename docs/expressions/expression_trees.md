@@ -20,7 +20,7 @@ In this case, the expression `sqrt(2 + x)` is parsed as:
   ConstantNode   2   x   SymbolNode
 ```
 
-Alternatively, this expression tree can be build by manually creating nodes:
+Alternatively, this expression tree can be built by manually creating nodes:
 
 ```js
 const node1 = new math.ConstantNode(2)
