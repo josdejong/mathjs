@@ -1,14 +1,14 @@
 import typedFunction from 'typed-function'
-import { deepFlatten, isLegacyFactory } from '../utils/object.js'
-import * as emitter from './../utils/emitter.js'
-import { importFactory } from './function/import.js'
-import { configFactory } from './function/config.js'
+import { ArgumentsError } from '../error/ArgumentsError.js'
+import { DimensionError } from '../error/DimensionError.js'
+import { IndexError } from '../error/IndexError.js'
 import { factory, isFactory } from '../utils/factory.js'
 import {
   isAccessorNode,
   isArray,
   isArrayNode,
   isAssignmentNode,
+  isBigInt,
   isBigNumber,
   isBlockNode,
   isBoolean,
@@ -26,30 +26,33 @@ import {
   isHelp,
   isIndex,
   isIndexNode,
+  isMap,
   isMatrix,
   isNode,
   isNull,
   isNumber,
   isObject,
   isObjectNode,
+  isObjectWrappingMap,
   isOperatorNode,
   isParenthesisNode,
+  isPartitionedMap,
   isRange,
   isRangeNode,
-  isRelationalNode,
   isRegExp,
+  isRelationalNode,
   isResultSet,
   isSparseMatrix,
   isString,
   isSymbolNode,
   isUndefined,
-  isUnit,
-  isBigInt
+  isUnit
 } from '../utils/is.js'
-import { ArgumentsError } from '../error/ArgumentsError.js'
-import { DimensionError } from '../error/DimensionError.js'
-import { IndexError } from '../error/IndexError.js'
+import { deepFlatten, isLegacyFactory } from '../utils/object.js'
+import * as emitter from './../utils/emitter.js'
 import { DEFAULT_CONFIG } from './config.js'
+import { configFactory } from './function/config.js'
+import { importFactory } from './function/import.js'
 
 /**
  * Create a mathjs instance from given factory functions and optionally config
@@ -126,6 +129,9 @@ export function create (factories, config) {
     isDate,
     isRegExp,
     isObject,
+    isMap,
+    isPartitionedMap,
+    isObjectWrappingMap,
     isNull,
     isUndefined,
 
