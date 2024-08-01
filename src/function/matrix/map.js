@@ -109,7 +109,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     }
 
     function _findArguments (callback, values, idx, arrays) {
-      if (typed.isTypedFunction(multiCallback)) {
+      if (typed.isTypedFunction(callback)) {
         if (typed.resolve(callback, [...values, idx, ...arrays]) !== null) {
           return [...values, idx, ...arrays]
         }
