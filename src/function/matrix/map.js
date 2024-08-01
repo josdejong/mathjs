@@ -77,7 +77,6 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     if (typeof multiCallback !== 'function') {
       throw new Error('Last argument must be a callback function')
     }
-    const N = Arrays.length
 
     const firstArrayIsMatrix = Arrays[0].isMatrix
 
@@ -85,7 +84,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
 
     const _get = firstArrayIsMatrix
       ? (matrix, idx) => matrix.get(idx)
-      : (array, idx) => _getFromArray(array, idx)
+      : _getFromArray
 
     const broadcastedArrays = firstArrayIsMatrix
       ? Arrays.map(M => M.isMatrix
@@ -95,7 +94,15 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
         ? broadcastTo(M.toArray(), newSize)
         : broadcastTo(M, newSize))
 
-    const callback = (x, idx) => multiCallback(..._findArguments(multiCallback, x, idx, broadcastedArrays))
+    let callback
+
+    if (typed.isTypedFunction(multiCallback)) {
+      const firstIndex = newSize.map(() => 0)
+      const firstValues = broadcastedArrays.map(array => _get(array, firstIndex))
+      callback = _getTypedCallback(multiCallback, firstValues, firstIndex, broadcastedArrays)
+    } else {
+      callback = _getCallback(multiCallback, Arrays.length)
+    }
 
     const broadcastedArraysCallback = (x, idx) =>
       callback(
@@ -108,28 +115,28 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return _mapArray(broadcastedArrays[0], broadcastedArraysCallback)
     }
 
-    function _findArguments (callback, values, idx, arrays) {
-      if (typed.isTypedFunction(callback)) {
-        if (typed.resolve(callback, [...values, idx, ...arrays]) !== null) {
-          return [...values, idx, ...arrays]
-        }
-        if (typed.resolve(callback, [...values, idx]) !== null) {
-          return [...values, idx]
-        }
-        if (typed.resolve(callback, values) !== null) {
-          return values
-        }
-        // this should never happen
-        return values
-      } else {
-        if (callback.length >= 2 * N + 1) {
-          return [...values, idx, ...arrays]
-        } else if (callback.length === N + 1) {
-          return [...values, idx]
-        } else {
-          return values
-        }
+    function _getCallback (callback, numberOfArrays) {
+      if (callback.length >= 2 * numberOfArrays + 1) {
+        return (x, idx) => multiCallback(...x, idx, broadcastedArrays)
       }
+      if (callback.length === numberOfArrays + 1) {
+        return (x, idx) => multiCallback(...x, idx)
+      }
+      return x => multiCallback(...x)
+    }
+
+    function _getTypedCallback (callback, values, idx, arrays) {
+      if (typed.resolve(callback, [...values, idx, ...arrays]) !== null) {
+        return (x, idx) => multiCallback(...x, idx, broadcastedArrays)
+      }
+      if (typed.resolve(callback, [...values, idx]) !== null) {
+        return (x, idx) => multiCallback(...x, idx)
+      }
+      if (typed.resolve(callback, values) !== null) {
+        return x => multiCallback(...x)
+      }
+      // this should never happen
+      return x => multiCallback(...x)
     }
   }
 })
