@@ -23,8 +23,10 @@ math.evaluate([expr1, expr2, expr3, ...], scope)
 Function `evaluate` accepts a single expression or an array with
 expressions as the first argument and has an optional second argument
 containing a `scope` with variables and functions. The scope can be a regular
-JavaScript `Map` (recommended) or `Object`. The scope will be used to resolve 
-symbols, and to write assigned variables or function.
+JavaScript `Map` (recommended), a plain JavaScript `object`, or any custom 
+class that implements the `Map` interface with methods `get`, `set`, `keys` 
+and `has`. The scope will be used to resolve symbols, and to write assigned
+variables and functions.
 
 When an `Object` is used as scope, mathjs will internally wrap it in an 
 `ObjectWrappingMap` interface since the internal functions can only use a `Map` 
