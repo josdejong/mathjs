@@ -1,5 +1,5 @@
-import { setSafeProperty, hasSafeProperty, getSafeProperty } from './customs.js'
-import { isObject } from './is.js'
+import { getSafeProperty, hasSafeProperty, setSafeProperty } from './customs.js'
+import { isMap, isObject } from './is.js'
 
 /**
  * A map facade on a bare object.
@@ -200,30 +200,6 @@ export function toObject (map) {
     setSafeProperty(object, key, value)
   }
   return object
-}
-
-/**
- * Returns `true` if the passed object appears to be a Map (i.e. duck typing).
- *
- * Methods looked for are `get`, `set`, `keys` and `has`.
- *
- * @param {Map | object} object
- * @returns
- */
-export function isMap (object) {
-  // We can use the fast instanceof, or a slower duck typing check.
-  // The duck typing method needs to cover enough methods to not be confused with DenseMatrix.
-  if (!object) {
-    return false
-  }
-  return object instanceof Map ||
-    object instanceof ObjectWrappingMap ||
-    (
-      typeof object.set === 'function' &&
-      typeof object.get === 'function' &&
-      typeof object.keys === 'function' &&
-      typeof object.has === 'function'
-    )
 }
 
 /**

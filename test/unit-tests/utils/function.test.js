@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { maxArgumentCount, memoize, memoizeCompare } from '../../../src/utils/function.js'
+import { memoize, memoizeCompare } from '../../../src/utils/function.js'
 import { deepStrictEqual } from '../../../src/utils/object.js'
 
 describe('util.function', function () {
@@ -106,43 +106,6 @@ describe('util.function', function () {
       assert.strictEqual(execCount, 5)
       assert.strictEqual(m({ x: 2, y: 3, z: undefined }), 6)
       assert.strictEqual(execCount, 5)
-    })
-  })
-
-  describe('maxArgumentCount', function () {
-    it('should calculate the max argument count of a typed function', function () {
-      const a = function () {}
-      a.signatures = {
-        'number, number': function () {},
-        number: function () {}
-      }
-      assert.strictEqual(maxArgumentCount(a), 2)
-
-      const b = function () {}
-      b.signatures = {
-        number: function () {},
-        'number, number': function () {}
-      }
-      assert.strictEqual(maxArgumentCount(b), 2)
-
-      const c = function () {}
-      c.signatures = {
-        number: function () {},
-        BigNumber: function () {}
-      }
-      assert.strictEqual(maxArgumentCount(c), 1)
-
-      const d = function () {}
-      d.signatures = {
-        'number,number': function () {},
-        number: function () {},
-        'number,any,number': function () {}
-      }
-      assert.strictEqual(maxArgumentCount(d), 3)
-    })
-
-    it('should return -1 for regular functions', function () {
-      assert.strictEqual(maxArgumentCount(function () {}), -1)
     })
   })
 })
