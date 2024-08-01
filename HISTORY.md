@@ -8,6 +8,7 @@
   from the function `evaluate` (see #3238).
 - Docs: improve the documentation of `scope` and fix the example 
   `custom_scope_objects.js` (#3150)
+- Fix: #3244 fix broken link to `ResultSet` in the docs about classes.
 
 # 2024-07-19, 13.0.3
 
