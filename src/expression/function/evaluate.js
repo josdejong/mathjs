@@ -9,6 +9,11 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
   /**
    * Evaluate an expression.
    *
+   * The expression parser does not use JavaScript. Its syntax is close
+   * to JavaScript but more suited for mathematical expressions.
+   * See [https://mathjs.org/docs/expressions/syntax.html](https://mathjs.org/docs/expressions/syntax.html) to learn
+   * the syntax and get an overview of the exact differences from JavaScript.
+   *
    * Note the evaluating arbitrary expressions may involve security risks,
    * see [https://mathjs.org/docs/expressions/security.html](https://mathjs.org/docs/expressions/security.html) for more information.
    *

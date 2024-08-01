@@ -85,7 +85,7 @@ describe('Chain', function () {
   })
 
   it('should not break with null or true as value', function () {
-    assert.deepStrictEqual(new Chain(null).size().done(), math.matrix([]))
+    assert.deepStrictEqual(new Chain(null).size().done(), math.matrix([], 'dense', 'number'))
     assert.strictEqual(new Chain(true).add(1).done(), 2)
   })
 

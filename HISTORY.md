@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since 13.0.3
+
+- Feat: add matrix datatypes in more cases (#3235). Thanks @dvd101x.
+- Docs: add a link to the documentation page about the syntax expression
+  from the function `evaluate` (see #3238).
+
 # 2024-07-19, 13.0.3
 
 - Fix: #3232 fix type definitions of function `format` to support notations

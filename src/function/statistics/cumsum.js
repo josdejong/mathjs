@@ -39,13 +39,13 @@ export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed
     // sum([a, b, c, d, ...])
     Array: _cumsum,
     Matrix: function (matrix) {
-      return matrix.create(_cumsum(matrix.valueOf()))
+      return matrix.create(_cumsum(matrix.valueOf(), matrix.datatype()))
     },
 
     // sum([a, b, c, d, ...], dim)
     'Array, number | BigNumber': _ncumSumDim,
     'Matrix, number | BigNumber': function (matrix, dim) {
-      return matrix.create(_ncumSumDim(matrix.valueOf(), dim))
+      return matrix.create(_ncumSumDim(matrix.valueOf(), dim), matrix.datatype())
     },
 
     // cumsum(a, b, c, d, ...)
