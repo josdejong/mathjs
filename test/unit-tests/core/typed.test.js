@@ -1,6 +1,7 @@
 import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
 import Decimal from 'decimal.js'
+import { ObjectWrappingMap, PartitionedMap } from '../../../src/utils/map.js'
 const math2 = math.create()
 
 describe('typed', function () {
@@ -177,6 +178,37 @@ describe('typed', function () {
     assert.strictEqual(math.isNull(), false)
   })
 
+  it('should test whether a value is an object', function () {
+    assert.strictEqual(math.isObject({}), true)
+    assert.strictEqual(math.isObject({ a: 2 }), true)
+    assert.strictEqual(math.isObject(Object.create({})), true)
+    assert.strictEqual(math.isObject(null), false)
+    assert.strictEqual(math.isObject([]), false)
+    assert.strictEqual(math.isObject(), false)
+    assert.strictEqual(math.isObject(undefined), false)
+  })
+
+  it('should test whether a value is a Map', function () {
+    assert.strictEqual(math.isMap({}), false)
+    assert.strictEqual(math.isMap(new Map()), true)
+    assert.strictEqual(math.isMap(new ObjectWrappingMap({})), true)
+    assert.strictEqual(math.isMap(new PartitionedMap(new Map(), new Map(), new Set(['x']))), true)
+  })
+
+  it('should test whether a value is a PartitionedMap', function () {
+    assert.strictEqual(math.isPartitionedMap({}), false)
+    assert.strictEqual(math.isPartitionedMap(new Map()), false)
+    assert.strictEqual(math.isPartitionedMap(new ObjectWrappingMap({})), false)
+    assert.strictEqual(math.isPartitionedMap(new PartitionedMap(new Map(), new Map(), new Set(['x']))), true)
+  })
+
+  it('should test whether a value is an ObjectWrappingMap', function () {
+    assert.strictEqual(math.isObjectWrappingMap({}), false)
+    assert.strictEqual(math.isObjectWrappingMap(new Map()), false)
+    assert.strictEqual(math.isObjectWrappingMap(new ObjectWrappingMap({})), true)
+    assert.strictEqual(math.isObjectWrappingMap(new PartitionedMap(new Map(), new Map(), new Set(['x']))), false)
+  })
+
   it('should test whether a value is undefined', function () {
     assert.strictEqual(math.isUndefined(undefined), true)
     assert.strictEqual(math.isUndefined(math.matrix()), false)
@@ -201,7 +233,7 @@ describe('typed', function () {
     assert.strictEqual(math.isConstantNode(), false)
   })
 
-  it('should test whether a value is a SymolNode', function () {
+  it('should test whether a value is a SymbolNode', function () {
     assert.strictEqual(math.isSymbolNode(new math.SymbolNode('')), true)
     assert.strictEqual(math.isSymbolNode(new math2.SymbolNode('')), true)
     assert.strictEqual(math.isSymbolNode({ isSymbolNode: true }), false)
