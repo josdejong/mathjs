@@ -66,11 +66,15 @@ describe('map', function () {
   it('should invoke a typed function with correct number of arguments (4)', function () {
     // cbrt has a syntax cbrt(x, allRoots), but it should invoke cbrt(x) here
     assert.deepStrictEqual(math.map([1, 8, 27], math.cbrt), [1, 2, 3])
+    assert.deepStrictEqual(math.map(math.matrix([1, 8, 27]), math.cbrt), math.matrix([1, 2, 3]))
+    assert.deepStrictEqual(math.map(math.matrix([1, 8, 27], 'sparse'), math.cbrt), math.matrix([1, 2, 3], 'sparse'))
   })
 
   it('should invoke a typed function with correct number of arguments (5)', function () {
-    // cbrt has a syntax cbrt(x, allRoots), but it should invoke cbrt(x) here
+    // format has a syntax format(x, options), but it should invoke format(x) here
     assert.deepStrictEqual(math.map([1, 8, 27], math.format), ['1', '8', '27'])
+    assert.deepStrictEqual(math.map(math.matrix([1, 8, 27]), math.format), math.matrix(['1', '8', '27']))
+    assert.deepStrictEqual(math.map(math.matrix([1, 8, 27], 'sparse'), math.format), math.matrix(['1', '8', '27'], 'sparse'))
   })
 
   it('should throw an error if called with unsupported type', function () {
