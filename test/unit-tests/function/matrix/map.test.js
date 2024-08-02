@@ -150,12 +150,32 @@ describe('map', function () {
   })
 
   it('should invoke a typed function with correct number of arguments for two matrices and an index', function () {
+    const callback = function (a, b, idx) {
+      return a + b + idx[0]
+    }
     const output = math.map(math.matrix([1, 2, 3]), math.matrix([4, 5, 6]), math.typed('callback', {
-      'number, number, Array': function (a, b, idx) {
-        return a + b + idx[0]
-      }
+      'number, number, Array': callback
     }))
-    assert.deepStrictEqual(output, math.matrix([5, 8, 11]))
+    const expected = math.matrix([5, 8, 11])
+    assert.deepStrictEqual(output, expected)
+  })
+
+  it('should invoke a function with correct number of arguments for two matrices and an index', function () {
+    const callback = function (a, b, idx) {
+      return a + b + idx[0]
+    }
+    const output = math.map(math.matrix([1, 2, 3]), math.matrix([4, 5, 6]), callback)
+    const expected = math.matrix([5, 8, 11])
+    assert.deepStrictEqual(output, expected)
+  })
+
+  it('should invoke a function with correct number of arguments for two matrices, index and original matrices', function () {
+    const callback = function (a, b, idx, A, B) {
+      return a + b + A.get(idx) + B.get(idx) + idx[0]
+    }
+    const output = math.map(math.matrix([1, 2, 3]), math.matrix([4, 5, 6]), callback)
+    const expected = math.matrix([10, 15, 20])
+    assert.deepStrictEqual(output, expected)
   })
 
   it('should invoke a typed function with correct number of arguments (2)', function () {
@@ -207,6 +227,14 @@ describe('map', function () {
   it('should throw an error if the callback argument types are incorrect (2)', function () {
     assert.throws(() => math.map([math.sin, 2, 3], math.sqrt),
       /TypeError: Function map cannot apply callback arguments sqrt\(value: function, index: Array, array: Array\) at index \[0]/)
+  })
+
+  it('should throw an error if the last argument of a mullti callback function is not a function', function () {
+    assert.throws(() => math.map([1], [2], 'not a function'),
+      /TypeError: Unexpected type of argument in function map/)
+
+    assert.throws(() => math.map([1], [2], ['not a function']),
+      /Last argument must be a callback function/)
   })
 
   it('should operate from the parser', function () {
