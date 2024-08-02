@@ -19,18 +19,28 @@ describe('map', function () {
   it('should map two arrays', function () {
     const arrA = [[1, 2, 3], [4, 5, 6]]
     const arrB = [[10, 20, 30], [40, 50, 60]]
-    const arr2 = math.map(arrA, arrB, function (valueA, valueB) { return valueA * 2 + valueB })
-    assert.deepStrictEqual(arr2, [[12, 24, 36], [48, 60, 72]])
+    const callback = function (valueA, valueB) { return valueA * 2 + valueB }
+    const arr2 = math.map(arrA, arrB, callback)
+    const expected = [[12, 24, 36], [48, 60, 72]]
+    assert.deepStrictEqual(arr2, expected)
     assert.ok(Array.isArray(arr2))
+    const arr3 = math.map(arrA, arrB, math.typed({ 'number, number': callback }))
+    assert.deepStrictEqual(arr3, expected)
+    assert.ok(Array.isArray(arr3))
   })
 
   it('should map three arrays', function () {
     const arrA = [[1, 2, 3], [4, 5, 6]]
     const arrB = [[10, 20, 30], [40, 50, 60]]
     const arrC = [[100, 200, 300], [400, 500, 600]]
-    const arr2 = math.map(arrA, arrB, arrC, function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC })
-    assert.deepStrictEqual(arr2, [[112, 224, 336], [448, 560, 672]])
+    const expected = [[112, 224, 336], [448, 560, 672]]
+    const callback = function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC }
+    const arr2 = math.map(arrA, arrB, arrC, callback)
+    assert.deepStrictEqual(arr2, expected)
     assert.ok(Array.isArray(arr2))
+    const arr3 = math.map(arrA, arrB, arrC, math.typed({ 'number, number, number': callback }))
+    assert.deepStrictEqual(arr3, expected)
+    assert.ok(Array.isArray(arr3))
   })
 
   it('should map three arrays with broadcasting', function () {
@@ -54,27 +64,42 @@ describe('map', function () {
     const matA = math.matrix([[1, 2, 3], [4, 5, 6]])
     const matB = math.matrix([[10, 20, 30], [40, 50, 60]])
     const matC = math.matrix([[100, 200, 300], [400, 500, 600]])
-    const mat2 = math.map(matA, matB, matC, function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC })
-    assert.deepStrictEqual(mat2, math.matrix([[112, 224, 336], [448, 560, 672]]))
+    const expected = math.matrix([[112, 224, 336], [448, 560, 672]])
+    const callback = function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC }
+    const mat2 = math.map(matA, matB, matC, callback)
+    assert.deepStrictEqual(mat2, expected)
     assert.ok(mat2 instanceof math.Matrix)
+    const mat3 = math.map(matA, matB, matC, math.typed({ 'number, number, number': callback }))
+    assert.deepStrictEqual(mat3, expected)
+    assert.ok(mat3 instanceof math.Matrix)
   })
 
   it('should map three matrices with broadcasting', function () {
     const matA = math.matrix([1, 2, 3])
     const matB = math.matrix([[10], [20], [30]])
     const matC = math.matrix([100, 200, 300])
-    const mat2 = math.map(matA, matB, matC, function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC / 2 })
-    assert.deepStrictEqual(mat2, math.matrix([[62, 114, 166], [72, 124, 176], [82, 134, 186]]))
+    const expected = [[62, 114, 166], [72, 124, 176], [82, 134, 186]]
+    const callback = function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC / 2 }
+    const mat2 = math.map(matA, matB, matC, callback)
+    assert.deepStrictEqual(mat2, math.matrix(expected))
     assert.ok(mat2 instanceof math.Matrix)
+    const mat3 = math.map(matA, matB, matC, math.typed({ 'number, number, number': callback }))
+    assert.deepStrictEqual(mat3, math.matrix(expected))
+    assert.ok(mat3 instanceof math.Matrix)
   })
 
   it('should map three matrices or arrays with broadcasting', function () {
     const matA = math.matrix([1, 2, 3])
     const matB = [[10], [20], [30]]
     const matC = math.matrix([100, 200, 300])
-    const mat2 = math.map(matA, matB, matC, function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC / 2 })
-    assert.deepStrictEqual(mat2, math.matrix([[62, 114, 166], [72, 124, 176], [82, 134, 186]]))
+    const expected = math.matrix([[62, 114, 166], [72, 124, 176], [82, 134, 186]])
+    const callback = function (valueA, valueB, valueC) { return valueA * 2 + valueB + valueC / 2 }
+    const mat2 = math.map(matA, matB, matC, callback)
+    assert.deepStrictEqual(mat2, expected)
     assert.ok(mat2 instanceof math.Matrix)
+    const mat3 = math.map(matA, matB, matC, math.typed({ 'number, number, number': callback }))
+    assert.deepStrictEqual(mat3, expected)
+    assert.ok(mat3 instanceof math.Matrix)
   })
 
   it('should invoke callback with parameters value, index, obj', function () {
@@ -122,6 +147,15 @@ describe('map', function () {
       }
     }))
     assert.deepStrictEqual(output, math.matrix([5, 7, 9]))
+  })
+
+  it('should invoke a typed function with correct number of arguments for two matrices and an index', function () {
+    const output = math.map(math.matrix([1, 2, 3]), math.matrix([4, 5, 6]), math.typed('callback', {
+      'number, number, Array': function (a, b, idx) {
+        return a + b + idx[0]
+      }
+    }))
+    assert.deepStrictEqual(output, math.matrix([5, 8, 11]))
   })
 
   it('should invoke a typed function with correct number of arguments (2)', function () {
@@ -202,6 +236,26 @@ describe('map', function () {
   it('should operate from the parser with three arrays with broadcasting', function () {
     const arr2 = math.evaluate('map([1, 2, 3], [[10], [20], [30]], [100, 200, 300], _(A, B, C) = A * 2 + B + C / 2)')
     assert.deepStrictEqual(arr2, math.matrix([[62, 114, 166], [72, 124, 176], [82, 134, 186]]))
+  })
+
+  it('should operate from the parser with multiple inputs and one based indices', function () {
+    const arr2 = math.evaluate('map([1,2],[3,4], f(a,b,idx)=a+b+idx[1])')
+    const expected = math.matrix([5, 8])
+    assert.deepStrictEqual(arr2, expected)
+  })
+
+  it('should operate from the parser with multiple inputs that need broadcasting and one based indices', function () {
+    const arr2 = math.evaluate('map([1],[3,4], f(a,b,idx)=a+b+idx[1])')
+    const expected = math.matrix([5, 7])
+    assert.deepStrictEqual(arr2, expected)
+  })
+
+  it('should operate from the parser with multiple inputs that need broadcasting and one based indices and the broadcasted arrays', function () {
+    // this is a convoluted way of calculating f(a,b,idx) = 2a+2b+index
+    // 2(1) + 2([3,4]) + [1, 2] # yields [9, 12]
+    const arr2 = math.evaluate('map([1],[3,4], f(a,b,idx,A,B)= a + subset(A, index(idx)) + b + subset(B, index(idx)) + idx[1])')
+    const expected = math.matrix([9, 12])
+    assert.deepStrictEqual(arr2, expected)
   })
 
   it('should LaTeX map', function () {

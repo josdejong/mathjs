@@ -101,7 +101,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       const firstValues = broadcastedArrays.map(array => _get(array, firstIndex))
       callback = _getTypedCallback(multiCallback, firstValues, firstIndex, broadcastedArrays)
     } else {
-      callback = _getCallback(multiCallback, Arrays.length)
+      callback = _getCallback(multiCallback, broadcastedArrays)
     }
 
     const broadcastedArraysCallback = (x, idx) =>
@@ -115,25 +115,26 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return _mapArray(broadcastedArrays[0], broadcastedArraysCallback)
     }
 
-    function _getCallback (callback, numberOfArrays) {
+    function _getCallback (callback, broadcastedArrays) {
+      const numberOfArrays = broadcastedArrays.length
       if (callback.length >= 2 * numberOfArrays + 1) {
-        return (x, idx) => multiCallback(...x, idx, broadcastedArrays)
+        return (x, idx) => callback(...x, idx, broadcastedArrays)
       }
       if (callback.length === numberOfArrays + 1) {
-        return (x, idx) => multiCallback(...x, idx)
+        return (x, idx) => callback(...x, idx)
       }
-      return x => multiCallback(...x)
+      return x => callback(...x)
     }
 
     function _getTypedCallback (callback, values, idx, arrays) {
       if (typed.resolve(callback, [...values, idx, ...arrays]) !== null) {
-        return (x, idx) => multiCallback(...x, idx, broadcastedArrays)
+        return (x, idx) => callback(...x, idx, ...arrays)
       }
       if (typed.resolve(callback, [...values, idx]) !== null) {
-        return (x, idx) => multiCallback(...x, idx)
+        return (x, idx) => callback(...x, idx)
       }
       if (typed.resolve(callback, values) !== null) {
-        return x => multiCallback(...x)
+        return x => callback(...x)
       }
       // this should never happen
       return x => multiCallback(...x)
