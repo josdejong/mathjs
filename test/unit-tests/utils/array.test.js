@@ -17,7 +17,8 @@ import {
   concat,
   checkBroadcastingRules,
   stretch,
-  broadcastArrays
+  broadcastArrays,
+  get
 } from '../../../src/utils/array.js'
 
 describe('util.array', function () {
@@ -648,6 +649,34 @@ describe('util.array', function () {
     it('should stretch arrays in the specified direction', function () {
       assert.deepStrictEqual(stretch([[1, 2]], 3, 0), [[1, 2], [1, 2], [1, 2]])
       assert.deepStrictEqual(stretch([[1, 2]], 3, 1), [[1, 2, 1, 2, 1, 2]])
+    })
+  })
+
+  describe('get', function () {
+    const m = [[0, 1], [2, 3]]
+
+    it('should get a value from the array', function () {
+      assert.strictEqual(get(m, [1, 0]), 2)
+      assert.strictEqual(get(m, [0, 1]), 1)
+    })
+
+    it('should throw an error when getting a value out of range', function () {
+      assert.throws(function () { get(m, [3, 0]) })
+      assert.throws(function () { get(m, [1, 5]) })
+      assert.throws(function () { get(m, [1]) })
+      assert.throws(function () { get(m, []) })
+    })
+
+    it('should throw an error in case of dimension mismatch', function () {
+      assert.throws(function () { get(m, [0, 2, 0, 2, 0, 2]) }, /Dimension mismatch/)
+    })
+
+    it('should throw an error when getting a value given a invalid index', function () {
+      assert.throws(function () { get(m, [1.2, 2]) })
+      assert.throws(function () { get(m, [1, -2]) })
+      assert.throws(function () { get(m, 1, 1) })
+      assert.throws(function () { get(m, null) })
+      assert.throws(function () { get(m, [[1, 1]]) })
     })
   })
 
