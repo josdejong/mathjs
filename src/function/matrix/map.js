@@ -117,7 +117,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
 
     function _getCallback (callback, broadcastedArrays) {
       const numberOfArrays = broadcastedArrays.length
-      if (callback.length >= 2 * numberOfArrays + 1) {
+      if (callback.length > numberOfArrays + 1) {
         return (x, idx) => callback(...x, idx, ...broadcastedArrays)
       }
       if (callback.length === numberOfArrays + 1) {
