@@ -1,5 +1,5 @@
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
-import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo } from '../../utils/array.js'
+import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get } from '../../utils/array.js'
 import { format } from '../../utils/string.js'
 import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
@@ -164,20 +164,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @return {*} value
    */
   DenseMatrix.prototype.get = function (index) {
-    if (!isArray(index)) { throw new TypeError('Array expected') }
-    if (index.length !== this._size.length) { throw new DimensionError(index.length, this._size.length) }
-
-    // check index
-    for (let x = 0; x < index.length; x++) { validateIndex(index[x], this._size[x]) }
-
-    let data = this._data
-    for (let i = 0, ii = index.length; i < ii; i++) {
-      const indexI = index[i]
-      validateIndex(indexI, data.length)
-      data = data[indexI]
-    }
-
-    return data
+    return get(this._data, index)
   }
 
   /**

@@ -1,5 +1,5 @@
 import { applyCallback } from '../../utils/applyCallback.js'
-import { arraySize, broadcastSizes, broadcastTo } from '../../utils/array.js'
+import { arraySize, broadcastSizes, broadcastTo, get } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'map'
@@ -84,7 +84,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
 
     const _get = firstArrayIsMatrix
       ? (matrix, idx) => matrix.get(idx)
-      : _getFromArray
+      : get
 
     const broadcastedArrays = firstArrayIsMatrix
       ? Arrays.map(M => M.isMatrix
@@ -94,23 +94,17 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
         ? broadcastTo(M.toArray(), newSize)
         : broadcastTo(M, newSize))
 
-    const callbackCases = [
-      x => multiCallback(...x),
-      (x, idx) => multiCallback(...x, idx),
-      (x, idx) => multiCallback(...x, idx, ...broadcastedArrays)
-    ]
-
     let callback
 
     if (typed.isTypedFunction(multiCallback)) {
       const firstIndex = newSize.map(() => 0)
       const firstValues = broadcastedArrays.map(array => _get(array, firstIndex))
       const callbackCase = _getTypedCallbackCase(multiCallback, firstValues, firstIndex, broadcastedArrays)
-      callback = callbackCases[callbackCase]
+      callback = _getLimitedCallback(callbackCase)
     } else {
       const numberOfArrays = Arrays.length
       const callbackCase = _getCallbackCase(multiCallback, numberOfArrays)
-      callback = callbackCases[callbackCase]
+      callback = _getLimitedCallback(callbackCase)
     }
 
     const broadcastedArraysCallback = (x, idx) =>
@@ -122,6 +116,17 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return broadcastedArrays[0].map(broadcastedArraysCallback)
     } else {
       return _mapArray(broadcastedArrays[0], broadcastedArraysCallback)
+    }
+
+    function _getLimitedCallback (callbackCase) {
+      switch (callbackCase) {
+        case 0:
+          return x => multiCallback(...x)
+        case 1:
+          return (x, idx) => multiCallback(...x, idx)
+        case 2:
+          return (x, idx) => multiCallback(...x, idx, ...broadcastedArrays)
+      }
     }
 
     function _getCallbackCase (callback, numberOfArrays) {
@@ -170,21 +175,4 @@ function _recurse (value, index, array, callback) {
     // invoke the callback function with the right number of arguments
     return applyCallback(callback, value, index, array, 'map')
   }
-}
-
-/**
- * Retrieves a single element from an array given an index.
- *
- * @param {Array} array - The array from which to retrieve the value.
- * @param {Array<number>} idx - An array of indices specifying the position of the desired element in each dimension.
- * @returns {*} - The value at the specified position in the collection.
- * @throws {Error} - Throws an error if the input is not a collection.
- *
- * @example
- * const arr = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]];
- * const idx = [1, 0, 1];
- * console.log(_getFromArray(arr, idx)); // 6
- */
-function _getFromArray (array, idx) {
-  return idx.reduce((acc, curr) => acc[curr], array)
 }

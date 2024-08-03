@@ -806,6 +806,26 @@ export function stretch (arrayToStretch, sizeToStretch, dimToStretch) {
 }
 
 /**
+* Retrieves a single element from an array given an index.
+*
+* @param {Array} array - The array from which to retrieve the value.
+* @param {Array<number>} idx - An array of indices specifying the position of the desired element in each dimension.
+* @returns {*} - The value at the specified position in the array.
+*
+* @example
+* const arr = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]];
+* const index = [1, 0, 1];
+* console.log(getValue(arr, index)); // 6
+*/
+export function get (array, index) {
+  if (!Array.isArray(array)) { throw new Error('Array expected') }
+  const size = arraySize(array)
+  if (index.length !== size.length) { throw new DimensionError(index.length, size.length) }
+  for (let x = 0; x < index.length; x++) { validateIndex(index[x], size[x]) }
+  return index.reduce((acc, curr) => acc[curr], array)
+}
+
+/**
  * Deep clones a multidimensional array
  * @param {Array} array
  * @returns cloned array
