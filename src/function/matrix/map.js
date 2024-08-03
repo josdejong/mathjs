@@ -94,14 +94,23 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
         ? broadcastTo(M.toArray(), newSize)
         : broadcastTo(M, newSize))
 
+    const callbackCases = [
+      x => multiCallback(...x),
+      (x, idx) => multiCallback(...x, idx),
+      (x, idx) => multiCallback(...x, idx, ...broadcastedArrays)
+    ]
+
     let callback
 
     if (typed.isTypedFunction(multiCallback)) {
       const firstIndex = newSize.map(() => 0)
       const firstValues = broadcastedArrays.map(array => _get(array, firstIndex))
-      callback = _getTypedCallback(multiCallback, firstValues, firstIndex, broadcastedArrays)
+      const callbackCase = _getTypedCallbackCase(multiCallback, firstValues, firstIndex, broadcastedArrays)
+      callback = callbackCases[callbackCase]
     } else {
-      callback = _getCallback(multiCallback, broadcastedArrays)
+      const numberOfArrays = Arrays.length
+      const callbackCase = _getCallbackCase(multiCallback, numberOfArrays)
+      callback = callbackCases[callbackCase]
     }
 
     const broadcastedArraysCallback = (x, idx) =>
@@ -115,29 +124,18 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return _mapArray(broadcastedArrays[0], broadcastedArraysCallback)
     }
 
-    function _getCallback (callback, broadcastedArrays) {
-      const numberOfArrays = broadcastedArrays.length
-      if (callback.length > numberOfArrays + 1) {
-        return (x, idx) => callback(...x, idx, ...broadcastedArrays)
-      }
-      if (callback.length === numberOfArrays + 1) {
-        return (x, idx) => callback(...x, idx)
-      }
-      return x => callback(...x)
+    function _getCallbackCase (callback, numberOfArrays) {
+      if (callback.length > numberOfArrays + 1) { return 2 }
+      if (callback.length === numberOfArrays + 1) { return 1 }
+      return 0
     }
 
-    function _getTypedCallback (callback, values, idx, arrays) {
-      if (typed.resolve(callback, [...values, idx, ...arrays]) !== null) {
-        return (x, idx) => callback(...x, idx, ...arrays)
-      }
-      if (typed.resolve(callback, [...values, idx]) !== null) {
-        return (x, idx) => callback(...x, idx)
-      }
-      if (typed.resolve(callback, values) !== null) {
-        return x => callback(...x)
-      }
+    function _getTypedCallbackCase (callback, values, idx, arrays) {
+      if (typed.resolve(callback, [...values, idx, ...arrays]) !== null) { return 2 }
+      if (typed.resolve(callback, [...values, idx]) !== null) { return 1 }
+      if (typed.resolve(callback, values) !== null) { return 0 }
       // this should never happen
-      return x => multiCallback(...x)
+      return 0
     }
   }
 })
