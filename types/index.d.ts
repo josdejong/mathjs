@@ -1967,7 +1967,20 @@ export interface MathJsInstance extends MathJsFactory {
   map<T extends MathCollection>(
     x: T,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (value: any, index: any, matrix: T) => MathType | string
+    callback: (value: any, index: number[], matrix: T) => MathType | string
+  ): T
+  /**
+   * Iterate over all elements of multiple matrices/arrays, and executes the given
+   * callback function.
+   * @param x The first matrix to iterate on.
+   * @param args The rest of the matrices and at the end the callback function is invoked with multiple
+   * parameters: the values of the elements, the indices of the elements, and
+   * the matrices/arrays being traversed.
+   * @returns Transformed map of matrices
+   */
+  map<T extends MathCollection>(
+    x: T,// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ...args: Array<T | Function>
   ): T
 
   /**
