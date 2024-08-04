@@ -1969,6 +1969,7 @@ export interface MathJsInstance extends MathJsFactory {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     callback: (value: any, index: number[], matrix: T) => MathType | string
   ): T
+
   /**
    * Iterate over all elements of multiple matrices/arrays, and executes the given
    * callback function.
@@ -1979,8 +1980,16 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Transformed map of matrices
    */
   map<T extends MathCollection>(
-    x: T,// eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ...args: Array<T | Function>
+    x: T,
+    ...args: Array<
+      | T
+      | ((
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          value: any,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ...args: Array<any | number[] | T>
+        ) => MathType | string)
+    >
   ): T
 
   /**
