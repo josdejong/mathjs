@@ -550,24 +550,65 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.map = function (callback) {
     // matrix instance
     const me = this
-    const recurse = function (value, index) {
-      if (isArray(value)) {
-        return value.map(function (child, i) {
-          return recurse(child, index.concat(i))
-        })
-      } else {
-        // invoke the callback function with the right number of arguments
-        return applyCallback(callback, value, index, me, 'map')
+    const s = me.size()
+
+    // copy to a new matrix
+    const result = new DenseMatrix(me)
+    if (s.length <= 0) {
+      return result
+    }
+
+    // keep track of the current index permutation
+    const index = new Uint32Array(s.length)
+
+    // if there is only one dimension, just loop through it
+    if (s.length === 1) {
+      for (let i = 0; i < s[0]; i++) {
+        index[0] = i
+        result._data[i] = applyCallback(callback, result._data[i], index, me, 'map')
+      }
+      return result
+    }
+
+    // stores a reference of each dimension of the matrix for faster access
+    const data = Array(s.length - 1)
+    const last = data.length - 1
+    data[0] = result._data[0]
+    for (let i = 0; i < last; i++) {
+      data[i + 1] = data[i][0]
+    }
+
+    index[last] = -1
+    while (true) {
+      let i
+      for (i = last; i >= 0; i--) {
+        // march index to the next permutation
+        index[i]++
+        if (index[i] === s[i]) {
+          index[i] = 0
+          continue
+        }
+
+        // update references to matrix dimensions
+        data[i] = i === 0 ? result._data[index[i]] : data[i - 1][index[i]]
+        for (let j = i; j < last; j++) {
+          data[j + 1] = data[j][0]
+        }
+
+        // loop through the last dimension and map each value
+        for (let j = 0; j < s[data.length]; j++) {
+          index[data.length] = j
+          data[last][j] = applyCallback(callback, data[last][j], index, me, 'map')
+        }
+        break
+      }
+
+      if (i === -1) {
+        break
       }
     }
 
-    // determine the new datatype when the original matrix has datatype defined
-    // TODO: should be done in matrix constructor instead
-    const data = recurse(this._data, [])
-    const datatype = this._datatype !== undefined
-      ? getArrayDataType(data, typeOf)
-      : undefined
-    return new DenseMatrix(data, datatype)
+    return result
   }
 
   /**
@@ -580,16 +621,57 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.forEach = function (callback) {
     // matrix instance
     const me = this
-    const recurse = function (value, index) {
-      if (isArray(value)) {
-        value.forEach(function (child, i) {
-          recurse(child, index.concat(i))
-        })
-      } else {
-        callback(value, index, me)
+    const s = me.size()
+
+    // if there is only one dimension, just loop through it
+    if (s.length === 1) {
+      for (let i = 0; i < s[0]; i++) {
+        applyCallback(callback, me._data[i], [i], me, 'forEach')
+      }
+      return
+    }
+
+    // keep track of the current index permutation
+    const index = new Uint32Array(s.length)
+
+    // store a reference of each dimension of the matrix for faster access
+    const data = Array(s.length - 1)
+    const last = data.length - 1
+
+    data[0] = me._data[0]
+    for (let i = 0; i < last; i++) {
+      data[i + 1] = data[i][0]
+    }
+
+    index[last] = -1
+    while (true) {
+      let i
+      for (i = last; i >= 0; i--) {
+        // march index to the next permutation
+        index[i]++
+        if (index[i] === s[i]) {
+          index[i] = 0
+          continue
+        }
+
+        // update references to matrix dimensions
+        data[i] = i === 0 ? me._data[index[i]] : data[i - 1][index[i]]
+        for (let j = i; j < last; j++) {
+          data[j + 1] = data[j][0]
+        }
+
+        // loop through the last dimension and map each value
+        for (let j = 0; j < s[data.length]; j++) {
+          index[data.length] = j
+          applyCallback(callback, data[last][j], [...index], me, 'forEach')
+        }
+        break
+      }
+
+      if (i === -1) {
+        break
       }
     }
-    recurse(this._data, [])
   }
 
   /**
