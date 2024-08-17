@@ -1245,9 +1245,9 @@ export interface MathJsInstance extends MathJsFactory {
   gcd<T extends number | BigNumber | Fraction | Matrix>(args: T[]): T
 
   /**
-   * Calculate the hypotenusa of a list with values. The hypotenusa is
+   * Calculate the hypotenuse of a list with values. The hypotenuse is
    * defined as: hypot(a, b, c, ...) = sqrt(a^2 + b^2 + c^2 + ...) For
-   * matrix input, the hypotenusa is calculated for all values in the
+   * matrix input, the hypotenuse is calculated for all values in the
    * matrix.
    * @param args A list with numeric values or an Array or Matrix. Matrix
    * and Array input is flattened and returns a single number for the
@@ -1948,10 +1948,10 @@ export interface MathJsInstance extends MathJsFactory {
   inv<T extends number | Complex | MathCollection>(x: T): NoLiteralType<T>
 
   /**
-   * Calculate the kronecker product of two matrices or vectors
+   * Calculate the Kronecker product of two matrices or vectors
    * @param x First vector
    * @param y Second vector
-   * @returns Returns the kronecker product of x and y
+   * @returns Returns the Kronecker product of x and y
    */
   kron(x: MathCollection, y: MathCollection): Matrix
 
@@ -2241,16 +2241,16 @@ export interface MathJsInstance extends MathJsFactory {
    **/
 
   /**
-   * Calculate N-dimensional fourier transform
+   * Calculate N-dimensional Fourier transform
    * @param {Array | Matrix} arr    An array or matrix
-   * @return {Array | Matrix}       N-dimensional fourier transformation of the array
+   * @return {Array | Matrix}       N-dimensional Fourier transformation of the array
    */
   fft<T extends MathCollection>(arr: T): T
 
   /**
-   * Calculate N-dimensional inverse fourier transform
+   * Calculate N-dimensional inverse Fourier transform
    * @param {Array | Matrix} arr    An array or matrix
-   * @return {Array | Matrix}       N-dimensional fourier transformation of the array
+   * @return {Array | Matrix}       N-dimensional Fourier transformation of the array
    */
   ifft<T extends MathCollection>(arr: T): T
 
@@ -3136,10 +3136,10 @@ export interface MathJsInstance extends MathJsFactory {
   acot<T extends BigNumber | Complex>(x: T): T
 
   /**
-   * Calculate the hyperbolic arccotangent of a value, defined as acoth(x)
+   * Calculate the inverse hyperbolic tangent of a value, defined as acoth(x)
    * = (ln((x+1)/x) + ln(x/(x-1))) / 2.
    * @param x Function input
-   * @returns The hyperbolic arccotangent of x
+   * @returns The inverse hyperbolic tangent of x
    */
   acoth(x: number): number
   acoth<T extends BigNumber | Complex>(x: T): T
@@ -3153,10 +3153,10 @@ export interface MathJsInstance extends MathJsFactory {
   acsc<T extends BigNumber | Complex>(x: T): T
 
   /**
-   * Calculate the hyperbolic arccosecant of a value, defined as acsch(x)
+   * Calculate the inverse hyperbolic cosecant of a value, defined as acsch(x)
    * = ln(1/x + sqrt(1/x^2 + 1)).
    * @param x Function input
-   * @returns The hyperbolic arccosecant of x
+   * @returns The inverse hyperbolic cosecant of x
    */
   acsch(x: number): number
   acsch<T extends BigNumber | Complex>(x: T): T
@@ -5076,9 +5076,9 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<T>
 
   /**
-   * Calculate the hypotenusa of a list with values. The hypotenusa is
+   * Calculate the hypotenuse of a list with values. The hypotenuse is
    * defined as: hypot(a, b, c, ...) = sqrt(a^2 + b^2 + c^2 + ...) For
-   * matrix input, the hypotenusa is calculated for all values in the
+   * matrix input, the hypotenuse is calculated for all values in the
    * matrix.
    */
   hypot<T extends number | BigNumber>(this: MathJsChain<T[]>): MathJsChain<T>
@@ -5687,7 +5687,7 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<NoLiteralType<T>>
 
   /**
-   * Calculate the kronecker product of two matrices or vectors
+   * Calculate the Kronecker product of two matrices or vectors
    * @param y Second vector
    */
   kron(
@@ -6545,7 +6545,7 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<T>
 
   /**
-   * Calculate the hyperbolic arccotangent of a value, defined as acoth(x)
+   * Calculate the inverse hyperbolic tangent of a value, defined as acoth(x)
    * = (ln((x+1)/x) + ln(x/(x-1))) / 2. For matrices, the function is
    * evaluated element wise.
    */
@@ -6564,7 +6564,7 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<T>
 
   /**
-   * Calculate the hyperbolic arccosecant of a value, defined as acsch(x)
+   * Calculate the inverse hyperbolic cosecant of a value, defined as acsch(x)
    * = ln(1/x + sqrt(1/x^2 + 1)). For matrices, the function is evaluated
    * element wise.
    */

@@ -6,10 +6,10 @@ const dependencies = ['typed', 'BigNumber']
 
 export const createAcsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
-   * Calculate the hyperbolic arccosecant of a value,
+   * Calculate the inverse hyperbolic cosecant of a value,
    * defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
    *
-   * To avoid confusion with the matrix hyperbolic arccosecant, this function
+   * To avoid confusion with the matrix inverse hyperbolic cosecant, this function
    * does not apply to matrices.
    *
    * Syntax:

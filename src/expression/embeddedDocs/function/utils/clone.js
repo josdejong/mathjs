@@ -4,7 +4,7 @@ export const cloneDocs = {
   syntax: [
     'clone(x)'
   ],
-  description: 'Clone a variable. Creates a copy of primitive variables,and a deep copy of matrices',
+  description: 'Clone a variable. Creates a copy of primitive variables, and a deep copy of matrices',
   examples: [
     'clone(3.5)',
     'clone(2 - 4i)',
