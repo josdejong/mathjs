@@ -293,7 +293,7 @@ export const embeddedDocs = {
   vacuumImpedance: { description: 'Characteristic impedance of vacuum', examples: ['vacuumImpedance'] },
   coulomb: { description: 'Coulomb\'s constant', examples: ['coulomb'] },
   elementaryCharge: { description: 'Elementary charge', examples: ['elementaryCharge'] },
-  bohrMagneton: { description: 'Borh magneton', examples: ['bohrMagneton'] },
+  bohrMagneton: { description: 'Bohr magneton', examples: ['bohrMagneton'] },
   conductanceQuantum: { description: 'Conductance quantum', examples: ['conductanceQuantum'] },
   inverseConductanceQuantum: { description: 'Inverse conductance quantum', examples: ['inverseConductanceQuantum'] },
   // josephson: {description: 'Josephson constant', examples: ['josephson']},
@@ -301,7 +301,7 @@ export const embeddedDocs = {
   nuclearMagneton: { description: 'Nuclear magneton', examples: ['nuclearMagneton'] },
   klitzing: { description: 'Von Klitzing constant', examples: ['klitzing'] },
 
-  bohrRadius: { description: 'Borh radius', examples: ['bohrRadius'] },
+  bohrRadius: { description: 'Bohr radius', examples: ['bohrRadius'] },
   classicalElectronRadius: { description: 'Classical electron radius', examples: ['classicalElectronRadius'] },
   electronMass: { description: 'Electron mass', examples: ['electronMass'] },
   fermiCoupling: { description: 'Fermi coupling constant', examples: ['fermiCoupling'] },
