@@ -6,10 +6,10 @@ const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
 
 export const createAcoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex, BigNumber }) => {
   /**
-   * Calculate the hyperbolic arccotangent of a value,
+   * Calculate the inverse hyperbolic tangent of a value,
    * defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
    *
-   * To avoid confusion with the matrix hyperbolic arccotangent, this
+   * To avoid confusion with the matrix inverse hyperbolic tangent, this
    * function does not apply to matrices.
    *
    * Syntax:

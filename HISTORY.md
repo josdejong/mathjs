@@ -516,7 +516,7 @@ Non-breaking changes:
 
 # 2022-05-24, version 10.6.0
 
-- Implementation of fourier transform functions `fft` and `ifft` (#2540).
+- Implementation of Fourier transform functions `fft` and `ifft` (#2540).
   Thanks @HanchaiN.
 - Fix TypeScript types not being listed in the exported fields (#2569).
   Thanks @mattvague.
