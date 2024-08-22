@@ -5,7 +5,7 @@ export const hypotDocs = {
     'hypot(a, b, c, ...)',
     'hypot([a, b, c, ...])'
   ],
-  description: 'Calculate the hypotenusa of a list with values. ',
+  description: 'Calculate the hypotenuse of a list with values.',
   examples: [
     'hypot(3, 4)',
     'sqrt(3^2 + 4^2)',

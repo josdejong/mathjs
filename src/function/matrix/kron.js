@@ -6,7 +6,7 @@ const dependencies = ['typed', 'matrix', 'multiplyScalar']
 
 export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiplyScalar }) => {
   /**
-     * Calculates the kronecker product of 2 matrices or vectors.
+     * Calculates the Kronecker product of 2 matrices or vectors.
      *
      * NOTE: If a one dimensional vector / matrix is given, it will be
      * wrapped so its two dimensions.
@@ -30,7 +30,7 @@ export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
      *
      * @param  {Array | Matrix} x     First vector
      * @param  {Array | Matrix} y     Second vector
-     * @return {Array | Matrix}       Returns the kronecker product of `x` and `y`
+     * @return {Array | Matrix}       Returns the Kronecker product of `x` and `y`
      */
   return typed(name, {
     'Matrix, Matrix': function (x, y) {
@@ -49,10 +49,10 @@ export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   })
 
   /**
-     * Calculate the kronecker product of two matrices / vectors
+     * Calculate the Kronecker product of two matrices / vectors
      * @param {Array} a  First vector
      * @param {Array} b  Second vector
-     * @returns {Array} Returns the kronecker product of x and y
+     * @returns {Array} Returns the Kronecker product of x and y
      * @private
      */
   function _kron (a, b) {

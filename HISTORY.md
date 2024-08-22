@@ -5,13 +5,14 @@
 - Feat: add matrix datatypes in more cases (#3235). Thanks @dvd101x.
 - Feat: export util functions `isMap`, `isPartitionedMap`, and 
   `isObjectWrappingMap`.
-- Docs: add a link to the documentation page about the syntax expression
-  from the function `evaluate` (see #3238).
-- Docs: improve the documentation of `scope` and fix the example 
-  `custom_scope_objects.js` (#3150)
 - Fix: #3241 function `map` not always working with matrices (#3242). 
   Thanks @dvd101x.
 - Fix: #3244 fix broken link to `ResultSet` in the docs about classes.
+- Docs: add a link to the documentation page about the syntax expression
+  from the function `evaluate` (see #3238).
+- Docs: improve the documentation of `scope` and fix the example
+  `custom_scope_objects.js` (#3150)
+- Docs: spelling fixes in the embedded docs (#3252). Thanks @dvd101x.
 
 # 2024-07-19, 13.0.3
 
@@ -516,7 +517,7 @@ Non-breaking changes:
 
 # 2022-05-24, version 10.6.0
 
-- Implementation of fourier transform functions `fft` and `ifft` (#2540).
+- Implementation of Fourier transform functions `fft` and `ifft` (#2540).
   Thanks @HanchaiN.
 - Fix TypeScript types not being listed in the exported fields (#2569).
   Thanks @mattvague.
