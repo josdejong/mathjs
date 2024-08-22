@@ -2,6 +2,8 @@
 
 # unpublished changes since 13.0.3
 
+- Feat: support multiple inputs in function `map` (#3228, #3196). 
+  Thanks @dvd101x.
 - Feat: add matrix datatypes in more cases (#3235). Thanks @dvd101x.
 - Feat: export util functions `isMap`, `isPartitionedMap`, and 
   `isObjectWrappingMap`.
