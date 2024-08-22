@@ -1,7 +1,6 @@
-import { applyCallback } from '../../utils/applyCallback.js'
-import { map } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
+import { createMap } from '../../function/matrix/map.js'
 import { compileInlineExpression } from './utils/compileInlineExpression.js'
 
 const name = 'map'
@@ -14,61 +13,123 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * This transform creates a one-based index instead of a zero-based index
    */
-  function mapTransform (args, math, scope) {
-    let x, callback
+  const map = createMap({ typed })
 
-    if (args[0]) {
-      x = args[0].compile().evaluate(scope)
+  function mapTransform (args, math, scope) {
+    if (args.length === 0) {
+      return map()
     }
 
-    if (args[1]) {
-      if (isSymbolNode(args[1]) || isFunctionAssignmentNode(args[1])) {
+    if (args.length === 1) {
+      return map(args[0])
+    }
+    const N = args.length - 1
+    let X, callback
+    callback = args[N]
+    X = args.slice(0, N)
+    X = X.map(arg => _compileAndEvaluate(arg, scope))
+
+    if (callback) {
+      if (isSymbolNode(callback) || isFunctionAssignmentNode(callback)) {
         // a function pointer, like filter([3, -2, 5], myTestFunction)
-        callback = args[1].compile().evaluate(scope)
+        callback = _compileAndEvaluate(callback, scope)
       } else {
         // an expression like filter([3, -2, 5], x > 0)
-        callback = compileInlineExpression(args[1], math, scope)
+        callback = compileInlineExpression(callback, math, scope)
       }
     }
+    return map(...X, _transformCallback(callback, N))
 
-    return map(x, callback)
+    function _compileAndEvaluate (arg, scope) {
+      return arg.compile().evaluate(scope)
+    }
   }
   mapTransform.rawArgs = true
 
-  // one-based version of map function
-  const map = typed('map', {
-    'Array, function': function (x, callback) {
-      return _map(x, callback, x)
-    },
-
-    'Matrix, function': function (x, callback) {
-      return x.create(_map(x.valueOf(), callback, x), x.datatype())
-    }
-  })
-
   return mapTransform
-}, { isTransformFunction: true })
 
-/**
- * Map for a multidimensional array. One-based indexes
- * @param {Array} array
- * @param {function} callback
- * @param {Array} orig
- * @return {Array}
- * @private
- */
-function _map (array, callback, orig) {
-  function recurse (value, index) {
-    if (Array.isArray(value)) {
-      return map(value, function (child, i) {
-        // we create a copy of the index array and append the new index value
-        return recurse(child, index.concat(i + 1)) // one based index, hence i + 1
-      })
+  /**
+   * Transforms the given callback function based on its type and number of arrays.
+   *
+   * @param {Function} callback - The callback function to transform.
+   * @param {number} numberOfArrays - The number of arrays to pass to the callback function.
+   * @returns {*} - The transformed callback function.
+   */
+  function _transformCallback (callback, numberOfArrays) {
+    if (typed.isTypedFunction(callback)) {
+      return _transformTypedCallbackFunction(callback, numberOfArrays)
     } else {
-      // invoke the (typed) callback function with the right number of arguments
-      return applyCallback(callback, value, index, orig, 'map')
+      return _transformCallbackFunction(callback, callback.length, numberOfArrays)
     }
   }
 
-  return recurse(array, [])
+  /**
+   * Transforms the given typed callback function based on the number of arrays.
+   *
+   * @param {Function} typedFunction - The typed callback function to transform.
+   * @param {number} numberOfArrays - The number of arrays to pass to the callback function.
+   * @returns {*} - The transformed typed callback function.
+   */
+  function _transformTypedCallbackFunction (typedFunction, numberOfArrays) {
+    const signatures = Object.fromEntries(
+      Object.entries(typedFunction.signatures)
+        .map(([signature, callbackFunction]) => {
+          const numberOfCallbackInputs = signature.split(',').length
+          if (typed.isTypedFunction(callbackFunction)) {
+            return [signature, _transformTypedCallbackFunction(callbackFunction, numberOfArrays)]
+          } else {
+            return [signature, _transformCallbackFunction(callbackFunction, numberOfCallbackInputs, numberOfArrays)]
+          }
+        })
+    )
+
+    if (typeof typedFunction.name === 'string') {
+      return typed(typedFunction.name, signatures)
+    } else {
+      return typed(signatures)
+    }
+  }
+}, { isTransformFunction: true })
+
+/**
+ * Transforms the callback function based on the number of callback inputs and arrays.
+ * There are three cases:
+ * 1. The callback function has N arguments.
+ * 2. The callback function has N+1 arguments.
+ * 3. The callback function has 2N+1 arguments.
+ *
+ * @param {Function} callbackFunction - The callback function to transform.
+ * @param {number} numberOfCallbackInputs - The number of callback inputs.
+ * @param {number} numberOfArrays - The number of arrays.
+ * @returns {Function} The transformed callback function.
+ */
+function _transformCallbackFunction (callbackFunction, numberOfCallbackInputs, numberOfArrays) {
+  if (numberOfCallbackInputs === numberOfArrays) {
+    return callbackFunction
+  } else if (numberOfCallbackInputs === numberOfArrays + 1) {
+    return function (...args) {
+      const vals = args.slice(0, numberOfArrays)
+      const idx = _transformDims(args[numberOfArrays])
+      return callbackFunction(...vals, idx)
+    }
+  } else if (numberOfCallbackInputs > numberOfArrays + 1) {
+    return function (...args) {
+      const vals = args.slice(0, numberOfArrays)
+      const idx = _transformDims(args[numberOfArrays])
+      const rest = args.slice(numberOfArrays + 1)
+      return callbackFunction(...vals, idx, ...rest)
+    }
+  } else {
+    return callbackFunction
+  }
+}
+
+/**
+ * Transforms the dimensions by adding 1 to each dimension.
+ *
+ * @param {Array} dims - The dimensions to transform.
+ * @returns {Array} The transformed dimensions.
+ */
+function _transformDims (dims) {
+  return dims.map(dim => dim.isBigNumber ? dim.plus(1) : dim + 1)
 }
