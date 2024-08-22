@@ -23,7 +23,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    * Syntax:
    *
    *    math.map(x, callback)
-   *    math.map(x, y, callback)
+   *    math.map(x, y, ..., callback)
    *
    * Examples:
    *
