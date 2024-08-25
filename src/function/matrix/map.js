@@ -1,4 +1,4 @@
-import { applyCallback } from '../../utils/applyCallback.js'
+import { reduceCallback } from '../../utils/applyCallback.js'
 import { arraySize, broadcastSizes, broadcastTo, get } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
@@ -143,18 +143,17 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       return 0
     }
   }
-})
-
-/**
+  /**
  * Map for a multi dimensional array
  * @param {Array} array
  * @param {Function} callback
  * @return {Array}
  * @private
  */
-function _mapArray (array, callback) {
-  return _recurse(array, [], array, callback)
-}
+  function _mapArray (array, callback) {
+    return _recurse(array, [], array, reduceCallback(callback, array, name))
+  }
+})
 
 /**
  * Recursive function to map a multi-dimensional array.
@@ -173,6 +172,6 @@ function _recurse (value, index, array, callback) {
     })
   } else {
     // invoke the callback function with the right number of arguments
-    return applyCallback(callback, value, index, array, 'map')
+    return callback(value, index, array)
   }
 }
