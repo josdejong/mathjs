@@ -1,4 +1,4 @@
-import { reduceCallback } from '../../utils/applyCallback.js'
+import { simplifyCallback } from '../../utils/applyCallback.js'
 import { arraySize, broadcastSizes, broadcastTo, get } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
@@ -151,7 +151,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
  * @private
  */
   function _mapArray (array, callback) {
-    return _recurse(array, [], array, reduceCallback(callback, array, name))
+    return _recurse(array, [], array, simplifyCallback(callback, array, name))
   }
 })
 
