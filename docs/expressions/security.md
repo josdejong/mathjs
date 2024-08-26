@@ -60,8 +60,8 @@ math.import({
   'parse':      function () { throw new Error('Function parse is disabled') },
   'simplify':   function () { throw new Error('Function simplify is disabled') },
   'derivative': function () { throw new Error('Function derivative is disabled') },
-  'resolve': function () { throw new Error('Function derivative is disabled') },
-  'reviver': function () { throw new Error('Function derivative is disabled') }
+  'resolve':    function () { throw new Error('Function resolve is disabled') },
+  'reviver':    function () { throw new Error('Function reviver is disabled') }
 }, { override: true })
 
 console.log(limitedEvaluate('sqrt(16)'))     // Ok, 4

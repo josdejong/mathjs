@@ -122,25 +122,25 @@ describe('maps', function () {
       assert.deepStrictEqual(Object.keys(obj), [])
     })
 
-    it('should not allow getting unsafe properties' , function () {
+    it('should not allow getting unsafe properties', function () {
       const map = new ObjectWrappingMap({})
 
       assert.throws(() => map.get('__proto__'), /Error: No access to property "__proto__"/)
     })
 
-    it('should not allow setting unsafe properties' , function () {
+    it('should not allow setting unsafe properties', function () {
       const map = new ObjectWrappingMap({})
 
       assert.throws(() => map.set('__proto__', 42), /Error: No access to property "__proto__"/)
     })
 
-    it('should not allow testing has unsafe properties' , function () {
+    it('should not allow testing has unsafe properties', function () {
       const map = new ObjectWrappingMap({})
 
       assert.strictEqual(map.has('__proto__'), false)
     })
 
-    it('should not allow deleting unsafe properties' , function () {
+    it('should not allow deleting unsafe properties', function () {
       const obj = {
         toString: 42
       }

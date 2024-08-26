@@ -173,7 +173,7 @@ describe('customs', function () {
     })
 
     it('should test properties on an array', function () {
-      const array = [3,2,1]
+      const array = [3, 2, 1]
       assert.strictEqual(isSafeProperty(array, 'length'), true)
       assert.strictEqual(isSafeProperty(array, 'foo'), true)
       assert.strictEqual(isSafeProperty(array, 'sort'), true)
