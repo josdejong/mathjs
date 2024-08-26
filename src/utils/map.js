@@ -17,7 +17,9 @@ export class ObjectWrappingMap {
   }
 
   keys () {
-    return Object.keys(this.wrappedObject).values()
+    return Object.keys(this.wrappedObject)
+      .filter(key => this.has(key))
+      .values()
   }
 
   get (key) {
