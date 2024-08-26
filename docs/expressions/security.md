@@ -40,8 +40,9 @@ risk in the expression parser:
 
 - `import` and `createUnit` which alter the built-in functionality and
   allow overriding existing functions and units.
-- `evaluate`, `parse`, `simplify`, and `derivative` which parse arbitrary
-  input into a manipulable expression tree.
+- `evaluate`, `parse`, `simplify`, `derivative`, and `resolve` which parse 
+  arbitrary input into a manipulable expression tree.
+- `reviver` which parses values into class instances.
 
 To make the expression parser less vulnerable whilst still supporting
 most functionality, these functions can be disabled:
@@ -58,7 +59,9 @@ math.import({
   'evaluate':   function () { throw new Error('Function evaluate is disabled') },
   'parse':      function () { throw new Error('Function parse is disabled') },
   'simplify':   function () { throw new Error('Function simplify is disabled') },
-  'derivative': function () { throw new Error('Function derivative is disabled') }
+  'derivative': function () { throw new Error('Function derivative is disabled') },
+  'resolve': function () { throw new Error('Function derivative is disabled') },
+  'reviver': function () { throw new Error('Function derivative is disabled') }
 }, { override: true })
 
 console.log(limitedEvaluate('sqrt(16)'))     // Ok, 4
@@ -71,7 +74,7 @@ console.log(limitedEvaluate('parse("2+3")')) // Error: Function parse is disable
 You found a security vulnerability? Awesome! We hope you don't have bad
 intentions and want to help fix the issue. Please report the
 vulnerability in a private way by contacting one of the maintainers
-via mail or an other private channel. That way we can work together
+via mail or another private channel. That way we can work together
 on a fix before sharing the issue with everybody including the bad guys.
 
 ## Stability risks
