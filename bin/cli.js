@@ -56,10 +56,28 @@ const PRECISION = 14 // decimals
  * "Lazy" load math.js: only require when we actually start using it.
  * This ensures the cli application looks like it loads instantly.
  * When requesting help or version number, math.js isn't even loaded.
- * @return {*}
+ * @return {{ evalute: function, parse: function, math: Object }}
  */
 function getMath () {
-  return require('../lib/browser/math.js')
+  const { create, all } = require('../lib/browser/math.js')
+
+  const math = create(all)
+  const parse = math.parse
+  const evaluate = math.evaluate
+
+  // See https://mathjs.org/docs/expressions/security.html#less-vulnerable-expression-parser
+  math.import({
+    'import':     function () { throw new Error('Function import is disabled') },
+    'createUnit': function () { throw new Error('Function createUnit is disabled') },
+    'evaluate':   function () { throw new Error('Function evaluate is disabled') },
+    'parse':      function () { throw new Error('Function parse is disabled') },
+    'simplify':   function () { throw new Error('Function simplify is disabled') },
+    'derivative': function () { throw new Error('Function derivative is disabled') },
+    'resolve': function () { throw new Error('Function resolve is disabled') },
+    'reviver': function () { throw new Error('Function reviver is disabled') }
+  }, { override: true })
+
+  return { math, parse, evaluate }
 }
 
 /**
@@ -68,7 +86,7 @@ function getMath () {
  * @param {*} value
  */
 function format (value) {
-  const math = getMath()
+  const { math } = getMath()
 
   return math.format(value, {
     fn: function (value) {
@@ -88,7 +106,7 @@ function format (value) {
  * @return {[Array, String]} completions
  */
 function completer (text) {
-  const math = getMath()
+  const { math } = getMath()
   let matches = []
   let keyword
   const m = /[a-zA-Z_0-9]+$/.exec(text)
@@ -183,7 +201,7 @@ function runStream (input, output, mode, parenthesis) {
   }
 
   // load math.js now, right *after* loading the prompt.
-  const math = getMath()
+  const { math, parse } = getMath()
 
   // TODO: automatic insertion of 'ans' before operators like +, -, *, /
 
@@ -214,7 +232,7 @@ function runStream (input, output, mode, parenthesis) {
           case 'evaluate':
             // evaluate expression
             try {
-              let node = math.parse(expr)
+              let node = parse(expr)
               let res = node.evaluate(scope)
 
               if (math.isResultSet(res)) {
@@ -288,7 +306,7 @@ function runStream (input, output, mode, parenthesis) {
  * @return {string | null} Returns the name when found, else returns null.
  */
 function findSymbolName (node) {
-  const math = getMath()
+  const { math } = getMath()
   let n = node
 
   while (n) {
@@ -412,9 +430,10 @@ if (version) {
   // run a stream, can be user input or pipe input
   runStream(process.stdin, process.stdout, mode, parenthesis)
 } else {
-  fs.stat(scripts[0], function (e, f) {
-    if (e) {
-      console.log(getMath().evaluate(scripts.join(' ')).toString())
+  fs.stat(scripts[0], function (err) {
+    if (err) {
+      const { evaluate } = getMath()
+      console.log(evaluate(scripts.join(' ')).toString())
     } else {
     // work through the queue of scripts
       scripts.forEach(function (arg) {
