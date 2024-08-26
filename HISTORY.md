@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 13.0.3
+# 2024-08-26, 13.1.0
 
 - Feat: support multiple inputs in function `map` (#3228, #3196). 
   Thanks @dvd101x.
