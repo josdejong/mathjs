@@ -118,10 +118,13 @@ Where :
 
 - `args` is an Array with nodes of the parsed arguments.
 - `math` is the math namespace against which the expression was compiled.
-- `scope` is a `Map` containing the variables defined in the scope passed 
-  via `evaluate(scope)`. In case of using a custom defined function like
-  `f(x) = rawFunction(x) ^ 2`, the scope passed to `rawFunction` also contains
-  the current value of parameter `x`.
+- `scope` is a [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) 
+  interface containing the variables defined in the scope 
+  passed via `evaluate(scope)`. The passed scope is always a `Map` interface,
+  and normally a `PartitionedMap` is used to separate local function variables
+  like `x` in a custom defined function `f(x) = rawFunction(x) ^ 2` from the 
+  scope variables. Note that a `PartitionedMap` can recursively link to another
+  `PartitionedMap`.
 
 Raw functions must be imported in the `math` namespace, as they need to be
 processed at compile time. They are not supported when passed via a scope

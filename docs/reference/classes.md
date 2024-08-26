@@ -50,7 +50,7 @@ Classes used internally that may be of use to developers:
 
 - [Index](classes/matrixindex.html)
 - [Range](classes/matrixrange.html)
-- [ResultSet](classes/matrixrange.html)
+- [ResultSet](classes/resultset.html)
 - [FibonacciHeap](classes/fibonacciheap.html)
 
 <h2 id="complex">Complex <a href="#complex" title="Permalink">#</a></h2>

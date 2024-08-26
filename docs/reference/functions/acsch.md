@@ -6,10 +6,10 @@ layout: default
 
 <h1 id="function-acsch">Function acsch <a href="#function-acsch" title="Permalink">#</a></h1>
 
-Calculate the hyperbolic arccosecant of a value,
+Calculate the inverse hyperbolic cosecant of a value,
 defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
 
-To avoid confusion with the matrix hyperbolic arccosecant, this function
+To avoid confusion with the matrix inverse hyperbolic cosecant, this function
 does not apply to matrices.
 
 

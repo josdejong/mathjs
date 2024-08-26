@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-fft">Function fft <a href="#function-fft" title="Permalink">#</a></h1>
 
-Calculate N-dimensional fourier transform
+Calculate N-dimensional Fourier transform
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -25,7 +25,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Array &#124; Matrix | N-dimensional fourier transformation of the array
+Array &#124; Matrix | N-dimensional Fourier transformation of the array
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

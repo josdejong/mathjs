@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-kron">Function kron <a href="#function-kron" title="Permalink">#</a></h1>
 
-Calculates the kronecker product of 2 matrices or vectors.
+Calculates the Kronecker product of 2 matrices or vectors.
 
 NOTE: If a one dimensional vector / matrix is given, it will be
 wrapped so its two dimensions.
@@ -30,7 +30,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Array &#124; Matrix | Returns the kronecker product of `x` and `y`
+Array &#124; Matrix | Returns the Kronecker product of `x` and `y`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

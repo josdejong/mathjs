@@ -37,12 +37,12 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.size(2.3)                  // returns []
-math.size('hello world')        // returns [11]
+math.size(2.3)                       // returns []
+math.size('hello world')             // returns [11]
 
 const A = [[1, 2, 3], [4, 5, 6]]
-math.size(A)                    // returns [2, 3]
-math.size(math.range(1,6))      // returns [5]
+math.size(A)                         // returns [2, 3]
+math.size(math.range(1,6).toArray()) // returns [5]
 ```
 
 

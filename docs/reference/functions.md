@@ -56,7 +56,7 @@ Function | Description
 [math.fix(x)](functions/fix.html) | Round a value towards zero.
 [math.floor(x)](functions/floor.html) | Round a value towards minus infinity.
 [math.gcd(a,&nbsp;b)](functions/gcd.html) | Calculate the greatest common divisor for two or more values or arrays.
-[math.hypot(a,&nbsp;b,&nbsp;...)](functions/hypot.html) | Calculate the hypotenusa of a list with values.
+[math.hypot(a,&nbsp;b,&nbsp;...)](functions/hypot.html) | Calculate the hypotenuse of a list with values.
 [math.invmod(a,&nbsp;b)](functions/invmod.html) | Calculate the (modular) multiplicative inverse of a modulo b.
 [math.lcm(a,&nbsp;b)](functions/lcm.html) | Calculate the least common multiple for two or more values or arrays.
 [math.log(x&nbsp;[,&nbsp;base])](functions/log.html) | Calculate the logarithm of a value.
@@ -140,15 +140,15 @@ Function | Description
 [math.dot(x,&nbsp;y)](functions/dot.html) | Calculate the dot product of two vectors.
 [math.eigs(x,&nbsp;[prec])](functions/eigs.html) | Compute eigenvalues and optionally eigenvectors of a square matrix.
 [math.expm(x)](functions/expm.html) | Compute the matrix exponential, expm(A) = e^A.
-[math.fft(arr)](functions/fft.html) | Calculate N-dimensional fourier transform.
+[math.fft(arr)](functions/fft.html) | Calculate N-dimensional Fourier transform.
 [math.filter(x,&nbsp;test)](functions/filter.html) | Filter the items in an array or one dimensional matrix.
 [math.flatten(x)](functions/flatten.html) | Flatten a multidimensional matrix into a single dimensional matrix.
 [math.forEach(x,&nbsp;callback)](functions/forEach.html) | Iterate over all elements of a matrix/array, and executes the given callback function.
 [math.getMatrixDataType(x)](functions/getMatrixDataType.html) | Find the data type of all elements in a matrix or array, for example 'number' if all items are a number and 'Complex' if all values are complex numbers.
 [math.identity(n)](functions/identity.html) | Create a 2-dimensional identity matrix with size m x n or n x n.
-[math.ifft(arr)](functions/ifft.html) | Calculate N-dimensional inverse fourier transform.
+[math.ifft(arr)](functions/ifft.html) | Calculate N-dimensional inverse Fourier transform.
 [math.inv(x)](functions/inv.html) | Calculate the inverse of a square matrix.
-[math.kron(x,&nbsp;y)](functions/kron.html) | Calculates the kronecker product of 2 matrices or vectors.
+[math.kron(x,&nbsp;y)](functions/kron.html) | Calculates the Kronecker product of 2 matrices or vectors.
 [math.map(x,&nbsp;callback)](functions/map.html) | Create a new matrix or array with the results of a callback function executed on each entry of a given matrix/array.
 [math.matrixFromColumns(...arr)](functions/matrixFromColumns.html) | Create a dense matrix from vectors as individual columns.
 [math.matrixFromFunction(size,&nbsp;fn)](functions/matrixFromFunction.html) | Create a matrix by evaluating a generating function at each index.
@@ -273,9 +273,9 @@ Function | Description
 [math.acos(x)](functions/acos.html) | Calculate the inverse cosine of a value.
 [math.acosh(x)](functions/acosh.html) | Calculate the hyperbolic arccos of a value, defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.
 [math.acot(x)](functions/acot.html) | Calculate the inverse cotangent of a value, defined as `acot(x) = atan(1/x)`.
-[math.acoth(x)](functions/acoth.html) | Calculate the hyperbolic arccotangent of a value, defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
+[math.acoth(x)](functions/acoth.html) | Calculate the inverse hyperbolic tangent of a value, defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
 [math.acsc(x)](functions/acsc.html) | Calculate the inverse cosecant of a value, defined as `acsc(x) = asin(1/x)`.
-[math.acsch(x)](functions/acsch.html) | Calculate the hyperbolic arccosecant of a value, defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
+[math.acsch(x)](functions/acsch.html) | Calculate the inverse hyperbolic cosecant of a value, defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
 [math.asec(x)](functions/asec.html) | Calculate the inverse secant of a value.
 [math.asech(x)](functions/asech.html) | Calculate the hyperbolic arcsecant of a value, defined as `asech(x) = acosh(1/x) = ln(sqrt(1/x^2 - 1) + 1/x)`.
 [math.asin(x)](functions/asin.html) | Calculate the inverse sine of a value.

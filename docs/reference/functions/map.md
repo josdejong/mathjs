@@ -9,9 +9,12 @@ layout: default
 Create a new matrix or array with the results of a callback function executed on
 each entry of a given matrix/array.
 
-For each entry of the input, the callback is invoked with three arguments:
-the value of the entry, the index at which that entry occurs, and the full
-matrix/array being traversed. Note that because the matrix/array might be
+For each entry of the input,
+
+the callback is invoked with 2N + 1 arguments:
+the N values of the entry, the index at which that entry occurs, and the N full
+broadcasted matrix/array being traversed where N is the number of matrices being traversed.
+Note that because the matrix/array might be
 multidimensional, the "index" argument is always an array of numbers giving
 the index in each dimension. This is true even for vectors: the "index"
 argument is an array of length 1, rather than simply a number.
@@ -21,6 +24,7 @@ argument is an array of length 1, rather than simply a number.
 
 ```js
 math.map(x, callback)
+math.map(x, y, ..., callback)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -49,11 +53,16 @@ Type | Description
 math.map([1, 2, 3], function(value) {
   return value * value
 })  // returns [1, 4, 9]
+math.map([1, 2], [3, 4], function(a, b) {
+ return a + b
+})  // returns [4, 6]
 
 // The callback is normally called with three arguments:
 //    callback(value, index, Array)
 // If you want to call with only one argument, use:
 math.map([1, 2, 3], x => math.format(x)) // returns ['1', '2', '3']
+// It can also be called with 2N + 1 arguments: for N arrays
+//    callback(value1, value2, index, BroadcastedArray1, BroadcastedArray2)
 ```
 
 

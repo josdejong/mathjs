@@ -4,6 +4,22 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20240826-1310">2024-08-26, 13.1.0 <a href="#20240826-1310" title="Permalink">#</a></h1>
+
+- Feat: support multiple inputs in function `map` (<a href="https://github.com/josdejong/mathjs/issues/3228">#3228</a>, <a href="https://github.com/josdejong/mathjs/issues/3196">#3196</a>). 
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: add matrix datatypes in more cases (<a href="https://github.com/josdejong/mathjs/issues/3235">#3235</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: export util functions `isMap`, `isPartitionedMap`, and 
+  `isObjectWrappingMap`.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3241">#3241</a> function `map` not always working with matrices (<a href="https://github.com/josdejong/mathjs/issues/3242">#3242</a>). 
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3244">#3244</a> fix broken link to `ResultSet` in the docs about classes.
+- Docs: add a link to the documentation page about the syntax expression
+  from the function `evaluate` (see <a href="https://github.com/josdejong/mathjs/issues/3238">#3238</a>).
+- Docs: improve the documentation of `scope` and fix the example
+  `custom_scope_objects.js` (<a href="https://github.com/josdejong/mathjs/issues/3150">#3150</a>)
+- Docs: spelling fixes in the embedded docs (<a href="https://github.com/josdejong/mathjs/issues/3252">#3252</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+
 <h1 id="20240719-1303">2024-07-19, 13.0.3 <a href="#20240719-1303" title="Permalink">#</a></h1>
 
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3232">#3232</a> fix type definitions of function `format` to support notations
@@ -507,7 +523,7 @@ Non-breaking changes:
 
 <h1 id="20220524-version-1060">2022-05-24, version 10.6.0 <a href="#20220524-version-1060" title="Permalink">#</a></h1>
 
-- Implementation of fourier transform functions `fft` and `ifft` (<a href="https://github.com/josdejong/mathjs/issues/2540">#2540</a>).
+- Implementation of Fourier transform functions `fft` and `ifft` (<a href="https://github.com/josdejong/mathjs/issues/2540">#2540</a>).
   Thanks <a href="https://github.com/HanchaiN">@HanchaiN</a>.
 - Fix TypeScript types not being listed in the exported fields (<a href="https://github.com/josdejong/mathjs/issues/2569">#2569</a>).
   Thanks <a href="https://github.com/mattvague">@mattvague</a>.
