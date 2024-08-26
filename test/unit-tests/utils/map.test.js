@@ -30,95 +30,125 @@ describe('maps', function () {
     }
   })
 
-  it('should wrap an object in a map-like object', function () {
-    const obj = {
-      a: 1,
-      b: 2,
-      c: 3
-    }
-    const map = new ObjectWrappingMap(obj)
+  describe('ObjectWrappingMap', function () {
+    it('should wrap an object in a map-like object', function () {
+      const obj = {
+        a: 1,
+        b: 2,
+        c: 3
+      }
+      const map = new ObjectWrappingMap(obj)
 
-    // isMap thinks it's a map.
-    assert.ok(isMap(map))
+      // isMap thinks it's a map.
+      assert.ok(isMap(map))
 
-    // get
-    for (const key of ['a', 'b', 'c']) {
-      assert.strictEqual(map.get(key), obj[key])
-    }
+      // get
+      for (const key of ['a', 'b', 'c']) {
+        assert.strictEqual(map.get(key), obj[key])
+      }
 
-    // get with a key not there gives an undefined.
-    for (const key of ['e', 'f']) {
-      assert.strictEqual(map.get(key), undefined)
-    }
+      // get with a key not there gives an undefined.
+      for (const key of ['e', 'f']) {
+        assert.strictEqual(map.get(key), undefined)
+      }
 
-    // We can behind the scenes add to the wrapped object.
-    Object.assign(obj, {
-      d: 4,
-      e: 5
+      // We can behind the scenes add to the wrapped object.
+      Object.assign(obj, {
+        d: 4,
+        e: 5
+      })
+
+      // set()
+      map.set('f', 6)
+      map.set('g', 7)
+
+      // we set the properties in obj, too.
+      assert.strictEqual(obj.f, 6)
+      assert.strictEqual(obj.g, 7)
+
+      for (const key of ['d', 'e', 'f', 'g']) {
+        assert.strictEqual(map.get(key), obj[key])
+      }
+
+      // keys()
+      assert.deepStrictEqual([...map.keys()], ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+
+      for (const key of map.keys()) {
+        assert.ok(map.has(key))
+      }
+
+      // size(
+      assert.strictEqual(map.size, 7)
+
+      // delete
+      map.delete('g')
+      assert.deepStrictEqual([...map.keys()], ['a', 'b', 'c', 'd', 'e', 'f'])
+
+      assert.ok(!map.has('not-in-this-map'))
+
+      // forEach
+      const log = []
+      map.forEach((value, key) => (log.push([key, value])))
+      assert.deepStrictEqual(log, [
+        ['a', 1],
+        ['b', 2],
+        ['c', 3],
+        ['d', 4],
+        ['e', 5],
+        ['f', 6]
+      ])
+
+      // entries
+      const it = map.entries()
+      assert.deepStrictEqual(it.next(), { done: false, value: ['a', 1] })
+      assert.deepStrictEqual(it.next(), { done: false, value: ['b', 2] })
+      assert.deepStrictEqual(it.next(), { done: false, value: ['c', 3] })
+      assert.deepStrictEqual(it.next(), { done: false, value: ['d', 4] })
+      assert.deepStrictEqual(it.next(), { done: false, value: ['e', 5] })
+      assert.deepStrictEqual(it.next(), { done: false, value: ['f', 6] })
+      assert.deepStrictEqual(it.next(), { done: true, value: undefined })
+
+      // We can get the same object out using toObject
+      const innerObject = toObject(map)
+      assert.strictEqual(innerObject, obj)
+
+      // Create a new Map
+      const copy = new Map(map)
+      assert.deepStrictEqual([...copy.keys()], [...map.keys()])
+
+      // clear
+      map.clear()
+      assert.deepStrictEqual([...map.keys()], [])
+      assert.deepStrictEqual(Object.keys(obj), [])
     })
 
-    // set()
-    map.set('f', 6)
-    map.set('g', 7)
+    it('should not allow getting unsafe properties' , function () {
+      const map = new ObjectWrappingMap({})
 
-    // we set the properties in obj, too.
-    assert.strictEqual(obj.f, 6)
-    assert.strictEqual(obj.g, 7)
+      assert.throws(() => map.get('__proto__'), /Error: No access to property "__proto__"/)
+    })
 
-    for (const key of ['d', 'e', 'f', 'g']) {
-      assert.strictEqual(map.get(key), obj[key])
-    }
+    it('should not allow setting unsafe properties' , function () {
+      const map = new ObjectWrappingMap({})
 
-    // keys()
-    assert.deepStrictEqual([...map.keys()], ['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+      assert.throws(() => map.set('__proto__', 42), /Error: No access to property "__proto__"/)
+    })
 
-    for (const key of map.keys()) {
-      assert.ok(map.has(key))
-    }
+    it('should not allow testing has unsafe properties' , function () {
+      const map = new ObjectWrappingMap({})
 
-    // size(
-    assert.strictEqual(map.size, 7)
+      assert.strictEqual(map.has('__proto__'), false)
+    })
 
-    // delete
-    map.delete('g')
-    assert.deepStrictEqual([...map.keys()], ['a', 'b', 'c', 'd', 'e', 'f'])
+    it('should not allow deleting unsafe properties' , function () {
+      const obj = {
+        toString: 42
+      }
+      const map = new ObjectWrappingMap(obj)
 
-    assert.ok(!map.has('not-in-this-map'))
-
-    // forEach
-    const log = []
-    map.forEach((value, key) => (log.push([key, value])))
-    assert.deepStrictEqual(log, [
-      ['a', 1],
-      ['b', 2],
-      ['c', 3],
-      ['d', 4],
-      ['e', 5],
-      ['f', 6]
-    ])
-
-    // entries
-    const it = map.entries()
-    assert.deepStrictEqual(it.next(), { done: false, value: ['a', 1] })
-    assert.deepStrictEqual(it.next(), { done: false, value: ['b', 2] })
-    assert.deepStrictEqual(it.next(), { done: false, value: ['c', 3] })
-    assert.deepStrictEqual(it.next(), { done: false, value: ['d', 4] })
-    assert.deepStrictEqual(it.next(), { done: false, value: ['e', 5] })
-    assert.deepStrictEqual(it.next(), { done: false, value: ['f', 6] })
-    assert.deepStrictEqual(it.next(), { done: true, value: undefined })
-
-    // We can get the same object out using toObject
-    const innerObject = toObject(map)
-    assert.strictEqual(innerObject, obj)
-
-    // Create a new Map
-    const copy = new Map(map)
-    assert.deepStrictEqual([...copy.keys()], [...map.keys()])
-
-    // clear
-    map.clear()
-    assert.deepStrictEqual([...map.keys()], [])
-    assert.deepStrictEqual(Object.keys(obj), [])
+      map.delete('toString')
+      assert.strictEqual(obj.toString, 42)
+    })
   })
 
   describe('PartitionedMap', function () {
