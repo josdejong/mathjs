@@ -169,12 +169,18 @@ describe('FunctionNode', function () {
     const b = new mymath.ConstantNode(5)
     const n = new mymath.FunctionNode(s, [a, b])
 
+    let actualArgs
     const scope = {
-      myFunction: function () {
+      myFunction: function (...args) {
+        actualArgs = args
         return 42
       }
     }
+
     assert.strictEqual(n.compile().evaluate(scope), 42)
+    assert.strictEqual(actualArgs[0], a.value)
+    assert.strictEqual(actualArgs[1], b.value)
+    assert.deepStrictEqual(actualArgs.length, 2)
   })
 
   it('should filter a FunctionNode', function () {
