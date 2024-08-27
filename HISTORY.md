@@ -1,5 +1,9 @@
 # History
 
+# changes since 13.1.1
+
+- Docs: fix broken links on the Configuration page. Thanks @vassudanagunta.
+
 # 2024-08-27, 13.1.1
 
 - Fix security vulnerability in the CLI and web API allowing to call functions
