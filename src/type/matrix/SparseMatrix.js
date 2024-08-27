@@ -5,7 +5,7 @@ import { clone, deepStrictEqual } from '../../utils/object.js'
 import { arraySize, getArrayDataType, processSizesWildcard, unsqueeze, validateIndex } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { DimensionError } from '../../error/DimensionError.js'
-import { applyCallback } from '../../utils/applyCallback.js'
+import { simplifyCallback } from '../../utils/applyCallback.js'
 
 const name = 'SparseMatrix'
 const dependencies = [
@@ -853,10 +853,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
+    const simplifiedCallback = simplifyCallback(callback, me, 'map')
     // invoke callback
     const invoke = function (v, i, j) {
       // invoke callback
-      return applyCallback(callback, v, [i, j], me, 'map')
+      return simplifiedCallback(v, [i, j], me)
     }
     // invoke _map
     return _map(this, 0, rows - 1, 0, columns - 1, invoke, skipZeros)

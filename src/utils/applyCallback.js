@@ -6,14 +6,14 @@ import { typeOf as _typeOf } from './is.js'
  * Simplifies a callback function by reducing its complexity and potentially improving its performance.
  *
  * @param {Function} callback The original callback function to simplify.
- * @param {Array} array The array that will be used with the callback function.
+ * @param {Array|Matrix} array The array that will be used with the callback function.
  * @param {string} name The name of the function that is using the callback.
  * @returns {Function} Returns a simplified version of the callback function.
  */
 export function simplifyCallback (callback, array, name) {
   if (typed.isTypedFunction(callback)) {
-    const firstIndex = arraySize(array).map(() => 0)
-    const firstValue = get(array, firstIndex)
+    const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
+    const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
     const hasSingleSignature = Object.keys(callback.signatures).length === 1
     const numberOfArguments = _findNumberOfArguments(callback, firstValue, firstIndex, array)
     const reducedCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback

@@ -5,7 +5,7 @@ import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
-import { applyCallback } from '../../utils/applyCallback.js'
+import { simplifyCallback } from '../../utils/applyCallback.js'
 
 const name = 'DenseMatrix'
 const dependencies = [
@@ -537,6 +537,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.map = function (callback) {
     // matrix instance
     const me = this
+    const simplifiedCallback = simplifyCallback(callback, me._data, 'map')
     const recurse = function (value, index) {
       if (isArray(value)) {
         return value.map(function (child, i) {
@@ -544,14 +545,14 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         })
       } else {
         // invoke the callback function with the right number of arguments
-        return applyCallback(callback, value, index, me, 'map')
+        return simplifiedCallback(value, index, me)
       }
     }
 
     // determine the new datatype when the original matrix has datatype defined
     // TODO: should be done in matrix constructor instead
-    const data = recurse(this._data, [])
-    const datatype = this._datatype !== undefined
+    const data = recurse(me._data, [])
+    const datatype = me._datatype !== undefined
       ? getArrayDataType(data, typeOf)
       : undefined
     return new DenseMatrix(data, datatype)
