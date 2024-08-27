@@ -54,7 +54,7 @@ const math = create(all)
 const limitedEvaluate = math.evaluate
 
 math.import({
-  // most important (hardly any functionaly impact)
+  // most important (hardly any functional impact)
   'import':     function () { throw new Error('Function import is disabled') },
   'createUnit': function () { throw new Error('Function createUnit is disabled') },
   'reviver':    function () { throw new Error('Function reviver is disabled') },
