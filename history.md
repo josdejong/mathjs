@@ -4,6 +4,19 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20240827-1311">2024-08-27, 13.1.1 <a href="#20240827-1311" title="Permalink">#</a></h1>
+
+- Fix security vulnerability in the CLI and web API allowing to call functions
+  `import`, `createUnit` and `reviver`, allowing to get access to the internal
+  math namespace and allowing arbitrary code execution. Thanks <a href="https://github.com/StarlightPWN">@StarlightPWN</a>.
+- Fix security vulnerability: when overwriting a `rawArgs` function with a 
+  non-`rawArgs` function, it was still called with raw arguments. This was both
+  a functional issue and a security issue. Thanks <a href="https://github.com/StarlightPWN">@StarlightPWN</a>.
+- Fix security vulnerability: ensure that `ObjectWrappingMap` cannot delete
+  unsafe properties. Thanks <a href="https://github.com/StarlightPWN">@StarlightPWN</a>.
+- Fix: not being able to use methods and properties on arrays inside the
+  expression parser.
+
 <h1 id="20240826-1310">2024-08-26, 13.1.0 <a href="#20240826-1310" title="Permalink">#</a></h1>
 
 - Feat: support multiple inputs in function `map` (<a href="https://github.com/josdejong/mathjs/issues/3228">#3228</a>, <a href="https://github.com/josdejong/mathjs/issues/3196">#3196</a>). 
