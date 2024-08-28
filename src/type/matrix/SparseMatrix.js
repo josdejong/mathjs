@@ -962,6 +962,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
+    const simplifiedCallback = simplifyCallback(callback, me, 'forEach')
     // loop columns
     for (let j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
@@ -975,7 +976,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
           const i = this._index[k]
 
           // value @ k
-          callback(this._values[k], [i, j], me)
+          simplifiedCallback(this._values[k], [i, j], me)
         }
       } else {
         // create a cache holding all defined values
@@ -989,7 +990,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         // and either read the value or zero
         for (let i = 0; i < rows; i++) {
           const value = (i in values) ? values[i] : 0
-          callback(value, [i, j], me)
+          simplifiedCallback(value, [i, j], me)
         }
       }
     }
@@ -1381,6 +1382,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // indeces for column j
     const k0 = ptr[j]
     const k1 = ptr[j + 1]
+    
     // loop
     for (let k = k0; k < k1; k++) {
       // invoke callback
