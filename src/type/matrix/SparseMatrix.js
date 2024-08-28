@@ -1382,7 +1382,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // indeces for column j
     const k0 = ptr[j]
     const k1 = ptr[j + 1]
-    
+
     // loop
     for (let k = k0; k < k1; k++) {
       // invoke callback
