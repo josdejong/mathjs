@@ -246,8 +246,17 @@ export interface ConditionalNodeCtor {
   ): ConditionalNode
 }
 
-export interface ConstantNode<TValue extends string | number = number>
-  extends MathNode {
+export interface ConstantNode<
+  TValue extends
+    | string
+    | number
+    | boolean
+    | null
+    | undefined
+    | bigint
+    | BigNumber
+    | Fraction = number
+> extends MathNode {
   type: 'ConstantNode'
   isConstantNode: true
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -255,7 +264,17 @@ export interface ConstantNode<TValue extends string | number = number>
 }
 
 export interface ConstantNodeCtor {
-  new <TValue extends string | number = string>(
+  new <
+    TValue extends
+      | string
+      | number
+      | boolean
+      | null
+      | undefined
+      | bigint
+      | BigNumber
+      | Fraction = string
+  >(
     value: TValue
   ): ConstantNode<TValue>
 }
