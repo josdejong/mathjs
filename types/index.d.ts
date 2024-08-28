@@ -246,7 +246,7 @@ export interface ConditionalNodeCtor {
   ): ConditionalNode
 }
 
-export interface ConstantNode<TValue extends string | number = number>
+export interface ConstantNode<TValue extends string | number | boolean | null | undefined | bigint | BigNumber | Fraction = number >
   extends MathNode {
   type: 'ConstantNode'
   isConstantNode: true
@@ -255,7 +255,7 @@ export interface ConstantNode<TValue extends string | number = number>
 }
 
 export interface ConstantNodeCtor {
-  new <TValue extends string | number = string>(
+  new <TValue extends string | number | boolean | null | undefined | bigint | BigNumber | Fraction = string>(
     value: TValue
   ): ConstantNode<TValue>
 }
