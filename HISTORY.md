@@ -2,6 +2,8 @@
 
 # changes since 13.1.1
 
+- Fix: improve the type definitions of `ConstantNode` to support all data 
+  types (#3257). Thanks @smith120bh.
 - Docs: fix broken links on the Configuration page. Thanks @vassudanagunta.
 
 # 2024-08-27, 13.1.1
