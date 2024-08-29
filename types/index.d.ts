@@ -246,8 +246,17 @@ export interface ConditionalNodeCtor {
   ): ConditionalNode
 }
 
-export interface ConstantNode<TValue extends string | number = number>
-  extends MathNode {
+export interface ConstantNode<
+  TValue extends
+    | string
+    | number
+    | boolean
+    | null
+    | undefined
+    | bigint
+    | BigNumber
+    | Fraction = number
+> extends MathNode {
   type: 'ConstantNode'
   isConstantNode: true
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -255,7 +264,17 @@ export interface ConstantNode<TValue extends string | number = number>
 }
 
 export interface ConstantNodeCtor {
-  new <TValue extends string | number = string>(
+  new <
+    TValue extends
+      | string
+      | number
+      | boolean
+      | null
+      | undefined
+      | bigint
+      | BigNumber
+      | Fraction = string
+  >(
     value: TValue
   ): ConstantNode<TValue>
 }
@@ -1967,7 +1986,29 @@ export interface MathJsInstance extends MathJsFactory {
   map<T extends MathCollection>(
     x: T,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (value: any, index: any, matrix: T) => MathType | string
+    callback: (value: any, index: number[], matrix: T) => MathType | string
+  ): T
+
+  /**
+   * Iterate over all elements of multiple matrices/arrays, and executes the given
+   * callback function.
+   * @param x The first matrix to iterate on.
+   * @param args The rest of the matrices and at the end the callback function is invoked with multiple
+   * parameters: the values of the elements, the indices of the elements, and
+   * the matrices/arrays being traversed.
+   * @returns Transformed map of matrices
+   */
+  map<T extends MathCollection>(
+    x: T,
+    ...args: Array<
+      | T
+      | ((
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          value: any,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ...args: Array<any | number[] | T>
+        ) => MathType | string)
+    >
   ): T
 
   /**

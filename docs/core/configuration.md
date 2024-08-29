@@ -59,9 +59,9 @@ The following configuration options are available:
   the input value.
 
   Available values are: `'number'` (default), `'BigNumber'`, `'bigint'`, or `'Fraction'`.
-  [BigNumbers](../datatypes/bignumbers.js) have higher precision than the default numbers of JavaScript, 
+  [BigNumbers](../datatypes/bignumbers.md) have higher precision than the default numbers of JavaScript, 
   [bigint](../datatypes/bigints.md) can represent large integer numbers, 
-  and [`Fractions`](../datatypes/fractions.js) store values in terms of a numerator and 
+  and [`Fractions`](../datatypes/fractions.md) store values in terms of a numerator and 
   denominator.
 
 - `numberFallback`. When `number` is configured for example with value `'bigint'`,
