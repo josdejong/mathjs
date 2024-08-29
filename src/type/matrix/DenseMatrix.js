@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-this-alias
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
 import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get } from '../../utils/array.js'
 import { format } from '../../utils/string.js'
@@ -546,7 +547,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     }
 
     // keep track of the current index permutation
-    const index = new Uint32Array(s.length)
+    const index = Array(s.length).fill(0)
 
     // if there is only one dimension, just loop through it
     if (s.length === 1) {
@@ -619,7 +620,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     }
 
     // keep track of the current index permutation
-    const index = new Uint32Array(s.length)
+    const index = Array(s.length).fill(0)
 
     // store a reference of each dimension of the matrix for faster access
     const data = Array(s.length - 1)
@@ -650,7 +651,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         // loop through the last dimension and map each value
         for (let j = 0; j < s[data.length]; j++) {
           index[data.length] = j
-          applyCallback(callback, data[last][j], [...index], me, 'forEach')
+          applyCallback(callback, data[last][j], index.slice(0), me, 'forEach')
         }
         break
       }
