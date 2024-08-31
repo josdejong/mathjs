@@ -22,17 +22,17 @@ export const createFilterTransform = /* #__PURE__ */ factory(name, dependencies,
     if (args.length === 0) {
       return filter()
     }
+    let x = args[0]
+
     if (args.length === 1) {
-      return filter(args[0])
+      return filter(x)
     }
 
     const N = args.length - 1
-    let x, callback
+    let callback = args[N]
 
-    callback = args[1]
-
-    if (args[0]) {
-      x = _compileAndEvaluate(args[0], scope)
+    if (x) {
+      x = _compileAndEvaluate(x, scope)
     }
 
     if (callback) {

@@ -26,9 +26,8 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
       return map(args[0])
     }
     const N = args.length - 1
-    let X, callback
-    callback = args[N]
-    X = args.slice(0, N)
+    let X = args.slice(0, N)
+    let callback = args[N]
     X = X.map(arg => _compileAndEvaluate(arg, scope))
 
     if (callback) {

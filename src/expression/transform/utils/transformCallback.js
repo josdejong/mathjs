@@ -87,9 +87,5 @@ function _transformCallbackFunction (callbackFunction, numberOfCallbackInputs, n
    * @returns {Array} The transformed dimensions.
    */
 function _transformDims (dims) {
-  if (Array.isArray(dims)) {
-    return dims.map(_transformDim)
-  }
-  return _transformDim(dims)
-  function _transformDim (dim) { return dim.isBigNumber ? dim.plus(1) : dim + 1 }
+  return dims.map(dim => dim + 1)
 }

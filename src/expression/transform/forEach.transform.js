@@ -20,17 +20,17 @@ export const createForEachTransform = /* #__PURE__ */ factory(name, dependencies
     if (args.length === 0) {
       return forEach()
     }
+    let x = args[0]
+
     if (args.length === 1) {
-      return forEach(args[0])
+      return forEach(x)
     }
 
     const N = args.length - 1
+    let callback = args[N]
 
-    let x, callback
-    callback = args[N]
-
-    if (args[0]) {
-      x = _compileAndEvaluate(args[0], scope)
+    if (x) {
+      x = _compileAndEvaluate(x, scope)
     }
 
     if (callback) {
