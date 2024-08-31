@@ -1,4 +1,4 @@
-import { simplifyCallback } from '../../utils/applyCallback.js'
+import { simplifyCallback } from '../../utils/simplifyCallback.js'
 import { factory } from '../../utils/factory.js'
 import { recurse } from '../../utils/array.js'
 

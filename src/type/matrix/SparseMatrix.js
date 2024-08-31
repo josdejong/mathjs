@@ -5,7 +5,7 @@ import { clone, deepStrictEqual } from '../../utils/object.js'
 import { arraySize, getArrayDataType, processSizesWildcard, unsqueeze, validateIndex } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { DimensionError } from '../../error/DimensionError.js'
-import { simplifyCallback } from '../../utils/applyCallback.js'
+import { simplifyCallback } from '../../utils/simplifyCallback.js'
 
 const name = 'SparseMatrix'
 const dependencies = [

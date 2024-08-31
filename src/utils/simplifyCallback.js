@@ -25,45 +25,6 @@ export function simplifyCallback (callback, array, name) {
   return callback
 }
 
-/**
- * Invoke a callback for functions like map and filter with a matching number of arguments
- * @param {function} callback
- * @param {any} value
- * @param {number | number[]} index
- * @param {Array} array
- * @param {string} mappingFnName   The name of the function that is invoking these callbacks, for example "map" or "filter"
- * @returns {*}
- */
-export function applyCallback (callback, value, index, array, mappingFnName) {
-  if (typed.isTypedFunction(callback)) {
-    // invoke the typed callback function with the matching number of arguments only
-
-    const args3 = [value, index, array]
-    const signature3 = typed.resolve(callback, args3)
-    if (signature3) {
-      return _trySignatureWithArgs(signature3, args3, mappingFnName, callback.name)
-    }
-
-    const args2 = [value, index]
-    const signature2 = typed.resolve(callback, args2)
-    if (signature2) {
-      return _trySignatureWithArgs(signature2, args2, mappingFnName, callback.name)
-    }
-
-    const args1 = [value]
-    const signature1 = typed.resolve(callback, args1)
-    if (signature1) {
-      return _trySignatureWithArgs(signature1, args1, mappingFnName, callback.name)
-    }
-
-    // fallback (will throw an exception)
-    return _trySignatureWithArgs(callback, args3, mappingFnName, callback.name)
-  } else {
-    // A regular JavaScript function
-    return callback(value, index, array)
-  }
-}
-
 function _findNumberOfArguments (callback, value, index, array) {
   const testArgs = [value, index, array]
   for (let i = 3; i > 0; i--) {
@@ -71,22 +32,6 @@ function _findNumberOfArguments (callback, value, index, array) {
     if (typed.resolve(callback, args) !== null) {
       return i
     }
-  }
-}
-
-/**
-   * @param {function} signature The selected signature of the typed-function
-   * @param {Array} args List with arguments to apply to the selected signature
-   * @param {string} mappingFnName the name of the function that is using the callback
-   * @param {string} callbackName the name of the callback function
-   * @returns {*} Returns the return value of the invoked signature
-   * @throws {TypeError} Throws an error when no matching signature was found
-   */
-function _trySignatureWithArgs (signature, args, mappingFnName, callbackName) {
-  try {
-    return signature.implementation.apply(signature.implementation, args)
-  } catch (err) {
-    _createCallbackError(err, args, mappingFnName, callbackName)
   }
 }
 

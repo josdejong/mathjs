@@ -5,7 +5,7 @@ import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
-import { simplifyCallback } from '../../utils/applyCallback.js'
+import { simplifyCallback } from '../../utils/simplifyCallback.js'
 
 const name = 'DenseMatrix'
 const dependencies = [
