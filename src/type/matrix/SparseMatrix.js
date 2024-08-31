@@ -853,11 +853,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
-    const simplifiedCallback = simplifyCallback(callback, me, 'map')
+    const simpleCallback = simplifyCallback(callback, me, 'map')
     // invoke callback
     const invoke = function (v, i, j) {
       // invoke callback
-      return simplifiedCallback(v, [i, j], me)
+      return simpleCallback(v, [i, j], me)
     }
     // invoke _map
     return _map(this, 0, rows - 1, 0, columns - 1, invoke, skipZeros)
@@ -962,7 +962,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
-    const simplifiedCallback = simplifyCallback(callback, me, 'forEach')
+    const simpleCallback = simplifyCallback(callback, me, 'forEach')
     // loop columns
     for (let j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
@@ -976,7 +976,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
           const i = this._index[k]
 
           // value @ k
-          simplifiedCallback(this._values[k], [i, j], me)
+          simpleCallback(this._values[k], [i, j], me)
         }
       } else {
         // create a cache holding all defined values
@@ -990,7 +990,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         // and either read the value or zero
         for (let i = 0; i < rows; i++) {
           const value = (i in values) ? values[i] : 0
-          simplifiedCallback(value, [i, j], me)
+          simpleCallback(value, [i, j], me)
         }
       }
     }

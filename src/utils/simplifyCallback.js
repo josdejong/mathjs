@@ -16,11 +16,11 @@ export function simplifyCallback (callback, array, name) {
     const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
     const hasSingleSignature = Object.keys(callback.signatures).length === 1
     const numberOfArguments = _findNumberOfArguments(callback, firstValue, firstIndex, array)
-    const reducedCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback
+    const simpleCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback
     if (numberOfArguments >= 1 && numberOfArguments <= 3) {
-      return (...args) => _tryFunctionWithArgs(reducedCallback, args.slice(0, numberOfArguments), name, callback.name)
+      return (...args) => _tryFunctionWithArgs(simpleCallback, args.slice(0, numberOfArguments), name, callback.name)
     }
-    return (...args) => _tryFunctionWithArgs(reducedCallback, args, name, callback.name)
+    return (...args) => _tryFunctionWithArgs(simpleCallback, args, name, callback.name)
   }
   return callback
 }

@@ -58,9 +58,9 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
  * @private
  */
 function _filterCallback (x, callback) {
-  const simplifiedCallback = simplifyCallback(callback, x, 'filter')
+  const simpleCallback = simplifyCallback(callback, x, 'filter')
   return filter(x, function (value, index, array) {
     // invoke the callback function with the right number of arguments
-    return simplifiedCallback(value, [index], array)
+    return simpleCallback(value, [index], array)
   })
 }

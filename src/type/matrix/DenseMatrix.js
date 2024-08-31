@@ -537,11 +537,11 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.map = function (callback) {
     // matrix instance
     const me = this
-    const simplifiedCallback = simplifyCallback(callback, me._data, 'map')
+    const simpleCallback = simplifyCallback(callback, me._data, 'map')
 
     // determine the new datatype when the original matrix has datatype defined
     // TODO: should be done in matrix constructor instead
-    const data = recurse(me._data, [], me, simplifiedCallback)
+    const data = recurse(me._data, [], me, simpleCallback)
     const datatype = me._datatype !== undefined
       ? getArrayDataType(data, typeOf)
       : undefined
@@ -558,8 +558,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.forEach = function (callback) {
     // matrix instance
     const me = this
-    const simplifiedCallback = simplifyCallback(callback, me._data, 'forEach')
-    recurse(this._data, [], me, simplifiedCallback)
+    const simpleCallback = simplifyCallback(callback, me._data, 'forEach')
+    recurse(this._data, [], me, simpleCallback)
   }
 
   /**
