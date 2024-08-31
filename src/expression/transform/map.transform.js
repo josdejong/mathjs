@@ -2,7 +2,7 @@ import { factory } from '../../utils/factory.js'
 import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
 import { createMap } from '../../function/matrix/map.js'
 import { compileInlineExpression } from './utils/compileInlineExpression.js'
-import { createTransformCallback } from './utils/callback.js'
+import { createTransformCallback } from './utils/transformCallback.js'
 
 const name = 'map'
 const dependencies = ['typed']
