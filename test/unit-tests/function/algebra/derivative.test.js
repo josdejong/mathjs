@@ -202,6 +202,12 @@ describe('derivative', function () {
     compareString(derivative(math.parse('x^2'), math.parse('x')), '2 * x')
   })
 
+  it('should accept string input containing special characters', function () {
+    // NOTE: we use `parse` here on purpose to see whether derivative accepts it
+    compareString(derivative('1 + x', 'x'), '1')
+    compareString(derivative('1 + $x', '$x'), '1')
+  })
+
   describe('expression parser', function () {
     it('should evaluate a derivative containing string value', function () {
       const res = math.evaluate('derivative("x^2", "x")')
@@ -260,7 +266,7 @@ describe('derivative', function () {
   it('should throw error for incorrect argument types', function () {
     assert.throws(function () {
       derivative('42', '42')
-    }, /TypeError: Unexpected type of argument in function derivative \(expected: SymbolNode or identifier, actual: string, index: 1\)/)
+    }, /TypeError: Invalid variable. Cannot parse "42" into a variable in function derivative/)
 
     assert.throws(function () {
       derivative('[1, 2; 3, 4]', 'x')
@@ -274,7 +280,7 @@ describe('derivative', function () {
   it('should throw error if incorrect number of arguments', function () {
     assert.throws(function () {
       derivative('x + 2')
-    }, /TypeError: Too few arguments in function derivative \(expected: SymbolNode or identifier, index: 1\)/)
+    }, /TypeError: Too few arguments in function derivative \(expected: string or SymbolNode or boolean, index: 1\)/)
 
     assert.throws(function () {
       derivative('x + 2', 'x', {}, true, 42)
