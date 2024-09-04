@@ -124,6 +124,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     // string starting with an alphabetic character. It is used (at least)
     // in the definition of the derivative() function, as the argument telling
     // what to differentiate over must (currently) be a variable.
+    // TODO: deprecate the identifier type (it's not used anymore, see https://github.com/josdejong/mathjs/issues/3253)
     {
       name: 'identifier',
       test: s => isString && /^\p{L}[\p{L}\d]*$/u.test(s)

@@ -1042,6 +1042,15 @@ export interface MathJsInstance extends MathJsFactory {
   simplifyCore(expr: MathNode | string, options?: SimplifyOptions): MathNode
 
   /**
+   * Gives the number of “leaf nodes” in the parse tree of the given
+   * expression. A leaf node is one that has no subexpressions, essentially
+   * either a symbol or a constant. Note that `5!` has just one leaf, the `5`;
+   * the unary factorial operator does not add a leaf. On the other hand,
+   * function symbols do add leaves, so `sin(x)/cos(x)` has four leaves.
+   */
+  leafCount(expr: MathNode): number
+
+  /**
    *  Replaces variable nodes with their scoped values
    * @param node Tree to replace variable nodes in
    * @param scope Scope to read/write variables
@@ -2550,15 +2559,15 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Determines if two expressions are symbolically equal, i.e. one is the
    * result of valid algebraic manipulations on the other.
-   * @param {Node|string} expr1 The first expression to compare
-   * @param {Node|string} expr2 The second expression to compare
+   * @param {Node} expr1 The first expression to compare
+   * @param {Node} expr2 The second expression to compare
    * @param {Object} [options] Optional option object, passed to simplify
    * @returns {boolean} Returns true if a valid manipulation making the
    * expressions equal is found.
    */
   symbolicEqual(
-    expr1: MathNode | string,
-    expr2: MathNode | string,
+    expr1: MathNode,
+    expr2: MathNode,
     options?: SimplifyOptions
   ): boolean
 
@@ -4889,6 +4898,15 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<MathNode>
 
   /**
+   * Gives the number of “leaf nodes” in the parse tree of the given
+   * expression. A leaf node is one that has no subexpressions, essentially
+   * either a symbol or a constant. Note that `5!` has just one leaf, the `5`;
+   * the unary factorial operator does not add a leaf. On the other hand,
+   * function symbols do add leaves, so `sin(x)/cos(x)` has four leaves.
+   */
+  leafCount(this: MathJsChain<MathNode>): MathJsChain<number>
+
+  /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting.
    * Sparse Matrix A is decomposed in two matrices (L, U) and two
    * permutation vectors (pinv, q) where P * A * Q = L * U
@@ -6142,17 +6160,16 @@ export interface MathJsChain<TValue> {
   /**
    * Determines if two expressions are symbolically equal, i.e. one is the
    * result of valid algebraic manipulations on the other.
-   * @param {Node|string} expr1 The first expression to compare
-   * @param {Node|string} expr2 The second expression to compare
+   * @param {Node} expr2 The second expression to compare
    * @param {Object} [options] Optional option object, passed to simplify
    * @returns {boolean} Returns true if a valid manipulation making the
    * expressions equal is found.
    */
   symbolicEqual(
-    this: MathJsChain<MathNode | string>,
-    expr2: MathNode | string,
+    this: MathJsChain<MathNode>,
+    expr2: MathNode,
     options?: SimplifyOptions
-  ): boolean
+  ): MathJsChain<boolean>
 
   /**
    * Test whether two values are unequal. The function tests whether the
@@ -6985,6 +7002,8 @@ export const {
   simplify,
   simplifyConstant,
   simplifyCore,
+  symbolicEqual,
+  leafCount,
   resolve,
   slu,
   usolve,
