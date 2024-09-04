@@ -1042,15 +1042,6 @@ export interface MathJsInstance extends MathJsFactory {
   simplifyCore(expr: MathNode | string, options?: SimplifyOptions): MathNode
 
   /**
-   * Attempts to determine if two expressions are symbolically equal.
-   */
-  symbolicEqual(
-    expr1: MathNode,
-    expr2: MathNode,
-    options?: SimplifyOptions
-  ): boolean
-
-  /**
    *  Replaces variable nodes with their scoped values
    * @param node Tree to replace variable nodes in
    * @param scope Scope to read/write variables
@@ -2559,15 +2550,15 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Determines if two expressions are symbolically equal, i.e. one is the
    * result of valid algebraic manipulations on the other.
-   * @param {Node|string} expr1 The first expression to compare
-   * @param {Node|string} expr2 The second expression to compare
+   * @param {Node} expr1 The first expression to compare
+   * @param {Node} expr2 The second expression to compare
    * @param {Object} [options] Optional option object, passed to simplify
    * @returns {boolean} Returns true if a valid manipulation making the
    * expressions equal is found.
    */
   symbolicEqual(
-    expr1: MathNode | string,
-    expr2: MathNode | string,
+    expr1: MathNode,
+    expr2: MathNode,
     options?: SimplifyOptions
   ): boolean
 
@@ -4898,15 +4889,6 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<MathNode>
 
   /**
-   * Attempts to determine if two expressions are symbolically equal.
-   */
-  symbolicEqual(
-    this: MathJsChain<MathNode>,
-    expr2: MathNode,
-    options?: SimplifyOptions
-  ): MathJsChain<boolean>
-
-  /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting.
    * Sparse Matrix A is decomposed in two matrices (L, U) and two
    * permutation vectors (pinv, q) where P * A * Q = L * U
@@ -6160,17 +6142,16 @@ export interface MathJsChain<TValue> {
   /**
    * Determines if two expressions are symbolically equal, i.e. one is the
    * result of valid algebraic manipulations on the other.
-   * @param {Node|string} expr1 The first expression to compare
-   * @param {Node|string} expr2 The second expression to compare
+   * @param {Node} expr2 The second expression to compare
    * @param {Object} [options] Optional option object, passed to simplify
    * @returns {boolean} Returns true if a valid manipulation making the
    * expressions equal is found.
    */
   symbolicEqual(
-    this: MathJsChain<MathNode | string>,
-    expr2: MathNode | string,
+    this: MathJsChain<MathNode>,
+    expr2: MathNode,
     options?: SimplifyOptions
-  ): boolean
+  ): MathJsChain<boolean>
 
   /**
    * Test whether two values are unequal. The function tests whether the
@@ -7003,6 +6984,7 @@ export const {
   simplify,
   simplifyConstant,
   simplifyCore,
+  symbolicEqual,
   resolve,
   slu,
   usolve,
