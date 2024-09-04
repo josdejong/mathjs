@@ -1042,6 +1042,15 @@ export interface MathJsInstance extends MathJsFactory {
   simplifyCore(expr: MathNode | string, options?: SimplifyOptions): MathNode
 
   /**
+   * Attempts to determine if two expressions are symbolically equal.
+   */
+  symbolicEqual(
+    expr1: MathNode,
+    expr2: MathNode,
+    options?: SimplifyOptions
+  ): boolean
+
+  /**
    *  Replaces variable nodes with their scoped values
    * @param node Tree to replace variable nodes in
    * @param scope Scope to read/write variables
@@ -4887,6 +4896,15 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathNode | string>,
     options?: SimplifyOptions
   ): MathJsChain<MathNode>
+
+  /**
+   * Attempts to determine if two expressions are symbolically equal.
+   */
+  symbolicEqual(
+    this: MathJsChain<MathNode>,
+    expr2: MathNode,
+    options?: SimplifyOptions
+  ): MathJsChain<boolean>
 
   /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting.

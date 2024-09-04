@@ -4,6 +4,7 @@
 
 - Fix: improve the type definitions of `ConstantNode` to support all data 
   types (#3257). Thanks @smith120bh.
+- Fix: #3259 function `symbolicEqual` missing in the TypeScript definitions.
 - Docs: fix broken links on the Configuration page. Thanks @vassudanagunta.
 
 # 2024-08-27, 13.1.1
