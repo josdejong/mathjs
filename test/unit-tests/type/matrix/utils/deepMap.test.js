@@ -54,6 +54,7 @@ describe('deepMap', function () {
   })
 
   // TODO: either deprecate the skipZeros option, or implement it for real
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should skip zero values if skipZeros is true', function () {
     const array = [0, 1, [2, 0, [3, 0]]]
     const log = []
