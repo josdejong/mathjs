@@ -78,7 +78,7 @@ const fiedler = [
 
 // sylvester
 (function () {
-  const A = sylvester.Matrix.create(fiedler, sylvester.Matrix.datatype())
+  const A = sylvester.Matrix.create(fiedler)
 
   suite.add(pad('matrix operations sylvester A+A'), function () { return A.add(A) })
   suite.add(pad('matrix operations sylvester A*A'), function () { return A.multiply(A) })
