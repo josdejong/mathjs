@@ -539,6 +539,10 @@ Chaining examples
     true
   )
 
+  // leafCount
+  assert.strictEqual(math.leafCount(math.parse('x*y')), 2)
+  assert.strictEqual(math.chain(math.parse('x*y')).leafCount().done(), 2)
+
   // slu
   expectTypeOf(
     math

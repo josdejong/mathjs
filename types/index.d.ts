@@ -1042,6 +1042,15 @@ export interface MathJsInstance extends MathJsFactory {
   simplifyCore(expr: MathNode | string, options?: SimplifyOptions): MathNode
 
   /**
+   * Gives the number of “leaf nodes” in the parse tree of the given
+   * expression. A leaf node is one that has no subexpressions, essentially
+   * either a symbol or a constant. Note that `5!` has just one leaf, the `5`;
+   * the unary factorial operator does not add a leaf. On the other hand,
+   * function symbols do add leaves, so `sin(x)/cos(x)` has four leaves.
+   */
+  leafCount(expr: MathNode): number
+
+  /**
    *  Replaces variable nodes with their scoped values
    * @param node Tree to replace variable nodes in
    * @param scope Scope to read/write variables
@@ -4889,6 +4898,15 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<MathNode>
 
   /**
+   * Gives the number of “leaf nodes” in the parse tree of the given
+   * expression. A leaf node is one that has no subexpressions, essentially
+   * either a symbol or a constant. Note that `5!` has just one leaf, the `5`;
+   * the unary factorial operator does not add a leaf. On the other hand,
+   * function symbols do add leaves, so `sin(x)/cos(x)` has four leaves.
+   */
+  leafCount(this: MathJsChain<MathNode>): MathJsChain<number>
+
+  /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting.
    * Sparse Matrix A is decomposed in two matrices (L, U) and two
    * permutation vectors (pinv, q) where P * A * Q = L * U
@@ -6985,6 +7003,7 @@ export const {
   simplifyConstant,
   simplifyCore,
   symbolicEqual,
+  leafCount,
   resolve,
   slu,
   usolve,
