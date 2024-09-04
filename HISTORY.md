@@ -1,6 +1,25 @@
 # History
 
-# unpublished changes since 13.0.3
+# changes since 13.1.1
+
+- Fix: improve the type definitions of `ConstantNode` to support all data 
+  types (#3257). Thanks @smith120bh.
+- Docs: fix broken links on the Configuration page. Thanks @vassudanagunta.
+
+# 2024-08-27, 13.1.1
+
+- Fix security vulnerability in the CLI and web API allowing to call functions
+  `import`, `createUnit` and `reviver`, allowing to get access to the internal
+  math namespace and allowing arbitrary code execution. Thanks @StarlightPWN.
+- Fix security vulnerability: when overwriting a `rawArgs` function with a 
+  non-`rawArgs` function, it was still called with raw arguments. This was both
+  a functional issue and a security issue. Thanks @StarlightPWN.
+- Fix security vulnerability: ensure that `ObjectWrappingMap` cannot delete
+  unsafe properties. Thanks @StarlightPWN.
+- Fix: not being able to use methods and properties on arrays inside the
+  expression parser.
+
+# 2024-08-26, 13.1.0
 
 - Feat: support multiple inputs in function `map` (#3228, #3196). 
   Thanks @dvd101x.

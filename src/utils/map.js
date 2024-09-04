@@ -1,4 +1,4 @@
-import { getSafeProperty, hasSafeProperty, setSafeProperty } from './customs.js'
+import { getSafeProperty, isSafeProperty, setSafeProperty } from './customs.js'
 import { isMap, isObject } from './is.js'
 
 /**
@@ -17,7 +17,9 @@ export class ObjectWrappingMap {
   }
 
   keys () {
-    return Object.keys(this.wrappedObject).values()
+    return Object.keys(this.wrappedObject)
+      .filter(key => this.has(key))
+      .values()
   }
 
   get (key) {
@@ -30,7 +32,7 @@ export class ObjectWrappingMap {
   }
 
   has (key) {
-    return hasSafeProperty(this.wrappedObject, key)
+    return isSafeProperty(this.wrappedObject, key) && key in this.wrappedObject
   }
 
   entries () {
@@ -44,7 +46,9 @@ export class ObjectWrappingMap {
   }
 
   delete (key) {
-    delete this.wrappedObject[key]
+    if (isSafeProperty(this.wrappedObject, key)) {
+      delete this.wrappedObject[key]
+    }
   }
 
   clear () {
