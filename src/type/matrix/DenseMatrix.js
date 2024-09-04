@@ -1,5 +1,18 @@
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
-import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get, recurse } from '../../utils/array.js'
+import {
+  arraySize,
+  getArrayDataType,
+  processSizesWildcard,
+  reshape,
+  resize,
+  unsqueeze,
+  validate,
+  validateIndex,
+  broadcastTo,
+  get,
+  recurse,
+  recurseNoIndex
+} from '../../utils/array.js'
 import { format } from '../../utils/string.js'
 import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
@@ -541,7 +554,9 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     // determine the new datatype when the original matrix has datatype defined
     // TODO: should be done in matrix constructor instead
-    const data = recurse(me._data, [], me, simpleCallback)
+    const data = callback.length === 1
+      ? recurseNoIndex(me._data, simpleCallback)
+      : recurse(me._data, [], me, simpleCallback)
     const datatype = me._datatype !== undefined
       ? getArrayDataType(data, typeOf)
       : undefined

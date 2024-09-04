@@ -846,6 +846,18 @@ export function recurse (value, index, array, callback) {
   }
 }
 
+export function recurseNoIndex (value, callback) {
+  if (Array.isArray(value)) {
+    return value.map(function (child) {
+      // we create a copy of the index array and append the new index value
+      return recurseNoIndex(child, callback)
+    })
+  } else {
+    // invoke the callback function with the right number of arguments
+    return callback(value)
+  }
+}
+
 /**
  * Deep clones a multidimensional array
  * @param {Array} array

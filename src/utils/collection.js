@@ -54,11 +54,10 @@ export function deepForEach (array, callback) {
  * @return {Array | Matrix} res
  */
 export function deepMap (array, callback, skipZeros) {
-  if (array && (typeof array.map === 'function')) {
-    // TODO: replace array.map with a for loop to improve performance
-    return array.map(function (x) {
-      return deepMap(x, callback, skipZeros)
-    })
+  if (isMatrix(array)) {
+    return array.map((value) => callback(value))
+  } else if (Array.isArray(array)) {
+    return array.map((x) => deepMap(x, callback, skipZeros))
   } else {
     return callback(array)
   }
