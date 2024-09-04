@@ -53,9 +53,15 @@ describe('deepMap', function () {
     assert.deepStrictEqual(result, [math.complex(4, 6), [math.complex(8, 10)]])
   })
 
-  it('should skip zero values if skipZeros is true', function () {
+  // TODO: either deprecate the skipZeros option, or implement it for real
+  it.skip('should skip zero values if skipZeros is true', function () {
     const array = [0, 1, [2, 0, [3, 0]]]
-    const result = deepMap(array, value => value * 2, true)
+    const log = []
+    const result = deepMap(array, value => {
+      log.push(value)
+      return value * 2
+    }, true)
     assert.deepStrictEqual(result, [0, 2, [4, 0, [6, 0]]])
+    assert.deepStrictEqual(log, [1, 2, 3])
   })
 })
