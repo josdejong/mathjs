@@ -5,7 +5,7 @@ import { clone, deepStrictEqual } from '../../utils/object.js'
 import { arraySize, getArrayDataType, processSizesWildcard, unsqueeze, validateIndex } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { DimensionError } from '../../error/DimensionError.js'
-import { simplifyCallback } from '../../utils/simplifyCallback.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 
 const name = 'SparseMatrix'
 const dependencies = [
@@ -853,11 +853,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
-    const simpleCallback = simplifyCallback(callback, me, 'map')
+    const fastCallback = optimizeCallback(callback, me, 'map')
     // invoke callback
     const invoke = function (v, i, j) {
       // invoke callback
-      return simpleCallback(v, [i, j], me)
+      return fastCallback(v, [i, j], me)
     }
     // invoke _map
     return _map(this, 0, rows - 1, 0, columns - 1, invoke, skipZeros)
@@ -962,7 +962,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
-    const simpleCallback = simplifyCallback(callback, me, 'forEach')
+    const fastCallback = optimizeCallback(callback, me, 'forEach')
     // loop columns
     for (let j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
@@ -976,7 +976,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
           const i = this._index[k]
 
           // value @ k
-          simpleCallback(this._values[k], [i, j], me)
+          fastCallback(this._values[k], [i, j], me)
         }
       } else {
         // create a cache holding all defined values
@@ -990,7 +990,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         // and either read the value or zero
         for (let i = 0; i < rows; i++) {
           const value = (i in values) ? values[i] : 0
-          simpleCallback(value, [i, j], me)
+          fastCallback(value, [i, j], me)
         }
       }
     }

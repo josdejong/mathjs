@@ -1,4 +1,4 @@
-import { simplifyCallback } from '../../utils/simplifyCallback.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 import { factory } from '../../utils/factory.js'
 import { recurse } from '../../utils/array.js'
 
@@ -45,5 +45,5 @@ export const createForEach = /* #__PURE__ */ factory(name, dependencies, ({ type
  * @private
  */
 function _forEach (array, callback) {
-  recurse(array, [], array, simplifyCallback(callback, array, name))
+  recurse(array, [], array, optimizeCallback(callback, array, name))
 }

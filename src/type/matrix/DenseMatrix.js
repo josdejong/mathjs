@@ -5,7 +5,7 @@ import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
-import { simplifyCallback } from '../../utils/simplifyCallback.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 
 const name = 'DenseMatrix'
 const dependencies = [
@@ -537,11 +537,11 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.map = function (callback) {
     // matrix instance
     const me = this
-    const simpleCallback = simplifyCallback(callback, me._data, 'map')
+    const fastCallback = optimizeCallback(callback, me._data, 'map')
 
     // determine the new datatype when the original matrix has datatype defined
     // TODO: should be done in matrix constructor instead
-    const data = recurse(me._data, [], me, simpleCallback)
+    const data = recurse(me._data, [], me, fastCallback)
     const datatype = me._datatype !== undefined
       ? getArrayDataType(data, typeOf)
       : undefined
@@ -558,8 +558,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.forEach = function (callback) {
     // matrix instance
     const me = this
-    const simpleCallback = simplifyCallback(callback, me._data, 'forEach')
-    recurse(this._data, [], me, simpleCallback)
+    const fastCallback = optimizeCallback(callback, me._data, 'forEach')
+    recurse(this._data, [], me, fastCallback)
   }
 
   /**

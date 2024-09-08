@@ -1,4 +1,4 @@
-import { simplifyCallback } from '../../utils/simplifyCallback.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 import { filter, filterRegExp } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
@@ -58,9 +58,9 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
  * @private
  */
 function _filterCallback (x, callback) {
-  const simpleCallback = simplifyCallback(callback, x, 'filter')
+  const fastCallback = optimizeCallback(callback, x, 'filter')
   return filter(x, function (value, index, array) {
     // invoke the callback function with the right number of arguments
-    return simpleCallback(value, [index], array)
+    return fastCallback(value, [index], array)
   })
 }

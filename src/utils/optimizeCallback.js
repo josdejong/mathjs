@@ -10,17 +10,17 @@ import { typeOf as _typeOf } from './is.js'
  * @param {string} name The name of the function that is using the callback.
  * @returns {Function} Returns a simplified version of the callback function.
  */
-export function simplifyCallback (callback, array, name) {
+export function optimizeCallback (callback, array, name) {
   if (typed.isTypedFunction(callback)) {
     const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
     const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
     const hasSingleSignature = Object.keys(callback.signatures).length === 1
     const numberOfArguments = _findNumberOfArguments(callback, firstValue, firstIndex, array)
-    const simpleCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback
+    const fastCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback
     if (numberOfArguments >= 1 && numberOfArguments <= 3) {
-      return (...args) => _tryFunctionWithArgs(simpleCallback, args.slice(0, numberOfArguments), name, callback.name)
+      return (...args) => _tryFunctionWithArgs(fastCallback, args.slice(0, numberOfArguments), name, callback.name)
     }
-    return (...args) => _tryFunctionWithArgs(simpleCallback, args, name, callback.name)
+    return (...args) => _tryFunctionWithArgs(fastCallback, args, name, callback.name)
   }
   return callback
 }
