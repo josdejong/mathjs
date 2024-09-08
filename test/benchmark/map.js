@@ -35,7 +35,7 @@ new Benchmark.Suite()
     map(array, abs)
   })
   .add(pad('map(array, abs.signatures.number)'), () => {
-    map(array, abs)
+    map(array, abs.signatures.number)
   })
   .add(pad('genericMatrix.map(abs.signatures.number)'), () => {
     genericMatrix.map(abs.signatures.number)
