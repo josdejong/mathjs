@@ -2,6 +2,8 @@
 
 # changes since 13.1.1
 
+- Feat: improve performance of functions `map`, `filter` and `forEach` (#3256).
+  Thanks @dvd101x.
 - Fix: #3253 cannot use identifiers containing special characters in function
   `derivative`.
 - Fix: improve the type definitions of `ConstantNode` to support all data 
