@@ -1,6 +1,6 @@
-import { applyCallback } from '../../utils/applyCallback.js'
-import { forEach as forEachArray } from '../../utils/array.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 import { factory } from '../../utils/factory.js'
+import { recurse } from '../../utils/array.js'
 
 const name = 'forEach'
 const dependencies = ['typed']
@@ -45,16 +45,5 @@ export const createForEach = /* #__PURE__ */ factory(name, dependencies, ({ type
  * @private
  */
 function _forEach (array, callback) {
-  const recurse = function (value, index) {
-    if (Array.isArray(value)) {
-      forEachArray(value, function (child, i) {
-        // we create a copy of the index array and append the new index value
-        recurse(child, index.concat(i))
-      })
-    } else {
-      // invoke the callback function with the right number of arguments
-      return applyCallback(callback, value, index, array, 'forEach')
-    }
-  }
-  recurse(array, [])
+  recurse(array, [], array, optimizeCallback(callback, array, name))
 }

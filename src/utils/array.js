@@ -826,6 +826,27 @@ export function get (array, index) {
 }
 
 /**
+ * Recursive function to map a multi-dimensional array.
+ *
+ * @param {*} value - The current value being processed in the array.
+ * @param {Array} index - The index of the current value being processed in the array.
+ * @param {Array} array - The array being processed.
+ * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
+ * @returns {*} The new array with each element being the result of the callback function.
+ */
+export function recurse (value, index, array, callback) {
+  if (Array.isArray(value)) {
+    return value.map(function (child, i) {
+      // we create a copy of the index array and append the new index value
+      return recurse(child, index.concat(i), array, callback)
+    })
+  } else {
+    // invoke the callback function with the right number of arguments
+    return callback(value, index, array)
+  }
+}
+
+/**
  * Deep clones a multidimensional array
  * @param {Array} array
  * @returns cloned array

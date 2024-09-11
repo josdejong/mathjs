@@ -1,11 +1,11 @@
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
-import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get } from '../../utils/array.js'
+import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get, recurse } from '../../utils/array.js'
 import { format } from '../../utils/string.js'
 import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
-import { applyCallback } from '../../utils/applyCallback.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 
 const name = 'DenseMatrix'
 const dependencies = [
@@ -537,21 +537,12 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.map = function (callback) {
     // matrix instance
     const me = this
-    const recurse = function (value, index) {
-      if (isArray(value)) {
-        return value.map(function (child, i) {
-          return recurse(child, index.concat(i))
-        })
-      } else {
-        // invoke the callback function with the right number of arguments
-        return applyCallback(callback, value, index, me, 'map')
-      }
-    }
+    const fastCallback = optimizeCallback(callback, me._data, 'map')
 
     // determine the new datatype when the original matrix has datatype defined
     // TODO: should be done in matrix constructor instead
-    const data = recurse(this._data, [])
-    const datatype = this._datatype !== undefined
+    const data = recurse(me._data, [], me, fastCallback)
+    const datatype = me._datatype !== undefined
       ? getArrayDataType(data, typeOf)
       : undefined
     return new DenseMatrix(data, datatype)
@@ -567,16 +558,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.forEach = function (callback) {
     // matrix instance
     const me = this
-    const recurse = function (value, index) {
-      if (isArray(value)) {
-        value.forEach(function (child, i) {
-          recurse(child, index.concat(i))
-        })
-      } else {
-        callback(value, index, me)
-      }
-    }
-    recurse(this._data, [])
+    const fastCallback = optimizeCallback(callback, me._data, 'forEach')
+    recurse(this._data, [], me, fastCallback)
   }
 
   /**
