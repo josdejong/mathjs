@@ -529,8 +529,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * Applies a callback function to a reference to each element of the matrix
    * @memberof DenseMatrix
    * @param {Function} callback   The callback function is invoked with three
-   *                              parameters: , the index
-   *                              of the element, and the Matrix being traversed.
+   *                              parameters: an array, an integer index to that
+   *                              array, and the Matrix being traversed.
    *
    * @return {DenseMatrix} matrix
    */
