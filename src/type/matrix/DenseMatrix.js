@@ -1,12 +1,12 @@
 // deno-lint-ignore-file no-this-alias
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
-import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get } from '../../utils/array.js'
+import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get, recurse } from '../../utils/array.js'
 import { format } from '../../utils/string.js'
 import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
-import { applyCallback } from '../../utils/applyCallback.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 
 const name = 'DenseMatrix'
 const dependencies = [
@@ -536,6 +536,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @return {DenseMatrix} matrix
    */
   DenseMatrix.prototype.map = function (callback) {
+    const fastCallback = optimizeCallback(callback, me._data, 'map')
+    
     // matrix instance
     const me = this
     const s = me.size()
@@ -553,7 +555,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     if (s.length === 1) {
       for (let i = 0; i < s[0]; i++) {
         index[0] = i
-        result._data[i] = applyCallback(callback, result._data[i], index, me, 'map')
+        result._data[i] = applyCallback(fastCallback, result._data[i], index, me, 'map')
       }
       return result
     }
@@ -586,7 +588,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         // loop through the last dimension and map each value
         for (let j = 0; j < s[data.length]; j++) {
           index[data.length] = j
-          data[last][j] = applyCallback(callback, data[last][j], index, me, 'map')
+          data[last][j] = applyCallback(fastCallback, data[last][j], index, me, 'map')
         }
         break
       }
@@ -607,6 +609,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    *                              of the element, and the Matrix being traversed.
    */
   DenseMatrix.prototype.forEach = function (callback) {
+    const fastCallback = optimizeCallback(callback, me._data, 'forEach')
+    
     // matrix instance
     const me = this
     const s = me.size()
@@ -614,7 +618,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     // if there is only one dimension, just loop through it
     if (s.length === 1) {
       for (let i = 0; i < s[0]; i++) {
-        applyCallback(callback, me._data[i], [i], me, 'forEach')
+        applyCallback(fastCallback, me._data[i], [i], me, 'forEach')
       }
       return
     }
@@ -651,7 +655,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         // loop through the last dimension and map each value
         for (let j = 0; j < s[data.length]; j++) {
           index[data.length] = j
-          applyCallback(callback, data[last][j], index.slice(0), me, 'forEach')
+          applyCallback(fastCallback, data[last][j], index.slice(0), me, 'forEach')
         }
         break
       }

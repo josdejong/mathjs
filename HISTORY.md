@@ -2,8 +2,14 @@
 
 # changes since 13.1.1
 
+- Feat: improve performance of functions `map`, `filter` and `forEach` (#3256).
+  Thanks @dvd101x.
+- Fix: #3253 cannot use identifiers containing special characters in function
+  `derivative`.
 - Fix: improve the type definitions of `ConstantNode` to support all data 
   types (#3257). Thanks @smith120bh.
+- Fix: #3259 function `symbolicEqual` missing in the TypeScript definitions.
+- Fix: #3246 function `leafCount` missing in the TypeScript definitions.
 - Docs: fix broken links on the Configuration page. Thanks @vassudanagunta.
 
 # 2024-08-27, 13.1.1

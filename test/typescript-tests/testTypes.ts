@@ -523,6 +523,26 @@ Chaining examples
     MathJsChain<MathNode>
   >()
 
+  // symbolicEqual
+  assert.strictEqual(
+    math.symbolicEqual(math.parse('x*y'), math.parse('y*x')),
+    true
+  )
+  assert.strictEqual(
+    math.symbolicEqual(math.parse('x*y'), math.parse('y*x'), {
+      exactFractions: true
+    }),
+    true
+  )
+  assert.strictEqual(
+    math.chain(math.parse('x*y')).symbolicEqual(math.parse('y*x')).done(),
+    true
+  )
+
+  // leafCount
+  assert.strictEqual(math.leafCount(math.parse('x*y')), 2)
+  assert.strictEqual(math.chain(math.parse('x*y')).leafCount().done(), 2)
+
   // slu
   expectTypeOf(
     math
