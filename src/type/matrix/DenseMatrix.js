@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-this-alias
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
-import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get, recurse } from '../../utils/array.js'
+import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get } from '../../utils/array.js'
 import { format } from '../../utils/string.js'
 import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
@@ -526,91 +526,15 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   }
 
   /**
-   * Create a new matrix with the results of the callback function executed on
-   * each entry of the matrix.
+   * Applies a callback function to a reference to each element of the matrix
    * @memberof DenseMatrix
    * @param {Function} callback   The callback function is invoked with three
-   *                              parameters: the value of the element, the index
+   *                              parameters: , the index
    *                              of the element, and the Matrix being traversed.
    *
    * @return {DenseMatrix} matrix
    */
-  DenseMatrix.prototype.map = function (callback) {
-    const fastCallback = optimizeCallback(callback, me._data, 'map')
-    
-    // matrix instance
-    const me = this
-    const s = me.size()
-
-    // copy to a new matrix
-    const result = new DenseMatrix(me)
-    if (s.length <= 0) {
-      return result
-    }
-
-    // keep track of the current index permutation
-    const index = Array(s.length).fill(0)
-
-    // if there is only one dimension, just loop through it
-    if (s.length === 1) {
-      for (let i = 0; i < s[0]; i++) {
-        index[0] = i
-        result._data[i] = applyCallback(fastCallback, result._data[i], index, me, 'map')
-      }
-      return result
-    }
-
-    // stores a reference of each dimension of the matrix for faster access
-    const data = Array(s.length - 1)
-    const last = data.length - 1
-    data[0] = result._data[0]
-    for (let i = 0; i < last; i++) {
-      data[i + 1] = data[i][0]
-    }
-
-    index[last] = -1
-    while (true) {
-      let i
-      for (i = last; i >= 0; i--) {
-        // march index to the next permutation
-        index[i]++
-        if (index[i] === s[i]) {
-          index[i] = 0
-          continue
-        }
-
-        // update references to matrix dimensions
-        data[i] = i === 0 ? result._data[index[i]] : data[i - 1][index[i]]
-        for (let j = i; j < last; j++) {
-          data[j + 1] = data[j][0]
-        }
-
-        // loop through the last dimension and map each value
-        for (let j = 0; j < s[data.length]; j++) {
-          index[data.length] = j
-          data[last][j] = applyCallback(fastCallback, data[last][j], index, me, 'map')
-        }
-        break
-      }
-
-      if (i === -1) {
-        break
-      }
-    }
-
-    return result
-  }
-
-  /**
-   * Execute a callback function on each entry of the matrix.
-   * @memberof DenseMatrix
-   * @param {Function} callback   The callback function is invoked with three
-   *                              parameters: the value of the element, the index
-   *                              of the element, and the Matrix being traversed.
-   */
-  DenseMatrix.prototype.forEach = function (callback) {
-    const fastCallback = optimizeCallback(callback, me._data, 'forEach')
-    
+  DenseMatrix.prototype._forEach = function (callback) {
     // matrix instance
     const me = this
     const s = me.size()
@@ -618,7 +542,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     // if there is only one dimension, just loop through it
     if (s.length === 1) {
       for (let i = 0; i < s[0]; i++) {
-        applyCallback(fastCallback, me._data[i], [i], me, 'forEach')
+        callback(me._data, i, [i])
       }
       return
     }
@@ -655,7 +579,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         // loop through the last dimension and map each value
         for (let j = 0; j < s[data.length]; j++) {
           index[data.length] = j
-          applyCallback(fastCallback, data[last][j], index.slice(0), me, 'forEach')
+          callback(data[last], j, index)
         }
         break
       }
@@ -664,6 +588,43 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         break
       }
     }
+  }
+
+  /**
+   * Create a new matrix with the results of the callback function executed on
+   * each entry of the matrix.
+   * @memberof DenseMatrix
+   * @param {Function} callback   The callback function is invoked with three
+   *                              parameters: the value of the element, the index
+   *                              of the element, and the Matrix being traversed.
+   *
+   * @return {DenseMatrix} matrix
+   */
+  DenseMatrix.prototype.map = function (callback) {
+    const me = this
+    const result = new DenseMatrix(me)
+    const fastCallback = optimizeCallback(callback, me._data, 'map')
+
+    result._forEach(function (arr, i, index) {
+      arr[i] = fastCallback(arr[i], index, me)
+    })
+
+    return result
+  }
+
+  /**
+   * Execute a callback function on each entry of the matrix.
+   * @memberof DenseMatrix
+   * @param {Function} callback   The callback function is invoked with three
+   *                              parameters: the value of the element, the index
+   *                              of the element, and the Matrix being traversed.
+   */
+  DenseMatrix.prototype.forEach = function (callback) {
+    const me = this
+    const fastCallback = optimizeCallback(callback, me._data, 'map')
+    me._forEach(function (arr, i, index) {
+      fastCallback(arr[i], index.slice(0), me)
+    })
   }
 
   /**
