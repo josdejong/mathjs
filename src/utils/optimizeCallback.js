@@ -15,7 +15,7 @@ export function optimizeCallback (callback, array, name) {
     const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
     const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
     const hasSingleSignature = Object.keys(callback.signatures).length === 1
-    const numberOfArguments = findNumberOfArguments(callback, firstValue, firstIndex, array)
+    const numberOfArguments = _typedFindNumberOfArguments(callback, firstValue, firstIndex, array)
     const fastCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback
     if (numberOfArguments >= 1 && numberOfArguments <= 3) {
       return (...args) => tryFunctionWithArgs(fastCallback, args.slice(0, numberOfArguments), name, callback.name)
@@ -25,7 +25,17 @@ export function optimizeCallback (callback, array, name) {
   return callback
 }
 
-export function findNumberOfArguments (callback, value, index, array) {
+export function findNumberOfArguments (callback, array) {
+  if (typed.isTypedFunction(callback)) {
+    const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
+    const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
+    return _typedFindNumberOfArguments(callback, firstValue, firstIndex, array)
+  } else {
+    return callback.length
+  }
+}
+
+function _typedFindNumberOfArguments (callback, value, index, array) {
   const testArgs = [value, index, array]
   for (let i = 3; i > 0; i--) {
     const args = testArgs.slice(0, i)

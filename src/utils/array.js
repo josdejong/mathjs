@@ -4,6 +4,7 @@ import { format } from './string.js'
 import { DimensionError } from '../error/DimensionError.js'
 import { IndexError } from '../error/IndexError.js'
 import { deepStrictEqual } from './object.js'
+import { findNumberOfArguments } from './optimizeCallback.js'
 
 /**
  * Calculate the size of a multi dimensional array.
@@ -835,13 +836,52 @@ export function get (array, index) {
  * @returns {*} The new array with each element being the result of the callback function.
  */
 export function deepMap (value, array, callback) {
-  return recurse(value, [], array, callback)
-  function recurse (value, index, array, callback) {
+  const numberOfArguments = findNumberOfArguments(callback, array)
+  switch (numberOfArguments) {
+    case 1:
+      return recurse1(value)
+    case 2:
+      return recurse2(value, [])
+    case 3:
+      return recurse3(value, [])
+    default:
+      return recurse3(value, [])
+  }
+
+  function recurse1 (value) {
+    if (Array.isArray(value)) {
+      return value.map(function (child) {
+        // we create a copy of the index array and append the new index value
+        const results = recurse1(child)
+        return results
+      })
+    } else {
+      // invoke the callback function with the right number of arguments
+      return callback(value)
+    }
+  }
+
+  function recurse2 (value, index) {
     if (Array.isArray(value)) {
       return value.map(function (child, i) {
         // we create a copy of the index array and append the new index value
         index.push(i)
-        const results = recurse(child, index, array, callback)
+        const results = recurse2(child, index)
+        index.pop()
+        return results
+      })
+    } else {
+      // invoke the callback function with the right number of arguments
+      return callback(value, [...index])
+    }
+  }
+
+  function recurse3 (value, index) {
+    if (Array.isArray(value)) {
+      return value.map(function (child, i) {
+        // we create a copy of the index array and append the new index value
+        index.push(i)
+        const results = recurse3(child, index)
         index.pop()
         return results
       })
@@ -862,13 +902,51 @@ export function deepMap (value, array, callback) {
  * @returns {*} The new array with each element being the result of the callback function.
  */
 export function deepForEach (value, array, callback) {
-  recurse(value, [], array, callback)
-  function recurse (value, index, array, callback) {
+  const numberOfArguments = findNumberOfArguments(callback, array)
+  switch (numberOfArguments) {
+    case 1:
+      recurse1(value)
+      break
+    case 2:
+      recurse2(value, [])
+      break
+    case 3:
+      recurse3(value, [])
+      break
+    default:
+      recurse3(value, [])
+      break
+  }
+
+  function recurse1 (value) {
+    if (Array.isArray(value)) {
+      return value.forEach(function (child) {
+        recurse1(child)
+      })
+    } else {
+      // invoke the callback function with the right number of arguments
+      callback(value)
+    }
+  }
+
+  function recurse2 (value, index) {
     if (Array.isArray(value)) {
       return value.forEach(function (child, i) {
-        // we create a copy of the index array and append the new index value
         index.push(i)
-        recurse(child, index, array, callback)
+        recurse2(child, index)
+        index.pop()
+      })
+    } else {
+      // invoke the callback function with the right number of arguments
+      callback(value, [...index])
+    }
+  }
+
+  function recurse3 (value, index) {
+    if (Array.isArray(value)) {
+      return value.forEach(function (child, i) {
+        index.push(i)
+        recurse3(child, index)
         index.pop()
       })
     } else {
