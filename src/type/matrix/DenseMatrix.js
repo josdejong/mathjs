@@ -1,5 +1,5 @@
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
-import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get, recurse } from '../../utils/array.js'
+import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get, deepMap, deepForEach } from '../../utils/array.js'
 import { format } from '../../utils/string.js'
 import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
@@ -541,7 +541,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     // determine the new datatype when the original matrix has datatype defined
     // TODO: should be done in matrix constructor instead
-    const data = recurse(me._data, [], me, fastCallback)
+    const data = deepMap(me._data, me, fastCallback)
     const datatype = me._datatype !== undefined
       ? getArrayDataType(data, typeOf)
       : undefined
@@ -559,7 +559,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     // matrix instance
     const me = this
     const fastCallback = optimizeCallback(callback, me._data, 'forEach')
-    recurse(this._data, [], me, fastCallback)
+    deepForEach(this._data, me, fastCallback)
   }
 
   /**
