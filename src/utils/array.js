@@ -920,7 +920,7 @@ export function deepForEach (value, array, callback) {
 
   function recurse1 (value) {
     if (Array.isArray(value)) {
-      return value.forEach(function (child) {
+      value.forEach(function (child) {
         recurse1(child)
       })
     } else {
@@ -931,7 +931,7 @@ export function deepForEach (value, array, callback) {
 
   function recurse2 (value, index) {
     if (Array.isArray(value)) {
-      return value.forEach(function (child, i) {
+      value.forEach(function (child, i) {
         index.push(i)
         recurse2(child, index)
         index.pop()
@@ -944,7 +944,7 @@ export function deepForEach (value, array, callback) {
 
   function recurse3 (value, index) {
     if (Array.isArray(value)) {
-      return value.forEach(function (child, i) {
+      value.forEach(function (child, i) {
         index.push(i)
         recurse3(child, index)
         index.pop()
