@@ -1074,6 +1074,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     while (true) {
       if ((state.tokenType === TOKENTYPE.SYMBOL) ||
           (state.token === 'in' && isConstantNode(node)) ||
+          (state.token === 'in' && isOperatorNode(node) && node.fn === 'unaryMinus' && isConstantNode(node.args[0])) ||
           (state.tokenType === TOKENTYPE.NUMBER &&
               !isConstantNode(last) &&
               (!isOperatorNode(last) || last.op === '!')) ||
