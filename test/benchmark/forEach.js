@@ -43,6 +43,16 @@ new Benchmark.Suite()
   .add(pad('numberMatrix.forEach(abs.signatures.number)'), () => {
     numberMatrix.forEach(abs.signatures.number)
   })
+  .add(pad('genericMatrix.forEach(abs+idx)'), () => {
+    genericMatrix.forEach((x, idx) => abs(x)+idx[0]-idx[1])
+  })
+  .add(pad('numberMatrix.forEach(abs+idx)'), () => {
+    numberMatrix.forEach((x, idx) => abs(x)+idx[0]-idx[1])
+  })
+  .add(pad('forEach(genericMatrix, abs+idx)'), () => {
+    forEach(genericMatrix, ((x, idx) => abs(x)+idx[0]-idx[1]))
+  })
+  .add()
   .on('cycle', function (event) {
     console.log(String(event.target))
   })
