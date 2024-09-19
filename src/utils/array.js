@@ -872,7 +872,7 @@ export function deepMap (value, array, callback) {
       })
     } else {
       // invoke the callback function with the right number of arguments
-      return callback(value, [...index])
+      return callback(value, index.slice())
     }
   }
 
@@ -887,7 +887,7 @@ export function deepMap (value, array, callback) {
       })
     } else {
       // invoke the callback function with the right number of arguments
-      return callback(value, [...index], array)
+      return callback(value, index.slice(), array)
     }
   }
 }
@@ -938,7 +938,7 @@ export function deepForEach (value, array, callback) {
       })
     } else {
       // invoke the callback function with the right number of arguments
-      callback(value, [...index])
+      callback(value, index.slice())
     }
   }
 
@@ -951,7 +951,7 @@ export function deepForEach (value, array, callback) {
       })
     } else {
       // invoke the callback function with the right number of arguments
-      callback(value, [...index], array)
+      callback(value, index.slice(), array)
     }
   }
 }
