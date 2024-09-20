@@ -8,21 +8,32 @@ import { typeOf as _typeOf } from './is.js'
  * @param {Function} callback The original callback function to simplify.
  * @param {Array|Matrix} array The array that will be used with the callback function.
  * @param {string} name The name of the function that is using the callback.
- * @returns {Function} Returns a simplified version of the callback function.
+ * @returns {Array} Returns an array with the simplified version of the callback function and it's number of arguments
  */
-export function optimizeCallback (callback, array, name) {
+export function optimizeCallback (callback, array, name, options) {
   if (typed.isTypedFunction(callback)) {
     const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
     const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
     const hasSingleSignature = Object.keys(callback.signatures).length === 1
     const numberOfArguments = _typedFindNumberOfArguments(callback, firstValue, firstIndex, array)
-    const fastCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback
-    if (numberOfArguments >= 1 && numberOfArguments <= 3) {
-      return (...args) => tryFunctionWithArgs(fastCallback, args.slice(0, numberOfArguments), name, callback.name)
+    const fastCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : (...args) => callback(...args)
+    if (options && options.detailedError) {
+      if (numberOfArguments >= 1 && numberOfArguments <= 3) {
+        const limitedCallback = (...args) => tryFunctionWithArgs(fastCallback, args.slice(0, numberOfArguments), name, callback.name)
+        return [limitedCallback, numberOfArguments]
+      } else {
+        const enhancedCallback = (...args) => tryFunctionWithArgs(fastCallback, args, name, callback.name)
+        return [enhancedCallback, numberOfArguments]
+      }
+    } else {
+      if (numberOfArguments >= 1 && numberOfArguments <= 3) {
+        return [(...args) => fastCallback(...args.slice(0, numberOfArguments)), numberOfArguments]
+      } else {
+        return [(...args) => fastCallback(...args), numberOfArguments]
+      }
     }
-    return (...args) => tryFunctionWithArgs(fastCallback, args, name, callback.name)
   }
-  return callback
+  return [callback, callback.length]
 }
 
 export function findNumberOfArguments (callback, array) {

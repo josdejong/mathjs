@@ -58,7 +58,7 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
  * @private
  */
 function _filterCallback (x, callback) {
-  const fastCallback = optimizeCallback(callback, x, 'filter')
+  const fastCallback = optimizeCallback(callback, x, 'filter')[0]
   return filter(x, function (value, index, array) {
     // invoke the callback function with the right number of arguments
     return fastCallback(value, [index], array)

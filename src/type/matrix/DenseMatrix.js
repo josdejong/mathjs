@@ -537,11 +537,11 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.map = function (callback) {
     // matrix instance
     const me = this
-    const fastCallback = optimizeCallback(callback, me._data, 'map')
+    const [fastCallback, numberOfArguments] = optimizeCallback(callback, me._data, 'map')
 
     // determine the new datatype when the original matrix has datatype defined
     // TODO: should be done in matrix constructor instead
-    const data = deepMap(me._data, me, fastCallback)
+    const data = deepMap(me._data, me, fastCallback, numberOfArguments)
     const datatype = me._datatype !== undefined
       ? getArrayDataType(data, typeOf)
       : undefined
@@ -558,8 +558,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.forEach = function (callback) {
     // matrix instance
     const me = this
-    const fastCallback = optimizeCallback(callback, me._data, 'forEach')
-    deepForEach(this._data, me, fastCallback)
+    const [fastCallback, numberOfArguments] = optimizeCallback(callback, me._data, 'forEach')
+    deepForEach(this._data, me, fastCallback, numberOfArguments)
   }
 
   /**

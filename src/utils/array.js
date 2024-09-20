@@ -835,9 +835,8 @@ export function get (array, index) {
  * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
  * @returns {*} The new array with each element being the result of the callback function.
  */
-export function deepMap (value, array, callback) {
-  const numberOfArguments = findNumberOfArguments(callback, array)
-  switch (numberOfArguments) {
+export function deepMap (value, array, callback, numberOfArguments) {
+  switch (numberOfArguments || findNumberOfArguments(callback, array)) {
     case 1:
       return recurse1(value)
     case 2:
@@ -901,9 +900,8 @@ export function deepMap (value, array, callback) {
  * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
  * @returns {*} The new array with each element being the result of the callback function.
  */
-export function deepForEach (value, array, callback) {
-  const numberOfArguments = findNumberOfArguments(callback, array)
-  switch (numberOfArguments) {
+export function deepForEach (value, array, callback, numberOfArguments) {
+  switch (numberOfArguments || findNumberOfArguments(callback, array)) {
     case 1:
       recurse1(value)
       break

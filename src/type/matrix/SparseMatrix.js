@@ -853,7 +853,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
-    const fastCallback = optimizeCallback(callback, me, 'map')
+    const fastCallback = optimizeCallback(callback, me, 'map')[0]
     // invoke callback
     const invoke = function (v, i, j) {
       // invoke callback
@@ -962,7 +962,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
-    const fastCallback = optimizeCallback(callback, me, 'forEach')
+    const fastCallback = optimizeCallback(callback, me, 'forEach')[0]
     // loop columns
     for (let j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
