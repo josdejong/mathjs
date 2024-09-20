@@ -44,13 +44,13 @@ new Benchmark.Suite()
     numberMatrix.map(abs.signatures.number)
   })
   .add(pad('map(array, abs + idx)'), () => {
-    map(array, (x, idx) => abs(x)+idx[0]-idx[1])
+    map(array, (x, idx) => abs(x) + idx[0] - idx[1])
   })
   .add(pad('genericMatrix.map(abs + idx)'), () => {
-    genericMatrix.map((x, idx) => abs(x)+idx[0]-idx[1])
+    genericMatrix.map((x, idx) => abs(x) + idx[0] - idx[1])
   })
   .add(pad('numberMatrix.map(abs + idx)'), () => {
-    numberMatrix.map((x, idx) => abs(x)+idx[0]-idx[1])
+    numberMatrix.map((x, idx) => abs(x) + idx[0] - idx[1])
   })
   .on('cycle', function (event) {
     console.log(String(event.target))

@@ -44,13 +44,13 @@ new Benchmark.Suite()
     numberMatrix.forEach(abs.signatures.number)
   })
   .add(pad('genericMatrix.forEach(abs+idx)'), () => {
-    genericMatrix.forEach((x, idx) => abs(x)+idx[0]-idx[1])
+    genericMatrix.forEach((x, idx) => abs(x) + idx[0] - idx[1])
   })
   .add(pad('numberMatrix.forEach(abs+idx)'), () => {
-    numberMatrix.forEach((x, idx) => abs(x)+idx[0]-idx[1])
+    numberMatrix.forEach((x, idx) => abs(x) + idx[0] - idx[1])
   })
   .add(pad('forEach(genericMatrix, abs+idx)'), () => {
-    forEach(genericMatrix, ((x, idx) => abs(x)+idx[0]-idx[1]))
+    forEach(genericMatrix, (x, idx) => abs(x) + idx[0] - idx[1])
   })
   .add()
   .on('cycle', function (event) {
