@@ -45,6 +45,6 @@ export const createForEach = /* #__PURE__ */ factory(name, dependencies, ({ type
  * @private
  */
 function _forEach (array, callback) {
-  const [fastCallback, numberOfArguments] = optimizeCallback(callback, array, name, { detailedError: true })
-  deepForEach(array, array, fastCallback, numberOfArguments)
+  const fastCallback = optimizeCallback(callback, array, name, { detailedError: true })
+  deepForEach(array, array, fastCallback, fastCallback.length)
 }

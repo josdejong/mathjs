@@ -16,24 +16,34 @@ export function optimizeCallback (callback, array, name, options) {
     const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
     const hasSingleSignature = Object.keys(callback.signatures).length === 1
     const numberOfArguments = _typedFindNumberOfArguments(callback, firstValue, firstIndex, array)
-    const fastCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : (...args) => callback(...args)
     if (options && options.detailedError) {
-      if (numberOfArguments >= 1 && numberOfArguments <= 3) {
-        const limitedCallback = (...args) => tryFunctionWithArgs(fastCallback, args.slice(0, numberOfArguments), name, callback.name)
-        return [limitedCallback, numberOfArguments]
-      } else {
-        const enhancedCallback = (...args) => tryFunctionWithArgs(fastCallback, args, name, callback.name)
-        return [enhancedCallback, numberOfArguments]
+      const fastCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback
+      switch (numberOfArguments) {
+        case 1:
+          return (val) => tryFunctionWithArgs(fastCallback, [val], name, callback.name)
+        case 2:
+          return (val, idx) => tryFunctionWithArgs(fastCallback, [val, idx], name, callback.name)
+        case 3:
+          return (val, idx, array) => tryFunctionWithArgs(fastCallback, [val, idx, array], name, callback.name)
+        default:
+          return (...args) => tryFunctionWithArgs(fastCallback, args, name, callback.name)
       }
+    } else if (hasSingleSignature) {
+      return Object.values(callback.signatures)[0]
     } else {
-      if (numberOfArguments >= 1 && numberOfArguments <= 3) {
-        return [(...args) => fastCallback(...args.slice(0, numberOfArguments)), numberOfArguments]
-      } else {
-        return [(...args) => fastCallback(...args), numberOfArguments]
+      switch (numberOfArguments) {
+        case 1:
+          return val => callback(val)
+        case 2:
+          return (val, idx) => callback(val, idx)
+        case 3:
+          return (val, idx, array) => callback(val, idx, array)
+        default:
+          return callback
       }
     }
   }
-  return [callback, callback.length]
+  return callback
 }
 
 export function findNumberOfArguments (callback, array) {
