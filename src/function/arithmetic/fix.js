@@ -50,6 +50,12 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    *    math.fix(c)                  // returns Complex 3 - 2i
    *    math.fix(c, 1)               // returns Complex 3.2 -2.7i
    *
+   *    const unit = math.unit('3.241 cm')
+   *    const cm = math.unit('cm')
+   *    const mm = math.unit('mm')
+   *    math.fix(unit, 1, cm)      // returns Unit 3.2 cm
+   *    math.fix(unit, 1, mm)      // returns Unit 32.4 mm
+   *
    *    math.fix([3.2, 3.8, -4.7])      // returns Array [3, 3, -4]
    *    math.fix([3.2, 3.8, -4.7], 1)   // returns Array [3.2, 3.8, -4.7]
    *

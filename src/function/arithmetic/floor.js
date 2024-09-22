@@ -69,8 +69,8 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *    const unit = math.unit('3.241 cm')
    *    const cm = math.unit('cm')
    *    const mm = math.unit('mm')
-   *    math.ceil(unit, 1, cm)      // returns Unit 3.2 cm
-   *    math.ceil(unit, 1, mm)      // returns Unit 32.2 mm
+   *    math.floor(unit, 1, cm)      // returns Unit 3.2 cm
+   *    math.floor(unit, 1, mm)      // returns Unit 32.4 mm
    *
    *    math.floor([3.2, 3.8, -4.7])       // returns Array [3, 3, -5]
    *    math.floor([3.21, 3.82, -4.71], 1)  // returns Array [3.2, 3.8, -4.8]
