@@ -179,6 +179,7 @@ describe('fix', function () {
     assert.deepStrictEqual(fix(unit('3.12345 cm'), unit('cm')), unit('3 cm'))
     assert.deepStrictEqual(fix(unit('2 inch'), unit('cm')), unit('5 cm'))
     assert.deepStrictEqual(fix(unit('2 inch'), 1, unit('cm')), unit('5 cm'))
+    assert.deepStrictEqual(fix(unit('-1.9 inch'), unit('cm')), unit('-4 cm'))
 
     // bignumber values
     assert.deepStrictEqual(fix(unit('3.12345 cm'), bignumber(2), unit('cm')), unit('3.12 cm'))
