@@ -67,6 +67,12 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *    math.ceil(c)                 // returns Complex 4 - 2i
    *    math.ceil(c, 1)              // returns Complex 3.3 - 2.7i
    *
+   *    const unit = math.unit('3.241 cm')
+   *    const cm = math.unit('cm')
+   *    const mm = math.unit('mm')
+   *    math.ceil(unit, 1, cm)      // returns Unit 3.3 cm
+   *    math.ceil(unit, 1, mm)      // returns Unit 32.5 mm
+   *
    *    math.ceil([3.2, 3.8, -4.7])  // returns Array [4, 4, -4]
    *    math.ceil([3.21, 3.82, -4.71], 1)  // returns Array [3.3, 3.9, -4.7]
    *
@@ -121,6 +127,24 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     'Fraction, BigNumber': function (x, n) {
       return x.ceil(n.toNumber())
     },
+
+    'Unit, number, Unit': typed.referToSelf(self => function (x, n, unit) {
+      const valueless = x.toNumeric(unit)
+      return unit.multiply(self(valueless, n))
+    }),
+
+    'Unit, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
+
+    'Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
+
+    'Array | Matrix, number, Unit': typed.referToSelf(self => (x, n, unit) => {
+      // deep map collection, skip zeros since ceil(0) = 0
+      return deepMap(x, (value) => self(value, n, unit), true)
+    }),
+
+    'Array | Matrix, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
+
+    'Array | Matrix, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
 
     'Array | Matrix': typed.referToSelf(self => (x) => {
       // deep map collection, skip zeros since ceil(0) = 0

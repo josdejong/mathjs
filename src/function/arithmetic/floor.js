@@ -66,6 +66,12 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *    math.floor(c)                 // returns Complex 3 - 3i
    *    math.floor(c, 1)              // returns Complex 3.2 -2.8i
    *
+   *    const unit = math.unit('3.241 cm')
+   *    const cm = math.unit('cm')
+   *    const mm = math.unit('mm')
+   *    math.ceil(unit, 1, cm)      // returns Unit 3.2 cm
+   *    math.ceil(unit, 1, mm)      // returns Unit 32.2 mm
+   *
    *    math.floor([3.2, 3.8, -4.7])       // returns Array [3, 3, -5]
    *    math.floor([3.21, 3.82, -4.71], 1)  // returns Array [3.2, 3.8, -4.8]
    *
@@ -124,6 +130,24 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     'Fraction, BigNumber': function (x, n) {
       return x.floor(n.toNumber())
     },
+
+    'Unit, number, Unit': typed.referToSelf(self => function (x, n, unit) {
+      const valueless = x.toNumeric(unit)
+      return unit.multiply(self(valueless, n))
+    }),
+
+    'Unit, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
+
+    'Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
+
+    'Array | Matrix, number, Unit': typed.referToSelf(self => (x, n, unit) => {
+      // deep map collection, skip zeros since floor(0) = 0
+      return deepMap(x, (value) => self(value, n, unit), true)
+    }),
+
+    'Array | Matrix, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
+
+    'Array | Matrix, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
 
     'Array | Matrix': typed.referToSelf(self => (x) => {
       // deep map collection, skip zeros since floor(0) = 0
