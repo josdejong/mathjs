@@ -649,6 +649,9 @@ Chaining examples
   expectTypeOf(math.chain([1]).ceil()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.unit('5.2cm')).ceil(math.unit('cm'))
+  ).toMatchTypeOf<MathJsChain<Unit>>()
 
   // fix
   expectTypeOf(math.chain(1).fix()).toMatchTypeOf<
@@ -657,6 +660,9 @@ Chaining examples
   expectTypeOf(math.chain([1]).fix()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.unit('5.2cm')).fix(math.unit('cm'))
+  ).toMatchTypeOf<MathJsChain<Unit>>()
 
   // floor
   expectTypeOf(math.chain(1).floor()).toMatchTypeOf<
@@ -665,6 +671,9 @@ Chaining examples
   expectTypeOf(math.chain([1]).floor()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.unit('5.2cm')).floor(math.unit('cm'))
+  ).toMatchTypeOf<MathJsChain<Unit>>()
 
   // round
   expectTypeOf(math.chain(1).round()).toMatchTypeOf<

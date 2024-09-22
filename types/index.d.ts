@@ -4995,6 +4995,25 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<T>,
     n?: number | BigNumber | MathCollection
   ): MathJsChain<T>
+  ceil<U extends MathCollection>(
+    this: MathJsChain<MathNumericType | U>,
+    n: U
+  ): MathJsChain<U>
+  ceil(this: MathJsChain<Unit>, unit: Unit): MathJsChain<Unit>
+  ceil<U extends MathCollection>(
+    this: MathJsChain<U>,
+    unit: Unit
+  ): MathJsChain<U>
+  ceil(
+    this: MathJsChain<Unit>,
+    n: number | BigNumber,
+    unit: Unit
+  ): MathJsChain<Unit>
+  ceil<U extends MathCollection>(
+    this: MathJsChain<U>,
+    n: number | BigNumber,
+    unit: Unit
+  ): MathJsChain<U>
 
   /**
    * Round a value towards zero. For matrices, the function is evaluated
@@ -5005,6 +5024,25 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<T>,
     n?: number | BigNumber | MathCollection
   ): MathJsChain<T>
+  fix<U extends MathCollection>(
+    this: MathJsChain<MathNumericType | U>,
+    n: U
+  ): MathJsChain<U>
+  fix(this: MathJsChain<Unit>, unit: Unit): MathJsChain<Unit>
+  fix<U extends MathCollection>(
+    this: MathJsChain<U>,
+    unit: Unit
+  ): MathJsChain<U>
+  fix(
+    this: MathJsChain<Unit>,
+    n: number | BigNumber,
+    unit: Unit
+  ): MathJsChain<Unit>
+  fix<U extends MathCollection>(
+    this: MathJsChain<U>,
+    n: number | BigNumber,
+    unit: Unit
+  ): MathJsChain<U>
 
   /**
    * Round a value towards minus infinity. For matrices, the function is
@@ -5015,6 +5053,25 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<T>,
     n?: number | BigNumber | MathCollection
   ): MathJsChain<T>
+  floor<U extends MathCollection>(
+    this: MathJsChain<MathNumericType | U>,
+    n: U
+  ): MathJsChain<U>
+  floor(this: MathJsChain<Unit>, unit: Unit): MathJsChain<Unit>
+  floor<U extends MathCollection>(
+    this: MathJsChain<U>,
+    unit: Unit
+  ): MathJsChain<U>
+  floor(
+    this: MathJsChain<Unit>,
+    n: number | BigNumber,
+    unit: Unit
+  ): MathJsChain<Unit>
+  floor<U extends MathCollection>(
+    this: MathJsChain<U>,
+    n: number | BigNumber,
+    unit: Unit
+  ): MathJsChain<U>
 
   /**
    * Round a value towards the nearest integer. For matrices, the function
