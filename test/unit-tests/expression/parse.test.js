@@ -591,6 +591,11 @@ describe('parse', function () {
       approxDeepEqual(parseAndEval('(2+3) in'), new Unit(5, 'in'))
       approxDeepEqual(parseAndEval('a in', { a: 5 }), new Unit(5, 'in'))
       approxDeepEqual(parseAndEval('0.5in + 1.5in to cm'), new Unit(5.08, 'cm').to('cm'))
+
+      assert(parseAndEval('2 meter^2').toString(), '2 meter^2')
+      assert(parseAndEval('-2 meter^2').toString(), '-2 meter^2')
+      assert(parseAndEval('2 in^2').toString(), '2 in^2')
+      assert(parseAndEval('-2 in^2').toString(), '-2 in^2')
     })
   })
 
