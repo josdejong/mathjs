@@ -128,23 +128,18 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return x.ceil(n.toNumber())
     },
 
-    'Unit, number, Unit': typed.referToSelf(self => function (x, n, unit) {
+    'Unit, number | BigNumber, Unit': typed.referToSelf(self => function (x, n, unit) {
+      if (typeof n !== 'number') n = n.toNumber()
       const valueless = x.toNumeric(unit)
       return unit.multiply(self(valueless, n))
     }),
 
-    'Unit, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
-
-    'Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
-
-    'Array | Matrix, number, Unit': typed.referToSelf(self => (x, n, unit) => {
+    'Array | Matrix, number | BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => {
       // deep map collection, skip zeros since ceil(0) = 0
       return deepMap(x, (value) => self(value, n, unit), true)
     }),
 
-    'Array | Matrix, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
-
-    'Array | Matrix, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
+    'Array | Matrix | Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
 
     'Array | Matrix': typed.referToSelf(self => (x) => {
       // deep map collection, skip zeros since ceil(0) = 0
