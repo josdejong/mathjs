@@ -1147,6 +1147,10 @@ export interface MathJsInstance extends MathJsFactory {
     n?: number | BigNumber
   ): NoLiteralType<T>
   ceil<U extends MathCollection>(x: MathNumericType, n: U): U
+  ceil<U extends MathCollection>(x: U, unit: Unit): U
+  ceil(x: Unit, unit: Unit): Unit
+  ceil(x: Unit, n: number | BigNumber, unit: Unit): Unit
+  ceil<U extends MathCollection>(x: U, n: number | BigNumber, unit: Unit): U
 
   /**
    * Round a value towards zero. For matrices, the function is evaluated
@@ -1160,6 +1164,10 @@ export interface MathJsInstance extends MathJsFactory {
     n?: number | BigNumber
   ): NoLiteralType<T>
   fix<U extends MathCollection>(x: MathNumericType, n: U): U
+  fix<U extends MathCollection>(x: U, unit: Unit): U
+  fix(x: Unit, unit: Unit): Unit
+  fix(x: Unit, n: number | BigNumber, unit: Unit): Unit
+  fix<U extends MathCollection>(x: U, n: number | BigNumber, unit: Unit): U
 
   /**
    * Round a value towards minus infinity. For matrices, the function is
@@ -1173,6 +1181,10 @@ export interface MathJsInstance extends MathJsFactory {
     n?: number | BigNumber
   ): NoLiteralType<T>
   floor<U extends MathCollection>(x: MathNumericType, n: U): U
+  floor<U extends MathCollection>(x: U, unit: Unit): U
+  floor(x: Unit, unit: Unit): Unit
+  floor(x: Unit, n: number | BigNumber, unit: Unit): Unit
+  floor<U extends MathCollection>(x: U, n: number | BigNumber, unit: Unit): U
 
   /**
    * Round a value towards the nearest integer. For matrices, the function

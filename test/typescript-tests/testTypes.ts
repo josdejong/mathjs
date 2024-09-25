@@ -1807,6 +1807,12 @@ Function ceil examples
     math.fraction(6286, 1000)
   ])
 
+  // unit input
+  const numCeiledUnit = math.ceil(math.unit(3.2, 'cm'), math.unit('cm'))
+  assert.deepStrictEqual(numCeiledUnit, math.unit(4, 'cm'))
+  const numCeiledUnit1Dec = math.ceil(math.unit(3.21, 'cm'), 1, math.unit('cm'))
+  assert.deepStrictEqual(numCeiledUnit1Dec, math.unit(3.3, 'cm'))
+
   // @ts-expect-error ... verify ceil(array, array) throws an error (for now)
   assert.throws(() => math.ceil([3.21, 3.82], [1, 2]), TypeError)
 }
