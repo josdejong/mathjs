@@ -1786,6 +1786,12 @@ Function ceil examples
     math.complex(3.3, -2.7)
   )
 
+  // unit input
+  const numCeiledUnit = math.ceil(math.unit(3.2, 'cm'), math.unit('cm'))
+  assert.deepStrictEqual(numCeiledUnit, math.unit(4, 'cm'))
+  const numCeiledUnit1Dec = math.ceil(math.unit(3.21, 'cm'), 1, math.unit('cm'))
+  assert.deepStrictEqual(numCeiledUnit1Dec, math.unit(3.3, 'cm'))
+
   // array input
   assert.deepStrictEqual(math.ceil([3.2, 3.8, -4.7]), [4, 4, -4])
   assert.deepStrictEqual(math.ceil([3.21, 3.82, -4.71], 1), [3.3, 3.9, -4.7])
@@ -1806,12 +1812,6 @@ Function ceil examples
     math.fraction(629, 100),
     math.fraction(6286, 1000)
   ])
-
-  // unit input
-  const numCeiledUnit = math.ceil(math.unit(3.2, 'cm'), math.unit('cm'))
-  assert.deepStrictEqual(numCeiledUnit, math.unit(4, 'cm'))
-  const numCeiledUnit1Dec = math.ceil(math.unit(3.21, 'cm'), 1, math.unit('cm'))
-  assert.deepStrictEqual(numCeiledUnit1Dec, math.unit(3.3, 'cm'))
 
   // @ts-expect-error ... verify ceil(array, array) throws an error (for now)
   assert.throws(() => math.ceil([3.21, 3.82], [1, 2]), TypeError)
@@ -1867,6 +1867,12 @@ Function fix examples
     math.fix(c, math.bignumber(1)),
     math.complex(3.2, -2.7)
   )
+
+  // unit input
+  const numCeiledUnit = math.fix(math.unit(3.2, 'cm'), math.unit('cm'))
+  assert.deepStrictEqual(numCeiledUnit, math.unit(3, 'cm'))
+  const numCeiledUnit1Dec = math.fix(math.unit(3.1, 'cm'), 1, math.unit('cm'))
+  assert.deepStrictEqual(numCeiledUnit1Dec, math.unit(3.1, 'cm'))
 
   // array input
   assert.deepStrictEqual(math.fix([3.2, 3.8, -4.7]), [3, 3, -4])
@@ -1943,6 +1949,12 @@ Function floor examples
     math.floor(c, math.bignumber(1)),
     math.complex(3.2, -2.8)
   )
+
+  // unit input
+  const numCeiledUnit = math.floor(math.unit(3.2, 'cm'), math.unit('cm'))
+  assert.deepStrictEqual(numCeiledUnit, math.unit(3, 'cm'))
+  const numCeiledUnit1Dec = math.floor(math.unit(3.1, 'cm'), 1, math.unit('cm'))
+  assert.deepStrictEqual(numCeiledUnit1Dec, math.unit(3.1, 'cm'))
 
   // array input
   assert.deepStrictEqual(math.floor([3.2, 3.8, -4.7]), [3, 3, -5])
