@@ -531,8 +531,6 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @param {Function} callback   The callback function is invoked with three
    *                              parameters: an array, an integer index to that
    *                              array, and the Matrix being traversed.
-   *
-   * @return {DenseMatrix} matrix
    */
   DenseMatrix.prototype._forEach = function (callback) {
     // matrix instance
@@ -579,7 +577,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         // loop through the last dimension and map each value
         for (let j = 0; j < s[data.length]; j++) {
           index[data.length] = j
-          callback(data[last], j, index)
+          callback(data[last], j, index.slice(0))
         }
         break
       }
@@ -623,7 +621,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     const me = this
     const fastCallback = optimizeCallback(callback, me._data, 'map')
     me._forEach(function (arr, i, index) {
-      fastCallback(arr[i], index.slice(0), me)
+      fastCallback(arr[i], index, me)
     })
   }
 
