@@ -4,6 +4,8 @@
 
 - Feat: improve performance of functions `map`, `filter` and `forEach` (#3256).
   Thanks @dvd101x.
+- Feat: improve performance of the methods `map()` and `forEach()`
+  of `DenseMatrix` (#3251). Thanks @Galm007.
 - Fix: #3253 cannot use identifiers containing special characters in function
   `derivative`.
 - Fix: improve the type definitions of `ConstantNode` to support all data 
