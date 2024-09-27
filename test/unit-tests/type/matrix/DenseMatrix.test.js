@@ -734,7 +734,7 @@ describe('DenseMatrix', function () {
       const m = new DenseMatrix([[1, 2, 3], [4, 5, 6]])
       const m2 = m.map(
         function (value, index, obj) {
-          return JSON.stringify([value, index, obj === m])
+          return [value, index, obj === m]
         }
       )
 
@@ -742,14 +742,14 @@ describe('DenseMatrix', function () {
         m2.toArray(),
         [
           [
-            '[1,[0,0],true]',
-            '[2,[0,1],true]',
-            '[3,[0,2],true]'
+            [1, [0, 0], true],
+            [2, [0, 1], true],
+            [3, [0, 2], true]
           ],
           [
-            '[4,[1,0],true]',
-            '[5,[1,1],true]',
-            '[6,[1,2],true]'
+            [4, [1, 0], true],
+            [5, [1, 1], true],
+            [6, [1, 2], true]
           ]
         ])
     })
@@ -792,7 +792,7 @@ describe('DenseMatrix', function () {
       const output = []
       m.forEach(
         function (value, index, obj) {
-          output.push(math.clone([value, index, obj === m]))
+          output.push([value, index, obj === m])
         }
       )
       assert.deepStrictEqual(output, [
