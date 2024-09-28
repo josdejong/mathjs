@@ -674,6 +674,9 @@ Chaining examples
   expectTypeOf(
     math.chain(math.unit('5.2cm')).floor(math.unit('cm'))
   ).toMatchTypeOf<MathJsChain<Unit>>()
+  expectTypeOf(
+    math.chain(math.unit('5.2cm')).round(2, math.unit('cm'))
+  ).toMatchTypeOf<MathJsChain<Unit>>()
 
   // round
   expectTypeOf(math.chain(1).round()).toMatchTypeOf<
