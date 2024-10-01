@@ -836,57 +836,65 @@ export function get (array, index) {
  * @returns {*} The new array with each element being the result of the callback function.
  */
 export function deepMap (value, array, callback, numberOfArguments) {
+  const size = arraySize(value)
+  const N = size.length - 1
   switch (numberOfArguments || findNumberOfArguments(callback, array)) {
     case 1:
-      return recurse1(value)
+      return recurse1(value, 0)
     case 2:
-      return recurse2(value, [])
+      return recurse2(value, size.map(() => null), 0)
     case 3:
-      return recurse3(value, [])
+      return recurse3(value, size.map(() => null), 0)
     default:
-      return recurse3(value, [])
+      return recurse3(value, size.map(() => null), 0)
   }
 
-  function recurse1 (value) {
-    if (Array.isArray(value)) {
+  function recurse1 (value, depth) {
+    if (depth < N) {
       return value.map(function (child) {
         // we create a copy of the index array and append the new index value
-        const results = recurse1(child)
+        const results = recurse1(child, depth + 1)
         return results
       })
     } else {
       // invoke the callback function with the right number of arguments
-      return callback(value)
+      return value.map(v => callback(v))
     }
   }
 
-  function recurse2 (value, index) {
-    if (Array.isArray(value)) {
+  function recurse2 (value, index, depth) {
+    if (depth < N) {
       return value.map(function (child, i) {
         // we create a copy of the index array and append the new index value
-        index.push(i)
-        const results = recurse2(child, index)
-        index.pop()
+        index[depth] = i
+        const results = recurse2(child, index, depth + 1)
+        index[depth] = null
         return results
       })
     } else {
       // invoke the callback function with the right number of arguments
-      return callback(value, index.slice())
+      return value.map((v, i) => {
+        index[depth] = i
+        return callback(v, index.slice())
+      })
     }
   }
 
-  function recurse3 (value, index) {
-    if (Array.isArray(value)) {
+  function recurse3 (value, index, depth) {
+    if (depth < N) {
       return value.map(function (child, i) {
         // we create a copy of the index array and append the new index value
-        index.push(i)
-        const results = recurse3(child, index)
-        index.pop()
+        index[depth] = i
+        const results = recurse3(child, index, depth + 1)
+        index[depth] = null
         return results
       })
     } else {
       // invoke the callback function with the right number of arguments
-      return callback(value, index.slice(), array)
+      return value.map((v, i) => {
+        index[depth] = i
+        return callback(v, index.slice(), array)
+      })
     }
   }
 }
@@ -901,55 +909,63 @@ export function deepMap (value, array, callback, numberOfArguments) {
  * @returns {*} The new array with each element being the result of the callback function.
  */
 export function deepForEach (value, array, callback, numberOfArguments) {
+  const size = arraySize(value)
+  const N = size.length - 1
   switch (numberOfArguments || findNumberOfArguments(callback, array)) {
     case 1:
-      recurse1(value)
+      recurse1(value, 0)
       break
     case 2:
-      recurse2(value, [])
+      recurse2(value, size.map(() => null), 0)
       break
     case 3:
-      recurse3(value, [])
+      recurse3(value, size.map(() => null), 0)
       break
     default:
-      recurse3(value, [])
+      recurse3(value, size.map(() => null), 0)
       break
   }
 
-  function recurse1 (value) {
-    if (Array.isArray(value)) {
+  function recurse1 (value, depth) {
+    if (depth < N) {
       value.forEach(function (child) {
-        recurse1(child)
+        recurse1(child, depth + 1)
       })
     } else {
       // invoke the callback function with the right number of arguments
-      callback(value)
+      value.forEach(v => callback(v))
     }
   }
 
-  function recurse2 (value, index) {
-    if (Array.isArray(value)) {
+  function recurse2 (value, index, depth) {
+    if (depth < N) {
       value.forEach(function (child, i) {
-        index.push(i)
-        recurse2(child, index)
-        index.pop()
+        index[depth] = i
+        recurse2(child, index, depth + 1)
+        index[depth] = null
       })
     } else {
       // invoke the callback function with the right number of arguments
-      callback(value, index.slice())
+      value.forEach((v, i) => {
+        index[depth] = i
+        callback(v, index.slice())
+      })
     }
   }
 
-  function recurse3 (value, index) {
-    if (Array.isArray(value)) {
+  function recurse3 (value, index, depth) {
+    if (depth < N) {
       value.forEach(function (child, i) {
-        index.push(i)
-        recurse3(child, index)
-        index.pop()
+        index[depth] = i
+        recurse3(child, index, depth + 1)
+        index[depth] = null
       })
     } else {
       // invoke the callback function with the right number of arguments
-      callback(value, index.slice(), array)
+      value.forEach((v, i) => {
+        index[depth] = i
+        callback(v, index.slice(), array)
+      })
     }
   }
 }
