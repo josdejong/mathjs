@@ -1,6 +1,6 @@
 # History
 
-# changes since 13.1.1
+# 2204-10-02 13.2.0
 
 - Feat: improve performance of functions `map`, `filter` and `forEach` (#3256).
   Thanks @dvd101x.
