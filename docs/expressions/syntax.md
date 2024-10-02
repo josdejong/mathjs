@@ -254,6 +254,68 @@ Note that math.js embodies a preference for the operator forms, in that calling
 `simplify` (see [Algebra](./algebra.html)) converts any instances of the function
 form into the corresponding operator.
 
+<h2 id="map-and-foreach">Map and forEach <a href="#map-and-foreach" title="Permalink">#</a></h2>
+
+The `map` and `forEach` functions can be used to apply a callback function to each element of an array or matrix.
+
+The callback functions can be functions, typed functions, inline functions (only in the parser) or compiled inline functions (only in the parser).
+
+The callback can have the follwoing inputs:
+- **value**: the current value in the array or matrix.
+- **index**: the index of the current value expressed as an array of numbers.
+- **array**: the array or matrix being iterated.
+
+Below is the syntax for both functions:
+
+<h3 id="map">map <a href="#map" title="Permalink">#</a></h3>
+
+The `map` function applies a function to each element of an array and returns a new array with the results.
+
+```js
+const parser = math.parser()
+
+// Define a square function
+parser.evaluate('square(x) = x ^ 2')
+
+// Apply the square function to each element of the array
+parser.evaluate('result = map([1, 2, 3, 4], square)')
+// result: [1, 4, 9, 16]
+
+// Apply an inline function to each element of the array
+parser.evaluate('result = map([1, 2, 3, 4], f(x) = x ^ 2)')
+// result: [1, 4, 9, 16]
+
+// Apply a compiled inline function to each element of the array
+parser.evaluate('result = map([1, 2, 3, 4], x ^ 2)')
+// result: [1, 4, 9, 16]
+```
+
+<h3 id="foreach">forEach <a href="#foreach" title="Permalink">#</a></h3>
+The `forEach` function applies a function to each element of an array or matrix but does not return a new array. It is useful for executing side effects.
+
+```js
+// Define a function that prints each element
+math.import({consoleLog: x => console.log(x)})
+const parser = math.parser()
+
+// Define a squareConsleLog function
+parser.evaluate('squareConsoleLog(x) = consoleLog(x ^ 2)')
+
+// Apply the squareConsleLog function to each element of the array
+parser.evaluate('forEach([1, 2, 3, 4], squareConsleLog)')
+// Prints: 1, 4, 9, 16
+
+// Apply an inline function to each element of the array
+parser.evaluate('forEach([1, 2, 3, 4], f(x) = consoleLog(x ^ 2))')
+// Prints: 1, 4, 9, 16
+
+// Apply a compiled inline function to each element of the array
+parser.evaluate('forEach([1, 2, 3, 4], consoleLog(x ^ 2))')
+// Prints: 1, 4, 9, 16
+```
+
+These functions are useful for performing element-wise operations on arrays or matrices.
+
 <h2 id="constants-and-variables">Constants and variables <a href="#constants-and-variables" title="Permalink">#</a></h2>
 
 Math.js has a number of built-in constants such as `pi` and `e`.

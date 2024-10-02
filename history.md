@@ -4,6 +4,23 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="22041002-1320">2204-10-02 13.2.0 <a href="#22041002-1320" title="Permalink">#</a></h1>
+
+- Feat: improve performance of functions `map`, `filter` and `forEach` (<a href="https://github.com/josdejong/mathjs/issues/3256">#3256</a>).
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: improve performance of the methods `map()` and `forEach()`
+  of `DenseMatrix` (<a href="https://github.com/josdejong/mathjs/issues/3251">#3251</a>). Thanks <a href="https://github.com/Galm007">@Galm007</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3253">#3253</a> cannot use identifiers containing special characters in function
+  `derivative`.
+- Fix: improve the type definitions of `ConstantNode` to support all data 
+  types (<a href="https://github.com/josdejong/mathjs/issues/3257">#3257</a>). Thanks <a href="https://github.com/smith120bh">@smith120bh</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3259">#3259</a> function `symbolicEqual` missing in the TypeScript definitions.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3246">#3246</a> function `leafCount` missing in the TypeScript definitions.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3267">#3267</a> implicit multiplication with a negative number and unit `in`.
+- Docs: fix broken links on the Configuration page. Thanks <a href="https://github.com/vassudanagunta">@vassudanagunta</a>.
+- Docs: document the syntax of `map` and `forEach` in the expression parser
+  (<a href="https://github.com/josdejong/mathjs/issues/3272">#3272</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+
 <h1 id="20240827-1311">2024-08-27, 13.1.1 <a href="#20240827-1311" title="Permalink">#</a></h1>
 
 - Fix security vulnerability in the CLI and web API allowing to call functions
