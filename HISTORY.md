@@ -14,6 +14,8 @@
 - Fix: #3246 function `leafCount` missing in the TypeScript definitions.
 - Fix: #3267 implicit multiplication with a negative number and unit `in`.
 - Docs: fix broken links on the Configuration page. Thanks @vassudanagunta.
+- Docs: document the syntax of `map` and `forEach` in the expression parser
+  (#3272). Thanks @dvd101x.
 
 # 2024-08-27, 13.1.1
 
