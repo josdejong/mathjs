@@ -1790,10 +1790,21 @@ Function ceil examples
   )
 
   // unit input
-  const numCeiledUnit = math.ceil(math.unit(3.2, 'cm'), math.unit('cm'))
-  assert.deepStrictEqual(numCeiledUnit, math.unit(4, 'cm'))
-  const numCeiledUnit1Dec = math.ceil(math.unit(3.21, 'cm'), 1, math.unit('cm'))
-  assert.deepStrictEqual(numCeiledUnit1Dec, math.unit(3.3, 'cm'))
+  const u1 = math.unit(3.2, 'cm')
+  const u2 = math.unit('cm')
+  const u3 = math.unit(5.51, 'cm')
+  const unitArray = [u1, u3]
+  const unitMatrix = math.matrix(unitArray)
+  assert.deepStrictEqual(math.ceil(u1, u2), math.unit(4, 'cm'))
+  assert.deepStrictEqual(math.ceil(u1, 1, u2), math.unit(3.2, 'cm'))
+  assert.deepStrictEqual(math.ceil(unitArray, 1, math.unit('cm')), [
+    math.unit(3.2, 'cm'),
+    math.unit(5.6, 'cm')
+  ])
+  assert.deepStrictEqual(
+    math.ceil(unitMatrix, 1, math.unit('cm')),
+    math.matrix([math.unit(3.2, 'cm'), math.unit(5.6, 'cm')])
+  )
 
   // array input
   assert.deepStrictEqual(math.ceil([3.2, 3.8, -4.7]), [4, 4, -4])
@@ -1872,10 +1883,21 @@ Function fix examples
   )
 
   // unit input
-  const numCeiledUnit = math.fix(math.unit(3.2, 'cm'), math.unit('cm'))
-  assert.deepStrictEqual(numCeiledUnit, math.unit(3, 'cm'))
-  const numCeiledUnit1Dec = math.fix(math.unit(3.1, 'cm'), 1, math.unit('cm'))
-  assert.deepStrictEqual(numCeiledUnit1Dec, math.unit(3.1, 'cm'))
+  const u1 = math.unit(3.2, 'cm')
+  const u2 = math.unit('cm')
+  const u3 = math.unit(5.51, 'cm')
+  const unitArray = [u1, u3]
+  const unitMatrix = math.matrix(unitArray)
+  assert.deepStrictEqual(math.fix(u1, u2), math.unit(3, 'cm'))
+  assert.deepStrictEqual(math.fix(u1, 1, u2), math.unit(3.2, 'cm'))
+  assert.deepStrictEqual(math.fix(unitArray, 1, math.unit('cm')), [
+    math.unit(3.2, 'cm'),
+    math.unit(5.5, 'cm')
+  ])
+  assert.deepStrictEqual(
+    math.fix(unitMatrix, 1, math.unit('cm')),
+    math.matrix([math.unit(3.2, 'cm'), math.unit(5.5, 'cm')])
+  )
 
   // array input
   assert.deepStrictEqual(math.fix([3.2, 3.8, -4.7]), [3, 3, -4])
@@ -1954,10 +1976,21 @@ Function floor examples
   )
 
   // unit input
-  const numCeiledUnit = math.floor(math.unit(3.2, 'cm'), math.unit('cm'))
-  assert.deepStrictEqual(numCeiledUnit, math.unit(3, 'cm'))
-  const numCeiledUnit1Dec = math.floor(math.unit(3.1, 'cm'), 1, math.unit('cm'))
-  assert.deepStrictEqual(numCeiledUnit1Dec, math.unit(3.1, 'cm'))
+  const u1 = math.unit(3.2, 'cm')
+  const u2 = math.unit('cm')
+  const u3 = math.unit(5.51, 'cm')
+  const unitArray = [u1, u3]
+  const unitMatrix = math.matrix(unitArray)
+  assert.deepStrictEqual(math.floor(u1, u2), math.unit(3, 'cm'))
+  assert.deepStrictEqual(math.floor(u1, 1, u2), math.unit(3.2, 'cm'))
+  assert.deepStrictEqual(math.floor(unitArray, 1, math.unit('cm')), [
+    math.unit(3.2, 'cm'),
+    math.unit(5.5, 'cm')
+  ])
+  assert.deepStrictEqual(
+    math.floor(unitMatrix, 1, math.unit('cm')),
+    math.matrix([math.unit(3.2, 'cm'), math.unit(5.5, 'cm')])
+  )
 
   // array input
   assert.deepStrictEqual(math.floor([3.2, 3.8, -4.7]), [3, 3, -5])
@@ -2036,13 +2069,28 @@ Function round examples
   )
 
   // unit input
+  const u1 = math.unit(3.2, 'cm')
+  const u2 = math.unit('cm')
+  const u3 = math.unit(5.51, 'cm')
+  const unitArray = [u1, u3]
+  const unitMatrix = math.matrix(unitArray)
+  assert.deepStrictEqual(math.round(u1, u2), math.unit(3, 'cm'))
+  assert.deepStrictEqual(math.round(u1, 1, u2), math.unit(3.2, 'cm'))
   assert.deepStrictEqual(
-    math.round(math.unit('5.21 cm'), math.unit('cm')),
-    math.unit('5 cm')
+    math.round(u1, math.bignumber(1), u2),
+    math.unit(3.2, 'cm')
+  )
+  assert.deepStrictEqual(math.round(unitArray, 1, math.unit('cm')), [
+    math.unit(3.2, 'cm'),
+    math.unit(5.5, 'cm')
+  ])
+  assert.deepStrictEqual(
+    math.round(unitArray, math.bignumber(1), math.unit('cm')),
+    [math.unit(3.2, 'cm'), math.unit(5.5, 'cm')]
   )
   assert.deepStrictEqual(
-    math.round(math.unit('5.21 cm'), 1, math.unit('cm')),
-    math.unit('5.2 cm')
+    math.round(unitMatrix, 1, math.unit('cm')),
+    math.matrix([math.unit(3.2, 'cm'), math.unit(5.5, 'cm')])
   )
 
   // array input

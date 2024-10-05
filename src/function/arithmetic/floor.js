@@ -49,6 +49,8 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    math.floor(x)
    *    math.floor(x, n)
+   *    math.floor(unit, valuelessUnit)
+   *    math.floor(unit, n, valuelessUnit)
    *
    * Examples:
    *
@@ -83,9 +85,10 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    ceil, fix, round
    *
-   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
+   * @param  {Unit} [valuelessUnit]                                        A valueless unit
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Rounded value
    */
   return typed('floor', {
     number: floorNumber.signatures.number,

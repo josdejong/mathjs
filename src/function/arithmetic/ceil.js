@@ -50,6 +50,8 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    math.ceil(x)
    *    math.ceil(x, n)
+   *    math.ceil(unit, valuelessUnit)
+   *    math.ceil(unit, n, valuelessUnit)
    *
    * Examples:
    *
@@ -80,9 +82,10 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    floor, fix, round
    *
-   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
+   * @param  {Unit} [valuelessUnit]                                        A valueless unit
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Rounded value
    */
   return typed('ceil', {
     number: ceilNumber.signatures.number,

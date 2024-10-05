@@ -33,6 +33,8 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    *
    *    math.fix(x)
    *    math.fix(x,n)
+   *    math.fix(unit, valuelessUnit)
+   *    math.fix(unit, n, valuelessUnit)
    *
    * Examples:
    *
@@ -63,9 +65,10 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    *
    *    ceil, floor, round
    *
-   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x    Number to be rounded
-   * @param  {number | BigNumber | Array} [n=0]                             Number of decimals
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix}     Rounded value
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
+   * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
+   * @param  {Unit} [valuelessUnit]                                        A valueless unit
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Rounded value
    */
   return typed('fix', {
     number: fixNumber.signatures.number,

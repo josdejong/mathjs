@@ -71,7 +71,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
    * @param  {Unit} [valuelessUnit]                                        A valueless unit
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Rounded value
    */
   return typed(name, {
     number: function (x) {
