@@ -109,11 +109,12 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
       return x.s < 0 ? ceil(x, n) : floor(x, n)
     },
 
-    'Unit, number | BigNumber, Unit': typed.referToSelf(self => function (x, n, unit) {
-      if (typeof n !== 'number') n = n.toNumber()
+    'Unit, number, Unit': typed.referToSelf(self => function (x, n, unit) {
       const valueless = x.toNumeric(unit)
       return unit.multiply(self(valueless, n))
     }),
+
+    'Unit, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
 
     'Array | Matrix, number | BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => {
       // deep map collection, skip zeros since fix(0) = 0

@@ -147,11 +147,12 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return x.round(n.toNumber())
     },
 
-    'Unit, number | BigNumber, Unit': typed.referToSelf(self => function (x, n, unit) {
-      if (typeof n !== 'number') n = n.toNumber()
+    'Unit, number, Unit': typed.referToSelf(self => function (x, n, unit) {
       const valueless = x.toNumeric(unit)
       return unit.multiply(self(valueless, n))
     }),
+
+    'Unit, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
 
     'Array | Matrix, number | BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => {
       // deep map collection, skip zeros since round(0) = 0
