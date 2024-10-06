@@ -10,16 +10,14 @@ export type NoLiteralType<T> = T extends number
       ? boolean
       : T
 
-// TODO: introduce generics for MathCollection, MathMatrix, and MathArray
 export type MathNumericType = number | BigNumber | bigint | Fraction | Complex
 export type MathScalarType = MathNumericType | Unit
-export type MathArray = MathNumericType[] | MathNumericType[][] // TODO: MathArray can also contain Unit
-export type MathCollection = MathArray | Matrix
+export type MathArray<T extends MathScalarType = MathScalarType> = T[] | T[][]
+export type MathCollection<T extends MathScalarType = MathScalarType> =
+  | MathArray<T>
+  | Matrix<T>
 export type MathType = MathScalarType | MathCollection
 export type MathExpression = string | string[] | MathCollection
-
-export type UnitArray = Unit[] | Unit[][]
-export type UnitCollection = UnitArray | UnitMatrix
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FactoryFunction<T> = (scope: any) => T
@@ -754,17 +752,6 @@ export interface MathJsInstance extends MathJsFactory {
     format?: 'sparse' | 'dense',
     dataType?: string
   ): Matrix
-  /**
-   * @param data A multi dimensional array
-   * @param format The Matrix storage format
-   * @param dataType The Matrix data type
-   * @returns The created Unit Matrix
-   */
-  matrix(
-    data: UnitArray,
-    format?: 'sparse' | 'dense',
-    dataType?: string
-  ): UnitMatrix
 
   /**
    * Create a number or convert a string, boolean, or unit to a number.
@@ -1161,10 +1148,14 @@ export interface MathJsInstance extends MathJsFactory {
     n?: number | BigNumber
   ): NoLiteralType<T>
   ceil<U extends MathCollection>(x: MathNumericType, n: U): U
-  ceil<U extends UnitCollection>(x: U, unit: Unit): U
+  ceil<U extends MathCollection<Unit>>(x: U, unit: Unit): U
   ceil(x: Unit, unit: Unit): Unit
   ceil(x: Unit, n: number | BigNumber, unit: Unit): Unit
-  ceil<U extends UnitCollection>(x: U, n: number | BigNumber, unit: Unit): U
+  ceil<U extends MathCollection<Unit>>(
+    x: U,
+    n: number | BigNumber,
+    unit: Unit
+  ): U
 
   /**
    * Round a value towards zero. For matrices, the function is evaluated
@@ -1178,10 +1169,14 @@ export interface MathJsInstance extends MathJsFactory {
     n?: number | BigNumber
   ): NoLiteralType<T>
   fix<U extends MathCollection>(x: MathNumericType, n: U): U
-  fix<U extends UnitCollection>(x: U, unit: Unit): U
+  fix<U extends MathCollection<Unit>>(x: U, unit: Unit): U
   fix(x: Unit, unit: Unit): Unit
   fix(x: Unit, n: number | BigNumber, unit: Unit): Unit
-  fix<U extends UnitCollection>(x: U, n: number | BigNumber, unit: Unit): U
+  fix<U extends MathCollection<Unit>>(
+    x: U,
+    n: number | BigNumber,
+    unit: Unit
+  ): U
 
   /**
    * Round a value towards minus infinity. For matrices, the function is
@@ -1195,10 +1190,14 @@ export interface MathJsInstance extends MathJsFactory {
     n?: number | BigNumber
   ): NoLiteralType<T>
   floor<U extends MathCollection>(x: MathNumericType, n: U): U
-  floor<U extends UnitCollection>(x: U, unit: Unit): U
+  floor<U extends MathCollection<Unit>>(x: U, unit: Unit): U
   floor(x: Unit, unit: Unit): Unit
   floor(x: Unit, n: number | BigNumber, unit: Unit): Unit
-  floor<U extends UnitCollection>(x: U, n: number | BigNumber, unit: Unit): U
+  floor<U extends MathCollection<Unit>>(
+    x: U,
+    n: number | BigNumber,
+    unit: Unit
+  ): U
 
   /**
    * Round a value towards the nearest integer. For matrices, the function
@@ -1212,10 +1211,14 @@ export interface MathJsInstance extends MathJsFactory {
     n?: number | BigNumber
   ): NoLiteralType<T>
   round<U extends MathCollection>(x: MathNumericType, n: U): U
-  round<U extends UnitCollection>(x: U, unit: Unit): U
+  round<U extends MathCollection<Unit>>(x: U, unit: Unit): U
   round(x: Unit, unit: Unit): Unit
   round(x: Unit, n: number | BigNumber, unit: Unit): Unit
-  round<U extends UnitCollection>(x: U, n: number | BigNumber, unit: Unit): U
+  round<U extends MathCollection<Unit>>(
+    x: U,
+    n: number | BigNumber,
+    unit: Unit
+  ): U
 
   // End of group of rounding functions
 
@@ -1390,7 +1393,7 @@ export interface MathJsInstance extends MathJsFactory {
   multiply<T extends MathArray>(x: T, y: T): T
   multiply(x: Unit, y: Unit): Unit
   multiply(x: number, y: number): number
-  multiply(x: MathType, y: MathType): MathType
+  multiply<T extends MathType, U extends MathType>(x: T, y: U): U | T
   multiply<T extends MathType>(...values: T[]): T
   multiply(...values: MathType[]): MathType
 
@@ -3991,14 +3994,14 @@ export const {
   varianceTransformDependencies
 }: Record<string, FactoryFunctionMap>
 
-export interface Matrix {
+export interface Matrix<T = MathScalarType> {
   type: string
   storage(): string
   datatype(): string
   create(data: MathArray, datatype?: string): void
   density(): number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  subset(index: Index, replacement?: any, defaultValue?: any): Matrix
+  subset(index: Index, replacement?: any, defaultValue?: any): Matrix<T>
   apply(
     dim: number,
     callback: (array: MathCollection) => number
@@ -4006,8 +4009,8 @@ export interface Matrix {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get(index: number[]): any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  set(index: number[], value: any, defaultValue?: number | string): Matrix
-  resize(size: MathCollection, defaultValue?: number | string): Matrix
+  set(index: number[], value: any, defaultValue?: number | string): Matrix<T>
+  resize(size: MathCollection, defaultValue?: number | string): Matrix<T>
   clone(): Matrix
   size(): number[]
   map(
@@ -4031,54 +4034,11 @@ export interface Matrix {
   toJSON(): any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   diagonal(k?: number | BigNumber): any[]
-  swapRows(i: number, j: number): Matrix
+  swapRows(i: number, j: number): Matrix<T>
 }
 
 export interface MatrixCtor {
   new (): Matrix
-}
-
-export interface UnitMatrix
-  extends Omit<
-    Matrix,
-    | 'create'
-    | 'toArray'
-    | 'valueOf'
-    | 'subset'
-    | 'apply'
-    | 'set'
-    | 'resize'
-    | 'clone'
-    | 'map'
-    | 'forEach'
-    | 'toArray'
-    | 'valueOf'
-    | 'swapRows'
-  > {
-  create(data: UnitArray, datatype?: string): void
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  subset(index: Index, replacement?: any, defaultValue?: any): UnitMatrix
-  apply(
-    dim: number,
-    callback: (array: UnitCollection) => number
-  ): UnitCollection
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  set(index: number[], value: any, defaultValue?: number | string): UnitMatrix
-  resize(size: MathCollection, defaultValue?: number | string): UnitMatrix
-  clone(): UnitMatrix
-  map(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (a: any, b: number[], c: UnitMatrix) => any,
-    skipZeros?: boolean
-  ): UnitMatrix
-  forEach(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (a: any, b: number[], c: UnitMatrix) => void,
-    skipZeros?: boolean
-  ): void
-  toArray(): UnitArray
-  valueOf(): UnitArray
-  swapRows(i: number, j: number): UnitMatrix
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -5069,7 +5029,7 @@ export interface MathJsChain<TValue> {
     n: U
   ): MathJsChain<U>
   ceil(this: MathJsChain<Unit>, unit: Unit): MathJsChain<Unit>
-  ceil<U extends UnitCollection>(
+  ceil<U extends MathCollection<Unit>>(
     this: MathJsChain<U>,
     unit: Unit
   ): MathJsChain<U>
@@ -5078,7 +5038,7 @@ export interface MathJsChain<TValue> {
     n: number | BigNumber,
     unit: Unit
   ): MathJsChain<Unit>
-  ceil<U extends UnitCollection>(
+  ceil<U extends MathCollection<Unit>>(
     this: MathJsChain<U>,
     n: number | BigNumber,
     unit: Unit
@@ -5098,7 +5058,7 @@ export interface MathJsChain<TValue> {
     n: U
   ): MathJsChain<U>
   fix(this: MathJsChain<Unit>, unit: Unit): MathJsChain<Unit>
-  fix<U extends UnitCollection>(
+  fix<U extends MathCollection<Unit>>(
     this: MathJsChain<U>,
     unit: Unit
   ): MathJsChain<U>
@@ -5107,7 +5067,7 @@ export interface MathJsChain<TValue> {
     n: number | BigNumber,
     unit: Unit
   ): MathJsChain<Unit>
-  fix<U extends UnitCollection>(
+  fix<U extends MathCollection<Unit>>(
     this: MathJsChain<U>,
     n: number | BigNumber,
     unit: Unit
@@ -5127,7 +5087,7 @@ export interface MathJsChain<TValue> {
     n: U
   ): MathJsChain<U>
   floor(this: MathJsChain<Unit>, unit: Unit): MathJsChain<Unit>
-  floor<U extends UnitCollection>(
+  floor<U extends MathCollection<Unit>>(
     this: MathJsChain<U>,
     unit: Unit
   ): MathJsChain<U>
@@ -5136,7 +5096,7 @@ export interface MathJsChain<TValue> {
     n: number | BigNumber,
     unit: Unit
   ): MathJsChain<Unit>
-  floor<U extends UnitCollection>(
+  floor<U extends MathCollection<Unit>>(
     this: MathJsChain<U>,
     n: number | BigNumber,
     unit: Unit
@@ -5156,7 +5116,7 @@ export interface MathJsChain<TValue> {
     n: U
   ): MathJsChain<U>
   round(this: MathJsChain<Unit>, unit: Unit): MathJsChain<Unit>
-  round<U extends UnitCollection>(
+  round<U extends MathCollection<Unit>>(
     this: MathJsChain<U>,
     unit: Unit
   ): MathJsChain<U>
@@ -5165,7 +5125,7 @@ export interface MathJsChain<TValue> {
     n: number | BigNumber,
     unit: Unit
   ): MathJsChain<Unit>
-  round<U extends UnitCollection>(
+  round<U extends MathCollection<Unit>>(
     this: MathJsChain<U>,
     n: number | BigNumber,
     unit: Unit

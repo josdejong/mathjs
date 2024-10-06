@@ -1794,6 +1794,7 @@ Function ceil examples
   const u2 = math.unit('cm')
   const u3 = math.unit(5.51, 'cm')
   const unitArray = [u1, u3]
+
   const unitMatrix = math.matrix(unitArray)
   assert.deepStrictEqual(math.ceil(u1, u2), math.unit(4, 'cm'))
   assert.deepStrictEqual(math.ceil(u1, 1, u2), math.unit(3.2, 'cm'))
@@ -1801,10 +1802,19 @@ Function ceil examples
     math.unit(3.2, 'cm'),
     math.unit(5.6, 'cm')
   ])
+
   assert.deepStrictEqual(
     math.ceil(unitMatrix, 1, math.unit('cm')),
     math.matrix([math.unit(3.2, 'cm'), math.unit(5.6, 'cm')])
   )
+
+  const array = [u1, u3, 1]
+  array.pop()
+
+  assert.deepStrictEqual(math.ceil(array as Unit[], 1, math.unit('cm')), [
+    math.unit(3.2, 'cm'),
+    math.unit(5.6, 'cm')
+  ])
 
   // array input
   assert.deepStrictEqual(math.ceil([3.2, 3.8, -4.7]), [4, 4, -4])
