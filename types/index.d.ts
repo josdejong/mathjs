@@ -752,6 +752,11 @@ export interface MathJsInstance extends MathJsFactory {
     format?: 'sparse' | 'dense',
     dataType?: string
   ): Matrix
+  matrix<T extends MathScalarType>(
+    data: MathCollection<T>,
+    format?: 'sparse' | 'dense',
+    dataType?: string
+  ): Matrix<T>
 
   /**
    * Create a number or convert a string, boolean, or unit to a number.
@@ -3433,7 +3438,11 @@ export interface MathJsInstance extends MathJsFactory {
 
   isArray: ArrayConstructor['isArray']
 
+  isUnitArray(x: unknown): x is MathArray<Unit>
+
   isMatrix(x: unknown): x is Matrix
+
+  isUnitMatrix(x: unknown): x is Matrix<Unit>
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   isCollection(x: unknown): x is Matrix | any[]
@@ -3994,14 +4003,14 @@ export const {
   varianceTransformDependencies
 }: Record<string, FactoryFunctionMap>
 
-export interface Matrix<T = MathScalarType> {
+export interface Matrix<T extends MathScalarType = MathScalarType> {
   type: string
   storage(): string
   datatype(): string
   create(data: MathArray, datatype?: string): void
   density(): number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  subset(index: Index, replacement?: any, defaultValue?: any): Matrix<T>
+  subset(index: Index, replacement?: any, defaultValue?: any): Matrix
   apply(
     dim: number,
     callback: (array: MathCollection) => number
@@ -4009,9 +4018,9 @@ export interface Matrix<T = MathScalarType> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get(index: number[]): any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  set(index: number[], value: any, defaultValue?: number | string): Matrix<T>
-  resize(size: MathCollection, defaultValue?: number | string): Matrix<T>
-  clone(): Matrix
+  set(index: number[], value: any, defaultValue?: number | string): Matrix
+  resize(size: MathCollection, defaultValue?: number | string): Matrix
+  clone(): Matrix<T>
   size(): number[]
   map(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -4023,8 +4032,8 @@ export interface Matrix<T = MathScalarType> {
     callback: (a: any, b: number[], c: Matrix) => void,
     skipZeros?: boolean
   ): void
-  toArray(): MathArray
-  valueOf(): MathArray
+  toArray(): MathArray<T>
+  valueOf(): MathArray<T>
   format(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     options?: FormatOptions | number | BigNumber | ((value: any) => string)
@@ -7301,7 +7310,9 @@ export const {
   isUnit,
   isString,
   isArray,
+  isUnitArray,
   isMatrix,
+  isUnitMatrix,
   isCollection,
   isDenseMatrix,
   isSparseMatrix,

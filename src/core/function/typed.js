@@ -79,7 +79,9 @@ import {
   isString,
   isSymbolNode,
   isUndefined,
-  isUnit
+  isUnit,
+  isUnitArray,
+  isUnitMatrix
 } from '../../utils/is.js'
 import { digits } from '../../utils/number.js'
 
@@ -132,7 +134,9 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'string', test: isString },
     { name: 'Chain', test: isChain },
     { name: 'Array', test: isArray },
+    { name: 'isUnitArray', test: isUnitArray },
     { name: 'Matrix', test: isMatrix },
+    { name: 'isUnitMatrix', test: isUnitMatrix },
     { name: 'DenseMatrix', test: isDenseMatrix },
     { name: 'SparseMatrix', test: isSparseMatrix },
     { name: 'Range', test: isRange },
