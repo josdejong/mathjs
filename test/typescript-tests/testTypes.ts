@@ -1464,6 +1464,9 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
     [5, 6, 7, 8]
   ]
 
+  const cde: MathArray = [1]
+  const def: MathArray = [2]
+
   const Mbcd = math.matrix(bcd)
   const Mabc = math.matrix(abc)
 
@@ -1476,6 +1479,7 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   const _r2 = math.multiply(a, b)
 
   // 1D JS Array
+  const _r12 = math.multiply(cde, def) // equal 2
   const r3 = math.multiply(abc, bcd)
   const _r31 = r3[1] // By default least promised valid syntax
 
