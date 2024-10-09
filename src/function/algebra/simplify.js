@@ -7,23 +7,12 @@ import { createEmptyMap, createMap } from '../../utils/map.js'
 
 const name = 'simplify'
 const dependencies = [
-  'config',
   'typed',
   'parse',
-  'add',
-  'subtract',
-  'multiply',
-  'divide',
-  'pow',
-  'isZero',
   'equal',
   'resolve',
   'simplifyConstant',
   'simplifyCore',
-  '?fraction',
-  '?bignumber',
-  'mathWithTransform',
-  'matrix',
   'AccessorNode',
   'ArrayNode',
   'ConstantNode',
@@ -37,23 +26,12 @@ const dependencies = [
 
 export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   {
-    config,
     typed,
     parse,
-    add,
-    subtract,
-    multiply,
-    divide,
-    pow,
-    isZero,
     equal,
     resolve,
     simplifyConstant,
     simplifyCore,
-    fraction,
-    bignumber,
-    mathWithTransform,
-    matrix,
     AccessorNode,
     ArrayNode,
     ConstantNode,
@@ -199,7 +177,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   simplify.positiveContext = positiveContext
 
   function removeParens (node) {
-    return node.transform(function (node, path, parent) {
+    return node.transform(function (node) {
       return isParenthesisNode(node)
         ? removeParens(node.content)
         : node
