@@ -1,6 +1,10 @@
 # History
 
-# 2204-10-02, 13.2.0
+# unpublished changes since 13.2.0
+
+- Update to the latest version of `complex.js`.
+
+# 2024-10-02, 13.2.0
 
 - Feat: improve performance of functions `map`, `filter` and `forEach` (#3256).
   Thanks @dvd101x.
