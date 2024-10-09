@@ -148,6 +148,34 @@ describe('ceil', function () {
     assert.deepStrictEqual(ceil(bignumber(-799999.9999999999)), bignumber(-800000))
   })
 
+  it('should ceil units', function () {
+    assert.deepStrictEqual(ceil(unit('5.01 inch'), unit('inch')), unit('6 inch'))
+    assert.deepStrictEqual(ceil(unit('3.12345 cm'), 3, unit('cm')), unit('3.124 cm'))
+    assert.deepStrictEqual(ceil(unit('3.12345 cm'), unit('cm')), unit('4 cm'))
+    assert.deepStrictEqual(ceil(unit('2 inch'), unit('cm')), unit('6 cm'))
+    assert.deepStrictEqual(ceil(unit('2 inch'), 1, unit('cm')), unit('5.1 cm'))
+
+    // bignumber values
+    assert.deepStrictEqual(ceil(unit('3.12345 cm'), bignumber(2), unit('cm')), unit('3.13 cm'))
+    assert.deepStrictEqual(ceil(unit(bignumber('2'), 'inch'), unit('cm')), unit(bignumber('6'), 'cm'))
+    assert.deepStrictEqual(ceil(unit(bignumber('2'), 'inch'), bignumber(1), unit('cm')), unit(bignumber('5.1'), 'cm'))
+
+    // first argument is a collection
+    assert.deepStrictEqual(ceil([unit('2 inch'), unit('3 inch')], unit('cm')), [unit('6 cm'), unit('8 cm')])
+    assert.deepStrictEqual(ceil(matrix([unit('2 inch'), unit('3 inch')]), unit('cm')), matrix([unit('6 cm'), unit('8 cm')]))
+  })
+
+  it('should throw an error if used with a unit without valueless unit', function () {
+    assert.throws(function () { ceil(unit('5cm')) }, TypeError, 'Function ceil(unit) not supported')
+    assert.throws(function () { ceil(unit('5cm'), 2) }, TypeError, 'Function ceil(unit) not supported')
+    assert.throws(function () { ceil(unit('5cm'), bignumber(2)) }, TypeError, 'Function ceil(unit) not supported')
+  })
+
+  it('should throw an error if used with a unit with a second unit that is not valueless', function () {
+    assert.throws(function () { ceil(unit('2 inch'), 1, unit('10 cm')) }, Error)
+    assert.throws(function () { ceil(unit('2 inch'), unit('10 cm')) }, Error)
+  })
+
   it('should throw an error for units', function () {
     assert.throws(function () { ceil(unit('5cm')) }, TypeError, 'Function ceil(unit) not supported')
   })

@@ -46,7 +46,9 @@ import {
   UnitPrefix,
   Node,
   isSymbolNode,
-  MathScalarType
+  MathScalarType,
+  isUnitArray,
+  isUnitMatrix
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -649,6 +651,9 @@ Chaining examples
   expectTypeOf(math.chain([1]).ceil()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.unit('5.2cm')).ceil(math.unit('cm'))
+  ).toMatchTypeOf<MathJsChain<Unit>>()
 
   // fix
   expectTypeOf(math.chain(1).fix()).toMatchTypeOf<
@@ -657,6 +662,9 @@ Chaining examples
   expectTypeOf(math.chain([1]).fix()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.unit('5.2cm')).fix(math.unit('cm'))
+  ).toMatchTypeOf<MathJsChain<Unit>>()
 
   // floor
   expectTypeOf(math.chain(1).floor()).toMatchTypeOf<
@@ -665,6 +673,12 @@ Chaining examples
   expectTypeOf(math.chain([1]).floor()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.unit('5.2cm')).floor(math.unit('cm'))
+  ).toMatchTypeOf<MathJsChain<Unit>>()
+  expectTypeOf(
+    math.chain(math.unit('5.2cm')).round(2, math.unit('cm'))
+  ).toMatchTypeOf<MathJsChain<Unit>>()
 
   // round
   expectTypeOf(math.chain(1).round()).toMatchTypeOf<
@@ -1450,6 +1464,9 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
     [5, 6, 7, 8]
   ]
 
+  const cde: MathArray = [1]
+  const def: MathArray = [2]
+
   const Mbcd = math.matrix(bcd)
   const Mabc = math.matrix(abc)
 
@@ -1462,6 +1479,7 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   const _r2 = math.multiply(a, b)
 
   // 1D JS Array
+  const _r12 = math.multiply(cde, def) // equal 2
   const r3 = math.multiply(abc, bcd)
   const _r31 = r3[1] // By default least promised valid syntax
 
@@ -1777,6 +1795,82 @@ Function ceil examples
     math.complex(3.3, -2.7)
   )
 
+  // unit input
+  const u1 = math.unit(3.2, 'cm')
+  const u2 = math.unit('cm')
+  const u3 = math.unit(5.51, 'cm')
+
+  // unit array input
+  const unitArray = [u1, u3]
+  const array = [u1, u3, 1]
+  array.pop()
+  const array2 = [
+    [u1, u3],
+    [1, 5]
+  ]
+  array2.pop()
+
+  assert.deepStrictEqual(math.ceil(u1, u2), math.unit(4, 'cm'))
+  assert.deepStrictEqual(math.ceil(u1, 1, u2), math.unit(3.2, 'cm'))
+  assert.deepStrictEqual(math.ceil(unitArray, 1, math.unit('cm')), [
+    math.unit(3.2, 'cm'),
+    math.unit(5.6, 'cm')
+  ])
+
+  // Can assert that the array is a Unit[]
+  assert.deepStrictEqual(math.ceil(array as Unit[], 1, math.unit('cm')), [
+    math.unit(3.2, 'cm'),
+    math.unit(5.6, 'cm')
+  ])
+
+  // Can assert that the array is a Unit[][]
+  assert.deepStrictEqual(math.ceil(array2 as Unit[][], 1, math.unit('cm')), [
+    [math.unit(3.2, 'cm'), math.unit(5.6, 'cm')]
+  ])
+
+  // Can use a type guard to assert that the array is a Unit[]
+  if (isUnitArray(array)) {
+    assert.deepStrictEqual(math.ceil(array, 1, math.unit('cm')), [
+      math.unit(3.2, 'cm'),
+      math.unit(5.6, 'cm')
+    ])
+  }
+  // Can use a type guard to assert that the array is a Unit[][]
+  if (isUnitArray(array2)) {
+    assert.deepStrictEqual(math.ceil(array2, 1, math.unit('cm')), [
+      [math.unit(3.2, 'cm'), math.unit(5.6, 'cm')]
+    ])
+  }
+
+  // unit matrix input
+  const unitMatrix = math.matrix<Unit>(unitArray)
+  const matrix = math.matrix([u1, u3])
+  let matrix2 = math.matrix([
+    [u1, u3],
+    [1, 5]
+  ])
+
+  matrix2 = matrix2.subset(math.index([0], [0, 1]))
+
+  assert.deepStrictEqual(
+    math.ceil(unitMatrix, 1, math.unit('cm')),
+    math.matrix([math.unit(3.2, 'cm'), math.unit(5.6, 'cm')])
+  )
+
+  // Can assert that the matrix is a Matrix<Unit>
+  assert.deepStrictEqual(
+    math.ceil(matrix as Matrix<Unit>, 1, math.unit('cm')),
+    math.matrix([math.unit(3.2, 'cm'), math.unit(5.6, 'cm')])
+  )
+
+  // Can use a type guard to assert that the matrix is a Matrix<Unit>
+  if (isUnitMatrix(matrix2)) {
+    assert.deepStrictEqual(
+      math.ceil(matrix2, 1, math.unit('cm')),
+      math.matrix([[math.unit(3.2, 'cm'), math.unit(5.6, 'cm')]])
+    )
+  }
+
   // array input
   assert.deepStrictEqual(math.ceil([3.2, 3.8, -4.7]), [4, 4, -4])
   assert.deepStrictEqual(math.ceil([3.21, 3.82, -4.71], 1), [3.3, 3.9, -4.7])
@@ -1853,6 +1947,23 @@ Function fix examples
     math.complex(3.2, -2.7)
   )
 
+  // unit input
+  const u1 = math.unit(3.2, 'cm')
+  const u2 = math.unit('cm')
+  const u3 = math.unit(5.51, 'cm')
+  const unitArray = [u1, u3]
+  const unitMatrix = math.matrix<Unit>(unitArray)
+  assert.deepStrictEqual(math.fix(u1, u2), math.unit(3, 'cm'))
+  assert.deepStrictEqual(math.fix(u1, 1, u2), math.unit(3.2, 'cm'))
+  assert.deepStrictEqual(math.fix(unitArray, 1, math.unit('cm')), [
+    math.unit(3.2, 'cm'),
+    math.unit(5.5, 'cm')
+  ])
+  assert.deepStrictEqual(
+    math.fix(unitMatrix, 1, math.unit('cm')),
+    math.matrix([math.unit(3.2, 'cm'), math.unit(5.5, 'cm')])
+  )
+
   // array input
   assert.deepStrictEqual(math.fix([3.2, 3.8, -4.7]), [3, 3, -4])
   assert.deepStrictEqual(math.fix([3.21, 3.82, -4.71], 1), [3.2, 3.8, -4.7])
@@ -1927,6 +2038,23 @@ Function floor examples
   assert.deepStrictEqual(
     math.floor(c, math.bignumber(1)),
     math.complex(3.2, -2.8)
+  )
+
+  // unit input
+  const u1 = math.unit(3.2, 'cm')
+  const u2 = math.unit('cm')
+  const u3 = math.unit(5.51, 'cm')
+  const unitArray = [u1, u3]
+  const unitMatrix = math.matrix<Unit>(unitArray)
+  assert.deepStrictEqual(math.floor(u1, u2), math.unit(3, 'cm'))
+  assert.deepStrictEqual(math.floor(u1, 1, u2), math.unit(3.2, 'cm'))
+  assert.deepStrictEqual(math.floor(unitArray, 1, math.unit('cm')), [
+    math.unit(3.2, 'cm'),
+    math.unit(5.5, 'cm')
+  ])
+  assert.deepStrictEqual(
+    math.floor(unitMatrix, 1, math.unit('cm')),
+    math.matrix([math.unit(3.2, 'cm'), math.unit(5.5, 'cm')])
   )
 
   // array input
@@ -2006,13 +2134,28 @@ Function round examples
   )
 
   // unit input
+  const u1 = math.unit(3.2, 'cm')
+  const u2 = math.unit('cm')
+  const u3 = math.unit(5.51, 'cm')
+  const unitArray = [u1, u3]
+  const unitMatrix = math.matrix<Unit>(unitArray)
+  assert.deepStrictEqual(math.round(u1, u2), math.unit(3, 'cm'))
+  assert.deepStrictEqual(math.round(u1, 1, u2), math.unit(3.2, 'cm'))
   assert.deepStrictEqual(
-    math.round(math.unit('5.21 cm'), math.unit('cm')),
-    math.unit('5 cm')
+    math.round(u1, math.bignumber(1), u2),
+    math.unit(3.2, 'cm')
+  )
+  assert.deepStrictEqual(math.round(unitArray, 1, math.unit('cm')), [
+    math.unit(3.2, 'cm'),
+    math.unit(5.5, 'cm')
+  ])
+  assert.deepStrictEqual(
+    math.round(unitArray, math.bignumber(1), math.unit('cm')),
+    [math.unit(3.2, 'cm'), math.unit(5.5, 'cm')]
   )
   assert.deepStrictEqual(
-    math.round(math.unit('5.21 cm'), 1, math.unit('cm')),
-    math.unit('5.2 cm')
+    math.round(unitMatrix, 1, math.unit('cm')),
+    math.matrix([math.unit(3.2, 'cm'), math.unit(5.5, 'cm')])
   )
 
   // array input
@@ -2300,7 +2443,9 @@ Factory Test
     math.isUnit,
     math.isString,
     math.isArray,
+    math.isUnitArray,
     math.isMatrix,
+    math.isUnitMatrix,
     math.isCollection,
     math.isDenseMatrix,
     math.isSparseMatrix,
@@ -2368,11 +2513,14 @@ Factory Test
   if (math.isArray(x)) {
     expectTypeOf(x).toMatchTypeOf<unknown[]>()
   }
+  if (math.isUnitArray(x)) {
+    expectTypeOf(x).toMatchTypeOf<Unit[] | Unit[][]>()
+  }
   if (math.isMatrix(x)) {
     expectTypeOf(x).toMatchTypeOf<Matrix>()
   }
-  if (math.isDenseMatrix(x)) {
-    expectTypeOf(x).toMatchTypeOf<Matrix>()
+  if (math.isUnitMatrix(x)) {
+    expectTypeOf(x).toMatchTypeOf<Matrix<Unit>>()
   }
   if (math.isSparseMatrix(x)) {
     expectTypeOf(x).toMatchTypeOf<Matrix>()
