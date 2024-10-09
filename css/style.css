@@ -350,14 +350,6 @@ h6 a:hover {
   color: #dc3912;
 }
 
-#forkme {
-  position: absolute;
-  text-align: right;
-  top: 0;
-  right: 0;
-  border: 0;
-}
-
 #forkme.small {
   display: none;
 }
