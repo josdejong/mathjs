@@ -120,8 +120,8 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
         const yFrac = fraction(y)
         const yNum = number(yFrac)
         if (y === yNum || Math.abs((y - yNum) / y) < 1e-14) {
-          if (yFrac.d % 2 === 1) {
-            return (yFrac.n % 2 === 0 ? 1 : -1) * Math.pow(-x, y)
+          if (yFrac.d % 2n === 1n) {
+            return ((yFrac.n % 2n === 0n) ? 1 : -1) * Math.pow(-x, y)
           }
         }
       } catch (ex) {

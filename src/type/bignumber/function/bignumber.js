@@ -76,10 +76,10 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
     }),
 
     Fraction: function (x) {
-      return new BigNumber(x.n).div(x.d).times(x.s)
+      return new BigNumber(String(x.n)).div(String(x.d)).times(String(x.s))
     },
 
-    null: function (x) {
+    null: function (_x) {
       return new BigNumber(0)
     },
 
