@@ -256,7 +256,7 @@ The `map` and `forEach` functions can be used to apply a callback function to ea
 
 The callback functions can be functions, typed functions, inline functions (only in the parser) or compiled inline functions (only in the parser).
 
-The callback can have the follwoing inputs:
+The callback can have the following inputs:
 - **value**: the current value in the array or matrix.
 - **index**: the index of the current value expressed as an array of numbers.
 - **array**: the array or matrix being iterated.
