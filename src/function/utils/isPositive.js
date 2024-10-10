@@ -49,7 +49,7 @@ export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ t
 
     bigint: x => x > 0n,
 
-    Fraction: x => x.s > 0 && x.n > 0,
+    Fraction: x => x.s > 0n && x.n > 0n,
 
     Unit: typed.referToSelf(self =>
       x => typed.find(self, x.valueType())(x.value)),

@@ -21,7 +21,8 @@ const dependencies = [
   'ObjectNode',
   'OperatorNode',
   'ParenthesisNode',
-  'SymbolNode'
+  'SymbolNode',
+  'replacer'
 ]
 
 export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
@@ -40,7 +41,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     ObjectNode,
     OperatorNode,
     ParenthesisNode,
-    SymbolNode
+    SymbolNode,
+    replacer
   }
 ) => {
   const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction, defaultContext, realContext, positiveContext } =
@@ -816,7 +818,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     const uniqueSets = []
     const unique = {}
     for (let i = 0; i < sets.length; i++) {
-      const s = JSON.stringify(sets[i])
+      const s = JSON.stringify(sets[i], replacer)
       if (!unique[s]) {
         unique[s] = true
         uniqueSets.push(sets[i])

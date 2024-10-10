@@ -52,7 +52,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     Fraction: function (x) {
-      return new Fraction(x.s, 1)
+      return new Fraction(x.s)
     },
 
     // deep map collection, skip zeros since sign(0) = 0

@@ -2951,7 +2951,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   Unit.typeConverters = {
     BigNumber: function (x) {
-      if (x?.isFraction) return new BigNumber(x.n).div(x.d).times(x.s)
+      if (x?.isFraction) return new BigNumber(String(x.n)).div(String(x.d)).times(String(x.s))
       return new BigNumber(x + '') // stringify to prevent constructor error
     },
 
