@@ -60,8 +60,7 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'bigint, bigint': function (numerator, denominator) {
-      // TODO: remove the conversion from bigint to string as soon as Fraction.js supports that
-      return new Fraction(String(numerator), String(denominator))
+      return new Fraction(numerator, denominator)
     },
 
     null: function (x) {
