@@ -12,8 +12,8 @@ export type NoLiteralType<T> = T extends number
 
 export type MathNumericType = number | BigNumber | bigint | Fraction | Complex
 export type MathScalarType = MathNumericType | Unit
-export type MathArray<T extends MathScalarType = MathScalarType> = T[] | T[][]
-export type MathCollection<T extends MathScalarType = MathScalarType> =
+export type MathArray<T extends MathScalarType = MathNumericType> = T[] | T[][]
+export type MathCollection<T extends MathScalarType = MathNumericType> =
   | MathArray<T>
   | Matrix<T>
 export type MathType = MathScalarType | MathCollection
@@ -4003,7 +4003,7 @@ export const {
   varianceTransformDependencies
 }: Record<string, FactoryFunctionMap>
 
-export interface Matrix<T extends MathScalarType = MathScalarType> {
+export interface Matrix<T extends MathScalarType = MathNumericType> {
   type: string
   storage(): string
   datatype(): string
