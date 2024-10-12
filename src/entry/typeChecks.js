@@ -42,7 +42,5 @@ export {
   isResultSet,
   isSparseMatrix,
   isSymbolNode,
-  isUnit,
-  isUnitArray,
-  isUnitMatrix
+  isUnit
 } from '../utils/is.js'

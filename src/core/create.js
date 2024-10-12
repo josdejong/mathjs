@@ -46,9 +46,7 @@ import {
   isString,
   isSymbolNode,
   isUndefined,
-  isUnit,
-  isUnitArray,
-  isUnitMatrix
+  isUnit
 } from '../utils/is.js'
 import { deepFlatten, isLegacyFactory } from '../utils/object.js'
 import * as emitter from './../utils/emitter.js'
@@ -118,9 +116,7 @@ export function create (factories, config) {
     isUnit,
     isString,
     isArray,
-    isUnitArray,
     isMatrix,
-    isUnitMatrix,
     isCollection,
     isDenseMatrix,
     isSparseMatrix,

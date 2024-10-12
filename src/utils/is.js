@@ -66,26 +66,8 @@ export function isString (x) {
 
 export const isArray = Array.isArray
 
-/**
- * Test whether a value is a Array or Array of Arrays containing only units
- * @param {*} x
- * @returns {boolean} isUnitArray
- */
-export function isUnitArray (x) {
-  return (isArray(x) && x.every((v) => (isUnit(v) || (isArray(v) && isUnitArray(v))))) || false
-}
-
 export function isMatrix (x) {
   return (x && x.constructor.prototype.isMatrix === true) || false
-}
-
-/**
- * Test whether a value is a Matrix containing only units
- * @param {*} x
- * @returns {boolean} isUnitMatrix
- */
-export function isUnitMatrix (x) {
-  return (isMatrix(x) && isUnitArray(x.toArray())) || false
 }
 
 /**

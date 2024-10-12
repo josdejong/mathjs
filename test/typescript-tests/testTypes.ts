@@ -46,9 +46,7 @@ import {
   UnitPrefix,
   Node,
   isSymbolNode,
-  MathScalarType,
-  isUnitArray,
-  isUnitMatrix
+  MathScalarType
 } from 'mathjs'
 import * as assert from 'assert'
 import { expectTypeOf } from 'expect-type'
@@ -1801,7 +1799,7 @@ Function ceil examples
   const u3 = math.unit(5.51, 'cm')
 
   // unit array input
-  const unitArray = [u1, u3]
+  const unitArray: MathArray<Unit> = [u1, u3]
   const array = [u1, u3, 1]
   array.pop()
   const array2 = [
@@ -1828,29 +1826,9 @@ Function ceil examples
     [math.unit(3.2, 'cm'), math.unit(5.6, 'cm')]
   ])
 
-  // Can use a type guard to assert that the array is a Unit[]
-  if (isUnitArray(array)) {
-    assert.deepStrictEqual(math.ceil(array, 1, math.unit('cm')), [
-      math.unit(3.2, 'cm'),
-      math.unit(5.6, 'cm')
-    ])
-  }
-  // Can use a type guard to assert that the array is a Unit[][]
-  if (isUnitArray(array2)) {
-    assert.deepStrictEqual(math.ceil(array2, 1, math.unit('cm')), [
-      [math.unit(3.2, 'cm'), math.unit(5.6, 'cm')]
-    ])
-  }
-
   // unit matrix input
   const unitMatrix = math.matrix<Unit>(unitArray)
   const matrix = math.matrix([u1, u3])
-  let matrix2 = math.matrix([
-    [u1, u3],
-    [1, 5]
-  ])
-
-  matrix2 = matrix2.subset(math.index([0], [0, 1]))
 
   assert.deepStrictEqual(
     math.ceil(unitMatrix, 1, math.unit('cm')),
@@ -1862,14 +1840,6 @@ Function ceil examples
     math.ceil(matrix as Matrix<Unit>, 1, math.unit('cm')),
     math.matrix([math.unit(3.2, 'cm'), math.unit(5.6, 'cm')])
   )
-
-  // Can use a type guard to assert that the matrix is a Matrix<Unit>
-  if (isUnitMatrix(matrix2)) {
-    assert.deepStrictEqual(
-      math.ceil(matrix2, 1, math.unit('cm')),
-      math.matrix([[math.unit(3.2, 'cm'), math.unit(5.6, 'cm')]])
-    )
-  }
 
   // array input
   assert.deepStrictEqual(math.ceil([3.2, 3.8, -4.7]), [4, 4, -4])
@@ -2443,9 +2413,7 @@ Factory Test
     math.isUnit,
     math.isString,
     math.isArray,
-    math.isUnitArray,
     math.isMatrix,
-    math.isUnitMatrix,
     math.isCollection,
     math.isDenseMatrix,
     math.isSparseMatrix,
@@ -2513,14 +2481,8 @@ Factory Test
   if (math.isArray(x)) {
     expectTypeOf(x).toMatchTypeOf<unknown[]>()
   }
-  if (math.isUnitArray(x)) {
-    expectTypeOf(x).toMatchTypeOf<Unit[] | Unit[][]>()
-  }
   if (math.isMatrix(x)) {
     expectTypeOf(x).toMatchTypeOf<Matrix>()
-  }
-  if (math.isUnitMatrix(x)) {
-    expectTypeOf(x).toMatchTypeOf<Matrix<Unit>>()
   }
   if (math.isSparseMatrix(x)) {
     expectTypeOf(x).toMatchTypeOf<Matrix>()

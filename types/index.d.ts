@@ -3437,11 +3437,7 @@ export interface MathJsInstance extends MathJsFactory {
 
   isArray: ArrayConstructor['isArray']
 
-  isUnitArray(x: unknown): x is MathArray<Unit>
-
   isMatrix(x: unknown): x is Matrix
-
-  isUnitMatrix(x: unknown): x is Matrix<Unit>
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   isCollection(x: unknown): x is Matrix | any[]
@@ -7309,9 +7305,7 @@ export const {
   isUnit,
   isString,
   isArray,
-  isUnitArray,
   isMatrix,
-  isUnitMatrix,
   isCollection,
   isDenseMatrix,
   isSparseMatrix,
