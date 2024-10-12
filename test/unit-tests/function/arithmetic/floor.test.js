@@ -12,7 +12,7 @@ const i = math.i
 const sparse = math.sparse
 
 describe('floor', function () {
-  it('should round booleans correctly', function () {
+  it('should floor booleans correctly', function () {
     assert.strictEqual(floor(true), 1)
     assert.strictEqual(floor(false), 0)
   })
@@ -148,6 +148,34 @@ describe('floor', function () {
     assert.deepStrictEqual(floor(bignumber(-30000.000000000004)), bignumber(-30000))
   })
 
+  it('should floor units', function () {
+    assert.deepStrictEqual(floor(unit('5.99 inch'), unit('inch')), unit('5 inch'))
+    assert.deepStrictEqual(floor(unit('3.12345 cm'), 3, unit('cm')), unit('3.123 cm'))
+    assert.deepStrictEqual(floor(unit('3.12345 cm'), unit('cm')), unit('3 cm'))
+    assert.deepStrictEqual(floor(unit('2 inch'), unit('cm')), unit('5 cm'))
+    assert.deepStrictEqual(floor(unit('2 inch'), 1, unit('cm')), unit('5 cm'))
+
+    // bignumber values
+    assert.deepStrictEqual(floor(unit('3.12345 cm'), bignumber(2), unit('cm')), unit('3.12 cm'))
+    assert.deepStrictEqual(floor(unit(bignumber('2'), 'inch'), unit('cm')), unit(bignumber('5'), 'cm'))
+    assert.deepStrictEqual(floor(unit(bignumber('2'), 'inch'), bignumber(1), unit('cm')), unit(bignumber('5.0'), 'cm'))
+
+    // first argument is a collection
+    assert.deepStrictEqual(floor([unit('2 inch'), unit('3 inch')], unit('cm')), [unit('5 cm'), unit('7 cm')])
+    assert.deepStrictEqual(floor(matrix([unit('2 inch'), unit('3 inch')]), unit('cm')), matrix([unit('5 cm'), unit('7 cm')]))
+  })
+
+  it('should throw an error if used with a unit without valueless unit', function () {
+    assert.throws(function () { floor(unit('5cm')) }, TypeError, 'Function floor(unit) not supported')
+    assert.throws(function () { floor(unit('5cm'), 2) }, TypeError, 'Function floor(unit) not supported')
+    assert.throws(function () { floor(unit('5cm'), bignumber(2)) }, TypeError, 'Function floor(unit) not supported')
+  })
+
+  it('should throw an error if used with a unit with a second unit that is not valueless', function () {
+    assert.throws(function () { floor(unit('2 inch'), 1, unit('10 cm')) }, Error)
+    assert.throws(function () { floor(unit('2 inch'), unit('10 cm')) }, Error)
+  })
+
   it('should throw an error with a unit', function () {
     assert.throws(function () { floor(unit('5cm')) }, TypeError, 'Function floor(unit) not supported')
   })
@@ -226,9 +254,9 @@ describe('floor', function () {
   })
 
   it('should throw an error if requested number of decimals is incorrect', function () {
-    assert.throws(function () { floor(2.5, 1.5) }, Error, 'Number of decimals in function round must be an integer')
-    assert.throws(function () { floor(2.5, -2) }, Error, ' Number of decimals in function round must be in the range of 0-15')
-    assert.throws(function () { floor(2.5, Infinity) }, Error, ' Number of decimals in function round must be in the range of 0-15')
+    assert.throws(function () { floor(2.5, 1.5) }, Error, 'Number of decimals in function floor must be an integer')
+    assert.throws(function () { floor(2.5, -2) }, Error, ' Number of decimals in function floor must be in the range of 0-15')
+    assert.throws(function () { floor(2.5, Infinity) }, Error, ' Number of decimals in function floor must be in the range of 0-15')
   })
 
   it('should LaTeX floor', function () {
