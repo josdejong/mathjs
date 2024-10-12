@@ -1,9 +1,15 @@
 # History
 
-# changes since 13.1.1
+# unpublished changes since 13.2.0
+
+- Update to the latest version of `complex.js`.
+
+# 2024-10-02, 13.2.0
 
 - Feat: improve performance of functions `map`, `filter` and `forEach` (#3256).
   Thanks @dvd101x.
+- Feat: improve performance of the methods `map()` and `forEach()`
+  of `DenseMatrix` (#3251). Thanks @Galm007.
 - Fix: #3253 cannot use identifiers containing special characters in function
   `derivative`.
 - Fix: improve the type definitions of `ConstantNode` to support all data 
@@ -12,6 +18,8 @@
 - Fix: #3246 function `leafCount` missing in the TypeScript definitions.
 - Fix: #3267 implicit multiplication with a negative number and unit `in`.
 - Docs: fix broken links on the Configuration page. Thanks @vassudanagunta.
+- Docs: document the syntax of `map` and `forEach` in the expression parser
+  (#3272). Thanks @dvd101x.
 
 # 2024-08-27, 13.1.1
 
