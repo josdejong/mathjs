@@ -27,6 +27,24 @@ describe('sum', function () {
     assert.strictEqual(sum([['2', '3'], ['4', '5']]), 14)
   })
 
+  // eslint-disable-next-line mocha/no-skipped-tests
+  it.skip('should return the max of strings by their numerical value (with BigNumber config)', function () {
+    // TODO: requires math.add to recon with config.number when parsing strings
+    const bigmath = math.create({ number: 'BigNumber' })
+    assert.deepStrictEqual(bigmath.sum('10', '3', '4', '2'), bigmath.bignumber('19'))
+    assert.deepStrictEqual(bigmath.sum('10'), bigmath.bignumber(10))
+  })
+
+  // eslint-disable-next-line mocha/no-skipped-tests
+  it.skip('should return the max of strings by their numerical value (with bigint config)', function () {
+    // TODO: requires math.add to recon with config.number when parsing strings
+    const bigmath = math.create({ number: 'bigint' })
+    assert.strictEqual(bigmath.sum('10', '3', '4', '2'), 19n)
+    assert.strictEqual(bigmath.sum('10'), 10n)
+    assert.strictEqual(bigmath.sum('2.5'), 2.5) // fallback to number
+    assert.strictEqual(bigmath.sum('2.5', '4'), 6.5) // fallback to number
+  })
+
   it('should return the sum of complex numbers', function () {
     assert.deepStrictEqual(sum(new Complex(2, 3), new Complex(-1, 2)), new Complex(1, 5))
   })
@@ -117,7 +135,7 @@ describe('sum', function () {
     assert.throws(function () { sum(2, 3, null) }, /Cannot calculate sum, unexpected type of argument/)
     assert.throws(function () { sum([2, 3, null]) }, /Cannot calculate sum, unexpected type of argument/)
     assert.throws(function () { sum('a', 'b') }, /Error: Cannot convert "a" to a number/)
-    assert.throws(function () { sum('a') }, /SyntaxError: String "a" is no valid number/)
+    assert.throws(function () { sum('a') }, /SyntaxError: String "a" is not a valid number/)
   })
 
   it('should LaTeX sum', function () {

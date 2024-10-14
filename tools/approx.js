@@ -1,5 +1,5 @@
-const assert = require('assert')
-const hasOwnProperty = require('./utils').hasOwnProperty
+import assert from 'assert' // do not use 'node:assert' here, that is not supported by Karma
+import { hasOwnProperty } from './utils.js'
 
 const EPSILON = 0.0001
 
@@ -19,7 +19,7 @@ function isNumber (value) {
  * @param {Number | BigNumber | Complex | Fraction} b
  * @param {Number} [epsilon]
  */
-exports.equal = function equal (a, b, epsilon) {
+export function approxEqual (a, b, epsilon) {
   if (epsilon === undefined) {
     epsilon = EPSILON
   }
@@ -40,19 +40,19 @@ exports.equal = function equal (a, b, epsilon) {
       assert.ok(diff <= maxDiff, (a + ' ~= ' + b + ' (epsilon: ' + epsilon + ')'))
     }
   } else if (a && a.isBigNumber) {
-    return exports.equal(a.toNumber(), b, epsilon)
+    return approxEqual(a.toNumber(), b, epsilon)
   } else if (b && b.isBigNumber) {
-    return exports.equal(a, b.toNumber(), epsilon)
+    return approxEqual(a, b.toNumber(), epsilon)
   } else if ((a && a.isComplex) || (b && b.isComplex)) {
     if (a && a.isComplex && b && b.isComplex) {
-      exports.equal(a.re, b.re, epsilon)
-      exports.equal(a.im, b.im, epsilon)
+      approxEqual(a.re, b.re, epsilon)
+      approxEqual(a.im, b.im, epsilon)
     } else if (a && a.isComplex) {
-      exports.equal(a.re, b, epsilon)
-      exports.equal(a.im, 0, epsilon)
+      approxEqual(a.re, b, epsilon)
+      approxEqual(a.im, 0, epsilon)
     } else if (b && b.isComplex) {
-      exports.equal(a, b.re, epsilon)
-      exports.equal(0, b.im, epsilon)
+      approxEqual(a, b.re, epsilon)
+      approxEqual(0, b.im, epsilon)
     }
   } else {
     assert.strictEqual(a, b)
@@ -64,21 +64,22 @@ exports.equal = function equal (a, b, epsilon) {
  * Will deep compare all values of Arrays and Objects element wise.
  * @param {*} a
  * @param {*} b
+ * @param {number} [epsilon]
  */
-exports.deepEqual = function deepEqual (a, b, epsilon) {
+export function approxDeepEqual (a, b, epsilon) {
   let prop, i, len
 
   if (Array.isArray(a) && Array.isArray(b)) {
     assert.strictEqual(a.length, b.length, a + ' ~= ' + b)
     for (i = 0, len = a.length; i < len; i++) {
-      deepEqual(a[i], b[i], epsilon)
+      approxDeepEqual(a[i], b[i], epsilon)
     }
   } else if (a instanceof Object && b instanceof Object) {
     for (prop in a) {
       if (hasOwnProperty(a, prop)) {
         assert.ok(hasOwnProperty(b, prop), a[prop] + ' ~= ' + b[prop] +
           ' (epsilon: ' + epsilon + ', prop: ' + prop + ')')
-        deepEqual(a[prop], b[prop], epsilon)
+        approxDeepEqual(a[prop], b[prop], epsilon)
       }
     }
 
@@ -86,10 +87,10 @@ exports.deepEqual = function deepEqual (a, b, epsilon) {
       if (hasOwnProperty(b, prop)) {
         assert.ok(hasOwnProperty(a, prop), a[prop] + ' ~= ' + b[prop] +
           ' (epsilon: ' + epsilon + ', prop: ' + prop + ')')
-        deepEqual(a[prop], b[prop], epsilon)
+        approxDeepEqual(a[prop], b[prop], epsilon)
       }
     }
   } else {
-    exports.equal(a, b, epsilon)
+    approxEqual(a, b, epsilon)
   }
 }

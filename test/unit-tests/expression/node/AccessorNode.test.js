@@ -515,6 +515,30 @@ describe('AccessorNode', function () {
     assert.strictEqual(n.toTex({ handler: customFunction }), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ')
   })
 
+  it('should stringify an AccessorNode with custom toHTML', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node, options) {
+      if (node.type === 'AccessorNode') {
+        let latex = node.object.toHTML(options) + ' at '
+        node.index.dimensions.forEach(function (range) {
+          latex += range.toHTML(options) + ', '
+        })
+
+        return latex
+      } else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
+      }
+    }
+
+    const a = new SymbolNode('a')
+    const b = new ConstantNode(1)
+    const c = new ConstantNode(2)
+
+    const n = new AccessorNode(a, new IndexNode([b, c]))
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), '<span class="math-symbol">a</span> at const(1, number), const(2, number), ')
+  })
+
   it('toJSON and fromJSON', function () {
     const a = new SymbolNode('a')
     const b = new ConstantNode(1)

@@ -1,5 +1,6 @@
 // test gcd
 import assert from 'assert'
+import { ArgumentsError } from '../../../../src/error/ArgumentsError.js'
 
 import math from '../../../../src/defaultInstance.js'
 const matrix = math.matrix
@@ -15,6 +16,34 @@ describe('gcd', function () {
     assert.strictEqual(gcd(12, -8), 4)
     assert.strictEqual(gcd(15, 3), 3)
     assert.strictEqual(gcd(25, 15, -10, 30), 5)
+  })
+
+  it('should find the greatest common divisor of two or more numbers with 1d array argument', function () {
+    assert.strictEqual(gcd([12, 8]), 4)
+    assert.strictEqual(gcd([25, 15, -10, 30]), 5)
+  })
+
+  it('should find the greatest common divisor of two or more numbers with 1d array argument', function () {
+    assert.strictEqual(gcd([[12, 8]]), 4)
+    assert.strictEqual(gcd([[25, 15, -10, 30]]), 5)
+  })
+
+  it('should throw exception on multi dimensional array argument', function () {
+    assert.throws(() => gcd([[1], [2]]), ArgumentsError)
+  })
+
+  it('should find the greatest common divisor of two or more numbers with 1d matrix argument', function () {
+    assert.strictEqual(gcd(matrix([12, 8])), 4)
+    assert.strictEqual(gcd(matrix([25, 15, -10, 30])), 5)
+  })
+
+  it('should find the greatest common divisor of two or more numbers with nested 1d matrix argument', function () {
+    assert.strictEqual(gcd(matrix([[12, 8]])), 4)
+    assert.strictEqual(gcd(matrix([[25, 15, -10, 30]])), 5)
+  })
+
+  it('should throw exception on multi dimensional matrix argument', function () {
+    assert.throws(() => gcd(matrix([[1], [2]])), ArgumentsError)
   })
 
   it('should calculate gcd for edge cases around zero', function () {
@@ -104,6 +133,11 @@ describe('gcd', function () {
     it('should find the greatest common divisor array - scalar', function () {
       assert.deepStrictEqual(gcd([5, 18, 3], 3), [1, 3, 3])
       assert.deepStrictEqual(gcd(3, [5, 18, 3]), [1, 3, 3])
+    })
+
+    it('should find the greatest common divisor between broadcastable arrays', function () {
+      assert.deepStrictEqual(gcd([5, 18, 3], [[3], [2], [1]]), [[1, 3, 3], [1, 2, 1], [1, 1, 1]])
+      assert.deepStrictEqual(gcd([[5], [18], [3]], [3, 2, 1]), [[1, 1, 1], [3, 2, 1], [3, 1, 1]])
     })
 
     it('should find the greatest common divisor array - array', function () {

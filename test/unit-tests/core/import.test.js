@@ -1,6 +1,6 @@
 import assert from 'assert'
 import mathjs from '../../../src/defaultInstance.js'
-import approx from '../../../tools/approx.js'
+import { approxEqual } from '../../../tools/approx.js'
 import { factory } from '../../../src/utils/factory.js'
 import { create } from '../../../src/core/create.js'
 import { hasOwnProperty } from '../../../src/utils/object.js'
@@ -162,7 +162,7 @@ describe('import', function () {
     assert.deepStrictEqual(math.a, 24)
 
     math.import({ pi: 24 }, { silent: true })
-    approx.equal(math.pi, Math.PI) // pi was ignored
+    approxEqual(math.pi, Math.PI) // pi was ignored
   })
 
   it('should import a boolean', function () {

@@ -12,15 +12,16 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'zeros',
-  'not'
+  'not',
+  'concat'
 ]
 
-export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not }) => {
+export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not, concat }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Logical `and`. Test whether two values are both defined with a nonzero/nonempty value.
@@ -45,8 +46,8 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    *    not, or, xor
    *
-   * @param  {number | BigNumber | Complex | Unit | Array | Matrix} x First value to check
-   * @param  {number | BigNumber | Complex | Unit | Array | Matrix} y Second value to check
+   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
+   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
    * @return {boolean | Array | Matrix}
    *            Returns true when both inputs are defined with a nonzero/nonempty value.
    */
@@ -62,6 +63,8 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       'BigNumber, BigNumber': function (x, y) {
         return !x.isZero() && !y.isZero() && !x.isNaN() && !y.isNaN()
       },
+
+      'bigint, bigint': andNumber,
 
       'Unit, Unit': typed.referToSelf(self =>
         (x, y) => self(x.value || 0, y.value || 0)),

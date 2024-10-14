@@ -1,3 +1,6 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
 import { factory } from '../../../utils/factory.js'
 import { csLeaf } from './csLeaf.js'
 
@@ -16,8 +19,6 @@ export const createCsCounts = /* #__PURE__ */ factory(name, dependencies, ({ tra
    * @param {Matrix} ata         Count the columns of A'A instead
    *
    * @return                     An array of size n of the column counts or null on error
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
   return function (a, parent, post, ata) {
     // check inputs

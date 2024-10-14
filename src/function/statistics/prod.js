@@ -1,5 +1,6 @@
 import { deepForEach } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
+import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'prod'
@@ -8,7 +9,7 @@ const dependencies = ['typed', 'config', 'multiplyScalar', 'numeric']
 export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, numeric }) => {
   /**
    * Compute the product of a matrix or a list with values.
-   * In case of a (multi dimensional) array or matrix, the sum of all
+   * In case of a multidimensional array or matrix, the sum of all
    * elements will be calculated.
    *
    * Syntax:
@@ -67,7 +68,7 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     // make sure returning numeric value: parse a string into a numeric value
     if (typeof prod === 'string') {
-      prod = numeric(prod, config.number)
+      prod = numeric(prod, safeNumberType(prod, config))
     }
 
     if (prod === undefined) {

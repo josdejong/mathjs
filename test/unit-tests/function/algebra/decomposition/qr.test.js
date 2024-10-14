@@ -1,7 +1,7 @@
 // test lup
 import assert from 'assert'
 
-import approx from '../../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../../tools/approx.js'
 import math from '../../../../../src/defaultInstance.js'
 
 /**
@@ -67,7 +67,7 @@ function assertValidQRDecomposition (A, Q, R) {
   assert.deepStrictEqual(math.size(R).valueOf(), [rows, cols])
 
   // A = Q * R
-  approx.deepEqual(math.multiply(Q, R).valueOf(), A.valueOf())
+  approxDeepEqual(math.multiply(Q, R).valueOf(), A.valueOf())
 
   // Q has unitary (orthonormal for real A) columns
   // use math.equal as approx.deepEqual cannot handle complex vs real number comparision
@@ -93,7 +93,7 @@ function assertValidQRDecomposition (A, Q, R) {
 
   for (let i = 0; i < raw.R._data.length; ++i) {
     for (let j = 0; j < i && j < (raw.R._data[0] || []).length; ++j) {
-      approx.equal(raw.R._data[i][j], 0, 1e-10)
+      approxEqual(raw.R._data[i][j], 0, 1e-10)
     }
   }
 }
@@ -104,9 +104,9 @@ describe('qr', function () {
 
     const r = math.qr(m)
     // L
-    approx.deepEqual(r.Q.valueOf(), [[0.6, -0.8], [0.8, 0.6]])
+    approxDeepEqual(r.Q.valueOf(), [[0.6, -0.8], [0.8, 0.6]])
     // U
-    approx.deepEqual(r.R.valueOf(), [[25, 90], [0, 15]])
+    approxDeepEqual(r.R.valueOf(), [[25, 90], [0, 15]])
     // verify
     assertValidQRDecomposition(m, r.Q, r.R)
 
@@ -132,9 +132,9 @@ describe('qr', function () {
 
     const r = math.qr(m)
     // Q
-    approx.deepEqual(r.Q.valueOf(), [[0.6, -0.8], [0.8, 0.6]])
+    approxDeepEqual(r.Q.valueOf(), [[0.6, -0.8], [0.8, 0.6]])
     // R
-    approx.deepEqual(r.R.valueOf(), [[25, 90], [0, 15]])
+    approxDeepEqual(r.R.valueOf(), [[25, 90], [0, 15]])
     // verify
     assertValidQRDecomposition(m, r.Q, r.R)
   })
@@ -144,7 +144,7 @@ describe('qr', function () {
 
     const r = math.qr(m)
     // Q
-    approx.deepEqual(
+    approxDeepEqual(
       r.Q.valueOf(),
       [
         [0.02241566559605479, 0.9997386855840484, -0.004483133119210979],
@@ -153,7 +153,7 @@ describe('qr', function () {
       ])
 
     // R
-    approx.deepEqual(
+    approxDeepEqual(
       r.R.valueOf(),
       [
         [223.0582883463423, -0, 34.912399165855504],
@@ -175,7 +175,7 @@ describe('qr', function () {
 
     const r = math.qr(m)
     // Q
-    approx.deepEqual(
+    approxDeepEqual(
       r.Q,
       math.matrix(
         [
@@ -184,7 +184,7 @@ describe('qr', function () {
         ]
       ))
     // R
-    approx.deepEqual(
+    approxDeepEqual(
       r.R,
       math.matrix(
         [
@@ -255,7 +255,7 @@ describe('qr', function () {
     const r = math.qr(m)
 
     // Q
-    approx.deepEqual(
+    approxDeepEqual(
       r.Q.valueOf(),
       [[0.21821789023599236, 0.9759000729485332, 1.1102230246251565e-16],
         [0.4364357804719848, -0.09759000729485323, 0.8944271909999157],
@@ -263,7 +263,7 @@ describe('qr', function () {
       ])
 
     // R
-    approx.deepEqual(
+    approxDeepEqual(
       r.R.valueOf(),
       [
         [4.582575694955841, 9.165151389911681, 11.129112402035613],
@@ -414,7 +414,7 @@ describe('qr', function () {
     const r = math.qr(m)
 
     // Q
-    approx.deepEqual(
+    approxDeepEqual(
       r.Q,
       math.evaluate(`complex([
         [0, 1],

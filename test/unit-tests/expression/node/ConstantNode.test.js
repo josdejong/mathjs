@@ -15,6 +15,7 @@ describe('ConstantNode', function () {
     // TODO: extensively test each of the supported types
 
     assert.strictEqual(new ConstantNode(3).value, 3)
+    assert.strictEqual(new ConstantNode(3n).value, 3n)
     assert.strictEqual(new ConstantNode('hello').value, 'hello')
     assert.strictEqual(new ConstantNode(true).value, true)
     assert.strictEqual(new ConstantNode(false).value, false)
@@ -37,6 +38,9 @@ describe('ConstantNode', function () {
 
     expr = new ConstantNode(2.3).compile()
     assert.strictEqual(expr.evaluate(), 2.3)
+
+    expr = new ConstantNode(4n).compile()
+    assert.strictEqual(expr.evaluate(), 4n)
 
     expr = new ConstantNode('hello').compile()
     assert.strictEqual(expr.evaluate(), 'hello')
@@ -135,9 +139,11 @@ describe('ConstantNode', function () {
   it('should stringify a ConstantNode', function () {
     assert.strictEqual(new ConstantNode(3).toString(), '3')
     assert.deepStrictEqual(new ConstantNode(3).toString(), '3')
+    assert.deepStrictEqual(new ConstantNode(3n).toString(), '3')
     assert.deepStrictEqual(new ConstantNode(math.bignumber('1e500')).toString(), '1e+500')
     assert.deepStrictEqual(new ConstantNode(math.fraction(2, 3)).toString(), '2/3')
     assert.strictEqual(new ConstantNode('hi').toString(), '"hi"')
+    assert.strictEqual(new ConstantNode('with " double quote').toString(), '"with \\" double quote"')
     assert.strictEqual(new ConstantNode(true).toString(), 'true')
     assert.strictEqual(new ConstantNode(false).toString(), 'false')
     assert.strictEqual(new ConstantNode(undefined).toString(), 'undefined')
@@ -157,6 +163,19 @@ describe('ConstantNode', function () {
     assert.strictEqual(n.toString({ handler: customFunction }), 'const(1)')
   })
 
+  it('should stringify a ConstantNode with custom toHTML', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node) {
+      if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ')'
+      }
+    }
+
+    const n = new ConstantNode(1)
+
+    assert.strictEqual(n.toHTML({ handler: customFunction }), 'const(1)')
+  })
+
   it('toJSON and fromJSON', function () {
     const a = new ConstantNode(2.3)
 
@@ -174,7 +193,13 @@ describe('ConstantNode', function () {
   it('should LaTeX a ConstantNode', function () {
     assert.strictEqual(new ConstantNode(3).toTex(), '3')
     assert.deepStrictEqual(new ConstantNode(3).toTex(), '3')
+    assert.deepStrictEqual(new ConstantNode(42n).toTex(), '42')
     assert.deepStrictEqual(new ConstantNode(math.bignumber('3')).toTex(), '3')
+    assert.deepStrictEqual(new ConstantNode(math.bignumber('1.3e7')).toTex(), '1.3\\cdot10^{+7}')
+    assert.deepStrictEqual(new ConstantNode(math.bignumber('1e500')).toTex(), '1\\cdot10^{+500}')
+    assert.deepStrictEqual(new ConstantNode(math.bignumber('1e-500')).toTex(), '1\\cdot10^{-500}')
+    assert.deepStrictEqual(new ConstantNode(math.bignumber('12345678901234567890')).toTex(),
+      '1.234567890123456789\\cdot10^{+19}')
     assert.strictEqual(new ConstantNode('hi').toTex(), '\\mathtt{"hi"}')
     assert.strictEqual(new ConstantNode(true).toTex(), 'true')
     assert.strictEqual(new ConstantNode(false).toTex(), 'false')
@@ -218,6 +243,6 @@ describe('ConstantNode', function () {
   it('should escape strings in toTex', function () {
     const n = new ConstantNode('space tab\tunderscore_bla$/')
 
-    assert.strictEqual(n.toTex(), '\\mathtt{"space~tab\\qquad{}underscore\\_bla\\$/"}')
+    assert.strictEqual(n.toTex(), '\\mathtt{"space~tab\\textbackslash{}tunderscore\\_bla\\$/"}')
   })
 })

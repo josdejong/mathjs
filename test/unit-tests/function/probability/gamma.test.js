@@ -1,7 +1,7 @@
 /* eslint-disable no-loss-of-precision */
 
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const gamma = math.gamma
@@ -26,29 +26,29 @@ describe('gamma', function () {
   })
 
   it('should calculate the gamma of a rational number', function () {
-    approx.equal(gamma(0.125), 7.5339415987976119046992)
-    approx.equal(gamma(0.25), 3.625609908221908311930685)
-    approx.equal(gamma(0.5), 1.77245385090551602729816748)
-    approx.equal(gamma(1.5), 0.88622692545275801364908374)
-    approx.equal(gamma(2.5), 1.32934038817913702047362561)
-    approx.equal(gamma(3.5), 3.32335097044784255118406403)
-    approx.equal(gamma(30.5), 4.8226969334909086010917483e+31)
-    approx.equal(gamma(144.9), 3.37554680943478639050191e+249)
+    approxEqual(gamma(0.125), 7.5339415987976119046992)
+    approxEqual(gamma(0.25), 3.625609908221908311930685)
+    approxEqual(gamma(0.5), 1.77245385090551602729816748)
+    approxEqual(gamma(1.5), 0.88622692545275801364908374)
+    approxEqual(gamma(2.5), 1.32934038817913702047362561)
+    approxEqual(gamma(3.5), 3.32335097044784255118406403)
+    approxEqual(gamma(30.5), 4.8226969334909086010917483e+31)
+    approxEqual(gamma(144.9), 3.37554680943478639050191e+249)
 
-    approx.equal(gamma(-0.5), -3.54490770181103205459633)
-    approx.equal(gamma(-1.5), 2.3632718012073547030642233)
-    approx.equal(gamma(-2.5), -0.945308720482941881225689)
-    approx.equal(gamma(-144.9), -2.078523735791760166777e-251)
+    approxEqual(gamma(-0.5), -3.54490770181103205459633)
+    approxEqual(gamma(-1.5), 2.3632718012073547030642233)
+    approxEqual(gamma(-2.5), -0.945308720482941881225689)
+    approxEqual(gamma(-144.9), -2.078523735791760166777e-251)
   })
 
   it('should calculate the gamma of an irrational number', function () {
-    approx.equal(gamma(Math.SQRT2), 0.8865814287192591250809176)
-    approx.equal(gamma(Math.PI), 2.2880377953400324179595889)
-    approx.equal(gamma(Math.E), 1.56746825577405307486334)
+    approxEqual(gamma(Math.SQRT2), 0.8865814287192591250809176)
+    approxEqual(gamma(Math.PI), 2.2880377953400324179595889)
+    approxEqual(gamma(Math.E), 1.56746825577405307486334)
 
-    approx.equal(gamma(-Math.SQRT2), 2.599459907524570073533756846)
-    approx.equal(gamma(-Math.PI), 1.01569714446021834110892259347)
-    approx.equal(gamma(-Math.E), -0.952681729748073099220537210195)
+    approxEqual(gamma(-Math.SQRT2), 2.599459907524570073533756846)
+    approxEqual(gamma(-Math.PI), 1.01569714446021834110892259347)
+    approxEqual(gamma(-Math.E), -0.952681729748073099220537210195)
   })
 
   it('should calculate the gamma of an integer bignumber', function () {
@@ -97,46 +97,46 @@ describe('gamma', function () {
   })
 */
   it('should calculate the gamma of an imaginary unit', function () {
-    approx.deepEqual(gamma(math.i), math.complex(-0.154949828301810685124955130,
+    approxDeepEqual(gamma(math.i), math.complex(-0.154949828301810685124955130,
       -0.498015668118356042713691117))
   })
 
   it('should calculate the gamma of a complex number', function () {
-    approx.deepEqual(gamma(math.complex(0, 0)), math.complex(Infinity))
-    approx.deepEqual(gamma(math.complex(0.0001, 0.0001)), math.complex(4999.422883240696,
+    approxDeepEqual(gamma(math.complex(0, 0)), math.complex(Infinity))
+    approxDeepEqual(gamma(math.complex(0.0001, 0.0001)), math.complex(4999.422883240696,
       -4999.9999011125))
-    approx.deepEqual(gamma(math.complex(1, 1)), math.complex(0.498015668118356,
+    approxDeepEqual(gamma(math.complex(1, 1)), math.complex(0.498015668118356,
       -0.154949828301810))
-    approx.deepEqual(gamma(math.complex(1, -1)), math.complex(0.498015668118356,
+    approxDeepEqual(gamma(math.complex(1, -1)), math.complex(0.498015668118356,
       0.154949828301810))
-    approx.deepEqual(gamma(math.complex(-1, 1)), math.complex(-0.17153291990827,
+    approxDeepEqual(gamma(math.complex(-1, 1)), math.complex(-0.17153291990827,
       0.32648274821008))
-    approx.deepEqual(gamma(math.complex(-1, -1)), math.complex(-0.1715329199082,
+    approxDeepEqual(gamma(math.complex(-1, -1)), math.complex(-0.1715329199082,
       -0.3264827482100))
-    approx.deepEqual(gamma(math.complex(0.5, 0.5)), math.complex(0.81816399954,
+    approxDeepEqual(gamma(math.complex(0.5, 0.5)), math.complex(0.81816399954,
       -0.76331382871))
-    approx.deepEqual(gamma(math.complex(0.5, -0.5)), math.complex(0.81816399954,
+    approxDeepEqual(gamma(math.complex(0.5, -0.5)), math.complex(0.81816399954,
       0.76331382871))
-    approx.deepEqual(gamma(math.complex(-0.5, 0.5)), math.complex(-1.5814778282,
+    approxDeepEqual(gamma(math.complex(-0.5, 0.5)), math.complex(-1.5814778282,
       -0.0548501708))
-    approx.deepEqual(gamma(math.complex(-0.5, -0.5)), math.complex(-1.581477828,
+    approxDeepEqual(gamma(math.complex(-0.5, -0.5)), math.complex(-1.581477828,
       0.054850170))
-    approx.deepEqual(gamma(math.complex(-0.45, -0.15)), math.complex(-3.2466111264,
+    approxDeepEqual(gamma(math.complex(-0.45, -0.15)), math.complex(-3.2466111264,
       0.2219549583256))
-    approx.deepEqual(gamma(math.complex(0.49, 1)), math.complex(0.294136245907794,
+    approxDeepEqual(gamma(math.complex(0.49, 1)), math.complex(0.294136245907794,
       -0.4298609111267))
-    approx.deepEqual(gamma(math.complex(9.43, -4.15)), math.complex(-39533.5179564,
+    approxDeepEqual(gamma(math.complex(9.43, -4.15)), math.complex(-39533.5179564,
       -7863.025662998))
-    approx.deepEqual(gamma(math.complex(5, 3)), math.complex(0.016041882741652,
+    approxDeepEqual(gamma(math.complex(5, 3)), math.complex(0.016041882741652,
       -9.433293289755986))
-    approx.deepEqual(gamma(math.complex(5, -3)), math.complex(0.016041882741652,
+    approxDeepEqual(gamma(math.complex(5, -3)), math.complex(0.016041882741652,
       9.433293289755986))
-    approx.deepEqual(gamma(math.complex(-4.242, 0.0001)), math.complex(-0.131096144111857,
+    approxDeepEqual(gamma(math.complex(-4.242, 0.0001)), math.complex(-0.131096144111857,
       -0.000063737771212))
 
-    approx.deepEqual(math.multiply(gamma(math.complex(-5, 3)), 1e6),
+    approxDeepEqual(math.multiply(gamma(math.complex(-5, 3)), 1e6),
       math.complex(7.896487481239, 4.756173836597))
-    approx.deepEqual(math.multiply(gamma(math.complex(-5, -3)), 1e6),
+    approxDeepEqual(math.multiply(gamma(math.complex(-5, -3)), 1e6),
       math.complex(7.8964874812, -4.7561738365))
   })
 

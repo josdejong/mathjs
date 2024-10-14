@@ -1,8 +1,8 @@
-import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
-import { filter, filterRegExp } from '../../utils/array.js'
-import { maxArgumentCount } from '../../utils/function.js'
-import { compileInlineExpression } from './utils/compileInlineExpression.js'
+import { createFilter } from '../../function/matrix/filter.js'
 import { factory } from '../../utils/factory.js'
+import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
+import { compileInlineExpression } from './utils/compileInlineExpression.js'
+import { createTransformCallback } from './utils/transformCallback.js'
 
 const name = 'filter'
 const dependencies = ['typed']
@@ -16,66 +16,42 @@ export const createFilterTransform = /* #__PURE__ */ factory(name, dependencies,
    * so you can do something like 'filter([3, -2, 5], x > 0)'.
    */
   function filterTransform (args, math, scope) {
-    let x, callback
+    const filter = createFilter({ typed })
+    const transformCallback = createTransformCallback({ typed })
 
-    if (args[0]) {
-      x = args[0].compile().evaluate(scope)
+    if (args.length === 0) {
+      return filter()
+    }
+    let x = args[0]
+
+    if (args.length === 1) {
+      return filter(x)
     }
 
-    if (args[1]) {
-      if (isSymbolNode(args[1]) || isFunctionAssignmentNode(args[1])) {
+    const N = args.length - 1
+    let callback = args[N]
+
+    if (x) {
+      x = _compileAndEvaluate(x, scope)
+    }
+
+    if (callback) {
+      if (isSymbolNode(callback) || isFunctionAssignmentNode(callback)) {
         // a function pointer, like filter([3, -2, 5], myTestFunction)
-        callback = args[1].compile().evaluate(scope)
+        callback = _compileAndEvaluate(callback, scope)
       } else {
         // an expression like filter([3, -2, 5], x > 0)
-        callback = compileInlineExpression(args[1], math, scope)
+        callback = compileInlineExpression(callback, math, scope)
       }
     }
 
-    return filter(x, callback)
+    return filter(x, transformCallback(callback, N))
   }
   filterTransform.rawArgs = true
 
-  // one based version of function filter
-  const filter = typed('filter', {
-    'Array, function': _filter,
-
-    'Matrix, function': function (x, test) {
-      return x.create(_filter(x.toArray(), test))
-    },
-
-    'Array, RegExp': filterRegExp,
-
-    'Matrix, RegExp': function (x, test) {
-      return x.create(filterRegExp(x.toArray(), test))
-    }
-  })
+  function _compileAndEvaluate (arg, scope) {
+    return arg.compile().evaluate(scope)
+  }
 
   return filterTransform
 }, { isTransformFunction: true })
-
-/**
- * Filter values in a callback given a callback function
- *
- * !!! Passes a one-based index !!!
- *
- * @param {Array} x
- * @param {Function} callback
- * @return {Array} Returns the filtered array
- * @private
- */
-function _filter (x, callback) {
-  // figure out what number of arguments the callback function expects
-  const args = maxArgumentCount(callback)
-
-  return filter(x, function (value, index, array) {
-    // invoke the callback function with the right number of arguments
-    if (args === 1) {
-      return callback(value)
-    } else if (args === 2) {
-      return callback(value, [index + 1])
-    } else { // 3 or -1
-      return callback(value, [index + 1], array)
-    }
-  })
-}

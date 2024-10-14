@@ -19,6 +19,12 @@ describe('abs', function () {
     assert.strictEqual(abs(0), 0)
   })
 
+  it('should return the abs value of a bigint', function () {
+    assert.strictEqual(abs(-4n), 4n)
+    assert.strictEqual(abs(4n), 4n)
+    assert.strictEqual(abs(0n), 0n)
+  })
+
   it('should return the absolute value of a big number', function () {
     assert.deepStrictEqual(abs(bignumber(-2.3)), bignumber(2.3))
     assert.deepStrictEqual(abs(bignumber('5e500')), bignumber('5e500'))
@@ -84,6 +90,9 @@ describe('abs', function () {
 
     u = abs(unit(complex(-4, 3), 'in'))
     assert.strictEqual(u.toString(), '5 in')
+
+    u = abs(unit(-10)) // dimensionless unit
+    assert.strictEqual(u.toString(), '10')
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

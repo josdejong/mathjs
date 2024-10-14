@@ -82,6 +82,14 @@ describe('and', function () {
     assert.strictEqual(and(bignumber(Infinity), bignumber(-Infinity)), true)
   })
 
+  it('should and bigints', function () {
+    assert.strictEqual(and(1n, 1n), true)
+    assert.strictEqual(and(-1n, 1n), true)
+    assert.strictEqual(and(-1n, -1n), true)
+    assert.strictEqual(and(0n, -1n), false)
+    assert.strictEqual(and(1n, 0n), false)
+  })
+
   it('should and mixed numbers and bignumbers', function () {
     assert.strictEqual(and(bignumber(2), 3), true)
     assert.strictEqual(and(2, bignumber(2)), true)
@@ -89,6 +97,15 @@ describe('and', function () {
     assert.strictEqual(and(2, bignumber(0)), false)
     assert.strictEqual(and(bignumber(0), 2), false)
     assert.strictEqual(and(bignumber(2), 0), false)
+  })
+
+  it('should and mixed numbers and bigints', function () {
+    assert.strictEqual(and(2n, 3), true)
+    assert.strictEqual(and(2, 2n), true)
+    assert.strictEqual(and(0, 2n), false)
+    assert.strictEqual(and(2, 0n), false)
+    assert.strictEqual(and(0n, 2), false)
+    assert.strictEqual(and(2n, 0), false)
   })
 
   it('should and two units', function () {
@@ -117,6 +134,10 @@ describe('and', function () {
     it('should and array - array', function () {
       assert.deepStrictEqual(and([0, 1, 0, 12], [0, 0, 1, 22]), [false, false, false, true])
       assert.deepStrictEqual(and([], []), [])
+    })
+
+    it('should and broadcastable arrays', function () {
+      assert.deepStrictEqual(and([[0, 1, 0, 12]], [[0], [0], [1], [22]]), [[false, false, false, false], [false, false, false, false], [false, true, false, true], [false, true, false, true]])
     })
 
     it('should and array - dense matrix', function () {

@@ -24,6 +24,20 @@ describe('max', function () {
     assert.strictEqual(max('10'), 10)
   })
 
+  it('should return the max of strings by their numerical value (with BigNumber config)', function () {
+    const bigmath = math.create({ number: 'BigNumber' })
+    assert.deepStrictEqual(bigmath.max('10', '3', '4', '2'), bigmath.bignumber(10))
+    assert.deepStrictEqual(bigmath.max('10'), bigmath.bignumber(10))
+  })
+
+  it('should return the max of strings by their numerical value (with bigint config)', function () {
+    const bigmath = math.create({ number: 'bigint' })
+    assert.strictEqual(bigmath.max('10', '3', '4', '2'), 10n)
+    assert.strictEqual(bigmath.max('10'), 10n)
+    assert.strictEqual(bigmath.max('2.5'), 2.5) // fallback to number
+    assert.strictEqual(bigmath.max('2.5', '4'), 4n) // fallback to number
+  })
+
   it('should return the max element from a vector', function () {
     assert.strictEqual(max(new DenseMatrix([1, 3, 5, 2, -5])), 5)
   })
@@ -100,7 +114,7 @@ describe('max', function () {
     assert.throws(function () { max([2, null, 4]) }, /TypeError: Cannot calculate max, unexpected type of argument/)
     assert.throws(function () { max([[2, 5], [4, null], [1, 7]], 0) }, /TypeError: Cannot calculate max, unexpected type of argument/)
     assert.throws(function () { max('a', 'b') }, /Error: Cannot convert "b" to a number/)
-    assert.throws(function () { max('a') }, /SyntaxError: String "a" is no valid number/)
+    assert.throws(function () { max('a') }, /SyntaxError: String "a" is not a valid number/)
   })
 
   it('should return undefined if called with an empty array', function () {

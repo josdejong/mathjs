@@ -1,4 +1,4 @@
-import { isNumber } from './is.js'
+import { isBigNumber, isNumber, isObject } from './is.js'
 
 /**
  * @typedef {{sign: '+' | '-' | '', coefficients: number[], exponent: number}} SplitValue
@@ -20,11 +20,47 @@ export function isInteger (value) {
 }
 
 /**
+ * Check if a string contains an integer
+ * @param {string} str
+ * @return {boolean} isInteger
+ */
+export function isIntegerStr (str) {
+  // regex matching strings like "123" and "-123"
+  return /^-?\d+$/.test(str)
+}
+
+/**
+ * Ensure the number type is compatible with the provided value.
+ * If not, return 'number' instead.
+ *
+ * For example:
+ *
+ *     safeNumberType('2.3', { number: 'bigint', numberFallback: 'number' })
+ *
+ * will return 'number' and not 'bigint' because trying to create a bigint with
+ * value 2.3 would throw an exception.
+ *
+ * @param {string} numberStr
+ * @param {{
+ *   number: 'number' | 'BigNumber' | 'bigint' | 'Fraction'
+ *   numberFallback: 'number' | 'BigNumber'
+ * }} config
+ * @returns {'number' | 'BigNumber' | 'bigint' | 'Fraction'}
+ */
+export function safeNumberType (numberStr, config) {
+  if (config.number === 'bigint' && !isIntegerStr(numberStr)) {
+    return config.numberFallback
+  }
+
+  return config.number
+}
+
+/**
  * Calculate the sign of a number
  * @param {number} x
  * @returns {number}
  */
-export const sign = /* #__PURE__ */ Math.sign || function (x) {
+export const sign = Math.sign || function (x) {
   if (x > 0) {
     return 1
   } else if (x < 0) {
@@ -39,7 +75,7 @@ export const sign = /* #__PURE__ */ Math.sign || function (x) {
  * @param {number} x
  * @returns {number}
  */
-export const log2 = /* #__PURE__ */ Math.log2 || function log2 (x) {
+export const log2 = Math.log2 || function log2 (x) {
   return Math.log(x) / Math.LN2
 }
 
@@ -48,7 +84,7 @@ export const log2 = /* #__PURE__ */ Math.log2 || function log2 (x) {
  * @param {number} x
  * @returns {number}
  */
-export const log10 = /* #__PURE__ */ Math.log10 || function log10 (x) {
+export const log10 = Math.log10 || function log10 (x) {
   return Math.log(x) / Math.LN10
 }
 
@@ -57,7 +93,7 @@ export const log10 = /* #__PURE__ */ Math.log10 || function log10 (x) {
  * @param {number} x
  * @returns {number}
  */
-export const log1p = /* #__PURE__ */ Math.log1p || function (x) {
+export const log1p = Math.log1p || function (x) {
   return Math.log(x + 1)
 }
 
@@ -70,7 +106,7 @@ export const log1p = /* #__PURE__ */ Math.log1p || function (x) {
  * @param {number} x
  * @returns {number} Returns the cubic root of x
  */
-export const cbrt = /* #__PURE__ */ Math.cbrt || function cbrt (x) {
+export const cbrt = Math.cbrt || function cbrt (x) {
   if (x === 0) {
     return x
   }
@@ -97,7 +133,7 @@ export const cbrt = /* #__PURE__ */ Math.cbrt || function cbrt (x) {
  * @param {number} x
  * @return {number} res
  */
-export const expm1 = /* #__PURE__ */ Math.expm1 || function expm1 (x) {
+export const expm1 = Math.expm1 || function expm1 (x) {
   return (x >= 2e-4 || x <= -2e-4)
     ? Math.exp(x) - 1
     : x + x * x / 2 + x * x * x / 6
@@ -239,31 +275,7 @@ export function format (value, options) {
     return 'NaN'
   }
 
-  // default values for options
-  let notation = 'auto'
-  let precision
-  let wordSize
-
-  if (options) {
-    // determine notation from options
-    if (options.notation) {
-      notation = options.notation
-    }
-
-    // determine precision from options
-    if (isNumber(options)) {
-      precision = options
-    } else if (isNumber(options.precision)) {
-      precision = options.precision
-    }
-
-    if (options.wordSize) {
-      wordSize = options.wordSize
-      if (typeof (wordSize) !== 'number') {
-        throw new Error('Option "wordSize" must be a number')
-      }
-    }
-  }
+  const { notation, precision, wordSize } = normalizeFormatOptions(options)
 
   // handle the various notations
   switch (notation) {
@@ -287,7 +299,7 @@ export function format (value, options) {
 
     case 'auto':
       // remove trailing zeros after the decimal point
-      return toPrecision(value, precision, options && options)
+      return toPrecision(value, precision, options)
         .replace(/((\.\d*?)(0+))($|e)/, function () {
           const digits = arguments[2]
           const e = arguments[4]
@@ -298,6 +310,49 @@ export function format (value, options) {
       throw new Error('Unknown notation "' + notation + '". ' +
         'Choose "auto", "exponential", "fixed", "bin", "oct", or "hex.')
   }
+}
+
+/**
+ * Normalize format options into an object:
+ *   {
+ *     notation: string,
+ *     precision: number | undefined,
+ *     wordSize: number | undefined
+ *   }
+ */
+export function normalizeFormatOptions (options) {
+  // default values for options
+  let notation = 'auto'
+  let precision
+  let wordSize
+
+  if (options !== undefined) {
+    if (isNumber(options)) {
+      precision = options
+    } else if (isBigNumber(options)) {
+      precision = options.toNumber()
+    } else if (isObject(options)) {
+      if (options.precision !== undefined) {
+        precision = _toNumberOrThrow(options.precision, () => {
+          throw new Error('Option "precision" must be a number or BigNumber')
+        })
+      }
+
+      if (options.wordSize !== undefined) {
+        wordSize = _toNumberOrThrow(options.wordSize, () => {
+          throw new Error('Option "wordSize" must be a number or BigNumber')
+        })
+      }
+
+      if (options.notation) {
+        notation = options.notation
+      }
+    } else {
+      throw new Error('Unsupported type of options, number, BigNumber, or object expected')
+    }
+  }
+
+  return { notation, precision, wordSize }
 }
 
 /**
@@ -478,8 +533,8 @@ export function toPrecision (value, precision, options) {
   }
 
   // determine lower and upper bound for exponential notation.
-  const lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3
-  const upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5
+  const lowerExp = _toNumberOrDefault(options?.lowerExp, -3)
+  const upperExp = _toNumberOrDefault(options?.upperExp, 5)
 
   const split = splitNumber(value)
   const rounded = precision ? roundDigits(split, precision) : split
@@ -597,42 +652,45 @@ export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-
 
 /**
  * Compares two floating point numbers.
- * @param {number} x          First value to compare
- * @param {number} y          Second value to compare
- * @param {number} [epsilon]  The maximum relative difference between x and y
- *                            If epsilon is undefined or null, the function will
- *                            test whether x and y are exactly equal.
+ * @param {number} a - First value to compare
+ * @param {number} b - Second value to compare
+ * @param {number} [relTol=1e-09] - The relative tolerance, indicating the maximum allowed difference relative to the larger absolute value. Must be greater than 0.
+ * @param {number} [absTol=1e-12] - The minimum absolute tolerance, useful for comparisons near zero. Must be at least 0.
  * @return {boolean} whether the two numbers are nearly equal
-*/
-export function nearlyEqual (x, y, epsilon) {
-  // if epsilon is null or undefined, test whether x and y are exactly equal
-  if (epsilon === null || epsilon === undefined) {
-    return x === y
+ *
+ * @throws {Error} If `relTol` is less than or equal to 0.
+ * @throws {Error} If `absTol` is less than 0.
+ *
+ * @example
+ * nearlyEqual(1.000000001, 1.0, 1e-8);            // true
+ * nearlyEqual(1.000000002, 1.0, 0);            // false
+ * nearlyEqual(1.0, 1.009, undefined, 0.01);       // true
+ * nearlyEqual(0.000000001, 0.0, undefined, 1e-8); // true
+ */
+export function nearlyEqual (a, b, relTol = 1e-8, absTol = 0) {
+  if (relTol <= 0) {
+    throw new Error('Relative tolerance must be greater than 0')
   }
 
-  if (x === y) {
-    return true
+  if (absTol < 0) {
+    throw new Error('Absolute tolerance must be at least 0')
   }
 
   // NaN
-  if (isNaN(x) || isNaN(y)) {
+  if (isNaN(a) || isNaN(b)) {
     return false
   }
 
-  // at this point x and y should be finite
-  if (isFinite(x) && isFinite(y)) {
-    // check numbers are very close, needed when comparing numbers near zero
-    const diff = Math.abs(x - y)
-    if (diff < DBL_EPSILON) {
-      return true
-    } else {
-      // use relative error
-      return diff <= Math.max(Math.abs(x), Math.abs(y)) * epsilon
-    }
+  if (!isFinite(a) || !isFinite(b)) {
+    return a === b
   }
 
-  // Infinite and Number or negative Infinite and positive Infinite cases
-  return false
+  if (a === b) {
+    return true
+  }
+
+  // abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+  return Math.abs(a - b) <= Math.max(relTol * Math.max(Math.abs(a), Math.abs(b)), absTol)
 }
 
 /**
@@ -695,4 +753,24 @@ export function copysign (x, y) {
   const signx = x > 0 ? true : x < 0 ? false : 1 / x === Infinity
   const signy = y > 0 ? true : y < 0 ? false : 1 / y === Infinity
   return signx ^ signy ? -x : x
+}
+
+function _toNumberOrThrow (value, onError) {
+  if (isNumber(value)) {
+    return value
+  } else if (isBigNumber(value)) {
+    return value.toNumber()
+  } else {
+    onError()
+  }
+}
+
+function _toNumberOrDefault (value, defaultValue) {
+  if (isNumber(value)) {
+    return value
+  } else if (isBigNumber(value)) {
+    return value.toNumber()
+  } else {
+    return defaultValue
+  }
 }

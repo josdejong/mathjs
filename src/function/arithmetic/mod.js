@@ -1,27 +1,32 @@
 import { factory } from '../../utils/factory.js'
+import { createFloor } from './floor.js'
 import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { modNumber } from '../../plain/number/index.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'mod'
 const dependencies = [
   'typed',
+  'config',
+  'round',
   'matrix',
   'equalScalar',
-  'DenseMatrix'
+  'zeros',
+  'DenseMatrix',
+  'concat'
 ]
 
-export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
+export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix, concat }) => {
+  const floor = createFloor({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Calculates the modulus, the remainder of an integer division.
@@ -54,28 +59,34 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    *    divide
    *
-   * @param  {number | BigNumber | Fraction | Array | Matrix} x Dividend
-   * @param  {number | BigNumber | Fraction | Array | Matrix} y Divisor
-   * @return {number | BigNumber | Fraction | Array | Matrix} Returns the remainder of `x` divided by `y`.
+   * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} x Dividend
+   * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} y Divisor
+   * @return {number | BigNumber | bigint | Fraction | Array | Matrix} Returns the remainder of `x` divided by `y`.
    */
   return typed(
     name,
     {
-      'number, number': modNumber,
+      'number, number': _modNumber,
 
       'BigNumber, BigNumber': function (x, y) {
-        if (y.isNeg()) {
-          throw new Error('Cannot calculate mod for a negative divisor')
+        return y.isZero() ? x : x.sub(y.mul(floor(x.div(y))))
+      },
+
+      'bigint, bigint': function (x, y) {
+        if (y === 0n) {
+          return x
         }
-        return y.isZero() ? x : x.mod(y)
+
+        if (x < 0) {
+          const m = x % y
+          return m === 0n ? m : m + y
+        }
+
+        return x % y
       },
 
       'Fraction, Fraction': function (x, y) {
-        if (y.compare(0) < 0) {
-          throw new Error('Cannot calculate mod for a negative divisor')
-        }
-        // Workaround suggested in Fraction.js library to calculate correct modulo for negative dividend
-        return x.compare(0) >= 0 ? x.mod(y) : x.mod(y).add(y).mod(y)
+        return y.equals(0) ? x : x.sub(y.mul(floor(x.div(y))))
       }
     },
     matrixAlgorithmSuite({
@@ -86,4 +97,21 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       sS: matAlgo12xSfs
     })
   )
+
+  /**
+ * Calculate the modulus of two numbers
+ * @param {number} x
+ * @param {number} y
+ * @returns {number} res
+ * @private
+ */
+  function _modNumber (x, y) {
+    // We don't use JavaScript's % operator here as this doesn't work
+    // correctly for x < 0 and x === 0
+    // see https://en.wikipedia.org/wiki/Modulo_operation
+
+    // We use mathjs floor to handle errors associated with
+    // precision float approximation
+    return (y === 0) ? x : x - y * floor(x / y)
+  }
 })

@@ -5,11 +5,11 @@
  * The tool can parse documentation information from the block comment in the
  * functions code, and generate a markdown file with the documentation.
  */
-const fs = require('fs')
-const glob = require('glob')
-const mkdirp = require('mkdirp')
-const del = require('del')
-const log = require('fancy-log')
+import fs from 'node:fs'
+import { glob } from 'glob'
+import { mkdirp } from 'mkdirp'
+import { deleteSync } from 'del'
+import log from 'fancy-log'
 
 // special cases for function syntax
 const SYNTAX = {
@@ -43,6 +43,7 @@ const SYNTAX = {
 
 const IGNORE_FUNCTIONS = {
   addScalar: true,
+  subtractScalar: true,
   divideScalar: true,
   multiplyScalar: true,
   equalScalar: true,
@@ -63,7 +64,7 @@ const IGNORE_WARNINGS = {
  *                         describing a math.js function
  * @return {Object} doc    json document
  */
-function generateDoc (name, code) {
+export function generateDoc (name, code) {
   // get block comment from code
   const commentRegex = /\/\*\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g
   // const match = commentRegex.exec(code)
@@ -373,11 +374,11 @@ function generateDoc (name, code) {
  * @param {Object} doc
  * @return {String[]} issues
  */
-function validateDoc (doc) {
+export function validateDoc (doc) {
   const issues = []
 
   function ignore (field) {
-    return IGNORE_WARNINGS[field].indexOf(doc.name) !== -1
+    return IGNORE_WARNINGS[field].includes(doc.name)
   }
 
   if (!doc.name) {
@@ -452,7 +453,7 @@ function validateDoc (doc) {
  *                              under seeAlso
  * @returns {string} markdown   Markdown contents
  */
-function generateMarkdown (doc, functions) {
+export function generateMarkdown (doc, functions) {
   let text = ''
 
   // TODO: should escape HTML characters in text
@@ -525,9 +526,9 @@ function generateMarkdown (doc, functions) {
  * @param {String} outputPath       Path to /docs/reference/functions
  * @param {String} outputRoot       Path to /docs/reference
  */
-function cleanup (outputPath, outputRoot) {
+export function cleanup (outputPath, outputRoot) {
   // cleanup previous docs
-  del.sync([
+  deleteSync([
     outputPath + '/*.md',
     outputRoot + '/functions.md'
   ])
@@ -543,10 +544,14 @@ function cleanup (outputPath, outputRoot) {
  *     keys name, category, fullPath, doc, and issues
  *     giving the relevant information
  */
-function collectDocs (functionNames, inputPath) {
-  // glob@8 doesn't work on Windows, which has \ separators instead of /
-  const linuxInputPath = inputPath.replace(/\\/g, '/') + '**/*.js'
-  const files = glob.sync(linuxInputPath)
+export function collectDocs (functionNames, inputPath) {
+  function normalizeWindowsPath(path) {
+    return path.replace(/\\/g, '/')
+  }
+
+  // glob doesn't work on Windows, which has \ separators instead of /
+  const linuxInputPath = normalizeWindowsPath(inputPath + '**/*.js')
+  const files = glob.sync(linuxInputPath).sort().map(normalizeWindowsPath)
 
   // generate path information for each of the files
   const functions = {} // TODO: change to array
@@ -557,10 +562,10 @@ function collectDocs (functionNames, inputPath) {
     let category
 
     // Note: determining whether a file is a function and what it's category
-    // is is a bit tricky and quite specific to the structure of the code,
+    // is a bit tricky and quite specific to the structure of the code,
     // we reckon with some edge cases here.
-    if (path.indexOf('docs') === -1 && functionIndex !== -1) {
-      if (path.indexOf('expression') !== -1) {
+    if (!path.includes('docs') && functionIndex !== -1) {
+      if (path.includes('expression')) {
         category = 'expression'
       } else if (/\/lib\/cjs\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
         // for type/bignumber/function/bignumber.js, type/fraction/function/fraction.js, etc
@@ -578,7 +583,7 @@ function collectDocs (functionNames, inputPath) {
       category = 'construction'
     }
 
-    if (functionNames.indexOf(name) === -1 || IGNORE_FUNCTIONS[name]) {
+    if (!functionNames.includes(name) || IGNORE_FUNCTIONS[name]) {
       category = null
     }
 
@@ -600,7 +605,7 @@ function collectDocs (functionNames, inputPath) {
     const fn = functions[name]
     const code = String(fs.readFileSync(fn.fullPath))
 
-    const isFunction = (functionNames.indexOf(name) !== -1) && !IGNORE_FUNCTIONS[name]
+    const isFunction = (functionNames.includes(name)) && !IGNORE_FUNCTIONS[name]
     const doc = isFunction ? generateDoc(name, code) : null
 
     if (isFunction && doc) {
@@ -621,7 +626,7 @@ function collectDocs (functionNames, inputPath) {
  * @param {String} outputPath       Path to /docs/reference/functions
  * @param {String} outputRoot       Path to /docs/reference
  */
-function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
+export function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
   if (!fs.existsSync(outputPath)) {
     mkdirp.sync(outputPath)
   }
@@ -725,11 +730,3 @@ function findAll (text, regex) {
 
   return matches
 }
-
-// exports
-exports.cleanup = cleanup
-exports.collectDocs = collectDocs
-exports.iteratePath = iteratePath
-exports.generateDoc = generateDoc
-exports.validateDoc = validateDoc
-exports.generateMarkdown = generateMarkdown

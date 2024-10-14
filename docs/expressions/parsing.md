@@ -22,9 +22,19 @@ math.evaluate([expr1, expr2, expr3, ...], scope)
 
 Function `evaluate` accepts a single expression or an array with
 expressions as the first argument and has an optional second argument
-containing a scope with variables and functions. The scope can be a regular
-JavaScript Object, or Map. The scope will be used to resolve symbols, and to write
-assigned variables or function.
+containing a `scope` with variables and functions. The scope can be a regular
+JavaScript `Map` (recommended), a plain JavaScript `object`, or any custom 
+class that implements the `Map` interface with methods `get`, `set`, `keys` 
+and `has`. The scope will be used to resolve symbols, and to write assigned
+variables and functions.
+
+When an `Object` is used as scope, mathjs will internally wrap it in an 
+`ObjectWrappingMap` interface since the internal functions can only use a `Map` 
+interface. In case of custom defined functions like `f(x) = x^2`, the scope 
+will be wrapped in a `PartitionedMap`, which reads and writes the function
+variables (like `x` in this example) from a temporary map, and reads and writes
+other variables from the original scope. The original scope is never copied, it
+is only wrapped around when needed.
 
 The following code demonstrates how to evaluate expressions.
 
@@ -167,7 +177,9 @@ The parser contains the following functions:
 - `get(name)`
   Retrieve a variable or function from the parser's scope.
 - `getAll()`
-  Retrieve a map with all defined a variables from the parser's scope.
+  Retrieve an object with all defined variables in the parser's scope.
+- `getAllAsMap()`
+  Retrieve a map with all defined variables in the parser's scope.
 - `remove(name)`
   Remove a variable or function from the parser's scope.
 - `set(name, value)`
@@ -192,7 +204,7 @@ parser.evaluate('f(x, y) = x^y')        // f(x, y)
 parser.evaluate('f(2, 3)')              // 8
 
 // get and set variables and functions
-const x = parser.get('x')               // x = 7
+const x = parser.get('x')               // x = 3.5
 const f = parser.get('f')               // function
 const g = f(3, 3)                       // g = 27
 parser.set('h', 500)

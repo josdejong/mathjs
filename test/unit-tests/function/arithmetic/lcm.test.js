@@ -104,6 +104,11 @@ describe('lcm', function () {
       assert.deepStrictEqual(lcm(3, [5, 18, 3]), [15, 18, 3])
     })
 
+    it('should find the greatest common divisor array - scalar', function () {
+      assert.deepStrictEqual(lcm([5, 18, 3], [[3], [2], [1]]), [[15, 18, 3], [10, 18, 6], [5, 18, 3]])
+      assert.deepStrictEqual(lcm([3, 2, 1], [[5], [18], [3]]), [[15, 10, 5], [18, 18, 18], [3, 6, 3]])
+    })
+
     it('should find the greatest common divisor array - array', function () {
       assert.deepStrictEqual(lcm([5, 2, 3], [25, 3, 6]), [25, 6, 6])
     })

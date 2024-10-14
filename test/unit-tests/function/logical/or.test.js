@@ -96,6 +96,14 @@ describe('or', function () {
     assert.strictEqual(or(bignumber(0), bignumber(0)), false)
   })
 
+  it('should or bigints', function () {
+    assert.strictEqual(or(1n, 1n), true)
+    assert.strictEqual(or(-1n, 1n), true)
+    assert.strictEqual(or(-1n, -1n), true)
+    assert.strictEqual(or(0n, -1n), true)
+    assert.strictEqual(or(1n, 0n), true)
+  })
+
   it('should or mixed numbers and bignumbers', function () {
     assert.strictEqual(or(bignumber(2), 3), true)
     assert.strictEqual(or(2, bignumber(2)), true)
@@ -105,6 +113,11 @@ describe('or', function () {
     assert.strictEqual(or(bignumber(0), 0), false)
     assert.strictEqual(or(bignumber(2), 0), true)
     assert.strictEqual(or(bignumber(0), 0), false)
+  })
+
+  it('should or mixed numbers and bigints', function () {
+    assert.strictEqual(or(2n, 3), true)
+    assert.strictEqual(or(2, 3n), true)
   })
 
   it('should or two units', function () {
@@ -147,6 +160,10 @@ describe('or', function () {
     it('should or array - array', function () {
       assert.deepStrictEqual(or([0, 1, 0, 12], [0, 0, 1, 22]), [false, true, true, true])
       assert.deepStrictEqual(or([], []), [])
+    })
+
+    it('should or broadcastable arrays', function () {
+      assert.deepStrictEqual(or([[0, 1, 0, 12]], [[0], [0], [1], [22]]), [[false, true, false, true], [false, true, false, true], [true, true, true, true], [true, true, true, true]])
     })
 
     it('should or array - dense matrix', function () {

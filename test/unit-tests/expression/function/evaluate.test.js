@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 import { createMap } from '../../../../src/utils/map.js'
 
@@ -9,7 +9,7 @@ const ResultSet = math.ResultSet
 
 describe('evaluate', function () {
   it('should evaluate expressions', function () {
-    approx.equal(math.evaluate('(2+3)/4'), 1.25)
+    approxEqual(math.evaluate('(2+3)/4'), 1.25)
     assert.deepStrictEqual(math.evaluate('sqrt(-4)'), new Complex(0, 2))
   })
 

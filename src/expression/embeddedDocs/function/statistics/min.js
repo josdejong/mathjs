@@ -4,7 +4,7 @@ export const minDocs = {
   syntax: [
     'min(a, b, c, ...)',
     'min(A)',
-    'min(A, dim)'
+    'min(A, dimension)'
   ],
   description: 'Compute the minimum value of a list of values.',
   examples: [

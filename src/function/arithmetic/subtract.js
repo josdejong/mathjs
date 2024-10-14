@@ -11,12 +11,13 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'addScalar',
+  'subtractScalar',
   'unaryMinus',
-  'DenseMatrix'
+  'DenseMatrix',
+  'concat'
 ]
 
-export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, DenseMatrix }) => {
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, subtractScalar, unaryMinus, DenseMatrix, concat }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
@@ -24,7 +25,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Subtract two values, `x - y`.
@@ -52,43 +53,17 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    *    add
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x
-   *            Initial value
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y
-   *            Value to subtract from `x`
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
-   *            Subtraction of `x` and `y`
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x Initial value
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Value to subtract from `x`
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} Subtraction of `x` and `y`
    */
   return typed(
     name,
     {
-      'number, number': (x, y) => x - y,
-      'Complex, Complex': (x, y) => x.sub(y),
-      'BigNumber, BigNumber': (x, y) => x.minus(y),
-      'Fraction, Fraction': (x, y) => x.sub(y),
-
-      'Unit, Unit': typed.referToSelf(self => (x, y) => {
-        if (x.value === null) {
-          throw new Error('Parameter x contains a unit with undefined value')
-        }
-
-        if (y.value === null) {
-          throw new Error('Parameter y contains a unit with undefined value')
-        }
-
-        if (!x.equalBase(y)) {
-          throw new Error('Units do not match')
-        }
-
-        const res = x.clone()
-        res.value =
-          typed.find(self, [res.valueType(), y.valueType()])(res.value, y.value)
-        res.fixPrefix = false
-
-        return res
-      })
+      'any, any': subtractScalar
     },
     matrixAlgorithmSuite({
+      elop: subtractScalar,
       SS: matAlgo05xSfSf,
       DS: matAlgo01xDSid,
       SD: matAlgo03xDSf,

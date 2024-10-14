@@ -10,7 +10,7 @@ import { hasOwnProperty } from './object.js'
  */
 function getSafeProperty (object, prop) {
   // only allow getting safe properties of a plain object
-  if (isPlainObject(object) && isSafeProperty(object, prop)) {
+  if (isSafeProperty(object, prop)) {
     return object[prop]
   }
 
@@ -33,7 +33,7 @@ function getSafeProperty (object, prop) {
 // TODO: merge this function into access.js?
 function setSafeProperty (object, prop, value) {
   // only allow setting safe properties of a plain object
-  if (isPlainObject(object) && isSafeProperty(object, prop)) {
+  if (isSafeProperty(object, prop)) {
     object[prop] = value
     return value
   }
@@ -41,22 +41,15 @@ function setSafeProperty (object, prop, value) {
   throw new Error('No access to property "' + prop + '"')
 }
 
-function getSafeProperties (object) {
-  return Object.keys(object).filter((prop) => hasOwnProperty(object, prop))
-}
-
-function hasSafeProperty (object, prop) {
-  return prop in object
-}
-
 /**
- * Test whether a property is safe to use for an object.
+ * Test whether a property is safe to use on an object or Array.
  * For example .toString and .constructor are not safe
+ * @param {Object | Array} object
  * @param {string} prop
  * @return {boolean} Returns true when safe
  */
 function isSafeProperty (object, prop) {
-  if (!object || typeof object !== 'object') {
+  if (!isPlainObject(object) && !Array.isArray(object)) {
     return false
   }
   // SAFE: whitelisted
@@ -88,12 +81,14 @@ function isSafeProperty (object, prop) {
  * Throws an error when that's not the case.
  * @param {Object} object
  * @param {string} method
+ * @return {function} Returns the method when valid
  */
-// TODO: merge this function into assign.js?
-function validateSafeMethod (object, method) {
+function getSafeMethod (object, method) {
   if (!isSafeMethod(object, method)) {
     throw new Error('No access to method "' + method + '"')
   }
+
+  return object[method]
 }
 
 /**
@@ -156,8 +151,6 @@ const safeNativeMethods = {
 export { getSafeProperty }
 export { setSafeProperty }
 export { isSafeProperty }
-export { hasSafeProperty }
-export { getSafeProperties }
-export { validateSafeMethod }
+export { getSafeMethod }
 export { isSafeMethod }
 export { isPlainObject }

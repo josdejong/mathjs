@@ -169,12 +169,18 @@ describe('FunctionNode', function () {
     const b = new mymath.ConstantNode(5)
     const n = new mymath.FunctionNode(s, [a, b])
 
+    let actualArgs
     const scope = {
-      myFunction: function () {
+      myFunction: function (...args) {
+        actualArgs = args
         return 42
       }
     }
+
     assert.strictEqual(n.compile().evaluate(scope), 42)
+    assert.strictEqual(actualArgs[0], a.value)
+    assert.strictEqual(actualArgs[1], b.value)
+    assert.deepStrictEqual(actualArgs.length, 2)
   })
 
   it('should filter a FunctionNode', function () {
@@ -436,6 +442,31 @@ describe('FunctionNode', function () {
 
     assert.strictEqual(n1.toString({ handler: customFunction }), '[add](const(1, number), const(2, number), )')
     assert.strictEqual(n2.toString({ handler: customFunction }), '[subtract](const(1, number), const(2, number), )')
+  })
+
+  it('should stringify a FunctionNode with custom toHTML', function () {
+    // Also checks if the custom functions get passed on to the children
+    const customFunction = function (node, options) {
+      if (node.type === 'FunctionNode') {
+        let string = '[' + node.name + ']('
+        node.args.forEach(function (arg) {
+          string += arg.toHTML(options) + ', '
+        })
+        string += ')'
+        return string
+      } else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
+      }
+    }
+
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
+
+    const n1 = new FunctionNode(new SymbolNode('add'), [a, b])
+    const n2 = new FunctionNode(new SymbolNode('subtract'), [a, b])
+
+    assert.strictEqual(n1.toHTML({ handler: customFunction }), '[add](const(1, number), const(2, number), )')
+    assert.strictEqual(n2.toHTML({ handler: customFunction }), '[subtract](const(1, number), const(2, number), )')
   })
 
   it('should stringify a FunctionNode with custom toString for a single function', function () {

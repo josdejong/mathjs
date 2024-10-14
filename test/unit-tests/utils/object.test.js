@@ -33,6 +33,10 @@ describe('object', function () {
       assert.strictEqual(clone(2.3), 2.3)
     })
 
+    it('should clone bigint', function () {
+      assert.strictEqual(clone(4n), 4n)
+    })
+
     it('should clone strings', function () {
       assert.strictEqual(clone('hello'), 'hello')
     })
@@ -79,7 +83,8 @@ describe('object', function () {
     })
 
     it('should throw an error in case of an unsupported type', function () {
-      assert.throws(function () { clone(/a regexp/) }, /Cannot clone/)
+      assert.throws(function () { clone(/a regexp/) }, /Cannot clone: unknown type of value/)
+      assert.throws(function () { clone(() => 42) }, /Cannot clone: unknown type of value/)
     })
   })
 

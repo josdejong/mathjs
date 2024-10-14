@@ -1,5 +1,6 @@
 import { containsCollections, deepForEach, reduce } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
+import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'min'
@@ -8,7 +9,7 @@ const dependencies = ['typed', 'config', 'numeric', 'smaller']
 export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, smaller }) => {
   /**
    * Compute the minimum value of a matrix or a  list of values.
-   * In case of a multi dimensional array, the minimum of the flattened array
+   * In case of a multidimensional array, the minimum of the flattened array
    * will be calculated. When `dim` is provided, the minimum over the selected
    * dimension will be calculated. Parameter `dim` is zero-based.
    *
@@ -16,7 +17,7 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    *     math.min(a, b, c, ...)
    *     math.min(A)
-   *     math.min(A, dim)
+   *     math.min(A, dimension)
    *
    * Examples:
    *
@@ -98,7 +99,7 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     // make sure returning numeric value: parse a string into a numeric value
     if (typeof min === 'string') {
-      min = numeric(min, config.number)
+      min = numeric(min, safeNumberType(min, config))
     }
 
     return min

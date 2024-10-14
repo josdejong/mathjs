@@ -1,7 +1,7 @@
 // test expm
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const expm = math.expm
 
@@ -15,7 +15,7 @@ describe('expm', function () {
 
   it('should compute the exponential of a matrix', function () {
     // Trivial example
-    approx.deepEqual(expm(
+    approxDeepEqual(expm(
       [[1, 0],
         [0, 1]]
     ),
@@ -25,7 +25,7 @@ describe('expm', function () {
     ))
 
     // Example given in the Moler and Van Loan paper
-    approx.deepEqual(expm(
+    approxDeepEqual(expm(
       [[-49, 24],
         [-64, 31]]
     ),
@@ -35,7 +35,7 @@ describe('expm', function () {
     ))
 
     // Another example from the same paper
-    approx.deepEqual(expm(
+    approxDeepEqual(expm(
       [[0, 6, 0, 0],
         [0, 0, 6, 0],
         [0, 0, 0, 6],
@@ -49,7 +49,7 @@ describe('expm', function () {
     ))
 
     // And another
-    approx.deepEqual(expm(
+    approxDeepEqual(expm(
       [[1, 1],
         [0, 1]]
     ),
@@ -59,7 +59,7 @@ describe('expm', function () {
     ))
 
     // And another
-    approx.deepEqual(expm(
+    approxDeepEqual(expm(
       [[1 + 1e-5, 1],
         [0, 1 - 1e-5]]
     ),
@@ -70,7 +70,7 @@ describe('expm', function () {
   })
 
   it('should work on SparseMatrix', function () {
-    approx.deepEqual(expm(
+    approxDeepEqual(expm(
       math.sparse(
         [[0, 6, 0, 0],
           [0, 0, 6, 0],

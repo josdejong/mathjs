@@ -17,7 +17,7 @@ export const createIfft = /* #__PURE__ */ factory(name, dependencies, ({
   conj
 }) => {
   /**
-   * Calculate N-dimensional inverse fourier transform
+   * Calculate N-dimensional inverse Fourier transform
    *
    * Syntax:
    *
@@ -32,7 +32,7 @@ export const createIfft = /* #__PURE__ */ factory(name, dependencies, ({
    *      fft
    *
    * @param {Array | Matrix} arr    An array or matrix
-   * @return {Array | Matrix}       N-dimensional fourier transformation of the array
+   * @return {Array | Matrix}       N-dimensional Fourier transformation of the array
    */
   return typed(name, {
     'Array | Matrix': function (arr) {

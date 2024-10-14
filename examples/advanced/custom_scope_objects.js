@@ -1,9 +1,9 @@
-const { create, all } = require('../..')
+import { all, create } from '../../lib/esm/index.js'
 
 const math = create(all)
 
-// The expression evaluator accepts an optional scope object.
-// This is the symbol table for variable defintions and function declations.
+// The expression evaluator accepts an optional scope Map or object that can
+// be used to keep additional variables and functions.
 
 // Scope can be a bare object.
 function withObjectScope () {
@@ -28,11 +28,11 @@ function withMapScope (scope, name) {
   math.evaluate('area(length, width) = length * width * scalar', scope)
   math.evaluate('A = area(x, y)', scope)
 
-  console.log(`Map-like scope (${name}):`, scope.localScope)
+  console.log(`Map-like scope (${name}):`, scope)
 }
 
 // This is a minimal set of functions to look like a Map.
-class MapScope {
+class CustomMap {
   constructor () {
     this.localScope = new Map()
   }
@@ -61,7 +61,7 @@ class MapScope {
  * used in mathjs.
  *
  */
-class AdvancedMapScope extends MapScope {
+class AdvancedCustomMap extends CustomMap {
   constructor (parent) {
     super()
     this.parentScope = parent
@@ -91,25 +91,19 @@ class AdvancedMapScope extends MapScope {
     return this.localScope.clear()
   }
 
-  /**
-   * Creates a child scope from this one. This is used in function calls.
-   *
-   * @returns a new Map scope that has access to the symbols in the parent, but
-   * cannot overwrite them.
-   */
-  createSubScope () {
-    return new AdvancedMapScope(this)
-  }
-
   toString () {
     return this.localScope.toString()
   }
 }
 
+// Use a plain JavaScript object
 withObjectScope()
-// Where safety is important, scope can also be a Map
-withMapScope(new Map(), 'simple Map')
-// Where flexibility is important, scope can duck type appear to be a Map.
-withMapScope(new MapScope(), 'MapScope example')
-// Extra methods allow even finer grain control.
-withMapScope(new AdvancedMapScope(), 'AdvancedScope example')
+
+// use a Map (recommended)
+withMapScope(new Map(), 'Map example')
+
+// Use a custom Map implementation
+withMapScope(new CustomMap(), 'CustomMap example')
+
+// Use a more advanced custom Map implementation
+withMapScope(new AdvancedCustomMap(), 'AdvancedCustomMap example')

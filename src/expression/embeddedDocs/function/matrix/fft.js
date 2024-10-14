@@ -4,7 +4,7 @@ export const fftDocs = {
   syntax: [
     'fft(x)'
   ],
-  description: 'Calculate N-dimensional fourier transform',
+  description: 'Calculate N-dimensional Fourier transform',
   examples: [
     'fft([[1, 0], [1, 0]])'
   ],

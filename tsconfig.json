@@ -5,11 +5,15 @@
     "paths": {
       "mathjs": ["./types/index.d.ts"]
     },
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "typeRoots": [],
     "types": [],
-    "lib": ["ES6", "DOM"],
-    "module": "ESNEXT",
+    "lib": [
+      "ES6",
+      "DOM",
+      "es2020.bigint"
+    ],
+    "module": "NodeNext",
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitThis": true,

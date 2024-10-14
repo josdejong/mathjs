@@ -19,6 +19,6 @@ export const numberDocs = {
     'number(unit("52cm"), "m")'
   ],
   seealso: [
-    'bignumber', 'boolean', 'complex', 'fraction', 'index', 'matrix', 'string', 'unit'
+    'bignumber', 'bigint', 'boolean', 'complex', 'fraction', 'index', 'matrix', 'string', 'unit'
   ]
 }

@@ -19,6 +19,12 @@ describe('cube', function () {
     assert.strictEqual(cube(0), 0)
   })
 
+  it('should return the cube of a bigint', function () {
+    assert.strictEqual(cube(4n), 64n)
+    assert.strictEqual(cube(-2n), -8n)
+    assert.strictEqual(cube(0n), 0n)
+  })
+
   it('should return the cube of a big number', function () {
     assert.deepStrictEqual(cube(bignumber(4)), bignumber(64))
     assert.deepStrictEqual(cube(bignumber(-2)), bignumber(-8))

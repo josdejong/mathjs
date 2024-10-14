@@ -7,7 +7,7 @@ const dependencies = ['typed', 'isNaN', 'isNumeric']
 export const createMode = /* #__PURE__ */ factory(name, dependencies, ({ typed, isNaN, isNumeric }) => {
   /**
   * Computes the mode of a set of numbers or a list with values(numbers or characters).
-  * If there are more than one modes, it returns a list of those values.
+  * If there are multiple modes, it returns a list of those values.
   *
   * Syntax:
   *

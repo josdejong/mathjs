@@ -1,5 +1,6 @@
 import { isConstantNode, typeOf } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
+import { safeNumberType } from '../../utils/number.js'
 
 const name = 'derivative'
 const dependencies = [
@@ -43,8 +44,8 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Syntax:
    *
-   *     derivative(expr, variable)
-   *     derivative(expr, variable, options)
+   *     math.derivative(expr, variable)
+   *     math.derivative(expr, variable, options)
    *
    * Examples:
    *
@@ -76,12 +77,20 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     return options.simplify ? simplify(res) : res
   }
 
-  typed.addConversion(
-    { from: 'identifier', to: 'SymbolNode', convert: parse })
+  function parseIdentifier (string) {
+    const symbol = parse(string)
+    if (!symbol.isSymbolNode) {
+      throw new TypeError('Invalid variable. ' +
+        `Cannot parse ${JSON.stringify(string)} into a variable in function derivative`)
+    }
+    return symbol
+  }
 
   const derivative = typed(name, {
     'Node, SymbolNode': plainDerivative,
-    'Node, SymbolNode, Object': plainDerivative
+    'Node, SymbolNode, Object': plainDerivative,
+    'Node, string': (node, symbol) => plainDerivative(node, parseIdentifier(symbol)),
+    'Node, string, Object': (node, symbol, options) => plainDerivative(node, parseIdentifier(symbol), options)
 
     /* TODO: implement and test syntax with order of derivatives -> implement as an option {order: number}
     'Node, SymbolNode, ConstantNode': function (expr, variable, {order}) {
@@ -95,9 +104,6 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     }
     */
   })
-
-  typed.removeConversion(
-    { from: 'identifier', to: 'SymbolNode', convert: parse })
 
   derivative._simplify = true
 
@@ -172,7 +178,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     },
 
     'Object, FunctionAssignmentNode, string': function (constNodes, node, varName) {
-      if (node.params.indexOf(varName) === -1) {
+      if (!node.params.includes(varName)) {
         constNodes[node] = true
         return true
       }
@@ -226,10 +232,6 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     },
 
     'FunctionNode, Object': function (node, constNodes) {
-      if (node.args.length !== 1) {
-        funcArgsCheck(node)
-      }
-
       if (constNodes[node] !== undefined) {
         return createConstantNode(0)
       }
@@ -303,9 +305,12 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
           }
           break
         case 'pow':
-          constNodes[arg1] = constNodes[node.args[1]]
-          // Pass to pow operator node parser
-          return _derivative(new OperatorNode('^', 'pow', [arg0, node.args[1]]), constNodes)
+          if (node.args.length === 2) {
+            constNodes[arg1] = constNodes[node.args[1]]
+            // Pass to pow operator node parser
+            return _derivative(new OperatorNode('^', 'pow', [arg0, node.args[1]]), constNodes)
+          }
+          break
         case 'exp':
           // d/dx(e^x) = e^x
           funcDerivative = new FunctionNode('exp', [arg0.clone()])
@@ -563,7 +568,9 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
           ])
           break
         case 'gamma': // Needs digamma function, d/dx(gamma(x)) = gamma(x)digamma(x)
-        default: throw new Error('Function "' + node.name + '" is not supported by derivative, or a wrong number of arguments is passed')
+        default:
+          throw new Error('Cannot process function "' + node.name + '" in derivative: ' +
+          'the function is not supported, undefined, or the number of arguments passed to it are not supported')
       }
 
       let op, func
@@ -740,33 +747,10 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
         ])
       }
 
-      throw new Error('Operator "' + node.op + '" is not supported by derivative, or a wrong number of arguments is passed')
+      throw new Error('Cannot process operator "' + node.op + '" in derivative: ' +
+        'the operator is not supported, undefined, or the number of arguments passed to it are not supported')
     }
   })
-
-  /**
-   * Ensures the number of arguments for a function are correct,
-   * and will throw an error otherwise.
-   *
-   * @param {FunctionNode} node
-   */
-  function funcArgsCheck (node) {
-    // TODO add min, max etc
-    if ((node.name === 'log' || node.name === 'nthRoot' || node.name === 'pow') && node.args.length === 2) {
-      return
-    }
-
-    // There should be an incorrect number of arguments if we reach here
-
-    // Change all args to constants to avoid unidentified
-    // symbol error when compiling function
-    for (let i = 0; i < node.args.length; ++i) {
-      node.args[i] = createConstantNode(0)
-    }
-
-    node.compile().evaluate()
-    throw new Error('Expected TypeError, but none found')
-  }
 
   /**
    * Helper function to create a constant node with a specific type
@@ -776,7 +760,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {ConstantNode}
    */
   function createConstantNode (value, valueType) {
-    return new ConstantNode(numeric(value, valueType || config.number))
+    return new ConstantNode(numeric(value, valueType || safeNumberType(String(value), config)))
   }
 
   return derivative

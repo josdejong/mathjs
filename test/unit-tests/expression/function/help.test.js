@@ -26,6 +26,13 @@ describe('help', function () {
     assert.strictEqual(help.doc.name, 'sin')
   })
 
+  it('should not alter the mathjs instance when stringifying help', function () {
+    const config = math.config()
+    const str = math.help(math.config).toString()
+    assert(str.includes('number: "Fraction"'))
+    assert.deepStrictEqual(math.config(), config)
+  })
+
   it('should find help from a function', function () {
     const help = math.help(math.sin)
     assert(help instanceof math.Help)

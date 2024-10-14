@@ -8,6 +8,10 @@ describe('print', function () {
     assert.strictEqual(math.print('hello, $name!', { name: 'user' }), 'hello, user!')
   })
 
+  it('should print a bigint', function () {
+    assert.strictEqual(math.print('The count is: $count', { count: 3n }), 'The count is: 3')
+  })
+
   it('should interpolate values from a nested object in a template (object template)', function () {
     assert.strictEqual(math.print('hello, $name.first $name.last!', {
       name: {
@@ -24,6 +28,16 @@ describe('print', function () {
         last: 'last'
       },
       separator: [',']
+    }), 'hello, first last!')
+  })
+
+  it('should interpolate values from a nested object in a template (mixed object/matrix template)', function () {
+    assert.strictEqual(math.print('hello$separator.0 $name.first $name.last!', {
+      name: {
+        first: 'first',
+        last: 'last'
+      },
+      separator: math.matrix([','])
     }), 'hello, first last!')
   })
 
@@ -103,5 +117,14 @@ describe('print', function () {
   it('should LaTeX print', function () {
     const expression = math.parse('print(template,values)')
     assert.strictEqual(expression.toTex(), '\\mathrm{print}\\left( template, values\\right)')
+  })
+
+  it('should work one indexed in the parser for all previous combinations', function () {
+    assert.deepStrictEqual(math.evaluate("print('I like $food', {food:'pizza'})"), 'I like pizza')
+    assert.deepStrictEqual(math.evaluate("print('I like $1', ['pizza'])"), 'I like pizza')
+    assert.deepStrictEqual(math.evaluate("print('I like $food.1', {food:['pizza']})"), 'I like pizza')
+    assert.deepStrictEqual(math.evaluate("print('I like $1.food', [{food:'pizza'}])"), 'I like pizza')
+    assert.deepStrictEqual(math.evaluate("print('I like $food.1 and $food.2', {food:['pizza','tacos']})"), 'I like pizza and tacos')
+    assert.deepStrictEqual(math.evaluate("print('Values: $1, $2, $3', [6, 9, 4])"), 'Values: 6, 9, 4')
   })
 })

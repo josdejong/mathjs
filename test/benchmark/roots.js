@@ -1,8 +1,8 @@
 // test performance of the expression parser in node.js
 
-const Benchmark = require('benchmark')
-const padRight = require('pad-right')
-const math = require('../..')
+import Benchmark from 'benchmark'
+import padRight from 'pad-right'
+import { polynomialRoot } from '../../lib/esm/index.js'
 
 function pad (text) {
   return padRight(text, 40, ' ')
@@ -17,7 +17,7 @@ function countRoots () {
       for (let b = 0; b <= maxCoeff; ++b) {
         for (let a = 1; a <= maxCoeff; ++a) {
           polys += 1
-          roots += math.polynomialRoot(d, c, b, a).length
+          roots += polynomialRoot(d, c, b, a).length
         }
       }
     }

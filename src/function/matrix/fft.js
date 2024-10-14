@@ -10,7 +10,12 @@ const dependencies = [
   'divideScalar',
   'exp',
   'tau',
-  'i'
+  'i',
+  'dotDivide',
+  'conj',
+  'pow',
+  'ceil',
+  'log2'
 ]
 
 export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
@@ -21,10 +26,15 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
   divideScalar,
   exp,
   tau,
-  i: I
+  i: I,
+  dotDivide,
+  conj,
+  pow,
+  ceil,
+  log2
 }) => {
   /**
-   * Calculate N-dimensional fourier transform
+   * Calculate N-dimensional Fourier transform
    *
    * Syntax:
    *
@@ -40,12 +50,12 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
    *      ifft
    *
    * @param {Array | Matrix} arr    An array or matrix
-   * @return {Array | Matrix}       N-dimensional fourier transformation of the array
+   * @return {Array | Matrix}       N-dimensional Fourier transformation of the array
    */
   return typed(name, {
     Array: _ndFft,
     Matrix: function (matrix) {
-      return matrix.create(_ndFft(matrix.toArray()))
+      return matrix.create(_ndFft(matrix.valueOf()), matrix.datatype())
     }
   })
 
@@ -79,7 +89,38 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
     }
     return _transpose(_1dFft(_transpose(arr), 1))
   }
-
+  /**
+   * Perform an 1-dimensional non-power-of-2 Fourier transform using Chirp-Z Transform
+   *
+   * @param {Array} arr      The array
+   * @return {Array}         resulting array
+   */
+  function _czt (arr) {
+    const n = arr.length
+    const w = exp(divideScalar(multiplyScalar(-1, multiplyScalar(I, tau)), n))
+    const chirp = []
+    for (let i = 1 - n; i < n; i++) {
+      chirp.push(pow(w, divideScalar(pow(i, 2), 2)))
+    }
+    const N2 = pow(2, ceil(log2(n + n - 1)))
+    const xp = [
+      ...new Array(n).fill(0).map((_, i) => multiplyScalar(arr[i], chirp[n - 1 + i])),
+      ...new Array(N2 - n).fill(0)
+    ]
+    const ichirp = [
+      ...new Array(n + n - 1).fill(0).map((_, i) => divideScalar(1, chirp[i])),
+      ...new Array(N2 - (n + n - 1)).fill(0)
+    ]
+    const fftXp = _fft(xp)
+    const fftIchirp = _fft(ichirp)
+    const fftProduct = new Array(N2).fill(0).map((_, i) => multiplyScalar(fftXp[i], fftIchirp[i]))
+    const ifftProduct = dotDivide(conj(_ndFft(conj(fftProduct))), N2)
+    const ret = []
+    for (let i = n - 1; i < n + n - 1; i++) {
+      ret.push(multiplyScalar(ifftProduct[i], chirp[i]))
+    }
+    return ret
+  }
   /**
    * Perform an 1-dimensional Fourier transform
    *
@@ -106,7 +147,10 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
         ret[k + len / 2] = addScalar(p, multiplyScalar(-1, q))
       }
       return ret
+    } else {
+      // use chirp-z transform for non-power-of-2 FFT
+      return _czt(arr)
     }
-    throw new Error('Can only calculate FFT of power-of-two size')
+    // throw new Error('Can only calculate FFT of power-of-two size')
   }
 })

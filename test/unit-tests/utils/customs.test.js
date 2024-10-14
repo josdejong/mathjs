@@ -1,7 +1,13 @@
 // test boolean utils
 import assert from 'assert'
 
-import { isPlainObject, isSafeMethod, isSafeProperty } from '../../../src/utils/customs.js'
+import {
+  getSafeMethod,
+  getSafeProperty,
+  isPlainObject,
+  isSafeMethod,
+  isSafeProperty
+} from '../../../src/utils/customs.js'
 import math from '../../../src/defaultInstance.js'
 
 describe('customs', function () {
@@ -110,6 +116,20 @@ describe('customs', function () {
     })
   })
 
+  describe('getSafeMethod', function () {
+    it('should return a method when safe', function () {
+      const obj = { getName: () => 'Joe' }
+
+      assert.strictEqual(getSafeMethod(obj, 'getName'), obj.getName)
+    })
+
+    it('should throw an exception when a method is unsafe', function () {
+      assert.throws(() => {
+        getSafeMethod(Function, 'constructor')
+      }, /Error: No access to method "constructor"/)
+    })
+  })
+
   describe('isSafeProperty', function () {
     it('should test properties on plain objects', function () {
       const object = {}
@@ -130,14 +150,14 @@ describe('customs', function () {
       assert.strictEqual(isSafeProperty(object, 'arguments'), false)
       assert.strictEqual(isSafeProperty(object, 'caller'), false)
 
-      // non existing property
+      // non-existing property
       assert.strictEqual(isSafeProperty(object, 'bar'), true)
 
       // property with unicode chars
       assert.strictEqual(isSafeProperty(object, 'co\u006Estructor'), false)
     })
 
-    it('should test inherited properties on plain objects ', function () {
+    it('should test inherited properties on plain objects', function () {
       const object1 = {}
       const object2 = Object.create(object1)
       object1.foo = true
@@ -152,11 +172,39 @@ describe('customs', function () {
       assert.strictEqual(isSafeProperty(object2, 'constructor'), false)
     })
 
-    it('should test for ghosted native property', function () {
-      const array1 = []
-      const array2 = Object.create(array1)
-      array2.length = Infinity
-      assert.strictEqual(isSafeProperty(array2, 'length'), true)
+    it('should test properties on an array', function () {
+      const array = [3, 2, 1]
+      assert.strictEqual(isSafeProperty(array, 'length'), true)
+      assert.strictEqual(isSafeProperty(array, 'foo'), true)
+      assert.strictEqual(isSafeProperty(array, 'sort'), true)
+      assert.strictEqual(isSafeProperty(array, '__proto__'), false)
+      assert.strictEqual(isSafeProperty(array, 'constructor'), false)
+    })
+  })
+
+  describe('getSafeProperty', function () {
+    it('should return a method when safe', function () {
+      const obj = { getName: () => 'Joe' }
+
+      assert.strictEqual(getSafeProperty(obj, 'getName'), obj.getName)
+    })
+
+    it('should return a property when safe', function () {
+      const obj = { username: 'Joe' }
+
+      assert.strictEqual(getSafeProperty(obj, 'username'), 'Joe')
+    })
+
+    it('should throw an exception when a method is unsafe', function () {
+      assert.throws(() => {
+        getSafeProperty(Function, 'constructor')
+      }, /Error: No access to property "constructor"/)
+    })
+
+    it('should throw an exception when a property is unsafe', function () {
+      assert.throws(() => {
+        getSafeProperty({ constructor: 'test' }, 'constructor')
+      }, /Error: No access to property "constructor"/)
     })
   })
 

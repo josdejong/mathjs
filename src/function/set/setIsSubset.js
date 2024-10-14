@@ -24,7 +24,7 @@ export const createSetIsSubset = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * @param {Array | Matrix}    a1  A (multi)set
    * @param {Array | Matrix}    a2  A (multi)set
-   * @return {boolean}            true | false
+   * @return {boolean} Returns true when a1 is a subset of a2, returns false otherwise
    */
   return typed(name, {
     'Array | Matrix, Array | Matrix': function (a1, a2) {

@@ -1,14 +1,14 @@
 import typedFunction from 'typed-function'
-import { deepFlatten, isLegacyFactory, values } from '../utils/object.js'
-import * as emitter from './../utils/emitter.js'
-import { importFactory } from './function/import.js'
-import { configFactory } from './function/config.js'
+import { ArgumentsError } from '../error/ArgumentsError.js'
+import { DimensionError } from '../error/DimensionError.js'
+import { IndexError } from '../error/IndexError.js'
 import { factory, isFactory } from '../utils/factory.js'
 import {
   isAccessorNode,
   isArray,
   isArrayNode,
   isAssignmentNode,
+  isBigInt,
   isBigNumber,
   isBlockNode,
   isBoolean,
@@ -26,18 +26,21 @@ import {
   isHelp,
   isIndex,
   isIndexNode,
+  isMap,
   isMatrix,
   isNode,
   isNull,
   isNumber,
   isObject,
   isObjectNode,
+  isObjectWrappingMap,
   isOperatorNode,
   isParenthesisNode,
+  isPartitionedMap,
   isRange,
   isRangeNode,
-  isRelationalNode,
   isRegExp,
+  isRelationalNode,
   isResultSet,
   isSparseMatrix,
   isString,
@@ -45,10 +48,11 @@ import {
   isUndefined,
   isUnit
 } from '../utils/is.js'
-import { ArgumentsError } from '../error/ArgumentsError.js'
-import { DimensionError } from '../error/DimensionError.js'
-import { IndexError } from '../error/IndexError.js'
+import { deepFlatten, isLegacyFactory } from '../utils/object.js'
+import * as emitter from './../utils/emitter.js'
 import { DEFAULT_CONFIG } from './config.js'
+import { configFactory } from './function/config.js'
+import { importFactory } from './function/import.js'
 
 /**
  * Create a mathjs instance from given factory functions and optionally config
@@ -63,8 +67,11 @@ import { DEFAULT_CONFIG } from './config.js'
  *                             The object can contain nested objects,
  *                             all nested objects will be flattened.
  * @param {Object} [config]    Available options:
- *                            {number} epsilon
+ *                            {number} relTol
  *                              Minimum relative difference between two
+ *                              compared values, used by all comparison functions.
+ *                            {number} absTol
+ *                              Minimum absolute difference between two
  *                              compared values, used by all comparison functions.
  *                            {string} matrix
  *                              A string 'Matrix' (default) or 'Array'.
@@ -104,6 +111,7 @@ export function create (factories, config) {
     isNumber,
     isComplex,
     isBigNumber,
+    isBigInt,
     isFraction,
     isUnit,
     isString,
@@ -121,6 +129,9 @@ export function create (factories, config) {
     isDate,
     isRegExp,
     isObject,
+    isMap,
+    isPartitionedMap,
+    isObjectWrappingMap,
     isNull,
     isUndefined,
 
@@ -216,7 +227,7 @@ export function create (factories, config) {
   // listen for changes in config, import all functions again when changed
   // TODO: move this listener into the import function?
   math.on('config', () => {
-    values(importedFactories).forEach(factory => {
+    Object.values(importedFactories).forEach(factory => {
       if (factory && factory.meta && factory.meta.recreateOnConfigChange) {
         // FIXME: only re-create when the current instance is the same as was initially created
         // FIXME: delete the functions/constants before importing them again?
@@ -234,7 +245,7 @@ export function create (factories, config) {
 
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
-  math.import(values(deepFlatten(factories)))
+  math.import(Object.values(deepFlatten(factories)))
 
   math.ArgumentsError = ArgumentsError
   math.DimensionError = DimensionError

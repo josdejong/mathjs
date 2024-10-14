@@ -1,8 +1,10 @@
 // test parse
 import assert from 'assert'
-
-import approx from '../../../tools/approx.js'
 import math from '../../../src/defaultInstance.js'
+import { isMap, isObjectWrappingMap, isPartitionedMap } from '../../../src/utils/is.js'
+import { PartitionedMap } from '../../../src/utils/map.js'
+
+import { approxDeepEqual, approxEqual } from '../../../tools/approx.js'
 
 const parse = math.parse
 const ConditionalNode = math.ConditionalNode
@@ -31,7 +33,7 @@ function parseAndStringifyWithParens (expr) {
 
 describe('parse', function () {
   it('should parse a single expression', function () {
-    approx.equal(parse('2 + 6 / 3').compile().evaluate(), 4)
+    approxEqual(parse('2 + 6 / 3').compile().evaluate(), 4)
   })
 
   it('should parse an empty expression', function () {
@@ -139,6 +141,13 @@ describe('parse', function () {
       assert.deepStrictEqual(res.entries, [2])
       assert.strictEqual(scope.x, 2)
       assert.strictEqual(scope.f(3), 9)
+    })
+
+    it('should support variable assignment inside a function definition', function () {
+      const scope = {}
+      parse('f(x)=(y=x)*2').compile().evaluate(scope)
+      assert.strictEqual(scope.f(2), 4)
+      assert.strictEqual(scope.y, 2)
     })
 
     it('should spread a function over multiple lines', function () {
@@ -278,7 +287,7 @@ describe('parse', function () {
     })
 
     it('should parse a number followed by e', function () {
-      approx.equal(parseAndEval('2e'), 2 * Math.E)
+      approxEqual(parseAndEval('2e'), 2 * Math.E)
     })
 
     it('should throw an error with invalid numbers', function () {
@@ -308,9 +317,9 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('0x12u') })
       assert.throws(function () { parseAndEval('0x12i-8') })
 
-      assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is no valid number/)
-      assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is no valid number/)
-      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is no valid number/)
+      assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is not a valid number/)
+      assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is not a valid number/)
+      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is not a valid number/)
     })
   })
 
@@ -364,6 +373,19 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   "hi" '), 'hi')
     })
 
+    it('should parse a string containing escape characters', function () {
+      // quote
+      assert.deepStrictEqual(parseAndEval('"with\'quote"'), "with'quote")
+
+      // escaped quote -> remove escape character
+      assert.deepStrictEqual(parseAndEval('"with\\"quote"'), 'with"quote')
+      assert.deepStrictEqual(parseAndEval('"with\\\'quote"'), "with'quote")
+
+      // escaped escape character -> remove two escape characters
+      assert.deepStrictEqual(parseAndEval('"with\\\\\\"quote"'), 'with\\"quote')
+      assert.deepStrictEqual(parseAndEval('"with\\\\\'quote"'), "with\\'quote")
+    })
+
     it('should parse a with escaped characters', function () {
       assert.deepStrictEqual(parseAndEval('"line end\\nnext"'), 'line end\nnext')
       assert.deepStrictEqual(parseAndEval('"line end\\n"'), 'line end\n')
@@ -371,6 +393,26 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('"tab\\t"'), 'tab\t')
       assert.deepStrictEqual(parseAndEval('"escaped backslash\\\\next"'), 'escaped backslash\\next')
       assert.deepStrictEqual(parseAndEval('"escaped backslash\\\\"'), 'escaped backslash\\')
+    })
+
+    it('should parse unicode characters', function () {
+      assert.deepStrictEqual(parseAndEval('"★"'), '★')
+      assert.deepStrictEqual(parseAndEval('"😀"'), '😀')
+      assert.deepStrictEqual(parseAndEval('"\ud83d\ude00"'), '\ud83d\ude00')
+
+      assert.deepStrictEqual(parseAndEval('"\\ud83d\\ude00"'), '😀')
+      assert.deepStrictEqual(parseAndEval('"\\u2140"'), '⅀')
+      assert.deepStrictEqual(parseAndEval('"\\u221B"'), '∛')
+    })
+
+    it('should throw an error on an invalid unicode character', function () {
+      assert.throws(() => parseAndEval('"\\ud8'), /Invalid unicode character \\ud8/)
+      assert.throws(() => parseAndEval('"\\ud8TT'), /Invalid unicode character \\ud8TT/)
+    })
+
+    it('should throw an error on an invalid escape character', function () {
+      assert.throws(() => parseAndEval('"\\y'), /Bad escape character \\y/)
+      assert.throws(() => parseAndEval('"\\v'), /Bad escape character \\v/)
     })
 
     it('should throw an error with invalid strings', function () {
@@ -420,7 +462,20 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   \'hi\' '), 'hi')
     })
 
-    it('should parse a with escaped characters', function () {
+    it('should parse a string containing escape characters', function () {
+      // quote
+      assert.deepStrictEqual(parseAndEval("'with\"quote'"), 'with"quote')
+
+      // escaped quote -> remove escape character
+      assert.deepStrictEqual(parseAndEval("'with\\'quote'"), "with'quote")
+      assert.deepStrictEqual(parseAndEval("'with\\\"quote'"), 'with"quote')
+
+      // escaped escape character -> remove two escape characters
+      assert.deepStrictEqual(parseAndEval("'with\\\\\\'quote'"), "with\\'quote")
+      assert.deepStrictEqual(parseAndEval("'with\\\\\"quote'"), 'with\\"quote')
+    })
+
+    it('should parse a string with escaped characters', function () {
       assert.deepStrictEqual(parseAndEval('\'line end\\nnext\''), 'line end\nnext')
       assert.deepStrictEqual(parseAndEval('\'line end\\n\''), 'line end\n')
       assert.deepStrictEqual(parseAndEval('\'tab\\tnext\''), 'tab\tnext')
@@ -483,28 +538,28 @@ describe('parse', function () {
     })
 
     it('should correctly parse negative temperatures', function () {
-      approx.deepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'))
-      approx.deepEqual(parseAndEval('--6 celsius'), new Unit(6, 'celsius'))
-      approx.deepEqual(parseAndEval('-6 celsius to fahrenheit'),
+      approxDeepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'))
+      approxDeepEqual(parseAndEval('--6 celsius'), new Unit(6, 'celsius'))
+      approxDeepEqual(parseAndEval('-6 celsius to fahrenheit'),
         new Unit(21.2, 'fahrenheit').to('fahrenheit'))
     })
 
     it('should convert units', function () {
       const scope = {}
-      approx.deepEqual(parseAndEval('(5.08 cm * 1000) to inch', scope),
+      approxDeepEqual(parseAndEval('(5.08 cm * 1000) to inch', scope),
         math.unit(2000, 'inch').to('inch'))
-      approx.deepEqual(parseAndEval('a = (5.08 cm * 1000) to mm', scope),
+      approxDeepEqual(parseAndEval('a = (5.08 cm * 1000) to mm', scope),
         math.unit(50800, 'mm').to('mm'))
-      approx.deepEqual(parseAndEval('a to inch', scope),
+      approxDeepEqual(parseAndEval('a to inch', scope),
         math.unit(2000, 'inch').to('inch'))
 
-      approx.deepEqual(parseAndEval('10 celsius to fahrenheit'),
+      approxDeepEqual(parseAndEval('10 celsius to fahrenheit'),
         math.unit(50, 'fahrenheit').to('fahrenheit'))
-      approx.deepEqual(parseAndEval('20 celsius to fahrenheit'),
+      approxDeepEqual(parseAndEval('20 celsius to fahrenheit'),
         math.unit(68, 'fahrenheit').to('fahrenheit'))
-      approx.deepEqual(parseAndEval('50 fahrenheit to celsius'),
+      approxDeepEqual(parseAndEval('50 fahrenheit to celsius'),
         math.unit(10, 'celsius').to('celsius'))
-      approx.deepEqual(parseAndEval('degC to degF'),
+      approxDeepEqual(parseAndEval('degC to degF'),
         math.unit(1.8, 'degF').to('degF'))
     })
 
@@ -517,25 +572,30 @@ describe('parse', function () {
     })
 
     it('should evaluate operator "to" with correct precedence ', function () {
-      approx.deepEqual(parseAndEval('5.08 cm * 1000 to inch'),
+      approxDeepEqual(parseAndEval('5.08 cm * 1000 to inch'),
         new Unit(2000, 'inch').to('inch'))
     })
 
     it('should evaluate operator "in" (alias of "to") ', function () {
-      approx.deepEqual(parseAndEval('5.08 cm in inch'),
+      approxDeepEqual(parseAndEval('5.08 cm in inch'),
         new Unit(2, 'inch').to('inch'))
     })
 
     it('should evaluate unit "in" (should not conflict with operator "in")', function () {
-      approx.deepEqual(parseAndEval('2 in'), new Unit(2, 'in'))
-      approx.deepEqual(parseAndEval('5.08 cm in in'), new Unit(2, 'in').to('in'))
-      approx.deepEqual(parseAndEval('5 in in in'), new Unit(5, 'in').to('in'))
-      approx.deepEqual(parseAndEval('2 in to meter'), new Unit(2, 'inch').to('meter'))
-      approx.deepEqual(parseAndEval('2 in in meter'), new Unit(2, 'inch').to('meter'))
-      approx.deepEqual(parseAndEval('a in inch', { a: new Unit(5.08, 'cm') }), new Unit(2, 'inch').to('inch'))
-      approx.deepEqual(parseAndEval('(2+3) in'), new Unit(5, 'in'))
-      approx.deepEqual(parseAndEval('a in', { a: 5 }), new Unit(5, 'in'))
-      approx.deepEqual(parseAndEval('0.5in + 1.5in to cm'), new Unit(5.08, 'cm').to('cm'))
+      approxDeepEqual(parseAndEval('2 in'), new Unit(2, 'in'))
+      approxDeepEqual(parseAndEval('5.08 cm in in'), new Unit(2, 'in').to('in'))
+      approxDeepEqual(parseAndEval('5 in in in'), new Unit(5, 'in').to('in'))
+      approxDeepEqual(parseAndEval('2 in to meter'), new Unit(2, 'inch').to('meter'))
+      approxDeepEqual(parseAndEval('2 in in meter'), new Unit(2, 'inch').to('meter'))
+      approxDeepEqual(parseAndEval('a in inch', { a: new Unit(5.08, 'cm') }), new Unit(2, 'inch').to('inch'))
+      approxDeepEqual(parseAndEval('(2+3) in'), new Unit(5, 'in'))
+      approxDeepEqual(parseAndEval('a in', { a: 5 }), new Unit(5, 'in'))
+      approxDeepEqual(parseAndEval('0.5in + 1.5in to cm'), new Unit(5.08, 'cm').to('cm'))
+
+      assert(parseAndEval('2 meter^2').toString(), '2 meter^2')
+      assert(parseAndEval('-2 meter^2').toString(), '-2 meter^2')
+      assert(parseAndEval('2 in^2').toString(), '2 in^2')
+      assert(parseAndEval('-2 in^2').toString(), '-2 in^2')
     })
   })
 
@@ -566,6 +626,43 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('[1;2;3]'), math.matrix([[1], [2], [3]]))
       assert.deepStrictEqual(parseAndEval('[[1,2],[3,4]]'), math.matrix([[1, 2], [3, 4]]))
       assert.deepStrictEqual(parseAndEval('[[[1],[2]],[[3],[4]]]'), math.matrix([[[1], [2]], [[3], [4]]]))
+    })
+
+    it('should parse a matrix with trailing commas', function () {
+      assert.ok(parseAndEval('[1,2;3,4;]') instanceof Matrix)
+
+      const m = parseAndEval('[1,2,3;4,5,6;]')
+      assert.deepStrictEqual(m.size(), [2, 3])
+      assert.deepStrictEqual(m, math.matrix([[1, 2, 3], [4, 5, 6]]))
+
+      const b = parseAndEval('[5, 6; 1, 1;]')
+      assert.deepStrictEqual(b.size(), [2, 2])
+      assert.deepStrictEqual(b, math.matrix([[5, 6], [1, 1]]))
+
+      // from 1 to n dimensions
+      assert.deepStrictEqual(parseAndEval('[ ]'), math.matrix([]))
+      assert.deepStrictEqual(parseAndEval('[1,2,3,]'), math.matrix([1, 2, 3]))
+      assert.deepStrictEqual(parseAndEval('[1;2;3;]'), math.matrix([[1], [2], [3]]))
+      assert.deepStrictEqual(parseAndEval('[[1,2],[3,4],]'), math.matrix([[1, 2], [3, 4]]))
+      assert.deepStrictEqual(parseAndEval('[[[1],[2]],[[3],[4]],]'), math.matrix([[[1], [2]], [[3], [4]]]))
+    })
+
+    it('should throw an error when multiple trailing commas/semicolons are in a matrix', function () {
+      assert.throws(function () {
+        parseAndEval('[1,2,3,,] ')
+      }, /SyntaxError: Value expected/)
+
+      assert.throws(function () {
+        parseAndEval('[1,2;3,4;,] ')
+      }, /SyntaxError: Value expected/)
+
+      assert.throws(function () {
+        parseAndEval('[1;2;3;;]')
+      }, /SyntaxError: Value expected/)
+
+      assert.throws(function () {
+        parseAndEval('[[[1],[2]],[[3],[4]],,]')
+      }, /SyntaxError: Value expected/)
     })
 
     it('should parse an empty matrix', function () {
@@ -657,7 +754,7 @@ describe('parse', function () {
     it('should get/set the matrix correctly for 3d matrices', function () {
       const scope = {}
       assert.deepStrictEqual(parseAndEval('f=[1,2;3,4]', scope), math.matrix([[1, 2], [3, 4]]))
-      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2]))
+      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2], 'dense', 'number'))
 
       parseAndEval('f[:,:,2]=[5,6;7,8]', scope)
       assert.deepStrictEqual(scope.f, math.matrix([
@@ -671,7 +768,7 @@ describe('parse', function () {
         ]
       ]))
 
-      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2, 2]))
+      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2, 2], 'dense', 'number'))
       assert.deepStrictEqual(parseAndEval('f[:,:,1]', scope), math.matrix([[[1], [2]], [[3], [4]]]))
       assert.deepStrictEqual(parseAndEval('f[:,:,2]', scope), math.matrix([[[5], [6]], [[7], [8]]]))
       assert.deepStrictEqual(parseAndEval('f[:,2,:]', scope), math.matrix([[[2, 6]], [[4, 8]]]))
@@ -687,6 +784,17 @@ describe('parse', function () {
         [0, 9, 9, 9]
       ]))
       assert.deepStrictEqual(parseAndEval('a[2:end-1, 2:end-1]', scope), math.matrix([[2, 0], [9, 9]]))
+    })
+
+    it('should get and set broadcasted submatrices in the parser', function () {
+      const scope = {}
+      parseAndEval('A = [1, 2, 3, 4]', scope)
+      assert.deepStrictEqual(parseAndEval('A[A>2]', scope), math.matrix([3, 4]))
+      parseAndEval('A[A>2] = 20', scope)
+      assert.deepStrictEqual(scope.A, math.matrix([1, 2, 20, 20]))
+      parseAndEval('A = [1, 2, 3, 4]', scope)
+      parseAndEval('A[A > 2] = [15]', scope)
+      assert.deepStrictEqual(scope.A, math.matrix([1, 2, 15, 15]))
     })
 
     it('should merge nested matrices', function () {
@@ -707,11 +815,11 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('d=1:3', scope), math.matrix([1, 2, 3]))
       assert.deepStrictEqual(parseAndEval('concat(d,d)', scope), math.matrix([1, 2, 3, 1, 2, 3]))
       assert.deepStrictEqual(parseAndEval('e=1+d', scope), math.matrix([2, 3, 4]))
-      assert.deepStrictEqual(parseAndEval('size(e)', scope), math.matrix([3]))
+      assert.deepStrictEqual(parseAndEval('size(e)', scope), math.matrix([3], 'dense', 'number'))
       assert.deepStrictEqual(parseAndEval('concat(e,e)', scope), math.matrix([2, 3, 4, 2, 3, 4]))
       assert.deepStrictEqual(parseAndEval('[[],[]]', scope), math.matrix([[], []]))
       assert.deepStrictEqual(parseAndEval('[[],[]]', scope).size(), [2, 0])
-      assert.deepStrictEqual(parseAndEval('size([[],[]])', scope), math.matrix([2, 0]))
+      assert.deepStrictEqual(parseAndEval('size([[],[]])', scope), math.matrix([2, 0], 'dense', 'number'))
     })
 
     it('should disable arrays as range in a matrix index', function () {
@@ -759,6 +867,12 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj.foo[2][3]', { obj: { foo: ['hello', 'world'] } }), 'r')
       assert.deepStrictEqual(parseAndEval('obj.foo[2][end]', { obj: { foo: ['hello', 'world'] } }), 'd')
       assert.deepStrictEqual(parseAndEval('obj.foo[1].bar', { obj: { foo: [{ bar: 4 }] } }), 4)
+    })
+
+    it('should get a property with the name of an operator like "to" or "in"', function () {
+      assert.deepStrictEqual(parseAndEval('obj.mod', { obj: { mod: 42 } }), 42)
+      assert.deepStrictEqual(parseAndEval('obj.in', { obj: { in: 42 } }), 42)
+      assert.deepStrictEqual(parseAndEval('obj.to', { obj: { to: 42 } }), 42)
     })
 
     it('should set an object property', function () {
@@ -850,7 +964,7 @@ describe('parse', function () {
     })
 
     it('should invoke a function on an object with the right context', function () {
-      approx.equal(parseAndEval('(2.54 cm).toNumeric("inch")'), 1)
+      approxEqual(parseAndEval('(2.54 cm).toNumeric("inch")'), 1)
       assert.deepStrictEqual(parseAndEval('bignumber(2).plus(3)'), math.bignumber(5))
       assert.deepStrictEqual(parseAndEval('bignumber(2)["plus"](3)'), math.bignumber(5))
     })
@@ -946,8 +1060,8 @@ describe('parse', function () {
     it('should parse symbolic constants', function () {
       assert.strictEqual(parse('i').type, 'SymbolNode')
       assert.deepStrictEqual(parseAndEval('i'), new Complex(0, 1))
-      approx.equal(parseAndEval('pi'), Math.PI)
-      approx.equal(parseAndEval('e'), Math.E)
+      approxEqual(parseAndEval('pi'), Math.PI)
+      approxEqual(parseAndEval('e'), Math.E)
     })
 
     it('should parse constants', function () {
@@ -967,7 +1081,7 @@ describe('parse', function () {
 
     it('should evaluate constants', function () {
       // Do these tests really belong in constants.test.js ?
-      approx.equal(math.sin(math.pi / 2), 1)
+      approxEqual(math.sin(math.pi / 2), 1)
 
       assert.deepStrictEqual(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), math.complex(0))
       assert.deepStrictEqual(math.round(math.evaluate('1+e^(pi*i)'), 5), math.complex(0))
@@ -987,7 +1101,7 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('a + 2', scope), 2.75)
       assert.strictEqual(parseAndEval('a = 2', scope), 2)
       assert.strictEqual(parseAndEval('a + 2', scope), 4)
-      approx.equal(parseAndEval('pi * 2', scope), 6.283185307179586)
+      approxEqual(parseAndEval('pi * 2', scope), 6.283185307179586)
     })
 
     it('should throw an error on undefined symbol', function () {
@@ -1032,7 +1146,7 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('sqrt(-4)'), new Complex(0, 2))
       assert.strictEqual(parseAndEval('abs(-4.2)'), 4.2)
       assert.strictEqual(parseAndEval('add(2, 3)'), 5)
-      approx.deepEqual(parseAndEval('1+exp(pi*i)'), new Complex(0, 0))
+      approxDeepEqual(parseAndEval('1+exp(pi*i)'), new Complex(0, 0))
       assert.strictEqual(parseAndEval('unequal(2, 3)'), true)
     })
 
@@ -1134,10 +1248,10 @@ describe('parse', function () {
 
   describe('parentheses', function () {
     it('should parse parentheses overriding the default precedence', function () {
-      approx.equal(parseAndEval('2 - (2 - 2)'), 2)
-      approx.equal(parseAndEval('2 - ((2 - 2) - 2)'), 4)
-      approx.equal(parseAndEval('3 * (2 + 3)'), 15)
-      approx.equal(parseAndEval('(2 + 3) * 3'), 15)
+      approxEqual(parseAndEval('2 - (2 - 2)'), 2)
+      approxEqual(parseAndEval('2 - ((2 - 2) - 2)'), 4)
+      approxEqual(parseAndEval('3 * (2 + 3)'), 15)
+      approxEqual(parseAndEval('(2 + 3) * 3'), 15)
     })
 
     it('should throw an error in case of unclosed parentheses', function () {
@@ -1147,8 +1261,8 @@ describe('parse', function () {
 
   describe('operators', function () {
     it('should parse operations', function () {
-      approx.equal(parseAndEval('(2+3)/4'), 1.25)
-      approx.equal(parseAndEval('2+3/4'), 2.75)
+      approxEqual(parseAndEval('(2+3)/4'), 1.25)
+      approxEqual(parseAndEval('2+3/4'), 2.75)
       assert.strictEqual(parse('0 + 2').toString(), '0 + 2')
     })
 
@@ -1174,21 +1288,21 @@ describe('parse', function () {
     })
 
     it('should parse dotMultiply .*', function () {
-      approx.deepEqual(parseAndEval('2.*3'), 6)
-      approx.deepEqual(parseAndEval('2e3.*3'), 6e3)
-      approx.deepEqual(parseAndEval('2 .* 3'), 6)
-      approx.deepEqual(parseAndEval('4 .* 2'), 8)
-      approx.deepEqual(parseAndEval('8 .* 2 .* 2'), 32)
+      approxDeepEqual(parseAndEval('2.*3'), 6)
+      approxDeepEqual(parseAndEval('2e3.*3'), 6e3)
+      approxDeepEqual(parseAndEval('2 .* 3'), 6)
+      approxDeepEqual(parseAndEval('4 .* 2'), 8)
+      approxDeepEqual(parseAndEval('8 .* 2 .* 2'), 32)
       assert.deepStrictEqual(parseAndEval('a=3; a.*4'), new ResultSet([12]))
 
       assert.deepStrictEqual(parseAndEval('[1,2,3] .* [1,2,3]'), math.matrix([1, 4, 9]))
     })
 
     it('should parse dotPower .^', function () {
-      approx.deepEqual(parseAndEval('2.^3'), 8)
-      approx.deepEqual(parseAndEval('2 .^ 3'), 8)
-      approx.deepEqual(parseAndEval('-2.^2'), -4) // -(2^2)
-      approx.deepEqual(parseAndEval('2.^3.^4'), 2.41785163922926e+24) // 2^(3^4)
+      approxDeepEqual(parseAndEval('2.^3'), 8)
+      approxDeepEqual(parseAndEval('2 .^ 3'), 8)
+      approxDeepEqual(parseAndEval('-2.^2'), -4) // -(2^2)
+      approxDeepEqual(parseAndEval('2.^3.^4'), 2.41785163922926e+24) // 2^(3^4)
 
       assert.deepStrictEqual(parseAndEval('[2,3] .^ [2,3]'), math.matrix([4, 27]))
     })
@@ -1221,46 +1335,49 @@ describe('parse', function () {
     })
 
     it('should parse mod %', function () {
-      approx.equal(parseAndEval('8 % 3'), 2)
-      approx.equal(parseAndEval('80% pi'), 1.4601836602551685)
-      assert.throws(function () { parseAndEval('3%(-100)') }, /Cannot calculate mod for a negative divisor/)
+      approxEqual(parseAndEval('8 % 3'), 2)
+      approxEqual(parseAndEval('80% pi'), 1.4601836602551685)
+    })
+
+    it('should parse mod % for negative divisors', function () {
+      assert.strictEqual(parseAndEval('3%(-100)'), -97)
     })
 
     it('should parse % value', function () {
-      approx.equal(parseAndEval('8 % '), 0.08)
-      approx.equal(parseAndEval('100%'), 1)
+      approxEqual(parseAndEval('8 % '), 0.08)
+      approxEqual(parseAndEval('100%'), 1)
     })
 
     it('should parse % with multiplication', function () {
-      approx.equal(parseAndEval('100*50%'), 50)
-      approx.equal(parseAndEval('50%*100'), 50)
+      approxEqual(parseAndEval('100*50%'), 50)
+      approxEqual(parseAndEval('50%*100'), 50)
       assert.throws(function () { parseAndEval('50%(*100)') }, /Value expected/)
     })
 
     it('should parse % with division', function () {
-      approx.equal(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
-      approx.equal(parseAndEval('100/50%*2'), 400) // should be treated as (100÷(50%))×2
-      approx.equal(parseAndEval('50%/100'), 0.005)
+      approxEqual(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
+      approxEqual(parseAndEval('100/50%*2'), 400) // should be treated as (100÷(50%))×2
+      approxEqual(parseAndEval('50%/100'), 0.005)
       assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
     })
 
     it('should parse % with addition', function () {
-      approx.equal(parseAndEval('100+3%'), 103)
-      approx.equal(parseAndEval('3%+100'), 100.03)
+      approxEqual(parseAndEval('100+3%'), 103)
+      approxEqual(parseAndEval('3%+100'), 100.03)
     })
 
     it('should parse % with subtraction', function () {
-      approx.equal(parseAndEval('100-3%'), 97)
-      approx.equal(parseAndEval('3%-100'), -99.97)
+      approxEqual(parseAndEval('100-3%'), 97)
+      approxEqual(parseAndEval('3%-100'), -99.97)
     })
 
     it('should parse operator mod', function () {
-      approx.equal(parseAndEval('8 mod 3'), 2)
+      approxEqual(parseAndEval('8 mod 3'), 2)
     })
 
     it('should parse multiply *', function () {
-      approx.equal(parseAndEval('4 * 2'), 8)
-      approx.equal(parseAndEval('8 * 2 * 2'), 32)
+      approxEqual(parseAndEval('4 * 2'), 8)
+      approxEqual(parseAndEval('8 * 2 * 2'), 32)
     })
 
     it('should parse implicit multiplication', function () {
@@ -1375,9 +1492,9 @@ describe('parse', function () {
     })
 
     it('should parse pow ^', function () {
-      approx.equal(parseAndEval('2^3'), 8)
-      approx.equal(parseAndEval('-2^2'), -4) // -(2^2)
-      approx.equal(parseAndEval('2^3^4'), 2.41785163922926e+24) // 2^(3^4)
+      approxEqual(parseAndEval('2^3'), 8)
+      approxEqual(parseAndEval('-2^2'), -4) // -(2^2)
+      approxEqual(parseAndEval('2^3^4'), 2.41785163922926e+24) // 2^(3^4)
     })
 
     it('should parse smaller <', function () {
@@ -1399,6 +1516,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true & false'), 0)
       assert.strictEqual(parseAndEval('false & true'), 0)
       assert.strictEqual(parseAndEval('false & false'), 0)
+
+      assert.strictEqual(parseAndEval('0 & undefined'), 0)
+      assert.strictEqual(parseAndEval('false & undefined'), 0)
+      assert.throws(function () { parseAndEval('true & undefined') }, TypeError)
+    })
+
+    it('should parse bitwise and & lazily', function () {
+      const scope = {}
+      parseAndEval('(a=false) & (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: false })
     })
 
     it('should parse bitwise xor ^|', function () {
@@ -1417,6 +1544,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true | false'), 1)
       assert.strictEqual(parseAndEval('false | true'), 1)
       assert.strictEqual(parseAndEval('false | false'), 0)
+
+      assert.strictEqual(parseAndEval('-1 | undefined'), -1)
+      assert.strictEqual(parseAndEval('true | undefined'), 1)
+      assert.throws(function () { parseAndEval('false | undefined') }, TypeError)
+    })
+
+    it('should parse bitwise or | lazily', function () {
+      const scope = {}
+      parseAndEval('(a=true) | (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: true })
     })
 
     it('should parse bitwise left shift <<', function () {
@@ -1440,6 +1577,58 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true and false'), false)
       assert.strictEqual(parseAndEval('false and true'), false)
       assert.strictEqual(parseAndEval('false and false'), false)
+
+      assert.strictEqual(parseAndEval('0 and undefined'), false)
+      assert.strictEqual(parseAndEval('false and undefined'), false)
+      assert.throws(function () { parseAndEval('true and undefined') }, TypeError)
+    })
+
+    it('should parse logical and lazily', function () {
+      const scope = {}
+      parseAndEval('(a=false) and (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: false })
+    })
+
+    it('should parse logical and inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = x > 2 and x < 4', scope)
+      assert.strictEqual(f(1), false)
+      assert.strictEqual(f(3), true)
+      assert.strictEqual(f(5), false)
+    })
+
+    it('should use a variable assignment with a rawArgs function inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = (a=false) and (b=true)', scope)
+      assert.deepStrictEqual(parseAndEval('f(2)', scope), false)
+      assert.deepStrictEqual(Object.keys(scope), ['f', 'a'])
+      assert.strictEqual(scope.f, f)
+      assert.strictEqual(scope.a, false)
+    })
+
+    it('should always pass a Map as scope to a rawArgs function', function () {
+      const myMath = math.create()
+      function myFunction (args, _math, _scope) {
+        return {
+          type: isObjectWrappingMap(_scope)
+            ? 'ObjectWrappingMap'
+            : isPartitionedMap(_scope)
+              ? 'PartitionedMap'
+              : isMap(_scope)
+                ? 'Map'
+                : 'unknown',
+          scope: _scope
+        }
+      }
+      myFunction.rawArgs = true
+      myMath.import({ myFunction })
+
+      assert.strictEqual(myMath.parse('myFunction()').evaluate({}).type, 'PartitionedMap')
+      const map = new Map()
+      assert.strictEqual(myMath.parse('myFunction()').evaluate(map).type, 'PartitionedMap')
+      assert.strictEqual(myMath.parse('myFunction()').evaluate(map).scope.a, map)
+      assert.strictEqual(myMath.parse('myFunction()').evaluate(new PartitionedMap(new Map(), new Map(), new Set('x'))).type, 'PartitionedMap')
+      assert.deepStrictEqual(myMath.parse('f(x) = myFunction(x); f(2)').evaluate(new Map()).entries[0].type, 'PartitionedMap')
     })
 
     it('should parse logical xor', function () {
@@ -1458,6 +1647,24 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('true or false'), true)
       assert.strictEqual(parseAndEval('false or true'), true)
       assert.strictEqual(parseAndEval('false or false'), false)
+
+      assert.strictEqual(parseAndEval('2 or undefined'), true)
+      assert.strictEqual(parseAndEval('true or undefined'), true)
+      assert.throws(function () { parseAndEval('false or undefined') }, TypeError)
+    })
+
+    it('should parse logical or inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = x < 2 or x > 4', scope)
+      assert.strictEqual(f(1), true)
+      assert.strictEqual(f(3), false)
+      assert.strictEqual(f(5), true)
+    })
+
+    it('should parse logical or lazily', function () {
+      const scope = {}
+      parseAndEval('(a=true) or (b=true)', scope)
+      assert.deepStrictEqual(scope, { a: true })
     })
 
     it('should parse logical not', function () {
@@ -1631,12 +1838,12 @@ describe('parse', function () {
     })
 
     it('should parse to', function () {
-      approx.deepEqual(parseAndEval('2.54 cm to inch'), math.unit(1, 'inch').to('inch'))
-      approx.deepEqual(parseAndEval('2.54 cm + 2 inch to foot'), math.unit(0.25, 'foot').to('foot'))
+      approxDeepEqual(parseAndEval('2.54 cm to inch'), math.unit(1, 'inch').to('inch'))
+      approxDeepEqual(parseAndEval('2.54 cm + 2 inch to foot'), math.unit(0.25, 'foot').to('foot'))
     })
 
     it('should parse in', function () {
-      approx.deepEqual(parseAndEval('2.54 cm in inch'), math.unit(1, 'inch').to('inch'))
+      approxDeepEqual(parseAndEval('2.54 cm in inch'), math.unit(1, 'inch').to('inch'))
     })
 
     it('should parse factorial !', function () {
@@ -1656,7 +1863,7 @@ describe('parse', function () {
       assert.ok(parseAndEval('[1,2,3;4,5,6]\'') instanceof Matrix)
       assert.deepStrictEqual(parseAndEval('[1:5]'), math.matrix([[1, 2, 3, 4, 5]]))
       assert.deepStrictEqual(parseAndEval('[1:5]\''), math.matrix([[1], [2], [3], [4], [5]]))
-      assert.deepStrictEqual(parseAndEval('size([1:5])'), math.matrix([1, 5]))
+      assert.deepStrictEqual(parseAndEval('size([1:5])'), math.matrix([1, 5], 'dense', 'number'))
       assert.deepStrictEqual(parseAndEval('[1,2;3,4]\''), math.matrix([[1, 3], [2, 4]]))
     })
 
@@ -1877,11 +2084,11 @@ describe('parse', function () {
 
   describe('functions', function () {
     it('should evaluate function "mod"', function () {
-      approx.equal(parseAndEval('mod(8, 3)'), 2)
+      approxEqual(parseAndEval('mod(8, 3)'), 2)
     })
 
     it('should evaluate function "to" ', function () {
-      approx.deepEqual(parseAndEval('to(5.08 cm * 1000, inch)'),
+      approxDeepEqual(parseAndEval('to(5.08 cm * 1000, inch)'),
         math.unit(2000, 'inch').to('inch'))
     })
 
@@ -1914,11 +2121,11 @@ describe('parse', function () {
     })
 
     it('should work with mixed numbers and bignumbers', function () {
-      approx.equal(bigmath.evaluate('pi + 1'), 4.141592653589793)
+      approxEqual(bigmath.evaluate('pi + 1'), 4.141592653589793)
     })
 
     it('should evaluate functions not supporting bignumbers', function () {
-      approx.equal(bigmath.evaluate('sin(0.1)'), 0.09983341664682815)
+      approxEqual(bigmath.evaluate('sin(0.1)'), 0.09983341664682815)
     })
 
     it('should create a range from bignumbers', function () {
@@ -1966,6 +2173,37 @@ describe('parse', function () {
 
     it('should work with units', function () {
       assert.deepStrictEqual(bigmath.evaluate('2 cm'), new bigmath.Unit(new bigmath.BigNumber(2), 'cm'))
+    })
+  })
+
+  describe('bigint', function () {
+    const bigmath = math.create({
+      number: 'bigint'
+    })
+
+    it('should parse integer numbers as bigint', function () {
+      assert.strictEqual(bigmath.evaluate('123123123123123123123'), 123123123123123123123n)
+      assert.strictEqual(bigmath.evaluate('-123123123123123123123'), -123123123123123123123n)
+      assert.strictEqual(bigmath.evaluate('2.3'), 2.3)
+      assert.strictEqual(bigmath.evaluate('-2.3'), -2.3)
+    })
+
+    it('should fallback on the configured numberFallback when parsing as bigint', function () {
+      const bigmathFallback = math.create({
+        number: 'bigint',
+        numberFallback: 'BigNumber'
+      })
+
+      assert.strictEqual(bigmathFallback.evaluate('42'), 42n)
+      assert.deepStrictEqual(bigmathFallback.evaluate('2.3'), bigmathFallback.bignumber('2.3'))
+      assert.deepStrictEqual(bigmathFallback.evaluate('-2.3'), bigmathFallback.bignumber('-2.3'))
+    })
+
+    it('should evaluate units with bigint values (falling back to number)', function () {
+      assert.strictEqual(bigmath.evaluate('5 mm').toString(), '5 mm')
+      assert.strictEqual(bigmath.evaluate('5.5 mm').toString(), '5.5 mm')
+      assert.strictEqual(bigmath.evaluate('2 * 5 mm').toString(), '10 mm')
+      assert.strictEqual(bigmath.evaluate('2.5 * 4 mm').toString(), '10 mm')
     })
   })
 
@@ -2227,7 +2465,7 @@ describe('parse', function () {
 
     try {
       mathClone.evaluate('f(x)=1;config({clone:f})')
-    } catch (err) {}
+    } catch (err) { }
 
     assert.strictEqual(mathClone.evaluate('2'), 2)
   })

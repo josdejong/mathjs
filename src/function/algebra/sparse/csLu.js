@@ -1,3 +1,7 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
+
 import { factory } from '../../../utils/factory.js'
 import { createCsSpsolve } from './csSpsolve.js'
 
@@ -27,8 +31,6 @@ export const createCsLu = /* #__PURE__ */ factory(name, dependencies, ({ abs, di
    * @param {Number}  tol             Partial pivoting threshold (1 for partial pivoting)
    *
    * @return {Number}                 The numeric LU factorization of A or null
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
   return function csLu (m, s, tol) {
     // validate input

@@ -4,9 +4,9 @@ import { format } from '../utils/string.js'
 import { factory } from '../utils/factory.js'
 
 const name = 'Help'
-const dependencies = ['parse']
+const dependencies = ['evaluate']
 
-export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ parse }) => {
+export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ evaluate }) => {
   /**
    * Documentation object
    * @param {Object} doc  Object containing properties:
@@ -58,7 +58,18 @@ export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ pa
     if (doc.examples) {
       desc += 'Examples:\n'
 
-      const scope = {}
+      // after evaluating the examples, we restore config in case the examples
+      // did change the config.
+      let configChanged = false
+      const originalConfig = evaluate('config()')
+
+      const scope = {
+        config: (newConfig) => {
+          configChanged = true
+          return evaluate('config(newConfig)', { newConfig })
+        }
+      }
+
       for (let i = 0; i < doc.examples.length; i++) {
         const expr = doc.examples[i]
         desc += '    ' + expr + '\n'
@@ -66,7 +77,7 @@ export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ pa
         let res
         try {
           // note: res can be undefined when `expr` is an empty string
-          res = parse(expr).compile().evaluate(scope)
+          res = evaluate(expr, scope)
         } catch (e) {
           res = e
         }
@@ -75,6 +86,10 @@ export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ pa
         }
       }
       desc += '\n'
+
+      if (configChanged) {
+        evaluate('config(originalConfig)', { originalConfig })
+      }
     }
     if (doc.mayThrow && doc.mayThrow.length) {
       desc += 'Throws: ' + doc.mayThrow.join(', ') + '\n\n'

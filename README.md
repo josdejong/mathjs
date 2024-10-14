@@ -7,41 +7,16 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![Version](https://img.shields.io/npm/v/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Downloads](https://img.shields.io/npm/dm/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Build Status](https://github.com/josdejong/mathjs/workflows/Node.js%20CI/badge.svg)](https://github.com/josdejong/mathjs/actions)
-[![Maintenance](https://img.shields.io/maintenance/yes/2023.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/maintenance/yes/2024.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
 [![Codecov](https://codecov.io/gh/josdejong/mathjs/branch/develop/graph/badge.svg)](https://codecov.io/gh/josdejong/mathjs)
-[![Foresight](https://api-public.service.runforesight.com/api/v1/badge/test?repoId=13cb22bf-6cd5-4c4b-a9de-46081ac63ffb)](https://mathjs.app.runforesight.com/)
-[![Github Sponsor](https://camo.githubusercontent.com/7d9333b097b2f54a8957d126ab82937811489c9b75c3850f609985cf94cd29fe/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2532302d53706f6e736f722532306d652532306f6e2532304769744875622d6f72616e6765)](https://github.com/sponsors/josdejong)
-
-## Sponsors
-
-<table width="100%">
-<tr>
-<td>
-  <img width="1000" height="0">
-  <a href="https://www.runforesight.com/?utm_source=mathjs&utm_medium=sponsorship">
-  <img src="https://www.thundra.io/hubfs/RunForesight/GitHub%20Sponsorship%20banners/power-up-github.png"
-alt="Foresight" width="260" align="right">
-  </a>
-
-<h3>Foresight: Increase CI/CD Health & Test Performance</h3>
-
-  <p>
-Foresight provides full visibility and deep insights into the health
-and performance of your tests and CI pipelines. Assess the risk of
-changes, resolve bottlenecks, reduce build times, and deliver
-high-quality software at speed with Foresight.
-  </p>
-
-[Sign up now!](https://runforesight.com/?utm_source=mathjs&utm_medium=sponsorship)
-</td>
-</tr>
-</table>
+[![Github Sponsor](https://img.shields.io/github/sponsors/josdejong
+)](https://github.com/sponsors/josdejong)
 
 ## Features
 
-- Supports numbers, big numbers, complex numbers, fractions, units, strings, arrays, and matrices.
+- Supports numbers, bignumbers, bigints, complex numbers, fractions, units, strings, arrays, and matrices.
 - Is compatible with JavaScript's built-in Math library.
 - Contains a flexible expression parser.
 - Does symbolic computation.
@@ -101,7 +76,7 @@ See the [Getting Started](https://mathjs.org/docs/getting_started.html) for a mo
 
 ## Browser support
 
-Math.js works on any ES6 compatible JavaScript engine, including node.js, Chrome, Firefox, Safari, and Edge.
+Math.js works on any [ES2020](https://262.ecma-international.org/11.0/) compatible JavaScript engine, including node.js, Chrome, Firefox, Safari, and Edge.
 
 
 ## Documentation
@@ -143,13 +118,13 @@ The code of `mathjs` is written in ES modules, and requires all files to have a 
 
 What mathjs tries to achieve is to offer an environment where you can do calculations with mixed data types,
 like multiplying a regular `number` with a `Complex` number or a `BigNumber`, and work with all of those in matrices.
-Mathjs also allows to add a new data type, like say `BigInt`, with little effort.
+Mathjs also allows to add a new data type with little effort.
 
 The solution that mathjs uses has two main ingredients:
 
-- **Typed functions**. All functions are created using [`typed-function`](https://github.com/josdejong/typed-function/). This makes it easier to (dynamically) create and extend a single function with new data types, automatically do type conversions on function inputs, etc. So, if you create function multiply for two `number`s, you can extend it with support for multiplying two `BigInts`. If you define a conversion from `BigInt` to `number`, the typed-function will automatically allow you to multiply a `BigInt` with a `number`.
+- **Typed functions**. All functions are created using [`typed-function`](https://github.com/josdejong/typed-function/). This makes it easier to (dynamically) create and extend a single function with new data types, automatically do type conversions on function inputs, etc. So, if you create function multiply for two `number`s, you can extend it with support for multiplying your own data type, say `MyDecimal`. If you define a conversion from `MyDecimal` to `number`, the typed-function will automatically allow you to multiply a `MyDecimal` with a `number`.
 
-- **Dependency injection**. When we have a function `multiply` with support for `BigInt`, thanks to the dependency injection, other functions using `multiply` under the hood, like `prod`, will automatically support `BigInt` too. This also works the other way around: if you don't need the heavyweight `multiply` (which supports BigNumbers, matrices, etc), and you just need a plain and simple number support, you can use a lightweight implementation of `multiply` just for numbers, and inject that in `prod` and other functions.
+- **Dependency injection**. When we have a function `multiply` with support for `MyDecimal`, thanks to the dependency injection, other functions using `multiply` under the hood, like `prod`, will automatically support `MyDecimal` too. This also works the other way around: if you don't need the heavyweight `multiply` (which supports BigNumbers, matrices, etc), and you just need a plain and simple number support, you can use a lightweight implementation of `multiply` just for numbers, and inject that in `prod` and other functions.
 
 At the lowest level, mathjs has immutable factory functions which create immutable functions. The core function `math.create(...)` creates a new instance having functions created from all passed factory functions. A mathjs instance is a collection of created functions. It contains a function like `math.import` to allow extending the instance with new functions, which can then be used in the expression parser.
 
@@ -161,7 +136,7 @@ A common case is to implement a new function. This involves the following steps:
 - Write documentation on the function in the source code comment of `myNewFunction.js`. This documentation is used to auto generate documentation on the website.
 - Write embedded documentation for the new function in `./src/expression/embeddedDocs/function/arithmetic/myNewFunction.js`. Add the new documentation to the index file `./src/expression/embeddedDocs/embeddedDocs.js`.
 - Write unit tests for the function in `./test/unit-tests/function/arithmetic/myNewFunction.test.js`.
-- Write a TypeScript definition for the new function in `./types/index.d.ts`, and write tests for it in `./types/index.ts`. Normally, two definitions need to be added: one for the static function `math.myNewFunction(...)` and one for the chained API `math.chain(...).myNewFunction(...)`.
+- Write the necessary TypeScript definitions for the new function in `./types/index.d.ts`, and write tests for it in `./test/typescript-tests/testTypes.ts`. This is described in [./types/EXPLANATION.md](./types/EXPLANATION.md).
 - Ensure the code style is ok by running `npm run lint` (run `npm run format` to fix the code style automatically).
 
 
@@ -184,6 +159,10 @@ To execute tests for the library, install the project dependencies once:
 Then, the tests can be executed:
 
     npm test
+
+To test the type definitions:
+
+    npm run test:types
 
 Additionally, the tests can be run on FireFox using [headless mode](https://developer.mozilla.org/en-US/Firefox/Headless_mode):
 
@@ -220,7 +199,10 @@ Thanks Github Actions and BrowserStack for the generous free hosting of this ope
 
 ## License
 
-Copyright (C) 2013-2023 Jos de Jong <wjosdejong@gmail.com>
+mathjs is published under the Apache 2.0 license:
+
+```
+Copyright (C) 2013-2024 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -233,3 +215,28 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
+
+mathjs contains a JavaScript port of the [CSparse](https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source) library, published under the LGPL-2.1+ license:
+
+```
+CSparse: a Concise Sparse matrix package.
+Copyright (c) 2006, Timothy A. Davis.
+http://www.suitesparse.com
+
+--------------------------------------------------------------------------------
+
+CSparse is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+CSparse is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this Module; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+```

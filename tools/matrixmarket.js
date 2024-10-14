@@ -1,11 +1,8 @@
-const fs = require('fs')
-const typed = require('typed-function')
-const { create, all } = require('../lib/cjs/index.js')
-const math = create(all)
-const Spa = math.Spa
-const DenseMatrix = math.DenseMatrix
-const SparseMatrix = math.SparseMatrix
-const FibonacciHeap = math.FibonacciHeap
+import fs from 'node:fs'
+import typed from 'typed-function'
+import { create, all } from '../lib/esm/index.js'
+
+const { Spa, DenseMatrix, SparseMatrix, FibonacciHeap } = create(all)
 
 const _importFromStream = function (stream) {
   return new Promise(function (resolve, reject) {
@@ -37,27 +34,27 @@ const _importFromStream = function (stream) {
         const datatype = matches[3]
         const qualifier = matches[4]
         // check typecode
-        if (typecodes.indexOf(typecode) === -1) {
+        if (!typecodes.includes(typecode)) {
           // typecode not supported
           reject(new Error('Matrix Market type code is not supported: ' + typecode))
           // close stream
           stream.close()
         }
         // check format
-        if (formats.indexOf(format) === -1) {
+        if (!formats.includes(format)) {
           // typecode not supported
           reject(new Error('Matrix Market format is not supported: ' + format))
           // close stream
           stream.close()
         }
         // check datatype
-        if (datatypes.indexOf(datatype) === -1) {
+        if (!datatypes.includes(datatype)) {
           // typecode not supported
           reject(new Error('Matrix Market datatype is not supported: ' + datatype))
           // close stream
           stream.close()
         }
-        if (qualifiers.indexOf(qualifier) === -1) {
+        if (!qualifiers.includes(qualifier)) {
           // typecode not supported
           reject(new Error('Matrix Market qualifier is not supported: ' + qualifier))
           // close stream
@@ -279,7 +276,7 @@ const _importFromStream = function (stream) {
 /**
  * Imports a Matrix Market matrix from the filesystem. (https://math.nist.gov/MatrixMarket/)
  */
-const _import = typed('importMatrix', {
+export const marketImport = typed('importMatrix', {
   Array: function (files) {
     return Promise.all(files.map(file => _import(file)))
   },
@@ -288,7 +285,3 @@ const _import = typed('importMatrix', {
     return _importFromStream(input)
   }
 })
-
-module.exports = {
-  import: _import
-}

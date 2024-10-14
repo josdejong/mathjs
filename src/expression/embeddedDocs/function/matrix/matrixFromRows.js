@@ -2,9 +2,9 @@ export const matrixFromRowsDocs = {
   name: 'matrixFromRows',
   category: 'Matrix',
   syntax: [
-    'math.matrixFromRows(...arr)',
-    'math.matrixFromRows(row1, row2)',
-    'math.matrixFromRows(row1, row2, row3)'
+    'matrixFromRows(...arr)',
+    'matrixFromRows(row1, row2)',
+    'matrixFromRows(row1, row2, row3)'
   ],
   description: 'Create a dense matrix from vectors as individual rows.',
   examples: [

@@ -1,8 +1,9 @@
 import { isInteger } from './number.js'
-import { isNumber } from './is.js'
+import { isNumber, isBigNumber, isArray, isString } from './is.js'
 import { format } from './string.js'
 import { DimensionError } from '../error/DimensionError.js'
 import { IndexError } from '../error/IndexError.js'
+import { deepStrictEqual } from './object.js'
 
 /**
  * Calculate the size of a multi dimensional array.
@@ -80,24 +81,65 @@ export function validate (array, size) {
 }
 
 /**
+ * Validate whether the source of the index matches the size of the Array
+ * @param {Array | Matrix} array    Array to be validated
+ * @param {Index} index  Index with the source information to validate
+ * @throws DimensionError
+ */
+export function validateIndexSourceSize (value, index) {
+  const valueSize = value.isMatrix ? value._size : arraySize(value)
+  const sourceSize = index._sourceSize
+  // checks if the source size is not null and matches the valueSize
+  sourceSize.forEach((sourceDim, i) => {
+    if (sourceDim !== null && sourceDim !== valueSize[i]) { throw new DimensionError(sourceDim, valueSize[i]) }
+  })
+}
+
+/**
  * Test whether index is an integer number with index >= 0 and index < length
  * when length is provided
  * @param {number} index    Zero-based index
  * @param {number} [length] Length of the array
  */
 export function validateIndex (index, length) {
-  if (!isNumber(index) || !isInteger(index)) {
-    throw new TypeError('Index must be an integer (value: ' + index + ')')
-  }
-  if (index < 0 || (typeof length === 'number' && index >= length)) {
-    throw new IndexError(index, length)
+  if (index !== undefined) {
+    if (!isNumber(index) || !isInteger(index)) {
+      throw new TypeError('Index must be an integer (value: ' + index + ')')
+    }
+    if (index < 0 || (typeof length === 'number' && index >= length)) {
+      throw new IndexError(index, length)
+    }
   }
 }
 
 /**
+ * Test if and index has empty values
+ * @param {number} index    Zero-based index
+ */
+export function isEmptyIndex (index) {
+  for (let i = 0; i < index._dimensions.length; ++i) {
+    const dimension = index._dimensions[i]
+    if (dimension._data && isArray(dimension._data)) {
+      if (dimension._size[0] === 0) {
+        return true
+      }
+    } else if (dimension.isRange) {
+      if (dimension.start === dimension.end) {
+        return true
+      }
+    } else if (isString(dimension)) {
+      if (dimension.length === 0) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+/**
  * Resize a multi dimensional array. The resized array is returned.
- * @param {Array} array         Array to be resized
- * @param {Array.<number>} size Array with the size of each dimension
+ * @param {Array | number} array         Array to be resized
+ * @param {number[]} size Array with the size of each dimension
  * @param {*} [defaultValue=0]  Value to be filled in in new entries,
  *                              zero by default. Specify for example `null`,
  *                              to clearly see entries that are not explicitly
@@ -105,10 +147,8 @@ export function validateIndex (index, length) {
  * @return {Array} array         The resized array
  */
 export function resize (array, size, defaultValue) {
-  // TODO: add support for scalars, having size=[] ?
-
   // check the type of the arguments
-  if (!Array.isArray(array) || !Array.isArray(size)) {
+  if (!Array.isArray(size)) {
     throw new TypeError('Array expected')
   }
   if (size.length === 0) {
@@ -122,6 +162,11 @@ export function resize (array, size, defaultValue) {
         '(size: ' + format(size) + ')')
     }
   })
+
+  // convert number to an array
+  if (isNumber(array) || isBigNumber(array)) {
+    array = [array]
+  }
 
   // recursively resize the array
   const _defaultValue = (defaultValue !== undefined) ? defaultValue : 0
@@ -193,7 +238,7 @@ function _resize (array, size, dim, defaultValue) {
 /**
  * Re-shape a multi dimensional array to fit the specified dimensions
  * @param {Array} array           Array to be reshaped
- * @param {Array.<number>} sizes  List of sizes for each dimension
+ * @param {number[]} sizes        List of sizes for each dimension
  * @returns {Array}               Array whose data has been formatted to fit the
  *                                specified dimensions
  *
@@ -238,10 +283,10 @@ export function reshape (array, sizes) {
 
 /**
  * Replaces the wildcard -1 in the sizes array.
- * @param {Array.<number>} sizes  List of sizes for each dimension. At most on wildcard.
+ * @param {number[]} sizes  List of sizes for each dimension. At most on wildcard.
  * @param {number} currentLength  Number of elements in the array.
  * @throws {Error}                If more than one wildcard or unable to replace it.
- * @returns {Array.<number>}      The sizes array with wildcard replaced.
+ * @returns {number[]}      The sizes array with wildcard replaced.
  */
 export function processSizesWildcard (sizes, currentLength) {
   const newLength = product(sizes)
@@ -269,7 +314,7 @@ export function processSizesWildcard (sizes, currentLength) {
 
 /**
  * Computes the product of all array elements.
- * @param {Array<number>} array Array of factors
+ * @param {number[]} array Array of factors
  * @returns {number}            Product of all elements
  */
 function product (array) {
@@ -279,7 +324,7 @@ function product (array) {
 /**
  * Iteratively re-shape a multi dimensional array to fit the specified dimensions
  * @param {Array} array           Array to be reshaped
- * @param {Array.<number>} sizes  List of sizes for each dimension
+ * @param {number[]} sizes  List of sizes for each dimension
  * @returns {Array}               Array whose data has been formatted to fit the
  *                                specified dimensions
  */
@@ -589,7 +634,7 @@ export function getArrayDataType (array, typeOf) {
 
 /**
  * Return the last item from an array
- * @param array
+ * @param {array}
  * @returns {*}
  */
 export function last (array) {
@@ -598,17 +643,214 @@ export function last (array) {
 
 /**
  * Get all but the last element of array.
+ * @param {array}
+ * @returns {*}
  */
 export function initial (array) {
   return array.slice(0, array.length - 1)
 }
 
 /**
- * Test whether an array or string contains an item
- * @param {Array | string} array
- * @param {*} item
- * @return {boolean}
+ * Recursively concatenate two matrices.
+ * The contents of the matrices is not cloned.
+ * @param {Array} a             Multi dimensional array
+ * @param {Array} b             Multi dimensional array
+ * @param {number} concatDim    The dimension on which to concatenate (zero-based)
+ * @param {number} dim          The current dim (zero-based)
+ * @return {Array} c            The concatenated matrix
+ * @private
  */
-export function contains (array, item) {
-  return array.indexOf(item) !== -1
+function concatRecursive (a, b, concatDim, dim) {
+  if (dim < concatDim) {
+    // recurse into next dimension
+    if (a.length !== b.length) {
+      throw new DimensionError(a.length, b.length)
+    }
+
+    const c = []
+    for (let i = 0; i < a.length; i++) {
+      c[i] = concatRecursive(a[i], b[i], concatDim, dim + 1)
+    }
+    return c
+  } else {
+    // concatenate this dimension
+    return a.concat(b)
+  }
+}
+
+/**
+ * Concatenates many arrays in the specified direction
+ * @param {...Array} arrays All the arrays to concatenate
+ * @param {number} concatDim The dimension on which to concatenate (zero-based)
+ * @returns
+*/
+export function concat () {
+  const arrays = Array.prototype.slice.call(arguments, 0, -1)
+  const concatDim = Array.prototype.slice.call(arguments, -1)
+
+  if (arrays.length === 1) {
+    return arrays[0]
+  }
+  if (arrays.length > 1) {
+    return arrays.slice(1).reduce(function (A, B) { return concatRecursive(A, B, concatDim, 0) }, arrays[0])
+  } else {
+    throw new Error('Wrong number of arguments in function concat')
+  }
+}
+
+/**
+ * Receives two or more sizes and get's the broadcasted size for both.
+ * @param  {...number[]} sizes Sizes to broadcast together
+ * @returns
+ */
+export function broadcastSizes (...sizes) {
+  const dimensions = sizes.map((s) => s.length)
+  const N = Math.max(...dimensions)
+  const sizeMax = new Array(N).fill(null)
+  // check for every size
+  for (let i = 0; i < sizes.length; i++) {
+    const size = sizes[i]
+    const dim = dimensions[i]
+    for (let j = 0; j < dim; j++) {
+      const n = N - dim + j
+      if (size[j] > sizeMax[n]) {
+        sizeMax[n] = size[j]
+      }
+    }
+  }
+  for (let i = 0; i < sizes.length; i++) {
+    checkBroadcastingRules(sizes[i], sizeMax)
+  }
+  return sizeMax
+}
+
+/**
+ * Checks if it's possible to broadcast a size to another size
+ * @param {number[]} size The size of the array to check
+ * @param {number[]} toSize The size of the array to validate if it can be broadcasted to
+ */
+export function checkBroadcastingRules (size, toSize) {
+  const N = toSize.length
+  const dim = size.length
+  for (let j = 0; j < dim; j++) {
+    const n = N - dim + j
+    if ((size[j] < toSize[n] && size[j] > 1) || (size[j] > toSize[n])) {
+      throw new Error(
+        `shape missmatch: missmatch is found in arg with shape (${size}) not possible to broadcast dimension ${dim} with size ${size[j]} to size ${toSize[n]}`
+      )
+    }
+  }
+}
+
+/**
+ * Broadcasts a single array to a certain size
+ * @param {array} array Array to be broadcasted
+ * @param {number[]} toSize Size to broadcast the array
+ * @returns The broadcasted array
+ */
+export function broadcastTo (array, toSize) {
+  let Asize = arraySize(array)
+  if (deepStrictEqual(Asize, toSize)) {
+    return array
+  }
+  checkBroadcastingRules(Asize, toSize)
+  const broadcastedSize = broadcastSizes(Asize, toSize)
+  const N = broadcastedSize.length
+  const paddedSize = [...Array(N - Asize.length).fill(1), ...Asize]
+
+  let A = clone(array)
+  // reshape A if needed to make it ready for concat
+  if (Asize.length < N) {
+    A = reshape(A, paddedSize)
+    Asize = arraySize(A)
+  }
+
+  // stretches the array on each dimension to make it the same size as index
+  for (let dim = 0; dim < N; dim++) {
+    if (Asize[dim] < broadcastedSize[dim]) {
+      A = stretch(A, broadcastedSize[dim], dim)
+      Asize = arraySize(A)
+    }
+  }
+  return A
+}
+
+/**
+ * Broadcasts arrays and returns the broadcasted arrays in an array
+ * @param  {...Array | any} arrays
+ * @returns
+ */
+export function broadcastArrays (...arrays) {
+  if (arrays.length === 0) {
+    throw new Error('Insuficient number of argumnets in function broadcastArrays')
+  }
+  if (arrays.length === 1) {
+    return arrays[0]
+  }
+  const sizes = arrays.map(function (array) { return arraySize(array) })
+  const broadcastedSize = broadcastSizes(...sizes)
+  const broadcastedArrays = []
+  arrays.forEach(function (array) { broadcastedArrays.push(broadcastTo(array, broadcastedSize)) })
+  return broadcastedArrays
+}
+
+/**
+ * stretches a matrix up to a certain size in a certain dimension
+ * @param {Array} arrayToStretch
+ * @param {number[]} sizeToStretch
+ * @param {number} dimToStretch
+ * @returns
+ */
+export function stretch (arrayToStretch, sizeToStretch, dimToStretch) {
+  return concat(...Array(sizeToStretch).fill(arrayToStretch), dimToStretch)
+}
+
+/**
+* Retrieves a single element from an array given an index.
+*
+* @param {Array} array - The array from which to retrieve the value.
+* @param {Array<number>} idx - An array of indices specifying the position of the desired element in each dimension.
+* @returns {*} - The value at the specified position in the array.
+*
+* @example
+* const arr = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]];
+* const index = [1, 0, 1];
+* console.log(getValue(arr, index)); // 6
+*/
+export function get (array, index) {
+  if (!Array.isArray(array)) { throw new Error('Array expected') }
+  const size = arraySize(array)
+  if (index.length !== size.length) { throw new DimensionError(index.length, size.length) }
+  for (let x = 0; x < index.length; x++) { validateIndex(index[x], size[x]) }
+  return index.reduce((acc, curr) => acc[curr], array)
+}
+
+/**
+ * Recursive function to map a multi-dimensional array.
+ *
+ * @param {*} value - The current value being processed in the array.
+ * @param {Array} index - The index of the current value being processed in the array.
+ * @param {Array} array - The array being processed.
+ * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
+ * @returns {*} The new array with each element being the result of the callback function.
+ */
+export function recurse (value, index, array, callback) {
+  if (Array.isArray(value)) {
+    return value.map(function (child, i) {
+      // we create a copy of the index array and append the new index value
+      return recurse(child, index.concat(i), array, callback)
+    })
+  } else {
+    // invoke the callback function with the right number of arguments
+    return callback(value, index, array)
+  }
+}
+
+/**
+ * Deep clones a multidimensional array
+ * @param {Array} array
+ * @returns cloned array
+ */
+export function clone (array) {
+  return Object.assign([], array)
 }

@@ -1,7 +1,7 @@
 // test subtract
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const subtract = math.subtract
@@ -86,7 +86,7 @@ describe('subtract', function () {
   })
 
   it('should subtract two quantities of the same unit', function () {
-    approx.deepEqual(subtract(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(-155.93, 'km'))
+    approxDeepEqual(subtract(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(-155.93, 'km'))
 
     assert.deepStrictEqual(subtract(math.unit(math.bignumber(5), 'km'), math.unit(math.bignumber(2), 'km')), math.unit(math.bignumber(3), 'km'))
 
@@ -98,8 +98,8 @@ describe('subtract', function () {
     let t = math.unit(20, 'degC')
     assert.deepStrictEqual(subtract(t, math.unit(1, 'degC')), math.unit(19, 'degC'))
     t = math.unit(68, 'degF')
-    approx.deepEqual(subtract(t, math.unit(2, 'degF')), math.unit(66, 'degF'))
-    approx.deepEqual(subtract(t, math.unit(1, 'degC')), math.unit(66.2, 'degF'))
+    approxDeepEqual(subtract(t, math.unit(2, 'degF')), math.unit(66, 'degF'))
+    approxDeepEqual(subtract(t, math.unit(1, 'degC')), math.unit(66.2, 'degF'))
   })
 
   it('should throw an error if subtracting two quantities of different units', function () {
@@ -146,6 +146,15 @@ describe('subtract', function () {
       assert.deepStrictEqual(subtract(2, [3, 0]), [-1, 2])
       assert.deepStrictEqual(subtract([3, 4], 2), [1, 2])
       assert.deepStrictEqual(subtract([3, 0], 2), [1, -2])
+    })
+
+    it('should substract broadcastable arrays correctly', function () {
+      const a2 = [1, 2]
+      const a3 = [[3], [4]]
+      const a4 = subtract(a2, a3)
+      const a5 = subtract(a3, a2)
+      assert.deepStrictEqual(a4, [[-2, -1], [-3, -2]])
+      assert.deepStrictEqual(a5, [[2, 1], [3, 2]])
     })
 
     it('should subtract array and dense matrix correctly', function () {

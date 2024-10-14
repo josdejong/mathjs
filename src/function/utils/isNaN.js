@@ -31,7 +31,7 @@ export const createIsNaN = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    *
    *    isNumeric, isNegative, isPositive, isZero, isInteger
    *
-   * @param {number | BigNumber | Fraction | Unit | Array | Matrix} x  Value to be tested
+   * @param {number | BigNumber | bigint | Fraction | Unit | Array | Matrix} x  Value to be tested
    * @return {boolean}  Returns true when `x` is NaN.
    *                    Throws an error in case of an unknown data type.
    */
@@ -40,6 +40,10 @@ export const createIsNaN = /* #__PURE__ */ factory(name, dependencies, ({ typed 
 
     BigNumber: function (x) {
       return x.isNaN()
+    },
+
+    bigint: function (x) {
+      return false
     },
 
     Fraction: function (x) {
@@ -54,8 +58,6 @@ export const createIsNaN = /* #__PURE__ */ factory(name, dependencies, ({ typed 
       return Number.isNaN(x.value)
     },
 
-    'Array | Matrix': function (x) {
-      return deepMap(x, Number.isNaN)
-    }
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })

@@ -5,7 +5,7 @@ import { clone, deepStrictEqual } from '../../utils/object.js'
 import { arraySize, getArrayDataType, processSizesWildcard, unsqueeze, validateIndex } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { DimensionError } from '../../error/DimensionError.js'
-import { maxArgumentCount } from '../../utils/function.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 
 const name = 'SparseMatrix'
 const dependencies = [
@@ -853,13 +853,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
+    const fastCallback = optimizeCallback(callback, me, 'map')
     // invoke callback
-    const args = maxArgumentCount(callback)
     const invoke = function (v, i, j) {
       // invoke callback
-      if (args === 1) return callback(v)
-      if (args === 2) return callback(v, [i, j])
-      return callback(v, [i, j], me)
+      return fastCallback(v, [i, j], me)
     }
     // invoke _map
     return _map(this, 0, rows - 1, 0, columns - 1, invoke, skipZeros)
@@ -890,11 +888,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // invoke callback
     const invoke = function (v, x, y) {
       // invoke callback
-      v = callback(v, x, y)
+      const value = callback(v, x, y)
       // check value != 0
-      if (!eq(v, zero)) {
+      if (!eq(value, zero)) {
         // store value
-        values.push(v)
+        values.push(value)
         // index
         index.push(x)
       }
@@ -964,6 +962,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
+    const fastCallback = optimizeCallback(callback, me, 'forEach')
     // loop columns
     for (let j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
@@ -977,7 +976,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
           const i = this._index[k]
 
           // value @ k
-          callback(this._values[k], [i, j], me)
+          fastCallback(this._values[k], [i, j], me)
         }
       } else {
         // create a cache holding all defined values
@@ -991,7 +990,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         // and either read the value or zero
         for (let i = 0; i < rows; i++) {
           const value = (i in values) ? values[i] : 0
-          callback(value, [i, j], me)
+          fastCallback(value, [i, j], me)
         }
       }
     }
@@ -1383,6 +1382,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // indeces for column j
     const k0 = ptr[j]
     const k1 = ptr[j + 1]
+
     // loop
     for (let k = k0; k < k1; k++) {
       // invoke callback

@@ -38,6 +38,12 @@ describe('reviver', function () {
     assert.deepStrictEqual(obj, b)
   })
 
+  it('should parse a stringified bigint', function () {
+    const json = '{"mathjs":"bigint","value":"12345678901234567890"}'
+
+    assert.deepStrictEqual(JSON.parse(json, reviver), 12345678901234567890n)
+  })
+
   it('should parse a stringified Fraction', function () {
     const json = '{"mathjs":"Fraction","n":3,"d":8}'
     const b = new math.Fraction(0.375)
@@ -63,6 +69,26 @@ describe('reviver', function () {
   it('should parse a stringified Unit', function () {
     const json = '{"mathjs":"Unit","value":5,"unit":"cm","fixPrefix":false}'
     const u = new math.Unit(5, 'cm')
+
+    const obj = JSON.parse(json, reviver)
+
+    assert(obj instanceof math.Unit)
+    assert.deepStrictEqual(obj, u)
+  })
+
+  it('should parse a stringified Unit with a value only', function () {
+    const json = '{"mathjs":"Unit","value":5,"unit":null,"fixPrefix":false}'
+    const u = new math.Unit(5)
+
+    const obj = JSON.parse(json, reviver)
+
+    assert(obj instanceof math.Unit)
+    assert.deepStrictEqual(obj, u)
+  })
+
+  it('should parse a stringified Unit without a value', function () {
+    const json = '{"mathjs":"Unit","value":null,"unit":"cm","fixPrefix":false}'
+    const u = new math.Unit(null, 'cm')
 
     const obj = JSON.parse(json, reviver)
 

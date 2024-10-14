@@ -1,22 +1,22 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 
 describe('trace', function () {
   it('should calculate correctly the trace of a NxN array', function () {
     assert.strictEqual(math.trace([5]), 5)
     assert.strictEqual(math.trace([[1, 2], [3, 4]]), 5)
-    approx.equal(math.trace([
+    approxEqual(math.trace([
       [-2, 2, 3],
       [-1, 1, 3],
       [2, 0, -1]
     ]), -2)
-    approx.equal(math.trace([
+    approxEqual(math.trace([
       [1, 4, 7],
       [3, 0, 5],
       [-1, 9, 11]
     ]), 12)
-    approx.equal(math.trace([
+    approxEqual(math.trace([
       [1, 7, 4, 3, 7],
       [0, 7, 0, 3, 7],
       [0, 7, 4, 3, 0],
@@ -29,7 +29,7 @@ describe('trace', function () {
     assert.strictEqual(math.trace(math.matrix([5])), 5)
     assert.strictEqual(math.trace(math.matrix([[1, 2], [3, 4]])), 5)
     assert.strictEqual(math.trace(math.matrix([[1, 2], [3, 4]])), 5)
-    approx.equal(
+    approxEqual(
       math.trace(
         math.matrix(
           [
@@ -38,7 +38,7 @@ describe('trace', function () {
             [2, 0, -1]
           ])),
       -2)
-    approx.equal(
+    approxEqual(
       math.trace(
         math.matrix(
           [
@@ -47,7 +47,7 @@ describe('trace', function () {
             [-1, 9, 11]
           ])),
       12)
-    approx.equal(
+    approxEqual(
       math.trace(
         math.matrix(
           [
@@ -58,14 +58,14 @@ describe('trace', function () {
             [2, 7, 4, 3, 7]
           ])),
       28)
-    approx.equal(math.trace(math.diag([4, -5, 6])), 5)
+    approxEqual(math.trace(math.diag([4, -5, 6])), 5)
   })
 
   it('should calculate correctly the trace of a NxN matrix, sparse', function () {
     assert.strictEqual(math.trace(math.matrix([5], 'sparse')), 5)
     assert.strictEqual(math.trace(math.matrix([[1, 2], [3, 4]], 'sparse')), 5)
     assert.strictEqual(math.trace(math.matrix([[1, 2], [3, 4]], 'sparse')), 5)
-    approx.equal(
+    approxEqual(
       math.trace(
         math.matrix(
           [
@@ -75,7 +75,7 @@ describe('trace', function () {
           ],
           'sparse')),
       -2)
-    approx.equal(
+    approxEqual(
       math.trace(
         math.matrix(
           [
@@ -85,7 +85,7 @@ describe('trace', function () {
           ],
           'sparse')),
       12)
-    approx.equal(
+    approxEqual(
       math.trace(
         math.matrix(
           [

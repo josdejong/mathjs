@@ -4,11 +4,12 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 const name = 'to'
 const dependencies = [
   'typed',
-  'matrix'
+  'matrix',
+  'concat'
 ]
 
-export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, concat }) => {
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Change the unit of a value.
@@ -21,9 +22,9 @@ export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
    *
    * Examples:
    *
-   *    math.to(math.unit('2 inch'), 'cm')                   // returns Unit 5.08 cm
-   *    math.to(math.unit('2 inch'), math.unit(null, 'cm'))  // returns Unit 5.08 cm
-   *    math.to(math.unit(16, 'bytes'), 'bits')              // returns Unit 128 bits
+   *    math.to(math.unit('2 inch'), 'cm')             // returns Unit 5.08 cm
+   *    math.to(math.unit('2 inch'), math.unit('cm'))  // returns Unit 5.08 cm
+   *    math.to(math.unit(16, 'bytes'), 'bits')        // returns Unit 128 bits
    *
    * See also:
    *

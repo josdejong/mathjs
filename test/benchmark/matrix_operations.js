@@ -9,9 +9,19 @@
  * has room for improvements, it's not a fully fletched benchmark suite.
  */
 
-const Benchmark = require('benchmark')
-const padRight = require('pad-right')
+import Benchmark from 'benchmark'
+import det from 'ndarray-determinant'
+import gemm from 'ndarray-gemm'
+import ops from 'ndarray-ops'
+import pack from 'ndarray-pack'
+import numeric from 'numericjs'
+import padRight from 'pad-right'
+import sylvester from 'sylvester'
+import zeros from 'zeros'
+import { all, create } from '../../lib/esm/index.js'
+
 const suite = new Benchmark.Suite()
+const math = create(all)
 
 function pad (text) {
   return padRight(text, 40, ' ')
@@ -48,7 +58,6 @@ const fiedler = [
 
 // mathjs
 (function () {
-  const math = require('../..')
   const A = math.matrix(fiedler, 'dense', 'number')
 
   suite.add(pad('matrix operations mathjs (number) A+A'), function () { return math.add(A, A) })
@@ -59,7 +68,6 @@ const fiedler = [
 
 // mathjs
 (function () {
-  const math = require('../..')
   const A = math.matrix(fiedler)
 
   suite.add(pad('matrix operations mathjs (generic) A+A'), function () { return math.add(A, A) })
@@ -70,7 +78,6 @@ const fiedler = [
 
 // sylvester
 (function () {
-  const sylvester = require('sylvester')
   const A = sylvester.Matrix.create(fiedler)
 
   suite.add(pad('matrix operations sylvester A+A'), function () { return A.add(A) })
@@ -81,7 +88,6 @@ const fiedler = [
 
 // numericjs
 (function () {
-  const numeric = require('numericjs')
   const A = fiedler
 
   suite.add(pad('matrix operations numericjs A+A'), function () { return numeric.add(A, A) })
@@ -92,12 +98,6 @@ const fiedler = [
 
 // ndarray
 (function () {
-  const gemm = require('ndarray-gemm')
-  const zeros = require('zeros')
-  const ops = require('ndarray-ops')
-  const pack = require('ndarray-pack')
-  const det = require('ndarray-determinant')
-
   const A = pack(fiedler)
   const B = zeros([25, 25])
 

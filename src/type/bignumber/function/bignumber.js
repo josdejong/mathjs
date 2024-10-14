@@ -24,9 +24,9 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * See also:
    *
-   *    boolean, complex, index, matrix, string, unit
+   *    number, bigint, boolean, complex, index, matrix, string, unit
    *
-   * @param {number | string | Fraction | BigNumber | Array | Matrix | boolean | null} [value]  Value for the big number,
+   * @param {number | string | Fraction | BigNumber | bigint | Array | Matrix | boolean | null} [value]  Value for the big number,
    *                                                    0 by default.
    * @returns {BigNumber} The created bignumber
    */
@@ -64,6 +64,16 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
       // we assume a BigNumber is immutable
       return x
     },
+
+    bigint: function (x) {
+      return new BigNumber(x.toString())
+    },
+
+    Unit: typed.referToSelf(self => (x) => {
+      const clone = x.clone()
+      clone.value = self(x.value)
+      return clone
+    }),
 
     Fraction: function (x) {
       return new BigNumber(x.n).div(x.d).times(x.s)

@@ -14,6 +14,14 @@ describe('bitOr', function () {
     assert.strictEqual(bitOr(-5, -3), -1)
   })
 
+  it('should bitwise or two bigints', function () {
+    assert.strictEqual(bitOr(53n, 131n), 183n)
+    assert.strictEqual(bitOr(2n, 3n), 3n)
+    assert.strictEqual(bitOr(-2n, 3n), -1n)
+    assert.strictEqual(bitOr(2n, -3n), -1n)
+    assert.strictEqual(bitOr(-5n, -3n), -1n)
+  })
+
   it('should bitwise or booleans', function () {
     assert.strictEqual(bitOr(true, true), 1)
     assert.strictEqual(bitOr(true, false), 1)
@@ -41,6 +49,11 @@ describe('bitOr', function () {
     assert.deepStrictEqual(bitOr(1, bignumber(2)), bignumber(3))
     assert.deepStrictEqual(bitOr(bignumber(7), 9), bignumber(15))
     assert.deepStrictEqual(bitOr(7, bignumber(9)), bignumber(15))
+  })
+
+  it('should bitwise or mixed numbers and bigints', function () {
+    assert.strictEqual(bitOr(53, 131n), 183)
+    assert.strictEqual(bitOr(53n, 131), 183)
   })
 
   it('should bitwise or mixed booleans and bignumbers', function () {
@@ -184,6 +197,14 @@ describe('bitOr', function () {
   it('should bitwise or a scalar and an array correctly', function () {
     assert.deepStrictEqual(bitOr(12, [3, 9]), [15, 13])
     assert.deepStrictEqual(bitOr([3, 9], 12), [15, 13])
+  })
+
+  it('should bitwise or broadcastable arrays correctly', function () {
+    const a = [6, 4, 28]
+    const b = [[13], [92], [101]]
+
+    assert.deepStrictEqual(bitOr(a, b), [[15, 13, 29], [94, 92, 92], [103, 101, 125]])
+    assert.deepStrictEqual(bitOr(b, a), [[15, 13, 29], [94, 92, 92], [103, 101, 125]])
   })
 
   it('should bitwise or a matrix and an array correctly', function () {

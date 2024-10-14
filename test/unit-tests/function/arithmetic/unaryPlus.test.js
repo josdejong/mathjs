@@ -24,8 +24,17 @@ describe('unaryPlus', function () {
 
   it('should return bignumber unary plus on a string', function () {
     const bigmath = math.create({ number: 'BigNumber' })
-    assert.deepStrictEqual(bigmath.unaryPlus('2'), bigmath.bignumber(2))
-    assert.deepStrictEqual(bigmath.unaryPlus('-2'), bigmath.bignumber(-2))
+    assert.deepStrictEqual(bigmath.unaryPlus('20000000000000000000001'), bigmath.bignumber('20000000000000000000001'))
+    assert.deepStrictEqual(bigmath.unaryPlus('-20000000000000000000001'), bigmath.bignumber('-20000000000000000000001'))
+  })
+
+  it('should return bigint unary plus on a string', function () {
+    const bigmath = math.create({ number: 'bigint' })
+    assert.deepStrictEqual(bigmath.unaryPlus('20000000000000000000001'), 20000000000000000000001n)
+    assert.deepStrictEqual(bigmath.unaryPlus('-20000000000000000000001'), -20000000000000000000001n)
+    assert.deepStrictEqual(bigmath.unaryPlus('2.4'), 2.4) // fallback to number
+    assert.deepStrictEqual(bigmath.unaryPlus(true), 1n)
+    assert.deepStrictEqual(bigmath.unaryPlus(false), 0n)
   })
 
   // TODO: this is temporary until the test above works again
@@ -44,6 +53,12 @@ describe('unaryPlus', function () {
     assert.deepStrictEqual(math.unaryPlus(2), 2)
     assert.deepStrictEqual(math.unaryPlus(-2), -2)
     assert.deepStrictEqual(math.unaryPlus(0), 0)
+  })
+
+  it('should perform unary plus of a bigint', function () {
+    assert.deepStrictEqual(math.unaryPlus(2n), 2n)
+    assert.deepStrictEqual(math.unaryPlus(-2n), -2n)
+    assert.deepStrictEqual(math.unaryPlus(0n), 0n)
   })
 
   it('should perform unary plus of a big number', function () {

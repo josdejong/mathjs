@@ -252,6 +252,17 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
     }
 
     /**
+     * Internal function to generate the string output.
+     * This has to be implemented by every Node
+     *
+     * @throws {Error}
+     */
+    _toString () {
+      // must be implemented by each of the Node implementations
+      throw new Error('_toString not implemented for ' + this.type)
+    }
+
+    /**
      * Get a JSON representation of the node
      * Both .toJSON() and the static .fromJSON(json) should be implemented by all
      * implementations of Node
@@ -284,18 +295,18 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
         return customString
       }
 
-      return this.toHTML(options)
+      return this._toHTML(options)
     }
 
     /**
-     * Internal function to generate the string output.
+     * Internal function to generate the HTML output.
      * This has to be implemented by every Node
      *
      * @throws {Error}
      */
-    _toString () {
+    _toHTML () {
       // must be implemented by each of the Node implementations
-      throw new Error('_toString not implemented for ' + this.type)
+      throw new Error('_toHTML not implemented for ' + this.type)
     }
 
     /**

@@ -7,23 +7,12 @@ import { createEmptyMap, createMap } from '../../utils/map.js'
 
 const name = 'simplify'
 const dependencies = [
-  'config',
   'typed',
   'parse',
-  'add',
-  'subtract',
-  'multiply',
-  'divide',
-  'pow',
-  'isZero',
   'equal',
   'resolve',
   'simplifyConstant',
   'simplifyCore',
-  '?fraction',
-  '?bignumber',
-  'mathWithTransform',
-  'matrix',
   'AccessorNode',
   'ArrayNode',
   'ConstantNode',
@@ -37,23 +26,12 @@ const dependencies = [
 
 export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   {
-    config,
     typed,
     parse,
-    add,
-    subtract,
-    multiply,
-    divide,
-    pow,
-    isZero,
     equal,
     resolve,
     simplifyConstant,
     simplifyCore,
-    fraction,
-    bignumber,
-    mathWithTransform,
-    matrix,
     AccessorNode,
     ArrayNode,
     ConstantNode,
@@ -153,13 +131,13 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *
    * Syntax:
    *
-   *     simplify(expr)
-   *     simplify(expr, rules)
-   *     simplify(expr, rules)
-   *     simplify(expr, rules, scope)
-   *     simplify(expr, rules, scope, options)
-   *     simplify(expr, scope)
-   *     simplify(expr, scope, options)
+   *     math.simplify(expr)
+   *     math.simplify(expr, rules)
+   *     math.simplify(expr, rules)
+   *     math.simplify(expr, rules, scope)
+   *     math.simplify(expr, rules, scope, options)
+   *     math.simplify(expr, scope)
+   *     math.simplify(expr, scope, options)
    *
    * Examples:
    *
@@ -199,7 +177,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   simplify.positiveContext = positiveContext
 
   function removeParens (node) {
-    return node.transform(function (node, path, parent) {
+    return node.transform(function (node) {
       return isParenthesisNode(node)
         ? removeParens(node.content)
         : node
@@ -392,6 +370,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // undo temporary rules
     // { l: '(-1) * n', r: '-n' }, // #811 added test which proved this is redundant
     { l: 'n+-n1', r: 'n-n1' }, // undo replace 'subtract'
+    { l: 'n+-(n1)', r: 'n-(n1)' },
     {
       s: 'n*(n1^-1) -> n/n1', // undo replace 'divide'; for * commutative
       assuming: { multiply: { commutative: true } } // o.w. / not conventional

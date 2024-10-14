@@ -64,6 +64,11 @@ describe('rightLogShift', function () {
       assert.deepStrictEqual(rightLogShift([[4, 8], [32, 0]], [[1, 2], [8, 0]]), [[2, 2], [0, 0]])
     })
 
+    it('should right arithmetically shift between broadcastable arrays', function () {
+      assert.deepStrictEqual(rightLogShift([[1, 2]], [[4], [32]]), [[0, 0], [1, 2]])
+      assert.deepStrictEqual(rightLogShift([[4], [32]], [1, 2]), [[2, 1], [16, 8]])
+    })
+
     it('should right arithmetically shift array - dense matrix', function () {
       assert.deepStrictEqual(rightLogShift([[1, 2], [8, 0]], matrix([[4, 8], [32, 0]])), matrix([[0, 0], [8, 0]]))
       assert.deepStrictEqual(rightLogShift([[4, 8], [32, 0]], matrix([[1, 2], [8, 0]])), matrix([[2, 2], [0, 0]]))

@@ -3,9 +3,9 @@ import { squeeze as arraySqueeze } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'squeeze'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed']
 
-export const createSqueeze = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+export const createSqueeze = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Squeeze a matrix, remove inner and outer singleton dimensions from a matrix.
    *
@@ -43,7 +43,7 @@ export const createSqueeze = /* #__PURE__ */ factory(name, dependencies, ({ type
     Matrix: function (x) {
       const res = arraySqueeze(x.toArray())
       // FIXME: return the same type of matrix as the input
-      return Array.isArray(res) ? matrix(res) : res
+      return Array.isArray(res) ? x.create(res, x.datatype()) : res
     },
 
     any: function (x) {

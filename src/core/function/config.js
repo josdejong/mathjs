@@ -1,4 +1,4 @@
-import { clone, mapObject, deepExtend } from '../../utils/object.js'
+import { clone, deepExtend } from '../../utils/object.js'
 import { DEFAULT_CONFIG } from '../config.js'
 
 export const MATRIX_OPTIONS = ['Matrix', 'Array'] // valid values for option matrix
@@ -29,13 +29,16 @@ export function configFactory (config, emit) {
    *     math.evaluate('0.4')                // outputs Fraction 2/5
    *
    * @param {Object} [options] Available options:
-   *                            {number} epsilon
+   *                            {number} relTol
    *                              Minimum relative difference between two
+   *                              compared values, used by all comparison functions.
+   *                            {number} absTol
+   *                              Minimum absolute difference between two
    *                              compared values, used by all comparison functions.
    *                            {string} matrix
    *                              A string 'Matrix' (default) or 'Array'.
    *                            {string} number
-   *                              A string 'number' (default), 'BigNumber', or 'Fraction'
+   *                              A string 'number' (default), 'BigNumber', 'bigint', or 'Fraction'
    *                            {number} precision
    *                              The number of significant digits for BigNumbers.
    *                              Not applicable for Numbers.
@@ -49,7 +52,16 @@ export function configFactory (config, emit) {
    */
   function _config (options) {
     if (options) {
-      const prev = mapObject(config, clone)
+      if (options.epsilon !== undefined) {
+        // this if is only for backwards compatibility, it can be removed in the future.
+        console.warn('Warning: The configuration option "epsilon" is deprecated. Use "relTol" and "absTol" instead.')
+        const optionsFix = clone(options)
+        optionsFix.relTol = options.epsilon
+        optionsFix.absTol = options.epsilon * 1e-3
+        delete optionsFix.epsilon
+        return _config(optionsFix)
+      }
+      const prev = clone(config)
 
       // validate some of the options
       validateOption(options, 'matrix', MATRIX_OPTIONS)
@@ -58,16 +70,16 @@ export function configFactory (config, emit) {
       // merge options
       deepExtend(config, options)
 
-      const curr = mapObject(config, clone)
+      const curr = clone(config)
 
-      const changes = mapObject(options, clone)
+      const changes = clone(options)
 
       // emit 'config' event
       emit('config', curr, prev, changes)
 
       return curr
     } else {
-      return mapObject(config, clone)
+      return clone(config)
     }
   }
 
@@ -88,23 +100,13 @@ export function configFactory (config, emit) {
 }
 
 /**
- * Test whether an Array contains a specific item.
- * @param {Array.<string>} array
- * @param {string} item
- * @return {boolean}
- */
-function contains (array, item) {
-  return array.indexOf(item) !== -1
-}
-
-/**
  * Validate an option
  * @param {Object} options         Object with options
  * @param {string} name            Name of the option to validate
  * @param {Array.<string>} values  Array with valid values for this option
  */
 function validateOption (options, name, values) {
-  if (options[name] !== undefined && !contains(values, options[name])) {
+  if (options[name] !== undefined && !values.includes(options[name])) {
     // unknown value
     console.warn('Warning: Unknown value "' + options[name] + '" for configuration option "' + name + '". ' +
       'Available options: ' + values.map(value => JSON.stringify(value)).join(', ') + '.')

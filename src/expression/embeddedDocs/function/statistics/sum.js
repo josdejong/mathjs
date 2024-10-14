@@ -3,7 +3,8 @@ export const sumDocs = {
   category: 'Statistics',
   syntax: [
     'sum(a, b, c, ...)',
-    'sum(A)'
+    'sum(A)',
+    'sum(A, dimension)'
   ],
   description: 'Compute the sum of all values.',
   examples: [

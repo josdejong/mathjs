@@ -18,7 +18,7 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      *     new ConstantNode(2.3)
      *     new ConstantNode('hello')
      *
-     * @param {*} value    Value can be any type (number, BigNumber, string, ...)
+     * @param {*} value    Value can be any type (number, BigNumber, bigint, string, ...)
      * @constructor ConstantNode
      * @extends {Node}
      */
@@ -92,11 +92,12 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Object} options
      * @return {string} str
      */
-    toHTML (options) {
+    _toHTML (options) {
       const value = this._toString(options)
 
       switch (typeOf(this.value)) {
         case 'number':
+        case 'bigint':
         case 'BigNumber':
         case 'Fraction':
           return '<span class="math-number">' + value + '</span>'
@@ -140,27 +141,34 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      */
     _toTex (options) {
       const value = this._toString(options)
+      const type = typeOf(this.value)
 
-      switch (typeOf(this.value)) {
+      switch (type) {
         case 'string':
           return '\\mathtt{' + escapeLatex(value) + '}'
 
         case 'number':
-        case 'BigNumber':
-          {
-            if (!isFinite(this.value)) {
-              return (this.value.valueOf() < 0)
-                ? '-\\infty'
-                : '\\infty'
-            }
-
-            const index = value.toLowerCase().indexOf('e')
-            if (index !== -1) {
-              return value.substring(0, index) + '\\cdot10^{' +
-                value.substring(index + 1) + '}'
-            }
+        case 'BigNumber': {
+          const finite = type === 'BigNumber' ? this.value.isFinite() : isFinite(this.value)
+          if (!finite) {
+            return (this.value.valueOf() < 0)
+              ? '-\\infty'
+              : '\\infty'
           }
+
+          const index = value.toLowerCase().indexOf('e')
+          if (index !== -1) {
+            return value.substring(0, index) + '\\cdot10^{' +
+              value.substring(index + 1) + '}'
+          }
+
           return value
+        }
+
+        case 'bigint': {
+          return value.toString()
+        }
+
         case 'Fraction':
           return this.value.toLatex()
 

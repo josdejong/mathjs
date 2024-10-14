@@ -1,5 +1,5 @@
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 import { filter, filterRegExp } from '../../utils/array.js'
-import { maxArgumentCount } from '../../utils/function.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'filter'
@@ -39,13 +39,13 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
     'Array, function': _filterCallback,
 
     'Matrix, function': function (x, test) {
-      return x.create(_filterCallback(x.toArray(), test))
+      return x.create(_filterCallback(x.valueOf(), test), x.datatype())
     },
 
     'Array, RegExp': filterRegExp,
 
     'Matrix, RegExp': function (x, test) {
-      return x.create(filterRegExp(x.toArray(), test))
+      return x.create(filterRegExp(x.valueOf(), test), x.datatype())
     }
   })
 })
@@ -58,17 +58,9 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
  * @private
  */
 function _filterCallback (x, callback) {
-  // figure out what number of arguments the callback function expects
-  const args = maxArgumentCount(callback)
-
+  const fastCallback = optimizeCallback(callback, x, 'filter')
   return filter(x, function (value, index, array) {
     // invoke the callback function with the right number of arguments
-    if (args === 1) {
-      return callback(value)
-    } else if (args === 2) {
-      return callback(value, [index])
-    } else { // 3 or -1
-      return callback(value, [index], array)
-    }
+    return fastCallback(value, [index], array)
   })
 }

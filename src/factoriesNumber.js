@@ -101,6 +101,7 @@ export const createUnaryMinus = /* #__PURE__ */ createNumberFactory('unaryMinus'
 export const createUnaryPlus = /* #__PURE__ */ createNumberFactory('unaryPlus', unaryPlusNumber)
 export const createAbs = /* #__PURE__ */ createNumberFactory('abs', absNumber)
 export const createAddScalar = /* #__PURE__ */ createNumberFactory('addScalar', addNumber)
+export const createSubtractScalar = /* #__PURE__ */ createNumberFactory('subtractScalar', subtractNumber)
 export const createCbrt = /* #__PURE__ */ createNumberFactory('cbrt', cbrtNumber)
 export { createCeilNumber as createCeil } from './function/arithmetic/ceil.js'
 export const createCube = /* #__PURE__ */ createNumberFactory('cube', cubeNumber)
@@ -174,6 +175,7 @@ export {
 
 // create
 export { createNumber } from './type/number.js'
+export { createBigint } from './type/bigint.js'
 export { createString } from './type/string.js'
 export { createBoolean } from './type/boolean.js'
 export { createParser } from './expression/function/parser.js'
@@ -249,7 +251,7 @@ export { createUnequalNumber as createUnequal } from './function/relational/uneq
 
 // special
 export { createErf } from './function/special/erf.js'
-
+export { createZeta } from './function/special/zeta.js'
 // statistics
 export { createMode } from './function/statistics/mode.js'
 export { createProd } from './function/statistics/prod.js'
@@ -263,6 +265,7 @@ export { createMad } from './function/statistics/mad.js'
 export { createVariance } from './function/statistics/variance.js'
 export { createQuantileSeq } from './function/statistics/quantileSeq.js'
 export { createStd } from './function/statistics/std.js'
+export { createCorr } from './function/statistics/corr.js'
 
 // string
 export { createFormat } from './function/string/format.js'

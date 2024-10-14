@@ -1,38 +1,66 @@
 import { factory } from '../../utils/factory.js'
 import { format } from '../../utils/string.js'
 import { createComplexEigs } from './eigs/complexEigs.js'
-import { createRealSymmetric } from './eigs/realSymetric.js'
+import { createRealSymmetric } from './eigs/realSymmetric.js'
 import { typeOf, isNumber, isBigNumber, isComplex, isFraction } from '../../utils/is.js'
 
 const name = 'eigs'
 
 // The absolute state of math.js's dependency system:
-const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number', 'complex', 'sqrt', 'diag', 'qr', 'usolve', 'usolveAll', 'im', 're', 'smaller', 'matrixFromColumns', 'dot']
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, qr, usolve, usolveAll, im, re, smaller, matrixFromColumns, dot }) => {
-  const doRealSymetric = createRealSymmetric({ config, addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
-  const doComplexEigs = createComplexEigs({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, qr, inv, usolve, usolveAll, equal, complex, larger, smaller, matrixFromColumns, dot })
+const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number', 'complex', 'sqrt', 'diag', 'size', 'reshape', 'qr', 'usolve', 'usolveAll', 'im', 're', 'smaller', 'matrixFromColumns', 'dot']
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, size, reshape, qr, usolve, usolveAll, im, re, smaller, matrixFromColumns, dot }) => {
+  const doRealSymmetric = createRealSymmetric({ config, addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
+  const doComplexEigs = createComplexEigs({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, size, reshape, qr, inv, usolve, usolveAll, equal, complex, larger, smaller, matrixFromColumns, dot })
 
   /**
-   * Compute eigenvalues and eigenvectors of a matrix. The eigenvalues are sorted by their absolute value, ascending.
-   * An eigenvalue with multiplicity k will be listed k times. The eigenvectors are returned as columns of a matrix –
-   * the eigenvector that belongs to the j-th eigenvalue in the list (eg. `values[j]`) is the j-th column (eg. `column(vectors, j)`).
-   * If the algorithm fails to converge, it will throw an error – in that case, however, you may still find useful information
+   * Compute eigenvalues and optionally eigenvectors of a square matrix.
+   * The eigenvalues are sorted by their absolute value, ascending, and
+   * returned as a vector in the `values` property of the returned project.
+   * An eigenvalue with algebraic multiplicity k will be listed k times, so
+   * that the returned `values` vector always has length equal to the size
+   * of the input matrix.
+   *
+   * The `eigenvectors` property of the return value provides the eigenvectors.
+   * It is an array of plain objects: the `value` property of each gives the
+   * associated eigenvalue, and the `vector` property gives the eigenvector
+   * itself. Note that the same `value` property will occur as many times in
+   * the list provided by `eigenvectors` as the geometric multiplicity of
+   * that value.
+   *
+   * If the algorithm fails to converge, it will throw an error –
+   * in that case, however, you may still find useful information
    * in `err.values` and `err.vectors`.
+   *
+   * Note that the 'precision' option does not directly specify the _accuracy_
+   * of the returned eigenvalues. Rather, it determines how small an entry
+   * of the iterative approximations to an upper triangular matrix must be
+   * in order to be considered zero. The actual accuracy of the returned
+   * eigenvalues may be greater or less than the precision, depending on the
+   * conditioning of the matrix and how far apart or close the actual
+   * eigenvalues are. Note that currently, relatively simple, "traditional"
+   * methods of eigenvalue computation are being used; this is not a modern,
+   * high-precision eigenvalue computation. That said, it should typically
+   * produce fairly reasonable results.
    *
    * Syntax:
    *
    *     math.eigs(x, [prec])
+   *     math.eigs(x, {options})
    *
    * Examples:
    *
-   *     const { eigs, multiply, column, transpose } = math
+   *     const { eigs, multiply, column, transpose, matrixFromColumns } = math
    *     const H = [[5, 2.3], [2.3, 1]]
-   *     const ans = eigs(H) // returns {values: [E1,E2...sorted], vectors: [v1,v2.... corresponding vectors as columns]}
+   *     const ans = eigs(H) // returns {values: [E1,E2...sorted], eigenvectors: [{value: E1, vector: v2}, {value: e, vector: v2}, ...]
    *     const E = ans.values
-   *     const U = ans.vectors
-   *     multiply(H, column(U, 0)) // returns multiply(E[0], column(U, 0))
-   *     const UTxHxU = multiply(transpose(U), H, U) // diagonalizes H
-   *     E[0] == UTxHxU[0][0]  // returns true
+   *     const V = ans.eigenvectors
+   *     multiply(H, V[0].vector)) // returns multiply(E[0], V[0].vector))
+   *     const U = matrixFromColumns(...V.map(obj => obj.vector))
+   *     const UTxHxU = multiply(transpose(U), H, U) // diagonalizes H if possible
+   *     E[0] == UTxHxU[0][0]  // returns true always
+   *
+   *     // Compute only approximate eigenvalues:
+   *     const {values} = eigs(H, {eigenvectors: false, precision: 1e-6})
    *
    * See also:
    *
@@ -40,64 +68,81 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *
    * @param {Array | Matrix} x  Matrix to be diagonalized
    *
-   * @param {number | BigNumber} [prec] Precision, default value: 1e-15
-   * @return {{values: Array|Matrix, vectors: Array|Matrix}} Object containing an array of eigenvalues and a matrix with eigenvectors as columns.
+   * @param {number | BigNumber | OptsObject} [opts] Object with keys `precision`, defaulting to config.relTol, and `eigenvectors`, defaulting to true and specifying whether to compute eigenvectors. If just a number, specifies precision.
+   * @return {{values: Array|Matrix, eigenvectors?: Array<EVobj>}} Object containing an array of eigenvalues and an array of {value: number|BigNumber, vector: Array|Matrix} objects. The eigenvectors property is undefined if eigenvectors were not requested.
    *
    */
   return typed('eigs', {
 
-    Array: function (x) {
-      const mat = matrix(x)
-      return computeValuesAndVectors(mat)
-    },
-
+    // The conversion to matrix in the first two implementations,
+    // just to convert back to an array right away in
+    // computeValuesAndVectors, is unfortunate, and should perhaps be
+    // streamlined. It is done because the Matrix object carries some
+    // type information about its entries, and so constructing the matrix
+    // is a roundabout way of doing type detection.
+    Array: function (x) { return doEigs(matrix(x)) },
     'Array, number|BigNumber': function (x, prec) {
-      const mat = matrix(x)
-      return computeValuesAndVectors(mat, prec)
+      return doEigs(matrix(x), { precision: prec })
     },
-
+    'Array, Object' (x, opts) { return doEigs(matrix(x), opts) },
     Matrix: function (mat) {
-      const { values, vectors } = computeValuesAndVectors(mat)
-      return {
-        values: matrix(values),
-        vectors: matrix(vectors)
-      }
+      return doEigs(mat, { matricize: true })
     },
-
     'Matrix, number|BigNumber': function (mat, prec) {
-      const { values, vectors } = computeValuesAndVectors(mat, prec)
-      return {
-        values: matrix(values),
-        vectors: matrix(vectors)
-      }
+      return doEigs(mat, { precision: prec, matricize: true })
+    },
+    'Matrix, Object': function (mat, opts) {
+      const useOpts = { matricize: true }
+      Object.assign(useOpts, opts)
+      return doEigs(mat, useOpts)
     }
   })
 
-  function computeValuesAndVectors (mat, prec) {
-    if (prec === undefined) {
-      prec = config.epsilon
+  function doEigs (mat, opts = {}) {
+    const computeVectors = 'eigenvectors' in opts ? opts.eigenvectors : true
+    const prec = opts.precision ?? config.relTol
+    const result = computeValuesAndVectors(mat, prec, computeVectors)
+    if (opts.matricize) {
+      result.values = matrix(result.values)
+      if (computeVectors) {
+        result.eigenvectors = result.eigenvectors.map(({ value, vector }) =>
+          ({ value, vector: matrix(vector) }))
+      }
+    }
+    if (computeVectors) {
+      Object.defineProperty(result, 'vectors', {
+        enumerable: false, // to make sure that the eigenvectors can still be
+        // converted to string.
+        get: () => {
+          throw new Error('eigs(M).vectors replaced with eigs(M).eigenvectors')
+        }
+      })
+    }
+    return result
+  }
+
+  function computeValuesAndVectors (mat, prec, computeVectors) {
+    const arr = mat.toArray() // NOTE: arr is guaranteed to be unaliased
+    // and so safe to modify in place
+    const asize = mat.size()
+
+    if (asize.length !== 2 || asize[0] !== asize[1]) {
+      throw new RangeError(`Matrix must be square (size: ${format(asize)})`)
     }
 
-    const size = mat.size()
-
-    if (size.length !== 2 || size[0] !== size[1]) {
-      throw new RangeError('Matrix must be square (size: ' + format(size) + ')')
-    }
-
-    const arr = mat.toArray()
-    const N = size[0]
+    const N = asize[0]
 
     if (isReal(arr, N, prec)) {
-      coerceReal(arr, N)
+      coerceReal(arr, N) // modifies arr by side effect
 
       if (isSymmetric(arr, N, prec)) {
-        const type = coerceTypes(mat, arr, N)
-        return doRealSymetric(arr, N, prec, type)
+        const type = coerceTypes(mat, arr, N) // modifies arr by side effect
+        return doRealSymmetric(arr, N, prec, type, computeVectors)
       }
     }
 
-    const type = coerceTypes(mat, arr, N)
-    return doComplexEigs(arr, N, prec, type)
+    const type = coerceTypes(mat, arr, N) // modifies arr by side effect
+    return doComplexEigs(arr, N, prec, type, computeVectors)
   }
 
   /** @return {boolean} */

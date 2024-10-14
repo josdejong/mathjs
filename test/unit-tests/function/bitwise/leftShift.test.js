@@ -19,6 +19,17 @@ describe('leftShift', function () {
     assert.strictEqual(leftShift(-3, 3), -24)
   })
 
+  it('should left shift a bigint by a given amount', function () {
+    assert.strictEqual(leftShift(0n, 1000n), 0n)
+    assert.strictEqual(leftShift(2n, 0n), 2n)
+    assert.strictEqual(leftShift(2n, 3n), 16n)
+    assert.strictEqual(leftShift(2n, 4n), 32n)
+    assert.strictEqual(leftShift(-2n, 2n), -8n)
+    assert.strictEqual(leftShift(3n, 3n), 24n)
+    assert.strictEqual(leftShift(-3n, 2n), -12n)
+    assert.strictEqual(leftShift(-3n, 3n), -24n)
+  })
+
   it('should left shift booleans by a boolean amount', function () {
     assert.strictEqual(leftShift(true, true), 2)
     assert.strictEqual(leftShift(true, false), 1)
@@ -31,6 +42,11 @@ describe('leftShift', function () {
     assert.strictEqual(leftShift(2, false), 2)
     assert.strictEqual(leftShift(true, 2), 4)
     assert.strictEqual(leftShift(false, 2), 0)
+  })
+
+  it('should left shift with a mix of numbers and bigints', function () {
+    assert.strictEqual(leftShift(2, 3n), 16)
+    assert.strictEqual(leftShift(2n, 3), 16)
   })
 
   it('should left shift bignumbers', function () {
@@ -98,6 +114,11 @@ describe('leftShift', function () {
     it('should left shift array - array', function () {
       assert.deepStrictEqual(leftShift([[1, 2], [8, 0]], [[4, 8], [32, 0]]), [[16, 512], [8, 0]])
       assert.deepStrictEqual(leftShift([[4, 8], [32, 0]], [[1, 2], [8, 0]]), [[8, 32], [8192, 0]])
+    })
+
+    it('should left shift broadcastable arrays', function () {
+      assert.deepStrictEqual(leftShift([[1, 2]], [[4], [32]]), [[16, 32], [1, 2]])
+      assert.deepStrictEqual(leftShift([[4], [32]], [8, 0]), [[1024, 4], [8192, 32]])
     })
 
     it('should left shift array - dense matrix', function () {

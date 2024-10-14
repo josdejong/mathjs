@@ -1,4 +1,4 @@
-import { isBigNumber } from './is.js'
+import { isBigNumber, isObject } from './is.js'
 
 /**
  * Clone an object
@@ -15,7 +15,7 @@ export function clone (x) {
   const type = typeof x
 
   // immutable primitive types
-  if (type === 'number' || type === 'string' || type === 'boolean' ||
+  if (type === 'number' || type === 'bigint' || type === 'string' || type === 'boolean' ||
       x === null || x === undefined) {
     return x
   }
@@ -34,10 +34,13 @@ export function clone (x) {
 
   if (x instanceof Date) return new Date(x.valueOf())
   if (isBigNumber(x)) return x // bignumbers are immutable
-  if (x instanceof RegExp) throw new TypeError('Cannot clone ' + x) // TODO: clone a RegExp
 
   // object
-  return mapObject(x, clone)
+  if (isObject(x)) {
+    return mapObject(x, clone)
+  }
+
+  throw new TypeError(`Cannot clone: unknown type of value (value: ${x})`)
 }
 
 /**
@@ -387,11 +390,7 @@ export function pickShallow (object, properties) {
   return copy
 }
 
-export function values (object) {
-  return Object.keys(object).map(key => object[key])
-}
-
 // helper function to test whether a string contains a path like 'user.name'
 function isPath (str) {
-  return str.indexOf('.') !== -1
+  return str.includes('.')
 }

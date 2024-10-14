@@ -2,11 +2,11 @@ export const matrixFromFunctionDocs = {
   name: 'matrixFromFunction',
   category: 'Matrix',
   syntax: [
-    'math.matrixFromFunction(size, fn)',
-    'math.matrixFromFunction(size, fn, format)',
-    'math.matrixFromFunction(size, fn, format, datatype)',
-    'math.matrixFromFunction(size, format, fn)',
-    'math.matrixFromFunction(size, format, datatype, fn)'
+    'matrixFromFunction(size, fn)',
+    'matrixFromFunction(size, fn, format)',
+    'matrixFromFunction(size, fn, format, datatype)',
+    'matrixFromFunction(size, format, fn)',
+    'matrixFromFunction(size, format, datatype, fn)'
   ],
   description: 'Create a matrix by evaluating a generating function at each index.',
   examples: [

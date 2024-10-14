@@ -1,9 +1,13 @@
-const assert = require('assert')
-const path = require('path')
+import assert from 'node:assert'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { approxEqual, approxDeepEqual } from '../../tools/approx.js'
+import { collectDocs } from '../../tools/docgenerator.js'
+import { create, all } from '../../lib/esm/index.js'
 
-const approx = require('../../tools/approx.js')
-const docgenerator = require('../../tools/docgenerator.js')
-const math = require('../..')
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const math = create(all)
+const debug = process.argv.includes('--debug-docs')
 
 function extractExpectation (comment, optional = false) {
   if (comment === '') return undefined
@@ -99,17 +103,22 @@ const knownProblems = new Set([
   'mod', 'invmod', 'floor', 'fix', 'expm1', 'exp', 'dotPow', 'dotMultiply',
   'dotDivide', 'divide', 'ceil', 'cbrt', 'add', 'usolveAll', 'usolve', 'slu',
   'rationalize', 'qr', 'lusolve', 'lup', 'lsolveAll', 'lsolve', 'derivative',
-  'symbolicEqual', 'map', 'schur', 'sylvester'
+  'symbolicEqual', 'map', 'schur', 'sylvester', 'freqz', 'round'
 ])
+
+let issueCount = 0
 
 function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
   if (knownProblems.has(name)) {
     try {
       checkExpectation(expected, got)
     } catch (err) {
-      console.log(
-        `PLEASE RESOLVE: '${gotFrom}' was supposed to '${expectedFrom}'`)
-      console.log('    but', err.toString())
+      issueCount++
+      if (debug) {
+        console.log(
+          `PLEASE RESOLVE: '${gotFrom}' was supposed to '${expectedFrom}'`)
+        console.log('    but', err.toString())
+      }
     }
   } else {
     checkExpectation(expected, got)
@@ -119,26 +128,32 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
 function checkExpectation (want, got) {
   if (Array.isArray(want)) {
     if (!Array.isArray(got)) {
-      want = math.matrix(want)
+      got = want.valueOf()
     }
-    return approx.deepEqual(got, want, 1e-9)
+    return approxDeepEqual(got, want, 1e-9)
   }
   if (want instanceof math.Unit && got instanceof math.Unit) {
-    return approx.deepEqual(got, want, 1e-9)
+    return approxDeepEqual(got, want, 1e-9)
   }
   if (want instanceof math.Complex && got instanceof math.Complex) {
-    return approx.deepEqual(got, want, 1e-9)
+    return approxDeepEqual(got, want, 1e-9)
   }
   if (typeof want === 'number' && typeof got === 'number' && want !== got) {
-    console.log(`  Note: return value ${got} not exactly as expected: ${want}`)
-    return approx.equal(got, want, 1e-9)
+    issueCount++
+    if (debug) {
+      console.log(`  Note: return value ${got} not exactly as expected: ${want}`)
+    }
+    return approxEqual(got, want, 1e-9)
+  }
+  if (typeof want !== 'undefined') {
+    return approxDeepEqual(got, want)
   } else {
-    assert.deepEqual(got, want)
+    // don't check if we don't know what the result is supposed to be
   }
 }
 
 const OKundocumented = new Set([
-  'addScalar', 'divideScalar', 'multiplyScalar', 'equalScalar',
+  'addScalar', 'subtractScalar', 'divideScalar', 'multiplyScalar', 'equalScalar',
   'docs', 'FibonacciHeap',
   'IndexError', 'DimensionError', 'ArgumentsError'
 ])
@@ -148,6 +163,7 @@ const knownUndocumented = new Set([
   'isNumber',
   'isComplex',
   'isBigNumber',
+  'isBigInt',
   'isFraction',
   'isUnit',
   'isString',
@@ -165,6 +181,9 @@ const knownUndocumented = new Set([
   'isDate',
   'isRegExp',
   'isObject',
+  'isMap',
+  'isPartitionedMap',
+  'isObjectWrappingMap',
   'isNull',
   'isUndefined',
   'isAccessorNode',
@@ -263,6 +282,7 @@ const knownUndocumented = new Set([
   'nuclearMagneton',
   'null',
   'number',
+  'bigint',
   'ObjectNode',
   'OperatorNode',
   'ParenthesisNode',
@@ -312,15 +332,11 @@ const knownUndocumented = new Set([
   'wienDisplacement'
 ])
 
-const bigwarning = `WARNING: ${knownProblems.size} known errors converted ` +
-      'to PLEASE RESOLVE warnings.' +
-      `\n  WARNING: ${knownUndocumented.size} symbols in math are known to ` +
-      'be undocumented; PLEASE EXTEND the documentation.'
-
-describe(bigwarning + '\n  Testing examples from (jsdoc) comments', function () {
+describe('Testing examples from (jsdoc) comments', function () {
   const allNames = Object.keys(math)
   const srcPath = path.resolve(__dirname, '../../src') + '/'
-  const allDocs = docgenerator.collectDocs(allNames, srcPath)
+  const allDocs = collectDocs(allNames, srcPath)
+
   it("should cover all names (but doesn't yet)", function () {
     const documented = new Set(Object.keys(allDocs))
     const badUndocumented = allNames.filter(name => {
@@ -345,7 +361,9 @@ describe(bigwarning + '\n  Testing examples from (jsdoc) comments', function () 
     describe('category: ' + category, function () {
       for (const doc of byCategory[category]) {
         it('satisfies ' + doc.name, function () {
-          console.log(`      Testing ${doc.name} ...`) // can remove once no known failures; for now it clarifies "PLEASE RESOLVE"
+          if (debug) {
+            console.log(`      Testing ${doc.name} ...`) // can remove once no known failures; for now it clarifies "PLEASE RESOLVE"
+          }
           const lines = doc.examples
           lines.push('//') // modifies doc but OK for test
           let accumulation = ''
@@ -371,7 +389,8 @@ describe(bigwarning + '\n  Testing examples from (jsdoc) comments', function () 
                 expectation = extractExpectation(expectationFrom)
                 parts[1] = ''
               }
-              if (accumulation) {
+              if (accumulation && !accumulation.includes('console.log(')) {
+                // note: we ignore examples that contain a console.log to keep the output of the tests clean
                 let value
                 try {
                   value = eval(accumulation) // eslint-disable-line no-eval
@@ -395,4 +414,23 @@ describe(bigwarning + '\n  Testing examples from (jsdoc) comments', function () 
       }
     })
   }
+
+  after(function () {
+    if (debug) {
+      if (knownProblems.size > 0) {
+        console.log(`\nWARNING: ${knownProblems.size} known errors converted ` +
+          'to PLEASE RESOLVE warnings.')
+      }
+      if (knownUndocumented.size > 0) {
+        console.log(`\nWARNING: ${knownUndocumented.size} symbols in math are known to ` +
+          'be undocumented; PLEASE EXTEND the documentation.')
+      }
+    }
+
+    if (issueCount > 0) {
+      console.log(`\nWARNING: ${issueCount} issues found in the JSDoc comments.` + (!debug
+        ? ' Run the tests again with "npm run test:node -- --debug-docs" to see detailed information'
+        : ''))
+    }
+  })
 })

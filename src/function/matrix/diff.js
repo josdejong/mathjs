@@ -48,9 +48,9 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *      subtract
    *      partitionSelect
    *
-   * @param {Array | Matrix} arr    An array or matrix
-   * @param {number} dim            Dimension
-   * @return {Array | Matrix}       Difference between array elements in given dimension
+   * @param {Array | Matrix} arr      An array or matrix
+   * @param {number | BigNumber} dim  Dimension
+   * @return {Array | Matrix}         Difference between array elements in given dimension
    */
   return typed(name, {
     'Array | Matrix': function (arr) { // No dimension specified => assume dimension 0

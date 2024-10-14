@@ -8,7 +8,7 @@ export const lgammaDocs = {
   examples: [
     'lgamma(4)',
     'lgamma(1/2)',
-    'lgamma(math.i)',
+    'lgamma(i)',
     'lgamma(complex(1.1, 2))'
   ],
   seealso: ['gamma']

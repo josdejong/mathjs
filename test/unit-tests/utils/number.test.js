@@ -505,22 +505,24 @@ describe('number', function () {
 
   describe('nearlyEqual', function () {
     it('should test whether two numbers are nearly equal', function () {
-      const epsilon = 1e-2
-      assert.strictEqual(nearlyEqual(1, 0.9, epsilon), false)
-      assert.strictEqual(nearlyEqual(1, 0.95, epsilon), false)
-      assert.strictEqual(nearlyEqual(1, 0.98, epsilon), false)
-      assert.strictEqual(nearlyEqual(1, 0.991, epsilon), true)
-      assert.strictEqual(nearlyEqual(1, 1.1, epsilon), false)
-      assert.strictEqual(nearlyEqual(1, 1.05, epsilon), false)
-      assert.strictEqual(nearlyEqual(1, 1.02, epsilon), false)
-      assert.strictEqual(nearlyEqual(1, 1.01, epsilon), true)
-      assert.strictEqual(nearlyEqual(1, 1, epsilon), true)
+      const relTol = 1e-2
+      const absTol = 1e-5
+      assert.strictEqual(nearlyEqual(1, 0.9, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(1, 0.95, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(1, 0.98, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(1, 0.991, relTol, absTol), true)
+      assert.strictEqual(nearlyEqual(1, 1.1, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(1, 1.05, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(1, 1.02, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(1, 1.01, relTol, absTol), true)
+      assert.strictEqual(nearlyEqual(1, 1, relTol, absTol), true)
 
-      // smaller epsilon
-      const epsilon2 = 1e-4
-      assert.strictEqual(nearlyEqual(1, 0.99, epsilon2), false)
-      assert.strictEqual(nearlyEqual(1, 0.999, epsilon2), false)
-      assert.strictEqual(nearlyEqual(1, 0.9999, epsilon2), true)
+      // smaller absTol and relTol
+      const relTol2 = 1e-4
+      const absTol2 = 1e-7
+      assert.strictEqual(nearlyEqual(1, 0.99, relTol2, absTol2), false)
+      assert.strictEqual(nearlyEqual(1, 0.999, relTol2, absTol2), false)
+      assert.strictEqual(nearlyEqual(1, 0.9999, relTol2, absTol2), true)
 
       // test one of these famous round-off errors
       assert.strictEqual((0.1 + 0.2) === 0.3, false)
@@ -528,60 +530,72 @@ describe('number', function () {
     })
 
     it('should test whether a positive and negative number are nearly equal', function () {
-      const epsilon = 1e-3
-      assert.strictEqual(nearlyEqual(1.2, 1.2, epsilon), true)
-      assert.strictEqual(nearlyEqual(1.2, -1.2, epsilon), false)
-      assert.strictEqual(nearlyEqual(-1.2, 1.2, epsilon), false)
-      assert.strictEqual(nearlyEqual(-1.2, -1.2, epsilon), true)
+      const relTol = 1e-3
+      const absTol = 1e-6
+      assert.strictEqual(nearlyEqual(1.2, 1.2, relTol, absTol), true)
+      assert.strictEqual(nearlyEqual(1.2, -1.2, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(-1.2, 1.2, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(-1.2, -1.2, relTol, absTol), true)
     })
 
     it('should test whether two large numbers are nearly equal', function () {
-      const epsilon = 1e-2
-      assert.strictEqual(nearlyEqual(1e200, 0.90e200, epsilon), false)
-      assert.strictEqual(nearlyEqual(1e200, 0.95e200, epsilon), false)
-      assert.strictEqual(nearlyEqual(1e200, 0.98e200, epsilon), false)
-      assert.strictEqual(nearlyEqual(1e200, 0.99e200, epsilon), true)
+      const relTol = 1e-2
+      const absTol = 1e-5
+      assert.strictEqual(nearlyEqual(1e200, 0.90e200, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(1e200, 0.95e200, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(1e200, 0.98e200, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(1e200, 0.99e200, relTol, absTol), true)
     })
 
     it('should test whether two small numbers are nearly equal (always true)', function () {
-      const epsilon = 1e-2
-      assert.strictEqual(nearlyEqual(1e-200, 0.99e-200, epsilon), true)
-      assert.strictEqual(nearlyEqual(1e-200, 10e-200, epsilon), true) // FIXME: why is this true?
+      const relTol = 1e-2
+      const absTol = 1e-5
+      assert.strictEqual(nearlyEqual(1e-200, 0.99e-200, relTol, absTol), true)
+      assert.strictEqual(nearlyEqual(1e-200, 10e-200, relTol, absTol), true) // FIXME: why is this true?
     })
 
     it('should compare with zero', function () {
-      const epsilon = 1e-3
-      assert.strictEqual(nearlyEqual(0, 0, epsilon), true)
-      assert.strictEqual(nearlyEqual(0, -0, epsilon), true)
-      assert.strictEqual(nearlyEqual(0, 1.2, epsilon), false)
-      assert.strictEqual(nearlyEqual(0, 1e30, epsilon), false)
-      assert.strictEqual(nearlyEqual(0, 1e-30, epsilon), true) // FIXME: why is this true?
+      const relTol = 1e-3
+      const absTol = 1e-6
+      assert.strictEqual(nearlyEqual(0, 0, relTol, absTol), true)
+      assert.strictEqual(nearlyEqual(0, -0, relTol, absTol), true)
+      assert.strictEqual(nearlyEqual(0, 1.2, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(0, 1e30, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(0, 1e-30, relTol, absTol), true) // FIXME: why is this true?
     })
 
     it('should compare with Infinity', function () {
-      const epsilon = 1e-3
+      const relTol = 1e-3
+      const absTol = 1e-6
 
-      assert.strictEqual(nearlyEqual(1.2, Infinity, epsilon), false)
-      assert.strictEqual(nearlyEqual(Infinity, 1.2, epsilon), false)
-      assert.strictEqual(nearlyEqual(Infinity, Infinity, epsilon), true)
-      assert.strictEqual(nearlyEqual(Infinity, -Infinity, epsilon), false)
-      assert.strictEqual(nearlyEqual(-Infinity, Infinity, epsilon), false)
-      assert.strictEqual(nearlyEqual(-Infinity, -Infinity, epsilon), true)
+      assert.strictEqual(nearlyEqual(1.2, Infinity, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(Infinity, 1.2, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(Infinity, Infinity, relTol, absTol), true)
+      assert.strictEqual(nearlyEqual(Infinity, -Infinity, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(-Infinity, Infinity, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(-Infinity, -Infinity, relTol, absTol), true)
     })
 
     it('should compare with NaN', function () {
-      const epsilon = 1e-3
-      assert.strictEqual(nearlyEqual(1.2, NaN, epsilon), false)
-      assert.strictEqual(nearlyEqual(NaN, 1.2, epsilon), false)
-      assert.strictEqual(nearlyEqual(NaN, NaN, epsilon), false)
+      const relTol = 1e-3
+      const absTol = 1e-6
+      assert.strictEqual(nearlyEqual(1.2, NaN, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(NaN, 1.2, relTol, absTol), false)
+      assert.strictEqual(nearlyEqual(NaN, NaN, relTol, absTol), false)
     })
 
-    it('should do exact comparison when epsilon is null or undefined', function () {
+    it('should use default values when absTol and relTol are undefined', function () {
       assert.strictEqual(nearlyEqual(1.2, 1.2), true)
-      assert.strictEqual(nearlyEqual(1.2, 1.2, null), true)
+      assert.strictEqual(nearlyEqual(1.2, 1.2, undefined), true)
+      assert.strictEqual(nearlyEqual(1.2, 1.2, undefined, undefined), true)
 
-      assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3), false)
-      assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3, null), false)
+      assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3), true)
+      assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3, undefined), true)
+      assert.strictEqual(nearlyEqual(0.1 + 0.2, 0.3, undefined, undefined), true)
+
+      assert.strictEqual(nearlyEqual(1.2 + 1e-7, 1.2), false)
+      assert.strictEqual(nearlyEqual(1.2 + 1e-7, 1.2, undefined), false)
+      assert.strictEqual(nearlyEqual(1.2 + 1e-7, 1.2, undefined, undefined), false)
     })
   })
 })

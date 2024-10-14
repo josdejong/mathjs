@@ -31,6 +31,15 @@ describe('add', function () {
       assert.deepStrictEqual(add([3, 4], 2), [5, 6])
     })
 
+    it('should add broadcastable arrays correctly', function () {
+      const a2 = [1, 2]
+      const a3 = [[3], [4]]
+      const a4 = add(a2, a3)
+      const a5 = add(a3, a2)
+      assert.deepStrictEqual(a4, [[4, 5], [5, 6]])
+      assert.deepStrictEqual(a5, [[4, 5], [5, 6]])
+    })
+
     it('should add array and dense matrix correctly', function () {
       const a = [1, 2, 3]
       const b = math.matrix([3, 2, 1])

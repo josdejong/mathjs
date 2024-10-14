@@ -1,7 +1,7 @@
-import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
-import { maxArgumentCount } from '../../utils/function.js'
-import { forEach } from '../../utils/array.js'
+import { createForEach } from '../../function/matrix/forEach.js'
+import { createTransformCallback } from './utils/transformCallback.js'
 import { factory } from '../../utils/factory.js'
+import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is.js'
 import { compileInlineExpression } from './utils/compileInlineExpression.js'
 
 const name = 'forEach'
@@ -14,53 +14,41 @@ export const createForEachTransform = /* #__PURE__ */ factory(name, dependencies
    *
    * This transform creates a one-based index instead of a zero-based index
    */
+  const forEach = createForEach({ typed })
+  const transformCallback = createTransformCallback({ typed })
   function forEachTransform (args, math, scope) {
-    let x, callback
+    if (args.length === 0) {
+      return forEach()
+    }
+    let x = args[0]
 
-    if (args[0]) {
-      x = args[0].compile().evaluate(scope)
+    if (args.length === 1) {
+      return forEach(x)
     }
 
-    if (args[1]) {
-      if (isSymbolNode(args[1]) || isFunctionAssignmentNode(args[1])) {
-        // a function pointer, like forEach([3, -2, 5], myTestFunction)
-        callback = args[1].compile().evaluate(scope)
+    const N = args.length - 1
+    let callback = args[N]
+
+    if (x) {
+      x = _compileAndEvaluate(x, scope)
+    }
+
+    if (callback) {
+      if (isSymbolNode(callback) || isFunctionAssignmentNode(callback)) {
+        // a function pointer, like filter([3, -2, 5], myTestFunction)
+        callback = _compileAndEvaluate(callback, scope)
       } else {
-        // an expression like forEach([3, -2, 5], x > 0 ? callback1(x) : callback2(x) )
-        callback = compileInlineExpression(args[1], math, scope)
+        // an expression like filter([3, -2, 5], x > 0)
+        callback = compileInlineExpression(callback, math, scope)
       }
     }
 
-    return _forEach(x, callback)
+    return forEach(x, transformCallback(callback, N))
   }
   forEachTransform.rawArgs = true
 
-  // one-based version of forEach
-  const _forEach = typed('forEach', {
-    'Array | Matrix, function': function (array, callback) {
-      // figure out what number of arguments the callback function expects
-      const args = maxArgumentCount(callback)
-
-      const recurse = function (value, index) {
-        if (Array.isArray(value)) {
-          forEach(value, function (child, i) {
-            // we create a copy of the index array and append the new index value
-            recurse(child, index.concat(i + 1)) // one based index, hence i+1
-          })
-        } else {
-          // invoke the callback function with the right number of arguments
-          if (args === 1) {
-            callback(value)
-          } else if (args === 2) {
-            callback(value, index)
-          } else { // 3 or -1
-            callback(value, index, array)
-          }
-        }
-      }
-      recurse(array.valueOf(), []) // pass Array
-    }
-  })
-
+  function _compileAndEvaluate (arg, scope) {
+    return arg.compile().evaluate(scope)
+  }
   return forEachTransform
 }, { isTransformFunction: true })

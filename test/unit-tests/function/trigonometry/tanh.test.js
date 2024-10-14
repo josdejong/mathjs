@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -10,16 +10,16 @@ const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 
 describe('tanh', function () {
   it('should return the tanh of a boolean', function () {
-    approx.equal(tanh(true), 0.76159415595576)
-    approx.equal(tanh(false), 0)
+    approxEqual(tanh(true), 0.76159415595576)
+    approxEqual(tanh(false), 0)
   })
 
   it('should return the tanh of a number', function () {
-    approx.equal(tanh(0), 0)
-    approx.equal(tanh(pi), 0.99627207622075)
-    approx.equal(tanh(1), 0.76159415595576)
-    approx.equal(tanh(2), 0.96402758007582)
-    approx.equal(tanh(3), 0.99505475368673)
+    approxEqual(tanh(0), 0)
+    approxEqual(tanh(pi), 0.99627207622075)
+    approxEqual(tanh(1), 0.76159415595576)
+    approxEqual(tanh(2), 0.96402758007582)
+    approxEqual(tanh(3), 0.99505475368673)
   })
 
   it('should return the tanh of a bignumber', function () {
@@ -47,9 +47,9 @@ describe('tanh', function () {
   })
 
   it('should return the tanh of a complex number', function () {
-    approx.deepEqual(tanh(complex('1')), complex(0.76159415595576, 0))
-    approx.deepEqual(tanh(complex('i')), complex(0, 1.5574077246549))
-    approx.deepEqual(tanh(complex('2 + i')), complex(1.0147936161466, 0.033812826079897))
+    approxDeepEqual(tanh(complex('1')), complex(0.76159415595576, 0))
+    approxDeepEqual(tanh(complex('i')), complex(0, 1.5574077246549))
+    approxDeepEqual(tanh(complex('2 + i')), complex(1.0147936161466, 0.033812826079897))
   })
 
   it('should throw an error on an angle', function () {
@@ -68,12 +68,12 @@ describe('tanh', function () {
 
   it('should not operate on an array', function () {
     assert.throws(() => tanh([1, 2, 3]), TypeError)
-    approx.deepEqual(math.map([1, 2, 3], tanh), tanh123)
+    approxDeepEqual(math.map([1, 2, 3], tanh), tanh123)
   })
 
   it('should not operate on a matrix', function () {
     assert.throws(() => tanh(matrix([1, 2, 3])), TypeError)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), tanh), matrix(tanh123))
+    approxDeepEqual(math.map(matrix([1, 2, 3]), tanh), matrix(tanh123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

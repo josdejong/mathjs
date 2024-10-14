@@ -1,7 +1,7 @@
 import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is.js'
 import { escape, format } from '../../utils/string.js'
 import { hasOwnProperty } from '../../utils/object.js'
-import { getSafeProperty, validateSafeMethod } from '../../utils/customs.js'
+import { getSafeProperty, getSafeMethod } from '../../utils/customs.js'
 import { createSubScope } from '../../utils/scope.js'
 import { factory } from '../../utils/factory.js'
 import { defaultTemplate, latexFunctions } from '../../utils/latex.js'
@@ -92,7 +92,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      * invoke a list with arguments on a node
      * @param {./Node | string} fn
      *     Item resolving to a function on which to invoke
-     *     the arguments, typically a SymboNode or AccessorNode
+     *     the arguments, typically a SymbolNode or AccessorNode
      * @param {./Node[]} args
      */
     constructor (fn, args) {
@@ -169,7 +169,15 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
             const rawArgs = this.args
             return function evalFunctionNode (scope, args, context) {
               const fn = resolveFn(scope)
-              return fn(rawArgs, math, createSubScope(scope, args), scope)
+
+              // the original function can be overwritten in the scope with a non-rawArgs function
+              if (fn.rawArgs === true) {
+                return fn(rawArgs, math, createSubScope(scope, args))
+              } else {
+                // "regular" evaluation
+                const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
+                return fn(...values)
+              }
             }
           } else {
             // "regular" evaluation
@@ -196,8 +204,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
               }
               default: return function evalFunctionNode (scope, args, context) {
                 const fn = resolveFn(scope)
-                const values = evalArgs.map(
-                  (evalArg) => evalArg(scope, args, context))
+                const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
                 return fn(...values)
               }
             }
@@ -205,7 +212,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         } else { // the function symbol is an argName
           const rawArgs = this.args
           return function evalFunctionNode (scope, args, context) {
-            const fn = args[name]
+            const fn = getSafeProperty(args, name)
             if (typeof fn !== 'function') {
               throw new TypeError(
                 `Argument '${name}' was not a function; received: ${strin(fn)}`
@@ -213,7 +220,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
             }
             if (fn.rawArgs) {
               // "Raw" evaluation
-              return fn(rawArgs, math, createSubScope(scope, args), scope)
+              return fn(rawArgs, math, createSubScope(scope, args))
             } else {
               const values = evalArgs.map(
                 (evalArg) => evalArg(scope, args, context))
@@ -235,18 +242,15 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
         return function evalFunctionNode (scope, args, context) {
           const object = evalObject(scope, args, context)
-          validateSafeMethod(object, prop)
-          const isRaw = object[prop] && object[prop].rawArgs
+          const fn = getSafeMethod(object, prop)
 
-          if (isRaw) {
+          if (fn?.rawArgs) {
             // "Raw" evaluation
-            return object[prop](
-              rawArgs, math, createSubScope(scope, args), scope)
+            return fn(rawArgs, math, createSubScope(scope, args))
           } else {
             // "regular" evaluation
-            const values = evalArgs.map(
-              (evalArg) => evalArg(scope, args, context))
-            return object[prop].apply(object, values)
+            const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
+            return fn.apply(object, values)
           }
         }
       } else {
@@ -267,7 +271,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
           }
           if (fn.rawArgs) {
             // "Raw" evaluation
-            return fn(rawArgs, math, createSubScope(scope, args), scope)
+            return fn(rawArgs, math, createSubScope(scope, args))
           } else {
             // "regular" evaluation
             const values = evalArgs.map(
@@ -397,7 +401,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Object} options
      * @return {string} str
      */
-    toHTML (options) {
+    _toHTML (options) {
       const args = this.args.map(function (arg) {
         return arg.toHTML(options)
       })

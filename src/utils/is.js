@@ -12,6 +12,8 @@
 //   for security reasons, so these functions are not exposed in the expression
 //   parser.
 
+import { ObjectWrappingMap } from './map.js'
+
 export function isNumber (x) {
   return typeof x === 'number'
 }
@@ -40,6 +42,10 @@ export function isBigNumber (x) {
   }
 
   return false
+}
+
+export function isBigInt (x) {
+  return typeof x === 'bigint'
 }
 
 export function isComplex (x) {
@@ -119,6 +125,38 @@ export function isObject (x) {
     x.constructor === Object &&
     !isComplex(x) &&
     !isFraction(x))
+}
+
+/**
+ * Returns `true` if the passed object appears to be a Map (i.e. duck typing).
+ *
+ * Methods looked for are `get`, `set`, `keys` and `has`.
+ *
+ * @param {Map | object} object
+ * @returns
+ */
+export function isMap (object) {
+  // We can use the fast instanceof, or a slower duck typing check.
+  // The duck typing method needs to cover enough methods to not be confused with DenseMatrix.
+  if (!object) {
+    return false
+  }
+  return object instanceof Map ||
+    object instanceof ObjectWrappingMap ||
+    (
+      typeof object.set === 'function' &&
+      typeof object.get === 'function' &&
+      typeof object.keys === 'function' &&
+      typeof object.has === 'function'
+    )
+}
+
+export function isPartitionedMap (object) {
+  return isMap(object) && isMap(object.a) && isMap(object.b)
+}
+
+export function isObjectWrappingMap (object) {
+  return isMap(object) && isObject(object.wrappedObject)
 }
 
 export function isNull (x) {

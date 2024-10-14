@@ -1,4 +1,7 @@
-const { create, evaluateDependencies } = require('../..')
+// we use the number only implementation in order to not pull in
+// the `Unit` class for example. when using as library,
+// use require('mathjs/number')
+import { create, evaluateDependencies } from '../../lib/esm/number.js'
 
 // custom implementations of all functions you want to support
 const add = (a, b) => a + b
@@ -8,7 +11,7 @@ const divide = (a, b) => a / b
 
 // create a mathjs instance with hardly any functions
 // there are some functions created which are used internally by evaluate though,
-// for example by the Unit class which has dependencies on addScalar, subtract,
+// for example by the Unit class which has dependencies on addScalar, subtractScalar,
 // multiplyScalar, etc.
 const math = create(evaluateDependencies)
 

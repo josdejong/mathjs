@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 
-import approx from '../../../tools/approx.js'
+import { approxEqual } from '../../../tools/approx.js'
 import math from '../../../src/defaultInstance.js'
 const Parser = math.Parser
 
@@ -120,7 +120,7 @@ describe('parser', function () {
     assert.strictEqual(parser.get('xx'), undefined)
     assert.strictEqual(parser.get('yy'), undefined)
     assert.strictEqual(parser.get('zz'), undefined)
-    approx.equal(parser.get('pi'), undefined)
+    approxEqual(parser.get('pi'), undefined)
 
     assert.throws(function () { parser.evaluate('xx') })
     assert.throws(function () { parser.evaluate('yy') })

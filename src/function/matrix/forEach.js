@@ -1,6 +1,6 @@
-import { maxArgumentCount } from '../../utils/function.js'
-import { forEach as forEachArray } from '../../utils/array.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 import { factory } from '../../utils/factory.js'
+import { recurse } from '../../utils/array.js'
 
 const name = 'forEach'
 const dependencies = ['typed']
@@ -39,31 +39,11 @@ export const createForEach = /* #__PURE__ */ factory(name, dependencies, ({ type
 })
 
 /**
- * forEach for a multi dimensional array
+ * forEach for a multidimensional array
  * @param {Array} array
  * @param {Function} callback
  * @private
  */
 function _forEach (array, callback) {
-  // figure out what number of arguments the callback function expects
-  const args = maxArgumentCount(callback)
-
-  const recurse = function (value, index) {
-    if (Array.isArray(value)) {
-      forEachArray(value, function (child, i) {
-        // we create a copy of the index array and append the new index value
-        recurse(child, index.concat(i))
-      })
-    } else {
-      // invoke the callback function with the right number of arguments
-      if (args === 1) {
-        callback(value)
-      } else if (args === 2) {
-        callback(value, index)
-      } else { // 3 or -1
-        callback(value, index, array)
-      }
-    }
-  }
-  recurse(array, [])
+  recurse(array, [], array, optimizeCallback(callback, array, name))
 }

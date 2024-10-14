@@ -1,4 +1,5 @@
-import { isInteger } from '../number.js'
+import { isBigNumber, isNumber } from '../is.js'
+import { isInteger, normalizeFormatOptions } from '../number.js'
 
 /**
  * Formats a BigNumber in a given base
@@ -115,7 +116,7 @@ function formatBigNumberToBase (n, base, size) {
  *    format(12400,  {notation: 'engineering'})          // returns '12.400e+3'
  *
  * @param {BigNumber} value
- * @param {Object | Function | number} [options]
+ * @param {Object | Function | number | BigNumber} [options]
  * @return {string} str The formatted value
  */
 export function format (value, options) {
@@ -129,31 +130,7 @@ export function format (value, options) {
     return value.isNaN() ? 'NaN' : (value.gt(0) ? 'Infinity' : '-Infinity')
   }
 
-  // default values for options
-  let notation = 'auto'
-  let precision
-  let wordSize
-
-  if (options !== undefined) {
-    // determine notation from options
-    if (options.notation) {
-      notation = options.notation
-    }
-
-    // determine precision from options
-    if (typeof options === 'number') {
-      precision = options
-    } else if (options.precision) {
-      precision = options.precision
-    }
-
-    if (options.wordSize) {
-      wordSize = options.wordSize
-      if (typeof (wordSize) !== 'number') {
-        throw new Error('Option "wordSize" must be a number')
-      }
-    }
-  }
+  const { notation, precision, wordSize } = normalizeFormatOptions(options)
 
   // handle the various notations
   switch (notation) {
@@ -179,8 +156,8 @@ export function format (value, options) {
     {
       // determine lower and upper bound for exponential notation.
       // TODO: implement support for upper and lower to be BigNumbers themselves
-      const lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3
-      const upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5
+      const lowerExp = _toNumberOrDefault(options?.lowerExp, -3)
+      const upperExp = _toNumberOrDefault(options?.upperExp, 5)
 
       // handle special case zero
       if (value.isZero()) return '0'
@@ -212,7 +189,7 @@ export function format (value, options) {
 
 /**
  * Format a BigNumber in engineering notation. Like '1.23e+6', '2.3e+0', '3.500e-3'
- * @param {BigNumber | string} value
+ * @param {BigNumber} value
  * @param {number} [precision]        Optional number of significant figures to return.
  */
 export function toEngineering (value, precision) {
@@ -224,8 +201,9 @@ export function toEngineering (value, precision) {
   const valueWithoutExp = value.mul(Math.pow(10, -newExp))
 
   let valueStr = valueWithoutExp.toPrecision(precision)
-  if (valueStr.indexOf('e') !== -1) {
-    valueStr = valueWithoutExp.toString()
+  if (valueStr.includes('e')) {
+    const BigNumber = value.constructor
+    valueStr = new BigNumber(valueStr).toFixed()
   }
 
   return valueStr + 'e' + (e >= 0 ? '+' : '') + newExp.toString()
@@ -255,4 +233,14 @@ export function toExponential (value, precision) {
  */
 export function toFixed (value, precision) {
   return value.toFixed(precision)
+}
+
+function _toNumberOrDefault (value, defaultValue) {
+  if (isNumber(value)) {
+    return value
+  } else if (isBigNumber(value)) {
+    return value.toNumber()
+  } else {
+    return defaultValue
+  }
 }

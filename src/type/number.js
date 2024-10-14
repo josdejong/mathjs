@@ -35,7 +35,7 @@ function makeNumberFromNonDecimalParts (parts) {
   }
   const result = n + f
   if (isNaN(result)) {
-    throw new SyntaxError('String "' + parts.input + '" is no valid number')
+    throw new SyntaxError('String "' + parts.input + '" is not a valid number')
   }
   return result
 }
@@ -60,7 +60,7 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * See also:
    *
-   *    bignumber, boolean, complex, index, matrix, string, unit
+   *    bignumber, bigint, boolean, numeric, complex, index, matrix, string, unit
    *
    * @param {string | number | BigNumber | Fraction | boolean | Array | Matrix | Unit | null} [value]  Value to be converted
    * @param {Unit | string} [valuelessUnit] A valueless unit, used to convert a unit to a number
@@ -91,7 +91,7 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       }
       let num = Number(x)
       if (isNaN(num)) {
-        throw new SyntaxError('String "' + x + '" is no valid number')
+        throw new SyntaxError('String "' + x + '" is not a valid number')
       }
       if (wordSizeSuffixMatch) {
         // x is a signed bin, oct, or hex literal
@@ -112,13 +112,19 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return x.toNumber()
     },
 
+    bigint: function (x) {
+      return Number(x)
+    },
+
     Fraction: function (x) {
       return x.valueOf()
     },
 
-    Unit: function (x) {
-      throw new Error('Second argument with valueless unit expected')
-    },
+    Unit: typed.referToSelf(self => (x) => {
+      const clone = x.clone()
+      clone.value = self(x.value)
+      return clone
+    }),
 
     null: function (x) {
       return 0

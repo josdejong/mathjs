@@ -26,6 +26,7 @@ Math.js can be used in the browser, in node.js and in any JavaScript engine. Ins
 - **[Data Types](datatypes/index.md)**
   - [Numbers](datatypes/numbers.md)
   - [BigNumbers](datatypes/bignumbers.md)
+  - [bigints](datatypes/bigints.md)
   - [Fractions](datatypes/fractions.md)
   - [Complex Numbers](datatypes/complex_numbers.md)
   - [Matrices](datatypes/matrices.md)

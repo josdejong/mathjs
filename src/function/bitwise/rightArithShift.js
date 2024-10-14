@@ -16,17 +16,18 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'zeros',
-  'DenseMatrix'
+  'DenseMatrix',
+  'concat'
 ]
 
-export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
+export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix, concat }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo08xS0Sid = createMatAlgo08xS0Sid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
   const useMatrixForArrayScalar = createUseMatrixForArrayScalar({ typed, matrix })
 
   /**
@@ -48,9 +49,9 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
    *
    *    bitAnd, bitNot, bitOr, bitXor, rightArithShift, rightLogShift
    *
-   * @param  {number | BigNumber | Array | Matrix} x Value to be shifted
-   * @param  {number | BigNumber} y Amount of shifts
-   * @return {number | BigNumber | Array | Matrix} `x` sign-filled shifted right `y` times
+   * @param  {number | BigNumber | bigint | Array | Matrix} x Value to be shifted
+   * @param  {number | BigNumber | bigint} y Amount of shifts
+   * @return {number | BigNumber | bigint | Array | Matrix} `x` zero-filled shifted right `y` times
    */
   return typed(
     name,
@@ -58,6 +59,8 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
       'number, number': rightArithShiftNumber,
 
       'BigNumber, BigNumber': rightArithShiftBigNumber,
+
+      'bigint, bigint': (x, y) => x >> y,
 
       'SparseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
         // check scalar

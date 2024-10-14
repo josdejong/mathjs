@@ -16,6 +16,7 @@ import { tauDocs } from './constants/tau.js'
 import { trueDocs } from './constants/true.js'
 import { versionDocs } from './constants/version.js'
 import { bignumberDocs } from './construction/bignumber.js'
+import { bigintDocs } from './construction/bigint.js'
 import { booleanDocs } from './construction/boolean.js'
 import { complexDocs } from './construction/complex.js'
 import { createUnitDocs } from './construction/createUnit.js'
@@ -79,9 +80,9 @@ import { roundDocs } from './function/arithmetic/round.js'
 import { signDocs } from './function/arithmetic/sign.js'
 import { sqrtDocs } from './function/arithmetic/sqrt.js'
 import { sqrtmDocs } from './function/arithmetic/sqrtm.js'
-import { sylvesterDocs } from './function/matrix/sylvester.js'
-import { schurDocs } from './function/matrix/schur.js'
-import { lyapDocs } from './function/matrix/lyap.js'
+import { sylvesterDocs } from './function/algebra/sylvester.js'
+import { schurDocs } from './function/algebra/schur.js'
+import { lyapDocs } from './function/algebra/lyap.js'
 import { squareDocs } from './function/arithmetic/square.js'
 import { subtractDocs } from './function/arithmetic/subtract.js'
 import { unaryMinusDocs } from './function/arithmetic/unaryMinus.js'
@@ -181,7 +182,10 @@ import { setPowersetDocs } from './function/set/setPowerset.js'
 import { setSizeDocs } from './function/set/setSize.js'
 import { setSymDifferenceDocs } from './function/set/setSymDifference.js'
 import { setUnionDocs } from './function/set/setUnion.js'
+import { zpk2tfDocs } from './function/signal/zpk2tf.js'
+import { freqzDocs } from './function/signal/freqz.js'
 import { erfDocs } from './function/special/erf.js'
+import { zetaDocs } from './function/special/zeta.js'
 import { madDocs } from './function/statistics/mad.js'
 import { maxDocs } from './function/statistics/max.js'
 import { meanDocs } from './function/statistics/mean.js'
@@ -194,6 +198,7 @@ import { stdDocs } from './function/statistics/std.js'
 import { cumSumDocs } from './function/statistics/cumsum.js'
 import { sumDocs } from './function/statistics/sum.js'
 import { varianceDocs } from './function/statistics/variance.js'
+import { corrDocs } from './function/statistics/corr.js'
 import { acosDocs } from './function/trigonometry/acos.js'
 import { acoshDocs } from './function/trigonometry/acosh.js'
 import { acotDocs } from './function/trigonometry/acot.js'
@@ -236,11 +241,13 @@ import { numericDocs } from './function/utils/numeric.js'
 import { octDocs } from './function/utils/oct.js'
 import { printDocs } from './function/utils/print.js'
 import { typeOfDocs } from './function/utils/typeOf.js'
+import { solveODEDocs } from './function/numeric/solveODE.js'
 
 export const embeddedDocs = {
 
   // construction functions
   bignumber: bignumberDocs,
+  bigint: bigintDocs,
   boolean: booleanDocs,
   complex: complexDocs,
   createUnit: createUnitDocs,
@@ -286,7 +293,7 @@ export const embeddedDocs = {
   vacuumImpedance: { description: 'Characteristic impedance of vacuum', examples: ['vacuumImpedance'] },
   coulomb: { description: 'Coulomb\'s constant', examples: ['coulomb'] },
   elementaryCharge: { description: 'Elementary charge', examples: ['elementaryCharge'] },
-  bohrMagneton: { description: 'Borh magneton', examples: ['bohrMagneton'] },
+  bohrMagneton: { description: 'Bohr magneton', examples: ['bohrMagneton'] },
   conductanceQuantum: { description: 'Conductance quantum', examples: ['conductanceQuantum'] },
   inverseConductanceQuantum: { description: 'Inverse conductance quantum', examples: ['inverseConductanceQuantum'] },
   // josephson: {description: 'Josephson constant', examples: ['josephson']},
@@ -294,7 +301,7 @@ export const embeddedDocs = {
   nuclearMagneton: { description: 'Nuclear magneton', examples: ['nuclearMagneton'] },
   klitzing: { description: 'Von Klitzing constant', examples: ['klitzing'] },
 
-  bohrRadius: { description: 'Borh radius', examples: ['bohrRadius'] },
+  bohrRadius: { description: 'Bohr radius', examples: ['bohrRadius'] },
   classicalElectronRadius: { description: 'Classical electron radius', examples: ['classicalElectronRadius'] },
   electronMass: { description: 'Electron mass', examples: ['electronMass'] },
   fermiCoupling: { description: 'Fermi coupling constant', examples: ['fermiCoupling'] },
@@ -476,6 +483,9 @@ export const embeddedDocs = {
   schur: schurDocs,
   lyap: lyapDocs,
 
+  // functions - numeric
+  solveODE: solveODEDocs,
+
   // functions - probability
   combinations: combinationsDocs,
   combinationsWithRep: combinationsWithRepDocs,
@@ -515,8 +525,13 @@ export const embeddedDocs = {
   setSymDifference: setSymDifferenceDocs,
   setUnion: setUnionDocs,
 
+  // functions - signal
+  zpk2tf: zpk2tfDocs,
+  freqz: freqzDocs,
+
   // functions - special
   erf: erfDocs,
+  zeta: zetaDocs,
 
   // functions - statistics
   cumsum: cumSumDocs,
@@ -531,6 +546,7 @@ export const embeddedDocs = {
   std: stdDocs,
   sum: sumDocs,
   variance: varianceDocs,
+  corr: corrDocs,
 
   // functions - trigonometry
   acos: acosDocs,

@@ -1,12 +1,11 @@
 // test performance of loading a new mathjs instance
-
-const Benchmark = require('benchmark')
-const padRight = require('pad-right')
+import assert from 'node:assert'
+import Benchmark from 'benchmark'
+import padRight from 'pad-right'
+import { create, all } from '../../lib/esm/index.js'
 
 const timeLabel = 'import, parse, and load time'
 console.time(timeLabel)
-const { create, all } = require('../..')
-const assert = require('assert')
 const math = create(all)
 console.timeEnd(timeLabel)
 

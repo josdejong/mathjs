@@ -11,14 +11,15 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'DenseMatrix'
+  'DenseMatrix',
+  'concat'
 ]
 
-export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
+export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
    * Bitwise OR two values, `x | y`.
@@ -39,15 +40,16 @@ export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    bitAnd, bitNot, bitXor, leftShift, rightArithShift, rightLogShift
    *
-   * @param  {number | BigNumber | Array | Matrix} x First value to or
-   * @param  {number | BigNumber | Array | Matrix} y Second value to or
-   * @return {number | BigNumber | Array | Matrix} OR of `x` and `y`
+   * @param  {number | BigNumber | bigint | Array | Matrix} x First value to or
+   * @param  {number | BigNumber | bigint | Array | Matrix} y Second value to or
+   * @return {number | BigNumber | bigint | Array | Matrix} OR of `x` and `y`
    */
   return typed(
     name,
     {
       'number, number': bitOrNumber,
-      'BigNumber, BigNumber': bitOrBigNumber
+      'BigNumber, BigNumber': bitOrBigNumber,
+      'bigint, bigint': (x, y) => x | y
     },
     matrixAlgorithmSuite({
       SS: matAlgo04xSidSid,

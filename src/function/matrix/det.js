@@ -4,9 +4,9 @@ import { format } from '../../utils/string.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'det'
-const dependencies = ['typed', 'matrix', 'subtract', 'multiply', 'divideScalar', 'isZero', 'unaryMinus']
+const dependencies = ['typed', 'matrix', 'subtractScalar', 'multiply', 'divideScalar', 'isZero', 'unaryMinus']
 
-export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract, multiply, divideScalar, isZero, unaryMinus }) => {
+export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtractScalar, multiply, divideScalar, isZero, unaryMinus }) => {
   /**
    * Calculate the determinant of a matrix.
    *
@@ -58,6 +58,8 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
           // vector
           if (size[0] === 1) {
             return clone(x.valueOf()[0])
+          } if (size[0] === 0) {
+            return 1 // det of an empty matrix is per definition 1
           } else {
             throw new RangeError('Matrix must be square ' +
             '(size: ' + format(size) + ')')
@@ -65,11 +67,13 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
 
         case 2:
         {
-          // two dimensional array
+          // two-dimensional array
           const rows = size[0]
           const cols = size[1]
           if (rows === cols) {
             return _det(x.clone().valueOf(), rows, cols)
+          } if (cols === 0) {
+            return 1 // det of an empty matrix is per definition 1
           } else {
             throw new RangeError('Matrix must be square ' +
               '(size: ' + format(size) + ')')
@@ -99,7 +103,7 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     } else if (rows === 2) {
       // this is a 2 x 2 matrix
       // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12
-      return subtract(
+      return subtractScalar(
         multiply(matrix[0][0], matrix[1][1]),
         multiply(matrix[1][0], matrix[0][1])
       )
@@ -129,7 +133,7 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         for (let i = k + 1; i < rows; i++) {
           const i_ = rowIndices[i]
           for (let j = k + 1; j < rows; j++) {
-            matrix[i_][j] = divideScalar(subtract(multiply(matrix[i_][j], piv), multiply(matrix[i_][k], matrix[k_][j])), piv_)
+            matrix[i_][j] = divideScalar(subtractScalar(multiply(matrix[i_][j], piv), multiply(matrix[i_][k], matrix[k_][j])), piv_)
           }
         }
       }

@@ -1,5 +1,6 @@
 import { deepForEach, reduce, containsCollections } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
+import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'max'
@@ -8,7 +9,7 @@ const dependencies = ['typed', 'config', 'numeric', 'larger']
 export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, larger }) => {
   /**
    * Compute the maximum value of a matrix or a  list with values.
-   * In case of a multi dimensional array, the maximum of the flattened array
+   * In case of a multidimensional array, the maximum of the flattened array
    * will be calculated. When `dim` is provided, the maximum over the selected
    * dimension will be calculated. Parameter `dim` is zero-based.
    *
@@ -16,7 +17,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    *     math.max(a, b, c, ...)
    *     math.max(A)
-   *     math.max(A, dim)
+   *     math.max(A, dimension)
    *
    * Examples:
    *
@@ -25,7 +26,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    *     // maximum over a specified dimension (zero-based)
    *     math.max([[2, 5], [4, 3], [1, 7]], 0) // returns [4, 7]
-   *     math.max([[2, 5], [4, 3]], [1, 7], 1) // returns [5, 4, 7]
+   *     math.max([[2, 5], [4, 3], [1, 7]], 1) // returns [5, 4, 7]
    *
    *     math.max(2.7, 7.1, -4.5, 2.0, 4.1)    // returns 7.1
    *     math.min(2.7, 7.1, -4.5, 2.0, 4.1)    // returns -4.5
@@ -98,7 +99,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     // make sure returning numeric value: parse a string into a numeric value
     if (typeof res === 'string') {
-      res = numeric(res, config.number)
+      res = numeric(res, safeNumberType(res, config))
     }
 
     return res

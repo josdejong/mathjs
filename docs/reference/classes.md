@@ -24,7 +24,7 @@ Stores values for a scalar unit and its postfix. (eg `100 mm` or `100 kg`). Alth
 Stores values for a fractional number.
 
 - [Overview](../datatypes/fractions.md)
-- [Class API](https://github.com/infusion/Fraction.js/)
+- [Class API](https://github.com/rawify/Fraction.js)
 
 ## BigNumber
 
@@ -46,7 +46,7 @@ Classes used internally that may be of use to developers:
 
 - [Index](classes/matrixindex.md)
 - [Range](classes/matrixrange.md)
-- [ResultSet](classes/matrixrange.md)
+- [ResultSet](classes/resultset.md)
 - [FibonacciHeap](classes/fibonacciheap.md)
 
 ## Complex

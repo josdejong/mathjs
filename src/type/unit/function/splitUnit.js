@@ -9,7 +9,7 @@ export const createSplitUnit = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * Syntax:
    *
-   *     splitUnit(unit: Unit, parts: Array.<Unit>)
+   *     math.splitUnit(unit: Unit, parts: Array.<Unit>)
    *
    * Example:
    *

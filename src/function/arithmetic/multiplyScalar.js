@@ -12,9 +12,9 @@ export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, 
    *
    * This function does not support collections (Array or Matrix).
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit} x   First value to multiply
-   * @param  {number | BigNumber | Fraction | Complex} y          Second value to multiply
-   * @return {number | BigNumber | Fraction | Complex | Unit}     Multiplication of `x` and `y`
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit} x   First value to multiply
+   * @param  {number | BigNumber | bigint | Fraction | Complex} y          Second value to multiply
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit}     Multiplication of `x` and `y`
    * @private
    */
   return typed('multiplyScalar', {
@@ -27,6 +27,10 @@ export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, 
 
     'BigNumber, BigNumber': function (x, y) {
       return x.times(y)
+    },
+
+    'bigint, bigint': function (x, y) {
+      return x * y
     },
 
     'Fraction, Fraction': function (x, y) {

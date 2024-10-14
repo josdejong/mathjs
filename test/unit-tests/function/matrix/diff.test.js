@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 
 // Parsing tests are inside diff.transform.test
@@ -146,11 +146,11 @@ describe('diff', function () {
     const smallUnitsArrayDimension1 = [[math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm')], [math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm'), math.unit('1 cm')], [math.unit('-1 cm'), math.unit('-1 cm'), math.unit('-1 cm'), math.unit('-2 cm')]]
 
     // With Dim specified
-    approx.deepEqual(diff(smallUnitsArray, 0), smallUnitsArrayDimension0)
-    approx.deepEqual(diff(smallUnitsArray, 1), smallUnitsArrayDimension1)
+    approxDeepEqual(diff(smallUnitsArray, 0), smallUnitsArrayDimension0)
+    approxDeepEqual(diff(smallUnitsArray, 1), smallUnitsArrayDimension1)
 
     // Without Dim specified
-    approx.deepEqual(diff(smallUnitsArray), smallUnitsArrayDimension0)
+    approxDeepEqual(diff(smallUnitsArray), smallUnitsArrayDimension0)
   })
 
   it('should throw if input is not an array or matrix', function () {

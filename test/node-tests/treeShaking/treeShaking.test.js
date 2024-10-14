@@ -8,14 +8,17 @@
 // - move code into a separate file to isolate it
 // - add /* #__PURE__ */ when creating a variable
 
-const path = require('path')
-const cp = require('child_process')
-const assert = require('assert')
-const del = require('del')
-const webpack = require('webpack')
+import path from 'node:path'
+import cp from 'node:child_process'
+import assert from 'node:assert'
+import { fileURLToPath } from 'node:url'
+import { deleteSync } from 'del'
+import webpack from 'webpack'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('tree shaking', function () {
-  const appName = 'treeShakingApp.mjs'
+  const appName = 'treeShakingApp.js'
   const bundleName = 'treeShakingApp.bundle.js'
   const bundleLicenseName = 'treeShakingApp.bundle.js.LICENSE.txt'
 
@@ -28,8 +31,8 @@ describe('tree shaking', function () {
   })
 
   function cleanup () {
-    del.sync(path.join(__dirname, bundleName))
-    del.sync(path.join(__dirname, bundleLicenseName))
+    deleteSync(path.join(__dirname, bundleName))
+    deleteSync(path.join(__dirname, bundleLicenseName))
   }
 
   it('should apply tree-shaking when bundling', function (done) {

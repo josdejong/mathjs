@@ -281,7 +281,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
      * @param {Object} options
      * @return {string}
      */
-    toHTML (options) {
+    _toHTML (options) {
       const object = this.object.toHTML(options)
       const index = this.index ? this.index.toHTML(options) : ''
       let value = this.value.toHTML(options)
@@ -312,7 +312,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
         value = `\\left(${value}\\right)`
       }
 
-      return object + index + ':=' + value
+      return object + index + '=' + value
     }
   }
 
