@@ -1,3 +1,5 @@
+import * as assert from 'assert'
+import { expectTypeOf } from 'expect-type'
 import {
   AccessorNode,
   addDependencies,
@@ -21,15 +23,19 @@ import {
   Help,
   Index,
   IndexNode,
+  isSymbolNode,
   LUDecomposition,
   MathArray,
   MathCollection,
   MathJsChain,
   MathJsFunctionName,
   MathNode,
+  MathNodeCommon,
   MathNumericType,
+  MathScalarType,
   MathType,
   Matrix,
+  Node,
   ObjectNode,
   OperatorNode,
   OperatorNodeFn,
@@ -41,15 +47,9 @@ import {
   SimplifyRule,
   SLUDecomposition,
   SymbolNode,
-  MathNodeCommon,
   Unit,
-  UnitPrefix,
-  Node,
-  isSymbolNode,
-  MathScalarType
+  UnitPrefix
 } from 'mathjs'
-import * as assert from 'assert'
-import { expectTypeOf } from 'expect-type'
 
 // This file serves a dual purpose:
 // 1) examples of how to use math.js in TypeScript
@@ -2482,6 +2482,9 @@ Factory Test
     expectTypeOf(x).toMatchTypeOf<unknown[]>()
   }
   if (math.isMatrix(x)) {
+    expectTypeOf(x).toMatchTypeOf<Matrix>()
+  }
+  if (math.isDenseMatrix(x)) {
     expectTypeOf(x).toMatchTypeOf<Matrix>()
   }
   if (math.isSparseMatrix(x)) {
