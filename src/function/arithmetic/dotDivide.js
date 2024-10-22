@@ -5,6 +5,7 @@ import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
+import { createSparseMatrixClass } from '../../type/matrix/SparseMatrix.js'
 
 const name = 'dotDivide'
 const dependencies = [
@@ -22,6 +23,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const SparseMatrix = createSparseMatrixClass({typed,equalScalar,Matrix:matrix})
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
@@ -52,7 +54,11 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
    */
   return typed(name, matrixAlgorithmSuite({
     elop: divideScalar,
-    SS: matAlgo07xSSf,
+    SS: (a,b)=>{
+      const result = matAlgo07xSSf(a, b, divideScalar, false)
+      const isSparseMatrix=(result instanceof SparseMatrix)
+      return isSparseMatrix ? result : new SparseMatrix(result)
+    },
     DS: matAlgo03xDSf,
     SD: matAlgo02xDS0,
     Ss: matAlgo11xS0s,
