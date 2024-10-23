@@ -34,6 +34,4 @@ jobs:
               curl https://downloads.lambdatest.com/hyperexecute/windows/hyperexecute.exe -o hyperexecute.exe
               export LT_USERNAME=${{ github.event.inputs.username }}
               export LT_ACCESS_KEY=${{ github.event.inputs.accessKey }}
-              echo $LT_USERNAME 
-              echo $LT_ACCESS_KEY
               ./hyperexecute --user $LT_USERNAME --key $LT_ACCESS_KEY --config hyperexecute.yaml
