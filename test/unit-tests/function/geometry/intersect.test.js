@@ -30,6 +30,10 @@ describe('intersect', function () {
   it('should return null if the points do not intersect', function () {
     assert.deepStrictEqual(math.intersect([0, 1, 0], [0, 0, 0], [1, 1, 0], [1, 0, 0]), null)
     assert.deepStrictEqual(math.intersect([0, 1], [0, 0], [1, 1], [1, 0]), null)
+    // assert.deepStrictEqual(math.intersect([0, 30, 0], [0, 21, 0], [0, 0, 9, 0]), null) // TODO
+
+    assert.deepStrictEqual(math.intersect(math.matrix([1, 0, 0]), math.matrix([1, 1, 1]), math.matrix([0, 1, 0]), math.matrix([1, 1, 0])), null)
+    // assert.deepStrictEqual(math.intersect(math.matrix([0, 30, 0]), math.matrix([0, 21, 0]), math.matrix([0, 0, 9, 0])), null) // TODO
   })
 
   it('should throw an error when number of arguments are other than 3 or 4', function () {
@@ -58,5 +62,13 @@ describe('intersect', function () {
       [bignumber(5), bignumber(5), bignumber(0)])
     assert.deepStrictEqual(bigintersect([bignumber(1), bignumber(0), bignumber(1)], [bignumber(4), bignumber(-2), bignumber(2)], [bignumber(1), bignumber(1), bignumber(1), bignumber(6)]),
       [bignumber(7), bignumber(-4), bignumber(3)])
+  })
+
+  it('should accept column and row vectors', function () {
+    assert.deepStrictEqual(math.intersect(math.matrix([[0], [0]]), [[10, 10]], math.matrix([[10, 0]]), math.matrix([[0], [10]])), math.matrix([5, 5]))
+    assert.deepStrictEqual(math.intersect(math.matrix([0, 0]), math.matrix([[10, 10]]), math.matrix([[10], [0]]), math.matrix([0, 10])), math.matrix([5, 5]))
+    assert.deepStrictEqual(math.intersect(math.matrix([[0], [0], [0]]), [[10, 10, 0]], [10, 0, 0], math.matrix([0, 10, 0])), math.matrix([5, 5, 0]))
+    assert.deepStrictEqual(math.intersect(math.matrix([[1, 0, 1]]), [4, -2, 2], math.matrix([[1], [1], [1], [6]])), math.matrix([7, -4, 3]))
+    assert.deepStrictEqual(math.intersect(math.matrix([[1], [0], [1]]), math.matrix([4, -2, 2]), math.matrix([[1, 1, 1, 6]])), math.matrix([7, -4, 3]))
   })
 })
