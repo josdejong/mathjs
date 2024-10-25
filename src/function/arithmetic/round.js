@@ -1,5 +1,7 @@
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
+import { nearlyEqual, splitNumber } from '../../utils/number.js'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
@@ -9,7 +11,7 @@ const NO_INT = 'Number of decimals in function round must be an integer'
 
 const name = 'round'
 const dependencies = [
-  'typed',
+  'typed','config',
   'matrix',
   'equalScalar',
   'zeros',
@@ -17,11 +19,13 @@ const dependencies = [
   'DenseMatrix'
 ]
 
-export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, BigNumber, DenseMatrix }) => {
+export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, equalScalar, zeros, BigNumber, DenseMatrix }) => {
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-
+  function toExponent (epsilon) {
+    return Math.abs(splitNumber(epsilon).exponent)
+  }
   /**
    * Round a value towards the nearest rounded value.
    * For matrices, the function is evaluated element wise.
@@ -67,9 +71,21 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
   return typed(name, {
-    number: roundNumber,
+    number: function (x) {
+      // Handle round off errors by first rounding to epsilon precision
+      const xEpsilon = roundNumber(x, toExponent(config.epsilon))
+      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      return roundNumber(xSelected)
+    },
 
-    'number, number': roundNumber,
+    'number, number': function (x, n) {
+      // Same as number: unless user specifies more decimals than epsilon
+      const epsilonExponent = toExponent(config.epsilon)
+      if (n >= epsilonExponent) { return roundNumber(x, n) }
+      const xEpsilon = roundNumber(x, epsilonExponent)
+      const xSelected = nearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      return roundNumber(xSelected, n)
+    },
 
     'number, BigNumber': function (x, n) {
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
@@ -95,13 +111,20 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     BigNumber: function (x) {
-      return x.toDecimalPlaces(0)
+      const xEpsilon = new BigNumber(x).toDecimalPlaces(toExponent(config.epsilon))
+      const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+      return xSelected.toDecimalPlaces(0)
     },
 
     'BigNumber, BigNumber': function (x, n) {
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
-      return x.toDecimalPlaces(n.toNumber())
+        // Same as BigNumber: unless user specifies more decimals than epsilon
+        const epsilonExponent = toExponent(config.epsilon)
+        if (n >= epsilonExponent) { return x.toDecimalPlaces(n.toNumber()) }
+        const xEpsilon = x.toDecimalPlaces(epsilonExponent)
+        const xSelected = bigNearlyEqual(x, xEpsilon, config.epsilon) ? xEpsilon : x
+        return xSelected.toDecimalPlaces(n.toNumber())
     },
 
     Fraction: function (x) {
