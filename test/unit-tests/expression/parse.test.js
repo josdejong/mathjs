@@ -1,4 +1,3 @@
-// test parse
 import assert from 'assert'
 
 import approx from '../../../tools/approx.js'
@@ -363,8 +362,7 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('"hello"'), 'hello')
       assert.deepStrictEqual(parseAndEval('   "hi" '), 'hi')
     })
-
-    it('should parse a string containing quotes', function () {
+    it('should parse a string containing escape characters', function () {
       // quote
       assert.deepStrictEqual(parseAndEval('"with\'quote"'), "with'quote")
 
@@ -384,6 +382,22 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('"tab\\t"'), 'tab\t')
       assert.deepStrictEqual(parseAndEval('"escaped backslash\\\\next"'), 'escaped backslash\\next')
       assert.deepStrictEqual(parseAndEval('"escaped backslash\\\\"'), 'escaped backslash\\')
+    })
+it('should parse unicode characters', function () {
+      assert.deepStrictEqual(parseAndEval('"★"'), '★')
+      assert.deepStrictEqual(parseAndEval('"😀"'), '😀')
+      assert.deepStrictEqual(parseAndEval('"\ud83d\ude00"'), '\ud83d\ude00')
+      assert.deepStrictEqual(parseAndEval('"\\ud83d\\ude00"'), '😀')
+      assert.deepStrictEqual(parseAndEval('"\\u2140"'), '⅀')
+      assert.deepStrictEqual(parseAndEval('"\\u221B"'), '∛')
+    })
+    it('should throw an error on an invalid unicode character', function () {
+      assert.throws(() => parseAndEval('"\\ud8'), /Invalid unicode character \\ud8/)
+      assert.throws(() => parseAndEval('"\\ud8TT'), /Invalid unicode character \\ud8TT/)
+    })
+    it('should throw an error on an invalid escape character', function () {
+      assert.throws(() => parseAndEval('"\\y'), /Bad escape character \\y/)
+      assert.throws(() => parseAndEval('"\\v'), /Bad escape character \\v/)
     })
 
     it('should throw an error with invalid strings', function () {
@@ -433,7 +447,7 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('   \'hi\' '), 'hi')
     })
 
-    it('should parse a string containing quotes', function () {
+    it('should parse a string containing escape characters', function () {
       // quote
       assert.deepStrictEqual(parseAndEval("'with\"quote'"), 'with"quote')
 
@@ -630,7 +644,6 @@ describe('parse', function () {
       }
       assert.deepStrictEqual(parseAndEval('a[2, :][1,1]', scope), 4)
     })
-
     it('should get BigNumber value from an array', function () {
       const res = parseAndEval('arr[1]', { arr: [math.bignumber(2)] })
       assert.deepStrictEqual(res, math.bignumber(2))
@@ -907,7 +920,6 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj.foo["bar"].baz', { obj: { foo: { bar: { baz: 2 } } } }), 2)
       assert.deepStrictEqual(parseAndEval('obj["foo"].bar["baz"]', { obj: { foo: { bar: { baz: 2 } } } }), 2)
     })
-
     it('should set an object property with dot notation', function () {
       const scope = { obj: {} }
       parseAndEval('obj.foo = 2', scope)
@@ -1187,7 +1199,6 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('3 * (1 + 2') }, /Parenthesis \) expected/)
     })
   })
-
   describe('operators', function () {
     it('should parse operations', function () {
       approx.equal(parseAndEval('(2+3)/4'), 1.25)
@@ -1431,7 +1442,6 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('2 < 2'), false)
       assert.strictEqual(parseAndEval('2 < 1'), false)
     })
-
     it('should parse smallerEq <=', function () {
       assert.strictEqual(parseAndEval('2 <= 3'), true)
       assert.strictEqual(parseAndEval('2 <= 2'), true)
@@ -1588,7 +1598,6 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('+-+2'), -2)
       assert.strictEqual(parseAndEval('-+-+2'), 2)
     })
-
     it('should parse unary plus and bitwise not  +, ~', function () {
       assert.strictEqual(parseAndEval('~+2'), -3)
       assert.strictEqual(parseAndEval('~+~2'), 2)
@@ -1725,7 +1734,6 @@ describe('parse', function () {
         assert.strictEqual(parseAndEval('8-2^2'), 4)
         assert.strictEqual(parseAndEval('4^2-2'), 14)
       })
-
       it('should respect precedence of multiply/divide and pow', function () {
         assert.strictEqual(parseAndEval('2*3^2'), 18)
         assert.strictEqual(parseAndEval('3^2*2'), 18)
@@ -1810,7 +1818,6 @@ describe('parse', function () {
         assert.deepStrictEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), math.matrix([1, 2]))
         assert.deepStrictEqual(parseAndEval('false ? 1:2:6'), math.matrix([2, 3, 4, 5, 6]))
       })
-
       it('should respect precedence between left/right shift and relational operators', function () {
         assert.strictEqual(parseAndEval('32 >> 4 == 2'), true)
         assert.strictEqual(parseAndEval('2 == 32 >> 4'), true)
