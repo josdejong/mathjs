@@ -857,7 +857,6 @@ Chaining examples
 
   assert.throws(
     () =>
-      // @ts-expect-error ... gcd() supports only 1d matrices!
       math.gcd([
         [
           [1, 5],
@@ -1461,9 +1460,16 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
     [4, 5, 6, 7],
     [5, 6, 7, 8]
   ]
+  const cde = [1, 2, 3, 4]
+  const def = [
+    [1, 2, 3, 4],
+    [2, 3, 4, 5],
+    [4, 5, 6, 7],
+    [5, 6, 7, 8]
+  ]
 
-  const cde: MathArray = [1]
-  const def: MathArray = [2]
+  const efg: MathArray = [1, 2, 3, 4, 5]
+  const fgh: MathArray = [2, 3, 4, 5, 6]
 
   const Mbcd = math.matrix(bcd)
   const Mabc = math.matrix(abc)
@@ -1477,9 +1483,15 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   const _r2 = math.multiply(a, b)
 
   // 1D JS Array
-  const _r12 = math.multiply(cde, def) // equal 2
   const r3 = math.multiply(abc, bcd)
-  const _r31 = r3[1] // By default least promised valid syntax
+  const r31 = math.multiply(cde, def)
+  const r32 = math.multiply(efg, fgh)
+
+  // @ts-expect-error ... Multiplication of two MathArrays can result in a MathNumericType | MathArray
+  const _r3 = r3[1]
+
+  const _r31 = r31[0] // If you let typescript infer the type of r31, it will correctly identify it is an array
+  assert.strictEqual(typeof r32, 'number')
 
   // 2D JS Array
   const r12 = math.multiply(bcd, bcd)
@@ -1488,8 +1500,8 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   const multiDimensional = (x: any): x is any[][] => x.length && x[0].length
   if (multiDimensional(r12)) {
     const _r1211 = r12[1][1]
+    const _r121 = r12[1] // Valid syntax
   }
-  const _r121 = r12[1] // Valid syntax
 
   // Matrix: matrix * vector
   const r7 = math.multiply(Mabc, bcd)
@@ -2807,4 +2819,56 @@ Match types of exact positional arguments.
   const e = math.mode(mathCollection)
   expectTypeOf(e).toMatchTypeOf<MathScalarType[]>()
   assert.deepStrictEqual(e, [1])
+}
+
+/**
+ * N-dimensional array examples
+ */
+{
+  const math = create(all, {})
+
+  const array1 = [1, 2, 3]
+  const array2 = [
+    [1, 2],
+    [3, 4]
+  ]
+  const array3 = [
+    [
+      [1, 2],
+      [3, 4]
+    ],
+    [
+      [5, 6],
+      [7, 8]
+    ]
+  ]
+  const array4 = [
+    [[[1, 2]], [[3, 4]]],
+    [[[5, 6]], [[7, 8]]],
+    [[[9, 10]], [[11, 12]]]
+  ]
+
+  const mixArray3 = [
+    [
+      [1, math.unit(2, 'cm'), math.bignumber(1), math.complex(1, 2)],
+      [3, math.unit(4, 'cm'), math.bignumber(2), math.complex(3, 4)]
+    ],
+    [
+      [5, math.unit(6, 'cm'), math.bignumber(3), math.complex(5, 6)],
+      [7, math.unit(8, 'cm'), math.bignumber(4), math.complex(7, 8)]
+    ]
+  ]
+
+  const unitArray3 = [
+    [[math.unit(1, 'cm'), math.unit(2, 'cm')]],
+    [[math.unit(3, 'cm'), math.unit(4, 'cm')]]
+  ]
+
+  expectTypeOf(array1).toMatchTypeOf<MathArray>()
+  expectTypeOf(array2).toMatchTypeOf<MathArray>()
+  expectTypeOf(array3).toMatchTypeOf<MathArray>()
+  expectTypeOf(array4).toMatchTypeOf<MathArray>()
+
+  expectTypeOf(mixArray3).toMatchTypeOf<MathArray<MathScalarType>>()
+  expectTypeOf(unitArray3).toMatchTypeOf<MathArray<Unit>>()
 }

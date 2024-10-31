@@ -13,7 +13,7 @@ export type NoLiteralType<T> = T extends number
 export type MathNumericType = number | BigNumber | bigint | Fraction | Complex
 export type MathScalarType = MathNumericType | Unit
 export type MathGeneric<T extends MathScalarType = MathNumericType> = T
-export type MathArray<T = MathGeneric> = T[] | T[][]
+export type MathArray<T = MathGeneric> = T[] | Array<MathArray<T>>
 export type MathCollection<T = MathGeneric> = MathArray<T> | Matrix<T>
 export type MathType = MathScalarType | MathCollection
 export type MathExpression = string | string[] | MathCollection
@@ -1394,7 +1394,7 @@ export interface MathJsInstance extends MathJsFactory {
 
   multiply<T extends MathNumericType[]>(x: T, y: T[]): T
   multiply<T extends MathNumericType[]>(x: T[], y: T): T
-  multiply<T extends MathArray<MathNumericType>>(x: T, y: T): T
+  multiply(x: MathArray, y: MathArray): MathArray | MathNumericType
   multiply(x: Unit, y: Unit): Unit
   multiply(x: number, y: number): number
   multiply(x: MathType, y: MathType): MathType
