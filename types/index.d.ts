@@ -1394,7 +1394,7 @@ export interface MathJsInstance extends MathJsFactory {
 
   multiply<T extends MathNumericType[]>(x: T, y: T[]): T
   multiply<T extends MathNumericType[]>(x: T[], y: T): T
-  multiply(x: MathArray, y: MathArray): MathArray | MathNumericType
+  multiply<T extends MathArray>(x: T, y: T): T | MathScalarType
   multiply(x: Unit, y: Unit): Unit
   multiply(x: number, y: number): number
   multiply(x: MathType, y: MathType): MathType
