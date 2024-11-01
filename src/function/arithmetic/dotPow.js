@@ -12,12 +12,13 @@ const dependencies = [
   'matrix',
   'pow',
   'DenseMatrix',
-  'concat'
+  'concat',
+  'SparseMatrix'
 ]
 
-export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix, concat }) => {
+export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix, concat, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
+  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })

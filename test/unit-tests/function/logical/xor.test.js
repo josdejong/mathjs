@@ -203,7 +203,7 @@ describe('xor', function () {
     })
 
     it('should xor sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(xor(sparse([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), matrix([[false, true], [true, false]]))
+      assert.deepStrictEqual(xor(sparse([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), sparse([[false, true], [true, false]]))
     })
   })
 
