@@ -9,6 +9,52 @@ module.exports = function (config) {
 
   const baseConfig = baseKarma(config)
 
+  const launcherDefaults = {
+    base: 'WebDriver',
+    config: webdriverConfig,
+    build: 'OSS',
+    name: 'mathjs',
+    video: false, // capture video for your test
+    visual: false, // capture screenshots on each step
+    network: false, // capture network logs for your test
+    console: false, // capture browser console logs
+    terminal: true,
+    user: process.env.LT_USERNAME,
+    accessKey: process.env.LT_ACCESS_KEY,
+    pseudoActivityInterval: 15000 // 5000 ms heartbeat
+  }
+
+  const customLaunchers = {
+    chrome_windows: {
+      ...launcherDefaults,
+      browserName: 'chrome',
+      version: '130'
+    },
+    firefox_android: {
+      ...launcherDefaults,
+      browserName: 'firefox',
+      version: '131'
+      // FIXME: configure Android
+    },
+    firefox_windows: {
+      ...launcherDefaults,
+      browserName: 'firefox',
+      version: '131',
+      // FIXME: configure windows
+    },
+    safari_mac: {
+      ...launcherDefaults,
+      browserName: 'safari',
+      version: '18.0'
+      // FIXME: configure Mac
+    },
+    edge_windows: {
+      ...launcherDefaults,
+      browserName: 'edge',
+      version: '130'
+    }
+  }
+
   config.set(Object.assign(baseConfig, {
     hostname: '127.0.0.1', // hostname, where karma web server will run
     port: 9876,
@@ -38,25 +84,10 @@ module.exports = function (config) {
 
     concurrency: 1,
     logLevel: config.LOG_DEBUG,
-    browsers: ['Windows_Chrome'],
-    customLaunchers: {
-      Windows_Chrome: {
-        base: 'WebDriver',
-        config: webdriverConfig,
-        browserName: 'chrome',
-        version: 'latest',
-        build: 'OSS',
-        name: 'Jos MathJs',
-        video: true, // capture video for your test
-        visual: true, // capture screenshots on each step
-        network: true, // capture network logs for your test
-        console: true, // capture browser console logs
-        terminal: true,
-        user: process.env.LT_USERNAME,
-        accessKey: process.env.LT_ACCESS_KEY,
-        pseudoActivityInterval: 15000 // 5000 ms heartbeat
-      }
-    },
+
+    browsers: Object.keys(customLaunchers),
+    customLaunchers,
+
     singleRun: true,
     autoWatch: true
   }))
