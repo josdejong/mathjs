@@ -28,30 +28,32 @@ module.exports = function (config) {
     chrome_windows: {
       ...launcherDefaults,
       browserName: 'chrome',
-      version: '130'
-    },
-    firefox_android: {
-      ...launcherDefaults,
-      browserName: 'firefox',
-      version: '131'
-      // FIXME: configure Android
+      version: '130',
+      platform: 'windows 11'
     },
     firefox_windows: {
       ...launcherDefaults,
       browserName: 'firefox',
       version: '131',
-      // FIXME: configure windows
+      platform: 'windows 11'
     },
     safari_mac: {
       ...launcherDefaults,
       browserName: 'safari',
-      version: '18.0'
-      // FIXME: configure Mac
+      version: '18',
+      platform: 'mac sequoia'
     },
     edge_windows: {
       ...launcherDefaults,
       browserName: 'edge',
-      version: '130'
+      version: '130',
+      platform: 'windows 11'
+    },
+    chrome_android: {
+      ...launcherDefaults,
+      browserName: 'chrome',
+      version: '130',
+      platform: 'android 15'
     }
   }
 
