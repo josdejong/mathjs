@@ -11,6 +11,8 @@ jobs:
     timeout-minutes: 15
     strategy:
       fail-fast: false
+      matrix:
+        os: [windows-latest]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4

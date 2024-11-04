@@ -1,5 +1,6 @@
 ---
 version: 0.1
+runson: ${matrix.os}  # defines the OS to test on
 
 concurrency: 1  # number of machines to execute the testcases
 
