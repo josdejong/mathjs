@@ -19,6 +19,10 @@ jobs:
 
       - name: Starting CI testing
         shell: bash
+        env:
+          CI: true
+          LT_USERNAME: ${{ secrets.LT_USERNAME }}
+          LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
         run: |
           echo "STEP 1 ) Download project"
             git clone https://github.com/josdejong/mathjs 
