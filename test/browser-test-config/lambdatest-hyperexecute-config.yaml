@@ -1,6 +1,5 @@
 ---
 version: 0.1
-runs-on: ubuntu-latest
 
 concurrency: 1  # number of machines to execute the testcases
 
