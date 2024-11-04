@@ -22,11 +22,6 @@ import {
 } from '../../src/constants.js'
 
 describe('constants', function () {
-  it('should fail', () => {
-    // Test error reporting from HyperExecute
-    approxEqual(2 + 2, 5)
-  })
-
   describe('number', function () {
     const config = { number: 'number', precision: 64, relTol: 1e-12 }
     const BigNumber = createBigNumberClass({ config })
