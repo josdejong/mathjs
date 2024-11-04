@@ -4,6 +4,9 @@ runson: ${matrix.os}  # defines the OS to test on
 
 concurrency: 1  # number of machines to execute the testcases
 
+matrix:
+  os: [linux]
+
 # pre steps sets up the environment for testing
 pre:
   - npm install
