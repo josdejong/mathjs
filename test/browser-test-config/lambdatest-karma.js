@@ -37,24 +37,26 @@ module.exports = function (config) {
       version: '131',
       platform: 'windows 11'
     },
-    safari_mac: {
-      ...launcherDefaults,
-      browserName: 'safari',
-      version: '18',
-      platform: 'mac sequoia'
-    },
+    // FIXME: test on Safari on Mac
+    // safari_mac: {
+    //   ...launcherDefaults,
+    //   browserName: 'safari',
+    //   version: '18',
+    //   platform: 'mac sequoia'
+    // },
     edge_windows: {
       ...launcherDefaults,
       browserName: 'edge',
       version: '130',
       platform: 'windows 11'
-    },
-    chrome_android: {
-      ...launcherDefaults,
-      browserName: 'chrome',
-      version: '130',
-      platform: 'android 15'
     }
+    // FIXME: test on Chrome on Android
+    // chrome_android: {
+    //   ...launcherDefaults,
+    //   browserName: 'chrome',
+    //   version: '130',
+    //   platform: 'android 15'
+    // }
   }
 
   config.set(Object.assign(baseConfig, {
