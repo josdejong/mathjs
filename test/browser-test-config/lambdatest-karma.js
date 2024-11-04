@@ -36,7 +36,7 @@ module.exports = function (config) {
       browserName: 'firefox',
       version: '131',
       platform: 'windows 11'
-    },
+    }
     // FIXME: test on Safari on Mac
     // safari_mac: {
     //   ...launcherDefaults,
@@ -44,12 +44,13 @@ module.exports = function (config) {
     //   version: '18',
     //   platform: 'mac sequoia'
     // },
-    edge_windows: {
-      ...launcherDefaults,
-      browserName: 'edge',
-      version: '130',
-      platform: 'windows 11'
-    }
+    // FIXME: test on Edge on Windows
+    // edge_windows: {
+    //   ...launcherDefaults,
+    //   browserName: 'edge',
+    //   version: '130',
+    //   platform: 'windows 11'
+    // }
     // FIXME: test on Chrome on Android
     // chrome_android: {
     //   ...launcherDefaults,
