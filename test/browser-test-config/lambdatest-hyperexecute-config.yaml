@@ -5,7 +5,7 @@ runson: ${matrix.os}  # defines the OS to test on
 concurrency: 1  # number of machines to execute the testcases
 
 matrix:
-  os: [win, win11, linux] #runnning unit tests on different platforms
+  os: [win, win11, linux]
 
 # pre steps sets up the environment for testing
 pre:
@@ -18,4 +18,4 @@ cacheDirectories:
   - node_modules
 
 testSuites:
-  - karma start test/browser-test-config/lt_karma.js # executing runner command
+  - karma start test/browser-test-config/lambdatest-karma.js
