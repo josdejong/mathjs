@@ -1,11 +1,8 @@
 ---
 version: 0.1
-runson: ${matrix.os}  # defines the OS to test on
+runs-on: ubuntu-latest
 
 concurrency: 1  # number of machines to execute the testcases
-
-matrix:
-  os: [linux]
 
 # pre steps sets up the environment for testing
 pre:
