@@ -1355,8 +1355,8 @@ describe('parse', function () {
     })
 
     it('should parse % with division', function () {
-      approxEqual(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
-      approxEqual(parseAndEval('100/50%*2'), 400) // should be treated as (100÷(50%))×2
+      approxEqual(parseAndEval('100/50%'), 0.02) // should be treated as (100/50)%
+      approxEqual(parseAndEval('100/50%*2'), 0.04) // should be treated as ((100/50)%))×2
       approxEqual(parseAndEval('50%/100'), 0.005)
       assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
     })

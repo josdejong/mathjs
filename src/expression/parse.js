@@ -1001,7 +1001,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseAddSubtract (state) {
     let node, name, fn, params
 
-    node = parseMultiplyDivide(state)
+    node = parseMultiplyDivideModulusPercentage(state)
 
     const operators = {
       '+': 'add',
@@ -1012,7 +1012,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       fn = operators[name]
 
       getTokenSkipNewline(state)
-      const rightNode = parseMultiplyDivide(state)
+      const rightNode = parseMultiplyDivideModulusPercentage(state)
       if (rightNode.isPercentage) {
         params = [node, new OperatorNode('*', 'multiply', [node, rightNode])]
       } else {
@@ -1025,11 +1025,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * multiply, divide
+   * multiply, divide, modulus, percentage
    * @return {Node} node
    * @private
    */
-  function parseMultiplyDivide (state) {
+  function parseMultiplyDivideModulusPercentage (state) {
     let node, last, name, fn
 
     node = parseImplicitMultiplication(state)
@@ -1039,9 +1039,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       '*': 'multiply',
       '.*': 'dotMultiply',
       '/': 'divide',
-      './': 'dotDivide'
+      './': 'dotDivide',
+      '%': 'mod',
+      mod: 'mod'
     }
-
     while (true) {
       if (hasOwnProperty(operators, state.token)) {
         // explicit operators
@@ -1050,8 +1051,22 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
         getTokenSkipNewline(state)
 
-        last = parseImplicitMultiplication(state)
-        node = new OperatorNode(name, fn, [node, last])
+        if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
+          // If the expression contains only %, then treat that as /100
+          if (state.token !== '' && operators[state.token]) {
+            const left = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
+            name = state.token
+            fn = operators[name]
+            getTokenSkipNewline(state)
+            last = parseImplicitMultiplication(state)
+
+            node = new OperatorNode(name, fn, [left, last])
+          } else { node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true) }
+          // return node
+        } else {
+          last = parseImplicitMultiplication(state)
+          node = new OperatorNode(name, fn, [node, last])
+        }
       } else {
         break
       }
@@ -1104,7 +1119,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseRule2 (state) {
-    let node = parseModulusPercentage(state)
+    let node = parseUnary(state)
     let last = node
     const tokenStates = []
 
@@ -1127,7 +1142,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             Object.assign(state, tokenStates.pop())
             tokenStates.pop()
-            last = parseModulusPercentage(state)
+            last = parseUnary(state)
             node = new OperatorNode('/', 'divide', [node, last])
           } else {
             // Not a match, so rewind
@@ -1142,39 +1157,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
       } else {
         break
-      }
-    }
-
-    return node
-  }
-
-  /**
-   * modulus and percentage
-   * @return {Node} node
-   * @private
-   */
-  function parseModulusPercentage (state) {
-    let node, name, fn, params
-
-    node = parseUnary(state)
-
-    const operators = {
-      '%': 'mod',
-      mod: 'mod'
-    }
-
-    while (hasOwnProperty(operators, state.token)) {
-      name = state.token
-      fn = operators[name]
-
-      getTokenSkipNewline(state)
-
-      if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
-        // If the expression contains only %, then treat that as /100
-        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
-      } else {
-        params = [node, parseUnary(state)]
-        node = new OperatorNode(name, fn, params)
       }
     }
 
