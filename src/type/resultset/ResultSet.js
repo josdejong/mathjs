@@ -39,7 +39,7 @@ export const createResultSet = /* #__PURE__ */ factory(name, dependencies, () =>
    * @returns {string} string
    */
   ResultSet.prototype.toString = function () {
-    return '[' + this.entries.join(', ') + ']'
+    return '[' + this.entries.map(String).join(', ') + ']'
   }
 
   /**
