@@ -719,6 +719,7 @@ export interface MathJsInstance extends MathJsFactory {
    * fraction
    * @returns Returns a fraction
    */
+  fraction(numerator: bigint, denominator: bigint): Fraction
   fraction(numerator: number, denominator: number): Fraction
 
   /**
@@ -4049,9 +4050,9 @@ export interface MatrixCtor {
 export interface BigNumber extends Decimal {}
 
 export interface Fraction {
-  s: number
-  n: number
-  d: number
+  s: bigint
+  n: bigint
+  d: bigint
 }
 
 export interface Complex {
