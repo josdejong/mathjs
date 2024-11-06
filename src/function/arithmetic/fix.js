@@ -96,11 +96,11 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
     },
 
     Fraction: function (x) {
-      return x.s < 0 ? x.ceil() : x.floor()
+      return x.s < 0n ? x.ceil() : x.floor()
     },
 
     'Fraction, number | BigNumber': function (x, n) {
-      return x.s < 0 ? ceil(x, n) : floor(x, n)
+      return x.s < 0n ? ceil(x, n) : floor(x, n)
     },
 
     'Array | Matrix': typed.referToSelf(self => (x) => {

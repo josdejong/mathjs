@@ -46,7 +46,7 @@ export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ t
 
     bigint: x => x < 0n,
 
-    Fraction: x => x.s < 0, // It's enough to decide on the sign
+    Fraction: x => x.s < 0n, // It's enough to decide on the sign
 
     Unit: typed.referToSelf(self =>
       x => typed.find(self, x.valueType())(x.value)),

@@ -233,7 +233,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
           throwNoFraction(x)
         }
 
-        return new Fraction(x.toString())
+        return new Fraction(x)
       }
     }, {
       from: 'Fraction',
