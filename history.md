@@ -4,7 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
-<h1 id="22041002-1320">2204-10-02 13.2.0 <a href="#22041002-1320" title="Permalink">#</a></h1>
+<h1 id="20241106-1321">2024-11-06, 13.2.1 <a href="#20241106-1321" title="Permalink">#</a></h1>
+
+- Update to the latest version of `complex.js`.
+- Fix `Index.dimension(dim)` accepting non-numeric input.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3290">#3290</a> should validate variables names in method `Parser.set` (<a href="https://github.com/josdejong/mathjs/issues/3308">#3308</a>).
+  Thanks <a href="https://github.com/nkumawat34">@nkumawat34</a>.
+
+<h1 id="20241002-1320">2024-10-02, 13.2.0 <a href="#20241002-1320" title="Permalink">#</a></h1>
 
 - Feat: improve performance of functions `map`, `filter` and `forEach` (<a href="https://github.com/josdejong/mathjs/issues/3256">#3256</a>).
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.

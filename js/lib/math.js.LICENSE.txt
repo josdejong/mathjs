@@ -7,13 +7,6 @@
  */
 
 /**
- * @license Complex.js v2.1.1 12/05/2020
- *
- * Copyright (c) 2020, Robert Eisele (robert@xarg.org)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- **/
-
-/**
  * @license Fraction.js v4.3.7 31/08/2023
  * https://www.xarg.org/2014/03/rational-numbers-in-javascript/
  *
@@ -29,8 +22,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 13.2.0
- * @date    2024-10-02
+ * @version 13.2.1
+ * @date    2024-11-06
  *
  * @license
  * Copyright (C) 2013-2024 Jos de Jong <wjosdejong@gmail.com>
