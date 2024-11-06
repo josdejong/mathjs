@@ -37,12 +37,12 @@ module.exports = function (config) {
       version: 'latest',
       platform: 'Windows 11'
     },
-    safari_mac: {
-      ...launcherDefaults,
-      browserName: 'Safari',
-      version: 'latest',
-      platform: 'MacOS Sequoia'
-    },
+    // safari_mac: {
+    //   ...launcherDefaults,
+    //   browserName: 'Safari',
+    //   version: 'latest',
+    //   platform: 'MacOS Sequoia'
+    // },
     edge_windows: {
       ...launcherDefaults,
       browserName: 'MicrosoftEdge',
