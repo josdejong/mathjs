@@ -51,8 +51,9 @@ module.exports = function (config) {
     },
     android: {
       ...launcherDefaults,
+      browserName: 'Galaxy S10 5G',
       version: '14',
-      platform: 'Galaxy S10 5G'
+      platform: 'android'
     }
   }
 
