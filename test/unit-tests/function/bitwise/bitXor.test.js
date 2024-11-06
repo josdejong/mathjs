@@ -155,7 +155,7 @@ describe('bitXor', function () {
     })
 
     it('should bitwise xor sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(bitXor(sparse([[1, 2], [3, 4]]), sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(bitXor(sparse([[1, 2], [3, 4]]), sparse([[5, 6], [7, 8]])), sparse([[4, 4], [4, 12]]))
     })
   })
 

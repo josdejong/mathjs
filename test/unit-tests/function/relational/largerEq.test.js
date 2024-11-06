@@ -206,7 +206,7 @@ describe('largerEq', function () {
     })
 
     it('should compare sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(largerEq(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[true, true, true], [true, false, true]]))
+      assert.deepStrictEqual(largerEq(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), sparse([[true, true, true], [true, false, true]]))
     })
   })
 

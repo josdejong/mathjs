@@ -168,7 +168,10 @@ describe('dotDivide', function () {
     it('should perform (sparse matrix ./ sparse matrix) element-wise matrix division', function () {
       const a = math.sparse([[1, 2], [0, 4]])
       const b = math.sparse([[5, 0], [7, 8]])
-      assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [0, 4 / 8]]))
+      const result = dotDivide(a, b)
+      const isSparseMatrix = !!(result._values && result._index && result._ptr)
+      assert.strictEqual(isSparseMatrix, true)
+      approxDeepEqual(result, math.sparse([[1 / 5, Infinity], [0, 4 / 8]]))
     })
 
     it('should throw an error when dividing element-wise with differing size is not broadcastable', function () {

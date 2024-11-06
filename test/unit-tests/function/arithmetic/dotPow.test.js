@@ -170,7 +170,7 @@ describe('dotPow', function () {
     })
 
     it('should elevate sparse matrix .^ sparse matrix', function () {
-      approxDeepEqual(dotPow(sparse([[1, 2, 0], [0, 1, 4]]), sparse([[2, 1, 0], [4, 1, 0]])), matrix([[1, 2, 1], [0, 1, 1]]))
+      approxDeepEqual(dotPow(sparse([[1, 2, 0], [0, 1, 4]]), sparse([[2, 1, 0], [4, 1, 0]])), sparse([[1, 2, 1], [0, 1, 1]]))
     })
   })
 
