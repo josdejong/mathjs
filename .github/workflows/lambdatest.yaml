@@ -1,0 +1,33 @@
+name: LambdaTest (HyperExecute)
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+
+jobs:
+  HyperExecute-Playwright:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Starting CI testing
+        shell: bash
+        env:
+          CI: true
+          LT_USERNAME: ${{ secrets.LT_USERNAME }}
+          LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+        run: |
+          echo "STEP 1 ) Download project"
+            git clone https://github.com/josdejong/mathjs 
+            cd mathjs
+          echo "STEP 2) Download HyperExecute"
+            curl https://downloads.lambdatest.com/hyperexecute/windows/hyperexecute.exe -o hyperexecute.exe
+          echo "STEP 3) Run tests using HyperExecute"
+            ./hyperexecute --user $LT_USERNAME --key $LT_ACCESS_KEY --config test/browser-test-config/lambdatest-hyperexecute-config.yaml
