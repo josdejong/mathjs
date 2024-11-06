@@ -71,7 +71,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
    * @param  {Unit} [valuelessUnit]                                        A valueless unit
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Rounded value
    */
   return typed(name, {
     number: function (x) {
@@ -154,16 +154,12 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'Unit, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
 
-    'Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
-
-    'Array | Matrix, number, Unit': typed.referToSelf(self => (x, n, unit) => {
+    'Array | Matrix, number | BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => {
       // deep map collection, skip zeros since round(0) = 0
       return deepMap(x, (value) => self(value, n, unit), true)
     }),
 
-    'Array | Matrix, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
-
-    'Array | Matrix, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
+    'Array | Matrix | Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
 
     'Array | Matrix': typed.referToSelf(self => x => {
       // deep map collection, skip zeros since round(0) = 0

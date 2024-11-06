@@ -1,0 +1,37 @@
+name: Hyperexecute
+on:
+  workflow_dispatch:
+    inputs:
+      username:
+        required: true
+        description: LT Username
+      accessKey:
+        description: LT Access Key
+        required: true
+      sampleRepoLink:
+        description: Link to the HyperExecute sample repo
+        default: https://github.com/gauravchawhan/mathjs
+        required: true
+jobs:
+  HyperExecute-Playwright:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Starting CLI testing
+        shell: bash
+        run: |
+          echo "STEP 1 ) Downloading sample suite"
+          git clone https://github.com/gauravchawhan/mathjs 
+          echo "STEP 2) Download CLI and setting environment variables"
+              cd mathjs
+              curl https://downloads.lambdatest.com/hyperexecute/windows/hyperexecute.exe -o hyperexecute.exe
+              export LT_USERNAME=${{ github.event.inputs.username }}
+              export LT_ACCESS_KEY=${{ github.event.inputs.accessKey }}
+              ./hyperexecute --user $LT_USERNAME --key $LT_ACCESS_KEY --config hyperexecute.yaml
