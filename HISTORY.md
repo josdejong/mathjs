@@ -3,6 +3,7 @@
 # unpublished changes since 13.2.0
 
 - Update to the latest version of `complex.js`.
+- Fix `Index.dimension(dim)` accepting non-numeric input. 
 
 # 2024-10-02, 13.2.0
 

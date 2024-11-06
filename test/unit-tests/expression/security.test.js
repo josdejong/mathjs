@@ -217,6 +217,10 @@ describe('security', function () {
     }, /TypeError: Unexpected type of argument in function subset \(expected: Index, actual: Object, index: 1\)/)
   })
 
+  it('should not allow accessing proto via dimension', function () {
+    assert.strictEqual(math.evaluate('a=index([0,1]);b=a.dimension("__proto__");b').toString(), '[null]')
+  })
+
   it('should not allow using restricted properties via subset (2)', function () {
     assert.throws(function () {
       math.evaluate("scope={}; setter = evaluate(\"f(obj, name, newValue, assign) = (obj[name] = newValue)\", scope); o = parse(\"1\"); setter(o, \"value\", \"evaluate\", subset); scope.obj.compile().evaluate()(\"console.log('hacked...')\")")
