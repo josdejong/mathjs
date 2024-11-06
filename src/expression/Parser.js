@@ -2,9 +2,9 @@ import { factory } from '../utils/factory.js'
 import { createEmptyMap, toObject } from '../utils/map.js'
 
 const name = 'Parser'
-const dependencies = ['evaluate']
+const dependencies = ['evaluate', 'parse']
 
-export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ evaluate }) => {
+export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ evaluate, parse }) => {
   /**
    * @constructor Parser
    * Parser contains methods to evaluate or parse expressions, and has a number
@@ -112,12 +112,32 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
     return this.scope
   }
 
+  function isValidVariableName (name) {
+    if (name.length === 0) { return false }
+
+    for (let i = 0; i < name.length; i++) {
+      const cPrev = name.charAt(i - 1)
+      const c = name.charAt(i)
+      const cNext = name.charAt(i + 1)
+      const valid = parse.isAlpha(c, cPrev, cNext) || (i > 0 && parse.isDigit(c))
+
+      if (!valid) {
+        return false
+      }
+    }
+
+    return true
+  }
+
   /**
    * Set a symbol (a function or variable) by name from the parsers scope.
    * @param {string} name
    * @param {* | undefined} value
    */
   Parser.prototype.set = function (name, value) {
+    if (!isValidVariableName(name)) {
+      throw new Error(`Invalid variable name: '${name}'. Variable names must follow the specified rules.`)
+    }
     this.scope.set(name, value)
     return value
   }
