@@ -1460,13 +1460,6 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
     [4, 5, 6, 7],
     [5, 6, 7, 8]
   ]
-  const cde = [1, 2, 3, 4]
-  const def = [
-    [1, 2, 3, 4],
-    [2, 3, 4, 5],
-    [4, 5, 6, 7],
-    [5, 6, 7, 8]
-  ]
 
   const efg: MathArray = [1, 2, 3, 4, 5]
   const fgh: MathArray = [2, 3, 4, 5, 6]
@@ -1483,15 +1476,11 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   const _r2 = math.multiply(a, b)
 
   // 1D JS Array
-  const r3 = math.multiply(abc, bcd)
-  const r31 = math.multiply(cde, def)
-  const r32 = math.multiply(efg, fgh)
+  const r3 = math.multiply(abc, bcd) // 1D * 2D => Array
+  const r3a = math.multiply(efg, fgh) // 1D * 1D => Scalar
 
-  // @ts-expect-error ... Multiplication of two MathArrays can result in a MathNumericType | MathArray
-  const _r3 = r3[1]
-
-  const _r31 = r31[0] // If you let typescript infer the type of r31, it will correctly identify it is an array
-  assert.strictEqual(typeof r32, 'number')
+  const _r31 = r3[1]
+  assert.strictEqual(typeof r3a, 'number')
 
   // 2D JS Array
   const r12 = math.multiply(bcd, bcd)
@@ -1500,8 +1489,9 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   const multiDimensional = (x: any): x is any[][] => x.length && x[0].length
   if (multiDimensional(r12)) {
     const _r1211 = r12[1][1]
-    const _r121 = r12[1] // Valid syntax
   }
+
+  const _r121 = r12[1]
 
   // Matrix: matrix * vector
   const r7 = math.multiply(Mabc, bcd)

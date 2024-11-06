@@ -1392,9 +1392,10 @@ export interface MathJsInstance extends MathJsFactory {
   multiply<T extends Matrix>(x: T, y: MathType): Matrix
   multiply<T extends Matrix>(x: MathType, y: T): Matrix
 
-  multiply<T extends MathNumericType[]>(x: T, y: T[]): T
-  multiply<T extends MathNumericType[]>(x: T[], y: T): T
-  multiply<T extends MathArray>(x: T, y: T): T | MathScalarType
+  multiply<T extends MathArray>(x: T, y: T[]): T
+  multiply<T extends MathArray>(x: T[], y: T): T
+  multiply<T extends MathArray>(x: T[], y: T[]): T
+  multiply<T extends MathArray>(x: T, y: T): MathScalarType
   multiply(x: Unit, y: Unit): Unit
   multiply(x: number, y: number): number
   multiply(x: MathType, y: MathType): MathType
