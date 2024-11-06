@@ -36,6 +36,6 @@ jobs:
               export LT_ACCESS_KEY=${{ github.event.inputs.accessKey }}
               echo $LT_USERNAME 
               echo $LT_ACCESS_KEY
-              ./hyperexecute --user $LT_USERNAME --key $LT_ACCESS_KEY --config hyperexecute.yaml
+              ./hyperexecute --user $LT_USERNAME --key $LT_ACCESS_KEY --config hyperexecute.yaml --download-logs
               npm install fs path readline
               node printresults.cjs
