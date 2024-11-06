@@ -27,37 +27,33 @@ module.exports = function (config) {
   const customLaunchers = {
     chrome_windows: {
       ...launcherDefaults,
-      browserName: 'chrome',
-      version: '130',
-      platform: 'windows 11'
+      browserName: 'Chrome',
+      version: 'latest',
+      platform: 'Windows 11'
     },
     firefox_windows: {
       ...launcherDefaults,
-      browserName: 'firefox',
-      version: '131',
-      platform: 'windows 11'
+      browserName: 'Firefox',
+      version: 'latest',
+      platform: 'Windows 11'
+    },
+    safari_mac: {
+      ...launcherDefaults,
+      browserName: 'Safari',
+      version: 'latest',
+      platform: 'MacOS Sequoia'
+    },
+    edge_windows: {
+      ...launcherDefaults,
+      browserName: 'MicrosoftEdge',
+      version: 'latest',
+      platform: 'Windows 11'
+    },
+    android: {
+      ...launcherDefaults,
+      version: '14',
+      platform: 'Galaxy S10 5G'
     }
-    // FIXME: test on Safari on Mac
-    // safari_mac: {
-    //   ...launcherDefaults,
-    //   browserName: 'safari',
-    //   version: '18',
-    //   platform: 'mac sequoia'
-    // },
-    // FIXME: test on Edge on Windows
-    // edge_windows: {
-    //   ...launcherDefaults,
-    //   browserName: 'edge',
-    //   version: '130',
-    //   platform: 'windows 11'
-    // }
-    // FIXME: test on Chrome on Android
-    // chrome_android: {
-    //   ...launcherDefaults,
-    //   browserName: 'chrome',
-    //   version: '130',
-    //   platform: 'android 15'
-    // }
   }
 
   config.set(Object.assign(baseConfig, {
