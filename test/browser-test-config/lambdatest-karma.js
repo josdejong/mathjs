@@ -48,13 +48,13 @@ module.exports = function (config) {
       browserName: 'MicrosoftEdge',
       version: 'latest',
       platform: 'Windows 11'
-    },
-    android: {
-      ...launcherDefaults,
-      browserName: 'Galaxy S10 5G',
-      version: '14',
-      platform: 'android'
     }
+    // android: {
+    //   ...launcherDefaults,
+    //   browserName: 'Galaxy S10 5G',
+    //   version: '14',
+    //   platform: 'android'
+    // }
   }
 
   config.set(Object.assign(baseConfig, {
