@@ -44,20 +44,8 @@ describe('reviver', function () {
     assert.deepStrictEqual(JSON.parse(json, reviver), 12345678901234567890n)
   })
 
-  it('should parse a stringified Fraction (fraction.js v4 with numbers)', function () {
-    const json = '{"mathjs":"Fraction","n":3,"d":8}'
-    const b = new math.Fraction(0.375)
-
-    const obj = JSON.parse(json, reviver)
-
-    assert(obj instanceof math.Fraction)
-    assert.strictEqual(obj.s, b.s)
-    assert.strictEqual(obj.n, b.n)
-    assert.strictEqual(obj.d, b.d)
-  })
-
   it('should parse a stringified Fraction', function () {
-    const json = '{"mathjs":"Fraction","n":{"mathjs":"bigint","value":"3"},"d":{"mathjs":"bigint","value":"8"}}'
+    const json = '{"mathjs":"Fraction","n":3,"d":8}'
     const b = new math.Fraction(0.375)
 
     const obj = JSON.parse(json, reviver)

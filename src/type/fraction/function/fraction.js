@@ -59,10 +59,6 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return new Fraction(numerator, denominator)
     },
 
-    'bigint, bigint': function (numerator, denominator) {
-      return new Fraction(numerator, denominator)
-    },
-
     null: function (x) {
       return new Fraction(0)
     },

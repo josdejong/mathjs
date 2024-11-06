@@ -74,7 +74,7 @@ function _format (value, options) {
   if (looksLikeFraction(value)) {
     if (!options || options.fraction !== 'decimal') {
       // output as ratio, like '1/3'
-      return `${value.s * value.n}/${value.d}`
+      return (value.s * value.n) + '/' + value.d
     } else {
       // output as decimal, like '0.(3)'
       return value.toString()
@@ -191,9 +191,9 @@ function formatArray (array, options) {
 function looksLikeFraction (value) {
   return (value &&
       typeof value === 'object' &&
-      typeof value.s === 'bigint' &&
-      typeof value.n === 'bigint' &&
-      typeof value.d === 'bigint') || false
+      typeof value.s === 'number' &&
+      typeof value.n === 'number' &&
+      typeof value.d === 'number') || false
 }
 
 /**

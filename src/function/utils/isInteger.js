@@ -47,7 +47,7 @@ export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({ ty
     },
 
     Fraction: function (x) {
-      return x.d === 1n
+      return x.d === 1 && isFinite(x.n)
     },
 
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))

@@ -38,10 +38,8 @@ describe('numeric', function () {
   })
 
   it('should convert a BigNumber to a Fraction', function () {
-    assert.deepStrictEqual(numeric(math.bignumber('-0.125'), 'Fraction'), math.fraction(-1, 8))
-    assert.deepStrictEqual(numeric(math.bignumber('0.142857142857142857142857'), 'Fraction'),
-      math.fraction(142857142857142857142857n, 1000000000000000000000000n)
-    )
+    assert.deepStrictEqual(numeric(math.bignumber(-0.125), 'Fraction'), math.fraction(-1, 8))
+    assert.deepStrictEqual(numeric(math.bignumber('0.142857142857142857142857'), 'Fraction'), math.fraction(1, 7))
   })
 
   it('should convert a BigNumber to a number', function () {

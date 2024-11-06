@@ -42,7 +42,7 @@ describe('replacer', function () {
 
   it('should stringify a Fraction', function () {
     const b = new math.Fraction(0.375)
-    const json = '{"mathjs":"Fraction","n":"3","d":"8"}'
+    const json = '{"mathjs":"Fraction","n":3,"d":8}'
 
     assert.deepStrictEqual(JSON.stringify(b), json)
     assert.deepStrictEqual(JSON.stringify(b, replacer), json)

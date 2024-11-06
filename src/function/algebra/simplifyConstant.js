@@ -211,17 +211,18 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   }
 
   function _fractionToNode (f) {
-    // note: we convert await from bigint values, because bigint values gives issues with divisions: 1n/2n=0n and not 0.5
-    const fromBigInt = (value) => config.number === 'BigNumber' && bignumber ? bignumber(value) : Number(value)
+    let n
+    const vn = f.s * f.n
+    if (vn < 0) {
+      n = new OperatorNode('-', 'unaryMinus', [new ConstantNode(-vn)])
+    } else {
+      n = new ConstantNode(vn)
+    }
 
-    const numeratorValue = f.s * f.n
-    const numeratorNode = (numeratorValue < 0n)
-      ? new OperatorNode('-', 'unaryMinus', [new ConstantNode(-fromBigInt(numeratorValue))])
-      : new ConstantNode(fromBigInt(numeratorValue))
-
-    return (f.d === 1n)
-      ? numeratorNode
-      : new OperatorNode('/', 'divide', [numeratorNode, new ConstantNode(fromBigInt(f.d))])
+    if (f.d === 1) {
+      return n
+    }
+    return new OperatorNode('/', 'divide', [n, new ConstantNode(f.d)])
   }
 
   /* Handles constant indexing of ArrayNodes, matrices, and ObjectNodes */

@@ -33,11 +33,7 @@ describe('fraction', function () {
   })
 
   it('should create a fraction from a bigint', function () {
-    equalFraction(math.fraction(42), new Fraction(42))
-    equalFraction(math.fraction(42n), new Fraction(42))
-    equalFraction(math.fraction(1n, 3n), new Fraction(1, 3))
-    equalFraction(math.fraction(1n, 3), new Fraction(1, 3))
-    equalFraction(math.fraction(1, 3n), new Fraction(1, 3))
+    equalFraction(math.fraction(42n), new Fraction('42'))
   })
 
   it('should convert the number value of a Unit to Fraction', function () {

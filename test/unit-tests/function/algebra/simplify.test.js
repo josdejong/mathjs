@@ -283,7 +283,6 @@ describe('simplify', function () {
     const bigmath = math.create({ number: 'bigint' })
     assert.deepStrictEqual(bigmath.simplify('70000000000000000123 + 1').evaluate(), 70000000000000000124n)
     assert.deepStrictEqual(bigmath.simplify('70000000000000000123 + 5e3').evaluate(), 70000000000000010000)
-    assert.deepStrictEqual(bigmath.simplify('70000000000000000123 + bigint(5000)').evaluate(), 70000000000000005123n)
   })
 
   it('should not change the value of numbers when converting to fractions (1)', function () {
