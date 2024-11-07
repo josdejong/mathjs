@@ -84,7 +84,7 @@ module.exports = function (config) {
     browserDisconnectTolerance: 1,
     browserNoActivityTimeout: 90000,
 
-    concurrency: 1,
+    concurrency: Infinity,
     logLevel: config.LOG_DEBUG,
 
     browsers: Object.keys(customLaunchers),
