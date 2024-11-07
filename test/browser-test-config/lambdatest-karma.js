@@ -85,12 +85,12 @@ module.exports = function (config) {
     browserNoActivityTimeout: 90000,
 
     concurrency: Infinity,
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_INFO,
 
     browsers: Object.keys(customLaunchers),
     customLaunchers,
 
     singleRun: true,
-    autoWatch: true
+    autoWatch: false
   }))
 }
