@@ -1355,8 +1355,8 @@ describe('parse', function () {
     })
 
     it('should parse % with division', function () {
-      approxEqual(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
-      approxEqual(parseAndEval('100/50%*2'), 400) // should be treated as (100÷(50%))×2
+      approxEqual(parseAndEval('100/50%'), 0.02) // should be treated as ((100/50)%)
+      approxEqual(parseAndEval('100/50%*2'), 0.04) // should be treated as ((100/50)%))×2
       approxEqual(parseAndEval('50%/100'), 0.005)
       assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
     })
@@ -1373,6 +1373,57 @@ describe('parse', function () {
 
     it('should parse operator mod', function () {
       approxEqual(parseAndEval('8 mod 3'), 2)
+    })
+
+    it('should give equal precedence to % and * operators', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 3 * 2'), '(10 % 3) * 2')
+      approxEqual(parseAndStringifyWithParens('10 * 3 % 4'), '(10 * 3) % 4')
+    })
+
+    it('should give equal precedence to % and / operators', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 4 / 2'), '(10 % 4) / 2')
+      approxEqual(parseAndStringifyWithParens('10 / 2 % 3'), '(10 / 2) % 3')
+    })
+
+    it('should give equal precedence to mod and * operators', function () {
+      approxEqual(parseAndStringifyWithParens('8 mod 3 * 2'), '(8 mod 3) * 2')
+      approxEqual(parseAndStringifyWithParens('8 * 3 mod 5'), '(8 * 3) mod 5')
+    })
+
+    it('should give equal precedence to mod and / operators', function () {
+      approxEqual(parseAndStringifyWithParens('8 mod 3 / 2'), '(8 mod 3) / 2')
+      approxEqual(parseAndStringifyWithParens('8 / 3 mod 2'), '(8 / 3) mod 2')
+    })
+
+    it('should give equal precedence to % and .* operators', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 3 .* 2'), '(10 % 3) .* 2')
+      approxEqual(parseAndStringifyWithParens('10 .* 3 % 4'), '(10 .* 3) % 4')
+    })
+
+    it('should give equal precedence to % and ./ operators', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 4 ./ 2'), '(10 % 4) ./ 2')
+      approxEqual(parseAndStringifyWithParens('10 ./ 2 % 3'), '(10 ./ 2) % 3')
+    })
+
+    it('should give equal precedence to mod and .* operators', function () {
+      approxEqual(parseAndStringifyWithParens('8 mod 3 .* 2'), '(8 mod 3) .* 2')
+      approxEqual(parseAndStringifyWithParens('8 .* 3 mod 5'), '(8 .* 3) mod 5')
+    })
+
+    it('should give equal precedence to mod and ./ operators', function () {
+      approxEqual(parseAndStringifyWithParens('8 mod 3 ./ 2'), '(8 mod 3) ./ 2')
+      approxEqual(parseAndStringifyWithParens('8 ./ 3 mod 2'), '(8 ./ 3) mod 2')
+    })
+
+    it('should evaluate complex expressions with mixed precedence equally', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 3 * 2 + 4 / 2'), '((10 % 3) * 2) + (4 / 2)')
+      approxEqual(parseAndStringifyWithParens('8 mod 3 + 2 * 4 - 5'), '((8 mod 3) + (2 * 4)) - 5')
+      approxEqual(parseAndStringifyWithParens('12 / 4 % 2 .* 5'), '((12 / 4) % 2) .* 5')
+    })
+
+    it('should handle cases with equal precedence among all operators', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 3 .* 2 ./ 2'), '((10 % 3) .* 2) ./ 2')
+      approxEqual(parseAndStringifyWithParens('10 ./ 2 % 3 * 2'), '((10 ./ 2) % 3) * 2')
     })
 
     it('should parse multiply *', function () {
