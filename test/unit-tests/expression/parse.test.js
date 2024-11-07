@@ -1375,6 +1375,57 @@ describe('parse', function () {
       approxEqual(parseAndEval('8 mod 3'), 2)
     })
 
+    it('should give equal precedence to % and * operators', function () {
+      approxEqual(parseAndEval('10 % 3 * 2'), 2) // Expected as (10 % 3) * 2 = 1 * 2 = 2
+      approxEqual(parseAndEval('10 * 3 % 4'), 2) // Expected as (10 * 3) % 4 = 30 % 4 = 2
+    })
+
+    it('should give equal precedence to % and / operators', function () {
+      approxEqual(parseAndEval('10 % 4 / 2'), 1) // Expected as (10 % 4) / 2 = 2 / 2 = 1
+      approxEqual(parseAndEval('10 / 2 % 3'), 2) // Expected as (10 / 2) % 3 = 5 % 3 = 2
+    })
+
+    it('should give equal precedence to mod and * operators', function () {
+      approxEqual(parseAndEval('8 mod 3 * 2'), 4) // Expected as (8 mod 3) * 2 = 2 * 2 = 4
+      approxEqual(parseAndEval('8 * 3 mod 5'), 4) // Expected as (8 * 3) mod 5 = 24 mod 5 = 4
+    })
+
+    it('should give equal precedence to mod and / operators', function () {
+      approxEqual(parseAndEval('8 mod 3 / 2'), 1) // Expected as (8 mod 3) / 2 = 2 / 2 = 1
+      approxEqual(parseAndEval('8 / 3 mod 2'), 0.6666666666666667) // Expected as (8 / 3) mod 2 = 2.6666666666666665 % 2 = 0.6666666666666667
+    })
+
+    it('should give equal precedence to % and .* operators', function () {
+      approxEqual(parseAndEval('10 % 3 .* 2'), 2) // Expected as (10 % 3) .* 2 = 1 .* 2 = 2
+      approxEqual(parseAndEval('10 .* 3 % 4'), 2) // Expected as (10 .* 3) % 4 = 30 % 4 = 2
+    })
+
+    it('should give equal precedence to % and ./ operators', function () {
+      approxEqual(parseAndEval('10 % 4 ./ 2'), 1) // Expected as (10 % 4) ./ 2 = 2 ./ 2 = 1
+      approxEqual(parseAndEval('10 ./ 2 % 3'), 2) // Expected as (10 ./ 2) % 3 = 5 % 3 = 2
+    })
+
+    it('should give equal precedence to mod and .* operators', function () {
+      approxEqual(parseAndEval('8 mod 3 .* 2'), 4) // Expected as (8 mod 3) .* 2 = 2 .* 2 = 4
+      approxEqual(parseAndEval('8 .* 3 mod 5'), 4) // Expected as (8 .* 3) mod 5 = 24 mod 5 = 4
+    })
+
+    it('should give equal precedence to mod and ./ operators', function () {
+      approxEqual(parseAndEval('8 mod 3 ./ 2'), 1) // Expected as (8 mod 3) ./ 2 = 2 ./ 2 = 1
+      approxEqual(parseAndEval('8 ./ 3 mod 2'), 0.6666666666666667) // Expected as (8 ./ 3) mod 2 = 2.6666666666666665 % 2 = 0.6666666666666667
+    })
+
+    it('should evaluate complex expressions with mixed precedence equally', function () {
+      approxEqual(parseAndEval('10 % 3 * 2 + 4 / 2'), 4) // Expected as (10 % 3) * 2 + (4 / 2) = 1 * 2 + 2 = 4
+      approxEqual(parseAndEval('8 mod 3 + 2 * 4 - 5'), 5) // Expected as (8 mod 3) + (2 * 4) - 5 = 2 + 8 - 5 = 5
+      approxEqual(parseAndEval('12 / 4 % 2 .* 5'), 5) // Expected as ((12 / 4) % 2) .* 5 = (3 % 2) .* 5 = 1 * 5 = 5
+    })
+
+    it('should handle cases with equal precedence among all operators', function () {
+      approxEqual(parseAndEval('10 % 3 .* 2 ./ 2'), 1) // Expected as ((10 % 3) .* 2) ./ 2 = (1 .* 2) ./ 2 = 2 / 2 = 1
+      approxEqual(parseAndEval('10 ./ 2 % 3 * 2'), 4) // Expected as ((10 ./ 2) % 3) * 2 = (5 % 3) * 2 = 2 * 2 = 4
+    })
+
     it('should parse multiply *', function () {
       approxEqual(parseAndEval('4 * 2'), 8)
       approxEqual(parseAndEval('8 * 2 * 2'), 32)
