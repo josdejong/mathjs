@@ -189,6 +189,10 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @returns {Range | null} range
    */
   Index.prototype.dimension = function (dim) {
+    if (typeof dim !== 'number') {
+      return null
+    }
+
     return this._dimensions[dim] || null
   }
 
