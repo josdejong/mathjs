@@ -1531,6 +1531,15 @@ describe('parse', function () {
       assert.strictEqual(parseAndStringifyWithParens('8.314 J/mol K'), '(8.314 J) / (mol K)')
     })
 
+    it('should handle precedence with implicit multiplication, division, and the "in" operator', function () {
+      assert.strictEqual(parseAndStringifyWithParens('1/2 in'), '(1 / 2) in')
+      assert.strictEqual(parseAndStringifyWithParens('1/2 kg'), '(1 / 2) kg')
+      assert.strictEqual(parseAndStringifyWithParens('3 kg in lb'), '(3 kg) in lb')
+      assert.strictEqual(parseAndStringifyWithParens('2 m / 1 s'), '(2 m) / (1 s)')
+      assert.strictEqual(parseAndStringifyWithParens('5 / 10 in'), '(5 / 10) in')
+      assert.strictEqual(parseAndStringifyWithParens('10 lb + 1/2 lb'), '(10 lb) + ((1 / 2) lb)')
+    })
+
     it('should throw an error when having an implicit multiplication between two numbers', function () {
       assert.throws(function () { math.parse('2 3') }, /Unexpected part "3"/)
       assert.throws(function () { math.parse('2 * 3 4') }, /Unexpected part "4"/)

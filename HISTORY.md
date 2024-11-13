@@ -1,9 +1,16 @@
 # History
 
-# unpublished changes since 13.2.0
+# 2024-11-13, 13.2.2
+
+- Fix: #1455 implicit multiplication of a fraction with unit `in` is incorrect 
+  (#3315). Thanks @nkumawat34.
+
+# 2024-11-06, 13.2.1
 
 - Update to the latest version of `complex.js`.
-- Fix `Index.dimension(dim)` accepting non-numeric input. 
+- Fix `Index.dimension(dim)` accepting non-numeric input.
+- Fix: #3290 should validate variables names in method `Parser.set` (#3308).
+  Thanks @nkumawat34.
 
 # 2024-10-02, 13.2.0
 

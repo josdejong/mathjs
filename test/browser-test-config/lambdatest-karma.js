@@ -84,13 +84,13 @@ module.exports = function (config) {
     browserDisconnectTolerance: 1,
     browserNoActivityTimeout: 90000,
 
-    concurrency: 1,
-    logLevel: config.LOG_DEBUG,
+    concurrency: Infinity,
+    logLevel: config.LOG_INFO,
 
     browsers: Object.keys(customLaunchers),
     customLaunchers,
 
     singleRun: true,
-    autoWatch: true
+    autoWatch: false
   }))
 }

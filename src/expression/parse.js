@@ -1138,7 +1138,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           getTokenSkipNewline(state)
 
           // Match the "symbol" part of the pattern, or a left parenthesis
-          if (state.tokenType === TOKENTYPE.SYMBOL || state.token === '(') {
+          if (state.tokenType === TOKENTYPE.SYMBOL || state.token === '(' || state.token === 'in') {
             // We've matched the pattern "number / number symbol".
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             Object.assign(state, tokenStates.pop())
