@@ -4,6 +4,11 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20241113-1322">2024-11-13, 13.2.2 <a href="#20241113-1322" title="Permalink">#</a></h1>
+
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/1455">#1455</a> implicit multiplication of a fraction with unit `in` is incorrect 
+  (<a href="https://github.com/josdejong/mathjs/issues/3315">#3315</a>). Thanks <a href="https://github.com/nkumawat34">@nkumawat34</a>.
+
 <h1 id="20241106-1321">2024-11-06, 13.2.1 <a href="#20241106-1321" title="Permalink">#</a></h1>
 
 - Update to the latest version of `complex.js`.
