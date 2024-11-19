@@ -253,6 +253,10 @@ export function isChain (x) {
   return (x && x.constructor.prototype.isChain === true) || false
 }
 
+export function isSet (x) {
+  return x instanceof Set
+}
+
 export function typeOf (x) {
   const t = typeof x
 

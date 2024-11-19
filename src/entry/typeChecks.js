@@ -32,6 +32,7 @@ export {
   isMap,
   isPartitionedMap,
   isObjectWrappingMap,
+  isSet,
   isObjectNode,
   isOperatorNode,
   isParenthesisNode,
