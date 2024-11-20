@@ -16,20 +16,23 @@ For matrices, the function is evaluated element wise.
 ```js
 math.ceil(x)
 math.ceil(x, n)
+math.ceil(unit, valuelessUnit)
+math.ceil(unit, n, valuelessUnit)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Value to be rounded
 `n` | number &#124; BigNumber &#124; Array | Number of decimals Default value: 0.
+`valuelessUnit` | Unit | A valueless unit
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Rounded value
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Rounded value
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -54,6 +57,12 @@ math.ceil(-4.782, 2)         // returns number -4.78
 const c = math.complex(3.24, -2.71)
 math.ceil(c)                 // returns Complex 4 - 2i
 math.ceil(c, 1)              // returns Complex 3.3 - 2.7i
+
+const unit = math.unit('3.241 cm')
+const cm = math.unit('cm')
+const mm = math.unit('mm')
+math.ceil(unit, 1, cm)      // returns Unit 3.3 cm
+math.ceil(unit, 1, mm)      // returns Unit 32.5 mm
 
 math.ceil([3.2, 3.8, -4.7])  // returns Array [4, 4, -4]
 math.ceil([3.21, 3.82, -4.71], 1)  // returns Array [3.3, 3.9, -4.7]

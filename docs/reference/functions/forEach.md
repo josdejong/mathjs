@@ -8,6 +8,13 @@ layout: default
 
 Iterate over all elements of a matrix/array, and executes the given callback function.
 
+The callback is invoked with three arguments: the current value,
+the current index, and the matrix operated upon.
+Note that because the matrix/array might be
+multidimensional, the "index" argument is always an array of numbers giving
+the index in each dimension. This is true even for vectors: the "index"
+argument is an array of length 1, rather than simply a number.
+
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 

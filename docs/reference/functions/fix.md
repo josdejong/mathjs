@@ -15,20 +15,23 @@ For matrices, the function is evaluated element wise.
 ```js
 math.fix(x)
 math.fix(x,n)
+math.fix(unit, valuelessUnit)
+math.fix(unit, n, valuelessUnit)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Value to be rounded
 `n` | number &#124; BigNumber &#124; Array | Number of decimals Default value: 0.
+`valuelessUnit` | Unit | A valueless unit
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Rounded value
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Rounded value
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -53,6 +56,12 @@ math.fix(-4.17, 1)               // returns number -4.1
 const c = math.complex(3.22, -2.78)
 math.fix(c)                  // returns Complex 3 - 2i
 math.fix(c, 1)               // returns Complex 3.2 -2.7i
+
+const unit = math.unit('3.241 cm')
+const cm = math.unit('cm')
+const mm = math.unit('mm')
+math.fix(unit, 1, cm)      // returns Unit 3.2 cm
+math.fix(unit, 1, mm)      // returns Unit 32.4 mm
 
 math.fix([3.2, 3.8, -4.7])      // returns Array [3, 3, -4]
 math.fix([3.2, 3.8, -4.7], 1)   // returns Array [3.2, 3.8, -4.7]

@@ -23,14 +23,14 @@ math.log(x, base)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex |  Value for which to calculate the logarithm.
-`base` | number &#124; BigNumber &#124; Complex |  Optional base for the logarithm. If not provided, the natural logarithm of `x` is calculated. Default value: e.
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex |  Value for which to calculate the logarithm.
+`base` | number &#124; BigNumber &#124; Fraction &#124; Complex |  Optional base for the logarithm. If not provided, the natural logarithm of `x` is calculated. Default value: e.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Complex |  Returns the logarithm of `x`
+number &#124; BigNumber &#124; Fraction &#124; Complex |  Returns the logarithm of `x`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

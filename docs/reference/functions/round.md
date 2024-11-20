@@ -31,7 +31,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Rounded value
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Rounded value
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

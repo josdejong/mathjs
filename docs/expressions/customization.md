@@ -370,7 +370,7 @@ The `parse` function exposes the following test functions:
 - `math.parse.isDigit(c)`
 
 The exact signature and implementation of these functions can be looked up in
-the [source code of the parser](https://github.com/josdejong/mathjs/blob/master/lib/expression/parse.js). The allowed alpha characters are described here: [Constants and variables](syntax.html#constants-and-variables).
+the [source code of the parser](https://github.com/josdejong/mathjs/blob/master/src/expression/parse.js). The allowed alpha characters are described here: [Constants and variables](syntax.html#constants-and-variables).
 
 For example, the phone character <code>&#9742;</code> is not supported by default. It can be enabled
 by replacing the `isAlpha` function:

@@ -4,6 +4,32 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20241120-1400">2024-11-20, 14.0.0 <a href="#20241120-1400" title="Permalink">#</a></h1>
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Feat: Upgrade to `fraction.js@5`, using `bigint` under the hood (<a href="https://github.com/josdejong/mathjs/issues/3283">#3283</a>).
+- Feat: Implement support for `Unit` in functions `ceil`, `floor`, and `fix`.
+  Possible breaking changes in the type definitions of arrays and matrices
+  due to the introduction of generics (<a href="https://github.com/josdejong/mathjs/issues/3269">#3269</a>). Thanks <a href="https://github.com/orelbn">@orelbn</a>.
+- Feat: Implement support for `log(x: Fraction, base: Fraction)`.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3301">#3301</a> precedence of `%` (mod) being higher than `*` and `/` (<a href="https://github.com/josdejong/mathjs/issues/3311">#3311</a>).
+  Thanks <a href="https://github.com/nkumawat34">@nkumawat34</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3222">#3222</a> prevent `math.import(...)` from overriding units unless you 
+  specify `{ override: true }` (<a href="https://github.com/josdejong/mathjs/issues/3225">#3225</a>).
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3219">#3219</a> let functions `dotDivide`, `dotPow`, `bitXor`, `xor`, `equal`,
+  `larger`, `largerEq`, `smaller`, `smallerEq`, and `unequal` return a sparse 
+  matrix when the input is two sparse matrices (<a href="https://github.com/josdejong/mathjs/issues/3307">#3307</a>). Thanks <a href="https://github.com/Aakash-Rana">@Aakash-Rana</a>.
+- Fix: Improve type definitions of arrays (<a href="https://github.com/josdejong/mathjs/issues/3306">#3306</a>). Thanks <a href="https://github.com/orelbn">@orelbn</a>.
+
+<h1 id="20241120-1323">2024-11-20, 13.2.3 <a href="#20241120-1323" title="Permalink">#</a></h1>
+
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3260">#3260</a> improve type definitions and documentation on the callback 
+  indices of `map`, `filter`, and `forEach`.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3323">#3323</a> support functions in function `clone`.
+- Docs: fix a broken link in the documentation (<a href="https://github.com/josdejong/mathjs/issues/3316">#3316</a>). 
+  Thanks <a href="https://github.com/emmanuel-ferdman">@emmanuel-ferdman</a>.
+
 <h1 id="20241113-1322">2024-11-13, 13.2.2 <a href="#20241113-1322" title="Permalink">#</a></h1>
 
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/1455">#1455</a> implicit multiplication of a fraction with unit `in` is incorrect 
