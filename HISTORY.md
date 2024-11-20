@@ -4,18 +4,19 @@
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
+- Feat: Upgrade to `fraction.js@5`, using `bigint` under the hood (#3283).
+- Feat: Implement support for `Unit` in functions `ceil`, `floor`, and `fix`.
+  Possible breaking changes in the type definitions of arrays and matrices
+  due to the introduction of generics (#3269). Thanks @orelbn.
+- Feat: Implement support for `log(x: Fraction, base: Fraction)`.
 - Fix: #3301 precedence of `%` (mod) being higher than `*` and `/` (#3311).
   Thanks @nkumawat34.
 - Fix: #3222 prevent `math.import(...)` from overriding units unless you 
   specify `{ override: true }` (#3225).
-- Upgrade to `fraction.js@5`, using `bigint` under the hood (#3283).
-- Implement support for `Unit` in functions `ceil`, `floor`, and `fix`. 
-  Possible breaking changes in the type definitions of arrays and matrices 
-  due to the introduction of generics (#3269). Thanks @orelbn.
 - Fix: #3219 let functions `dotDivide`, `dotPow`, `bitXor`, `xor`, `equal`,
   `larger`, `largerEq`, `smaller`, `smallerEq`, and `unequal` return a sparse 
   matrix when the input is two sparse matrices (#3307). Thanks @Aakash-Rana.
-- Improve type definitions of arrays (#3306). Thanks @orelbn.
+- Fix: Improve type definitions of arrays (#3306). Thanks @orelbn.
 
 # 2024-11-20, 13.2.3
 
