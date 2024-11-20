@@ -1975,8 +1975,7 @@ export interface MathJsInstance extends MathJsFactory {
       | ((
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           value: any,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          index: any,
+          index: number[],
           matrix: MathCollection | string[]
         ) => boolean)
       | RegExp
@@ -2000,7 +1999,7 @@ export interface MathJsInstance extends MathJsFactory {
   forEach<T extends MathCollection>(
     x: T,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (value: any, index: any, matrix: T) => void
+    callback: (value: any, index: number[], matrix: T) => void
   ): void
 
   /**
@@ -5806,8 +5805,7 @@ export interface MathJsChain<TValue> {
       | ((
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           value: any,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          index: any,
+          index: number[],
           matrix: MathCollection | string[]
         ) => boolean)
       | RegExp
@@ -5826,7 +5824,7 @@ export interface MathJsChain<TValue> {
   forEach<T extends MathCollection>(
     this: MathJsChain<T>,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (value: any, index: any, matrix: T) => void
+    callback: (value: any, index: number[], matrix: T) => void
   ): void
 
   /**
@@ -5856,7 +5854,7 @@ export interface MathJsChain<TValue> {
   map<T extends MathCollection>(
     this: MathJsChain<T>,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (value: any, index: any, matrix: T) => MathType | string
+    callback: (value: any, index: number[], matrix: T) => MathType | string
   ): MathJsChain<T>
 
   /**

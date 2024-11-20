@@ -40,6 +40,11 @@ export function clone (x) {
     return mapObject(x, clone)
   }
 
+  if (type === 'function') {
+    // we assume that the function is immutable
+    return x
+  }
+
   throw new TypeError(`Cannot clone: unknown type of value (value: ${x})`)
 }
 

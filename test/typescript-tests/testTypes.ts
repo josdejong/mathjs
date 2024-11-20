@@ -1303,8 +1303,20 @@ Matrices examples
 
   // map matrix
   {
+    const arr = [1, 2, 3]
     assert.deepStrictEqual(
-      math.map([1, 2, 3], function (value) {
+      math.map(arr, function (value) {
+        return value * value
+      }),
+      [1, 4, 9]
+    )
+
+    assert.deepStrictEqual(
+      math.map(arr, function (value, index, self) {
+        const indexValue = index[0]
+        expectTypeOf(indexValue).toMatchTypeOf<number>()
+        assert.deepStrictEqual(self, arr)
+
         return value * value
       }),
       [1, 4, 9]
@@ -1313,8 +1325,9 @@ Matrices examples
 
   // filter matrix
   {
+    const arr = [6, -2, -1, 4, 3]
     assert.deepStrictEqual(
-      math.filter([6, -2, -1, 4, 3], function (x) {
+      math.filter(arr, function (x) {
         return x > 0
       }),
       [6, 4, 3]
@@ -1323,6 +1336,31 @@ Matrices examples
       math.filter(['23', 'foo', '100', '55', 'bar'], /\d+/),
       ['23', '100', '55']
     )
+    assert.deepStrictEqual(
+      math.filter(arr, function (x, index, self) {
+        const indexValue = index[0]
+        expectTypeOf(indexValue).toMatchTypeOf<number>()
+        assert.deepStrictEqual(self, arr)
+
+        return x > 0
+      }),
+      [6, 4, 3]
+    )
+  }
+
+  // forEach matrix
+  {
+    const arr = [6, -2, -1, 4, 3]
+
+    const output: number[] = []
+    math.forEach(arr, function (x, index, self) {
+      const indexValue = index[0]
+      expectTypeOf(indexValue).toMatchTypeOf<number>()
+      assert.deepStrictEqual(self, arr)
+      output.push(x)
+    })
+
+    assert.deepStrictEqual(output, arr)
   }
 
   // concat matrix
