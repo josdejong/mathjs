@@ -1,5 +1,13 @@
 # History
 
+# 2024-11-20, 13.2.3
+
+- Fix: #3260 improve type definitions and documentation on the callback 
+  indices of `map`, `filter`, and `forEach`.
+- Fix: #3323 support functions in function `clone`.
+- Docs: fix a broken link in the documentation (#3316). 
+  Thanks @emmanuel-ferdman.
+
 # 2024-11-13, 13.2.2
 
 - Fix: #1455 implicit multiplication of a fraction with unit `in` is incorrect 
