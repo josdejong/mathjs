@@ -88,6 +88,13 @@ describe('clone', function () {
     assert.strictEqual(b.valueOf()[2].re, 2)
   })
 
+  it('should clone a function', function () {
+    const f = () => 42
+    const a = math.matrix([f])
+    const b = math.clone(a)
+    assert.strictEqual(b.get([0]), f)
+  })
+
   it('should LaTeX clone', function () {
     const expression = math.parse('clone(1)')
     assert.strictEqual(expression.toTex(), '\\mathrm{clone}\\left(1\\right)')
