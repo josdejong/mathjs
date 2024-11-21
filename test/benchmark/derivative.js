@@ -12,15 +12,17 @@ for (let i = 1; i <= 5; i++) {
 
 const results = []
 
+Benchmark.options.minSamples = 100
+
 const suite = new Benchmark.Suite()
 suite
   .add('ddf', function () {
     const res = derivative(derivative(expr, parse('x'), { simplify: false }), parse('x'), { simplify: false })
-    results.push(res)
+    results.splice(0, 1, res)
   })
   .add('df ', function () {
     const res = derivative(expr, parse('x'), { simplify: false })
-    results.push(res)
+    results.splice(0,1, res)
   })
   .on('cycle', function (event) {
     console.log(String(event.target))
