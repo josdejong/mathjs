@@ -22,7 +22,7 @@ suite
   })
   .add('df ', function () {
     const res = derivative(expr, parse('x'), { simplify: false })
-    results.splice(0,1, res)
+    results.splice(0, 1, res)
   })
   .on('cycle', function (event) {
     console.log(String(event.target))
