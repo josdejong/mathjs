@@ -209,12 +209,6 @@ describe('typed', function () {
     assert.strictEqual(math.isObjectWrappingMap(new PartitionedMap(new Map(), new Map(), new Set(['x']))), false)
   })
 
-  it('should test whether a value is a Set', function () {
-    assert.strictEqual(math.isSet({}), false)
-    assert.strictEqual(math.isSet(new Set()), true)
-    assert.strictEqual(math.isSet(new Set(['x', 'y'])), true)
-  })
-
   it('should test whether a value is undefined', function () {
     assert.strictEqual(math.isUndefined(undefined), true)
     assert.strictEqual(math.isUndefined(math.matrix()), false)

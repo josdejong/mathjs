@@ -2316,7 +2316,6 @@ Factory Test
     math.isMap,
     math.isPartitionedMap,
     math.isObjectWrappingMap,
-    math.isSet,
     math.isNull,
     math.isUndefined,
     math.isAccessorNode,

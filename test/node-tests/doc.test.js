@@ -184,7 +184,6 @@ const knownUndocumented = new Set([
   'isMap',
   'isPartitionedMap',
   'isObjectWrappingMap',
-  'isSet',
   'isNull',
   'isUndefined',
   'isAccessorNode',

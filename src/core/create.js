@@ -34,7 +34,6 @@ import {
   isObject,
   isObjectNode,
   isObjectWrappingMap,
-  isSet,
   isOperatorNode,
   isParenthesisNode,
   isPartitionedMap,
@@ -133,7 +132,6 @@ export function create (factories, config) {
     isMap,
     isPartitionedMap,
     isObjectWrappingMap,
-    isSet,
     isNull,
     isUndefined,
 

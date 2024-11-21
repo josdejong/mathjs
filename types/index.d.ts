@@ -3439,8 +3439,6 @@ export interface MathJsInstance extends MathJsFactory {
     x: unknown
   ): x is ObjectWrappingMap<T, U>
 
-  isSet<T>(x: unknown): x is Set<T>
-
   isNull(x: unknown): x is null
 
   isUndefined(x: unknown): x is undefined

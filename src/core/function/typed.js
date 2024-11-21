@@ -75,7 +75,6 @@ import {
   isRegExp,
   isRelationalNode,
   isResultSet,
-  isSet,
   isSparseMatrix,
   isString,
   isSymbolNode,
@@ -165,7 +164,6 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'SymbolNode', test: isSymbolNode },
 
     { name: 'Map', test: isMap },
-    { name: 'Set', test: isSet },
     { name: 'Object', test: isObject } // order 'Object' last, it matches on other classes too
   ])
 
