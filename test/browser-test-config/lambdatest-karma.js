@@ -37,12 +37,12 @@ module.exports = function (config) {
       version: 'latest',
       platform: 'Windows 11'
     },
-    safari_mac: {
-      ...launcherDefaults,
-      browserName: 'Safari',
-      version: 'latest',
-      platform: 'macOS Monterey'
-    },
+    // safari_mac: {
+    //   ...launcherDefaults,
+    //   browserName: 'Safari',
+    //   version: 'latest',
+    //   platform: 'macOS Monterey'
+    // },
     edge_windows: {
       ...launcherDefaults,
       browserName: 'MicrosoftEdge',
