@@ -672,7 +672,7 @@ describe('Unit', function () {
         })
 
       const str = JSON.stringify(new Unit(math.fraction(0.375), 'cm'))
-      assert.deepStrictEqual(str, '{"mathjs":"Unit","value":{"mathjs":"Fraction","n":3,"d":8},"unit":"cm","fixPrefix":false}')
+      assert.deepStrictEqual(str, '{"mathjs":"Unit","value":{"mathjs":"Fraction","n":"3","d":"8"},"unit":"cm","fixPrefix":false}')
 
       const cmpx = JSON.stringify(new Unit(math.complex(2, 4), 'g'))
       assert.strictEqual(cmpx, '{"mathjs":"Unit","value":{"mathjs":"Complex","re":2,"im":4},"unit":"g","fixPrefix":false}')

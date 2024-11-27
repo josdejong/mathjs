@@ -173,6 +173,39 @@ describe('fix', function () {
     assert.strictEqual(fix(-799999.9999999999, 3), -800000)
   })
 
+  it('should fix units', function () {
+    assert.deepStrictEqual(fix(unit('5.99 inch'), unit('inch')), unit('5 inch'))
+    assert.deepStrictEqual(fix(unit('3.12345 cm'), 3, unit('cm')), unit('3.123 cm'))
+    assert.deepStrictEqual(fix(unit('3.12345 cm'), unit('cm')), unit('3 cm'))
+    assert.deepStrictEqual(fix(unit('2 inch'), unit('cm')), unit('5 cm'))
+    assert.deepStrictEqual(fix(unit('2 inch'), 1, unit('cm')), unit('5 cm'))
+    assert.deepStrictEqual(fix(unit('-1.9 inch'), unit('cm')), unit('-4 cm'))
+
+    // bignumber values
+    assert.deepStrictEqual(fix(unit('3.12345 cm'), bignumber(2), unit('cm')), unit('3.12 cm'))
+    assert.deepStrictEqual(fix(unit(bignumber('2'), 'inch'), unit('cm')), unit(bignumber('5'), 'cm'))
+    assert.deepStrictEqual(fix(unit(bignumber('2'), 'inch'), bignumber(1), unit('cm')), unit(bignumber('5.0'), 'cm'))
+
+    // first argument is a collection
+    assert.deepStrictEqual(fix([unit('2 inch'), unit('3 inch')], unit('cm')), [unit('5 cm'), unit('7 cm')])
+    assert.deepStrictEqual(fix(matrix([unit('2 inch'), unit('3 inch')]), unit('cm')), matrix([unit('5 cm'), unit('7 cm')]))
+  })
+
+  it('should throw an error if used with a unit without valueless unit', function () {
+    assert.throws(function () { fix(unit('5cm')) }, TypeError, 'Function fix(unit) not supported')
+    assert.throws(function () { fix(unit('5cm'), 2) }, TypeError, 'Function fix(unit) not supported')
+    assert.throws(function () { fix(unit('5cm'), bignumber(2)) }, TypeError, 'Function fix(unit) not supported')
+  })
+
+  it('should throw an error if used with a unit with a second unit that is not valueless', function () {
+    assert.throws(function () { fix(unit('2 inch'), 1, unit('10 cm')) }, Error)
+    assert.throws(function () { fix(unit('2 inch'), unit('10 cm')) }, Error)
+  })
+
+  it('should throw an error with a unit', function () {
+    assert.throws(function () { fix(unit('5cm')) }, TypeError, 'Function fix(unit) not supported')
+  })
+
   it('should throw an error on unit as parameter', function () {
     // unit
     assert.throws(function () { fix(unit('5cm')) }, TypeError, 'Function fix(unit) not supported')

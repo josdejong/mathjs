@@ -9,6 +9,13 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
   /**
    * Filter the items in an array or one dimensional matrix.
    *
+   * The callback is invoked with three arguments: the current value,
+   * the current index, and the matrix operated upon.
+   * Note that because the matrix/array might be
+   * multidimensional, the "index" argument is always an array of numbers giving
+   * the index in each dimension. This is true even for vectors: the "index"
+   * argument is an array of length 1, rather than simply a number.
+   *
    * Syntax:
    *
    *    math.filter(x, test)
