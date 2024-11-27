@@ -41,7 +41,7 @@ module.exports = function (config) {
     //   ...launcherDefaults,
     //   browserName: 'Safari',
     //   version: 'latest',
-    //   platform: 'MacOS Sequoia'
+    //   platform: 'macOS Monterey'
     // },
     edge_windows: {
       ...launcherDefaults,
