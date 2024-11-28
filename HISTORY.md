@@ -1,5 +1,9 @@
 # History
 
+# unpublished changes
+
+- Fix: make derivative much faster (#3322). Thanks @paulftw.
+
 # 2024-11-20, 14.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
