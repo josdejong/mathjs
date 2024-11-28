@@ -126,7 +126,7 @@ describe('derivative', function () {
     compareString(derivativeWithoutSimplify('nthRoot(6x)', 'x'), '6 * 1 / (2 * sqrt(6 x))')
     compareString(derivativeWithoutSimplify('nthRoot(6x, 3)', 'x'), '1 / 3 * 6 * 1 * (6 x) ^ (1 / 3 - 1)')
 
-    compareString(derivativeWithoutSimplify('nthRoot((6x), (2x))', 'x'), '(6 x) ^ (1 / (2 x)) * ((6 * 1) * 1 / (2 x) / (6 x) + (0 * (2 x) - 1 * (2 * 1)) / (2 x) ^ 2 * log((6 x)))')
+    compareString(derivativeWithoutSimplify('nthRoot((6x), (2x))', 'x'), '(6 x) ^ (1 / (2 x)) * ((6 * 1) * 1 / (2 x) / (6 x) + -1 * (2 * 1) / (2 x) ^ 2 * log((6 x)))')
     compareString(derivativeWithoutSimplify('log((6*x))', 'x'), '(6 * 1) / (6 * x)')
     compareString(derivativeWithoutSimplify('log10((6x))', 'x'), '(6 * 1) / ((6 x) * log(10))')
     compareString(derivativeWithoutSimplify('log((6x), 10)', 'x'), '(6 * 1) / ((6 x) * log(10))')
@@ -270,11 +270,11 @@ describe('derivative', function () {
 
     assert.throws(function () {
       derivative('[1, 2; 3, 4]', 'x')
-    }, /TypeError: Unexpected type of argument in function constTag \(expected: ConstantNode or FunctionNode or FunctionAssignmentNode or OperatorNode or ParenthesisNode or SymbolNode, actual:.*ArrayNode.*, index: 1\)/)
+    }, /TypeError: Unexpected type of argument in function _derivative \(expected: ConstantNode or FunctionNode or FunctionAssignmentNode or OperatorNode or ParenthesisNode or SymbolNode, actual:.*ArrayNode.*, index: 0\)/)
 
     assert.throws(function () {
       derivative('x + [1, 2; 3, 4]', 'x')
-    }, /TypeError: Unexpected type of argument in function constTag \(expected: ConstantNode or FunctionNode or FunctionAssignmentNode or OperatorNode or ParenthesisNode or SymbolNode, actual:.*ArrayNode.*, index: 1\)/)
+    }, /TypeError: Unexpected type of argument in function _derivative \(expected: ConstantNode or FunctionNode or FunctionAssignmentNode or OperatorNode or ParenthesisNode or SymbolNode, actual:.*ArrayNode.*, index: 0\)/)
   })
 
   it('should throw error if incorrect number of arguments', function () {
