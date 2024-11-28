@@ -188,15 +188,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     },
 
     'function, FunctionNode | OperatorNode, string': function (isConst, node, varName) {
-      if (node.args.length > 0) {
-        for (let i = 0; i < node.args.length; ++i) {
-          if (!isConst(node.args[i], varName)) {
-            return false
-          }
-        }
-        return true
-      }
-      return false
+      return node.args.every(arg => isConst(arg, varName))
     }
   })
 
