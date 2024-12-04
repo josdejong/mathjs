@@ -9,7 +9,7 @@ on:
 # Allow only one concurrent test
 concurrency:
   group: "browserstack"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   browser-tests:
