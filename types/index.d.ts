@@ -1,4 +1,7 @@
 import { Decimal } from 'decimal.js'
+import { Fraction } from 'fraction.js'
+
+export { Fraction }
 
 export as namespace math
 
@@ -4048,12 +4051,6 @@ export interface MatrixCtor {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BigNumber extends Decimal {}
-
-export interface Fraction {
-  s: bigint
-  n: bigint
-  d: bigint
-}
 
 export interface Complex {
   re: number
