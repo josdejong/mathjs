@@ -1,5 +1,6 @@
+// deno-lint-ignore-file no-this-alias
 import { isArray, isBigNumber, isCollection, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is.js'
-import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get, deepMap, deepForEach } from '../../utils/array.js'
+import { arraySize, getArrayDataType, processSizesWildcard, reshape, resize, unsqueeze, validate, validateIndex, broadcastTo, get } from '../../utils/array.js'
 import { format } from '../../utils/string.js'
 import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
@@ -525,6 +526,69 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   }
 
   /**
+   * Applies a callback function to a reference to each element of the matrix
+   * @memberof DenseMatrix
+   * @param {Function} callback   The callback function is invoked with three
+   *                              parameters: an array, an integer index to that
+   *                              array, and the Matrix being traversed.
+   */
+  DenseMatrix.prototype._forEach = function (callback) {
+    // matrix instance
+    const me = this
+    const s = me.size()
+
+    // if there is only one dimension, just loop through it
+    if (s.length === 1) {
+      for (let i = 0; i < s[0]; i++) {
+        callback(me._data, i, [i])
+      }
+      return
+    }
+
+    // keep track of the current index permutation
+    const index = Array(s.length).fill(0)
+
+    // store a reference of each dimension of the matrix for faster access
+    const data = Array(s.length - 1)
+    const last = data.length - 1
+
+    data[0] = me._data[0]
+    for (let i = 0; i < last; i++) {
+      data[i + 1] = data[i][0]
+    }
+
+    index[last] = -1
+    while (true) {
+      let i
+      for (i = last; i >= 0; i--) {
+        // march index to the next permutation
+        index[i]++
+        if (index[i] === s[i]) {
+          index[i] = 0
+          continue
+        }
+
+        // update references to matrix dimensions
+        data[i] = i === 0 ? me._data[index[i]] : data[i - 1][index[i]]
+        for (let j = i; j < last; j++) {
+          data[j + 1] = data[j][0]
+        }
+
+        // loop through the last dimension and map each value
+        for (let j = 0; j < s[data.length]; j++) {
+          index[data.length] = j
+          callback(data[last], j, index.slice(0))
+        }
+        break
+      }
+
+      if (i === -1) {
+        break
+      }
+    }
+  }
+
+  /**
    * Create a new matrix with the results of the callback function executed on
    * each entry of the matrix.
    * @memberof DenseMatrix
@@ -535,17 +599,15 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @return {DenseMatrix} matrix
    */
   DenseMatrix.prototype.map = function (callback) {
-    // matrix instance
     const me = this
+    const result = new DenseMatrix(me)
     const fastCallback = optimizeCallback(callback, me._data, 'map')
 
-    // determine the new datatype when the original matrix has datatype defined
-    // TODO: should be done in matrix constructor instead
-    const data = deepMap(me._data, me, fastCallback, fastCallback.length)
-    const datatype = me._datatype !== undefined
-      ? getArrayDataType(data, typeOf)
-      : undefined
-    return new DenseMatrix(data, datatype)
+    result._forEach(function (arr, i, index) {
+      arr[i] = fastCallback(arr[i], index, me)
+    })
+
+    return result
   }
 
   /**
@@ -556,10 +618,11 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    *                              of the element, and the Matrix being traversed.
    */
   DenseMatrix.prototype.forEach = function (callback) {
-    // matrix instance
     const me = this
-    const fastCallback = optimizeCallback(callback, me._data, 'forEach')
-    deepForEach(this._data, me, fastCallback, fastCallback.length)
+    const fastCallback = optimizeCallback(callback, me._data, 'map')
+    me._forEach(function (arr, i, index) {
+      fastCallback(arr[i], index, me)
+    })
   }
 
   /**

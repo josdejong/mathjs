@@ -1,9 +1,53 @@
 # History
 
-# changes since 13.1.1
+# unpublished changes
+
+- Fix: make derivative much faster (#3322). Thanks @paulftw.
+
+# 2024-11-20, 14.0.0
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Feat: Upgrade to `fraction.js@5`, using `bigint` under the hood (#3283).
+- Feat: Implement support for `Unit` in functions `ceil`, `floor`, and `fix`.
+  Possible breaking changes in the type definitions of arrays and matrices
+  due to the introduction of generics (#3269). Thanks @orelbn.
+- Feat: Implement support for `log(x: Fraction, base: Fraction)`.
+- Fix: #3301 precedence of `%` (mod) being higher than `*` and `/` (#3311).
+  Thanks @nkumawat34.
+- Fix: #3222 prevent `math.import(...)` from overriding units unless you 
+  specify `{ override: true }` (#3225).
+- Fix: #3219 let functions `dotDivide`, `dotPow`, `bitXor`, `xor`, `equal`,
+  `larger`, `largerEq`, `smaller`, `smallerEq`, and `unequal` return a sparse 
+  matrix when the input is two sparse matrices (#3307). Thanks @Aakash-Rana.
+- Fix: Improve type definitions of arrays (#3306). Thanks @orelbn.
+
+# 2024-11-20, 13.2.3
+
+- Fix: #3260 improve type definitions and documentation on the callback 
+  indices of `map`, `filter`, and `forEach`.
+- Fix: #3323 support functions in function `clone`.
+- Docs: fix a broken link in the documentation (#3316). 
+  Thanks @emmanuel-ferdman.
+
+# 2024-11-13, 13.2.2
+
+- Fix: #1455 implicit multiplication of a fraction with unit `in` is incorrect 
+  (#3315). Thanks @nkumawat34.
+
+# 2024-11-06, 13.2.1
+
+- Update to the latest version of `complex.js`.
+- Fix `Index.dimension(dim)` accepting non-numeric input.
+- Fix: #3290 should validate variables names in method `Parser.set` (#3308).
+  Thanks @nkumawat34.
+
+# 2024-10-02, 13.2.0
 
 - Feat: improve performance of functions `map`, `filter` and `forEach` (#3256).
   Thanks @dvd101x.
+- Feat: improve performance of the methods `map()` and `forEach()`
+  of `DenseMatrix` (#3251). Thanks @Galm007.
 - Fix: #3253 cannot use identifiers containing special characters in function
   `derivative`.
 - Fix: improve the type definitions of `ConstantNode` to support all data 
@@ -12,6 +56,8 @@
 - Fix: #3246 function `leafCount` missing in the TypeScript definitions.
 - Fix: #3267 implicit multiplication with a negative number and unit `in`.
 - Docs: fix broken links on the Configuration page. Thanks @vassudanagunta.
+- Docs: document the syntax of `map` and `forEach` in the expression parser
+  (#3272). Thanks @dvd101x.
 
 # 2024-08-27, 13.1.1
 

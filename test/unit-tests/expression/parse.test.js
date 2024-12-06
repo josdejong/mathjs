@@ -1355,8 +1355,8 @@ describe('parse', function () {
     })
 
     it('should parse % with division', function () {
-      approxEqual(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
-      approxEqual(parseAndEval('100/50%*2'), 400) // should be treated as (100÷(50%))×2
+      approxEqual(parseAndEval('100/50%'), 0.02) // should be treated as ((100/50)%)
+      approxEqual(parseAndEval('100/50%*2'), 0.04) // should be treated as ((100/50)%))×2
       approxEqual(parseAndEval('50%/100'), 0.005)
       assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
     })
@@ -1373,6 +1373,57 @@ describe('parse', function () {
 
     it('should parse operator mod', function () {
       approxEqual(parseAndEval('8 mod 3'), 2)
+    })
+
+    it('should give equal precedence to % and * operators', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 3 * 2'), '(10 % 3) * 2')
+      approxEqual(parseAndStringifyWithParens('10 * 3 % 4'), '(10 * 3) % 4')
+    })
+
+    it('should give equal precedence to % and / operators', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 4 / 2'), '(10 % 4) / 2')
+      approxEqual(parseAndStringifyWithParens('10 / 2 % 3'), '(10 / 2) % 3')
+    })
+
+    it('should give equal precedence to mod and * operators', function () {
+      approxEqual(parseAndStringifyWithParens('8 mod 3 * 2'), '(8 mod 3) * 2')
+      approxEqual(parseAndStringifyWithParens('8 * 3 mod 5'), '(8 * 3) mod 5')
+    })
+
+    it('should give equal precedence to mod and / operators', function () {
+      approxEqual(parseAndStringifyWithParens('8 mod 3 / 2'), '(8 mod 3) / 2')
+      approxEqual(parseAndStringifyWithParens('8 / 3 mod 2'), '(8 / 3) mod 2')
+    })
+
+    it('should give equal precedence to % and .* operators', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 3 .* 2'), '(10 % 3) .* 2')
+      approxEqual(parseAndStringifyWithParens('10 .* 3 % 4'), '(10 .* 3) % 4')
+    })
+
+    it('should give equal precedence to % and ./ operators', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 4 ./ 2'), '(10 % 4) ./ 2')
+      approxEqual(parseAndStringifyWithParens('10 ./ 2 % 3'), '(10 ./ 2) % 3')
+    })
+
+    it('should give equal precedence to mod and .* operators', function () {
+      approxEqual(parseAndStringifyWithParens('8 mod 3 .* 2'), '(8 mod 3) .* 2')
+      approxEqual(parseAndStringifyWithParens('8 .* 3 mod 5'), '(8 .* 3) mod 5')
+    })
+
+    it('should give equal precedence to mod and ./ operators', function () {
+      approxEqual(parseAndStringifyWithParens('8 mod 3 ./ 2'), '(8 mod 3) ./ 2')
+      approxEqual(parseAndStringifyWithParens('8 ./ 3 mod 2'), '(8 ./ 3) mod 2')
+    })
+
+    it('should evaluate complex expressions with mixed precedence equally', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 3 * 2 + 4 / 2'), '((10 % 3) * 2) + (4 / 2)')
+      approxEqual(parseAndStringifyWithParens('8 mod 3 + 2 * 4 - 5'), '((8 mod 3) + (2 * 4)) - 5')
+      approxEqual(parseAndStringifyWithParens('12 / 4 % 2 .* 5'), '((12 / 4) % 2) .* 5')
+    })
+
+    it('should handle cases with equal precedence among all operators', function () {
+      approxEqual(parseAndStringifyWithParens('10 % 3 .* 2 ./ 2'), '((10 % 3) .* 2) ./ 2')
+      approxEqual(parseAndStringifyWithParens('10 ./ 2 % 3 * 2'), '((10 ./ 2) % 3) * 2')
     })
 
     it('should parse multiply *', function () {
@@ -1478,6 +1529,15 @@ describe('parse', function () {
       assert.strictEqual(parseAndStringifyWithParens('4 lb + 1 lb^2 / 2 lb'), '(4 lb) + ((1 (lb ^ 2)) / (2 lb))')
       assert.strictEqual(parseAndStringifyWithParens('1 m/s^2 + 1 m / 2 s^2'), '((1 m) / (s ^ 2)) + ((1 m) / (2 (s ^ 2)))')
       assert.strictEqual(parseAndStringifyWithParens('8.314 J/mol K'), '(8.314 J) / (mol K)')
+    })
+
+    it('should handle precedence with implicit multiplication, division, and the "in" operator', function () {
+      assert.strictEqual(parseAndStringifyWithParens('1/2 in'), '(1 / 2) in')
+      assert.strictEqual(parseAndStringifyWithParens('1/2 kg'), '(1 / 2) kg')
+      assert.strictEqual(parseAndStringifyWithParens('3 kg in lb'), '(3 kg) in lb')
+      assert.strictEqual(parseAndStringifyWithParens('2 m / 1 s'), '(2 m) / (1 s)')
+      assert.strictEqual(parseAndStringifyWithParens('5 / 10 in'), '(5 / 10) in')
+      assert.strictEqual(parseAndStringifyWithParens('10 lb + 1/2 lb'), '(10 lb) + ((1 / 2) lb)')
     })
 
     it('should throw an error when having an implicit multiplication between two numbers', function () {

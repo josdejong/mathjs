@@ -7,6 +7,7 @@ const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
+const fraction = math.fraction
 const log = math.log
 
 describe('log', function () {
@@ -91,6 +92,13 @@ describe('log', function () {
     approxDeepEqual(log(complex(-1, -1)), complex('0.346573590279973 - 2.356194490192345i'))
     approxDeepEqual(log(complex(-1, 1)), complex('0.346573590279973 + 2.356194490192345i'))
     approxDeepEqual(log(complex(1, 0)), complex(0, 0))
+  })
+
+  it('should return the log of a Fraction', function () {
+    approxDeepEqual(log(fraction(27, 8), fraction(9, 4)), fraction(3, 2))
+    assert.throws(() => log(fraction(27, 8), fraction(-2, 5)),
+      /Cannot implicitly convert a Fraction to BigNumber or vice versa/
+    )
   })
 
   it('should handle complex number with large imaginary part', function () {

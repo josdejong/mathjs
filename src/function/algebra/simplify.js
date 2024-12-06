@@ -7,23 +7,12 @@ import { createEmptyMap, createMap } from '../../utils/map.js'
 
 const name = 'simplify'
 const dependencies = [
-  'config',
   'typed',
   'parse',
-  'add',
-  'subtract',
-  'multiply',
-  'divide',
-  'pow',
-  'isZero',
   'equal',
   'resolve',
   'simplifyConstant',
   'simplifyCore',
-  '?fraction',
-  '?bignumber',
-  'mathWithTransform',
-  'matrix',
   'AccessorNode',
   'ArrayNode',
   'ConstantNode',
@@ -32,28 +21,18 @@ const dependencies = [
   'ObjectNode',
   'OperatorNode',
   'ParenthesisNode',
-  'SymbolNode'
+  'SymbolNode',
+  'replacer'
 ]
 
 export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   {
-    config,
     typed,
     parse,
-    add,
-    subtract,
-    multiply,
-    divide,
-    pow,
-    isZero,
     equal,
     resolve,
     simplifyConstant,
     simplifyCore,
-    fraction,
-    bignumber,
-    mathWithTransform,
-    matrix,
     AccessorNode,
     ArrayNode,
     ConstantNode,
@@ -62,7 +41,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     ObjectNode,
     OperatorNode,
     ParenthesisNode,
-    SymbolNode
+    SymbolNode,
+    replacer
   }
 ) => {
   const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction, defaultContext, realContext, positiveContext } =
@@ -199,7 +179,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   simplify.positiveContext = positiveContext
 
   function removeParens (node) {
-    return node.transform(function (node, path, parent) {
+    return node.transform(function (node) {
       return isParenthesisNode(node)
         ? removeParens(node.content)
         : node
@@ -838,7 +818,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     const uniqueSets = []
     const unique = {}
     for (let i = 0; i < sets.length; i++) {
-      const s = JSON.stringify(sets[i])
+      const s = JSON.stringify(sets[i], replacer)
       if (!unique[s]) {
         unique[s] = true
         uniqueSets.push(sets[i])

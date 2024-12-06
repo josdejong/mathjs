@@ -2,9 +2,9 @@ import { factory } from '../../utils/factory.js'
 import { logNumber } from '../../plain/number/index.js'
 
 const name = 'log'
-const dependencies = ['config', 'typed', 'divideScalar', 'Complex']
+const dependencies = ['config', 'typed', 'typeOf', 'divideScalar', 'Complex']
 
-export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, Complex }) => {
+export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, typeOf, config, divideScalar, Complex }) => {
   /**
    * Calculate the logarithm of a value.
    *
@@ -32,12 +32,12 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    *    exp, log2, log10, log1p
    *
-   * @param {number | BigNumber | Complex} x
+   * @param {number | BigNumber | Fraction | Complex} x
    *            Value for which to calculate the logarithm.
-   * @param {number | BigNumber | Complex} [base=e]
+   * @param {number | BigNumber | Fraction | Complex} [base=e]
    *            Optional base for the logarithm. If not provided, the natural
    *            logarithm of `x` is calculated.
-   * @return {number | BigNumber | Complex}
+   * @return {number | BigNumber | Fraction | Complex}
    *            Returns the logarithm of `x`
    */
   return typed(name, {
@@ -65,6 +65,15 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     'any, any': typed.referToSelf(self => (x, base) => {
       // calculate logarithm for a specified base, log(x, base)
+
+      if (typeOf(x) === 'Fraction' && typeOf(base) === 'Fraction') {
+        const result = x.log(base)
+
+        if (result !== null) {
+          return result
+        }
+      }
+
       return divideScalar(self(x), self(base))
     })
   })
