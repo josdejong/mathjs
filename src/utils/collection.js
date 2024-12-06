@@ -27,16 +27,15 @@ export function containsCollections (array) {
  */
 export function deepForEach (array, callback) {
   if (isMatrix(array)) {
-    array = array.valueOf()
+    recurse(array.valueOf())
+  } else {
+    recurse(array)
   }
-
-  for (let i = 0, ii = array.length; i < ii; i++) {
-    const value = array[i]
-
-    if (Array.isArray(value)) {
-      deepForEach(value, callback)
+  function recurse (array) {
+    if (Array.isArray(array)) {
+      array.forEach(value => recurse(value))
     } else {
-      callback(value)
+      callback(array)
     }
   }
 }
@@ -54,13 +53,28 @@ export function deepForEach (array, callback) {
  * @return {Array | Matrix} res
  */
 export function deepMap (array, callback, skipZeros) {
-  if (array && (typeof array.map === 'function')) {
-    // TODO: replace array.map with a for loop to improve performance
-    return array.map(function (x) {
-      return deepMap(x, callback, skipZeros)
-    })
+  if (skipZeros) {
+    const callbackSkip = (x) => x === 0 ? 0 : callback(x)
+    if (isMatrix(array)) {
+      return array.create(recurse(array.valueOf(), callbackSkip), array.datatype())
+    } else {
+      return recurse(array, callbackSkip)
+    }
   } else {
-    return callback(array)
+    if (isMatrix(array)) {
+      return array.create(recurse(array.valueOf(), callback), array.datatype())
+    } else {
+      return recurse(array, callback)
+    }
+  }
+  function recurse (array) {
+    if (Array.isArray(array)) {
+      return array.map(function (x) {
+        return recurse(x)
+      })
+    } else {
+      return callback(array)
+    }
   }
 }
 
