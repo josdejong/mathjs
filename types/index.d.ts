@@ -4049,7 +4049,7 @@ export interface MatrixCtor {
   new (): Matrix
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface BigNumber extends Decimal {}
 
 export interface Complex {
@@ -4243,7 +4243,7 @@ export interface UnitDefinition {
   baseName?: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface Index {}
 
 export interface PartitionedMap<T, U> {

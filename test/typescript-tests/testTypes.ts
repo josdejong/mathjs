@@ -73,7 +73,7 @@ Basic usage examples
   // functions and constants
   math.round(math.e, 3)
   math.round(100.123, 3)
-  math.atan2(3, -3) / math.pi
+  const _res = math.atan2(3, -3) / math.pi
   math.log(10000, 10)
   math.sqrt(-4)
 
@@ -1394,7 +1394,7 @@ Matrices examples
     const eigv = math.eigs(D, { eigenvectors: false })
     assert.ok(math.deepEqual(eigv.values, [1, 1]))
     //@ts-expect-error  ...verify that eigenvectors not expected to be there
-    eigv.eigenvectors
+    const _eigenvectors = eigv.eigenvectors
   }
 
   // Fourier transform and inverse
