@@ -19,8 +19,9 @@ import sylvester from 'sylvester'
 import eig from 'eigen'
 import zeros from 'zeros'
 import { all, create } from '../../lib/esm/index.js'
+import { formatTaskResult } from './utils/formatTaskResult.js'
 
-const bench = new Bench({ time: 100 })
+const bench = new Bench({ time: 10, iterations: 100 })
 const math = create(all)
 
 // fiedler matrix 25 x 25
@@ -115,12 +116,6 @@ const fiedler = [
     bench.add('matrix operations eigen-js det(A)', function () { return A.det() })
   })()
 
+  bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
   await bench.run()
-
-  console.table(bench.tasks.map(({ name, result }) => ({
-    Name: name,
-    'Ops/sec': Math.round(result?.hz),
-    'Average Time (\u00b5s)': result?.mean * 1000,
-    'Variance (\u00b5s)': result?.variance * 1000
-  })))
 })().catch(console.error)
