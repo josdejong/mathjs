@@ -43,6 +43,24 @@ new Benchmark.Suite()
   .add(pad('numberMatrix.map(abs.signatures.number)'), () => {
     numberMatrix.map(abs.signatures.number)
   })
+  .add(pad('map(array, abs + idx)'), () => {
+    map(array, (x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add(pad('genericMatrix.map(abs + idx)'), () => {
+    genericMatrix.map((x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add(pad('numberMatrix.map(abs + idx)'), () => {
+    numberMatrix.map((x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add(pad('map(array, abs + idx + arr)'), () => {
+    map(array, (x, idx, X) => abs(x) + idx[0] - idx[1] + X[0][0])
+  })
+  .add(pad('genericMatrix.map(abs + idx + matrix)'), () => {
+    genericMatrix.map((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
+  })
+  .add(pad('numberMatrix.map(abs + idx + matrix)'), () => {
+    numberMatrix.map((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
+  })
   .on('cycle', function (event) {
     console.log(String(event.target))
   })

@@ -43,6 +43,28 @@ new Benchmark.Suite()
   .add(pad('numberMatrix.forEach(abs.signatures.number)'), () => {
     numberMatrix.forEach(abs.signatures.number)
   })
+  .add(pad('genericMatrix.forEach(abs+idx)'), () => {
+    genericMatrix.forEach((x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add(pad('numberMatrix.forEach(abs+idx)'), () => {
+    numberMatrix.forEach((x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add(pad('forEach(genericMatrix, abs+idx)'), () => {
+    forEach(genericMatrix, (x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add(pad('genericMatrix.forEach(abs+idx+arr)'), () => {
+    genericMatrix.forEach((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
+  })
+  .add(pad('numberMatrix.forEach(abs+idx+arr)'), () => {
+    numberMatrix.forEach((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
+  })
+  .add(pad('forEach(genericMatrix, abs+idx+arr)'), () => {
+    forEach(genericMatrix, (x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
+  })
+  .add(pad('forEach(array, abs+idx+arr)'), () => {
+    forEach(array, (x, idx, X) => abs(x) + idx[0] - idx[1] + X[0][0])
+  })
+  .add()
   .on('cycle', function (event) {
     console.log(String(event.target))
   })

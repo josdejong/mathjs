@@ -4,6 +4,7 @@ import { format } from './string.js'
 import { DimensionError } from '../error/DimensionError.js'
 import { IndexError } from '../error/IndexError.js'
 import { deepStrictEqual } from './object.js'
+import { findNumberOfArguments } from './optimizeCallback.js'
 
 /**
  * Calculate the size of a multi dimensional array.
@@ -834,15 +835,138 @@ export function get (array, index) {
  * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
  * @returns {*} The new array with each element being the result of the callback function.
  */
-export function recurse (value, index, array, callback) {
-  if (Array.isArray(value)) {
-    return value.map(function (child, i) {
-      // we create a copy of the index array and append the new index value
-      return recurse(child, index.concat(i), array, callback)
-    })
-  } else {
-    // invoke the callback function with the right number of arguments
-    return callback(value, index, array)
+export function deepMap (value, array, callback, numberOfArguments) {
+  const size = arraySize(value)
+  const N = size.length - 1
+  switch (numberOfArguments || findNumberOfArguments(callback, array)) {
+    case 1:
+      return recurse1(value, 0)
+    case 2:
+      return recurse2(value, size.map(() => null), 0)
+    case 3:
+      return recurse3(value, size.map(() => null), 0)
+    default:
+      return recurse3(value, size.map(() => null), 0)
+  }
+
+  function recurse1 (value, depth) {
+    if (depth < N) {
+      return value.map(function (child) {
+        // we create a copy of the index array and append the new index value
+        const results = recurse1(child, depth + 1)
+        return results
+      })
+    } else {
+      // invoke the callback function with the right number of arguments
+      return value.map(v => callback(v))
+    }
+  }
+
+  function recurse2 (value, index, depth) {
+    if (depth < N) {
+      return value.map(function (child, i) {
+        // we create a copy of the index array and append the new index value
+        index[depth] = i
+        const results = recurse2(child, index, depth + 1)
+        index[depth] = null
+        return results
+      })
+    } else {
+      // invoke the callback function with the right number of arguments
+      return value.map((v, i) => {
+        index[depth] = i
+        return callback(v, index.slice())
+      })
+    }
+  }
+
+  function recurse3 (value, index, depth) {
+    if (depth < N) {
+      return value.map(function (child, i) {
+        // we create a copy of the index array and append the new index value
+        index[depth] = i
+        const results = recurse3(child, index, depth + 1)
+        index[depth] = null
+        return results
+      })
+    } else {
+      // invoke the callback function with the right number of arguments
+      return value.map((v, i) => {
+        index[depth] = i
+        return callback(v, index.slice(), array)
+      })
+    }
+  }
+}
+
+/**
+ * Recursive function to map a multi-dimensional array.
+ *
+ * @param {*} value - The current value being processed in the array.
+ * @param {Array} index - The index of the current value being processed in the array.
+ * @param {Array} array - The array being processed.
+ * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
+ * @returns {*} The new array with each element being the result of the callback function.
+ */
+export function deepForEach (value, array, callback, numberOfArguments) {
+  const size = arraySize(value)
+  const N = size.length - 1
+  switch (numberOfArguments || findNumberOfArguments(callback, array)) {
+    case 1:
+      recurse1(value, 0)
+      break
+    case 2:
+      recurse2(value, size.map(() => null), 0)
+      break
+    case 3:
+      recurse3(value, size.map(() => null), 0)
+      break
+    default:
+      recurse3(value, size.map(() => null), 0)
+      break
+  }
+
+  function recurse1 (value, depth) {
+    if (depth < N) {
+      value.forEach(function (child) {
+        recurse1(child, depth + 1)
+      })
+    } else {
+      // invoke the callback function with the right number of arguments
+      value.forEach(v => callback(v))
+    }
+  }
+
+  function recurse2 (value, index, depth) {
+    if (depth < N) {
+      value.forEach(function (child, i) {
+        index[depth] = i
+        recurse2(child, index, depth + 1)
+        index[depth] = null
+      })
+    } else {
+      // invoke the callback function with the right number of arguments
+      value.forEach((v, i) => {
+        index[depth] = i
+        callback(v, index.slice())
+      })
+    }
+  }
+
+  function recurse3 (value, index, depth) {
+    if (depth < N) {
+      value.forEach(function (child, i) {
+        index[depth] = i
+        recurse3(child, index, depth + 1)
+        index[depth] = null
+      })
+    } else {
+      // invoke the callback function with the right number of arguments
+      value.forEach((v, i) => {
+        index[depth] = i
+        callback(v, index.slice(), array)
+      })
+    }
   }
 }
 
