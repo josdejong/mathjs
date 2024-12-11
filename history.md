@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20241211-1401">2024-12-11, 14.0.1 <a href="#20241211-1401" title="Permalink">#</a></h1>
+
+- Fix: make derivative much faster (<a href="https://github.com/josdejong/mathjs/issues/3322">#3322</a>). Thanks <a href="https://github.com/paulftw">@paulftw</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3317">#3317</a> export `Fraction` type from the `fraction.js` library instead of
+  using a custom interface (<a href="https://github.com/josdejong/mathjs/issues/3330">#3330</a>). Thanks <a href="https://github.com/fchu">@fchu</a>.
+
 <h1 id="20241120-1400">2024-11-20, 14.0.0 <a href="#20241120-1400" title="Permalink">#</a></h1>
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
