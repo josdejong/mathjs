@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes
+# 2024-12-11, 14.0.1
 
 - Fix: make derivative much faster (#3322). Thanks @paulftw.
 - Fix: #3317 export `Fraction` type from the `fraction.js` library instead of
