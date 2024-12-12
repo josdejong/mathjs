@@ -1,63 +1,104 @@
-const baseKarma = require('./base-karma')
-const mochaConfig = require('../../.mocharc.json')
+const baseKarma = require('./base-karma');
+const mochaConfig = require('../../.mocharc.json');
+
 
 module.exports = function (config) {
-  const webdriverConfig = {
-    hostname: 'hub.lambdatest.com', // lambdatest hub address
-    port: 80
-  }
+  const createWebDriverConfig = (hostname) => ({
+    hostname,
+    port: 80,
+  });
+  
+  const createLauncher = (config, overrides = {}) => ({
+    base: 'WebDriver',
+    config,
+    "LT:Options": {
+    build: 'OSS',
+    name: 'mathjs',
+    video: true,
+    visual: false,
+    network: false,
+    console: false,
+    terminal: true,
+    tunnel: true,
+    user: process.env.LT_USERNAME,
+    accessKey: process.env.LT_ACCESS_KEY,
+    pseudoActivityInterval: 15000,
+    w3c: true
+  },
+  ...overrides,
+  });
 
-  const baseConfig = baseKarma(config)
+  const webdriverConfig = createWebDriverConfig('hub.lambdatest.com');
+  const mobileWebDriverConfig = createWebDriverConfig('mobile-hub.lambdatest.com');
 
-  config.set(Object.assign(baseConfig, {
-    hostname: '127.0.0.1', // hostname, where karma web server will run
+  const customLaunchers = {
+    chrome_windows: createLauncher(webdriverConfig, {
+      browserName: 'Chrome',
+      version: 'latest',
+      platform: 'Windows 11',
+    }),
+
+    firefox_windows: createLauncher(webdriverConfig, {
+      browserName: 'Firefox',
+      version: 'latest',
+      platform: 'Windows 11',
+    }),
+
+    safari_mac: createLauncher(webdriverConfig, {
+      browserName: 'Safari',
+      version: 'latest',
+      platform: 'macOS Ventura',
+      webdriverMode: true
+    }),
+
+    edge_windows: createLauncher(webdriverConfig, {
+      browserName: 'MicrosoftEdge',
+      version: 'latest',
+      platform: 'Windows 11',
+    }),
+
+    ios: createLauncher(mobileWebDriverConfig, {
+      deviceName: 'iPhone.*',
+      browserName: 'Safari',
+      appiumVersion: "1.22.3",
+      isRealMobile: true,
+      platformName: 'ios',
+    }),
+  };
+
+  const baseConfig = baseKarma(config);
+
+  config.set({
+    ...baseConfig,
+    hostname: 'localhost.lambdatest.com',
     port: 9876,
     basePath: '../..',
     frameworks: ['mocha'],
-
     client: {
       mocha: {
-        timeout: mochaConfig.timeout
-      }
+        timeout: mochaConfig.timeout,
+      },
     },
+    reporters: ['spec'],
     files: [
-      'test/browser-test-config/browser-tests.test.js'
+      'test/browser-test-config/browser-tests.test.js',
     ],
-
     plugins: [
       'karma-webpack',
       'karma-mocha',
-      'karma-webdriver-launcher'
+      'karma-webdriver-launcher',
+      'karma-spec-reporter'
     ],
-
     captureTimeout: 600000,
     retryLimit: 1,
     browserDisconnectTimeout: 90000,
     browserDisconnectTolerance: 1,
     browserNoActivityTimeout: 90000,
-
-    concurrency: 1,
-    logLevel: config.LOG_DEBUG,
-    browsers: ['Windows_Chrome'],
-    customLaunchers: {
-      Windows_Chrome: {
-        base: 'WebDriver',
-        config: webdriverConfig,
-        browserName: 'chrome',
-        version: 'latest',
-        build: 'OSS',
-        name: 'Jos MathJs',
-        video: true, // capture video for your test
-        visual: true, // capture screenshots on each step
-        network: true, // capture network logs for your test
-        console: true, // capture browser console logs
-        terminal: true,
-        user: process.env.LT_USERNAME,
-        accessKey: process.env.LT_ACCESS_KEY,
-        pseudoActivityInterval: 15000 // 5000 ms heartbeat
-      }
-    },
+    concurrency: Infinity,
+    logLevel: config.LOG_INFO,
+    browsers: Object.keys(customLaunchers),
+    customLaunchers,
     singleRun: true,
-    autoWatch: true
-  }))
-}
+    autoWatch: false,
+  });
+};
