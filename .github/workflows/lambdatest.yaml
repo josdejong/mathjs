@@ -1,4 +1,4 @@
-name: Browser testing on browser stack
+name: Browser testing on Lambdatest
 
 on:
   push:
