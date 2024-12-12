@@ -20,9 +20,4 @@ jobs:
             env:
               LT_USERNAME: ${{ secrets.LT_USERNAME }}
               LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
-          - name: Export Tunnel Logs for debugging
-            uses: actions/upload-artifact@v2
-            with:
-              name: tunnel_logs
-              path: ${{ steps.tunnel.outputs.logFileName }}
             
