@@ -76,10 +76,11 @@ module.exports = function (config) {
     frameworks: ['mocha'],
     client: {
       mocha: {
-        timeout: mochaConfig.timeout
+        timeout: mochaConfig.timeout,
+        reporter: 'dot'
       }
     },
-    reporters: ['dot'],
+    reporters: ['spec'],
     files: [
       'test/browser-test-config/browser-tests.test.js'
     ],
