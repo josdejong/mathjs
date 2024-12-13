@@ -34,7 +34,6 @@ function parseAndStringifyWithParens (expr) {
 describe('parse', function () {
   it('should parse a single expression', function () {
     approxEqual(parse('2 + 6 / 3').compile().evaluate(), 4)
-    assert.strictEqual(parse('2 + 6 / 3').compile().evaluate(), 6) // FIXME: cleanup again, this is for testing
   })
 
   it('should parse an empty expression', function () {
