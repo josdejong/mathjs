@@ -54,15 +54,16 @@ module.exports = function (config) {
       browserName: 'MicrosoftEdge',
       version: 'latest',
       platform: 'Windows 11'
-    }),
-
-    ios: createLauncher(mobileWebDriverConfig, {
-      deviceName: 'iPhone.*',
-      browserName: 'Safari',
-      appiumVersion: '1.22.3',
-      isRealMobile: true,
-      platformName: 'ios'
     })
+
+    // TODO: get testing on iphone and android working
+    // ios: createLauncher(mobileWebDriverConfig, {
+    //   deviceName: 'iPhone.*',
+    //   browserName: 'Safari',
+    //   appiumVersion: '1.22.3',
+    //   isRealMobile: true,
+    //   platformName: 'ios'
+    // })
   }
 
   const baseConfig = baseKarma(config)
