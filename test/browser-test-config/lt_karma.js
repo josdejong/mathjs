@@ -1,47 +1,46 @@
-const baseKarma = require('./base-karma');
-const mochaConfig = require('../../.mocharc.json');
-
+const baseKarma = require('./base-karma')
+const mochaConfig = require('../../.mocharc.json')
 
 module.exports = function (config) {
   const createWebDriverConfig = (hostname) => ({
     hostname,
-    port: 80,
-  });
-  
+    port: 80
+  })
+
   const createLauncher = (config, overrides = {}) => ({
     base: 'WebDriver',
     config,
-    "LT:Options": {
-    build: 'OSS',
-    name: 'mathjs',
-    video: true,
-    visual: false,
-    network: false,
-    console: false,
-    terminal: true,
-    tunnel: true,
-    user: process.env.LT_USERNAME,
-    accessKey: process.env.LT_ACCESS_KEY,
-    pseudoActivityInterval: 15000,
-    w3c: true
-  },
-  ...overrides,
-  });
+    'LT:Options': {
+      build: 'OSS',
+      name: 'mathjs',
+      video: true,
+      visual: false,
+      network: false,
+      console: false,
+      terminal: true,
+      tunnel: true,
+      user: process.env.LT_USERNAME,
+      accessKey: process.env.LT_ACCESS_KEY,
+      pseudoActivityInterval: 15000,
+      w3c: true
+    },
+    ...overrides
+  })
 
-  const webdriverConfig = createWebDriverConfig('hub.lambdatest.com');
-  const mobileWebDriverConfig = createWebDriverConfig('mobile-hub.lambdatest.com');
+  const webdriverConfig = createWebDriverConfig('hub.lambdatest.com')
+  const mobileWebDriverConfig = createWebDriverConfig('mobile-hub.lambdatest.com')
 
   const customLaunchers = {
     chrome_windows: createLauncher(webdriverConfig, {
       browserName: 'Chrome',
       version: 'latest',
-      platform: 'Windows 11',
+      platform: 'Windows 11'
     }),
 
     firefox_windows: createLauncher(webdriverConfig, {
       browserName: 'Firefox',
       version: 'latest',
-      platform: 'Windows 11',
+      platform: 'Windows 11'
     }),
 
     safari_mac: createLauncher(webdriverConfig, {
@@ -54,19 +53,19 @@ module.exports = function (config) {
     edge_windows: createLauncher(webdriverConfig, {
       browserName: 'MicrosoftEdge',
       version: 'latest',
-      platform: 'Windows 11',
+      platform: 'Windows 11'
     }),
 
     ios: createLauncher(mobileWebDriverConfig, {
       deviceName: 'iPhone.*',
       browserName: 'Safari',
-      appiumVersion: "1.22.3",
+      appiumVersion: '1.22.3',
       isRealMobile: true,
-      platformName: 'ios',
-    }),
-  };
+      platformName: 'ios'
+    })
+  }
 
-  const baseConfig = baseKarma(config);
+  const baseConfig = baseKarma(config)
 
   config.set({
     ...baseConfig,
@@ -76,12 +75,12 @@ module.exports = function (config) {
     frameworks: ['mocha'],
     client: {
       mocha: {
-        timeout: mochaConfig.timeout,
-      },
+        timeout: mochaConfig.timeout
+      }
     },
     reporters: ['spec'],
     files: [
-      'test/browser-test-config/browser-tests.test.js',
+      'test/browser-test-config/browser-tests.test.js'
     ],
     plugins: [
       'karma-webpack',
@@ -99,6 +98,6 @@ module.exports = function (config) {
     browsers: Object.keys(customLaunchers),
     customLaunchers,
     singleRun: true,
-    autoWatch: false,
-  });
-};
+    autoWatch: false
+  })
+}
