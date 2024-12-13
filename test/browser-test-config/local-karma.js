@@ -7,8 +7,6 @@ module.exports = function (config) {
   config.set(Object.assign(baseConfig, {
     browsers: ['FirefoxHeadless'],
 
-    reporters: ['mocha'],
-
     client: {
       captureConsole: true,
       mocha: {

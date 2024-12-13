@@ -79,7 +79,6 @@ module.exports = function (config) {
         timeout: mochaConfig.timeout
       }
     },
-    reporters: ['spec'],
     files: [
       'test/browser-test-config/browser-tests.test.js'
     ],
