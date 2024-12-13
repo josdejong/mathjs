@@ -20,7 +20,7 @@ jobs:
             with:
               node-version: 22.x
           - run: npm ci
-          - run: npm  run test:lambdatest
+          - run: npm run test:lambdatest
             env:
               LT_USERNAME: ${{ secrets.LT_USERNAME }}
               LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
