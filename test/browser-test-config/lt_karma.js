@@ -28,7 +28,7 @@ module.exports = function (config) {
   })
 
   const webdriverConfig = createWebDriverConfig('hub.lambdatest.com')
-  const mobileWebDriverConfig = createWebDriverConfig('mobile-hub.lambdatest.com')
+  // const mobileWebDriverConfig = createWebDriverConfig('mobile-hub.lambdatest.com')
 
   const customLaunchers = {
     chrome_windows: createLauncher(webdriverConfig, {
