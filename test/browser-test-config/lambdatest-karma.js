@@ -76,8 +76,7 @@ module.exports = function (config) {
     frameworks: ['mocha'],
     client: {
       mocha: {
-        timeout: mochaConfig.timeout,
-        reporter: 'dot'
+        timeout: mochaConfig.timeout
       }
     },
     reporters: ['spec'],
