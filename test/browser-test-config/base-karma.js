@@ -9,6 +9,10 @@ module.exports = function (config) {
       'mocha'
     ],
 
+    mochaReporter: {
+      output: 'minimal'
+    },
+
     // list of files / patterns to load in the browser
     files: [
       'test/browser-test-config/browser-tests.test.js'
