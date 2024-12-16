@@ -6,9 +6,6 @@ const genericMatrix = map(ones(10, 10, 'dense'), _ => round(random(-5, 5), 2))
 const numberMatrix = new DenseMatrix(genericMatrix, 'number')
 const array = genericMatrix.toArray()
 
-// console.log('data', array)
-// console.log('abs(data)', abs(array))npm run
-
 const bench = new Bench({ time: 100, iterations: 100 })
   .add('abs(genericMatrix)', () => {
     abs(genericMatrix)
@@ -43,22 +40,22 @@ const bench = new Bench({ time: 100, iterations: 100 })
   .add('numberMatrix.map(abs.signatures.number)', () => {
     numberMatrix.map(abs.signatures.number)
   })
-  .add(pad('map(array, abs + idx)'), () => {
+  .add('map(array, abs + idx)', () => {
     map(array, (x, idx) => abs(x) + idx[0] - idx[1])
   })
-  .add(pad('genericMatrix.map(abs + idx)'), () => {
+  .add('genericMatrix.map(abs + idx)', () => {
     genericMatrix.map((x, idx) => abs(x) + idx[0] - idx[1])
   })
-  .add(pad('numberMatrix.map(abs + idx)'), () => {
+  .add('numberMatrix.map(abs + idx)', () => {
     numberMatrix.map((x, idx) => abs(x) + idx[0] - idx[1])
   })
-  .add(pad('map(array, abs + idx + arr)'), () => {
+  .add('map(array, abs + idx + arr)', () => {
     map(array, (x, idx, X) => abs(x) + idx[0] - idx[1] + X[0][0])
   })
-  .add(pad('genericMatrix.map(abs + idx + matrix)'), () => {
+  .add('genericMatrix.map(abs + idx + matrix)', () => {
     genericMatrix.map((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
   })
-  .add(pad('numberMatrix.map(abs + idx + matrix)'), () => {
+  .add('numberMatrix.map(abs + idx + matrix)', () => {
     numberMatrix.map((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
   })
   .on('cycle', function (event) {
