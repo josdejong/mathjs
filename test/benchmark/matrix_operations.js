@@ -9,23 +9,20 @@
  * has room for improvements, it's not a fully fletched benchmark suite.
  */
 
-import Benchmark from 'benchmark'
+import { Bench } from 'tinybench'
 import det from 'ndarray-determinant'
 import gemm from 'ndarray-gemm'
 import ops from 'ndarray-ops'
 import pack from 'ndarray-pack'
 import numeric from 'numericjs'
-import padRight from 'pad-right'
 import sylvester from 'sylvester'
+import eig from 'eigen'
 import zeros from 'zeros'
 import { all, create } from '../../lib/esm/index.js'
+import { formatTaskResult } from './utils/formatTaskResult.js'
 
-const suite = new Benchmark.Suite()
+const bench = new Bench({ time: 10, iterations: 100 })
 const math = create(all)
-
-function pad (text) {
-  return padRight(text, 40, ' ')
-}
 
 // fiedler matrix 25 x 25
 const fiedler = [
@@ -56,66 +53,69 @@ const fiedler = [
   [24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 ];
 
-// mathjs
-(function () {
-  const A = math.matrix(fiedler, 'dense', 'number')
+(async function () {
+  // mathjs
+  (function () {
+    const A = math.matrix(fiedler, 'dense', 'number')
 
-  suite.add(pad('matrix operations mathjs (number) A+A'), function () { return math.add(A, A) })
-  suite.add(pad('matrix operations mathjs (number) A*A'), function () { return math.multiply(A, A) })
-  suite.add(pad('matrix operations mathjs (number) A\''), function () { return math.transpose(A) })
-  suite.add(pad('matrix operations mathjs (number) det(A)'), function () { return math.det(A) })
-})();
+    bench.add('matrix operations mathjs (number) A+A', function () { return math.add(A, A) })
+    bench.add('matrix operations mathjs (number) A*A', function () { return math.multiply(A, A) })
+    bench.add('matrix operations mathjs (number) A\'', function () { return math.transpose(A) })
+    bench.add('matrix operations mathjs (number) det(A)', function () { return math.det(A) })
+  })();
 
-// mathjs
-(function () {
-  const A = math.matrix(fiedler)
+  // mathjs
+  (function () {
+    const A = math.matrix(fiedler)
 
-  suite.add(pad('matrix operations mathjs (generic) A+A'), function () { return math.add(A, A) })
-  suite.add(pad('matrix operations mathjs (generic) A*A'), function () { return math.multiply(A, A) })
-  suite.add(pad('matrix operations mathjs (generic) A\''), function () { return math.transpose(A) })
-  suite.add(pad('matrix operations mathjs (generic) det(A)'), function () { return math.det(A) })
-})();
+    bench.add('matrix operations mathjs (generic) A+A', function () { return math.add(A, A) })
+    bench.add('matrix operations mathjs (generic) A*A', function () { return math.multiply(A, A) })
+    bench.add('matrix operations mathjs (generic) A\'', function () { return math.transpose(A) })
+    bench.add('matrix operations mathjs (generic) det(A)', function () { return math.det(A) })
+  })();
 
-// sylvester
-(function () {
-  const A = sylvester.Matrix.create(fiedler)
+  // sylvester
+  (function () {
+    const A = sylvester.Matrix.create(fiedler)
 
-  suite.add(pad('matrix operations sylvester A+A'), function () { return A.add(A) })
-  suite.add(pad('matrix operations sylvester A*A'), function () { return A.multiply(A) })
-  suite.add(pad('matrix operations sylvester A\''), function () { return A.transpose() })
-  suite.add(pad('matrix operations sylvester det(A)'), function () { return A.det() })
-})();
+    bench.add('matrix operations sylvester A+A', function () { return A.add(A) })
+    bench.add('matrix operations sylvester A*A', function () { return A.multiply(A) })
+    bench.add('matrix operations sylvester A\'', function () { return A.transpose() })
+    bench.add('matrix operations sylvester det(A)', function () { return A.det() })
+  })();
 
-// numericjs
-(function () {
-  const A = fiedler
+  // numericjs
+  (function () {
+    const A = fiedler
 
-  suite.add(pad('matrix operations numericjs A+A'), function () { return numeric.add(A, A) })
-  suite.add(pad('matrix operations numericjs A*A'), function () { return numeric.dot(A, A) })
-  suite.add(pad('matrix operations numericjs A\''), function () { return numeric.transpose(A) })
-  suite.add(pad('matrix operations numericjs det(A)'), function () { return numeric.det(A) })
-})();
+    bench.add('matrix operations numericjs A+A', function () { return numeric.add(A, A) })
+    bench.add('matrix operations numericjs A*A', function () { return numeric.dot(A, A) })
+    bench.add('matrix operations numericjs A\'', function () { return numeric.transpose(A) })
+    bench.add('matrix operations numericjs det(A)', function () { return numeric.det(A) })
+  })();
 
-// ndarray
-(function () {
-  const A = pack(fiedler)
-  const B = zeros([25, 25])
+  // ndarray
+  (function () {
+    const A = pack(fiedler)
+    const B = zeros([25, 25])
 
-  suite.add(pad('matrix operations ndarray A+A'), function () { return ops.add(B, A, A) })
-  suite.add(pad('matrix operations ndarray A*A'), function () { return gemm(B, A, A) })
-  suite.add(pad('matrix operations ndarray A\''), function () { ops.assign(B, A); return B.transpose(1, 0) })
-  suite.add(pad('matrix operations ndarray det(A)'), function () { return det(A) })
-})()
+    bench.add('matrix operations ndarray A+A', function () { return ops.add(B, A, A) })
+    bench.add('matrix operations ndarray A*A', function () { return gemm(B, A, A) })
+    bench.add('matrix operations ndarray A\'', function () { ops.assign(B, A); return B.transpose(1, 0) })
+    bench.add('matrix operations ndarray det(A)', function () { return det(A) })
+  })()
 
-const durations = []
+  // eigen-js
+  await eig.ready
+  await (function () {
+    const A = new eig.Matrix(fiedler)
 
-suite
-  .on('cycle', function (event) {
-    const benchmark = event.target
-    console.log(String(event.target))
-    durations.push(benchmark.name + ' avg duration per operation: ' + Math.round(benchmark.stats.mean * 1e6) + ' microseconds')
-  })
-  .run()
+    bench.add('matrix operations eigen-js A+A', function () { return A.matAdd(A) })
+    bench.add('matrix operations eigen-js A*A', function () { return A.matMul(A) })
+    bench.add('matrix operations eigen-js A\'', function () { return A.transpose() })
+    bench.add('matrix operations eigen-js det(A)', function () { return A.det() })
+  })()
 
-console.log()
-console.log(durations.join('\n'))
+  bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
+  await bench.run()
+})().catch(console.error)

@@ -1,6 +1,7 @@
 import assert from 'node:assert'
-import Benchmark from 'benchmark'
+import { Bench } from 'tinybench'
 import { isPrime } from '../../lib/esm/index.js'
+import { formatTaskResult } from './utils/formatTaskResult.js'
 
 const primes = [2147483647, 87178291199, 4398042316799]
 const notPrimes = [2199023255551, 8796093022207, 140737488355327]
@@ -14,7 +15,7 @@ assert(primesResults.every(result => result === true))
 assert(notPrimesResults.every(result => result === false))
 assert(carmichaelsResults.every(result => result === false))
 
-new Benchmark.Suite()
+const bench = new Bench({ time: 100, iterations: 100 })
   .add('primes', () => {
     primes.forEach(num => isPrime(num))
   })
@@ -24,9 +25,6 @@ new Benchmark.Suite()
   .add('carmichaels', () => {
     carmichaels.forEach(num => isPrime(num))
   })
-  .on('cycle', function (event) {
-    console.log(String(event.target))
-  })
-  .on('complete', function () {
-  })
-  .run()
+
+bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
+await bench.run()

@@ -1,12 +1,8 @@
 // test performance of the expression parser in node.js
 
-import Benchmark from 'benchmark'
-import padRight from 'pad-right'
-import { simplify, derivative } from '../../lib/esm/index.js'
-
-function pad (text) {
-  return padRight(text, 40, ' ')
-}
+import { Bench } from 'tinybench'
+import { derivative, simplify } from '../../lib/esm/index.js'
+import { formatTaskResult } from './utils/formatTaskResult.js'
 
 const simplifyExpr = '2 * 1 * x ^ (2 - 1)'
 const derivativeExpr = '2x^2 + log(3x) + 2x + 3'
@@ -18,19 +14,15 @@ console.log('    ' + derivative(derivativeExpr, 'x'))
 
 const results = []
 
-const suite = new Benchmark.Suite()
-suite
-  .add(pad('algebra simplify '), function () {
+const bench = new Bench({ time: 100, iterations: 100 })
+  .add('algebra simplify ', function () {
     const res = simplify(simplifyExpr)
     results.push(res)
   })
-  .add(pad('algebra derivative'), function () {
+  .add('algebra derivative', function () {
     const res = derivative(derivativeExpr, 'x')
     results.push(res)
   })
-  .on('cycle', function (event) {
-    console.log(String(event.target))
-  })
-  .on('complete', function () {
-  })
-  .run()
+
+bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
+await bench.run()

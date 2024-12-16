@@ -1,7 +1,8 @@
 // test performance of derivative
 
-import Benchmark from 'benchmark'
+import { Bench } from 'tinybench'
 import { derivative, parse } from '../../lib/esm/index.js'
+import { formatTaskResult } from './utils/formatTaskResult.js'
 
 let expr = parse('0')
 for (let i = 1; i <= 5; i++) {
@@ -12,10 +13,7 @@ for (let i = 1; i <= 5; i++) {
 
 const results = []
 
-Benchmark.options.minSamples = 100
-
-const suite = new Benchmark.Suite()
-suite
+const bench = new Bench({ time: 100, iterations: 100 })
   .add('ddf', function () {
     const res = derivative(derivative(expr, parse('x'), { simplify: false }), parse('x'), { simplify: false })
     results.splice(0, 1, res)
@@ -24,9 +22,6 @@ suite
     const res = derivative(expr, parse('x'), { simplify: false })
     results.splice(0, 1, res)
   })
-  .on('cycle', function (event) {
-    console.log(String(event.target))
-  })
-  .on('complete', function () {
-  })
-  .run()
+
+bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
+await bench.run()

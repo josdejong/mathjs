@@ -1,12 +1,8 @@
 // test performance of the expression parser in node.js
 
-import Benchmark from 'benchmark'
-import padRight from 'pad-right'
+import { Bench } from 'tinybench'
 import { polynomialRoot } from '../../lib/esm/index.js'
-
-function pad (text) {
-  return padRight(text, 40, ' ')
-}
+import { formatTaskResult } from './utils/formatTaskResult.js'
 
 const maxCoeff = 5
 function countRoots () {
@@ -31,15 +27,11 @@ console.log('polynomials (with coefficients <=', maxCoeff, ')')
 
 const results = []
 
-const suite = new Benchmark.Suite()
-suite
-  .add(pad('count roots'), function () {
+const bench = new Bench({ time: 100, iterations: 100 })
+  .add('count roots', function () {
     const res = countRoots()
     results.push(res)
   })
-  .on('cycle', function (event) {
-    console.log(String(event.target))
-  })
-  .on('complete', function () {
-  })
-  .run()
+
+bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
+await bench.run()

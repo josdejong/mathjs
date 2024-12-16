@@ -1,6 +1,6 @@
-import Benchmark from 'benchmark'
-import padRight from 'pad-right'
-import { ones, abs, DenseMatrix, map, forEach, random, round } from '../../lib/esm/index.js'
+import { Bench } from 'tinybench'
+import { abs, DenseMatrix, forEach, map, ones, random, round } from '../../lib/esm/index.js'
+import { formatTaskResult } from './utils/formatTaskResult.js'
 
 const genericMatrix = map(ones(10, 10, 'dense'), _ => round(random(-5, 5), 2))
 const numberMatrix = new DenseMatrix(genericMatrix, 'number')
@@ -9,38 +9,38 @@ const array = genericMatrix.toArray()
 // console.log('data', array)
 // console.log('abs(data)', abs(array))npm run
 
-new Benchmark.Suite()
-  .add(pad('abs(genericMatrix)'), () => {
+const bench = new Bench({ time: 100, iterations: 100 })
+  .add('abs(genericMatrix)', () => {
     abs(genericMatrix)
   })
-  .add(pad('abs(array)'), () => {
+  .add('abs(array)', () => {
     abs(array)
   })
-  .add(pad('abs(numberMatrix)'), () => {
+  .add('abs(numberMatrix)', () => {
     abs(numberMatrix)
   })
-  .add(pad('genericMatrix.forEach(abs)'), () => {
+  .add('genericMatrix.forEach(abs)', () => {
     genericMatrix.forEach(abs)
   })
-  .add(pad('numberMatrix.forEach(abs)'), () => {
+  .add('numberMatrix.forEach(abs)', () => {
     numberMatrix.forEach(abs)
   })
-  .add(pad('forEach(genericMatrix, abs)'), () => {
+  .add('forEach(genericMatrix, abs)', () => {
     forEach(genericMatrix, abs)
   })
-  .add(pad('forEach(numberMatrix, abs)'), () => {
+  .add('forEach(numberMatrix, abs)', () => {
     forEach(numberMatrix, abs)
   })
-  .add(pad('forEach(array, abs)'), () => {
+  .add('forEach(array, abs)', () => {
     forEach(array, abs)
   })
-  .add(pad('forEach(array, abs.signatures.number)'), () => {
+  .add('forEach(array, abs.signatures.number)', () => {
     forEach(array, abs.signatures.number)
   })
-  .add(pad('genericMatrix.forEach(abs.signatures.number)'), () => {
+  .add('genericMatrix.forEach(abs.signatures.number)', () => {
     genericMatrix.forEach(abs.signatures.number)
   })
-  .add(pad('numberMatrix.forEach(abs.signatures.number)'), () => {
+  .add('numberMatrix.forEach(abs.signatures.number)', () => {
     numberMatrix.forEach(abs.signatures.number)
   })
   .add(pad('genericMatrix.forEach(abs+idx)'), () => {
@@ -72,6 +72,5 @@ new Benchmark.Suite()
   })
   .run()
 
-function pad (text) {
-  return padRight(text, 45, ' ')
-}
+bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
+await bench.run()
