@@ -79,7 +79,7 @@ module.exports = function (config) {
         timeout: mochaConfig.timeout
       }
     },
-    reporters: ['progress'],
+    reporters: ['text-summary'],
     files: [
       'test/browser-test-config/browser-tests.test.js'
     ],
