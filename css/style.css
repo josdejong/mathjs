@@ -154,6 +154,7 @@ div.like {
   max-width: 100%;
   height: 42px;
   margin-right: 10px;
+  display: flex;
 }
 
 div.like.github {
@@ -162,6 +163,15 @@ div.like.github {
 
 div.like.linkedin {
   margin-top: -3px;
+}
+
+div.like .spacing {
+  flex: 1;
+}
+
+div.like .sponsor {
+  display: flex;
+  gap: 10px;
 }
 
 #footer {
