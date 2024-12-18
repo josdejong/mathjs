@@ -13,7 +13,7 @@ module.exports = function (config) {
     'LT:Options': {
       build: 'OSS',
       name: 'mathjs',
-      video: true,
+      video: false,
       visual: false,
       network: false,
       console: false,
@@ -79,7 +79,7 @@ module.exports = function (config) {
         timeout: mochaConfig.timeout
       }
     },
-    reporters: ['spec'],
+    reporters: ['progress'],
     files: [
       'test/browser-test-config/browser-tests.test.js'
     ],
