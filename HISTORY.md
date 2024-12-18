@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 14.0.1
+
+- Docs: fixed description of `sign` in the embedded docs (#3338). 
+  Thanks @witer33.
+
 # 2024-12-11, 14.0.1
 
 - Fix: make derivative much faster (#3322). Thanks @paulftw.
