@@ -165,11 +165,11 @@ div.like.linkedin {
   margin-top: -3px;
 }
 
-div.like .spacing {
+div.spacing {
   flex: 1;
 }
 
-div.like .sponsor {
+div.sponsor {
   display: flex;
   gap: 10px;
 }
