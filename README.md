@@ -168,9 +168,9 @@ Additionally, the tests can be run on FireFox using [headless mode](https://deve
 
     npm run test:browser
 
-To run the tests remotely on BrowserStack, first set the environment variables `BROWSER_STACK_USERNAME` and `BROWSER_STACK_ACCESS_KEY` with your username and access key and then execute:
+To run the tests remotely on LambdaTest, first set the environment variables `LT_USERNAME` and `LT_ACCESS_KEY` with your username and access key and then execute:
 
-    npm run test:browserstack
+    npm run test:lambdatest
 
 You can separately run the code linter, though it is also executed with `npm test`:
 
@@ -191,11 +191,11 @@ To see the coverage results, open the generated report in your browser:
 
 ### Continuous integration testing
 
-Continuous integration tests are run on [Github Actions](https://github.com/josdejong/mathjs/actions) and [BrowserStack](https://www.browserstack.com) every time a commit is pushed to github. Github Actions runs the tests for different versions of node.js, and BrowserStack runs the tests on all major browsers.
+Continuous integration tests are run on [Github Actions](https://github.com/josdejong/mathjs/actions) and [LambdaTest](https://www.lambdatest.com) every time a commit is pushed to github. Github Actions runs the tests for different versions of node.js, and LambdaTest runs the tests on all major browsers.
 
-[![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)](https://www.browserstack.com)
+[![LambdaTest](https://raw.github.com/josdejong/mathjs/master/misc/lambdatest.svg)](https://www.lambdatest.com)
 
-Thanks Github Actions and BrowserStack for the generous free hosting of this open source project!
+Thanks, GitHub Actions and LambdaTest for the generous free hosting of this open source project!
 
 ## License
 

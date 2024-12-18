@@ -21,7 +21,6 @@ module.exports = function (config) {
     ],
 
     plugins: [
-      'karma-browserstack-launcher',
       'karma-webpack',
       'karma-mocha',
       'karma-mocha-reporter',
