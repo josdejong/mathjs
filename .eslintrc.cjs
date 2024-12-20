@@ -17,7 +17,23 @@ module.exports = {
       files: ['*.js', '*.cjs', '*.mjs'],
       extends: [
         'standard'
-      ]
+      ],
+      rules: {
+        indent: ['error', 2, { SwitchCase: 1 }],
+        semi: ['error', 'always'],
+        quotes: ['error', 'single', { avoidEscape: true }],
+        'comma-spacing': 'error',
+        'object-curly-spacing': ['error', 'always'],
+        'space-before-function-paren': ['error', 'never'],
+        'no-console': 'error',
+        'no-unused-vars': ['error', { args: 'after-used', ignoreRestSiblings: true }],
+        'no-empty-function': 'error',
+        'brace-style': ['error', '1tbs', { allowSingleLine: true }],
+        'keyword-spacing': 'error',
+        'spaced-comment': ['error', 'always'],
+        'no-else-return': 'error'
+      }
+
     },
     {
       files: ['*.test.js'],
@@ -53,4 +69,4 @@ module.exports = {
       }
     }
   ]
-}
+};
