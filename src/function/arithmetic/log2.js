@@ -41,6 +41,16 @@ export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
 
+    bigint: function (x) {
+      if (x > 0 || config.predictable) {
+        if (x <= 0) return NaN
+        const s = x.toString(16)
+        const s15 = s.substring(0, 15)
+        return 4 * (s.length - s15.length) + log2Number(Number('0x' + s15))
+      }
+      return _log2Complex(new Complex(x.toNumber(), 0))
+    },
+
     Complex: _log2Complex,
 
     BigNumber: function (x) {

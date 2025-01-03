@@ -3,6 +3,7 @@ import math from '../../../../src/defaultInstance.js'
 const BigNumber = math.BigNumber
 const Complex = math.Complex
 const DenseMatrix = math.DenseMatrix
+const fraction = math.fraction
 const min = math.min
 
 describe('min', function () {
@@ -97,6 +98,16 @@ describe('min', function () {
     assert(isNaN(min([1, 3, NaN])))
     assert(isNaN(min([NaN, NaN, NaN])))
     assert(isNaN(min(NaN, NaN, NaN)))
+  })
+
+  it('should return the smallest of mixed types', function () {
+    assert.deepStrictEqual(min(1n, 3, new BigNumber(7), fraction(5, 4)), 1n)
+    assert.deepStrictEqual(min(3n, 1, new BigNumber(7), fraction(5, 4)), 1)
+    const big1 = new BigNumber(1)
+    assert.deepStrictEqual(min(3n, 7, big1, fraction(5, 4)), big1)
+    const threeq = fraction(3, 4)
+    assert.deepStrictEqual(min(3n, 7, new BigNumber(1.25), threeq), threeq)
+    assert.strictEqual(min(3n, 7, big1, threeq, -Infinity), -Infinity)
   })
 
   it('should throw an error when called multiple arrays or matrices', function () {

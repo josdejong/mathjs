@@ -4,6 +4,7 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const complex = math.complex
+const fraction = math.fraction
 const matrix = math.matrix
 const sparse = math.sparse
 const unit = math.unit
@@ -98,19 +99,24 @@ describe('smaller', function () {
   })
 
   it('should compare two fractions', function () {
-    assert.strictEqual(smaller(math.fraction(3), math.fraction(2)).valueOf(), false)
-    assert.strictEqual(smaller(math.fraction(2), math.fraction(3)).valueOf(), true)
-    assert.strictEqual(smaller(math.fraction(3), math.fraction(3)).valueOf(), false)
+    assert.strictEqual(smaller(fraction(3), fraction(2)).valueOf(), false)
+    assert.strictEqual(smaller(fraction(2), fraction(3)).valueOf(), true)
+    assert.strictEqual(smaller(fraction(3), fraction(3)).valueOf(), false)
   })
 
   it('should compare mixed fractions and numbers', function () {
-    assert.strictEqual(smaller(1, math.fraction(1, 3)), false)
-    assert.strictEqual(smaller(math.fraction(2), 2), false)
+    assert.strictEqual(smaller(1, fraction(1, 3)), false)
+    assert.strictEqual(smaller(fraction(2), 2), false)
   })
 
   it('should compare mixed fractions and bigints', function () {
-    assert.strictEqual(smaller(1n, math.fraction(1, 3)), false)
-    assert.strictEqual(smaller(math.fraction(2), 2n), false)
+    assert.strictEqual(smaller(1n, fraction(1, 3)), false)
+    assert.strictEqual(smaller(fraction(2), 2n), false)
+  })
+
+  it('should compare mixed fractions and bignumbers', function () {
+    assert.strictEqual(smaller(bignumber(1), fraction(1, 3)), false)
+    assert.strictEqual(smaller(fraction(2), bignumber(2)), false)
   })
 
   it('should compare two measures of the same unit correctly', function () {

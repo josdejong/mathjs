@@ -3,6 +3,7 @@ import { logNumber } from '../../plain/number/index.js'
 
 const name = 'log'
 const dependencies = ['config', 'typed', 'typeOf', 'divideScalar', 'Complex']
+const nlg16 = Math.log(16)
 
 export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, typeOf, config, divideScalar, Complex }) => {
   /**
@@ -48,6 +49,16 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, t
         // negative value -> complex value computation
         return new Complex(x, 0).log()
       }
+    },
+
+    bigint: function (x) {
+      if (x > 0 || config.predictable) {
+        if (x <= 0) return NaN
+        const s = x.toString(16)
+        const s15 = s.substring(0, 15)
+        return nlg16 * (s.length - s15.length) + logNumber(Number('0x' + s15))
+      }
+      return new Complex(x.toNumber(), 0).log()
     },
 
     Complex: function (x) {

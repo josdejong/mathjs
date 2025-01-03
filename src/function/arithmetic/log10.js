@@ -4,6 +4,7 @@ import { log10Number } from '../../plain/number/index.js'
 
 const name = 'log10'
 const dependencies = ['typed', 'config', 'Complex']
+const log16 = log10Number(16)
 
 export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
   /**
@@ -39,6 +40,16 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         // negative value -> complex value computation
         return new Complex(x, 0).log().div(Math.LN10)
       }
+    },
+
+    bigint: function (x) {
+      if (x > 0 || config.predictable) {
+        if (x <= 0) return NaN
+        const s = x.toString(16)
+        const s15 = s.substring(0, 15)
+        return log16 * (s.length - s15.length) + log10Number(Number('0x' + s15))
+      }
+      return new Complex(x.toNumber(), 0).log().div(Math.LN10)
     },
 
     Complex: function (x) {

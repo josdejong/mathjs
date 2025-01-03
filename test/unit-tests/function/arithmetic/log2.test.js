@@ -81,6 +81,11 @@ describe('log2', function () {
     approxDeepEqual(log2(complex(1, 0)), complex(0, 0))
   })
 
+  it('should return the log base two of a large bigint', function () {
+    const two70 = 2n ** 70n
+    assert.strictEqual(log2(two70), 70)
+  })
+
   it('should throw an error when used on a unit', function () {
     assert.throws(function () { log2(unit('5cm')) })
   })

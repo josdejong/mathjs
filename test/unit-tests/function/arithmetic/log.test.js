@@ -112,6 +112,11 @@ describe('log', function () {
     }
   })
 
+  it('should return the log of a large bigint', function () {
+    const ten16 = 10000000000000000n
+    approxDeepEqual(log(ten16), 16 * log(10n))
+  })
+
   it('should throw an error when used on a unit', function () {
     assert.throws(function () { log(unit('5cm')) })
   })
