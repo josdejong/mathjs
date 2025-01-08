@@ -48,8 +48,16 @@ export function isIntegerStr (str) {
  * @returns {'number' | 'BigNumber' | 'bigint' | 'Fraction'}
  */
 export function safeNumberType (numberStr, config) {
-  if (config.number === 'bigint' && !isIntegerStr(numberStr)) {
-    return config.numberFallback
+  if (config.number === 'bigint') {
+    const canParseIntoBigint =
+      isIntegerStr(numberStr) ||
+      numberStr.startsWith('0x') ||
+      numberStr.startsWith('0b') ||
+      numberStr.startsWith('0o')
+
+    if (!canParseIntoBigint) {
+      return config.numberFallback
+    }
   }
 
   return config.number
