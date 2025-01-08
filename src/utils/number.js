@@ -20,13 +20,39 @@ export function isInteger (value) {
 }
 
 /**
- * Check if a string contains an integer
+ * Check if a string contains an integer number like "123" and "-123"
  * @param {string} str
  * @return {boolean} isInteger
  */
 export function isIntegerStr (str) {
-  // regex matching strings like "123" and "-123"
   return /^-?\d+$/.test(str)
+}
+
+/**
+ * Check if a string contains a hex number like "0xA2"
+ * @param {string} str
+ * @return {boolean} isInteger
+ */
+export function isHexStr (str) {
+  return /^0x[0-9A-Fa-f]+$/.test(str)
+}
+
+/**
+ * Check if a string contains a binary number like "0b1011"
+ * @param {string} str
+ * @return {boolean} isInteger
+ */
+export function isBinStr (str) {
+  return /^0b[01]+$/.test(str)
+}
+
+/**
+ * Check if a string contains an octal number like "0o70"
+ * @param {string} str
+ * @return {boolean} isInteger
+ */
+export function isOctStr (str) {
+  return /^0o[0-7]+$/.test(str)
 }
 
 /**
@@ -51,9 +77,9 @@ export function safeNumberType (numberStr, config) {
   if (config.number === 'bigint') {
     const canParseIntoBigint =
       isIntegerStr(numberStr) ||
-      numberStr.startsWith('0x') ||
-      numberStr.startsWith('0b') ||
-      numberStr.startsWith('0o')
+      isHexStr(numberStr) ||
+      isBinStr(numberStr) ||
+      isOctStr(numberStr)
 
     if (!canParseIntoBigint) {
       return config.numberFallback
