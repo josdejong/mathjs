@@ -146,12 +146,12 @@ function checkExpectation (want, got) {
     return approxEqual(got, want, 1e-9)
   }
   if (
-      typeof want === 'string'
-      && typeof got === 'string'
-      && want.endsWith('Error')
-      && got.startsWith(want)
+    typeof want === 'string' &&
+    typeof got === 'string' &&
+    want.endsWith('Error') &&
+    got.startsWith(want)
   ) {
-      return true  // we obtained the expected error type
+    return true // we obtained the expected error type
   }
   if (typeof want !== 'undefined') {
     return approxDeepEqual(got, want)
