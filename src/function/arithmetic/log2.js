@@ -1,6 +1,7 @@
-import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { log2Number } from '../../plain/number/index.js'
+import { promoteLogarithm } from '../../utils/bigint.js'
+import { deepMap } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'log2'
 const dependencies = ['typed', 'config', 'Complex']
@@ -31,25 +32,21 @@ export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the 2-base logarithm of `x`
    */
+  function complexLog2Number (x) {
+    return _log2Complex(new Complex(x, 0))
+  }
+
   return typed(name, {
     number: function (x) {
       if (x >= 0 || config.predictable) {
         return log2Number(x)
       } else {
         // negative value -> complex value computation
-        return _log2Complex(new Complex(x, 0))
+        return complexLog2Number(x)
       }
     },
 
-    bigint: function (x) {
-      if (x > 0 || config.predictable) {
-        if (x <= 0) return NaN
-        const s = x.toString(16)
-        const s15 = s.substring(0, 15)
-        return 4 * (s.length - s15.length) + log2Number(Number('0x' + s15))
-      }
-      return _log2Complex(new Complex(x.toNumber(), 0))
-    },
+    bigint: promoteLogarithm(4, log2Number, config, complexLog2Number),
 
     Complex: _log2Complex,
 
@@ -58,7 +55,7 @@ export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         return x.log(2)
       } else {
         // downgrade to number, return Complex valued result
-        return _log2Complex(new Complex(x.toNumber(), 0))
+        return complexLog2Number(x.toNumber())
       }
     },
 

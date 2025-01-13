@@ -18,12 +18,6 @@ const dependencies = [
   'SparseMatrix'
 ]
 
-function bigLarger (config) {
-  return function (x, y) {
-    return x.gt(y) && !bigNearlyEqual(x, y, config.relTol, config.absTol)
-  }
-}
-
 export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, bignumber, matrix, DenseMatrix, concat, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
@@ -62,7 +56,9 @@ export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
    */
-  const bignumLarger = bigLarger(config)
+  function bignumLarger (x, y) {
+    return x.gt(y) && !bigNearlyEqual(x, y, config.relTol, config.absTol)
+  }
 
   return typed(
     name,

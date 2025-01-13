@@ -1,4 +1,5 @@
 import { factory } from '../../utils/factory.js'
+import { promoteLogarithm } from '../../utils/bigint.js'
 import { logNumber } from '../../plain/number/index.js'
 
 const name = 'log'
@@ -41,36 +42,34 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, t
    * @return {number | BigNumber | Fraction | Complex}
    *            Returns the logarithm of `x`
    */
+  function complexLog (c) {
+    return c.log()
+  }
+
+  function complexLogNumber (x) {
+    return complexLog(new Complex(x, 0))
+  }
+
   return typed(name, {
     number: function (x) {
       if (x >= 0 || config.predictable) {
         return logNumber(x)
       } else {
         // negative value -> complex value computation
-        return new Complex(x, 0).log()
+        return complexLogNumber(x)
       }
     },
 
-    bigint: function (x) {
-      if (x > 0 || config.predictable) {
-        if (x <= 0) return NaN
-        const s = x.toString(16)
-        const s15 = s.substring(0, 15)
-        return nlg16 * (s.length - s15.length) + logNumber(Number('0x' + s15))
-      }
-      return new Complex(x.toNumber(), 0).log()
-    },
+    bigint: promoteLogarithm(nlg16, logNumber, config, complexLogNumber),
 
-    Complex: function (x) {
-      return x.log()
-    },
+    Complex: complexLog,
 
     BigNumber: function (x) {
       if (!x.isNegative() || config.predictable) {
         return x.ln()
       } else {
         // downgrade to number, return Complex valued result
-        return new Complex(x.toNumber(), 0).log()
+        return complexLogNumber(x.toNumber())
       }
     },
 

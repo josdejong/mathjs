@@ -91,7 +91,7 @@ function extractValue (spec) {
 
 const knownProblems = new Set([
   'isZero', 'isPositive', 'isNumeric', 'isNegative', 'isNaN',
-  'isInteger', 'hasNumericValue', 'clone', 'print', 'hex', 'format', 'to', 'sin',
+  'hasNumericValue', 'clone', 'hex', 'format', 'to', 'sin',
   'cos', 'atan2', 'atan', 'asin', 'asec', 'acsc', 'acoth', 'acot', 'max',
   'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
   'random', 'pickRandom', 'kldivergence', 'xor', 'or', 'not', 'and', 'distance',
@@ -144,6 +144,14 @@ function checkExpectation (want, got) {
       console.log(`  Note: return value ${got} not exactly as expected: ${want}`)
     }
     return approxEqual(got, want, 1e-9)
+  }
+  if (
+      typeof want === 'string'
+      && typeof got === 'string'
+      && want.endsWith('Error')
+      && got.startsWith(want)
+  ) {
+      return true  // we obtained the expected error type
   }
   if (typeof want !== 'undefined') {
     return approxDeepEqual(got, want)
