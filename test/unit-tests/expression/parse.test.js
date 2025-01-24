@@ -2248,6 +2248,12 @@ describe('parse', function () {
       assert.strictEqual(bigmath.evaluate('-2.3'), -2.3)
     })
 
+    it('should parse hex, bin, oct numbers as bigint', function () {
+      assert.strictEqual(bigmath.evaluate('0xA2'), 162n)
+      assert.strictEqual(bigmath.evaluate('0b1011'), 11n)
+      assert.strictEqual(bigmath.evaluate('0o70'), 56n)
+    })
+
     it('should fallback on the configured numberFallback when parsing as bigint', function () {
       const bigmathFallback = math.create({
         number: 'bigint',
