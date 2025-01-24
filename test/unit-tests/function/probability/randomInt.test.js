@@ -19,6 +19,27 @@ describe('randomInt', function () {
     assertUniformDistributionInt(picked, -15, -5)
   })
 
+  it('when called with no arguments, should flip a coin', function () {
+    const picked = Array.from({ length: 10000 }, () => randomInt())
+    assertUniformDistributionInt(picked, 0, 2)
+  })
+
+  it('should return a bigint given bigint limits', function () {
+    let picked = randomInt(1n, 7n)
+    assert.strictEqual(typeof picked, 'bigint')
+    assert(picked >= 1n)
+    assert(picked < 7n)
+    const wayBig = 10000000000000000n
+    picked = randomInt(wayBig, wayBig + 6n)
+    assert.strictEqual(typeof picked, 'bigint')
+    assert(picked >= wayBig)
+    assert(picked < wayBig + 6n)
+    picked = randomInt(1n, wayBig)
+    assert.strictEqual(typeof picked, 'bigint')
+    assert(picked >= 1n)
+    assert(picked < wayBig)
+  })
+
   it('should pick uniformly distributed random array, with elements in [min, max)', function () {
     const picked = []
     const matrices = []

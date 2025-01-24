@@ -1,9 +1,11 @@
-import { factory } from '../../utils/factory.js'
-import { deepMap } from '../../utils/collection.js'
 import { log10Number } from '../../plain/number/index.js'
+import { promoteLogarithm } from '../../utils/bigint.js'
+import { deepMap } from '../../utils/collection.js'
+import { factory } from '../../utils/factory.js'
 
 const name = 'log10'
 const dependencies = ['typed', 'config', 'Complex']
+const log16 = log10Number(16)
 
 export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
   /**
@@ -31,26 +33,34 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the 10-base logarithm of `x`
    */
+
+  function complexLog (c) {
+    return c.log().div(Math.LN10)
+  }
+
+  function complexLogNumber (x) {
+    return complexLog(new Complex(x, 0))
+  }
   return typed(name, {
     number: function (x) {
       if (x >= 0 || config.predictable) {
         return log10Number(x)
       } else {
         // negative value -> complex value computation
-        return new Complex(x, 0).log().div(Math.LN10)
+        return complexLogNumber(x)
       }
     },
 
-    Complex: function (x) {
-      return new Complex(x).log().div(Math.LN10)
-    },
+    bigint: promoteLogarithm(log16, log10Number, config, complexLogNumber),
+
+    Complex: complexLog,
 
     BigNumber: function (x) {
       if (!x.isNegative() || config.predictable) {
         return x.log()
       } else {
         // downgrade to number, return Complex valued result
-        return new Complex(x.toNumber(), 0).log().div(Math.LN10)
+        return complexLogNumber(x.toNumber())
       }
     },
 
