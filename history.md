@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20250124-1410">2025-01-24, 14.1.0 <a href="#20250124-1410" title="Permalink">#</a></h1>
+
+- Feat: implement `bigint` support in functions `log`, `log2`, `log10`, 
+  `larger`, `smaller`, `max`, `min` (<a href="https://github.com/josdejong/mathjs/issues/3345">#3345</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3342">#3342</a> hexadecimal input not turned into a `bigint` (<a href="https://github.com/josdejong/mathjs/issues/3348">#3348</a>).
+- Fix `randomInt()` not working (<a href="https://github.com/josdejong/mathjs/issues/3345">#3345</a>).
+- Docs: fixed description of `sign` in the embedded docs (<a href="https://github.com/josdejong/mathjs/issues/3338">#3338</a>). 
+  Thanks <a href="https://github.com/witer33">@witer33</a>.
+
 <h1 id="20241211-1401">2024-12-11, 14.0.1 <a href="#20241211-1401" title="Permalink">#</a></h1>
 
 - Fix: make derivative much faster (<a href="https://github.com/josdejong/mathjs/issues/3322">#3322</a>). Thanks <a href="https://github.com/paulftw">@paulftw</a>.

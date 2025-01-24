@@ -13,7 +13,7 @@ using a uniform distribution.
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.randomInt()                // generate a random integer between 0 and 1
+math.randomInt()                // generate either 0 or 1, randomly
 math.randomInt(max)             // generate a random integer between 0 and max
 math.randomInt(min, max)        // generate a random integer between min and max
 math.randomInt(size)            // generate a matrix with random integer between 0 and 1
