@@ -63,7 +63,9 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
       if (isNode(value)) {
         const nextWithin = new Set(within)
         nextWithin.add(node.name)
-        return _resolve(value, scope, nextWithin)
+        // It doesn't make sense to preserve the range property while substituting nodes. Drop it by cloning deeply
+        // the node.
+        return _resolve(value.cloneDeep(), scope, nextWithin)
       } else if (typeof value === 'number') {
         return parse(String(value))
       } else if (value !== undefined) {

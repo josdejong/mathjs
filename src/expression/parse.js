@@ -682,10 +682,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.token === '=') {
       if (isSymbolNode(node)) {
         // parse a variable assignment like 'a = 2/3'
-        name = node.name
         getTokenSkipNewline(state)
         value = parseAssignment(state)
-        return new AssignmentNode(new SymbolNode(name), value)
+        return new AssignmentNode(node, value)
       } else if (isAccessorNode(node)) {
         // parse a matrix subset assignment like 'A[1,2] = 4'
         getTokenSkipNewline(state)
@@ -1323,15 +1322,16 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.tokenType === TOKENTYPE.SYMBOL ||
         (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
       name = state.token
+      const range = [state.index - name.length, state.index]
 
       getToken(state)
 
       if (hasOwnProperty(CONSTANTS, name)) { // true, false, null, ...
-        node = new ConstantNode(CONSTANTS[name])
+        node = new ConstantNode(CONSTANTS[name], range)
       } else if (NUMERIC_CONSTANTS.includes(name)) { // NaN, Infinity
-        node = new ConstantNode(numeric(name, 'number'))
+        node = new ConstantNode(numeric(name, 'number'), range)
       } else {
-        node = new SymbolNode(name)
+        node = new SymbolNode(name, range)
       }
 
       // parse function parameters and matrix index
@@ -1424,7 +1424,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           throw createSyntaxError(state, 'Property name expected after dot')
         }
 
-        params.push(new ConstantNode(state.token))
+        const nodeRange = [state.index - state.token.length - 1, state.index]
+        params.push(new ConstantNode(state.token, nodeRange))
         getToken(state)
 
         const dotNotation = true
@@ -1446,8 +1447,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.token === '"' || state.token === "'") {
       str = parseStringToken(state, state.token)
 
+      const range = [state.index - str.length - 1, state.index]
       // create constant
-      node = new ConstantNode(str)
+      node = new ConstantNode(str, range)
 
       // parse index parameters
       node = parseAccessors(state, node)
@@ -1662,12 +1664,13 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.tokenType === TOKENTYPE.NUMBER) {
       // this is a number
       numberStr = state.token
+      const range = [state.index - numberStr.length, state.index]
       getToken(state)
 
       const numericType = safeNumberType(numberStr, config)
       const value = numeric(numberStr, numericType)
 
-      return new ConstantNode(value)
+      return new ConstantNode(value, range)
     }
 
     return parseParentheses(state)

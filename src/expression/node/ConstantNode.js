@@ -19,12 +19,14 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      *     new ConstantNode('hello')
      *
      * @param {*} value    Value can be any type (number, BigNumber, bigint, string, ...)
+     * @param {number[]} range Start and end index of the parsed value in the original string
      * @constructor ConstantNode
      * @extends {Node}
      */
-    constructor (value) {
+    constructor (value, range) {
       super()
       this.value = value
+      this.range = range
     }
 
     static name = name
@@ -75,7 +77,7 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @return {ConstantNode}
      */
     clone () {
-      return new ConstantNode(this.value)
+      return new ConstantNode(this.value, this.range)
     }
 
     /**
@@ -120,18 +122,22 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @returns {Object}
      */
     toJSON () {
-      return { mathjs: name, value: this.value }
+      return {
+        mathjs: name,
+        value: this.value,
+        ...(this.range && { range: this.range })
+      }
     }
 
     /**
      * Instantiate a ConstantNode from its JSON representation
      * @param {Object} json  An object structured like
-     *                       `{"mathjs": "SymbolNode", value: 2.3}`,
+     *                       `{"mathjs": "SymbolNode", value: 2.3, range: [0, 3]}`,
      *                       where mathjs is optional
      * @returns {ConstantNode}
      */
     static fromJSON (json) {
-      return new ConstantNode(json.value)
+      return new ConstantNode(json.value, json.range)
     }
 
     /**

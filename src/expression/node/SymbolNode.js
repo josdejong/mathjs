@@ -26,9 +26,10 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @extends {Node}
      * A symbol node can hold and resolve a symbol
      * @param {string} name
+     * @param {number[]} range Start and end index of the parsed value in the original string
      * @extends {Node}
      */
-    constructor (name) {
+    constructor (name, range) {
       super()
       // validate input
       if (typeof name !== 'string') {
@@ -36,6 +37,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
       }
 
       this.name = name
+      this.range = range
     }
 
     get type () { return 'SymbolNode' }
@@ -114,7 +116,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @return {SymbolNode}
      */
     clone () {
-      return new SymbolNode(this.name)
+      return new SymbolNode(this.name, this.range)
     }
 
     /**
@@ -163,19 +165,20 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
     toJSON () {
       return {
         mathjs: 'SymbolNode',
-        name: this.name
+        name: this.name,
+        ...(this.range && { range: this.range })
       }
     }
 
     /**
      * Instantiate a SymbolNode from its JSON representation
      * @param {Object} json  An object structured like
-     *                       `{"mathjs": "SymbolNode", name: "x"}`,
+     *                       `{"mathjs": "SymbolNode", name: "x", range: [1, 2]}`,
      *                       where mathjs is optional
      * @returns {SymbolNode}
      */
     static fromJSON (json) {
-      return new SymbolNode(json.name)
+      return new SymbolNode(json.name, json.range)
     }
 
     /**

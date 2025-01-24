@@ -45,7 +45,7 @@ describe('resolve', function () {
 
   it('should operate directly on strings', function () {
     const collapsingScope = { x: math.parse('y'), y: math.parse('z') }
-    assert.deepStrictEqual(math.resolve('x+y', { x: 1 }), math.parse('1 + y'))
+    assert.deepStrictEqual(math.resolve('x + y', { x: 1 }), math.parse('1 + y'))
     assert.deepStrictEqual(
       math.resolve('x + y', collapsingScope),
       math.parse('z + z'))
@@ -59,7 +59,7 @@ describe('resolve', function () {
       math.resolve(math.parse('x+y'), new Map([['x', 1]])).toString(), '1 + y'
     ) // direct
     assert.deepStrictEqual(
-      math.resolve('x+y', new Map([['x', 1]])), math.parse('1 + y'))
+      math.resolve('x + y', new Map([['x', 1]])), math.parse('1 + y'))
     simplifyAndCompare('x+y', 'x+y', new Map()) // operator
     simplifyAndCompare('x+y', 'y+1', new Map([['x', 1]]))
     simplifyAndCompare('x+y', 'y+1', new Map([['x', math.parse('1')]]))
