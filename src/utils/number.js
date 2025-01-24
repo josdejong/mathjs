@@ -20,12 +20,11 @@ export function isInteger (value) {
 }
 
 /**
- * Check if a string contains an integer
+ * Check if a string contains an integer number like "123" and "-123"
  * @param {string} str
  * @return {boolean} isInteger
  */
 export function isIntegerStr (str) {
-  // regex matching strings like "123" and "-123"
   return /^-?\d+$/.test(str)
 }
 
@@ -48,8 +47,12 @@ export function isIntegerStr (str) {
  * @returns {'number' | 'BigNumber' | 'bigint' | 'Fraction'}
  */
 export function safeNumberType (numberStr, config) {
-  if (config.number === 'bigint' && !isIntegerStr(numberStr)) {
-    return config.numberFallback
+  if (config.number === 'bigint') {
+    try {
+      BigInt(numberStr)
+    } catch {
+      return config.numberFallback
+    }
   }
 
   return config.number
