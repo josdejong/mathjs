@@ -29,7 +29,7 @@ export const createPrint = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    *       user: {
    *         name: 'Mary',
    *       },
-   *       date: new Date(2013, 2, 23).toISOString().substring(0, 10)
+   *       date: '2013-03-23'
    *     })
    *
    *     // the following outputs: 'My favorite fruits are apples and bananas !'
