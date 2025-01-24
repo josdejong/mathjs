@@ -472,7 +472,34 @@ export function flatten (array) {
     // if not an array, return as is
     return array
   }
-  return array.flat(Infinity)
+  if (typeof Array.prototype.flat === 'function') {
+    return array.flat(Infinity)
+  } else {
+    // TODO: once Array.prototype.flat is supported in all browsers, remove this and the _flatten function
+    return _flatten(array)
+  }
+
+  function _flatten (array) {
+    const flat = []
+
+    function flattenHelper (value) {
+      if (Array.isArray(value)) {
+        const len = value.length
+        for (let i = 0; i < len; i++) {
+          flattenHelper(value[i]) // traverse through sub-arrays recursively
+        }
+      } else {
+        flat.push(value)
+      }
+    }
+
+    const len = array.length
+    for (let i = 0; i < len; i++) {
+      flattenHelper(array[i])
+    }
+
+    return flat
+  }
 }
 
 /**
