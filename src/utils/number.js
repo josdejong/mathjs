@@ -29,33 +29,6 @@ export function isIntegerStr (str) {
 }
 
 /**
- * Check if a string contains a hex number like "0xA2"
- * @param {string} str
- * @return {boolean} isInteger
- */
-export function isHexStr (str) {
-  return /^0x[0-9A-Fa-f]+$/.test(str)
-}
-
-/**
- * Check if a string contains a binary number like "0b1011"
- * @param {string} str
- * @return {boolean} isInteger
- */
-export function isBinStr (str) {
-  return /^0b[01]+$/.test(str)
-}
-
-/**
- * Check if a string contains an octal number like "0o70"
- * @param {string} str
- * @return {boolean} isInteger
- */
-export function isOctStr (str) {
-  return /^0o[0-7]+$/.test(str)
-}
-
-/**
  * Ensure the number type is compatible with the provided value.
  * If not, return 'number' instead.
  *
@@ -75,13 +48,9 @@ export function isOctStr (str) {
  */
 export function safeNumberType (numberStr, config) {
   if (config.number === 'bigint') {
-    const canParseIntoBigint =
-      isIntegerStr(numberStr) ||
-      isHexStr(numberStr) ||
-      isBinStr(numberStr) ||
-      isOctStr(numberStr)
-
-    if (!canParseIntoBigint) {
+    try {
+      BigInt(numberStr)
+    } catch {
       return config.numberFallback
     }
   }
