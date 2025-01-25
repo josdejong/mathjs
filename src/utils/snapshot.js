@@ -113,13 +113,18 @@ export function createSnapshotFromFactories (factories) {
     const dependenciesName = factory.fn +
       (isTransformFunction ? 'Transform' : '') +
       'Dependencies'
+    const alias = factory.meta?.alias ?? ''
 
     allFactoryFunctions[factoryName] = 'function'
     allFunctionsConstantsClasses[name] = validateTypeOf(math[name])
+    if (alias) {
+      allFunctionsConstantsClasses[alias] = allFunctionsConstantsClasses[name]
+    }
     allDependencyCollections[dependenciesName] = 'Object'
 
     if (isTransformFunction) {
       allTransformFunctions[name] = 'function'
+      if (alias) allTransformFunctions[alias] = 'function'
     }
 
     if (isClass) {
@@ -130,6 +135,7 @@ export function createSnapshotFromFactories (factories) {
       }
     } else {
       allFunctionsConstants[name] = validateTypeOf(math[name])
+      if (alias) allFunctionsConstants[alias] = allFunctionsConstants[name]
     }
   })
 
@@ -144,7 +150,6 @@ export function createSnapshotFromFactories (factories) {
   })
   embeddedDocs = exclude(embeddedDocs, [
     'equalScalar',
-    'apply',
     'addScalar',
     'subtractScalar',
     'multiplyScalar',

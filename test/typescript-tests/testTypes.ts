@@ -613,8 +613,8 @@ Chaining examples
     )
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
-  // apply
-  expectTypeOf(math.chain([1, 2, 3]).apply(0, () => 1)).toMatchTypeOf<
+  // mapSlices
+  expectTypeOf(math.chain([1, 2, 3]).mapSlices(0, () => 1)).toMatchTypeOf<
     MathJsChain<number[]>
   >()
 
@@ -1251,6 +1251,7 @@ Matrices examples
 
   // perform operations with matrices
   math.map(a, math.sqrt)
+  math.mapSlices(b, 1, math.sum)
   math.factorial(a)
 
   // create and manipulate matrices. Arrays and Matrices can be used mixed.

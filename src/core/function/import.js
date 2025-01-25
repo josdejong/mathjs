@@ -294,27 +294,38 @@ export function importFactory (typed, load, math, importedFactories) {
       }
     }
 
+    const alias = factory.meta?.alias ?? ''
+    const needsTransform = isTransformFunctionFactory(factory) ||
+      factoryAllowedInExpressions(factory)
+    const withTransform = math.expression.mathWithTransform
+
     // TODO: add unit test with non-lazy factory
     if (!factory.meta || factory.meta.lazy !== false) {
       lazy(namespace, name, resolver)
+      if (alias) lazy(namespace, alias, resolver)
 
       // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
       if (existing && existingTransform) {
         _deleteTransform(name)
+        if (alias) _deleteTransform(alias)
       } else {
-        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
-          lazy(math.expression.mathWithTransform, name, () => namespace[name])
+        if (needsTransform) {
+          lazy(withTransform, name, () => namespace[name])
+          if (alias) lazy(withTransform, alias, () => namespace[name])
         }
       }
     } else {
       namespace[name] = resolver()
+      if (alias) namespace[alias] = namespace[name]
 
       // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
       if (existing && existingTransform) {
         _deleteTransform(name)
+        if (alias) _deleteTransform(alias)
       } else {
-        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
-          lazy(math.expression.mathWithTransform, name, () => namespace[name])
+        if (needsTransform) {
+          lazy(withTransform, name, () => namespace[name])
+          if (alias) lazy(withTransform, alias, () => namespace[name])
         }
       }
     }

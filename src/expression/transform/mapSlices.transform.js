@@ -1,23 +1,23 @@
 import { errorTransform } from './utils/errorTransform.js'
 import { factory } from '../../utils/factory.js'
-import { createApply } from '../../function/matrix/apply.js'
+import { createMapSlices } from '../../function/matrix/mapSlices.js'
 import { isBigNumber, isNumber } from '../../utils/is.js'
 
-const name = 'apply'
+const name = 'mapSlices'
 const dependencies = ['typed', 'isInteger']
 
 /**
- * Attach a transform function to math.apply
+ * Attach a transform function to math.mapSlices
  * Adds a property transform containing the transform function.
  *
- * This transform changed the last `dim` parameter of function apply
+ * This transform changed the last `dim` parameter of function mapSlices
  * from one-based to zero based
  */
-export const createApplyTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, isInteger }) => {
-  const apply = createApply({ typed, isInteger })
+export const createMapSlicesTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, isInteger }) => {
+  const mapSlices = createMapSlices({ typed, isInteger })
 
   // @see: comment of concat itself
-  return typed('apply', {
+  return typed('mapSlices', {
     '...any': function (args) {
       // change dim from one-based to zero-based
       const dim = args[1]
@@ -29,10 +29,10 @@ export const createApplyTransform = /* #__PURE__ */ factory(name, dependencies, 
       }
 
       try {
-        return apply.apply(null, args)
+        return mapSlices.apply(null, args)
       } catch (err) {
         throw errorTransform(err)
       }
     }
   })
-}, { isTransformFunction: true })
+}, { isTransformFunction: true, ...createMapSlices.meta })

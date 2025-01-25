@@ -1805,7 +1805,7 @@ export interface MathJsInstance extends MathJsFactory {
    * array or 1-d matrix as an input and return a number.
    * @returns The residual matrix with the function applied over some dimension.
    */
-  apply<T extends MathCollection>(
+  mapSlices<T extends MathCollection>(
     array: T,
     dim: number,
     callback: (array: MathCollection) => number
@@ -3705,7 +3705,7 @@ export const {
   unaryMinusDependencies,
   unaryPlusDependencies,
   absDependencies,
-  applyDependencies,
+  mapSlicesDependencies,
   addScalarDependencies,
   cbrtDependencies,
   ceilDependencies,
@@ -3984,7 +3984,7 @@ export const {
   vacuumImpedanceDependencies,
   weakMixingAngleDependencies,
   wienDisplacementDependencies,
-  applyTransformDependencies,
+  mapSlicesTransformDependencies,
   columnTransformDependencies,
   filterTransformDependencies,
   forEachTransformDependencies,
@@ -4010,7 +4010,7 @@ export interface Matrix<T = MathGeneric> {
   density(): number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subset(index: Index, replacement?: any, defaultValue?: any): Matrix
-  apply(
+  mapSlices(
     dim: number,
     callback: (array: MathCollection) => number
   ): MathCollection
@@ -4996,7 +4996,7 @@ export interface MathJsChain<TValue> {
    * array or 1-d matrix as an input and return a number.
    * @returns The residual matrix with the function applied over some dimension.
    */
-  apply<T extends MathCollection>(
+  mapSlices<T extends MathCollection>(
     this: MathJsChain<T>,
     dim: number,
     callback: (array: Array<MathType> | Matrix) => number
@@ -7162,7 +7162,7 @@ export const {
   xor,
 
   // matrix functions
-  apply,
+  mapSlices,
   concat,
   cross,
   det,
