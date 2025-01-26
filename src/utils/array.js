@@ -10,7 +10,7 @@ import { deepStrictEqual } from './object.js'
  * This function checks the size of the first entry, it does not validate
  * whether all dimensions match. (use function `validate` for that)
  * @param {Array} x
- * @return {Number[]} size
+ * @return {number[]} size
  */
 export function arraySize (x) {
   const s = []
@@ -834,7 +834,7 @@ export function broadcastArrays (...arrays) {
 /**
  * Stretches a matrix up to a certain size in a certain dimension
  * @param {Array} arrayToStretch
- * @param {number} sizeToStretch
+ * @param {number[]} sizeToStretch
  * @param {number} dimToStretch
  * @returns {Array} The stretched array
  */
