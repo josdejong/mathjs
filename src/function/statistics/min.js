@@ -83,7 +83,7 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     deepForEach(array, function (value) {
       try {
-        if (isNaN(value) && typeof value === 'number') {
+        if (typeof value === 'number' && isNaN(value)) {
           min = NaN
         } else if (min === undefined || smaller(value, min)) {
           min = value

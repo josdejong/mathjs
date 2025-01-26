@@ -1,7 +1,11 @@
 # History
 
-# unpublished changes since 14.0.1
+# 2025-01-24, 14.1.0
 
+- Feat: implement `bigint` support in functions `log`, `log2`, `log10`, 
+  `larger`, `smaller`, `max`, `min` (#3345). Thanks @gwhitney.
+- Fix: #3342 hexadecimal input not turned into a `bigint` (#3348).
+- Fix `randomInt()` not working (#3345).
 - Docs: fixed description of `sign` in the embedded docs (#3338). 
   Thanks @witer33.
 
