@@ -465,40 +465,60 @@ function _unsqueeze (array, dims, dim) {
  * Flatten a multi dimensional array, put all elements in a one dimensional
  * array
  * @param {Array} array   A multi dimensional array
+ * @param {boolean} [isHomogeneous=false] Indicates if the size is homogeneous (like a valid matrix)
  * @return {Array}        The flattened array (1 dimensional)
  */
-export function flatten (array) {
+export function flatten (array, isHomogeneous = false) {
   if (!Array.isArray(array)) {
     // if not an array, return as is
     return array
   }
-  if (typeof Array.prototype.flat === 'function') {
-    return array.flat(Infinity)
+  if (isHomogeneous) {
+    return _flattenHomogeneous(array)
   } else {
-    // TODO: once Array.prototype.flat is supported in all browsers, remove this and the _flatten function
-    return _flatten(array)
+    if (typeof Array.prototype.flat === 'function') {
+      return array.flat(Infinity)
+    } else {
+      return _flattenFallback(array)
+    }
   }
 
-  function _flatten (array) {
+  function _flattenFallback (arr) {
+    // remove this when Array.prototype.flat is broadly supported
     const flat = []
-
-    function flattenHelper (value) {
+    _recurse(arr)
+    return flat
+    function _recurse (value) {
       if (Array.isArray(value)) {
         const len = value.length
         for (let i = 0; i < len; i++) {
-          flattenHelper(value[i]) // traverse through sub-arrays recursively
+          _recurse(value[i]) // traverse through sub-arrays recursively
         }
       } else {
         flat.push(value)
       }
     }
+  }
 
-    const len = array.length
-    for (let i = 0; i < len; i++) {
-      flattenHelper(array[i])
-    }
-
+  function _flattenHomogeneous (arr) {
+    const flat = []
+    _recurse(arr)
     return flat
+
+    function _recurse (value) {
+      if (Array.isArray(value)) {
+        const len = value.length
+        if (Array.isArray(value[0])) {
+          for (let i = 0; i < len; i++) {
+            _recurse(value[i]) // traverse through sub-arrays recursively
+          }
+        } else {
+          for (let i = 0; i < len; i++) {
+            flat.push(value[i]) // traverse through sub-arrays without recursion
+          }
+        }
+      }
+    }
   }
 }
 
