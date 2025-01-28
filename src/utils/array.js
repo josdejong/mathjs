@@ -465,15 +465,15 @@ function _unsqueeze (array, dims, dim) {
  * Flatten a multi dimensional array, put all elements in a one dimensional
  * array
  * @param {Array} array   A multi dimensional array
- * @param {boolean} [isHomogeneous=false] Indicates if the size is homogeneous (like a valid matrix)
+ * @param {boolean} [hasHomogeneousSize=false] Indicates if the size is homogeneous (like a valid matrix)
  * @return {Array}        The flattened array (1 dimensional)
  */
-export function flatten (array, isHomogeneous = false) {
+export function flatten (array, hasHomogeneousSize = false) {
   if (!Array.isArray(array)) {
     // if not an array, return as is
     return array
   }
-  if (isHomogeneous) {
+  if (hasHomogeneousSize) {
     return _flattenHomogeneous(array)
   } else {
     if (typeof Array.prototype.flat === 'function') {
@@ -488,6 +488,7 @@ export function flatten (array, isHomogeneous = false) {
     const flat = []
     _recurse(arr)
     return flat
+
     function _recurse (value) {
       if (Array.isArray(value)) {
         const len = value.length

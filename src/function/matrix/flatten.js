@@ -1,4 +1,4 @@
-import { flatten as flattenArray, arraySize, validate } from '../../utils/array.js'
+import { flatten as flattenArray } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'flatten'
@@ -26,11 +26,7 @@ export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ type
    */
   return typed(name, {
     Array: function (x) {
-      try {
-        return flattenArray(x, validate(x, arraySize(x)))
-      } catch {
-        return flattenArray(x)
-      }
+      return flattenArray(x, false)
     },
 
     Matrix: function (x) {
