@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js'
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
-import { nearlyEqual } from '../../utils/number.js'
+import { isInteger, nearlyEqual } from '../../utils/number.js'
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
@@ -10,26 +10,44 @@ import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 const name = 'floor'
 const dependencies = ['typed', 'config', 'round', 'matrix', 'equalScalar', 'zeros', 'DenseMatrix']
 
+const bigTen = new Decimal(10)
+
 export const createFloorNumber = /* #__PURE__ */ factory(
   name, ['typed', 'config', 'round'], ({ typed, config, round }) => {
-    return typed(name, {
-      number: function (x) {
-        if (nearlyEqual(x, round(x), config.relTol, config.absTol)) {
-          return round(x)
-        } else {
-          return Math.floor(x)
-        }
-      },
+    function _floorNumber (x) {
+      // First, if the floor and the round are identical we can be
+      // quite comfortable that is the best answer:
+      const f = Math.floor(x)
+      const r = round(x)
+      if (f === r) return f
+      // OK, they are different. If x is truly distinct from f but
+      // appears indistinguishable from r, presume it really is just
+      // the integer r with rounding/computation error, and return that
+      if (
+        nearlyEqual(x, r, config.relTol, config.absTol) &&
+        !nearlyEqual(x, f, config.relTol, config.absTol)
+      ) {
+        return r
+      }
+      // Otherwise (x distinct from both r and f, or indistinguishable from
+      // both r and f) may as well just return f, as that's the best
+      // candidate we can discern:
+      return f
+    }
 
+    return typed(name, {
+      number: _floorNumber,
       'number, number': function (x, n) {
-        if (nearlyEqual(x, round(x, n), config.relTol, config.absTol)) {
-          return round(x, n)
-        } else {
-          let [number, exponent] = `${x}e`.split('e')
-          const result = Math.floor(Number(`${number}e${Number(exponent) + n}`));
-          [number, exponent] = `${result}e`.split('e')
-          return Number(`${number}e${Number(exponent) - n}`)
+        if (!isInteger(n)) {
+          throw new RangeError(
+            'number of decimals in function floor must be an integer')
         }
+        if (n < 0 || n > 15) {
+          throw new RangeError(
+            'number of decimals in floor number must be in range 0 - 15')
+        }
+        const shift = 10 ** n
+        return _floorNumber(x * shift) / shift
       }
     })
   }
@@ -41,6 +59,15 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   const floorNumber = createFloorNumber({ typed, config, round })
+  function _bigFloor (x) {
+    // see _floorNumber above for rationale
+    const bne = (a, b) => bigNearlyEqual(a, b, config.relTol, config.absTol)
+    const f = x.floor()
+    const r = round(x)
+    if (f.eq(r)) return f
+    if (bne(x, r) && !bne(x, f)) return r
+    return f
+  }
   /**
    * Round a value towards minus infinity.
    * For matrices, the function is evaluated element wise.
@@ -106,21 +133,16 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return x.floor(n.toNumber())
     },
 
-    BigNumber: function (x) {
-      if (bigNearlyEqual(x, round(x), config.relTol, config.absTol)) {
-        return round(x)
-      } else {
-        return x.floor()
-      }
-    },
+    BigNumber: _bigFloor,
 
     'BigNumber, BigNumber': function (x, n) {
-      if (bigNearlyEqual(x, round(x, n), config.relTol, config.absTol)) {
-        return round(x, n)
-      } else {
-        return x.toDecimalPlaces(n.toNumber(), Decimal.ROUND_FLOOR)
-      }
+      const shift = bigTen.pow(n)
+      return _bigFloor(x.mul(shift)).div(shift)
     },
+
+    bigint: b => b,
+    'bigint, number': (b, _dummy) => b,
+    'bigint, BigNumber': (b, _dummy) => b,
 
     Fraction: function (x) {
       return x.floor()
