@@ -294,7 +294,7 @@ export function importFactory (typed, load, math, importedFactories) {
       }
     }
 
-    const alias = factory.meta?.alias ?? ''
+    const former = factory.meta?.formerly ?? ''
     const needsTransform = isTransformFunctionFactory(factory) ||
       factoryAllowedInExpressions(factory)
     const withTransform = math.expression.mathWithTransform
@@ -302,30 +302,30 @@ export function importFactory (typed, load, math, importedFactories) {
     // TODO: add unit test with non-lazy factory
     if (!factory.meta || factory.meta.lazy !== false) {
       lazy(namespace, name, resolver)
-      if (alias) lazy(namespace, alias, resolver)
+      if (former) lazy(namespace, former, resolver)
 
       // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
       if (existing && existingTransform) {
         _deleteTransform(name)
-        if (alias) _deleteTransform(alias)
+        if (former) _deleteTransform(former)
       } else {
         if (needsTransform) {
           lazy(withTransform, name, () => namespace[name])
-          if (alias) lazy(withTransform, alias, () => namespace[name])
+          if (former) lazy(withTransform, former, () => namespace[name])
         }
       }
     } else {
       namespace[name] = resolver()
-      if (alias) namespace[alias] = namespace[name]
+      if (former) namespace[former] = namespace[name]
 
       // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
       if (existing && existingTransform) {
         _deleteTransform(name)
-        if (alias) _deleteTransform(alias)
+        if (former) _deleteTransform(former)
       } else {
         if (needsTransform) {
           lazy(withTransform, name, () => namespace[name])
-          if (alias) lazy(withTransform, alias, () => namespace[name])
+          if (former) lazy(withTransform, former, () => namespace[name])
         }
       }
     }

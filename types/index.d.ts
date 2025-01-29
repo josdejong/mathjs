@@ -1810,6 +1810,10 @@ export interface MathJsInstance extends MathJsFactory {
     dim: number,
     callback: (array: MathCollection) => number
   ): T
+  /**
+   * @deprecated backwards-compatibility old name of mapSlices
+   */
+  apply: MathJsInstance['mapSlices']
 
   /**
    * Concatenate two or more matrices. dim: number is a zero-based
@@ -4010,10 +4014,6 @@ export interface Matrix<T = MathGeneric> {
   density(): number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subset(index: Index, replacement?: any, defaultValue?: any): Matrix
-  mapSlices(
-    dim: number,
-    callback: (array: MathCollection) => number
-  ): MathCollection
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get(index: number[]): any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -5001,6 +5001,10 @@ export interface MathJsChain<TValue> {
     dim: number,
     callback: (array: Array<MathType> | Matrix) => number
   ): MathJsChain<T>
+  /**
+   * @deprecated backwards-compatibility old name of mapSlices
+   **/
+  apply: MathJsChain<TValue>['mapSlices']
 
   /**
    * Calculate the cubic root of a value. For matrices, the function is
@@ -7163,6 +7167,7 @@ export const {
 
   // matrix functions
   mapSlices,
+  apply, // @deprecated prior name of mapSlices
   concat,
   cross,
   det,

@@ -113,18 +113,18 @@ export function createSnapshotFromFactories (factories) {
     const dependenciesName = factory.fn +
       (isTransformFunction ? 'Transform' : '') +
       'Dependencies'
-    const alias = factory.meta?.alias ?? ''
+    const former = factory.meta?.formerly ?? ''
 
     allFactoryFunctions[factoryName] = 'function'
     allFunctionsConstantsClasses[name] = validateTypeOf(math[name])
-    if (alias) {
-      allFunctionsConstantsClasses[alias] = allFunctionsConstantsClasses[name]
+    if (former) {
+      allFunctionsConstantsClasses[former] = allFunctionsConstantsClasses[name]
     }
     allDependencyCollections[dependenciesName] = 'Object'
 
     if (isTransformFunction) {
       allTransformFunctions[name] = 'function'
-      if (alias) allTransformFunctions[alias] = 'function'
+      if (former) allTransformFunctions[former] = 'function'
     }
 
     if (isClass) {
@@ -135,7 +135,7 @@ export function createSnapshotFromFactories (factories) {
       }
     } else {
       allFunctionsConstants[name] = validateTypeOf(math[name])
-      if (alias) allFunctionsConstants[alias] = allFunctionsConstants[name]
+      if (former) allFunctionsConstants[former] = allFunctionsConstants[name]
     }
   })
 

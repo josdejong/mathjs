@@ -4,7 +4,7 @@ import math from '../../../../src/defaultInstance.js'
 const sum = math.sum
 const mapSlices = math.expression.transform.mapSlices
 
-describe('apply.mapSlices', function () {
+describe('mapSlices.transform', function () {
   it('should apply a function to the rows of a matrix with one based indices', function () {
     assert.deepStrictEqual(mapSlices([[1, 2], [3, 4]], 1, sum), [4, 6])
   })

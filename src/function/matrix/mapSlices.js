@@ -62,7 +62,7 @@ export const createMapSlices = /* #__PURE__ */ factory(name, dependencies, ({ ty
       }
     }
   })
-}, { alias: 'apply' })
+}, { formerly: 'apply' })
 
 /**
  * Recursively reduce a matrix
