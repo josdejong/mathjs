@@ -50,6 +50,24 @@ describe('range', function () {
     assert.deepStrictEqual(math2.range(5, 0, -1), [5, 4, 3, 2, 1])
   })
 
+  it('should create a range with bigints', function () {
+    assert.deepStrictEqual(range(1n, 3n), matrix([1n, 2n]))
+    assert.deepStrictEqual(range(3n, 1n, -1n), matrix([3n, 2n]))
+    assert.deepStrictEqual(range(1n, 3n, true), matrix([1n, 2n, 3n]))
+    assert.deepStrictEqual(range(3n, 1n, -1n, true), matrix([3n, 2n, 1n]))
+  })
+
+  it('should handle mixed numbers and bigints appropriately', function () {
+    assert.deepStrictEqual(range(1n, 3), matrix([1n, 2n]))
+    assert.deepStrictEqual(range(3, 1n, -1n), matrix([3n, 2n]))
+    assert.deepStrictEqual(range(3n, 1, -1), matrix([3n, 2n]))
+    assert.deepStrictEqual(range(1, 3n, true), matrix([1n, 2n, 3n]))
+    assert.deepStrictEqual(range(3n, 1, -1n, true), matrix([3n, 2n, 1n]))
+    assert.deepStrictEqual(range(3, 1n, -1, true), matrix([3n, 2n, 1n]))
+    assert.deepStrictEqual(range(1, 5, 2n), matrix([1, 3]))
+    assert.deepStrictEqual(range(5, 1, -2n, true), matrix([5, 3, 1]))
+  })
+
   it('should create a range with bignumbers', function () {
     assert.deepStrictEqual(range(bignumber(1), bignumber(3)), matrix([bignumber(1), bignumber(2)]))
     assert.deepStrictEqual(range(bignumber(3), bignumber(1), bignumber(-1)), matrix([bignumber(3), bignumber(2)]))
@@ -147,8 +165,14 @@ describe('range', function () {
     assert.throws(function () { range(math.unit('5cm')) }, TypeError)
   })
 
-  it('should throw an error if called with a single only two units value', function () {
+  it('should throw an error if called with only two units value', function () {
     assert.throws(function () { range(math.unit('0cm'), math.unit('5cm')) }, TypeError)
+  })
+
+  it('should throw an error when called with mismatching units', function () {
+    assert.throws(function () {
+      range(math.unit('0cm'), math.unit('2kg'), math.unit('1cm'))
+    }, Error, 'Cannot compare units with different base')
   })
 
   it('should throw an error if called with a complex number', function () {

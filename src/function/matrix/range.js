@@ -25,14 +25,20 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * - `str: string`
    *   A string 'start:end' or 'start:step:end'
-   * - `start: {number | BigNumber | Unit}`
+   * - `start: {number | bigint | BigNumber | Unit}`
    *   Start of the range
-   * - `end: number | BigNumber | Unit`
+   * - `end: number | bigint | BigNumber | Unit`
    *   End of the range, excluded by default, included when parameter includeEnd=true
-   * - `step: number | BigNumber | Unit`
+   * - `step: number | bigint | BigNumber | Unit`
    *   Step size. Default value is 1.
    * - `includeEnd: boolean`
    *   Option to specify whether to include the end or not. False by default.
+   *
+   * Note that if either start or end of the range is a bigint, the entries
+   * of the return value will be bigints. Similarly, if either end of the
+   * range is a BigNumber, the entries will be BigNumber. In the case of
+   * Unit values, the units of the endpoints must be compatible, and the
+   * return value will have compatible units as well.
    *
    * Examples:
    *
@@ -67,6 +73,32 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
     'number, number, number, boolean': function (start, end, step, includeEnd) {
       return _out(_range(start, end, step, includeEnd))
+    },
+
+    // Handle bigints; if either limit is bigint, range should be too
+    'bigint, bigint|number': function (start, end) {
+      return _out(_range(start, end, 1n, false))
+    },
+    'number, bigint': function (start, end) {
+      return _out(_range(BigInt(start), end, 1n, false))
+    },
+    'bigint, bigint|number, bigint|number': function (start, end, step) {
+      return _out(_range(start, end, BigInt(step), false))
+    },
+    'number, bigint, bigint|number': function (start, end, step) {
+      return _out(_range(BigInt(start), end, BigInt(step), false))
+    },
+    'bigint, bigint|number, boolean': function (start, end, includeEnd) {
+      return _out(_range(start, end, 1n, includeEnd))
+    },
+    'number, bigint, boolean': function (start, end, includeEnd) {
+      return _out(_range(BigInt(start), end, 1n, includeEnd))
+    },
+    'bigint, bigint|number, bigint|number, boolean': function (start, end, step, includeEnd) {
+      return _out(_range(start, end, BigInt(step), includeEnd))
+    },
+    'number, bigint, bigint|number, boolean': function (start, end, step, includeEnd) {
+      return _out(_range(BigInt(start), end, BigInt(step), includeEnd))
     },
 
     'BigNumber, BigNumber': function (start, end) {

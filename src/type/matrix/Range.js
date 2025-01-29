@@ -7,13 +7,20 @@ const dependencies = []
 
 export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
-   * Create a range. A range has a start, step, and end, and contains functions
-   * to iterate over the range.
+   * Create a range of numbers. A range has a start, step, and end,
+   * and contains functions to iterate over the range.
    *
    * A range can be constructed as:
    *
    *     const range = new Range(start, end)
    *     const range = new Range(start, end, step)
+   *
+   * Note that the endpoints and step may be specified with other numeric
+   * types such as bigint or BigNumber, but they will be demoted to the
+   * built-in `number` type and the Range will only contain numbers. The
+   * rationale for this demotion is that Range objects are primarily used
+   * for indexing Matrix objects, and Matrix objects may only be indexed
+   * with `number`s.
    *
    * To get the result of the range:
    *     range.forEach(function (x) {
