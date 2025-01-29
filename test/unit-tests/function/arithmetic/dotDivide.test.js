@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const dotDivide = math.dotDivide
 const complex = math.complex
 
@@ -27,7 +27,7 @@ describe('dotDivide', function () {
   it('should add mixed numbers and booleans', function () {
     assert.strictEqual(dotDivide(2, true), 2)
     assert.strictEqual(dotDivide(2, false), Infinity)
-    approx.equal(dotDivide(true, 2), 0.5)
+    approxEqual(dotDivide(true, 2), 0.5)
     assert.strictEqual(dotDivide(false, 2), 0)
   })
 
@@ -41,10 +41,10 @@ describe('dotDivide', function () {
   })
 
   it('should divide two complex numbers', function () {
-    approx.deepEqual(dotDivide(complex('2+3i'), 2), complex('1+1.5i'))
-    approx.deepEqual(dotDivide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'))
-    approx.deepEqual(dotDivide(complex('2i'), complex('4i')), 0.5)
-    approx.deepEqual(dotDivide(4, complex('1+2i')), complex('0.8 - 1.6i'))
+    approxDeepEqual(dotDivide(complex('2+3i'), 2), complex('1+1.5i'))
+    approxDeepEqual(dotDivide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'))
+    approxDeepEqual(dotDivide(complex('2i'), complex('4i')), 0.5)
+    approxDeepEqual(dotDivide(4, complex('1+2i')), complex('0.8 - 1.6i'))
   })
 
   it('should divide a unit by a number', function () {
@@ -71,7 +71,7 @@ describe('dotDivide', function () {
     })
 
     it('should divide 1 over a array element-wise', function () {
-      approx.deepEqual(dotDivide(1, [[1, 4, 7], [3, 0, 5], [-1, 9, 11]]), [[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]])
+      approxDeepEqual(dotDivide(1, [[1, 4, 7], [3, 0, 5], [-1, 9, 11]]), [[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]])
     })
 
     it('should divide broadcastable arrays element-wise', function () {
@@ -115,7 +115,7 @@ describe('dotDivide', function () {
     })
 
     it('should divide 1 over a dense matrix element-wise', function () {
-      approx.deepEqual(dotDivide(1, math.matrix([[1, 4, 7], [3, 0, 5], [-1, 9, 11]])), math.matrix([[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]]))
+      approxDeepEqual(dotDivide(1, math.matrix([[1, 4, 7], [3, 0, 5], [-1, 9, 11]])), math.matrix([[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]]))
     })
 
     it('should perform (dense matrix ./ array) element-wise matrix division', function () {
@@ -150,7 +150,7 @@ describe('dotDivide', function () {
     })
 
     it('should divide 1 over a sparse matrix element-wise', function () {
-      approx.deepEqual(dotDivide(1, math.sparse([[1, 4, 7], [3, 0, 5], [-1, 9, 11]])), math.matrix([[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]]))
+      approxDeepEqual(dotDivide(1, math.sparse([[1, 4, 7], [3, 0, 5], [-1, 9, 11]])), math.matrix([[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]]))
     })
 
     it('should perform (sparse matrix ./ array) element-wise matrix division', function () {
@@ -168,11 +168,14 @@ describe('dotDivide', function () {
     it('should perform (sparse matrix ./ sparse matrix) element-wise matrix division', function () {
       const a = math.sparse([[1, 2], [0, 4]])
       const b = math.sparse([[5, 0], [7, 8]])
-      assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [0, 4 / 8]]))
+      const result = dotDivide(a, b)
+      const isSparseMatrix = !!(result._values && result._index && result._ptr)
+      assert.strictEqual(isSparseMatrix, true)
+      approxDeepEqual(result, math.sparse([[1 / 5, Infinity], [0, 4 / 8]]))
     })
 
-    it('should throw an error when dividing element-wise with differing size', function () {
-      assert.throws(function () { dotDivide(math.sparse([[1, 2], [3, 4]]), math.sparse([[1]])) })
+    it('should throw an error when dividing element-wise with differing size is not broadcastable', function () {
+      assert.throws(function () { dotDivide(math.sparse([[1, 2], [3, 4]]), math.sparse([1, 2, 3])) })
     })
   })
 

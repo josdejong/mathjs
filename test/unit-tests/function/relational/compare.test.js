@@ -20,6 +20,16 @@ describe('compare', function () {
     assert.strictEqual(compare(-3, -2), -1)
   })
 
+  it('should compare two bigints correctly', function () {
+    assert.strictEqual(compare(2n, 3n), -1n)
+    assert.strictEqual(compare(2n, 2n), 0n)
+    assert.strictEqual(compare(2n, 1n), 1n)
+    assert.strictEqual(compare(0n, 0n), 0n)
+    assert.strictEqual(compare(-2n, 2n), -1n)
+    assert.strictEqual(compare(-2n, -3n), 1n)
+    assert.strictEqual(compare(-3n, -2n), -1n)
+  })
+
   it('should compare two floating point numbers correctly', function () {
     // Infinity
     assert.strictEqual(compare(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), 0)
@@ -61,6 +71,16 @@ describe('compare', function () {
     assert.deepStrictEqual(compare(2, bignumber(2)), bignumber(0))
   })
 
+  it('should compare mixed numbers and bigints', function () {
+    assert.deepStrictEqual(compare(2n, 3), -1)
+    assert.deepStrictEqual(compare(2, 2n), 0)
+  })
+
+  it('should compare mixed bigints and bignumbers', function () {
+    assert.deepStrictEqual(compare(bignumber(2), 3n), bignumber(-1))
+    assert.deepStrictEqual(compare(2n, bignumber(2)), bignumber(0))
+  })
+
   it('should compare mixed booleans and bignumbers', function () {
     assert.deepStrictEqual(compare(bignumber(0.1), true), bignumber(-1))
     assert.deepStrictEqual(compare(bignumber(1), true), bignumber(0))
@@ -86,6 +106,11 @@ describe('compare', function () {
   it('should compare mixed fractions and numbers', function () {
     assert.deepStrictEqual(compare(1, math.fraction(1, 3)), math.fraction(1))
     assert.deepStrictEqual(compare(math.fraction(1, 3), 1), math.fraction(-1))
+  })
+
+  it('should compare mixed fractions and bigints', function () {
+    assert.deepStrictEqual(compare(1n, math.fraction(1, 3)), math.fraction(1))
+    assert.deepStrictEqual(compare(math.fraction(1, 3), 1n), math.fraction(-1))
   })
 
   it('should add two measures of the same unit', function () {
@@ -173,12 +198,12 @@ describe('compare', function () {
     })
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.compare(1, 0.991), 1)
     assert.strictEqual(mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), '1')
 
-    mymath.config({ epsilon: 1e-2 })
+    mymath.config({ relTol: 1e-2 })
     assert.strictEqual(mymath.compare(1, 0.991), 0)
     assert.strictEqual(mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), '0')
   })

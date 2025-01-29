@@ -43,8 +43,8 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
    *
    *    and, not, xor
    *
-   * @param  {number | BigNumber | Complex | Unit | Array | Matrix} x First value to check
-   * @param  {number | BigNumber | Complex | Unit | Array | Matrix} y Second value to check
+   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
+   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
    * @return {boolean | Array | Matrix}
    *            Returns true when one of the inputs is defined with a nonzero/nonempty value.
    */
@@ -60,6 +60,8 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
       'BigNumber, BigNumber': function (x, y) {
         return (!x.isZero() && !x.isNaN()) || (!y.isZero() && !y.isNaN())
       },
+
+      'bigint, bigint': orNumber,
 
       'Unit, Unit': typed.referToSelf(self =>
         (x, y) => self(x.value || 0, y.value || 0))

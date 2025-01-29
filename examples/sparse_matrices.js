@@ -1,5 +1,5 @@
-// load math.js (using node.js)
-const { identity, multiply, transpose, complex } = require('..')
+// Sparse matrices
+import { identity, multiply, transpose, complex } from '../lib/esm/index.js'
 
 // create a sparse matrix
 console.log('creating a 1000x1000 sparse matrix...')

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 
 const variance = math.expression.transform.variance
@@ -53,14 +53,14 @@ describe('variance.transform', function () {
     const a = math.unit(10, 'cm')
     const b = math.unit(20, 'cm')
     const c = math.unit(50, 'cm^2')
-    approx.equal(variance([a, b]).toNumber('cm^2'), c.toNumber('cm^2'))
+    approxEqual(variance([a, b]).toNumber('cm^2'), c.toNumber('cm^2'))
   })
 
   it('should compute the variance of quantities with compatible units', function () {
     const a = math.unit(1, 'm')
     const b = math.unit(50, 'cm')
     const c = math.unit(1250, 'cm^2')
-    approx.equal(variance([a, b]).toNumber('cm^2'), c.toNumber('cm^2'))
+    approxEqual(variance([a, b]).toNumber('cm^2'), c.toNumber('cm^2'))
   })
 
   it('should not compute the variance of quantities with incompatible units', function () {

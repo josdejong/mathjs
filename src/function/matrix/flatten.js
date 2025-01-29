@@ -2,9 +2,9 @@ import { flatten as flattenArray } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'flatten'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed']
 
-export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Flatten a multidimensional matrix into a single dimensional matrix.
    * A new matrix is returned, the original matrix is left untouched.
@@ -30,9 +30,9 @@ export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ type
     },
 
     Matrix: function (x) {
-      const flat = flattenArray(x.toArray())
-      // TODO: return the same matrix type as x (Dense or Sparse Matrix)
-      return matrix(flat)
+      // Return the same matrix type as x (Dense or Sparse Matrix)
+      // Return the same data type as x
+      return x.create(flattenArray(x.toArray()), x.datatype())
     }
   })
 })

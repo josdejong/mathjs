@@ -25,6 +25,7 @@ describe('lyap', function () {
       [-0.33204819381292294, 0.5331793776065724, -0.10706505975853345, -0.6187026623519725, -0.4199482902478158]
     ])), 'fro') < 1e-3)
   })
+
   it('should solve lyapunov equation of order 5 with Arrays', function () {
     assert.ok(math.norm(math.subtract(math.lyap([
       [-5.3, -1.4, -0.2, 0.7, 1.0],

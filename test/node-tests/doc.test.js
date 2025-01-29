@@ -1,11 +1,13 @@
-const assert = require('assert')
-const path = require('path')
+import assert from 'node:assert'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { approxEqual, approxDeepEqual } from '../../tools/approx.js'
+import { collectDocs } from '../../tools/docgenerator.js'
+import { create, all } from '../../lib/esm/index.js'
 
-const approx = require('../../tools/approx.js')
-const docgenerator = require('../../tools/docgenerator.js')
-const math = require('../..')
-
-const debug = process.argv.indexOf('--debug-docs') !== -1
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const math = create(all)
+const debug = process.argv.includes('--debug-docs')
 
 function extractExpectation (comment, optional = false) {
   if (comment === '') return undefined
@@ -89,7 +91,7 @@ function extractValue (spec) {
 
 const knownProblems = new Set([
   'isZero', 'isPositive', 'isNumeric', 'isNegative', 'isNaN',
-  'isInteger', 'hasNumericValue', 'clone', 'print', 'hex', 'format', 'to', 'sin',
+  'hasNumericValue', 'clone', 'hex', 'format', 'to', 'sin',
   'cos', 'atan2', 'atan', 'asin', 'asec', 'acsc', 'acoth', 'acot', 'max',
   'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
   'random', 'pickRandom', 'kldivergence', 'xor', 'or', 'not', 'and', 'distance',
@@ -126,25 +128,33 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
 function checkExpectation (want, got) {
   if (Array.isArray(want)) {
     if (!Array.isArray(got)) {
-      want = math.matrix(want)
+      got = want.valueOf()
     }
-    return approx.deepEqual(got, want, 1e-9)
+    return approxDeepEqual(got, want, 1e-9)
   }
   if (want instanceof math.Unit && got instanceof math.Unit) {
-    return approx.deepEqual(got, want, 1e-9)
+    return approxDeepEqual(got, want, 1e-9)
   }
   if (want instanceof math.Complex && got instanceof math.Complex) {
-    return approx.deepEqual(got, want, 1e-9)
+    return approxDeepEqual(got, want, 1e-9)
   }
   if (typeof want === 'number' && typeof got === 'number' && want !== got) {
     issueCount++
     if (debug) {
       console.log(`  Note: return value ${got} not exactly as expected: ${want}`)
     }
-    return approx.equal(got, want, 1e-9)
+    return approxEqual(got, want, 1e-9)
+  }
+  if (
+    typeof want === 'string' &&
+    typeof got === 'string' &&
+    want.endsWith('Error') &&
+    got.startsWith(want)
+  ) {
+    return true // we obtained the expected error type
   }
   if (typeof want !== 'undefined') {
-    return approx.deepEqual(got, want)
+    return approxDeepEqual(got, want)
   } else {
     // don't check if we don't know what the result is supposed to be
   }
@@ -161,6 +171,7 @@ const knownUndocumented = new Set([
   'isNumber',
   'isComplex',
   'isBigNumber',
+  'isBigInt',
   'isFraction',
   'isUnit',
   'isString',
@@ -178,6 +189,9 @@ const knownUndocumented = new Set([
   'isDate',
   'isRegExp',
   'isObject',
+  'isMap',
+  'isPartitionedMap',
+  'isObjectWrappingMap',
   'isNull',
   'isUndefined',
   'isAccessorNode',
@@ -276,6 +290,7 @@ const knownUndocumented = new Set([
   'nuclearMagneton',
   'null',
   'number',
+  'bigint',
   'ObjectNode',
   'OperatorNode',
   'ParenthesisNode',
@@ -328,7 +343,8 @@ const knownUndocumented = new Set([
 describe('Testing examples from (jsdoc) comments', function () {
   const allNames = Object.keys(math)
   const srcPath = path.resolve(__dirname, '../../src') + '/'
-  const allDocs = docgenerator.collectDocs(allNames, srcPath)
+  const allDocs = collectDocs(allNames, srcPath)
+
   it("should cover all names (but doesn't yet)", function () {
     const documented = new Set(Object.keys(allDocs))
     const badUndocumented = allNames.filter(name => {

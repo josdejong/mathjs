@@ -25,13 +25,13 @@ export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *    math.isInteger(math.fraction(4))      // returns true
    *    math.isInteger('3')                   // returns true
    *    math.isInteger([3, 0.5, -2])          // returns [true, false, true]
-   *    math.isInteger(math.complex('2-4i'))  // throws an error
+   *    math.isInteger(math.complex('2-4i'))  // throws TypeError
    *
    * See also:
    *
    *    isNumeric, isPositive, isNegative, isZero
    *
-   * @param {number | BigNumber | Fraction | Array | Matrix} x   Value to be tested
+   * @param {number | BigNumber | bigint | Fraction | Array | Matrix} x   Value to be tested
    * @return {boolean}  Returns true when `x` contains a numeric, integer value.
    *                    Throws an error in case of an unknown data type.
    */
@@ -42,8 +42,12 @@ export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({ ty
       return x.isInt()
     },
 
+    bigint: function (x) {
+      return true
+    },
+
     Fraction: function (x) {
-      return x.d === 1 && isFinite(x.n)
+      return x.d === 1n
     },
 
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))

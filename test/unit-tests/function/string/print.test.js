@@ -8,6 +8,10 @@ describe('print', function () {
     assert.strictEqual(math.print('hello, $name!', { name: 'user' }), 'hello, user!')
   })
 
+  it('should print a bigint', function () {
+    assert.strictEqual(math.print('The count is: $count', { count: 3n }), 'The count is: 3')
+  })
+
   it('should interpolate values from a nested object in a template (object template)', function () {
     assert.strictEqual(math.print('hello, $name.first $name.last!', {
       name: {

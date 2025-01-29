@@ -17,6 +17,12 @@ describe('isInteger', function () {
     assert.strictEqual(isInteger(0.1 + 0.2), false) // TODO: what to do with round off errors?
   })
 
+  it('should test whether a bigint is an integer', function () {
+    assert.strictEqual(isInteger(2n), true)
+    assert.strictEqual(isInteger(0n), true)
+    assert.strictEqual(isInteger(-3n), true)
+  })
+
   it('should test whether a boolean is an integer', function () {
     assert.strictEqual(isInteger(true), true)
     assert.strictEqual(isInteger(false), true)

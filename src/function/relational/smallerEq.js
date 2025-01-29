@@ -13,12 +13,13 @@ const dependencies = [
   'config',
   'matrix',
   'DenseMatrix',
-  'concat'
+  'concat',
+  'SparseMatrix'
 ]
 
-export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, DenseMatrix, concat }) => {
+export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, DenseMatrix, concat, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
+  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
   const compareUnits = createCompareUnits({ typed })
@@ -27,7 +28,7 @@ export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * Test whether value x is smaller or equal to y.
    *
    * The function returns true when x is smaller than y or the relative
-   * difference between x and y is smaller than the configured epsilon. The
+   * difference between x and y is smaller than the configured relTol and absTol. The
    * function cannot be used to compare values smaller than approximately 2.22e-16.
    *
    * For matrices, the function is evaluated element wise.
@@ -46,8 +47,8 @@ export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    equal, unequal, smaller, larger, largerEq, compare
    *
-   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
-   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
    */
   return typed(
@@ -57,8 +58,10 @@ export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ ty
       'boolean, boolean': (x, y) => (x <= y),
 
       'BigNumber, BigNumber': function (x, y) {
-        return x.lte(y) || bigNearlyEqual(x, y, config.epsilon)
+        return x.lte(y) || bigNearlyEqual(x, y, config.relTol, config.absTol)
       },
+
+      'bigint, bigint': (x, y) => (x <= y),
 
       'Fraction, Fraction': (x, y) => (x.compare(y) !== 1),
 
@@ -78,7 +81,7 @@ export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ ty
 export const createSmallerEqNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return x <= y || nearlyEqual(x, y, config.epsilon)
+      return x <= y || nearlyEqual(x, y, config.relTol, config.absTol)
     }
   })
 })

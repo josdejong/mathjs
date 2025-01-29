@@ -50,7 +50,7 @@ const ans = math.add(0.1, 0.2)     //  0.30000000000000004
 math.format(ans, {precision: 14})  // '0.3'
 ```
 
-Alternatives are to use [Fractions](fractions.md) which store a number as a numerator and denominator, or [BigNumbers](bignumbers.md), which store a number with a higher precision.
+Alternatives are to use [Fractions](fractions.md) which store a number as a numerator and denominator, [BigNumbers](bignumbers.md) which store a number with a higher precision, or [bigint](bigints.md) which can store larger integer numbers.
 
 
 ## Minimum and maximum
@@ -73,16 +73,14 @@ false, as the addition `0.1 + 0.2` introduces a round-off error and does not
 return exactly `0.3`.
 
 To solve this problem, the relational functions of math.js check whether the
-relative difference between the compared values is smaller than the configured
-option `epsilon`. In pseudo code (without exceptions for 0, Infinity and NaN):
+relative and absolute differences between the compared values is smaller than the configured
+option `relTol` and `absTol`. In pseudo code (without exceptions for 0, Infinity and NaN):
 
-    diff = abs(x - y)
-    nearlyEqual = (diff <= max(abs(x), abs(y)) * EPSILON) OR (diff < DBL_EPSILON)
+    abs(a-b) <= max(relTol * max(abs(a), abs(b)), absTol)
 
 where:
 
- - `EPSILON` is the relative difference between x and y. Epsilon is configurable
-   and is `1e-12` by default. See [Configuration](../core/configuration.md).
+ - `relTol` is the relative tolerance between x and y and `absTol` the absolute tolerance. Relative tolerance and absolute tolerance are configurable and are `1e-12` and `1e-15` respectively by default. See [Configuration](../core/configuration.md).
  - `DBL_EPSILON` is the minimum positive floating point number such that
    `1.0 + DBL_EPSILON !== 1.0`. This is a constant with a value of approximately
    `2.2204460492503130808472633361816e-16`.

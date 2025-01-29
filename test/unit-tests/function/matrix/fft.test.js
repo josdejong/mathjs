@@ -1,18 +1,18 @@
 // test fft
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const fft = math.fft
 
 describe('fft', function () {
-  it('should calculate 1-dimensional fourier transformation', function () {
+  it('should calculate 1-dimensional Fourier transformation', function () {
     const in1 = [1, math.complex(2, -1), math.complex(0, -1), math.complex(-1, 2)]
     const out1 = [2, math.complex(-2, -2), math.complex(0, -2), math.complex(4, 4)]
-    approx.deepEqual(fft(in1.valueOf()), out1.valueOf())
-    approx.deepEqual(fft(math.matrix(in1)), math.matrix(out1))
+    approxDeepEqual(fft(in1.valueOf()), out1.valueOf())
+    approxDeepEqual(fft(math.matrix(in1)), math.matrix(out1))
   })
 
-  it('should calculate multidimensional fourier transformation', function () {
+  it('should calculate multidimensional Fourier transformation', function () {
     const in1 = [
       [1, 0],
       [1, 0]
@@ -21,8 +21,8 @@ describe('fft', function () {
       [2, 2],
       [0, 0]
     ]
-    approx.deepEqual(fft(in1.valueOf()), out1.valueOf())
-    approx.deepEqual(fft(math.matrix(in1)), math.matrix(out1))
+    approxDeepEqual(fft(in1.valueOf()), out1.valueOf())
+    approxDeepEqual(fft(math.matrix(in1)), math.matrix(out1))
     const in2 = [
       [0, 0, 1, 1],
       [0, 0, 1, 1],
@@ -35,25 +35,25 @@ describe('fft', function () {
       [0, 0, 0, 0],
       [0, -4, 0, math.complex(0, -4)]
     ]
-    approx.deepEqual(fft(in2.valueOf()), out2.valueOf())
-    approx.deepEqual(fft(math.matrix(in2)), math.matrix(out2))
+    approxDeepEqual(fft(in2.valueOf()), out2.valueOf())
+    approxDeepEqual(fft(math.matrix(in2)), math.matrix(out2))
   })
 
-  it('should calculate 1-dimensional non-power-of-2 fourier transformation', function () {
+  it('should calculate 1-dimensional non-power-of-2 Fourier transformation', function () {
     const in1 = [1, 2, 3]
     const out1 = [math.complex(6, -0), math.complex(-1.5, 0.8660254), math.complex(-1.5, -0.8660254)]
-    approx.deepEqual(fft(in1.valueOf()), out1.valueOf())
-    approx.deepEqual(fft(math.matrix(in1)), math.matrix(out1))
+    approxDeepEqual(fft(in1.valueOf()), out1.valueOf())
+    approxDeepEqual(fft(math.matrix(in1)), math.matrix(out1))
     const in2 = [math.complex(1, 2), math.complex(-3, 4), math.complex(1, 0), math.complex(-1, 0), math.complex(0, 5)]
     const out2 = [
       math.complex(-2, 11), math.complex(-0.8781075, 6.45875199), math.complex(2.83926573, -1.61568416),
       math.complex(4.01483624, -8.94662174), math.complex(1.02400553, 3.10355391)
     ]
-    approx.deepEqual(fft(in2.valueOf()), out2.valueOf())
-    approx.deepEqual(fft(math.matrix(in2)), math.matrix(out2))
+    approxDeepEqual(fft(in2.valueOf()), out2.valueOf())
+    approxDeepEqual(fft(math.matrix(in2)), math.matrix(out2))
   })
 
-  it('should calculate multidimensional non-power-of-2 fourier transformation', function () {
+  it('should calculate multidimensional non-power-of-2 Fourier transformation', function () {
     const in1 = [
       [1, 2, 3],
       [4, 5, 6],
@@ -64,8 +64,8 @@ describe('fft', function () {
       [math.complex(6.5, -26.84678752), math.complex(-4, -3.46410162), math.complex(5, 1.73205081)],
       [math.complex(6.5, 26.84678752), math.complex(5, -1.73205081), math.complex(-4, 3.46410162)]
     ]
-    approx.deepEqual(fft(in1.valueOf()), out1.valueOf())
-    approx.deepEqual(fft(math.matrix(in1)), math.matrix(out1))
+    approxDeepEqual(fft(in1.valueOf()), out1.valueOf())
+    approxDeepEqual(fft(math.matrix(in1)), math.matrix(out1))
     const in2 = [
       [0, 0, math.complex(-5, 1), 1, 1],
       [0, math.complex(0, -6), 3, 1, 1],
@@ -85,7 +85,7 @@ describe('fft', function () {
       [math.complex(-4.14740672, -19.31254257), math.complex(-16.23037949, -7.77609714), math.complex(-26.56126066, 2.17438311),
         math.complex(-0.38368317, 19.58261663), math.complex(15.45614719, -2.39378488)]
     ]
-    approx.deepEqual(fft(in2.valueOf()), out2.valueOf())
-    approx.deepEqual(fft(math.matrix(in2)), math.matrix(out2))
+    approxDeepEqual(fft(in2.valueOf()), out2.valueOf())
+    approxDeepEqual(fft(math.matrix(in2)), math.matrix(out2))
   })
 })

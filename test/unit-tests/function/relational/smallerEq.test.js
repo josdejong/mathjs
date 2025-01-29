@@ -21,6 +21,17 @@ describe('smallerEq', function () {
     assert.strictEqual(smallerEq(-3, -2), true)
   })
 
+  it('should compare two numbers correctly', function () {
+    assert.strictEqual(smallerEq(2n, 3n), true)
+    assert.strictEqual(smallerEq(2n, 2n), true)
+    assert.strictEqual(smallerEq(2n, 1n), false)
+    assert.strictEqual(smallerEq(0n, 0n), true)
+    assert.strictEqual(smallerEq(-2n, 2n), true)
+    assert.strictEqual(smallerEq(-2n, -3n), false)
+    assert.strictEqual(smallerEq(-2n, -2n), true)
+    assert.strictEqual(smallerEq(-3n, -2n), true)
+  })
+
   it('should compare two floating point numbers correctly', function () {
     // Infinity
     assert.strictEqual(smallerEq(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), true)
@@ -67,6 +78,14 @@ describe('smallerEq', function () {
     assert.throws(function () { smallerEq(bignumber(1).div(3), 1 / 3) }, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/)
   })
 
+  it('should compare mixed numbers and bigints', function () {
+    assert.deepStrictEqual(smallerEq(2n, 3), true)
+    assert.deepStrictEqual(smallerEq(2, 2n), true)
+
+    assert.throws(function () { smallerEq(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+    assert.throws(function () { smallerEq(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+  })
+
   it('should compare mixed booleans and bignumbers', function () {
     assert.deepStrictEqual(smallerEq(bignumber(0.1), true), true)
     assert.deepStrictEqual(smallerEq(bignumber(1), true), true)
@@ -88,6 +107,11 @@ describe('smallerEq', function () {
     assert.strictEqual(smallerEq(math.fraction(2), 2), true)
   })
 
+  it('should compare mixed fractions and bigints', function () {
+    assert.strictEqual(smallerEq(1n, math.fraction(1, 3)), false)
+    assert.strictEqual(smallerEq(math.fraction(2), 2n), true)
+  })
+
   it('should compare two measures of the same unit correctly', function () {
     assert.strictEqual(smallerEq(unit('100cm'), unit('10inch')), false)
     assert.strictEqual(smallerEq(unit('99cm'), unit('1m')), true)
@@ -95,12 +119,12 @@ describe('smallerEq', function () {
     assert.strictEqual(smallerEq(unit('101cm'), unit('1m')), false)
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.smallerEq(1.01, 1), false)
     assert.strictEqual(mymath.smallerEq(mymath.bignumber(1.01), mymath.bignumber(1)), false)
 
-    mymath.config({ epsilon: 1e-2 })
+    mymath.config({ relTol: 1e-2 })
     assert.strictEqual(mymath.smallerEq(1.01, 1), true)
     assert.strictEqual(mymath.smallerEq(mymath.bignumber(1.01), mymath.bignumber(1)), true)
   })
@@ -188,7 +212,7 @@ describe('smallerEq', function () {
     })
 
     it('should compare sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(smallerEq(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[true, false, true], [true, true, false]]))
+      assert.deepStrictEqual(smallerEq(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), sparse([[true, false, true], [true, true, false]]))
     })
   })
 

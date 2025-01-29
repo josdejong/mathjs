@@ -1,6 +1,6 @@
-import { applyCallback } from '../../utils/applyCallback.js'
-import { forEach as forEachArray } from '../../utils/array.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 import { factory } from '../../utils/factory.js'
+import { recurse } from '../../utils/array.js'
 
 const name = 'forEach'
 const dependencies = ['typed']
@@ -8,6 +8,13 @@ const dependencies = ['typed']
 export const createForEach = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterate over all elements of a matrix/array, and executes the given callback function.
+   *
+   * The callback is invoked with three arguments: the current value,
+   * the current index, and the matrix operated upon.
+   * Note that because the matrix/array might be
+   * multidimensional, the "index" argument is always an array of numbers giving
+   * the index in each dimension. This is true even for vectors: the "index"
+   * argument is an array of length 1, rather than simply a number.
    *
    * Syntax:
    *
@@ -45,16 +52,5 @@ export const createForEach = /* #__PURE__ */ factory(name, dependencies, ({ type
  * @private
  */
 function _forEach (array, callback) {
-  const recurse = function (value, index) {
-    if (Array.isArray(value)) {
-      forEachArray(value, function (child, i) {
-        // we create a copy of the index array and append the new index value
-        recurse(child, index.concat(i))
-      })
-    } else {
-      // invoke the callback function with the right number of arguments
-      return applyCallback(callback, value, index, array, 'forEach')
-    }
-  }
-  recurse(array, [])
+  recurse(array, [], array, optimizeCallback(callback, array, name))
 }

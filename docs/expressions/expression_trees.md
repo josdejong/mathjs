@@ -20,7 +20,7 @@ In this case, the expression `sqrt(2 + x)` is parsed as:
   ConstantNode   2   x   SymbolNode
 ```
 
-Alternatively, this expression tree can be build by manually creating nodes:
+Alternatively, this expression tree can be built by manually creating nodes:
 
 ```js
 const node1 = new math.ConstantNode(2)
@@ -213,7 +213,7 @@ All nodes have the following methods:
     this node and each of its child nodes. Similar to `Array.forEach`, except
     recursive.
     The callback function is a mapping function accepting a node, and returning
-    a replacement for the node or the original node. Function `callback` is
+    nothing. Function `callback` is
     called as `callback(node: Node, path: string, parent: Node)` for every node
     in the tree. Parameter `path` is a string containing a relative JSON Path.
     Example:

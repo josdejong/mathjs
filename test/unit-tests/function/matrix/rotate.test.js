@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 
 const unit = math.unit
@@ -29,7 +29,7 @@ describe('rotate', function () {
     const imSin = 4.16890695996656
     const cosComplex = complex(-reCos, -imCos)
     const sinComplex = complex(reSin, -imSin)
-    approx.deepEqual(rotate([1, 1], complex('2+3i')),
+    approxDeepEqual(rotate([1, 1], complex('2+3i')),
       [add(cosComplex, multiply(-1.0, sinComplex)), add(cosComplex, sinComplex)])
   })
 
@@ -50,7 +50,7 @@ describe('rotate', function () {
     const imSin = 4.16890695996656
     const cosComplex = complex(-reCos, -imCos)
     const sinComplex = complex(reSin, -imSin)
-    approx.deepEqual(rotate(matrix([1, 1]), complex('2+3i')),
+    approxDeepEqual(rotate(matrix([1, 1]), complex('2+3i')),
       matrix([add(cosComplex, multiply(-1.0, sinComplex)), add(cosComplex, sinComplex)]))
   })
 
@@ -89,7 +89,7 @@ describe('rotate', function () {
     const imSin = 4.16890695996656
     const cosComplex = complex(-reCos, -imCos)
     const sinComplex = complex(reSin, -imSin)
-    approx.deepEqual(rotate([11, 12, 13], complex('2+3i'), [0, 0, 1]),
+    approxDeepEqual(rotate([11, 12, 13], complex('2+3i'), [0, 0, 1]),
       [add(multiply(11, cosComplex), multiply(-12.0, sinComplex)),
         add(multiply(11, sinComplex), multiply(12, cosComplex)),
         13])
@@ -114,7 +114,7 @@ describe('rotate', function () {
     const imSin = 4.16890695996656
     const cosComplex = complex(-reCos, -imCos)
     const sinComplex = complex(reSin, -imSin)
-    approx.deepEqual(rotate(matrix([11, 12, 13]), complex('2+3i'), [0, 0, 1]),
+    approxDeepEqual(rotate(matrix([11, 12, 13]), complex('2+3i'), [0, 0, 1]),
       matrix([add(multiply(11, cosComplex), multiply(-12.0, sinComplex)),
         add(multiply(11, sinComplex), multiply(12, cosComplex)),
         13]))

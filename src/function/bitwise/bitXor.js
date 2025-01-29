@@ -11,12 +11,13 @@ const dependencies = [
   'typed',
   'matrix',
   'DenseMatrix',
-  'concat'
+  'concat',
+  'SparseMatrix'
 ]
 
-export const createBitXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix, concat }) => {
+export const createBitXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix, concat, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
+  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
@@ -38,15 +39,16 @@ export const createBitXor = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    bitAnd, bitNot, bitOr, leftShift, rightArithShift, rightLogShift
    *
-   * @param  {number | BigNumber | Array | Matrix} x First value to xor
-   * @param  {number | BigNumber | Array | Matrix} y Second value to xor
-   * @return {number | BigNumber | Array | Matrix} XOR of `x` and `y`
+   * @param  {number | BigNumber | bigint | Array | Matrix} x First value to xor
+   * @param  {number | BigNumber | bigint | Array | Matrix} y Second value to xor
+   * @return {number | BigNumber | bigint | Array | Matrix} XOR of `x` and `y`
    */
   return typed(
     name,
     {
       'number, number': bitXorNumber,
-      'BigNumber, BigNumber': bigBitXor
+      'BigNumber, BigNumber': bigBitXor,
+      'bigint, bigint': (x, y) => x ^ y
     },
     matrixAlgorithmSuite({
       SS: matAlgo07xSSf,

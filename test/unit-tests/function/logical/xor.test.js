@@ -95,6 +95,14 @@ describe('xor', function () {
     assert.strictEqual(xor(bignumber(0), bignumber(0)), false)
   })
 
+  it('should xor bigints', function () {
+    assert.strictEqual(xor(1n, 1n), false)
+    assert.strictEqual(xor(-1n, 1n), false)
+    assert.strictEqual(xor(-1n, -1n), false)
+    assert.strictEqual(xor(0n, -1n), true)
+    assert.strictEqual(xor(1n, 0n), true)
+  })
+
   it('should xor mixed numbers and bignumbers', function () {
     assert.strictEqual(xor(bignumber(2), 3), false)
     assert.strictEqual(xor(2, bignumber(2)), false)
@@ -103,6 +111,11 @@ describe('xor', function () {
     assert.strictEqual(xor(bignumber(0), 2), true)
     assert.strictEqual(xor(bignumber(2), 0), true)
     assert.strictEqual(xor(bignumber(0), 0), false)
+  })
+
+  it('should xor mixed numbers and bigints', function () {
+    assert.strictEqual(xor(2n, 3), false)
+    assert.strictEqual(xor(0, 2n), true)
   })
 
   it('should xor two units', function () {
@@ -190,7 +203,7 @@ describe('xor', function () {
     })
 
     it('should xor sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(xor(sparse([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), matrix([[false, true], [true, false]]))
+      assert.deepStrictEqual(xor(sparse([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), sparse([[false, true], [true, false]]))
     })
   })
 

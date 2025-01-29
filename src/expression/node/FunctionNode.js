@@ -92,7 +92,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      * invoke a list with arguments on a node
      * @param {./Node | string} fn
      *     Item resolving to a function on which to invoke
-     *     the arguments, typically a SymboNode or AccessorNode
+     *     the arguments, typically a SymbolNode or AccessorNode
      * @param {./Node[]} args
      */
     constructor (fn, args) {
@@ -169,7 +169,15 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
             const rawArgs = this.args
             return function evalFunctionNode (scope, args, context) {
               const fn = resolveFn(scope)
-              return fn(rawArgs, math, createSubScope(scope, args))
+
+              // the original function can be overwritten in the scope with a non-rawArgs function
+              if (fn.rawArgs === true) {
+                return fn(rawArgs, math, createSubScope(scope, args))
+              } else {
+                // "regular" evaluation
+                const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
+                return fn(...values)
+              }
             }
           } else {
             // "regular" evaluation
@@ -196,8 +204,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
               }
               default: return function evalFunctionNode (scope, args, context) {
                 const fn = resolveFn(scope)
-                const values = evalArgs.map(
-                  (evalArg) => evalArg(scope, args, context))
+                const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
                 return fn(...values)
               }
             }

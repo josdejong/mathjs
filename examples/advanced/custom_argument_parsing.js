@@ -7,7 +7,7 @@
  * will be invoked with unevaluated arguments, allowing the function
  * to process the arguments in a customized way.
  */
-const { create, all } = require('../..')
+import { create, all } from '../../lib/esm/index.js'
 const math = create(all)
 
 /**
@@ -43,7 +43,7 @@ function integrate (f, start, end, step) {
  * @param {Array.<math.Node>} args
  *            Expects the following arguments: [f, x, start, end, step]
  * @param {Object} math
- * @param {Object} [scope]
+ * @param {Map} [scope]
  */
 integrate.transform = function (args, math, scope) {
   // determine the variable name
@@ -57,16 +57,12 @@ integrate.transform = function (args, math, scope) {
   const end = args[3].compile().evaluate(scope)
   const step = args[4] && args[4].compile().evaluate(scope) // step is optional
 
-  // create a new scope, linked to the provided scope. We use this new scope
-  // to apply the variable.
-  const fnScope = Object.create(scope)
-
   // construct a function which evaluates the first parameter f after applying
   // a value for parameter x.
   const fnCode = args[0].compile()
   const f = function (x) {
-    fnScope[variable] = x
-    return fnCode.evaluate(fnScope)
+    scope.set(variable, x)
+    return fnCode.evaluate(scope)
   }
 
   // execute the integration
@@ -80,7 +76,7 @@ integrate.transform.rawArgs = true
 // import the function into math.js. Raw functions must be imported in the
 // math namespace, they can't be used via `evaluate(scope)`.
 math.import({
-  integrate: integrate
+  integrate
 })
 
 // use the function in JavaScript
@@ -93,6 +89,6 @@ console.log(math.integrate(f, 0, 1)) // outputs 0.6667254718034714
 console.log(math.evaluate('integrate(x^0.5, x, 0, 1)')) // outputs 0.6667254718034714
 
 // use the function via the expression parser (2)
-const scope = {}
+const scope = new Map()
 math.evaluate('f(x) = 2 * x', scope)
 console.log(math.evaluate('integrate(f(x), x, 0, 2)', scope)) // outputs 4.000000000000003

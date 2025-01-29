@@ -10,12 +10,13 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'DenseMatrix',
-  'concat'
+  'concat',
+  'SparseMatrix'
 ]
 
-export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
+export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, DenseMatrix })
+  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
@@ -23,7 +24,7 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * Test whether two values are equal.
    *
    * The function tests whether the relative difference between x and y is
-   * smaller than the configured epsilon. The function cannot be used to
+   * smaller than the configured relTol and absTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16.
    *
    * For matrices, the function is evaluated element wise.
@@ -59,8 +60,8 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    unequal, smaller, smallerEq, larger, largerEq, compare, deepEqual, equalText
    *
-   * @param  {number | BigNumber | boolean | Complex | Unit | string | Array | Matrix} x First value to compare
-   * @param  {number | BigNumber | boolean | Complex | Unit | string | Array | Matrix} y Second value to compare
+   * @param  {number | BigNumber | bigint | boolean | Complex | Unit | string | Array | Matrix} x First value to compare
+   * @param  {number | BigNumber | bigint | boolean | Complex | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the compared values are equal, else returns false
    */
   return typed(

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const BigNumber = math.BigNumber
 const Complex = math.Complex
@@ -11,14 +11,14 @@ describe('median', function () {
   it('should return the median of an even number of numbers', function () {
     assert.strictEqual(median(3, 1), 2)
     assert.strictEqual(median(1, 3), 2)
-    approx.equal(median(1, 3, 5, 2), 2.5)
+    approxEqual(median(1, 3, 5, 2), 2.5)
     assert.strictEqual(median(0, 0, 0, 0), 0)
   })
 
   it('should return the median of an odd number of numbers', function () {
     assert.strictEqual(median(0), 0)
     assert.strictEqual(median(5), 5)
-    approx.equal(median(1, 3, 5, 2, -1), 2)
+    approxEqual(median(1, 3, 5, 2, -1), 2)
     assert.strictEqual(median(0, 0, 0), 0)
   })
 
@@ -54,14 +54,14 @@ describe('median', function () {
   })
 
   it('should return the median from a 2d array', function () {
-    approx.equal(median([
+    approxEqual(median([
       [1, 4, 7],
       [3, 0, 5]
     ]), 3.5)
   })
 
   it('should return the median from a 2d matrix', function () {
-    approx.equal(median(new DenseMatrix([
+    approxEqual(median(new DenseMatrix([
       [1, 4, 7],
       [3, 0, 5]
     ])), 3.5)

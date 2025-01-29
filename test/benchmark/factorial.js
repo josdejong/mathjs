@@ -1,10 +1,6 @@
-const Benchmark = require('benchmark')
-const BigNumber = require('decimal.js')
-const padRight = require('pad-right')
-
-function pad (text) {
-  return padRight(text, 40, ' ')
-}
+import BigNumber from 'decimal.js'
+import { Bench } from 'tinybench'
+import { formatTaskResult } from './utils/formatTaskResult.js'
 
 const results = []
 
@@ -45,55 +41,51 @@ function betterFactorial (n) {
   return prod
 }
 
-const suite = new Benchmark.Suite()
-suite
-  .add(pad('bigFactorial for small numbers'), function () {
+const bench = new Bench({ time: 100, iterations: 100 })
+  .add('bigFactorial for small numbers', function () {
     const res = bigFactorial(new BigNumber(8))
     results.push(res)
   })
-  .add(pad('new bigFactorial for small numbers'), function () {
+  .add('new bigFactorial for small numbers', function () {
     const res = betterFactorial(new BigNumber(8))
     results.push(res)
   })
 
-  .add(pad('bigFactorial for small numbers 2'), function () {
+  .add('bigFactorial for small numbers 2', function () {
     const res = bigFactorial(new BigNumber(20))
     results.push(res)
   })
-  .add(pad('new bigFactorial for small numbers 2'), function () {
+  .add('new bigFactorial for small numbers 2', function () {
     const res = betterFactorial(new BigNumber(20))
     results.push(res)
   })
 
-  .add(pad('bigFactorial for big numbers'), function () {
+  .add('bigFactorial for big numbers', function () {
     const res = bigFactorial(new BigNumber(600))
     results.push(res)
   })
-  .add(pad('new bigFactorial for big numbers'), function () {
+  .add('new bigFactorial for big numbers', function () {
     const res = betterFactorial(new BigNumber(600))
     results.push(res)
   })
 
-  .add(pad('bigFactorial for HUGE numbers'), function () {
+  .add('bigFactorial for HUGE numbers', function () {
     const res = bigFactorial(new BigNumber(1500))
     results.push(res)
   })
-  .add(pad('new bigFactorial for HUGE numbers'), function () {
+  .add('new bigFactorial for HUGE numbers', function () {
     const res = betterFactorial(new BigNumber(1500))
     results.push(res)
   })
 
-  .add(pad('bigFactorial for "HUGER" numbers'), function () {
+  .add('bigFactorial for "HUGER" numbers', function () {
     const res = bigFactorial(new BigNumber(10000))
     results.push(res)
   })
-  .add(pad('new bigFactorial for "HUGER" numbers'), function () {
+  .add('new bigFactorial for "HUGER" numbers', function () {
     const res = betterFactorial(new BigNumber(10000))
     results.push(res)
   })
-  .on('cycle', function (event) {
-    console.log(String(event.target))
-  })
-  .on('complete', function () {
-  })
-  .run()
+
+bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
+await bench.run()

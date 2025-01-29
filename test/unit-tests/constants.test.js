@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../tools/approx.js'
+import { approxEqual } from '../../tools/approx.js'
 import { createBigNumberClass } from '../../src/type/bignumber/BigNumber.js'
 import { createComplexClass } from '../../src/type/complex/Complex.js'
 import {
@@ -23,7 +23,7 @@ import {
 
 describe('constants', function () {
   describe('number', function () {
-    const config = { number: 'number', precision: 64, epsilon: 1e-12 }
+    const config = { number: 'number', precision: 64, relTol: 1e-12 }
     const BigNumber = createBigNumberClass({ config })
     const Complex = createComplexClass({ config })
     const dependencies = {
@@ -33,47 +33,47 @@ describe('constants', function () {
     }
 
     it('should create pi', function () {
-      approx.equal(createPi(dependencies), 3.14159265358979)
+      approxEqual(createPi(dependencies), 3.14159265358979)
     })
 
     it('should create tau', function () {
-      approx.equal(createTau(dependencies), 6.28318530717959)
+      approxEqual(createTau(dependencies), 6.28318530717959)
     })
 
     it('should create phi, golden ratio', function () {
-      approx.equal(createPhi(dependencies), 1.61803398874989)
+      approxEqual(createPhi(dependencies), 1.61803398874989)
     })
 
     it('should create e (euler constant)', function () {
-      approx.equal(createE(dependencies), 2.71828182845905)
+      approxEqual(createE(dependencies), 2.71828182845905)
     })
 
     it('should create LN2', function () {
-      approx.equal(createLN2(dependencies), 0.69314718055995)
+      approxEqual(createLN2(dependencies), 0.69314718055995)
     })
 
     it('should create LN10', function () {
-      approx.equal(createLN10(dependencies), 2.30258509299405)
+      approxEqual(createLN10(dependencies), 2.30258509299405)
     })
 
     it('should create LOG2E', function () {
-      approx.equal(createLOG2E(dependencies), 1.44269504088896)
+      approxEqual(createLOG2E(dependencies), 1.44269504088896)
     })
 
     it('should create LOG10E', function () {
-      approx.equal(createLOG10E(dependencies), 0.43429448190325)
+      approxEqual(createLOG10E(dependencies), 0.43429448190325)
     })
 
     it('should create PI', function () {
-      approx.equal(createPi(dependencies), 3.14159265358979)
+      approxEqual(createPi(dependencies), 3.14159265358979)
     })
 
     it('should create SQRT1_2', function () {
-      approx.equal(createSQRT1_2(dependencies), 0.70710678118655)
+      approxEqual(createSQRT1_2(dependencies), 0.70710678118655)
     })
 
     it('should create SQRT2', function () {
-      approx.equal(createSQRT2(dependencies), 1.4142135623731)
+      approxEqual(createSQRT2(dependencies), 1.4142135623731)
     })
 
     it('should create Infinity', function () {
@@ -86,7 +86,7 @@ describe('constants', function () {
   })
 
   describe('bignumbers', function () {
-    const config = { number: 'BigNumber', precision: 64, epsilon: 1e-12 }
+    const config = { number: 'BigNumber', precision: 64, relTol: 1e-12 }
     const BigNumber = createBigNumberClass({ config })
     const Complex = createComplexClass({ config })
     const dependencies = {

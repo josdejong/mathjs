@@ -18,6 +18,14 @@ describe('unequal', function () {
     assert.strictEqual(unequal(true, 1), false)
   })
 
+  it('should compare two bigints correctly', function () {
+    assert.strictEqual(unequal(2n, 3n), true)
+    assert.strictEqual(unequal(2n, 2n), false)
+    assert.strictEqual(unequal(0n, 0n), false)
+    assert.strictEqual(unequal(-2n, 2n), true)
+    assert.strictEqual(unequal(true, 1n), false)
+  })
+
   it('should compare two floating point numbers correctly', function () {
     // NaN
     assert.strictEqual(unequal(Number.NaN, Number.NaN), true)
@@ -69,6 +77,14 @@ describe('unequal', function () {
 
     assert.throws(function () { unequal(1 / 3, bignumber(1).div(3)) }, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { unequal(bignumber(1).div(3), 1 / 3) }, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+  })
+
+  it('should compare mixed numbers and bigints', function () {
+    assert.deepStrictEqual(unequal(2n, 3), true)
+    assert.deepStrictEqual(unequal(2, 2n), false)
+
+    assert.throws(function () { unequal(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+    assert.throws(function () { unequal(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
   })
 
   it('should compare mixed booleans and bignumbers', function () {
@@ -132,13 +148,13 @@ describe('unequal', function () {
     assert.strictEqual(unequal(2, undefined), true)
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.unequal(1, 0.991), true)
     assert.strictEqual(mymath.unequal(mymath.bignumber(1), mymath.bignumber(0.991)), true)
     assert.strictEqual(mymath.unequal(mymath.complex(1, 0), mymath.complex(0.991, 0)), true)
 
-    mymath.config({ epsilon: 1e-2 })
+    mymath.config({ relTol: 1e-2 })
     assert.strictEqual(mymath.unequal(1, 0.991), false)
     assert.strictEqual(mymath.unequal(mymath.bignumber(1), mymath.bignumber(0.991)), false)
     assert.strictEqual(mymath.unequal(mymath.complex(1, 0), mymath.complex(0.991, 0)), false)
@@ -227,7 +243,7 @@ describe('unequal', function () {
     })
 
     it('should compare sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(unequal(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, true, true]]))
+      assert.deepStrictEqual(unequal(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), sparse([[false, true, false], [false, true, true]]))
     })
   })
 

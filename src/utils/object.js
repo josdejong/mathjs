@@ -15,7 +15,7 @@ export function clone (x) {
   const type = typeof x
 
   // immutable primitive types
-  if (type === 'number' || type === 'string' || type === 'boolean' ||
+  if (type === 'number' || type === 'bigint' || type === 'string' || type === 'boolean' ||
       x === null || x === undefined) {
     return x
   }
@@ -38,6 +38,11 @@ export function clone (x) {
   // object
   if (isObject(x)) {
     return mapObject(x, clone)
+  }
+
+  if (type === 'function') {
+    // we assume that the function is immutable
+    return x
   }
 
   throw new TypeError(`Cannot clone: unknown type of value (value: ${x})`)
@@ -390,11 +395,7 @@ export function pickShallow (object, properties) {
   return copy
 }
 
-export function values (object) {
-  return Object.keys(object).map(key => object[key])
-}
-
 // helper function to test whether a string contains a path like 'user.name'
 function isPath (str) {
-  return str.indexOf('.') !== -1
+  return str.includes('.')
 }

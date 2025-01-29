@@ -7,7 +7,7 @@ export const diffDocs = {
   ],
   description: [
     'Create a new matrix or array with the difference of the passed matrix or array.',
-    'Dim parameter is optional and used to indicant the dimension of the array/matrix to apply the difference',
+    'Dim parameter is optional and used to indicate the dimension of the array/matrix to apply the difference',
     'If no dimension parameter is passed it is assumed as dimension 0',
     'Dimension is zero-based in javascript and one-based in the parser',
     'Arrays must be \'rectangular\' meaning arrays like [1, 2]',

@@ -20,6 +20,21 @@ describe('isPrime', function () {
     assert.strictEqual(isPrime(999), false)
   })
 
+  it('should test whether a bigint is prime', function () {
+    assert.strictEqual(isPrime(0n), false)
+    assert.strictEqual(isPrime(-0n), false)
+    assert.strictEqual(isPrime(-1n), false)
+    assert.strictEqual(isPrime(1n), false)
+    assert.strictEqual(isPrime(2n), true)
+    assert.strictEqual(isPrime(3n), true)
+    assert.strictEqual(isPrime(5n), true)
+    assert.strictEqual(isPrime(7n), true)
+    assert.strictEqual(isPrime(4n), false)
+    assert.strictEqual(isPrime(100n), false)
+    assert.strictEqual(isPrime(102n), false)
+    assert.strictEqual(isPrime(999n), false)
+  })
+
   it('should test whether a BigNumber is prime', function () {
     assert.strictEqual(isPrime(bignumber(0)), false)
     assert.strictEqual(isPrime(bignumber(-0)), false)

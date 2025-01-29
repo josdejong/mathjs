@@ -7,8 +7,13 @@ module.exports = function (config) {
 
     frameworks: [
       'mocha'
-      // 'webpack' TODO: needed after upgrading to webpack 5, see https://github.com/josdejong/mathjs/pull/2433
     ],
+
+    mochaReporter: {
+      output: 'minimal'
+    },
+
+    reporters: ['mocha'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -16,7 +21,6 @@ module.exports = function (config) {
     ],
 
     plugins: [
-      'karma-browserstack-launcher',
       'karma-webpack',
       'karma-mocha',
       'karma-mocha-reporter',

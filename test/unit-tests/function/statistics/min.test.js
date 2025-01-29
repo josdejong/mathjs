@@ -3,6 +3,7 @@ import math from '../../../../src/defaultInstance.js'
 const BigNumber = math.BigNumber
 const Complex = math.Complex
 const DenseMatrix = math.DenseMatrix
+const fraction = math.fraction
 const min = math.min
 
 describe('min', function () {
@@ -17,6 +18,20 @@ describe('min', function () {
   it('should return the min of strings by their numerical value', function () {
     assert.strictEqual(min('10', '3', '4', '2'), 2)
     assert.strictEqual(min('10'), 10)
+  })
+
+  it('should return the max of strings by their numerical value (with BigNumber config)', function () {
+    const bigmath = math.create({ number: 'BigNumber' })
+    assert.deepStrictEqual(bigmath.min('10', '3', '4', '2'), bigmath.bignumber(2))
+    assert.deepStrictEqual(bigmath.min('10'), bigmath.bignumber(10))
+  })
+
+  it('should return the max of strings by their numerical value (with bigint config)', function () {
+    const bigmath = math.create({ number: 'bigint' })
+    assert.strictEqual(bigmath.min('10', '3', '4', '2'), 2n)
+    assert.strictEqual(bigmath.min('10'), 10n)
+    assert.strictEqual(bigmath.min('2.5'), 2.5) // fallback to number
+    assert.strictEqual(bigmath.min('2.5', '4'), 2.5) // fallback to number
   })
 
   it('should return the min element from a vector', function () {
@@ -83,6 +98,16 @@ describe('min', function () {
     assert(isNaN(min([1, 3, NaN])))
     assert(isNaN(min([NaN, NaN, NaN])))
     assert(isNaN(min(NaN, NaN, NaN)))
+  })
+
+  it('should return the smallest of mixed types', function () {
+    assert.deepStrictEqual(min(1n, 3, new BigNumber(7), fraction(5, 4)), 1n)
+    assert.deepStrictEqual(min(3n, 1, new BigNumber(7), fraction(5, 4)), 1)
+    const big1 = new BigNumber(1)
+    assert.deepStrictEqual(min(3n, 7, big1, fraction(5, 4)), big1)
+    const threeq = fraction(3, 4)
+    assert.deepStrictEqual(min(3n, 7, new BigNumber(1.25), threeq), threeq)
+    assert.strictEqual(min(3n, 7, big1, threeq, -Infinity), -Infinity)
   })
 
   it('should throw an error when called multiple arrays or matrices', function () {

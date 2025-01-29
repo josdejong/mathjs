@@ -1,6 +1,6 @@
 // test pinv
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const pinv = math.pinv
 
@@ -22,13 +22,13 @@ function assertValidPinv (A, A_) {
   assert.deepStrictEqual(math.size(A_).valueOf(), [cols, rows])
 
   // A A_ A = A
-  approx.deepEqual(math.add(math.multiply(A, math.multiply(A_, A)), math.Complex(1, 1)).valueOf(), math.add(A, math.Complex(1, 1)).valueOf())
+  approxDeepEqual(math.add(math.multiply(A, math.multiply(A_, A)), math.Complex(1, 1)).valueOf(), math.add(A, math.Complex(1, 1)).valueOf())
   // A_ A A_ = A_
-  approx.deepEqual(math.add(math.multiply(A_, math.multiply(A, A_)), math.Complex(1, 1)).valueOf(), math.add(A_, math.Complex(1, 1)).valueOf())
+  approxDeepEqual(math.add(math.multiply(A_, math.multiply(A, A_)), math.Complex(1, 1)).valueOf(), math.add(A_, math.Complex(1, 1)).valueOf())
   // (A A_)* = A A_
-  approx.deepEqual(math.add(math.ctranspose(math.multiply(A, A_)), math.Complex(1, 1)).valueOf(), math.add(math.multiply(A, A_), math.Complex(1, 1)).valueOf())
+  approxDeepEqual(math.add(math.ctranspose(math.multiply(A, A_)), math.Complex(1, 1)).valueOf(), math.add(math.multiply(A, A_), math.Complex(1, 1)).valueOf())
   // (A_ A)* = A_ A
-  approx.deepEqual(math.add(math.ctranspose(math.multiply(A_, A)), math.Complex(1, 1)).valueOf(), math.add(math.multiply(A_, A), math.Complex(1, 1)).valueOf())
+  approxDeepEqual(math.add(math.ctranspose(math.multiply(A_, A)), math.Complex(1, 1)).valueOf(), math.add(math.multiply(A_, A), math.Complex(1, 1)).valueOf())
 }
 
 describe('pinv', function () {
@@ -36,7 +36,7 @@ describe('pinv', function () {
     const pinvA = pinv(A)
     if (A_) {
       if (strict) assert.deepStrictEqual(pinvA, A_)
-      else approx.deepEqual(pinvA, A_)
+      else approxDeepEqual(pinvA, A_)
     }
     switch (math.size(A).valueOf().length) {
       case 0:
@@ -53,6 +53,7 @@ describe('pinv', function () {
         break
     }
   }
+
   it('should return the inverse of a number', function () {
     check(4, 1 / 4, true)
     check(math.bignumber(4), math.bignumber(1 / 4), true)

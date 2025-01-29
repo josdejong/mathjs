@@ -16,6 +16,14 @@ describe('bitXor', function () {
     assert.strictEqual(bitXor(-5, -3), 6)
   })
 
+  it('should xor two bigints', function () {
+    assert.strictEqual(bitXor(53n, 131n), 182n)
+    assert.strictEqual(bitXor(2n, 3n), 1n)
+    assert.strictEqual(bitXor(-2n, 3n), -3n)
+    assert.strictEqual(bitXor(2n, -3n), -1n)
+    assert.strictEqual(bitXor(-5n, -3n), 6n)
+  })
+
   it('should xor booleans', function () {
     assert.strictEqual(bitXor(true, true), 0)
     assert.strictEqual(bitXor(true, false), 1)
@@ -45,6 +53,11 @@ describe('bitXor', function () {
     assert.deepStrictEqual(bitXor(1, bignumber(2)), bignumber(3))
     assert.deepStrictEqual(bitXor(bignumber(7), 9), bignumber(14))
     assert.deepStrictEqual(bitXor(7, bignumber(9)), bignumber(14))
+  })
+
+  it('should bitwise xor mixed numbers and bigints', function () {
+    assert.strictEqual(bitXor(53n, 131), 182)
+    assert.strictEqual(bitXor(53, 131n), 182)
   })
 
   it('should bitwise xor mixed booleans and bignumbers', function () {
@@ -142,7 +155,7 @@ describe('bitXor', function () {
     })
 
     it('should bitwise xor sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(bitXor(sparse([[1, 2], [3, 4]]), sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(bitXor(sparse([[1, 2], [3, 4]]), sparse([[5, 6], [7, 8]])), sparse([[4, 4], [4, 12]]))
     })
   })
 

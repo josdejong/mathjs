@@ -115,7 +115,7 @@ Operators                         | Description
 `^`, `.^`                         | Exponentiation
 `+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
 See section below                 | Implicit multiplication
-`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, percentage, modulus
+`*`, `/`, `.*`, `./`,`%`, `mod`   | Multiply, divide , percentage, modulus
 `+`, `-`                          | Add, subtract
 `:`                               | Range
 `to`, `in`                        | Unit conversion
@@ -248,6 +248,68 @@ Operator Expression  | Equivalent Function Expression
 Note that math.js embodies a preference for the operator forms, in that calling
 `simplify` (see [Algebra](./algebra.md)) converts any instances of the function
 form into the corresponding operator.
+
+## Map and forEach
+
+The `map` and `forEach` functions can be used to apply a callback function to each element of an array or matrix.
+
+The callback functions can be functions, typed functions, inline functions (only in the parser) or compiled inline functions (only in the parser).
+
+The callback can have the following inputs:
+- **value**: the current value in the array or matrix.
+- **index**: the index of the current value expressed as an array of numbers.
+- **array**: the array or matrix being iterated.
+
+Below is the syntax for both functions:
+
+### map
+
+The `map` function applies a function to each element of an array and returns a new array with the results.
+
+```js
+const parser = math.parser()
+
+// Define a square function
+parser.evaluate('square(x) = x ^ 2')
+
+// Apply the square function to each element of the array
+parser.evaluate('result = map([1, 2, 3, 4], square)')
+// result: [1, 4, 9, 16]
+
+// Apply an inline function to each element of the array
+parser.evaluate('result = map([1, 2, 3, 4], f(x) = x ^ 2)')
+// result: [1, 4, 9, 16]
+
+// Apply a compiled inline function to each element of the array
+parser.evaluate('result = map([1, 2, 3, 4], x ^ 2)')
+// result: [1, 4, 9, 16]
+```
+
+### forEach
+The `forEach` function applies a function to each element of an array or matrix but does not return a new array. It is useful for executing side effects.
+
+```js
+// Define a function that prints each element
+math.import({consoleLog: x => console.log(x)})
+const parser = math.parser()
+
+// Define a squareConsleLog function
+parser.evaluate('squareConsoleLog(x) = consoleLog(x ^ 2)')
+
+// Apply the squareConsleLog function to each element of the array
+parser.evaluate('forEach([1, 2, 3, 4], squareConsleLog)')
+// Prints: 1, 4, 9, 16
+
+// Apply an inline function to each element of the array
+parser.evaluate('forEach([1, 2, 3, 4], f(x) = consoleLog(x ^ 2))')
+// Prints: 1, 4, 9, 16
+
+// Apply a compiled inline function to each element of the array
+parser.evaluate('forEach([1, 2, 3, 4], consoleLog(x ^ 2))')
+// Prints: 1, 4, 9, 16
+```
+
+These functions are useful for performing element-wise operations on arrays or matrices.
 
 ## Constants and variables
 
@@ -470,19 +532,6 @@ parser.evaluate('a + b')        // Complex, 6 + 2i
 parser.evaluate('a * b')        // Complex, 11 + 10i
 parser.evaluate('i * i')        // Number,  -1
 parser.evaluate('sqrt(-4)')     // Complex, 2i
-```
-
-Math.js does not automatically convert complex numbers with an imaginary part
-of zero to numbers. They can be converted to a number using the function
-`number`.
-
-```js
-// convert a complex number to a number
-const parser = math.parser()
-parser.evaluate('a = 2 + 3i')   // Complex, 2 + 3i
-parser.evaluate('b = a - 3i')   // Complex, 2 + 0i
-parser.evaluate('number(b)')    // Number,  2
-parser.evaluate('number(a)')    // Error: unexpected type of argument
 ```
 
 

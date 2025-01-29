@@ -1,3 +1,7 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
+
 /**
  * Depth-first search and postorder of a tree rooted at node j
  *
@@ -8,8 +12,6 @@
  * @param {Number}  next            The index offset within the workspace for the next array
  * @param {Array}   post            The post ordering array
  * @param {Number}  stack           The index offset within the workspace for the stack array
- *
- * Reference: http://faculty.cse.tamu.edu/davis/publications.html
  */
 export function csTdfs (j, k, w, head, next, post, stack) {
   // variables

@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [18.x, 20.x, 22.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -48,9 +48,14 @@ jobs:
         with:
           node-version: 20.x
       - run: npm ci
-      - run: npm run coverage && npx codecov
+      - run: npm run coverage
         env:
           CI: true
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
 
   build-and-test:
     runs-on: ubuntu-latest

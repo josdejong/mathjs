@@ -34,7 +34,7 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
   log2
 }) => {
   /**
-   * Calculate N-dimensional fourier transform
+   * Calculate N-dimensional Fourier transform
    *
    * Syntax:
    *
@@ -50,12 +50,12 @@ export const createFft = /* #__PURE__ */ factory(name, dependencies, ({
    *      ifft
    *
    * @param {Array | Matrix} arr    An array or matrix
-   * @return {Array | Matrix}       N-dimensional fourier transformation of the array
+   * @return {Array | Matrix}       N-dimensional Fourier transformation of the array
    */
   return typed(name, {
     Array: _ndFft,
     Matrix: function (matrix) {
-      return matrix.create(_ndFft(matrix.toArray()))
+      return matrix.create(_ndFft(matrix.valueOf()), matrix.datatype())
     }
   })
 

@@ -1,7 +1,6 @@
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is.js'
 import { isFactory, stripOptionalNotation } from '../../utils/factory.js'
 import { hasOwnProperty, lazy } from '../../utils/object.js'
-import { contains } from '../../utils/array.js'
 import { ArgumentsError } from '../../error/ArgumentsError.js'
 
 export function importFactory (typed, load, math, importedFactories) {
@@ -163,7 +162,9 @@ export function importFactory (typed, load, math, importedFactories) {
       return
     }
 
-    if (math[name] === undefined || options.override) {
+    const isDefined = math[name] !== undefined
+    const isValuelessUnit = math.Unit?.isValuelessUnit(name)
+    if ((!isDefined && !isValuelessUnit) || options.override) {
       math[name] = value
       delete importedFactories[name]
 
@@ -235,7 +236,7 @@ export function importFactory (typed, load, math, importedFactories) {
    * @private
    */
   function _importFactory (factory, options, name = factory.fn) {
-    if (contains(name, '.')) {
+    if (name.includes('.')) {
       throw new Error('Factory name should not contain a nested path. ' +
         'Name: ' + JSON.stringify(name))
     }
@@ -253,7 +254,7 @@ export function importFactory (typed, load, math, importedFactories) {
       factory.dependencies
         .map(stripOptionalNotation)
         .forEach(dependency => {
-          if (contains(dependency, '.')) {
+          if (dependency.includes('.')) {
             throw new Error('Factory dependency should not contain a nested path. ' +
               'Name: ' + JSON.stringify(dependency))
           }
@@ -273,7 +274,7 @@ export function importFactory (typed, load, math, importedFactories) {
 
       if (instance && typeof instance.transform === 'function') {
         throw new Error('Transforms cannot be attached to factory functions. ' +
-            'Please create a separate function for it with exports.path="expression.transform"')
+            'Please create a separate function for it with export const path = "expression.transform"')
       }
 
       if (existing === undefined || options.override) {
@@ -353,7 +354,7 @@ export function importFactory (typed, load, math, importedFactories) {
   }
 
   function factoryAllowedInExpressions (factory) {
-    return factory.fn.indexOf('.') === -1 && // FIXME: make checking on path redundant, check on meta data instead
+    return !factory.fn.includes('.') && // FIXME: make checking on path redundant, check on meta data instead
       !hasOwnProperty(unsafe, factory.fn) &&
       (!factory.meta || !factory.meta.isClass)
   }

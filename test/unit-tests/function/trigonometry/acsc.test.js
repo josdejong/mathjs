@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -17,18 +17,18 @@ const Big = bigmath.bignumber
 
 describe('acsc', function () {
   it('should return the arccsc of a boolean', function () {
-    approx.equal(acsc(true), pi / 2)
+    approxEqual(acsc(true), pi / 2)
     assert.deepStrictEqual(acsc(false), complex(pi / 2, Infinity))
     // assert.ok(isNaN(acsc(false)))
   })
 
   it('should return the arccsc of a number', function () {
-    approx.equal(acsc(-2) / pi, -1 / 6)
-    approx.equal(acsc(-1) / pi, -0.5)
+    approxEqual(acsc(-2) / pi, -1 / 6)
+    approxEqual(acsc(-1) / pi, -0.5)
     assert.deepStrictEqual(acsc(0), complex(pi / 2, Infinity))
     // assert.ok(isNaN(acsc(0)))
-    approx.equal(acsc(1) / pi, 0.5)
-    approx.equal(acsc(2) / pi, 1 / 6)
+    approxEqual(acsc(1) / pi, 0.5)
+    approxEqual(acsc(2) / pi, 1 / 6)
   })
 
   it('should return the arccsc of a number when predictable:true', function () {
@@ -68,11 +68,11 @@ describe('acsc', function () {
   })
 
   it('should be the inverse function of csc', function () {
-    approx.equal(acsc(csc(-1)), -1)
-    approx.equal(acsc(csc(0)), 0)
-    approx.equal(acsc(csc(0.1)), 0.1)
-    approx.equal(acsc(csc(0.5)), 0.5)
-    approx.equal(acsc(csc(2)), 1.14159265358979)
+    approxEqual(acsc(csc(-1)), -1)
+    approxEqual(acsc(csc(0)), 0)
+    approxEqual(acsc(csc(0.1)), 0.1)
+    approxEqual(acsc(csc(0.5)), 0.5)
+    approxEqual(acsc(csc(2)), 1.14159265358979)
   })
 
   it('should be the inverse function of bignumber csc', function () {
@@ -99,18 +99,18 @@ describe('acsc', function () {
   it('should return the arccsc of a complex number', function () {
     const re = 0.150385604327861963
     const im = 0.231334698573973315
-    approx.deepEqual(acsc(complex('2+3i')), complex(re, -im))
-    approx.deepEqual(acsc(complex('2-3i')), complex(re, im))
-    approx.deepEqual(acsc(complex('-2+3i')), complex(-re, -im))
-    approx.deepEqual(acsc(complex('-2-3i')), complex(-re, im))
-    approx.deepEqual(acsc(complex('1+i')), complex(0.4522784471511907, -0.53063753095251783))
-    approx.deepEqual(acsc(complex('i')), complex(0, -0.881373587019543))
+    approxDeepEqual(acsc(complex('2+3i')), complex(re, -im))
+    approxDeepEqual(acsc(complex('2-3i')), complex(re, im))
+    approxDeepEqual(acsc(complex('-2+3i')), complex(-re, -im))
+    approxDeepEqual(acsc(complex('-2-3i')), complex(-re, im))
+    approxDeepEqual(acsc(complex('1+i')), complex(0.4522784471511907, -0.53063753095251783))
+    approxDeepEqual(acsc(complex('i')), complex(0, -0.881373587019543))
 
-    approx.deepEqual(acsc(complex('-1')), complex(-pi / 2, 0))
-    approx.deepEqual(acsc(complex('-0.5')), complex(-pi / 2, 1.3169578969248))
+    approxDeepEqual(acsc(complex('-1')), complex(-pi / 2, 0))
+    approxDeepEqual(acsc(complex('-0.5')), complex(-pi / 2, 1.3169578969248))
     assert.deepStrictEqual(acsc(complex('0')), complex(pi / 2, Infinity))
-    approx.deepEqual(acsc(complex('0.5')), complex(pi / 2, -1.3169578969248))
-    approx.deepEqual(acsc(complex('1')), complex(pi / 2, 0))
+    approxDeepEqual(acsc(complex('0.5')), complex(pi / 2, -1.3169578969248))
+    approxDeepEqual(acsc(complex('1')), complex(pi / 2, 0))
   })
 
   it('should throw an error if called with a unit', function () {
@@ -126,8 +126,8 @@ describe('acsc', function () {
     assert.throws(() => acsc([1, 2, 3]), TypeError)
     assert.throws(() => acsc(matrix([1, 2, 3])), TypeError)
     const acsc123 = [pi / 2, pi / 6, 0.339836909454]
-    approx.deepEqual(math.map([1, 2, 3], acsc), acsc123)
-    approx.deepEqual(math.map(matrix([1, 2, 3]), acsc), matrix(acsc123))
+    approxDeepEqual(math.map([1, 2, 3], acsc), acsc123)
+    approxDeepEqual(math.map(matrix([1, 2, 3]), acsc), matrix(acsc123))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

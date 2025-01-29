@@ -2,20 +2,13 @@
 
 // browserify benchmark/expression_parser.js -o ./benchmark_expression_parser.js
 
-const assert = require('assert')
-const Benchmark = require('benchmark')
-const padRight = require('pad-right')
-const math = require('../..')
-const { getSafeProperty } = require('../../lib/cjs/utils/customs')
+import assert from 'node:assert'
+import { Bench } from 'tinybench'
+import { all, create } from '../../lib/esm/index.js'
+import { getSafeProperty } from '../../lib/esm/utils/customs.js'
+import { formatTaskResult } from './utils/formatTaskResult.js'
 
-// expose on window when using bundled in a browser
-if (typeof window !== 'undefined') {
-  window.Benchmark = Benchmark
-}
-
-function pad (text) {
-  return padRight(text, 40, ' ')
-}
+const math = create(all)
 
 const expr = '2 + 3 * sin(pi / 4) - 4x'
 const scope = new Map([
@@ -47,40 +40,34 @@ assertApproxEqual(compiledPlainJs.evaluate(scope), correctResult, 1e-7)
 let total = 0
 const nodes = []
 
-const suite = new Benchmark.Suite()
-suite
-  .add(pad('(plain js) evaluate'), function () {
+const bench = new Bench({ time: 100, iterations: 100 })
+  .add('(plain js) evaluate', function () {
     total += compiledPlainJs.evaluate(scope)
   })
 
-  .add(pad('(mathjs) evaluate'), function () {
+  .add('(mathjs) evaluate', function () {
     total += compiled.evaluate(scope)
   })
-  .add(pad('(mathjs) parse, compile, evaluate'), function () {
+  .add('(mathjs) parse, compile, evaluate', function () {
     total += math.parse(expr).compile().evaluate(scope)
   })
-  .add(pad('(mathjs) parse, compile'), function () {
+  .add('(mathjs) parse, compile', function () {
     const node = math.parse(expr).compile()
     nodes.push(node)
   })
-  .add(pad('(mathjs) parse'), function () {
+  .add('(mathjs) parse', function () {
     const node = math.parse(expr)
     nodes.push(node)
   })
 
-  .on('cycle', function (event) {
-    console.log(String(event.target))
-  })
-  .on('complete', function () {
-    // we count at total to prevent the browsers from not executing
-    // the benchmarks ("dead code") when the results would not be used.
-    if (total > 1e6) {
-      console.log('')
-    } else {
-      console.log('')
-    }
-  })
-  .run()
+bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
+await bench.run()
+
+// we count at total to prevent the browsers from not executing
+// the benchmarks ("dead code") when the results would not be used.
+if (total > 1e6) {
+  console.log('')
+}
 
 function assertApproxEqual (actual, expected, tolerance) {
   const diff = Math.abs(expected - actual)

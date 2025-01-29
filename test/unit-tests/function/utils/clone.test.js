@@ -19,6 +19,14 @@ describe('clone', function () {
     assert.strictEqual(b, 1)
   })
 
+  it('should clone a bigint', function () {
+    let a = 1n
+    const b = math.clone(a)
+    a = 2n
+    assert.strictEqual(a, 2n)
+    assert.strictEqual(b, 1n)
+  })
+
   it('should throw an error on wrong number of arguments', function () {
     assert.throws(function () { math.clone() }, /TypeError: Too few arguments/)
     assert.throws(function () { math.clone(2, 4) }, /TypeError: Too many arguments/)
@@ -78,6 +86,13 @@ describe('clone', function () {
     b = math.clone(a)
     a.valueOf()[2].re = 5
     assert.strictEqual(b.valueOf()[2].re, 2)
+  })
+
+  it('should clone a function', function () {
+    const f = () => 42
+    const a = math.matrix([f])
+    const b = math.clone(a)
+    assert.strictEqual(b.get([0]), f)
   })
 
   it('should LaTeX clone', function () {

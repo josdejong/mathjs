@@ -32,6 +32,7 @@ describe('schur', function () {
       [-0.6745633977804205, 0.24977632323107185, 0.6575567219332444, -0.22147775183161147, 0.03380493473031572]
     ])) < 1e-3)
   })
+
   it('should calculate schur decomposition of order 5 Matrix with numbers', function () {
     assert.ok(math.norm(math.subtract(math.schur(math.matrix([
       [-5.3, -1.4, -0.2, 0.7, 1.0],

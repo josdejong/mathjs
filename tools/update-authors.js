@@ -7,11 +7,13 @@
 // Usage: tools/update-author.js [--dry]
 // Passing --dry will redirect output to stdout rather than write to 'AUTHORS'.
 
-'use strict'
-const { spawn } = require('child_process')
-const path = require('path')
-const fs = require('fs')
-const readline = require('readline')
+import { spawn } from 'node:child_process'
+import path from 'node:path'
+import fs from 'node:fs'
+import readline from 'node:readline'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 class CaseIndifferentMap {
   constructor () {

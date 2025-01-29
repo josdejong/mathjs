@@ -1,4 +1,4 @@
-import { applyCallback } from '../../utils/applyCallback.js'
+import { optimizeCallback } from '../../utils/optimizeCallback.js'
 import { filter, filterRegExp } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
@@ -8,6 +8,13 @@ const dependencies = ['typed']
 export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Filter the items in an array or one dimensional matrix.
+   *
+   * The callback is invoked with three arguments: the current value,
+   * the current index, and the matrix operated upon.
+   * Note that because the matrix/array might be
+   * multidimensional, the "index" argument is always an array of numbers giving
+   * the index in each dimension. This is true even for vectors: the "index"
+   * argument is an array of length 1, rather than simply a number.
    *
    * Syntax:
    *
@@ -39,13 +46,13 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
     'Array, function': _filterCallback,
 
     'Matrix, function': function (x, test) {
-      return x.create(_filterCallback(x.toArray(), test))
+      return x.create(_filterCallback(x.valueOf(), test), x.datatype())
     },
 
     'Array, RegExp': filterRegExp,
 
     'Matrix, RegExp': function (x, test) {
-      return x.create(filterRegExp(x.toArray(), test))
+      return x.create(filterRegExp(x.valueOf(), test), x.datatype())
     }
   })
 })
@@ -58,8 +65,9 @@ export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed
  * @private
  */
 function _filterCallback (x, callback) {
+  const fastCallback = optimizeCallback(callback, x, 'filter')
   return filter(x, function (value, index, array) {
     // invoke the callback function with the right number of arguments
-    return applyCallback(callback, value, [index], array, 'filter')
+    return fastCallback(value, [index], array)
   })
 }

@@ -1,7 +1,7 @@
 // test sign
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const fraction = math.fraction
@@ -19,6 +19,12 @@ describe('sign', function () {
     assert.strictEqual(math.sign(0), 0)
   })
 
+  it('should calculate the sign of a bigint', function () {
+    assert.strictEqual(math.sign(3n), 1n)
+    assert.strictEqual(math.sign(-3n), -1n)
+    assert.strictEqual(math.sign(0n), 0n)
+  })
+
   it('should calculate the sign of a big number', function () {
     assert.deepStrictEqual(math.sign(bignumber(3)), bignumber(1))
     assert.deepStrictEqual(math.sign(bignumber(-3)), bignumber(-1))
@@ -34,7 +40,7 @@ describe('sign', function () {
   })
 
   it('should calculate the sign of a complex value', function () {
-    approx.deepEqual(math.sign(math.complex(2, -3)), math.complex(0.554700196225229, -0.832050294337844))
+    approxDeepEqual(math.sign(math.complex(2, -3)), math.complex(0.554700196225229, -0.832050294337844))
   })
 
   it('should calculate the sign of a unit', function () {
@@ -90,9 +96,11 @@ describe('sign', function () {
     it('number', function () {
       assert.strictEqual(math.sign(0), 0)
     })
+
     it('bignumber', function () {
       assert.deepStrictEqual(math.sign(math.bignumber(0)), math.bignumber(0))
     })
+
     it('complex', function () {
       assert.deepStrictEqual(math.sign(math.complex(0)), math.complex(0))
     })

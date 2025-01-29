@@ -1,4 +1,3 @@
-import { contains } from './array.js'
 import { pickShallow } from './object.js'
 
 /**
@@ -63,7 +62,7 @@ export function sortFactories (factories) {
   function containsDependency (factory, dependency) {
     // TODO: detect circular references
     if (isFactory(factory)) {
-      if (contains(factory.dependencies, dependency.fn || dependency.name)) {
+      if (factory.dependencies.includes(dependency.fn || dependency.name)) {
         return true
       }
 

@@ -2,7 +2,7 @@
 
 import assert from 'assert'
 
-import approx from '../../../tools/approx.js'
+import { approxEqual } from '../../../tools/approx.js'
 import math from '../../../src/defaultInstance.js'
 const Parser = math.Parser
 
@@ -120,12 +120,30 @@ describe('parser', function () {
     assert.strictEqual(parser.get('xx'), undefined)
     assert.strictEqual(parser.get('yy'), undefined)
     assert.strictEqual(parser.get('zz'), undefined)
-    approx.equal(parser.get('pi'), undefined)
+    approxEqual(parser.get('pi'), undefined)
 
     assert.throws(function () { parser.evaluate('xx') })
     assert.throws(function () { parser.evaluate('yy') })
     assert.throws(function () { parser.evaluate('zz') })
     assert.strictEqual(parser.evaluate('pi'), Math.PI)
+  })
+
+  it('should validate variable names', function () {
+    const parser = new Parser()
+
+    // Valid variable names
+    assert.strictEqual(parser.set('validVar', 42), 42)
+    assert.strictEqual(parser.evaluate('validVar'), 42)
+    assert.strictEqual(parser.set('_underscoreVar', 10), 10)
+    assert.strictEqual(parser.evaluate('_underscoreVar'), 10)
+    assert.strictEqual(parser.set('var123', 100), 100)
+    assert.strictEqual(parser.evaluate('var123'), 100)
+
+    // Invalid variable names
+    assert.throws(() => parser.set('123var', 5), /Invalid variable name/)
+    assert.throws(() => parser.set('var-with-hyphen', 5), /Invalid variable name/)
+    assert.throws(() => parser.set('var with space', 5), /Invalid variable name/)
+    assert.throws(() => parser.set('@specialChar', 5), /Invalid variable name/)
   })
 
   describe('security', function () {

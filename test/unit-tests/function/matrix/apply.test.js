@@ -18,6 +18,7 @@ describe('apply', function () {
     [[13, 14], [15, 16], [17, 18]],
     [[19, 20], [21, 22], [23, 24]]
   ]
+
   it('should apply to the rows of a tensor', function () {
     assert.deepStrictEqual(math.apply(inputMatrix, 2, sum), [[3, 7, 11], [15, 19, 23], [27, 31, 35], [39, 43, 47]])
   })

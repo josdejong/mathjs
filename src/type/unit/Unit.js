@@ -466,7 +466,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Return the type of the value of this unit
    *
    * @memberof Unit
-   * @ return {string} type of the value of the unit
+   * @return {string} type of the value of the unit
    */
   Unit.prototype.valueType = function () {
     return typeOf(this.value)
@@ -476,6 +476,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Return whether the unit is derived (such as m/s, or cm^2, but not N)
    * @memberof Unit
    * @return {boolean} True if the unit is derived
+   * @private
    */
   Unit.prototype._isDerived = function () {
     if (this.units.length === 0) {
@@ -585,7 +586,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * check if this unit has given base unit
    * If this unit is a derived unit, this will ALWAYS return false, since by definition base units are not derived.
    * @memberof Unit
-   * @param {BASE_UNITS | string | undefined} base
+   * @param {BASE_UNIT | string | undefined} base
    */
   Unit.prototype.hasBase = function (base) {
     if (typeof (base) === 'string') {
@@ -902,7 +903,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     return {
       mathjs: 'Unit',
       value: this._denormalize(this.value),
-      unit: this.formatUnits(),
+      unit: this.units.length > 0 ? this.formatUnits() : null,
       fixPrefix: this.fixPrefix
     }
   }
@@ -915,7 +916,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Unit}
    */
   Unit.fromJSON = function (json) {
-    const unit = new Unit(json.value, json.unit)
+    const unit = new Unit(json.value, json.unit ?? undefined)
     unit.fixPrefix = json.fixPrefix || false
     return unit
   }
@@ -1833,30 +1834,30 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'minim',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.00000006161152,
+      value: 0.000000061611519921875,
       offset: 0
-    }, // 0.06161152 mL
+    }, // 1/61440 gallons
     fluiddram: {
       name: 'fluiddram',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.0000036966911,
+      value: 0.0000036966911953125,
       offset: 0
-    }, // 3.696691 mL
+    }, // 1/1024 gallons
     fluidounce: {
       name: 'fluidounce',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.00002957353,
+      value: 0.0000295735295625,
       offset: 0
-    }, // 29.57353 mL
+    }, // 1/128 gallons
     gill: {
       name: 'gill',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.0001182941,
+      value: 0.00011829411825,
       offset: 0
-    }, // 118.2941 mL
+    }, // 1/32 gallons
     cc: {
       name: 'cc',
       base: BASE_UNITS.VOLUME,
@@ -1868,117 +1869,51 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'cup',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.0002365882,
+      value: 0.0002365882365,
       offset: 0
-    }, // 236.5882 mL
+    }, // 1/16 gallons
     pint: {
       name: 'pint',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.0004731765,
+      value: 0.000473176473,
       offset: 0
-    }, // 473.1765 mL
+    }, // 1/8 gallons
     quart: {
       name: 'quart',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.0009463529,
+      value: 0.000946352946,
       offset: 0
-    }, // 946.3529 mL
+    }, // 1/4 gallons
     gallon: {
       name: 'gallon',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.003785412,
+      value: 0.003785411784,
       offset: 0
-    }, // 3.785412 L
+    }, // 3.785411784 L
     beerbarrel: {
       name: 'beerbarrel',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.1173478,
+      value: 0.117347765304,
       offset: 0
-    }, // 117.3478 L
+    }, // 31 gallons
     oilbarrel: {
       name: 'oilbarrel',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.1589873,
+      value: 0.158987294928,
       offset: 0
-    }, // 158.9873 L
+    }, // 42 gallons
     hogshead: {
       name: 'hogshead',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
-      value: 0.2384810,
+      value: 0.238480942392,
       offset: 0
-    }, // 238.4810 L
-
-    // {name: 'min', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.00000006161152, offset: 0}, // 0.06161152 mL // min is already in use as minute
-    fldr: {
-      name: 'fldr',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.0000036966911,
-      offset: 0
-    }, // 3.696691 mL
-    floz: {
-      name: 'floz',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.00002957353,
-      offset: 0
-    }, // 29.57353 mL
-    gi: {
-      name: 'gi',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.0001182941,
-      offset: 0
-    }, // 118.2941 mL
-    cp: {
-      name: 'cp',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.0002365882,
-      offset: 0
-    }, // 236.5882 mL
-    pt: {
-      name: 'pt',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.0004731765,
-      offset: 0
-    }, // 473.1765 mL
-    qt: {
-      name: 'qt',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.0009463529,
-      offset: 0
-    }, // 946.3529 mL
-    gal: {
-      name: 'gal',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.003785412,
-      offset: 0
-    }, // 3.785412 L
-    bbl: {
-      name: 'bbl',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.1173478,
-      offset: 0
-    }, // 117.3478 L
-    obl: {
-      name: 'obl',
-      base: BASE_UNITS.VOLUME,
-      prefixes: PREFIXES.NONE,
-      value: 0.1589873,
-      offset: 0
-    }, // 158.9873 L
-    // {name: 'hogshead', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.2384810, offset: 0}, // 238.4810 L // TODO: hh?
+    }, // 63 gallons
 
     // Mass
     g: {
@@ -2767,6 +2702,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   // aliases (formerly plurals)
+  // note that ALIASES is only used at creation to create more entries in UNITS by copying the aliased units
   const ALIASES = {
     meters: 'meter',
     inches: 'inch',
@@ -2785,14 +2721,23 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     teaspoons: 'teaspoon',
     tablespoons: 'tablespoon',
     minims: 'minim',
+    fldr: 'fluiddram',
     fluiddrams: 'fluiddram',
+    floz: 'fluidounce',
     fluidounces: 'fluidounce',
+    gi: 'gill',
     gills: 'gill',
+    cp: 'cup',
     cups: 'cup',
+    pt: 'pint',
     pints: 'pint',
+    qt: 'quart',
     quarts: 'quart',
+    gal: 'gallon',
     gallons: 'gallon',
+    bbl: 'beerbarrel',
     beerbarrels: 'beerbarrel',
+    obl: 'oilbarrel',
     oilbarrels: 'oilbarrel',
     hogsheads: 'hogshead',
     gtts: 'gtt',
@@ -2974,6 +2919,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * Set a unit system for formatting derived units.
+   * @memberof Unit
    * @param {string} [name] The name of the unit system.
    */
   Unit.setUnitSystem = function (name) {
@@ -2986,6 +2932,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * Return the current unit system.
+   * @memberof Unit
    * @return {string} The current unit system.
    */
   Unit.getUnitSystem = function () {
@@ -3004,7 +2951,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   Unit.typeConverters = {
     BigNumber: function (x) {
-      if (x?.isFraction) return new BigNumber(x.n).div(x.d).times(x.s)
+      if (x?.isFraction) return new BigNumber(String(x.n)).div(String(x.d)).times(String(x.s))
       return new BigNumber(x + '') // stringify to prevent constructor error
     },
 
@@ -3079,7 +3026,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * Checks if a character is a valid latin letter (upper or lower case).
    * Note that this function can be overridden, for example to allow support of other alphabets.
+   * @memberof Unit
    * @param {string} c Tested character
+   * @return {boolean} true if the character is a latin letter
    */
   Unit.isValidAlpha = function isValidAlpha (c) {
     return /^[a-zA-Z]$/.test(c)
@@ -3099,20 +3048,24 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * Wrapper around createUnitSingle.
    * Example:
-   *  createUnit({
-   *    foo: { },
-   *    bar: {
-   *      definition: 'kg/foo',
-   *      aliases: ['ba', 'barr', 'bars'],
-   *      offset: 200
-   *    },
-   *    baz: '4 bar'
-   *  },
-   *  {
-   *    override: true
-   *  })
+   *  createUnit( {
+   *     foo: {
+   *       prefixes: 'long',
+   *       baseName: 'essence-of-foo'
+   *     },
+   *     bar: '40 foo',
+   *     baz: {
+   *       definition: '1 bar/hour',
+   *       prefixes: 'long'
+   *     }
+   *   },
+   *   {
+   *     override: true
+   *   })
+   * @memberof Unit
    * @param {object} obj      Object map. Each key becomes a unit which is defined by its value.
    * @param {object} options
+   * @return {Unit} the last created unit
    */
   Unit.createUnit = function (obj, options) {
     if (typeof (obj) !== 'object') {
@@ -3147,13 +3100,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Create a user-defined unit and register it with the Unit type.
    * Example:
    *  createUnitSingle('knot', '0.514444444 m/s')
-   *  createUnitSingle('acre', new Unit(43560, 'ft^2'))
    *
+   * @memberof Unit
    * @param {string} name      The name of the new unit. Must be unique. Example: 'knot'
-   * @param {string, Unit, Object} definition      Definition of the unit in terms
+   * @param {string | Unit | object} definition      Definition of the unit in terms
    * of existing units. For example, '0.514444444 m / s'. Can be a Unit, a string,
    * or an Object. If an Object, may have the following properties:
-   *   - definition {string|Unit} The definition of this unit.
+   *   - definition {string | Unit} The definition of this unit.
    *   - prefixes {string} "none", "short", "long", "binary_short", or "binary_long".
    *     The default is "none".
    *   - aliases {Array} Array of strings. Example: ['knots', 'kt', 'kts']
@@ -3327,8 +3280,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       alias.name = aliasName
       Unit.UNITS[aliasName] = alias
     }
-    // delete the memoization cache, since adding a new unit to the array
-    // invalidates all old results
+
+    // delete the memoization cache because we created a new unit
     delete _findUnit.cache
 
     return new Unit(null, name)
@@ -3336,6 +3289,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   Unit.deleteUnit = function (name) {
     delete Unit.UNITS[name]
+
+    // delete the memoization cache because we deleted a unit
+    delete _findUnit.cache
   }
 
   // expose arrays with prefixes, dimensions, units, systems

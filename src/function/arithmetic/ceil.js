@@ -14,7 +14,7 @@ export const createCeilNumber = /* #__PURE__ */ factory(
   name, ['typed', 'config', 'round'], ({ typed, config, round }) => {
     return typed(name, {
       number: function (x) {
-        if (nearlyEqual(x, round(x), config.epsilon)) {
+        if (nearlyEqual(x, round(x), config.relTol, config.absTol)) {
           return round(x)
         } else {
           return Math.ceil(x)
@@ -22,7 +22,7 @@ export const createCeilNumber = /* #__PURE__ */ factory(
       },
 
       'number, number': function (x, n) {
-        if (nearlyEqual(x, round(x, n), config.epsilon)) {
+        if (nearlyEqual(x, round(x, n), config.relTol, config.absTol)) {
           return round(x, n)
         } else {
           let [number, exponent] = `${x}e`.split('e')
@@ -50,6 +50,8 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    math.ceil(x)
    *    math.ceil(x, n)
+   *    math.ceil(unit, valuelessUnit)
+   *    math.ceil(unit, n, valuelessUnit)
    *
    * Examples:
    *
@@ -67,6 +69,12 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *    math.ceil(c)                 // returns Complex 4 - 2i
    *    math.ceil(c, 1)              // returns Complex 3.3 - 2.7i
    *
+   *    const unit = math.unit('3.241 cm')
+   *    const cm = math.unit('cm')
+   *    const mm = math.unit('mm')
+   *    math.ceil(unit, 1, cm)      // returns Unit 3.3 cm
+   *    math.ceil(unit, 1, mm)      // returns Unit 32.5 mm
+   *
    *    math.ceil([3.2, 3.8, -4.7])  // returns Array [4, 4, -4]
    *    math.ceil([3.21, 3.82, -4.71], 1)  // returns Array [3.3, 3.9, -4.7]
    *
@@ -74,9 +82,10 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    floor, fix, round
    *
-   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
+   * @param  {Unit} [valuelessUnit]                                        A valueless unit
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Rounded value
    */
   return typed('ceil', {
     number: ceilNumber.signatures.number,
@@ -95,7 +104,7 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     BigNumber: function (x) {
-      if (bigNearlyEqual(x, round(x), config.epsilon)) {
+      if (bigNearlyEqual(x, round(x), config.relTol, config.absTol)) {
         return round(x)
       } else {
         return x.ceil()
@@ -103,7 +112,7 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     'BigNumber, BigNumber': function (x, n) {
-      if (bigNearlyEqual(x, round(x, n), config.epsilon)) {
+      if (bigNearlyEqual(x, round(x, n), config.relTol, config.absTol)) {
         return round(x, n)
       } else {
         return x.toDecimalPlaces(n.toNumber(), Decimal.ROUND_CEIL)
@@ -121,6 +130,20 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     'Fraction, BigNumber': function (x, n) {
       return x.ceil(n.toNumber())
     },
+
+    'Unit, number, Unit': typed.referToSelf(self => function (x, n, unit) {
+      const valueless = x.toNumeric(unit)
+      return unit.multiply(self(valueless, n))
+    }),
+
+    'Unit, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
+
+    'Array | Matrix, number | BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => {
+      // deep map collection, skip zeros since ceil(0) = 0
+      return deepMap(x, (value) => self(value, n, unit), true)
+    }),
+
+    'Array | Matrix | Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
 
     'Array | Matrix': typed.referToSelf(self => (x) => {
       // deep map collection, skip zeros since ceil(0) = 0

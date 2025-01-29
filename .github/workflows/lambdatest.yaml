@@ -1,0 +1,27 @@
+name: Browser testing on Lambdatest
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+    test-tunnel:
+        runs-on: ubuntu-latest
+        steps:  
+          - name: Start Tunnel
+            uses: LambdaTest/LambdaTest-tunnel-action@v2
+            id: tunnel
+            with:
+              user: ${{ secrets.LT_USERNAME }}
+              accessKey: ${{ secrets.LT_ACCESS_KEY }}
+          - uses: actions/checkout@v4
+          - uses: actions/setup-node@v4
+            with:
+              node-version: 22.x
+          - run: npm ci
+          - run: npm run test:lambdatest
+            env:
+              LT_USERNAME: ${{ secrets.LT_USERNAME }}
+              LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+            

@@ -16,7 +16,7 @@ export function validateBundle (expectedBundleStructure, bundle) {
   const originalWarn = console.warn
 
   console.warn = function (...args) {
-    if (args.join(' ').indexOf('is moved to') !== -1 && args.join(' ').indexOf('Please use the new location instead') !== -1) {
+    if (args.join(' ').includes('is moved to') && args.join(' ').includes('Please use the new location instead')) {
       // Ignore warnings like:
       // Warning: math.type.isNumber is moved to math.isNumber in v6.0.0. Please use the new location instead.
       return
@@ -52,11 +52,11 @@ export function validateBundle (expectedBundleStructure, bundle) {
       const expectedType = get(expectedBundleStructure, path) || 'undefined'
 
       // FIXME: ugly to have these special cases
-      if (path.join('.').indexOf('docs.') !== -1) {
+      if (path.join('.').includes('docs.')) {
         // ignore the contents of docs
         return
       }
-      if (path.join('.').indexOf('all.') !== -1) {
+      if (path.join('.').includes('all.')) {
         // ignore the contents of all dependencies
         return
       }
@@ -237,7 +237,7 @@ export function createSnapshotFromFactories (factories) {
 
 function traverse (obj, callback = (value, path) => {}, path = []) {
   // FIXME: ugly to have these special cases
-  if (path.length > 0 && path[0].indexOf('Dependencies') !== -1) {
+  if (path.length > 0 && path[0].includes('Dependencies')) {
     // special case for objects holding a collection of dependencies
     callback(obj, path)
   } else if (validateTypeOf(obj) === 'Array') {

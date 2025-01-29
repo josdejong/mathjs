@@ -1,7 +1,7 @@
 // test round
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const complex = math.complex
@@ -10,15 +10,20 @@ const matrix = math.matrix
 const sparse = math.sparse
 const round = math.round
 const unit = math.unit
+const math2 = math.create()
+
+//                                        1         2         3         4         5         6
+//                            xx.1234567890123456789012345678901234567890123456789012345678901234
+const testBigNum = bignumber('10.9999999999999999999999999999999999999999999999999999999999999998')
 
 describe('round', function () {
   it('should round a number to te given number of decimals', function () {
-    approx.equal(round(math.pi), 3)
-    approx.equal(round(math.pi * 1000), 3142)
-    approx.equal(round(math.pi, 3), 3.142)
-    approx.equal(round(math.pi, 6), 3.141593)
-    approx.equal(round(1234.5678, 2), 1234.57)
-    approx.equal(round(2.135, 2), 2.14)
+    approxEqual(round(math.pi), 3)
+    approxEqual(round(math.pi * 1000), 3142)
+    approxEqual(round(math.pi, 3), 3.142)
+    approxEqual(round(math.pi, 6), 3.141593)
+    approxEqual(round(1234.5678, 2), 1234.57)
+    approxEqual(round(2.135, 2), 2.14)
 
     assert.strictEqual(round(2.7), 3)
     assert.strictEqual(round(2.5), 3)
@@ -26,13 +31,16 @@ describe('round', function () {
     assert.strictEqual(round(-2.5), -3)
     assert.strictEqual(round(-2.7), -3)
     assert.strictEqual(round(-2.5, 0), -3)
+    assert.strictEqual(round(6.999999999999998, 15), 6.999999999999998)
+    assert.strictEqual(round(6.999999999999998, 14), 7)
+    assert.strictEqual(round(2.555555555555555, 13), 2.5555555555556)
   })
 
   it('should round booleans (yeah, not really useful but it should be supported)', function () {
-    approx.equal(round(true), 1)
-    approx.equal(round(false), 0)
-    approx.equal(round(true, 2), 1)
-    approx.equal(round(false, 2), 0)
+    approxEqual(round(true), 1)
+    approxEqual(round(false), 0)
+    approxEqual(round(true, 2), 1)
+    approxEqual(round(false, 2), 0)
   })
 
   it('should throw an error on invalid type of value', function () {
@@ -65,6 +73,10 @@ describe('round', function () {
   })
 
   it('should round bignumbers', function () {
+    assert.deepStrictEqual(round(bignumber(0.145 * 100)), bignumber(15))
+    assert.deepStrictEqual(round(bignumber(0.145 * 100), bignumber(0)), bignumber(15))
+    assert.deepStrictEqual(round(testBigNum, bignumber(63)), bignumber(11))
+    assert.deepStrictEqual(round(testBigNum, bignumber(64)), testBigNum)
     assert.deepStrictEqual(round(bignumber(2.7)), bignumber(3))
     assert.deepStrictEqual(round(bignumber(2.5)), bignumber(3))
     assert.deepStrictEqual(round(bignumber(-2.5)), bignumber(-3))
@@ -92,6 +104,8 @@ describe('round', function () {
   })
 
   it('should gracefully handle round-off errors', function () {
+    assert.strictEqual(round(0.145 * 100), 15)
+    assert.strictEqual(round((0.145 * 100), 0), 15)
     assert.strictEqual(round(3.0000000000000004), 3)
     assert.strictEqual(round(7.999999999999999), 8)
     assert.strictEqual(round(-3.0000000000000004), -3)
@@ -157,6 +171,19 @@ describe('round', function () {
     assert.deepStrictEqual(round(math.range(0, 2.1, 1 / 3)), math.matrix([0, 0, 1, 1, 1, 2, 2]))
     assert.deepStrictEqual(round([1.7, 2.3]), [2, 2])
     assert.deepStrictEqual(round(math.matrix([1.7, 2.3])).valueOf(), [2, 2])
+  })
+
+  describe('changing config.relTol during runtime', function () {
+    it('uses default config.relTol of 1e-12', function () {
+      assert.strictEqual(math2.round((0.000000000001459), 12), 1e-12)
+      assert.deepStrictEqual(math2.round(bignumber(1.49e-12), bignumber(12)), bignumber(1e-12))
+    })
+
+    it('uses updated config.relTol value', function () {
+      math2.config({ relTol: 1e-13 })
+      assert.strictEqual(math2.round((0.000000000001459), 12), 1e-12)
+      assert.deepStrictEqual(math2.round(bignumber(1.49e-12), bignumber(12)), bignumber(1e-12))
+    })
   })
 
   describe('Array', function () {

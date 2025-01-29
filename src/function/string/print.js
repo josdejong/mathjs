@@ -24,12 +24,12 @@ export const createPrint = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    *     // the following outputs: 'The value of pi is 3.141592654'
    *     math.print('The value of pi is $pi', {pi: math.pi}, 10)
    *
-   *     // the following outputs: 'hello Mary! The date is 2013-03-23'
+   *     // the following outputs: 'Hello Mary! The date is 2013-03-23'
    *     math.print('Hello $user.name! The date is $date', {
    *       user: {
    *         name: 'Mary',
    *       },
-   *       date: new Date(2013, 2, 23).toISOString().substring(0, 10)
+   *       date: '2013-03-23'
    *     })
    *
    *     // the following outputs: 'My favorite fruits are apples and bananas !'

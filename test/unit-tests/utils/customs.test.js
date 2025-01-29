@@ -150,14 +150,14 @@ describe('customs', function () {
       assert.strictEqual(isSafeProperty(object, 'arguments'), false)
       assert.strictEqual(isSafeProperty(object, 'caller'), false)
 
-      // non existing property
+      // non-existing property
       assert.strictEqual(isSafeProperty(object, 'bar'), true)
 
       // property with unicode chars
       assert.strictEqual(isSafeProperty(object, 'co\u006Estructor'), false)
     })
 
-    it('should test inherited properties on plain objects ', function () {
+    it('should test inherited properties on plain objects', function () {
       const object1 = {}
       const object2 = Object.create(object1)
       object1.foo = true
@@ -172,11 +172,13 @@ describe('customs', function () {
       assert.strictEqual(isSafeProperty(object2, 'constructor'), false)
     })
 
-    it('should test for ghosted native property', function () {
-      const array1 = []
-      const array2 = Object.create(array1)
-      array2.length = Infinity
-      assert.strictEqual(isSafeProperty(array2, 'length'), true)
+    it('should test properties on an array', function () {
+      const array = [3, 2, 1]
+      assert.strictEqual(isSafeProperty(array, 'length'), true)
+      assert.strictEqual(isSafeProperty(array, 'foo'), true)
+      assert.strictEqual(isSafeProperty(array, 'sort'), true)
+      assert.strictEqual(isSafeProperty(array, '__proto__'), false)
+      assert.strictEqual(isSafeProperty(array, 'constructor'), false)
     })
   })
 

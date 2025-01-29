@@ -29,15 +29,12 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *    isNumeric, isZero, isNegative, isInteger
    *
-   * @param {number | BigNumber | Array | Matrix} x  Value to be tested
+   * @param {number | BigNumber | bigint | Array | Matrix} x  Value to be tested
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
   return typed(name, {
     number: function (x) {
-      if (x * 0 !== 0) {
-        return false
-      }
       if (x <= 3) {
         return x > 1
       }
@@ -52,10 +49,22 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
       return true
     },
 
-    BigNumber: function (n) {
-      if (n.toNumber() * 0 !== 0) {
+    bigint: function (x) {
+      if (x <= 3n) {
+        return x > 1n
+      }
+      if (x % 2n === 0n || x % 3n === 0n) {
         return false
       }
+      for (let i = 5n; i * i <= x; i += 6n) {
+        if (x % i === 0n || x % (i + 2n) === 0n) {
+          return false
+        }
+      }
+      return true
+    },
+
+    BigNumber: function (n) {
       if (n.lte(3)) return n.gt(1)
       if (n.mod(2).eq(0) || n.mod(3).eq(0)) return false
       if (n.lt(Math.pow(2, 32))) {

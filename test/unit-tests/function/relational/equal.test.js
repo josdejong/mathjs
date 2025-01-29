@@ -17,6 +17,13 @@ describe('equal', function () {
     assert.strictEqual(equal(-2, 2), false)
   })
 
+  it('should compare two bigints correctly', function () {
+    assert.strictEqual(equal(2n, 3n), false)
+    assert.strictEqual(equal(2n, 2n), true)
+    assert.strictEqual(equal(0n, 0n), true)
+    assert.strictEqual(equal(-2n, 2n), false)
+  })
+
   it('should compare two floating point numbers correctly', function () {
     // NaN
     assert.strictEqual(equal(Number.NaN, Number.NaN), false)
@@ -68,6 +75,14 @@ describe('equal', function () {
 
     assert.throws(function () { equal(1 / 3, bignumber(1).div(3)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { equal(bignumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+  })
+
+  it('should compare mixed numbers and bigint', function () {
+    assert.deepStrictEqual(equal(2n, 3), false)
+    assert.deepStrictEqual(equal(2, 2n), true)
+
+    assert.throws(function () { equal(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+    assert.throws(function () { equal(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
   })
 
   it('should compare mixed booleans and bignumbers', function () {
@@ -146,13 +161,13 @@ describe('equal', function () {
     assert.throws(function () { equal('A', 'B') }, /Cannot convert "A" to a number/)
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.equal(1, 0.991), false)
     assert.strictEqual(mymath.equal(mymath.bignumber(1), mymath.bignumber(0.991)), false)
     assert.strictEqual(mymath.equal(mymath.complex(1, 0), mymath.complex(0.991, 0)), false)
 
-    mymath.config({ epsilon: 1e-2 })
+    mymath.config({ relTol: 1e-2 })
     assert.strictEqual(mymath.equal(1, 0.991), true)
     assert.strictEqual(mymath.equal(mymath.bignumber(1), mymath.bignumber(0.991)), true)
     assert.strictEqual(mymath.equal(mymath.complex(1, 0), mymath.complex(0.991, 0)), true)
@@ -231,7 +246,7 @@ describe('equal', function () {
     })
 
     it('should compare sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(equal(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[true, false, true], [true, false, false]]))
+      assert.deepStrictEqual(equal(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), sparse([[true, false, true], [true, false, false]]))
     })
   })
 

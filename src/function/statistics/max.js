@@ -1,5 +1,6 @@
 import { deepForEach, reduce, containsCollections } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
+import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'max'
@@ -82,7 +83,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     deepForEach(array, function (value) {
       try {
-        if (isNaN(value) && typeof value === 'number') {
+        if (typeof value === 'number' && isNaN(value)) {
           res = NaN
         } else if (res === undefined || larger(value, res)) {
           res = value
@@ -98,7 +99,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     // make sure returning numeric value: parse a string into a numeric value
     if (typeof res === 'string') {
-      res = numeric(res, config.number)
+      res = numeric(res, safeNumberType(res, config))
     }
 
     return res

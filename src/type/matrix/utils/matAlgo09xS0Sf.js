@@ -29,13 +29,13 @@ export const createMatAlgo09xS0Sf = /* #__PURE__ */ factory(name, dependencies, 
     const aindex = a._index
     const aptr = a._ptr
     const asize = a._size
-    const adt = a._datatype
+    const adt = a._datatype || a._data === undefined ? a._datatype : a.getDataType()
     // sparse matrix arrays
     const bvalues = b._values
     const bindex = b._index
     const bptr = b._ptr
     const bsize = b._size
-    const bdt = b._datatype
+    const bdt = b._datatype || b._data === undefined ? b._datatype : b.getDataType()
 
     // validate dimensions
     if (asize.length !== bsize.length) { throw new DimensionError(asize.length, bsize.length) }
@@ -57,7 +57,7 @@ export const createMatAlgo09xS0Sf = /* #__PURE__ */ factory(name, dependencies, 
     let cf = callback
 
     // process data types
-    if (typeof adt === 'string' && adt === bdt) {
+    if (typeof adt === 'string' && adt === bdt && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signature that matches (dt, dt)
@@ -130,7 +130,7 @@ export const createMatAlgo09xS0Sf = /* #__PURE__ */ factory(name, dependencies, 
       index: cindex,
       ptr: cptr,
       size: [rows, columns],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
   }
 })

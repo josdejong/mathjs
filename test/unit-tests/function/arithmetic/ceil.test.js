@@ -1,7 +1,7 @@
 // test ceil
 import assert from 'assert'
 
-import approx from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const { bignumber, ceil, complex, fraction, i, isFraction, matrix, pi, unit, parse, sparse } = math
 
@@ -12,29 +12,29 @@ describe('ceil', function () {
   })
 
   it('should return the ceil of a number', function () {
-    approx.equal(ceil(0), 0)
-    approx.equal(ceil(1), 1)
-    approx.equal(ceil(1.3), 2)
-    approx.equal(ceil(1.8), 2)
-    approx.equal(ceil(2), 2)
-    approx.equal(ceil(-1), -1)
-    approx.equal(ceil(-1.3), -1)
-    approx.equal(ceil(-1.8), -1)
-    approx.equal(ceil(-2), -2)
-    approx.equal(ceil(-2.1), -2)
-    approx.equal(ceil(pi), 4)
+    approxEqual(ceil(0), 0)
+    approxEqual(ceil(1), 1)
+    approxEqual(ceil(1.3), 2)
+    approxEqual(ceil(1.8), 2)
+    approxEqual(ceil(2), 2)
+    approxEqual(ceil(-1), -1)
+    approxEqual(ceil(-1.3), -1)
+    approxEqual(ceil(-1.8), -1)
+    approxEqual(ceil(-2), -2)
+    approxEqual(ceil(-2.1), -2)
+    approxEqual(ceil(pi), 4)
   })
 
   it('should return the ceil of a number with a given number of decimals', function () {
-    approx.equal(ceil(0, 5), 0)
-    approx.equal(ceil(2, 3), 2)
-    approx.equal(ceil(math.pi, 3), 3.142)
-    approx.equal(ceil(math.pi, 6), 3.141593)
-    approx.equal(ceil(1234.5678, 2), 1234.57)
-    approx.equal(ceil(2.13, 2), 2.13)
-    approx.equal(ceil(-1.8, 0), -1)
-    approx.equal(ceil(-1.8, 1), -1.8)
-    approx.equal(ceil(-2.178, 2), -2.17)
+    approxEqual(ceil(0, 5), 0)
+    approxEqual(ceil(2, 3), 2)
+    approxEqual(ceil(math.pi, 3), 3.142)
+    approxEqual(ceil(math.pi, 6), 3.141593)
+    approxEqual(ceil(1234.5678, 2), 1234.57)
+    approxEqual(ceil(2.13, 2), 2.13)
+    approxEqual(ceil(-1.8, 0), -1)
+    approxEqual(ceil(-1.8, 1), -1.8)
+    approxEqual(ceil(-2.178, 2), -2.17)
   })
 
   it('should return the ceil of a big number', function () {
@@ -65,23 +65,23 @@ describe('ceil', function () {
   })
 
   it('should return the ceil of real and imag part of a complex', function () {
-    approx.deepEqual(ceil(complex(0, 0)), complex(0, 0))
-    approx.deepEqual(ceil(complex(1.3, 1.8)), complex(2, 2))
-    approx.deepEqual(ceil(i), complex(0, 1))
-    approx.deepEqual(ceil(complex(-1.3, -1.8)), complex(-1, -1))
+    approxDeepEqual(ceil(complex(0, 0)), complex(0, 0))
+    approxDeepEqual(ceil(complex(1.3, 1.8)), complex(2, 2))
+    approxDeepEqual(ceil(i), complex(0, 1))
+    approxDeepEqual(ceil(complex(-1.3, -1.8)), complex(-1, -1))
   })
 
   it('should return the ceil of real and imag part of a complex with a given number of decimals', function () {
-    approx.deepEqual(ceil(complex(0, 0), 3), complex(0, 0))
-    approx.deepEqual(ceil(complex(1.3, 1.8), 0), complex(2, 2))
-    approx.deepEqual(ceil(complex(1.3, 1.8), 1), complex(1.3, 1.8))
-    approx.deepEqual(ceil(complex(1.315, 1.878), 2), complex(1.32, 1.88))
-    approx.deepEqual(ceil(complex(1.315, 1.878), bignumber(2)), complex(1.32, 1.88))
-    approx.deepEqual(ceil(i, 0), complex(0, 1))
-    approx.deepEqual(ceil(i, 4), complex(0, 1))
-    approx.deepEqual(ceil(complex(-1.3, -1.8), 0), complex(-1, -1))
-    approx.deepEqual(ceil(complex(-1.3, -1.8), 1), complex(-1.3, -1.8))
-    approx.deepEqual(ceil(complex(-1.315, -1.878), 2), complex(-1.31, -1.87))
+    approxDeepEqual(ceil(complex(0, 0), 3), complex(0, 0))
+    approxDeepEqual(ceil(complex(1.3, 1.8), 0), complex(2, 2))
+    approxDeepEqual(ceil(complex(1.3, 1.8), 1), complex(1.3, 1.8))
+    approxDeepEqual(ceil(complex(1.315, 1.878), 2), complex(1.32, 1.88))
+    approxDeepEqual(ceil(complex(1.315, 1.878), bignumber(2)), complex(1.32, 1.88))
+    approxDeepEqual(ceil(i, 0), complex(0, 1))
+    approxDeepEqual(ceil(i, 4), complex(0, 1))
+    approxDeepEqual(ceil(complex(-1.3, -1.8), 0), complex(-1, -1))
+    approxDeepEqual(ceil(complex(-1.3, -1.8), 1), complex(-1.3, -1.8))
+    approxDeepEqual(ceil(complex(-1.315, -1.878), 2), complex(-1.31, -1.87))
   })
 
   it('should return the ceil of a fraction', function () {
@@ -148,6 +148,34 @@ describe('ceil', function () {
     assert.deepStrictEqual(ceil(bignumber(-799999.9999999999)), bignumber(-800000))
   })
 
+  it('should ceil units', function () {
+    assert.deepStrictEqual(ceil(unit('5.01 inch'), unit('inch')), unit('6 inch'))
+    assert.deepStrictEqual(ceil(unit('3.12345 cm'), 3, unit('cm')), unit('3.124 cm'))
+    assert.deepStrictEqual(ceil(unit('3.12345 cm'), unit('cm')), unit('4 cm'))
+    assert.deepStrictEqual(ceil(unit('2 inch'), unit('cm')), unit('6 cm'))
+    assert.deepStrictEqual(ceil(unit('2 inch'), 1, unit('cm')), unit('5.1 cm'))
+
+    // bignumber values
+    assert.deepStrictEqual(ceil(unit('3.12345 cm'), bignumber(2), unit('cm')), unit('3.13 cm'))
+    assert.deepStrictEqual(ceil(unit(bignumber('2'), 'inch'), unit('cm')), unit(bignumber('6'), 'cm'))
+    assert.deepStrictEqual(ceil(unit(bignumber('2'), 'inch'), bignumber(1), unit('cm')), unit(bignumber('5.1'), 'cm'))
+
+    // first argument is a collection
+    assert.deepStrictEqual(ceil([unit('2 inch'), unit('3 inch')], unit('cm')), [unit('6 cm'), unit('8 cm')])
+    assert.deepStrictEqual(ceil(matrix([unit('2 inch'), unit('3 inch')]), unit('cm')), matrix([unit('6 cm'), unit('8 cm')]))
+  })
+
+  it('should throw an error if used with a unit without valueless unit', function () {
+    assert.throws(function () { ceil(unit('5cm')) }, TypeError, 'Function ceil(unit) not supported')
+    assert.throws(function () { ceil(unit('5cm'), 2) }, TypeError, 'Function ceil(unit) not supported')
+    assert.throws(function () { ceil(unit('5cm'), bignumber(2)) }, TypeError, 'Function ceil(unit) not supported')
+  })
+
+  it('should throw an error if used with a unit with a second unit that is not valueless', function () {
+    assert.throws(function () { ceil(unit('2 inch'), 1, unit('10 cm')) }, Error)
+    assert.throws(function () { ceil(unit('2 inch'), unit('10 cm')) }, Error)
+  })
+
   it('should throw an error for units', function () {
     assert.throws(function () { ceil(unit('5cm')) }, TypeError, 'Function ceil(unit) not supported')
   })
@@ -166,14 +194,14 @@ describe('ceil', function () {
   })
 
   it('should ceil each element in a matrix, array or range', function () {
-    approx.deepEqual(ceil([1.2, 3.4, 5.6, 7.8, 10.0]), [2, 4, 6, 8, 10])
-    approx.deepEqual(ceil(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([2, 4, 6, 8, 10]))
+    approxDeepEqual(ceil([1.2, 3.4, 5.6, 7.8, 10.0]), [2, 4, 6, 8, 10])
+    approxDeepEqual(ceil(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([2, 4, 6, 8, 10]))
   })
 
   it('should ceil each element in a matrix with a given number of decimals', function () {
-    approx.deepEqual(ceil([1.282, 3.415, -5.121, -10.128], 2), [1.29, 3.42, -5.12, -10.12])
-    approx.deepEqual(ceil(matrix([1.282, 3.415, -5.121, -10.128]), 2), matrix([1.29, 3.42, -5.12, -10.12]))
-    approx.deepEqual(ceil(matrix([1.282, 3.415, -5.121, -10.128]), bignumber(2)), matrix(bignumber([1.29, 3.42, -5.12, -10.12])))
+    approxDeepEqual(ceil([1.282, 3.415, -5.121, -10.128], 2), [1.29, 3.42, -5.12, -10.12])
+    approxDeepEqual(ceil(matrix([1.282, 3.415, -5.121, -10.128]), 2), matrix([1.29, 3.42, -5.12, -10.12]))
+    approxDeepEqual(ceil(matrix([1.282, 3.415, -5.121, -10.128]), bignumber(2)), matrix(bignumber([1.29, 3.42, -5.12, -10.12])))
   })
 
   it('should ceil when number of decimals is provided in an array', function () {
@@ -196,7 +224,7 @@ describe('ceil', function () {
 
   it('should ceil dense matrix with given bignumber decimals', function () {
     const expected = matrix([[1.778, 2.346], [-90.827, 0]])
-    approx.deepEqual(ceil(matrix([[1.7777, 2.3456], [-90.8272, 0]]), bignumber(3)), expected)
+    approxDeepEqual(ceil(matrix([[1.7777, 2.3456], [-90.8272, 0]]), bignumber(3)), expected)
   })
 
   it('should ceil sparse matrix', function () {

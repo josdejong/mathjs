@@ -1,5 +1,7 @@
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
+import { nearlyEqual, splitNumber } from '../../utils/number.js'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
@@ -10,6 +12,7 @@ const NO_INT = 'Number of decimals in function round must be an integer'
 const name = 'round'
 const dependencies = [
   'typed',
+  'config',
   'matrix',
   'equalScalar',
   'zeros',
@@ -17,10 +20,14 @@ const dependencies = [
   'DenseMatrix'
 ]
 
-export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, BigNumber, DenseMatrix }) => {
+export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, equalScalar, zeros, BigNumber, DenseMatrix }) => {
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
+
+  function toExponent (epsilon) {
+    return Math.abs(splitNumber(epsilon).exponent)
+  }
 
   /**
    * Round a value towards the nearest rounded value.
@@ -64,12 +71,25 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
    * @param  {Unit} [valuelessUnit]                                        A valueless unit
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Rounded value
    */
   return typed(name, {
-    number: roundNumber,
+    number: function (x) {
+      // Handle round off errors by first rounding to relTol precision
+      const xEpsilon = roundNumber(x, toExponent(config.relTol))
+      const xSelected = nearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
+      return roundNumber(xSelected)
+    },
 
-    'number, number': roundNumber,
+    'number, number': function (x, n) {
+      // Same as number: unless user specifies more decimals than relTol
+      const epsilonExponent = toExponent(config.relTol)
+      if (n >= epsilonExponent) { return roundNumber(x, n) }
+
+      const xEpsilon = roundNumber(x, epsilonExponent)
+      const xSelected = nearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
+      return roundNumber(xSelected, n)
+    },
 
     'number, BigNumber': function (x, n) {
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
@@ -95,13 +115,22 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     BigNumber: function (x) {
-      return x.toDecimalPlaces(0)
+      // Handle round off errors by first rounding to relTol precision
+      const xEpsilon = new BigNumber(x).toDecimalPlaces(toExponent(config.relTol))
+      const xSelected = bigNearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
+      return xSelected.toDecimalPlaces(0)
     },
 
     'BigNumber, BigNumber': function (x, n) {
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
-      return x.toDecimalPlaces(n.toNumber())
+      // Same as BigNumber: unless user specifies more decimals than relTol
+      const epsilonExponent = toExponent(config.relTol)
+      if (n >= epsilonExponent) { return x.toDecimalPlaces(n.toNumber()) }
+
+      const xEpsilon = x.toDecimalPlaces(epsilonExponent)
+      const xSelected = bigNearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
+      return xSelected.toDecimalPlaces(n.toNumber())
     },
 
     Fraction: function (x) {
@@ -125,16 +154,12 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'Unit, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
 
-    'Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
-
-    'Array | Matrix, number, Unit': typed.referToSelf(self => (x, n, unit) => {
+    'Array | Matrix, number | BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => {
       // deep map collection, skip zeros since round(0) = 0
       return deepMap(x, (value) => self(value, n, unit), true)
     }),
 
-    'Array | Matrix, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
-
-    'Array | Matrix, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
+    'Array | Matrix | Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
 
     'Array | Matrix': typed.referToSelf(self => x => {
       // deep map collection, skip zeros since round(0) = 0

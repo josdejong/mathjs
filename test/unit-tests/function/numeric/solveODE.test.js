@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-import approx from '../../../../tools/approx.js'
+import { approxDeepEqual } from '../../../../tools/approx.js'
 
 const solveODE = math.solveODE
 const matrix = math.matrix
@@ -87,14 +87,14 @@ describe('solveODE', function () {
 
   it('should solve when minStep is zero', function () {
     const sol = solveODE(f, tspan, y0, { minStep: 0 })
-    approx.deepEqual(sol.y, exactSol(sol.t, y0), tol)
+    approxDeepEqual(sol.y, exactSol(sol.t, y0), tol)
     const seconds = unit('s')
     const meters = unit('m')
     function fWithUnits (t, y) { return subtract(divide(y, seconds), multiply(t, divide(meters, multiply(seconds, seconds)))) }
     const tspanWithUnits = multiply(tspan, seconds)
     const y0withUnits = multiply(y0, meters)
     const solU = solveODE(fWithUnits, tspanWithUnits, y0withUnits, { minStep: unit(0, 's') })
-    approx.deepEqual(divide(solU.y, meters), exactSol(divide(solU.t, seconds), y0), tol)
+    approxDeepEqual(divide(solU.y, meters), exactSol(divide(solU.t, seconds), y0), tol)
   })
 
   it('should throw an error if the maxStep is not positive', function () {
@@ -141,18 +141,18 @@ describe('solveODE', function () {
 
   it('should solve close to the analytical solution', function () {
     const sol = solveODE(f, tspan, y0)
-    approx.deepEqual(sol.y, exactSol(sol.t, y0), tol)
+    approxDeepEqual(sol.y, exactSol(sol.t, y0), tol)
   })
 
   it('should solve backwards', function () {
     const exactSolEnd = exactSol([4], y0)[0]
     const sol = solveODE(f, [tspan[1], tspan[0]], exactSolEnd)
-    approx.deepEqual(sol.y, exactSol(sol.t, sol.y[sol.y.length - 1]), tol)
+    approxDeepEqual(sol.y, exactSol(sol.t, sol.y[sol.y.length - 1]), tol)
   })
 
   it('should solve if the arguments are matrices', function () {
     const sol = solveODE(f, matrix(tspan), matrix(y0))
-    approx.deepEqual(sol.y, matrix(exactSol(sol.t, y0)), tol)
+    approxDeepEqual(sol.y, matrix(exactSol(sol.t, y0)), tol)
     assert.deepStrictEqual(
       isMatrix(sol.t) && isMatrix(sol.y),
       true
@@ -161,18 +161,18 @@ describe('solveODE', function () {
 
   it('should solve if the arguments have bignumbers', function () {
     const sol = solveODE(f, bignumber(tspan), bignumber(y0))
-    approx.deepEqual(number(sol.y), exactSol(number(sol.t), y0), tol)
+    approxDeepEqual(number(sol.y), exactSol(number(sol.t), y0), tol)
   })
 
   it('should solve with options even if they are empty', function () {
     const options = {}
     const sol = solveODE(f, tspan, y0, options)
-    approx.deepEqual(sol.y, exactSol(sol.t, y0), tol)
+    approxDeepEqual(sol.y, exactSol(sol.t, y0), tol)
   })
 
   it('should solve when y0 is a scalar', function () {
     const sol = solveODE(f, tspan, y0[0])
-    approx.deepEqual(sol.y, exactSol(sol.t, [y0[0]]).map(x => x[0]), tol)
+    approxDeepEqual(sol.y, exactSol(sol.t, [y0[0]]).map(x => x[0]), tol)
   })
 
   it('should solve with units', function () {
@@ -182,22 +182,22 @@ describe('solveODE', function () {
     const tspanWithUnits = multiply(tspan, seconds)
     const y0withUnits = multiply(y0, meters)
     const sol = solveODE(fWithUnits, tspanWithUnits, y0withUnits)
-    approx.deepEqual(divide(sol.y, meters), exactSol(divide(sol.t, seconds), y0), tol)
+    approxDeepEqual(divide(sol.y, meters), exactSol(divide(sol.t, seconds), y0), tol)
   })
 
   it('should solve close to the analytical solution with RK23 method', function () {
     const sol = solveODE(f, tspan, y0, { method: 'RK23' })
-    approx.deepEqual(sol.y, exactSol(sol.t, y0), tol)
+    approxDeepEqual(sol.y, exactSol(sol.t, y0), tol)
   })
 
   it('should solve close to the analytical solution with RK45 method', function () {
     const sol = solveODE(f, tspan, y0, { method: 'RK45' })
-    approx.deepEqual(sol.y, exactSol(sol.t, y0), tol)
+    approxDeepEqual(sol.y, exactSol(sol.t, y0), tol)
   })
 
   it('should solve with method name in lower case', function () {
     const sol = solveODE(f, tspan, y0, { method: 'rk45' })
-    approx.deepEqual(sol.y, exactSol(sol.t, y0), tol)
+    approxDeepEqual(sol.y, exactSol(sol.t, y0), tol)
   })
 
   it('should solve with few steps if a higher tolerance is specified', function () {

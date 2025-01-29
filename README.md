@@ -7,7 +7,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![Version](https://img.shields.io/npm/v/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Downloads](https://img.shields.io/npm/dm/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Build Status](https://github.com/josdejong/mathjs/workflows/Node.js%20CI/badge.svg)](https://github.com/josdejong/mathjs/actions)
-[![Maintenance](https://img.shields.io/maintenance/yes/2024.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/maintenance/yes/2025.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
 [![Codecov](https://codecov.io/gh/josdejong/mathjs/branch/develop/graph/badge.svg)](https://codecov.io/gh/josdejong/mathjs)
@@ -16,7 +16,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 
 ## Features
 
-- Supports numbers, big numbers, complex numbers, fractions, units, strings, arrays, and matrices.
+- Supports numbers, bignumbers, bigints, complex numbers, fractions, units, strings, arrays, and matrices.
 - Is compatible with JavaScript's built-in Math library.
 - Contains a flexible expression parser.
 - Does symbolic computation.
@@ -76,7 +76,7 @@ See the [Getting Started](https://mathjs.org/docs/getting_started.html) for a mo
 
 ## Browser support
 
-Math.js works on any ES6 compatible JavaScript engine, including node.js, Chrome, Firefox, Safari, and Edge.
+Math.js works on any [ES2020](https://262.ecma-international.org/11.0/) compatible JavaScript engine, including node.js, Chrome, Firefox, Safari, and Edge.
 
 
 ## Documentation
@@ -118,13 +118,13 @@ The code of `mathjs` is written in ES modules, and requires all files to have a 
 
 What mathjs tries to achieve is to offer an environment where you can do calculations with mixed data types,
 like multiplying a regular `number` with a `Complex` number or a `BigNumber`, and work with all of those in matrices.
-Mathjs also allows to add a new data type, like say `BigInt`, with little effort.
+Mathjs also allows to add a new data type with little effort.
 
 The solution that mathjs uses has two main ingredients:
 
-- **Typed functions**. All functions are created using [`typed-function`](https://github.com/josdejong/typed-function/). This makes it easier to (dynamically) create and extend a single function with new data types, automatically do type conversions on function inputs, etc. So, if you create function multiply for two `number`s, you can extend it with support for multiplying two `BigInts`. If you define a conversion from `BigInt` to `number`, the typed-function will automatically allow you to multiply a `BigInt` with a `number`.
+- **Typed functions**. All functions are created using [`typed-function`](https://github.com/josdejong/typed-function/). This makes it easier to (dynamically) create and extend a single function with new data types, automatically do type conversions on function inputs, etc. So, if you create function multiply for two `number`s, you can extend it with support for multiplying your own data type, say `MyDecimal`. If you define a conversion from `MyDecimal` to `number`, the typed-function will automatically allow you to multiply a `MyDecimal` with a `number`.
 
-- **Dependency injection**. When we have a function `multiply` with support for `BigInt`, thanks to the dependency injection, other functions using `multiply` under the hood, like `prod`, will automatically support `BigInt` too. This also works the other way around: if you don't need the heavyweight `multiply` (which supports BigNumbers, matrices, etc), and you just need a plain and simple number support, you can use a lightweight implementation of `multiply` just for numbers, and inject that in `prod` and other functions.
+- **Dependency injection**. When we have a function `multiply` with support for `MyDecimal`, thanks to the dependency injection, other functions using `multiply` under the hood, like `prod`, will automatically support `MyDecimal` too. This also works the other way around: if you don't need the heavyweight `multiply` (which supports BigNumbers, matrices, etc), and you just need a plain and simple number support, you can use a lightweight implementation of `multiply` just for numbers, and inject that in `prod` and other functions.
 
 At the lowest level, mathjs has immutable factory functions which create immutable functions. The core function `math.create(...)` creates a new instance having functions created from all passed factory functions. A mathjs instance is a collection of created functions. It contains a function like `math.import` to allow extending the instance with new functions, which can then be used in the expression parser.
 
@@ -160,13 +160,17 @@ Then, the tests can be executed:
 
     npm test
 
+To test the type definitions:
+
+    npm run test:types
+
 Additionally, the tests can be run on FireFox using [headless mode](https://developer.mozilla.org/en-US/Firefox/Headless_mode):
 
     npm run test:browser
 
-To run the tests remotely on BrowserStack, first set the environment variables `BROWSER_STACK_USERNAME` and `BROWSER_STACK_ACCESS_KEY` with your username and access key and then execute:
+To run the tests remotely on LambdaTest, first set the environment variables `LT_USERNAME` and `LT_ACCESS_KEY` with your username and access key and then execute:
 
-    npm run test:browserstack
+    npm run test:lambdatest
 
 You can separately run the code linter, though it is also executed with `npm test`:
 
@@ -187,15 +191,18 @@ To see the coverage results, open the generated report in your browser:
 
 ### Continuous integration testing
 
-Continuous integration tests are run on [Github Actions](https://github.com/josdejong/mathjs/actions) and [BrowserStack](https://www.browserstack.com) every time a commit is pushed to github. Github Actions runs the tests for different versions of node.js, and BrowserStack runs the tests on all major browsers.
+Continuous integration tests are run on [Github Actions](https://github.com/josdejong/mathjs/actions) and [LambdaTest](https://www.lambdatest.com) every time a commit is pushed to github. Github Actions runs the tests for different versions of node.js, and LambdaTest runs the tests on all major browsers.
 
-[![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)](https://www.browserstack.com)
+[![LambdaTest](https://raw.github.com/josdejong/mathjs/master/misc/lambdatest.svg)](https://www.lambdatest.com)
 
-Thanks Github Actions and BrowserStack for the generous free hosting of this open source project!
+Thanks, GitHub Actions and LambdaTest for the generous free hosting of this open source project!
 
 ## License
 
-Copyright (C) 2013-2024 Jos de Jong <wjosdejong@gmail.com>
+mathjs is published under the Apache 2.0 license:
+
+```
+Copyright (C) 2013-2025 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -208,3 +215,28 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
+
+mathjs contains a JavaScript port of the [CSparse](https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source) library, published under the LGPL-2.1+ license:
+
+```
+CSparse: a Concise Sparse matrix package.
+Copyright (c) 2006, Timothy A. Davis.
+http://www.suitesparse.com
+
+--------------------------------------------------------------------------------
+
+CSparse is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+CSparse is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this Module; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+```

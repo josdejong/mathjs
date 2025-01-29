@@ -36,11 +36,14 @@
  * @returns {function} The created typed-function.
  */
 
+import typedFunction from 'typed-function'
+import { factory } from '../../utils/factory.js'
 import {
   isAccessorNode,
   isArray,
   isArrayNode,
   isAssignmentNode,
+  isBigInt,
   isBigNumber,
   isBlockNode,
   isBoolean,
@@ -58,6 +61,7 @@ import {
   isHelp,
   isIndex,
   isIndexNode,
+  isMap,
   isMatrix,
   isNode,
   isNull,
@@ -68,8 +72,8 @@ import {
   isParenthesisNode,
   isRange,
   isRangeNode,
-  isRelationalNode,
   isRegExp,
+  isRelationalNode,
   isResultSet,
   isSparseMatrix,
   isString,
@@ -77,10 +81,7 @@ import {
   isUndefined,
   isUnit
 } from '../../utils/is.js'
-import typedFunction from 'typed-function'
 import { digits } from '../../utils/number.js'
-import { factory } from '../../utils/factory.js'
-import { isMap } from '../../utils/map.js'
 
 // returns a new instance of typed-function
 let _createTyped = function () {
@@ -116,12 +117,14 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'number', test: isNumber },
     { name: 'Complex', test: isComplex },
     { name: 'BigNumber', test: isBigNumber },
+    { name: 'bigint', test: isBigInt },
     { name: 'Fraction', test: isFraction },
     { name: 'Unit', test: isUnit },
     // The following type matches a valid variable name, i.e., an alphanumeric
     // string starting with an alphabetic character. It is used (at least)
     // in the definition of the derivative() function, as the argument telling
     // what to differentiate over must (currently) be a variable.
+    // TODO: deprecate the identifier type (it's not used anymore, see https://github.com/josdejong/mathjs/issues/3253)
     {
       name: 'identifier',
       test: s => isString && /^\p{L}[\p{L}\d]*$/u.test(s)
@@ -202,6 +205,37 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         return new Complex(x.toNumber(), 0)
       }
     }, {
+      from: 'bigint',
+      to: 'number',
+      convert: function (x) {
+        if (x > Number.MAX_SAFE_INTEGER) {
+          throw new TypeError('Cannot implicitly convert bigint to number: ' +
+            'value exceeds the max safe integer value (value: ' + x + ')')
+        }
+
+        return Number(x)
+      }
+    }, {
+      from: 'bigint',
+      to: 'BigNumber',
+      convert: function (x) {
+        if (!BigNumber) {
+          throwNoBignumber(x)
+        }
+
+        return new BigNumber(x.toString())
+      }
+    }, {
+      from: 'bigint',
+      to: 'Fraction',
+      convert: function (x) {
+        if (!Fraction) {
+          throwNoFraction(x)
+        }
+
+        return new Fraction(x)
+      }
+    }, {
       from: 'Fraction',
       to: 'BigNumber',
       convert: function (x) {
@@ -267,6 +301,16 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       }
     }, {
       from: 'string',
+      to: 'bigint',
+      convert: function (x) {
+        try {
+          return BigInt(x)
+        } catch (err) {
+          throw new Error('Cannot convert "' + x + '" to BigInt')
+        }
+      }
+    }, {
+      from: 'string',
       to: 'Fraction',
       convert: function (x) {
         if (!Fraction) {
@@ -308,6 +352,12 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         }
 
         return new BigNumber(+x)
+      }
+    }, {
+      from: 'boolean',
+      to: 'bigint',
+      convert: function (x) {
+        return BigInt(+x)
       }
     }, {
       from: 'boolean',

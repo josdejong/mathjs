@@ -4,6 +4,7 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 const bignumber = math.bignumber
 const complex = math.complex
+const fraction = math.fraction
 const matrix = math.matrix
 const sparse = math.sparse
 const unit = math.unit
@@ -18,6 +19,16 @@ describe('smaller', function () {
     assert.strictEqual(smaller(-2, 2), true)
     assert.strictEqual(smaller(-2, -3), false)
     assert.strictEqual(smaller(-3, -2), true)
+  })
+
+  it('should compare two bigints correctly', function () {
+    assert.strictEqual(smaller(2n, 3n), true)
+    assert.strictEqual(smaller(2n, 2n), false)
+    assert.strictEqual(smaller(2n, 1n), false)
+    assert.strictEqual(smaller(0n, 0n), false)
+    assert.strictEqual(smaller(-2n, 2n), true)
+    assert.strictEqual(smaller(-2n, -3n), false)
+    assert.strictEqual(smaller(-3n, -2n), true)
   })
 
   it('should compare two floating point numbers correctly', function () {
@@ -69,6 +80,14 @@ describe('smaller', function () {
     assert.throws(function () { smaller(bignumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
   })
 
+  it('should compare mixed numbers and bigints', function () {
+    assert.deepStrictEqual(smaller(2n, 3), true)
+    assert.deepStrictEqual(smaller(2, 2n), false)
+
+    assert.throws(function () { smaller(123123123123123123123n, 1) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+    assert.throws(function () { smaller(1, 123123123123123123123n) }, /Cannot implicitly convert bigint to number: value exceeds the max safe integer value/)
+  })
+
   it('should compare mixed booleans and bignumbers', function () {
     assert.deepStrictEqual(smaller(bignumber(0.1), true), true)
     assert.deepStrictEqual(smaller(bignumber(1), true), false)
@@ -80,14 +99,24 @@ describe('smaller', function () {
   })
 
   it('should compare two fractions', function () {
-    assert.strictEqual(smaller(math.fraction(3), math.fraction(2)).valueOf(), false)
-    assert.strictEqual(smaller(math.fraction(2), math.fraction(3)).valueOf(), true)
-    assert.strictEqual(smaller(math.fraction(3), math.fraction(3)).valueOf(), false)
+    assert.strictEqual(smaller(fraction(3), fraction(2)).valueOf(), false)
+    assert.strictEqual(smaller(fraction(2), fraction(3)).valueOf(), true)
+    assert.strictEqual(smaller(fraction(3), fraction(3)).valueOf(), false)
   })
 
   it('should compare mixed fractions and numbers', function () {
-    assert.strictEqual(smaller(1, math.fraction(1, 3)), false)
-    assert.strictEqual(smaller(math.fraction(2), 2), false)
+    assert.strictEqual(smaller(1, fraction(1, 3)), false)
+    assert.strictEqual(smaller(fraction(2), 2), false)
+  })
+
+  it('should compare mixed fractions and bigints', function () {
+    assert.strictEqual(smaller(1n, fraction(1, 3)), false)
+    assert.strictEqual(smaller(fraction(2), 2n), false)
+  })
+
+  it('should compare mixed fractions and bignumbers', function () {
+    assert.strictEqual(smaller(bignumber(1), fraction(1, 3)), false)
+    assert.strictEqual(smaller(fraction(2), bignumber(2)), false)
   })
 
   it('should compare two measures of the same unit correctly', function () {
@@ -97,12 +126,12 @@ describe('smaller', function () {
     assert.strictEqual(smaller(unit('101cm'), unit('1m')), false)
   })
 
-  it('should apply configuration option epsilon', function () {
+  it('should apply configuration option relTol', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.smaller(0.991, 1), true)
     assert.strictEqual(mymath.smaller(mymath.bignumber(0.991), mymath.bignumber(1)), true)
 
-    mymath.config({ epsilon: 1e-2 })
+    mymath.config({ relTol: 1e-2 })
     assert.strictEqual(mymath.smaller(0.991, 1), false)
     assert.strictEqual(mymath.smaller(mymath.bignumber(0.991), mymath.bignumber(1)), false)
   })
@@ -188,7 +217,7 @@ describe('smaller', function () {
     })
 
     it('should compare sparse matrix - sparse matrix', function () {
-      assert.deepStrictEqual(smaller(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, false, false], [false, true, false]]))
+      assert.deepStrictEqual(smaller(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), sparse([[false, false, false], [false, true, false]]))
     })
   })
 

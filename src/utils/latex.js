@@ -267,6 +267,10 @@ export const latexFunctions = {
     0: '0',
     1: '\\left(${args[0]}\\right)'
   },
+  bigint: {
+    0: '0',
+    1: '\\left(${args[0]}\\right)'
+  },
   complex: {
     0: '0',
     1: '\\left(${args[0]}\\right)',

@@ -16,11 +16,11 @@ const dependencies = [
 
 export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, addScalar, divideScalar, multiplyScalar, sqrt, smaller, isPositive }) => {
   /**
-   * Calculate the hypotenusa of a list with values. The hypotenusa is defined as:
+   * Calculate the hypotenuse of a list with values. The hypotenuse is defined as:
    *
    *     hypot(a, b, c, ...) = sqrt(a^2 + b^2 + c^2 + ...)
    *
-   * For matrix input, the hypotenusa is calculated for all values in the matrix.
+   * For matrix input, the hypotenuse is calculated for all values in the matrix.
    *
    * Syntax:
    *
@@ -52,7 +52,7 @@ export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   })
 
   /**
-   * Calculate the hypotenusa for an Array with values
+   * Calculate the hypotenuse for an Array with values
    * @param {Array.<number | BigNumber>} args
    * @return {number | BigNumber} Returns the result
    * @private

@@ -53,7 +53,7 @@ export const createMad = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
         return abs(subtract(value, med))
       }))
     } catch (err) {
-      if (err instanceof TypeError && err.message.indexOf('median') !== -1) {
+      if (err instanceof TypeError && err.message.includes('median')) {
         throw new TypeError(err.message.replace('median', 'mad'))
       } else {
         throw improveErrorMessage(err, 'mad')

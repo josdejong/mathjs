@@ -1,5 +1,5 @@
 import assert from 'assert'
-import approx from '../../../../tools/approx.js'
+import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const BigNumber = math.BigNumber
 const Complex = math.Complex
@@ -60,14 +60,14 @@ describe('mean', function () {
     const a = math.unit(10, 'cm')
     const b = math.unit(20, 'cm')
     const c = math.unit(15, 'cm')
-    approx.equal(mean(a, b).toNumber('cm'), c.toNumber('cm'))
+    approxEqual(mean(a, b).toNumber('cm'), c.toNumber('cm'))
   })
 
   it('should compute the mean of quantities with compatible units', function () {
     const a = math.unit(1, 'm')
     const b = math.unit(50, 'cm')
     const c = math.unit(0.75, 'm')
-    approx.equal(mean(a, b).toNumber('cm'), c.toNumber('cm'))
+    approxEqual(mean(a, b).toNumber('cm'), c.toNumber('cm'))
   })
 
   it('should not compute the mean of quantities with incompatible units', function () {

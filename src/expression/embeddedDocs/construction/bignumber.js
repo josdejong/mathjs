@@ -14,6 +14,6 @@ export const bignumberDocs = {
     'bignumber([0.1, 0.2, 0.3])'
   ],
   seealso: [
-    'boolean', 'complex', 'fraction', 'index', 'matrix', 'string', 'unit'
+    'boolean', 'bigint', 'complex', 'fraction', 'index', 'matrix', 'string', 'unit'
   ]
 }

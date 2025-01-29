@@ -87,17 +87,3 @@ export function memoizeCompare (fn, isEqual) {
 
   return memoize
 }
-
-/**
- * Find the maximum number of arguments expected by a typed function.
- * @param {function} fn   A typed function
- * @return {number} Returns the maximum number of expected arguments.
- *                  Returns -1 when no signatures where found on the function.
- */
-export function maxArgumentCount (fn) {
-  return Object.keys(fn.signatures || {})
-    .reduce(function (args, signature) {
-      const count = (signature.match(/,/g) || []).length + 1
-      return Math.max(args, count)
-    }, -1)
-}

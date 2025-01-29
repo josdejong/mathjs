@@ -1,6 +1,6 @@
 import assert from 'assert'
 import mathjs from '../../../src/defaultInstance.js'
-import approx from '../../../tools/approx.js'
+import { approxEqual } from '../../../tools/approx.js'
 import { factory } from '../../../src/utils/factory.js'
 import { create } from '../../../src/core/create.js'
 import { hasOwnProperty } from '../../../src/utils/object.js'
@@ -51,6 +51,12 @@ describe('import', function () {
     assert.strictEqual(math.myvalue, 42)
   })
 
+  it('should not override existing units', function () {
+    assert.throws(function () { math.import({ meter: 10 }) },
+      /Error: Cannot import "meter": already exists/)
+    assert.deepStrictEqual(math.evaluate('1 meter'), math.unit('1 meter'))
+  })
+
   it('should allow importing the same function twice if it is strictly equal', function () {
     function foo () { return 'bar' }
 
@@ -90,6 +96,11 @@ describe('import', function () {
   it('should override existing functions if forced', function () {
     math.import({ myvalue: 10 }, { override: true })
     assert.strictEqual(math.myvalue, 10)
+  })
+
+  it('should override existing units if forced', function () {
+    math.import({ meter: 10 }, { override: true })
+    assert.strictEqual(math.evaluate('meter'), 10)
   })
 
   it('should parse the user defined members', function () {
@@ -149,10 +160,10 @@ describe('import', function () {
   it('should ignore properties on Object', function () {
     Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
-    math.import({ bar: 456 })
+    math.import({ baz: 456 })
 
     assert(!hasOwnProperty(math, 'foo'))
-    assert(hasOwnProperty(math, 'bar'))
+    assert(hasOwnProperty(math, 'baz'))
 
     delete Object.prototype.foo
   })
@@ -162,7 +173,7 @@ describe('import', function () {
     assert.deepStrictEqual(math.a, 24)
 
     math.import({ pi: 24 }, { silent: true })
-    approx.equal(math.pi, Math.PI) // pi was ignored
+    approxEqual(math.pi, Math.PI) // pi was ignored
   })
 
   it('should import a boolean', function () {

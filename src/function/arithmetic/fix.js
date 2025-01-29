@@ -33,6 +33,8 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    *
    *    math.fix(x)
    *    math.fix(x,n)
+   *    math.fix(unit, valuelessUnit)
+   *    math.fix(unit, n, valuelessUnit)
    *
    * Examples:
    *
@@ -50,6 +52,12 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    *    math.fix(c)                  // returns Complex 3 - 2i
    *    math.fix(c, 1)               // returns Complex 3.2 -2.7i
    *
+   *    const unit = math.unit('3.241 cm')
+   *    const cm = math.unit('cm')
+   *    const mm = math.unit('mm')
+   *    math.fix(unit, 1, cm)      // returns Unit 3.2 cm
+   *    math.fix(unit, 1, mm)      // returns Unit 32.4 mm
+   *
    *    math.fix([3.2, 3.8, -4.7])      // returns Array [3, 3, -4]
    *    math.fix([3.2, 3.8, -4.7], 1)   // returns Array [3.2, 3.8, -4.7]
    *
@@ -57,9 +65,10 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    *
    *    ceil, floor, round
    *
-   * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x    Number to be rounded
-   * @param  {number | BigNumber | Array} [n=0]                             Number of decimals
-   * @return {number | BigNumber | Fraction | Complex | Array | Matrix}     Rounded value
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
+   * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
+   * @param  {Unit} [valuelessUnit]                                        A valueless unit
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Rounded value
    */
   return typed('fix', {
     number: fixNumber.signatures.number,
@@ -96,12 +105,26 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
     },
 
     Fraction: function (x) {
-      return x.s < 0 ? x.ceil() : x.floor()
+      return x.s < 0n ? x.ceil() : x.floor()
     },
 
     'Fraction, number | BigNumber': function (x, n) {
-      return x.s < 0 ? ceil(x, n) : floor(x, n)
+      return x.s < 0n ? ceil(x, n) : floor(x, n)
     },
+
+    'Unit, number, Unit': typed.referToSelf(self => function (x, n, unit) {
+      const valueless = x.toNumeric(unit)
+      return unit.multiply(self(valueless, n))
+    }),
+
+    'Unit, BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => self(x, n.toNumber(), unit)),
+
+    'Array | Matrix, number | BigNumber, Unit': typed.referToSelf(self => (x, n, unit) => {
+      // deep map collection, skip zeros since fix(0) = 0
+      return deepMap(x, (value) => self(value, n, unit), true)
+    }),
+
+    'Array | Matrix | Unit, Unit': typed.referToSelf(self => (x, unit) => self(x, 0, unit)),
 
     'Array | Matrix': typed.referToSelf(self => (x) => {
       // deep map collection, skip zeros since fix(0) = 0

@@ -53,9 +53,9 @@ export const createAdd = /* #__PURE__ */ factory(
    *
    *    subtract, sum
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First value to add
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to add
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to add
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to add
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
    */
     return typed(
       name,

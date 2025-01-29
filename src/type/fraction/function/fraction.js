@@ -37,7 +37,7 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    *    bignumber, number, string, unit
    *
-   * @param {number | string | Fraction | BigNumber | Unit | Array | Matrix} [args]
+   * @param {number | string | Fraction | BigNumber | bigint | Unit | Array | Matrix} [args]
    *            Arguments specifying the value, or numerator and denominator of
    *            the fraction
    * @return {Fraction | Array | Matrix} Returns a fraction
@@ -59,11 +59,19 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return new Fraction(numerator, denominator)
     },
 
+    'bigint, bigint': function (numerator, denominator) {
+      return new Fraction(numerator, denominator)
+    },
+
     null: function (x) {
       return new Fraction(0)
     },
 
     BigNumber: function (x) {
+      return new Fraction(x.toString())
+    },
+
+    bigint: function (x) {
       return new Fraction(x.toString())
     },
 

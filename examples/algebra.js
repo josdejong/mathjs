@@ -3,9 +3,7 @@
 // math.js has support for symbolic computation (CAS). It can parse
 // expressions in an expression tree and do algebraic operations like
 // simplification and derivation on this tree.
-
-// load math.js (using node.js)
-const { simplify, parse, derivative } = require('..')
+import { simplify, parse, derivative } from '../lib/esm/index.js'
 
 // simplify an expression
 console.log('simplify expressions')

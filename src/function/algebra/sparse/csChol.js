@@ -1,3 +1,6 @@
+// Copyright (c) 2006-2024, Timothy A. Davis, All Rights Reserved.
+// SPDX-License-Identifier: LGPL-2.1+
+// https://github.com/DrTimothyAldenDavis/SuiteSparse/tree/dev/CSparse/Source
 import { factory } from '../../../utils/factory.js'
 import { csEreach } from './csEreach.js'
 import { createCsSymperm } from './csSymperm.js'
@@ -40,8 +43,6 @@ export const createCsChol = /* #__PURE__ */ factory(name, dependencies, (
    * @param {Object}  s               The symbolic analysis from cs_schol()
    *
    * @return {Number}                 The numeric Cholesky factorization of A or null
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
   return function csChol (m, s) {
     // validate input

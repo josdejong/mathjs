@@ -651,16 +651,6 @@ export function initial (array) {
 }
 
 /**
- * Test whether an array or string contains an item
- * @param {Array | string} array
- * @param {*} item
- * @return {boolean}
- */
-export function contains (array, item) {
-  return array.indexOf(item) !== -1
-}
-
-/**
  * Recursively concatenate two matrices.
  * The contents of the matrices is not cloned.
  * @param {Array} a             Multi dimensional array
@@ -813,6 +803,47 @@ export function broadcastArrays (...arrays) {
  */
 export function stretch (arrayToStretch, sizeToStretch, dimToStretch) {
   return concat(...Array(sizeToStretch).fill(arrayToStretch), dimToStretch)
+}
+
+/**
+* Retrieves a single element from an array given an index.
+*
+* @param {Array} array - The array from which to retrieve the value.
+* @param {Array<number>} idx - An array of indices specifying the position of the desired element in each dimension.
+* @returns {*} - The value at the specified position in the array.
+*
+* @example
+* const arr = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]];
+* const index = [1, 0, 1];
+* console.log(getValue(arr, index)); // 6
+*/
+export function get (array, index) {
+  if (!Array.isArray(array)) { throw new Error('Array expected') }
+  const size = arraySize(array)
+  if (index.length !== size.length) { throw new DimensionError(index.length, size.length) }
+  for (let x = 0; x < index.length; x++) { validateIndex(index[x], size[x]) }
+  return index.reduce((acc, curr) => acc[curr], array)
+}
+
+/**
+ * Recursive function to map a multi-dimensional array.
+ *
+ * @param {*} value - The current value being processed in the array.
+ * @param {Array} index - The index of the current value being processed in the array.
+ * @param {Array} array - The array being processed.
+ * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
+ * @returns {*} The new array with each element being the result of the callback function.
+ */
+export function recurse (value, index, array, callback) {
+  if (Array.isArray(value)) {
+    return value.map(function (child, i) {
+      // we create a copy of the index array and append the new index value
+      return recurse(child, index.concat(i), array, callback)
+    })
+  } else {
+    // invoke the callback function with the right number of arguments
+    return callback(value, index, array)
+  }
 }
 
 /**

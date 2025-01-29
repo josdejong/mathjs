@@ -30,8 +30,8 @@ const array = [[2, 0], [-1, 3]]               // Array
 const matrix = math.matrix([[7, 1], [-2, 3]]) // Matrix
 
 // perform a calculation on an array and matrix
-math.square(array)                            // Array,  [[4, 0], [1, 9]]
-math.square(matrix)                           // Matrix, [[49, 1], [4, 9]]
+math.map(array, math.square)                  // Array,  [[4, 0], [1, 9]]
+math.map(matrix, math.square)                 // Matrix, [[49, 1], [4, 9]]
 
 // perform calculations with mixed array and matrix input
 math.add(array, matrix)                       // Matrix, [[9, 1], [-3, 6]]
@@ -413,6 +413,39 @@ const cum = a.map(function (value, index, matrix) {
 }) 
 console.log(cum.toString())  // [[0, 1], [3, 6], [10, 15]]
 ```
+
+### Iterating over multiple Matrixes or Arrays
+
+You can iterate over multiple matrices or arrays by using the `map` function. Mapping allows to perform element-wise operations on matrices by automatically adjusting their sizes to match each other.
+
+To iterate over multiple matrices, you can use the `map` function. The `map` function applies a given function to each element of the matrices and returns a new matrix with the results.
+
+Here's an example of iterating over two matrices and adding their corresponding elements:
+
+```js
+const a = math.matrix([[1, 2], [3, 4]]);
+const b = math.matrix([[5, 6], [7, 8]]);
+
+const result = math.map(a, b, (x, y) => x + y);
+
+console.log(result); // [[6, 8], [10, 12]]
+```
+
+In this example, the `map` function takes matrices as the first two arguments and a callback function `(x, y) => x + y` as the third argument. The callback function is applied to each element of the matrices, where `x` represents the corresponding element from matrix `a` and `y` represents the corresponding element from matrix `b`. The result is a new matrix with the element-wise sum of the two matrices.
+
+By using broadcasting and the `map` function, you can easily iterate over multiple matrices and perform element-wise operations.
+
+```js
+const a = math.matrix([10, 20])
+const b = math.matrix([[3, 4], [5, 6]])
+
+const result = math.map(a, b, (x, y) => x + y)
+console.log(result); // [[13, 24], [15, 26]]
+```
+
+It's also possible to provide a callback with an index and the broadcasted arrays. Like `(valueA, valueB, index)` or even `(valueA, valueB, index, broadcastedMatrixA, broadcastedMatrixB)`. There is no specific limit for the number of matrices `N` that can be mapped. Thus, the callback can have `N` arguments, `N+1` arguments in the case of including the index, or `2N+1` arguments in the case of including the index and the broadcasted matrices in the callback. 
+
+At this moment `forEach` doesn't include the same functionality.
 
 ## Storage types
 

@@ -1,11 +1,13 @@
 import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 import { isPositiveNumber } from '../../plain/number/index.js'
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
+import { nearlyEqual } from '../../utils/number.js'
 
 const name = 'isPositive'
-const dependencies = ['typed']
+const dependencies = ['typed', 'config']
 
-export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ typed, config }) => {
   /**
    * Test whether a value is positive: larger than zero.
    * The function supports types `number`, `BigNumber`, `Fraction`, and `Unit`.
@@ -33,20 +35,21 @@ export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ t
    *
    *    isNumeric, isZero, isNegative, isInteger
    *
-   * @param {number | BigNumber | Fraction | Unit | Array | Matrix} x  Value to be tested
+   * @param {number | BigNumber | bigint | Fraction | Unit | Array | Matrix} x  Value to be tested
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
   return typed(name, {
-    number: isPositiveNumber,
+    number: x => nearlyEqual(x, 0, config.relTol, config.absTol) ? false : isPositiveNumber(x),
 
-    BigNumber: function (x) {
-      return !x.isNeg() && !x.isZero() && !x.isNaN()
-    },
+    BigNumber: x =>
+      bigNearlyEqual(x, new x.constructor(0), config.relTol, config.absTol)
+        ? false
+        : !x.isNeg() && !x.isZero() && !x.isNaN(),
 
-    Fraction: function (x) {
-      return x.s > 0 && x.n > 0
-    },
+    bigint: x => x > 0n,
+
+    Fraction: x => x.s > 0n && x.n > 0n,
 
     Unit: typed.referToSelf(self =>
       x => typed.find(self, x.valueType())(x.value)),

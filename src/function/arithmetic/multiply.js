@@ -110,11 +110,11 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // a dense
     const adata = a._data
     const asize = a._size
-    const adt = a._datatype
+    const adt = a._datatype || a.getDataType()
     // b dense
     const bdata = b._data
     const bsize = b._size
-    const bdt = b._datatype
+    const bdt = b._datatype || b.getDataType()
     // rows & columns
     const alength = asize[0]
     const bcolumns = bsize[1]
@@ -127,7 +127,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -154,7 +154,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return a.createDenseMatrix({
       data: c,
       size: [bcolumns],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
   }
 
@@ -198,10 +198,10 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // a dense
     const adata = a._data
     const asize = a._size
-    const adt = a._datatype
+    const adt = a._datatype || a.getDataType()
     // b dense
     const bdata = b._data
-    const bdt = b._datatype
+    const bdt = b._datatype || b.getDataType()
     // rows & columns
     const arows = asize[0]
     const acolumns = asize[1]
@@ -214,7 +214,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -243,7 +243,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return a.createDenseMatrix({
       data: c,
       size: [arows],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
   }
 
@@ -255,15 +255,15 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    * @return {Matrix}             DenseMatrix    (MxC)
    */
-  function _multiplyDenseMatrixDenseMatrix (a, b) {
+  function _multiplyDenseMatrixDenseMatrix (a, b) { // getDataType()
     // a dense
     const adata = a._data
     const asize = a._size
-    const adt = a._datatype
+    const adt = a._datatype || a.getDataType()
     // b dense
     const bdata = b._data
     const bsize = b._size
-    const bdt = b._datatype
+    const bdt = b._datatype || b.getDataType()
     // rows & columns
     const arows = asize[0]
     const acolumns = asize[1]
@@ -277,7 +277,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -311,7 +311,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     return a.createDenseMatrix({
       data: c,
       size: [arows, bcolumns],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
   }
 
@@ -327,13 +327,13 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // a dense
     const adata = a._data
     const asize = a._size
-    const adt = a._datatype
+    const adt = a._datatype || a.getDataType()
     // b sparse
     const bvalues = b._values
     const bindex = b._index
     const bptr = b._ptr
     const bsize = b._size
-    const bdt = b._datatype
+    const bdt = b._datatype || b._data === undefined ? b._datatype : b.getDataType()
     // validate b matrix
     if (!bvalues) { throw new Error('Cannot multiply Dense Matrix times Pattern only Matrix') }
     // rows & columns
@@ -352,7 +352,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let zero = 0
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -373,7 +373,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       index: cindex,
       ptr: cptr,
       size: [arows, bcolumns],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
 
     // loop b columns
@@ -437,12 +437,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const avalues = a._values
     const aindex = a._index
     const aptr = a._ptr
-    const adt = a._datatype
+    const adt = a._datatype || a._data === undefined ? a._datatype : a.getDataType()
     // validate a matrix
     if (!avalues) { throw new Error('Cannot multiply Pattern only Matrix times Dense Matrix') }
     // b dense
     const bdata = b._data
-    const bdt = b._datatype
+    const bdt = b._datatype || b.getDataType()
     // rows & columns
     const arows = a._size[0]
     const brows = b._size[0]
@@ -463,7 +463,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let zero = 0
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -516,13 +516,13 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     // update ptr
     cptr[1] = cindex.length
 
-    // return sparse matrix
+    // matrix to return
     return a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
       size: [arows, 1],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
   }
 
@@ -539,12 +539,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const avalues = a._values
     const aindex = a._index
     const aptr = a._ptr
-    const adt = a._datatype
+    const adt = a._datatype || a._data === undefined ? a._datatype : a.getDataType()
     // validate a matrix
     if (!avalues) { throw new Error('Cannot multiply Pattern only Matrix times Dense Matrix') }
     // b dense
     const bdata = b._data
-    const bdt = b._datatype
+    const bdt = b._datatype || b.getDataType()
     // rows & columns
     const arows = a._size[0]
     const brows = b._size[0]
@@ -562,7 +562,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let zero = 0
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -583,7 +583,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       index: cindex,
       ptr: cptr,
       size: [arows, bcolumns],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
 
     // workspace
@@ -650,12 +650,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const avalues = a._values
     const aindex = a._index
     const aptr = a._ptr
-    const adt = a._datatype
+    const adt = a._datatype || a._data === undefined ? a._datatype : a.getDataType()
     // b sparse
     const bvalues = b._values
     const bindex = b._index
     const bptr = b._ptr
-    const bdt = b._datatype
+    const bdt = b._datatype || b._data === undefined ? b._datatype : b.getDataType()
 
     // rows & columns
     const arows = a._size[0]
@@ -671,7 +671,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string') {
+    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
       // datatype
       dt = adt
       // find signatures that matches (dt, dt)
@@ -689,7 +689,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       index: cindex,
       ptr: cptr,
       size: [arows, bcolumns],
-      datatype: dt
+      datatype: adt === a._datatype && bdt === b._datatype ? dt : undefined
     })
 
     // workspace
@@ -789,9 +789,9 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    *    divide, prod, cross, dot
    *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First value to multiply
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to multiply
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
    */
   return typed(name, multiplyScalar, {
     // we extend the signatures of multiplyScalar with signatures dealing with matrices
