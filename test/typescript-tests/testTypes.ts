@@ -1268,8 +1268,10 @@ Matrices examples
     const _c = math.multiply(a, b)
     const f: Matrix = math.matrix([1, 0])
     const _d: Matrix = f.subset(math.index(1))
-    const g: number[] =
-      math.matrixFromFunction([3], (i: number[]) => i[0] * i[0])
+    const g: number[] = math.matrixFromFunction(
+      [3],
+      (i: number[]) => i[0] * i[0]
+    )
     assert.strictEqual(g[2], 4)
     const h: Matrix = math.matrixFromFunction(
       [2, 2],

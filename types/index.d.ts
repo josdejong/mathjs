@@ -23,8 +23,9 @@ export type MathExpression = string | string[] | MathCollection
 
 // add type for Matrix Callback Function and Matrix Storage Format
 export type MatrixStorageFormat = 'dense' | 'sparse'
-export type MatrixFromFunctionCallback<T extends MathScalarType> =
-    (index: number[]) => T
+export type MatrixFromFunctionCallback<T extends MathScalarType> = (
+  index: number[]
+) => T
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FactoryFunction<T> = (scope: any) => T
@@ -1356,7 +1357,7 @@ export interface MathJsInstance extends MathJsFactory {
     fn: MatrixFromFunctionCallback<T>
   ): T[]
   matrixFromFunction<T extends MathScalarType>(
-      size: [number, number],
+    size: [number, number],
     fn: MatrixFromFunctionCallback<T>
   ): T[][]
   matrixFromFunction<T extends MathScalarType>(
