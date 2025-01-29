@@ -150,6 +150,38 @@ describe('range', function () {
       assert.deepStrictEqual(range(bignumber(3), bignumber(1), bignumber(-1), true), matrix([bignumber(3), bignumber(2), bignumber(1)]))
     })
 
+    it('should handle Fractions', function () {
+      const frac = math.fraction
+      assert.deepStrictEqual(
+        range(frac(1, 3), frac(10, 3)),
+        matrix([frac(1, 3), frac(4, 3), frac(7, 3)]))
+      assert.deepStrictEqual(
+        range(frac(1, 3), frac(7, 3), true),
+        matrix([frac(1, 3), frac(4, 3), frac(7, 3)]))
+      assert.deepStrictEqual(
+        range(frac(1, 3), frac(4, 3), frac(1, 3)),
+        matrix([frac(1, 3), frac(2, 3), frac(1)]))
+      assert.deepStrictEqual(
+        range(frac(1, 3), frac(4, 3), frac(1, 3), true),
+        matrix([frac(1, 3), frac(2, 3), frac(1), frac(4, 3)]))
+    })
+
+    it('should allow mixed number and Fraction', function () {
+      const frac = math.fraction
+      assert.deepStrictEqual(
+        range(1, frac(10, 3)),
+        matrix([frac(1), frac(2), frac(3)]))
+      assert.deepStrictEqual(
+        range(frac(1, 3), 3, true),
+        matrix([frac(1, 3), frac(4, 3), frac(7, 3)]))
+      assert.deepStrictEqual(
+        range(frac(1, 3), 2, frac(1, 3)),
+        matrix([frac(1, 3), frac(2, 3), frac(1), frac(4, 3), frac(5, 3)]))
+      assert.deepStrictEqual(
+        range(0, frac(4, 3), frac(1, 3), true),
+        matrix([frac(0), frac(1, 3), frac(2, 3), frac(1), frac(4, 3)]))
+    })
+
     it('should throw an error in case of invalid type of include end', function () {
       assert.throws(function () { range(0, 10, 2, 0) }, /TypeError: Unexpected type of argument/)
       assert.throws(function () { range(0, 10, 2, 1) }, /TypeError: Unexpected type of argument/)
@@ -193,9 +225,7 @@ describe('range', function () {
     assert.throws(function () { range(1, 2, 3, true, 5) }, /TypeError: Too many arguments/)
   })
 
-  // FIXME: should give the right error
-  // eslint-disable-next-line mocha/no-skipped-tests
-  it.skip('should not cast a single number or boolean to string', function () {
+  it('should not cast a single number or boolean to string', function () {
     assert.throws(function () { range(2) }, /TypeError: Too few arguments/)
     assert.throws(function () { range(true) }, /TypeError: Unexpected type of argument/)
   })
