@@ -23,10 +23,8 @@ export type MathExpression = string | string[] | MathCollection
 
 // add type for Matrix Callback Function and Matrix Storage Format
 export type MatrixStorageFormat = 'dense' | 'sparse'
-
-export interface MatrixFromFunctionCallback<T extends (number | BigNumber)[]> {
-  (value: T): number | BigNumber
-}
+export type MatrixFromFunctionCallback<T extends MathScalarType> =
+    (index: number[]) => T
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FactoryFunction<T> = (scope: any) => T
@@ -759,12 +757,12 @@ export interface MathJsInstance extends MathJsFactory {
    */
   matrix(
     data: MathCollection | string[],
-    format?: 'sparse' | 'dense',
+    format?: MatrixStorageFormat,
     dataType?: string
   ): Matrix
   matrix<T extends MathScalarType>(
     data: MathCollection<T>,
-    format?: 'sparse' | 'dense',
+    format?: MatrixStorageFormat,
     dataType?: string
   ): Matrix<T>
 
@@ -1333,19 +1331,19 @@ export interface MathJsInstance extends MathJsFactory {
    * Create a dense matrix from vectors as individual rows. If you pass column vectors, they will be transposed (but not conjugated!)
    * @param rows - a multi-dimensional number array or matrix
    */
-  matrixFromRows<T extends (number | BigNumber)[] | Matrix>(...rows: T[]): T[]
-  matrixFromRows<T extends (number | BigNumber)[] | Matrix>(rows: T): T[]
+  matrixFromRows(...rows: Matrix[]): Matrix
+  matrixFromRows<T extends MathScalarType>(
+    ...rows: (T[] | [T][] | Matrix)[]
+  ): T[][]
 
   /**
    * Create a dense matrix from vectors as individual columns. If you pass row vectors, they will be transposed (but not conjugated!)
    * @param cols - a multi-dimensional number array or matrix
    */
-  matrixFromColumns<T extends (number | BigNumber)[] | Matrix>(
-    ...cols: T[]
-  ): T[] | Matrix
-  matrixFromColumns<T extends (number | BigNumber)[] | Matrix>(
-    cols: T
-  ): T[] | Matrix
+  matrixFromColumns(...cols: Matrix[]): Matrix
+  matrixFromColumns<T extends MathScalarType>(
+    ...cols: (T[] | [T][] | Matrix)[]
+  ): T[][]
   /**
    * Create a matrix by evaluating a generating function at each index. The simplest overload returns a multi-dimensional array as long as size is an array. Passing size as a Matrix or specifying a format will result in returning a Matrix.
    * @param size - the size of the matrix to be created
@@ -1353,32 +1351,34 @@ export interface MathJsInstance extends MathJsFactory {
    * @param format - The Matrix storage format, either 'dense' or 'sparse'
    * @param datatype - Type of the values
    */
-  matrixFromFunction<T extends (number | BigNumber)[] | Matrix>(
-    size: T,
-    fn: MatrixFromFunctionCallback<(number | BigNumber)[]>
-  ): T[] | Matrix
-  matrixFromFunction<T extends (number | BigNumber)[] | Matrix>(
-    size: T,
-    fn: MatrixFromFunctionCallback<(number | BigNumber)[]>,
-    format: MatrixStorageFormat
-  ): T[] | Matrix
-  matrixFromFunction<T extends (number | BigNumber)[] | Matrix>(
-    size: T,
-    fn: MatrixFromFunctionCallback<(number | BigNumber)[]>,
+  matrixFromFunction<T extends MathScalarType>(
+    size: [number],
+    fn: MatrixFromFunctionCallback<T>
+  ): T[]
+  matrixFromFunction<T extends MathScalarType>(
+      size: [number, number],
+    fn: MatrixFromFunctionCallback<T>
+  ): T[][]
+  matrixFromFunction<T extends MathScalarType>(
+    size: number[],
+    fn: MatrixFromFunctionCallback<T>
+  ): MathArray<T>
+  matrixFromFunction(
+    size: Matrix<number>,
+    fn: MatrixFromFunctionCallback<MathScalarType>
+  ): Matrix
+  matrixFromFunction(
+    size: number[] | Matrix<number>,
+    fn: MatrixFromFunctionCallback<MathScalarType>,
     format: MatrixStorageFormat,
-    datatype: string
-  ): T[] | Matrix
-  matrixFromFunction<T extends (number | BigNumber)[] | Matrix>(
-    size: T,
+    datatype?: string
+  ): Matrix
+  matrixFromFunction(
+    size: number[] | Matrix<number>,
     format: MatrixStorageFormat,
-    fn: MatrixFromFunctionCallback<(number | BigNumber)[]>
-  ): T[] | Matrix
-  matrixFromFunction<T extends (number | BigNumber)[] | Matrix>(
-    size: T,
-    format: MatrixStorageFormat,
-    datatype: string,
-    fn: MatrixFromFunctionCallback<(number | BigNumber)[]>
-  ): T[] | Matrix
+    fn: MatrixFromFunctionCallback<MathScalarType>,
+    datatype?: string
+  ): Matrix
   /**
    * Calculate the least common multiple for two or more values or arrays.
    * lcm is defined as: lcm(a, b) = abs(a * b) / gcd(a, b) For matrices,
