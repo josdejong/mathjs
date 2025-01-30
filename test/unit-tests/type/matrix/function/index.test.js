@@ -25,6 +25,12 @@ describe('index', function () {
     assert.deepStrictEqual(index._dimensions, [new Range(2, 6, 1), new ImmutableDenseMatrix([3])])
   })
 
+  it('should create an index from bigints (downgrades to numbers)', function () {
+    const index = math.index(new Range(2n, 6n), 3n)
+    assert.ok(index instanceof math.Index)
+    assert.deepStrictEqual(index._dimensions, [new Range(2, 6, 1), new ImmutableDenseMatrix([3])])
+  })
+
   it('should LaTeX index', function () {
     const expr1 = math.parse('index(1)')
     const expr2 = math.parse('index(1,2)')
