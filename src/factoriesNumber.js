@@ -209,7 +209,7 @@ export const createOr = /* #__PURE__ */ createNumberFactory('or', orNumber)
 export const createXor = /* #__PURE__ */ createNumberFactory('xor', xorNumber)
 
 // matrix
-export { createApply } from './function/matrix/apply.js'
+export { createMapSlices } from './function/matrix/mapSlices.js'
 export { createFilter } from './function/matrix/filter.js'
 export { createForEach } from './function/matrix/forEach.js'
 export { createMap } from './function/matrix/map.js'
@@ -299,7 +299,7 @@ export const createTan = /* #__PURE__ */ createNumberFactory('tan', tanNumber)
 export const createTanh = /* #__PURE__ */ createNumberFactory('tanh', tanhNumber)
 
 // transforms
-export { createApplyTransform } from './expression/transform/apply.transform.js'
+export { createMapSlicesTransform } from './expression/transform/mapSlices.transform.js'
 export { createFilterTransform } from './expression/transform/filter.transform.js'
 export { createForEachTransform } from './expression/transform/forEach.transform.js'
 export { createMapTransform } from './expression/transform/map.transform.js'
