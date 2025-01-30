@@ -52,8 +52,8 @@ describe('IndexNode', function () {
   })
 
   it('should run forEach on an IndexNode', function () {
-    const b = new ConstantNode(2)
-    const c = new ConstantNode(1)
+    const b = new ConstantNode(2n)
+    const c = new ConstantNode(1n)
     const n = new IndexNode([b, c])
 
     const nodes = []

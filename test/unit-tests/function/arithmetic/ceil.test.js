@@ -37,6 +37,12 @@ describe('ceil', function () {
     approxEqual(ceil(-2.178, 2), -2.17)
   })
 
+  it('should be safe to call with a bigint', function () {
+    const b = 12345678901234567890n
+    assert.strictEqual(ceil(b), b)
+    assert.strictEqual(ceil(b, 7), b)
+  })
+
   it('should return the ceil of a big number', function () {
     assert.deepStrictEqual(ceil(bignumber(0)), bignumber(0))
     assert.deepStrictEqual(ceil(bignumber(1)), bignumber(1))
@@ -146,6 +152,13 @@ describe('ceil', function () {
     assert.deepStrictEqual(ceil(bignumber(799999.9999999999)), bignumber(800000))
     assert.deepStrictEqual(ceil(bignumber(-30000.000000000004)), bignumber(-30000))
     assert.deepStrictEqual(ceil(bignumber(-799999.9999999999)), bignumber(-800000))
+  })
+
+  it('should not be confused by default tolerances', function () {
+    assert.strictEqual(ceil(1234567890123.4), 1234567890124)
+    assert.strictEqual(
+      ceil(bignumber('12345678901234567890.4')).toFixed(),
+      '12345678901234567891')
   })
 
   it('should ceil units', function () {
