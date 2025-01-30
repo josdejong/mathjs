@@ -20,8 +20,11 @@ import { pickShallow } from './object.js'
  * @param {string} name           Name of the function to be created
  * @param {string[]} dependencies The names of all required dependencies
  * @param {function} create       Callback function called with an object with all dependencies
- * @param {Object} [meta]         Optional object with meta information that will be attached
- *                                to the created factory function as property `meta`.
+ * @param {Object} [meta]
+ *     Optional object with meta information that will be attached
+ *     to the created factory function as property `meta`. For explanation
+ *     of what meta properties can be specified and what they mean, see
+ *     docs/core/extension.md.
  * @returns {function}
  */
 export function factory (name, dependencies, create, meta) {

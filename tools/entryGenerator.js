@@ -81,6 +81,9 @@ export const {{name}} = /* #__PURE__ */ {{factoryName ~}}
 {{name}}{{#unless @last}}, {{/unless ~}}
 {{/dependencies ~}}
 {{#if dependencies}} {{/if ~}}})
+{{#if formerly}}
+export const {{formerly}} = {{name}}
+{{/if}}
 {{/pureFactories}}
 `)
 
@@ -359,7 +362,8 @@ function generateFunctionsFiles ({ suffix, factories, entryFolder }) {
 
             return true
           })
-          .map(dependency => ({ name: dependency }))
+          .map(dependency => ({ name: dependency })),
+        formerly: factory.meta?.formerly
       }
     }),
 

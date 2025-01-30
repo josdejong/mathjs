@@ -111,6 +111,7 @@ import { andDocs } from './function/logical/and.js'
 import { notDocs } from './function/logical/not.js'
 import { orDocs } from './function/logical/or.js'
 import { xorDocs } from './function/logical/xor.js'
+import { mapSlicesDocs } from './function/matrix/mapSlices.js'
 import { columnDocs } from './function/matrix/column.js'
 import { concatDocs } from './function/matrix/concat.js'
 import { countDocs } from './function/matrix/count.js'
@@ -440,6 +441,7 @@ export const embeddedDocs = {
   xor: xorDocs,
 
   // functions - matrix
+  mapSlices: mapSlicesDocs,
   concat: concatDocs,
   count: countDocs,
   cross: crossDocs,

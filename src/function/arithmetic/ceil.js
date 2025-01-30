@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js'
 import { factory } from '../../utils/factory.js'
 import { deepMap } from '../../utils/collection.js'
-import { nearlyEqual } from '../../utils/number.js'
+import { isInteger, nearlyEqual } from '../../utils/number.js'
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
@@ -10,26 +10,37 @@ import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 const name = 'ceil'
 const dependencies = ['typed', 'config', 'round', 'matrix', 'equalScalar', 'zeros', 'DenseMatrix']
 
+const bigTen = new Decimal(10)
+
 export const createCeilNumber = /* #__PURE__ */ factory(
   name, ['typed', 'config', 'round'], ({ typed, config, round }) => {
-    return typed(name, {
-      number: function (x) {
-        if (nearlyEqual(x, round(x), config.relTol, config.absTol)) {
-          return round(x)
-        } else {
-          return Math.ceil(x)
-        }
-      },
+    function _ceilNumber (x) {
+      // See ./floor.js _floorNumber for rationale here
+      const c = Math.ceil(x)
+      const r = round(x)
+      if (c === r) return c
+      if (
+        nearlyEqual(x, r, config.relTol, config.absTol) &&
+        !nearlyEqual(x, c, config.relTol, config.absTol)
+      ) {
+        return r
+      }
+      return c
+    }
 
+    return typed(name, {
+      number: _ceilNumber,
       'number, number': function (x, n) {
-        if (nearlyEqual(x, round(x, n), config.relTol, config.absTol)) {
-          return round(x, n)
-        } else {
-          let [number, exponent] = `${x}e`.split('e')
-          const result = Math.ceil(Number(`${number}e${Number(exponent) + n}`));
-          [number, exponent] = `${result}e`.split('e')
-          return Number(`${number}e${Number(exponent) - n}`)
+        if (!isInteger(n)) {
+          throw new RangeError(
+            'number of decimals in function ceil must be an integer')
         }
+        if (n < 0 || n > 15) {
+          throw new RangeError(
+            'number of decimals in ceil number must be in range 0-15')
+        }
+        const shift = 10 ** n
+        return _ceilNumber(x * shift) / shift
       }
     })
   }
@@ -41,6 +52,15 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   const ceilNumber = createCeilNumber({ typed, config, round })
+  function _bigCeil (x) {
+    // see ./floor.js _floorNumber for rationale
+    const bne = (a, b) => bigNearlyEqual(a, b, config.relTol, config.absTol)
+    const c = x.ceil()
+    const r = round(x)
+    if (c.eq(r)) return c
+    if (bne(x, r) && !bne(x, c)) return r
+    return c
+  }
   /**
    * Round a value towards plus infinity
    * If `x` is complex, both real and imaginary part are rounded towards plus infinity.
@@ -103,21 +123,16 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return x.ceil(n.toNumber())
     },
 
-    BigNumber: function (x) {
-      if (bigNearlyEqual(x, round(x), config.relTol, config.absTol)) {
-        return round(x)
-      } else {
-        return x.ceil()
-      }
-    },
+    BigNumber: _bigCeil,
 
     'BigNumber, BigNumber': function (x, n) {
-      if (bigNearlyEqual(x, round(x, n), config.relTol, config.absTol)) {
-        return round(x, n)
-      } else {
-        return x.toDecimalPlaces(n.toNumber(), Decimal.ROUND_CEIL)
-      }
+      const shift = bigTen.pow(n)
+      return _bigCeil(x.mul(shift)).div(shift)
     },
+
+    bigint: b => b,
+    'bigint, number': (b, _dummy) => b,
+    'bigint, BigNumber': (b, _dummy) => b,
 
     Fraction: function (x) {
       return x.ceil()
