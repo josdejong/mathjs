@@ -128,7 +128,6 @@ Function | Description
 
 Function | Description
 ---- | -----------
-[math.apply(A,&nbsp;dim,&nbsp;callback)](functions/apply.html) | Apply a function that maps an array to a scalar along a given axis of a matrix or array.
 [math.column(value,&nbsp;index)](functions/column.html) | Return a column from a Matrix.
 [math.concat(a,&nbsp;b,&nbsp;c,&nbsp;...&nbsp;[,&nbsp;dim])](functions/concat.html) | Concatenate two or more matrices.
 [math.count(x)](functions/count.html) | Count the number of elements of a matrix, array or string.
@@ -150,6 +149,7 @@ Function | Description
 [math.inv(x)](functions/inv.html) | Calculate the inverse of a square matrix.
 [math.kron(x,&nbsp;y)](functions/kron.html) | Calculates the Kronecker product of 2 matrices or vectors.
 [math.map(x,&nbsp;callback)](functions/map.html) | Create a new matrix or array with the results of a callback function executed on each entry of a given matrix/array.
+[math.mapSlices(A,&nbsp;dim,&nbsp;callback)](functions/mapSlices.html) | Apply a function that maps an array to a scalar along a given axis of a matrix or array.
 [math.matrixFromColumns(...arr)](functions/matrixFromColumns.html) | Create a dense matrix from vectors as individual columns.
 [math.matrixFromFunction(size,&nbsp;fn)](functions/matrixFromFunction.html) | Create a matrix by evaluating a generating function at each index.
 [math.matrixFromRows(...arr)](functions/matrixFromRows.html) | Create a dense matrix from vectors as individual rows.

@@ -4,6 +4,17 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20240130-1420">2024-01-30, 14.2.0 <a href="#20240130-1420" title="Permalink">#</a></h1>
+
+- Feat: <a href="https://github.com/josdejong/mathjs/issues/3041">#3041</a>, <a href="https://github.com/josdejong/mathjs/issues/3340">#3340</a> rename `apply` to `mapSlices` (<a href="https://github.com/josdejong/mathjs/issues/3357">#3357</a>). Function
+  `apply` is still available but is now marked deprecated. Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3247">#3247</a> don't override type-native floor/ceil within tolerance of value 
+  (<a href="https://github.com/josdejong/mathjs/issues/3369">#3369</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3360">#3360</a> add bigint support to matrix indices and ranges (<a href="https://github.com/josdejong/mathjs/issues/3361">#3361</a>).
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3115">#3115</a> type definitions for matrixFrom* (<a href="https://github.com/josdejong/mathjs/issues/3371">#3371</a>). Thanks <a href="https://github.com/Hudsxn">@Hudsxn</a> 
+  and <a href="https://github.com/gwhitney">@gwhitney</a>.
+
 <h1 id="20250124-1410">2025-01-24, 14.1.0 <a href="#20250124-1410" title="Permalink">#</a></h1>
 
 - Feat: implement `bigint` support in functions `log`, `log2`, `log10`, 

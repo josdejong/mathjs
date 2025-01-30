@@ -41,7 +41,7 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.acoth(0.5)       // returns 0.8047189562170503
+math.acoth(0.5)     // returns 0.5493061443340548 - 1.5707963267948966i
 ```
 
 

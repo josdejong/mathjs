@@ -42,7 +42,7 @@ Type | Description
 ```js
 math.acsc(2)             // returns 0.5235987755982989
 math.acsc(0.5)           // returns Complex 1.5707963267948966 -1.3169578969248166i
-math.acsc(math.csc(1.5)) // returns number ~1.5
+math.acsc(math.csc(1.5)) // returns number 1.5
 ```
 
 

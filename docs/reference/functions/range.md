@@ -28,11 +28,11 @@ math.range(start, end, step [, includeEnd])  // Create a range with start, step,
 
 - `str: string`
   A string 'start:end' or 'start:step:end'
-- `start: {number | BigNumber | Unit}`
+- `start: {number | bigint | BigNumber | Fraction | Unit}`
   Start of the range
-- `end: number | BigNumber | Unit`
+- `end: number | bigint | BigNumber | Fraction | Unit`
   End of the range, excluded by default, included when parameter includeEnd=true
-- `step: number | BigNumber | Unit`
+- `step: number | bigint | BigNumber | Fraction | Unit`
   Step size. Default value is 1.
 - `includeEnd: boolean`
   Option to specify whether to include the end or not. False by default.
@@ -41,7 +41,7 @@ math.range(start, end, step [, includeEnd])  // Create a range with start, step,
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | * | Parameters describing the ranges `start`, `end`, and optional `step`.
+`args` | * | Parameters describing the range's `start`, `end`, and optional `step`.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -63,6 +63,7 @@ math.range(2, 6)        // [2, 3, 4, 5]
 math.range(2, -3, -1)   // [2, 1, 0, -1, -2]
 math.range('2:1:6')     // [2, 3, 4, 5]
 math.range(2, 6, true)  // [2, 3, 4, 5, 6]
+math.range(2, math.fraction(8,3), math.fraction(1,3)) // [fraction(2), fraction(7,3)]
 math.range(math.unit(2, 'm'), math.unit(-3, 'm'), math.unit(-1, 'm')) // [2 m, 1 m, 0 m , -1 m, -2 m]
 ```
 
