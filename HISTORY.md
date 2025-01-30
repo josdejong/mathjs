@@ -1,5 +1,16 @@
 # History
 
+# 2024-01-30, 14.2.0
+
+- Feat: #3041, #3340 rename `apply` to `mapSlices` (#3357). Function
+  `apply` is still available but is now marked deprecated. Thanks @gwhitney.
+- Fix: #3247 don't override type-native floor/ceil within tolerance of value 
+  (#3369). Thanks @gwhitney.
+- Fix: #3360 add bigint support to matrix indices and ranges (#3361).
+  Thanks @gwhitney.
+- Fix: #3115 type definitions for matrixFrom* (#3371). Thanks @Hudsxn 
+  and @gwhitney.
+
 # 2025-01-24, 14.1.0
 
 - Feat: implement `bigint` support in functions `log`, `log2`, `log10`, 
