@@ -465,62 +465,24 @@ function _unsqueeze (array, dims, dim) {
  * Flatten a multi dimensional array, put all elements in a one dimensional
  * array
  * @param {Array} array   A multi dimensional array
- * @param {boolean} [hasHomogeneousSize=false] Indicates if the size is homogeneous (like a valid matrix)
  * @return {Array}        The flattened array (1 dimensional)
  */
-export function flatten (array, hasHomogeneousSize = false) {
+export function flatten (array) {
   if (!Array.isArray(array)) {
     // if not an array, return as is
     return array
   }
-  if (hasHomogeneousSize) {
-    return _flattenHomogeneous(array)
-  } else {
-    if (typeof Array.prototype.flat === 'function') {
-      return array.flat(Infinity)
+  const flat = []
+
+  array.forEach(function callback (value) {
+    if (Array.isArray(value)) {
+      value.forEach(callback) // traverse through sub-arrays recursively
     } else {
-      return _flattenFallback(array)
+      flat.push(value)
     }
-  }
+  })
 
-  function _flattenFallback (arr) {
-    // remove this when Array.prototype.flat is broadly supported
-    const flat = []
-    _recurse(arr)
-    return flat
-
-    function _recurse (value) {
-      if (Array.isArray(value)) {
-        const len = value.length
-        for (let i = 0; i < len; i++) {
-          _recurse(value[i]) // traverse through sub-arrays recursively
-        }
-      } else {
-        flat.push(value)
-      }
-    }
-  }
-
-  function _flattenHomogeneous (arr) {
-    const flat = []
-    _recurse(arr)
-    return flat
-
-    function _recurse (value) {
-      if (Array.isArray(value)) {
-        const len = value.length
-        if (Array.isArray(value[0])) {
-          for (let i = 0; i < len; i++) {
-            _recurse(value[i]) // traverse through sub-arrays recursively
-          }
-        } else {
-          for (let i = 0; i < len; i++) {
-            flat.push(value[i]) // traverse through sub-arrays without recursion
-          }
-        }
-      }
-    }
-  }
+  return flat
 }
 
 /**
