@@ -66,18 +66,34 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    *     node1.compile().evaluate() // 5
    *
    *     let scope = {a:3, b:4}
-   *     const node2 = math.parse('a * b') // 12
+   *     const node2 = math.parse('a * b')
+   *     node2.evaluate(scope) // 12
    *     const code2 = node2.compile()
-   *     code2.evaluate(scope) // 12
+   *     scope.b = 5
+   *     code2.evaluate(scope) // 15
    *     scope.a = 5
-   *     code2.evaluate(scope) // 20
+   *     code2.evaluate(scope) // 25
    *
-   *     const nodes = math.parse(['a = 3', 'b = 4', 'a * b'])
-   *     nodes[2].compile().evaluate() // 12
+   *     const nodes = math.parse(['a = 3', 'b = 2', 'a * b'])
+   *     const newscope = {}
+   *     nodes.map(node => node.compile().evaluate(newscope)) // [3, 2, 6]
    *
    * See also:
    *
    *     evaluate, compile
+   *
+   * History:
+   *
+   *     v0.9   Created
+   *     v0.13  Switched to one-based indices
+   *     v0.14  Added `[1,2;3,4]` notation for matrices
+   *     v0.18  Dropped the `function` keyword
+   *     v0.20  Added ternary conditional
+   *     v0.27  Allow multi-line expressions; allow functions that receive
+   *            unevaluated parameters (`rawArgs`)
+   *     v3     Add object notation; allow assignments internal to other
+   *            expressions
+   *     v7.3   Supported binary, octal, and hexadecimal notation
    *
    * @param {string | string[] | Matrix} expr          Expression to be parsed
    * @param {{nodes: Object<string, Node>}} [options]  Available options:

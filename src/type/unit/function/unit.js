@@ -19,15 +19,24 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Examples:
    *
-   *    const kph = math.unit('km/h')   // returns Unit km/h (valueless)
-   *    const v = math.unit(25, kph)    // returns Unit 25 km/h
-   *    const a = math.unit(5, 'cm')    // returns Unit 50 mm
-   *    const b = math.unit('23 kg')    // returns Unit 23 kg
+   *    math.unit('23 kg')              // returns Unit 23 kg
+   *       // Valueless Units can be used to specify the unit type:
+   *    const kph = math.unit('km/h')
+   *    math.unit(25, kph)              // returns Unit 25 km/h
+   *    const a = math.unit(5, 'cm')
    *    a.to('m')                       // returns Unit 0.05 m
    *
    * See also:
    *
-   *    bignumber, boolean, complex, index, matrix, number, string, createUnit
+   *    bigint, bignumber, boolean, complex, index, matrix, number, string, createUnit
+   *
+   * History:
+   *
+   *    v0.5   Created
+   *    v0.16  Support conversion from BigNumber
+   *    v2.5   Support BigNumber and Fraction values in units
+   *    v2.6   Support Complex values in units
+   *    v11.1  Allow the type of unit to be specifed by a unit (not just string)
    *
    * @param {* | Array | Matrix} args   A number and unit.
    * @return {Unit | Array | Matrix}    The created unit

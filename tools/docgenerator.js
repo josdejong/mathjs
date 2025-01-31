@@ -191,6 +191,29 @@ export function generateDoc (name, code) {
     return false
   }
 
+  function parseHistory () {
+    if (/^history/i.test(line)) {
+      next()
+      skipEmptyLines()
+
+      while (exists() && !empty()) {
+        let [_all, indent, version, entry] = line.match(/^(\s*)(\S*)\s+(.*)$/)
+        const moreIndent = indent + ' '
+        next()
+        while (exists() && !empty() && line.startsWith(moreIndent)) {
+          entry += ' ' + line.trim()
+          next()
+        }
+        doc.history[version] = entry
+      }
+
+      skipEmptyLines()
+
+      return true
+    }
+    return false
+  }
+
   function parseExamples () {
     if (/^example/i.test(line)) {
       next()
@@ -338,6 +361,7 @@ export function generateDoc (name, code) {
     description: '',
     syntax: [],
     where: [],
+    history: {},
     examples: [],
     seeAlso: [],
     parameters: [],
@@ -354,6 +378,7 @@ export function generateDoc (name, code) {
 
     const handled = parseSyntax() ||
         parseWhere() ||
+        parseHistory() ||
         parseExamples() ||
         parseSeeAlso() ||
         parseParameters() ||
@@ -518,6 +543,15 @@ export function generateMarkdown (doc, functions) {
         '\n'
   }
 
+  if (Object.keys(doc.history).length > 0) {
+    text += '## History\n\n' +
+      'Version | Comment\n' +
+      '------- | -------\n'
+    for (const version in doc.history) {
+      text += `${version} | ${doc.history[version]}\n`
+    }
+  }
+
   return text
 }
 
@@ -567,19 +601,22 @@ export function collectDocs (functionNames, inputPath) {
     if (!path.includes('docs') && functionIndex !== -1) {
       if (path.includes('expression')) {
         category = 'expression'
-      } else if (/\/lib\/cjs\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
-        // for type/bignumber/function/bignumber.js, type/fraction/function/fraction.js, etc
-        category = 'construction'
-      } else if (/\/lib\/cjs\/core\/function/.test(fullPath)) {
-        category = 'core'
+      } else if (functionIndex == path.length - 1) {
+        if (path[functionIndex - 1] === 'core') {
+          category = 'core'
+        } else {
+          // for type/bignumber/function/bignumber.js, type/fraction/function/fraction.js, etc
+          category = 'construction'
+        }
       } else {
+        // typical case, e.g. src/function/algebra/lsolve.js
         category = path[functionIndex + 1]
       }
-    } else if (fullPath.endsWith('/lib/cjs/expression/parse.js')) {
+    } else if (path[path.length - 1] === 'expression' && name === 'parse') {
       // TODO: this is an ugly special case
       category = 'expression'
-    } else if (path.join('/').endsWith('/lib/cjs/type')) {
-      // for boolean.js, number.js, string.js
+    } else if (path[path.length - 1] === 'type') {
+      // for boolean.js, number.js, string.js, bigint.js
       category = 'construction'
     }
 

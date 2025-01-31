@@ -42,17 +42,17 @@ export const createPolynomialRoot = /* #__PURE__ */ factory(name, dependencies, 
    *     math.polynomialRoot(constant, linearCoeff, quadraticCoeff, cubicCoeff)
    *
    * Examples:
-   *     // linear
+   *         // linear
    *     math.polynomialRoot(6, 3)                                        // [-2]
    *     math.polynomialRoot(math.complex(6,3), 3)                        // [-2 - i]
    *     math.polynomialRoot(math.complex(6,3), math.complex(2,1))        // [-3 + 0i]
-   *     // quadratic
+   *         // quadratic
    *     math.polynomialRoot(2, -3, 1)                                    // [2, 1]
    *     math.polynomialRoot(8, 8, 2)                                     // [-2]
    *     math.polynomialRoot(-2, 0, 1)                                    // [1.4142135623730951, -1.4142135623730951]
    *     math.polynomialRoot(2, -2, 1)                                    // [1 + i, 1 - i]
    *     math.polynomialRoot(math.complex(1,3), math.complex(-3, -2), 1)  // [2 + i, 1 + i]
-   *     // cubic
+   *         // cubic
    *     math.polynomialRoot(-6, 11, -6, 1)                               // [1, 3, 2]
    *     math.polynomialRoot(-8, 0, 0, 1)                                 // [-1 - 1.7320508075688774i, 2, -1 + 1.7320508075688774i]
    *     math.polynomialRoot(0, 8, 8, 2)                                  // [0, -2]
@@ -60,6 +60,10 @@ export const createPolynomialRoot = /* #__PURE__ */ factory(name, dependencies, 
    *
    * See also:
    *     cbrt, sqrt
+   *
+   * History:
+   *
+   *     v11.4  Created
    *
    * @param {... number | Complex} coeffs
    *     The coefficients of the polynomial, starting with with the constant coefficent, followed
