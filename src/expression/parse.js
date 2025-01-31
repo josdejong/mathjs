@@ -71,7 +71,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    *     const code2 = node2.compile()
    *     code2.evaluate(scope) // 12 ...
    *     scope.a = 5
-   *     code2.evaluate(scope) // 20
+   *     code2.evaluate(scope) // 25
    *
    *     const nodes = math.parse(['a = 3', 'b = 4', 'a * b'])
    *     nodes.map(node => node.evaluate()) // [3, 4, 12]

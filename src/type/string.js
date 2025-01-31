@@ -26,7 +26,11 @@ export const createString = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * See also:
    *
-   *    bignumber, boolean, complex, index, matrix, number, unit
+   *    bigint, bignumber, boolean, complex, index, matrix, number, unit
+   *
+   * History:
+   *
+   *    v0.9  Created
    *
    * History:
    *
