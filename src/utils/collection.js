@@ -2,7 +2,7 @@ import { isCollection, isMatrix } from './is.js'
 import { IndexError } from '../error/IndexError.js'
 import { arraySize, findFirst as arrayFindFirst } from './array.js'
 import { _switch } from './switch.js'
-import { forEach as iterableForEach } from './iterable.js'
+import { forEach as iterableForEach, map as iterableMap } from './iterable.js'
 
 /**
  * Test whether an array contains collections
@@ -56,28 +56,11 @@ export function deepForEach (array, callback) {
  * @return {Array | Matrix} res
  */
 export function deepMap (array, callback, skipZeros) {
-  if (skipZeros) {
-    const callbackSkip = (x) => x === 0 ? 0 : callback(x)
-    if (isMatrix(array)) {
-      return array.create(recurse(array.valueOf(), callbackSkip), array.datatype())
-    } else {
-      return recurse(array, callbackSkip)
-    }
+  const callbackSkip = skipZeros ? x => x === 0 ? 0 : callback(x) : x => callback(x)
+  if (isMatrix(array)) {
+    return array.map(callbackSkip)
   } else {
-    if (isMatrix(array)) {
-      return array.create(recurse(array.valueOf(), callback), array.datatype())
-    } else {
-      return recurse(array, callback)
-    }
-  }
-  function recurse (array) {
-    if (Array.isArray(array)) {
-      return array.map(function (x) {
-        return recurse(x)
-      })
-    } else {
-      return callback(array)
-    }
+    return iterableMap(array, callbackSkip, false, false, array)
   }
 }
 
