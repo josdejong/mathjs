@@ -58,12 +58,6 @@ const bench = new Bench({ time: 100, iterations: 100 })
   .add('numberMatrix.map(abs + idx + matrix)', () => {
     numberMatrix.map((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
   })
-  .on('cycle', function (event) {
-    console.log(String(event.target))
-  })
-  .on('complete', function () {
-  })
-  .run()
 
 bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
 await bench.run()

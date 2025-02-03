@@ -1,6 +1,6 @@
 import { isCollection, isMatrix } from './is.js'
 import { IndexError } from '../error/IndexError.js'
-import { arraySize } from './array.js'
+import { arraySize, findFirst as arrayFindFirst } from './array.js'
 import { _switch } from './switch.js'
 
 /**
@@ -16,6 +16,15 @@ export function containsCollections (array) {
     }
   }
   return false
+}
+
+export function findFirst (array) {
+  if (isMatrix(array)) {
+    const idx = array.size().map(() => 0)
+    return { value: array.get(idx), index: idx }
+  } else {
+    return arrayFindFirst(array)
+  }
 }
 
 /**
