@@ -12,8 +12,7 @@ import { typeOf as _typeOf } from './is.js'
  */
 export function optimizeCallback (callback, array, name, options) {
   if (typed.isTypedFunction(callback)) {
-    const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
-    const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
+    const [firstValue, firstIndex] = findFirstValueAndIndex(array)
     const hasSingleSignature = Object.keys(callback.signatures).length === 1
     const numberOfArguments = _typedFindNumberOfArguments(callback, firstValue, firstIndex, array)
     if (options && options.detailedError) {
@@ -23,8 +22,6 @@ export function optimizeCallback (callback, array, name, options) {
           return (val) => tryFunctionWithArgs(fastCallback, [val], name, callback.name)
         case 2:
           return (val, idx) => tryFunctionWithArgs(fastCallback, [val, idx], name, callback.name)
-        case 3:
-          return (val, idx, array) => tryFunctionWithArgs(fastCallback, [val, idx, array], name, callback.name)
         default:
           return (...args) => tryFunctionWithArgs(fastCallback, args, name, callback.name)
       }
@@ -36,8 +33,6 @@ export function optimizeCallback (callback, array, name, options) {
           return val => callback(val)
         case 2:
           return (val, idx) => callback(val, idx)
-        case 3:
-          return (val, idx, array) => callback(val, idx, array)
         default:
           return callback
       }
@@ -46,14 +41,33 @@ export function optimizeCallback (callback, array, name, options) {
   return callback
 }
 
+function findFirstValueAndIndex (array) {
+  const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
+  const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
+
+  return [firstValue, firstIndex]
+}
+
 export function findNumberOfArguments (callback, array) {
+  const [firstValue, firstIndex] = findFirstValueAndIndex(array)
   if (typed.isTypedFunction(callback)) {
-    const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
-    const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
     return _typedFindNumberOfArguments(callback, firstValue, firstIndex, array)
   } else {
-    return callback.length
+    return _fnFindNumberOfArguments(callback, firstValue, firstIndex)
   }
+}
+
+function _fnFindNumberOfArguments (callback, value, index) {
+  if (callback.length === 0) return 3
+  try {
+    callback(value)
+    return 1
+  } catch {}
+  try {
+    callback(value, index)
+    return 2
+  } catch {}
+  return 3
 }
 
 function _typedFindNumberOfArguments (callback, value, index, array) {
