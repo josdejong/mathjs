@@ -26,7 +26,6 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.25.7",
-    "@lambdatest/node-tunnel": "^4.0.8",
     "complex.js": "^2.2.5",
     "decimal.js": "^10.4.3",
     "escape-latex": "^1.2.0",
