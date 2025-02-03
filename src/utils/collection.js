@@ -2,6 +2,7 @@ import { isCollection, isMatrix } from './is.js'
 import { IndexError } from '../error/IndexError.js'
 import { arraySize, findFirst as arrayFindFirst } from './array.js'
 import { _switch } from './switch.js'
+import { forEach as iterableForEach } from './iterable.js'
 
 /**
  * Test whether an array contains collections
@@ -36,16 +37,9 @@ export function findFirst (array) {
  */
 export function deepForEach (array, callback) {
   if (isMatrix(array)) {
-    recurse(array.valueOf())
+    array.forEach(callback)
   } else {
-    recurse(array)
-  }
-  function recurse (array) {
-    if (Array.isArray(array)) {
-      array.forEach(value => recurse(value))
-    } else {
-      callback(array)
-    }
+    iterableForEach(array, callback, false, false, array)
   }
 }
 

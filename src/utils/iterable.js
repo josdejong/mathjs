@@ -85,13 +85,7 @@ export function forEach (array, callback, isHomogeneous = false, callbackIsIndex
     }
   } else {
     if (isHomogeneous) {
-      array.forEach(function rec (value) {
-        if (Array.isArray(value[0])) {
-          value.forEach(rec)
-        } else {
-          value.forEach(callback)
-        }
-      })
+      recurseHomogeneous(array)
     } else {
       array.forEach(function rec (value) {
         if (Array.isArray(value)) {
@@ -100,6 +94,14 @@ export function forEach (array, callback, isHomogeneous = false, callbackIsIndex
           callback(value)
         }
       })
+    }
+  }
+
+  function recurseHomogeneous (value) {
+    if (Array.isArray(value[0])) {
+      value.forEach(recurseHomogeneous)
+    } else {
+      value.forEach(callback)
     }
   }
 
