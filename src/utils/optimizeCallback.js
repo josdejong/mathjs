@@ -42,6 +42,9 @@ export function optimizeCallback (callback, array, name, options) {
 }
 
 function findFirstValueAndIndex (array) {
+  if((array.isMatrix && array.valueOf().length === 0) || (Array.isArray(array) && array.length === 0)) {
+    return [undefined, []]
+  }
   const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
   const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
 
