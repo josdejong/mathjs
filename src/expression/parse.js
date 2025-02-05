@@ -1083,6 +1083,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function parseImplicitMultiplication (state) {
     let node, last
+    const tokenStates = []
 
     node = parseRule2(state)
     last = node
@@ -1093,8 +1094,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           (state.token === 'in' && isOperatorNode(node) && node.fn === 'unaryMinus' && isConstantNode(node.args[0])) ||
           (state.tokenType === TOKENTYPE.NUMBER &&
               !isConstantNode(last) &&
-              (!isOperatorNode(last) || last.op === '!')) ||
-          (state.token === '(')) {
+              (!isOperatorNode(last) || last.op === '!'))
+      ) {
         // parse implicit multiplication
         //
         // symbol:      implicit multiplication like '2a', '(2+3)a', 'a b'
@@ -1102,6 +1103,24 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // parenthesis: implicit multiplication like '2(3+4)', '(3+4)(1+2)'
         last = parseRule2(state)
         node = new OperatorNode('*', 'multiply', [node, last], true /* implicit */)
+      } else if (state.token === '(') {
+        // parse implicit multiplication like '2(3+4)', '(3+4)(1+2)'
+        // but might also be function call like '(compose(f, g))(1, 2)'
+        // Function application forced by presence of comma
+        tokenStates.push(Object.assign({}, state))
+        try {
+          last = parseRule2(state)
+          node = new OperatorNode('*', 'multiply', [node, last], true /* implicit */)
+        } catch (e) {
+          Object.assign(state, tokenStates.pop())
+          if (e instanceof SyntaxError) {
+            const dummy = new SymbolNode('_TEMP_')
+            const dummyCall = parseAccessors(state, dummy)
+            node = new FunctionNode(node, dummyCall.args)
+          } else {
+            throw e
+          }
+        }
       } else {
         break
       }
@@ -1368,13 +1387,13 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           openParams(state)
           getToken(state)
 
-          if (state.token !== ')') {
+          while (state.token !== ')') { // eslint-disable-line no-unmodified-loop-condition
             params.push(parseAssignment(state))
-
-            // parse a list with parameters
-            while (state.token === ',') { // eslint-disable-line no-unmodified-loop-condition
+            if (state.token === ',') {
+              // parse a list with parameters
               getToken(state)
-              params.push(parseAssignment(state))
+            } else {
+              break
             }
           }
 
