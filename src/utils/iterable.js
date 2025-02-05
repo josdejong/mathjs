@@ -14,19 +14,19 @@ export function map (array, callback, isHomogeneous = false, callbackIsIndexed =
   if (array.length === 0) return []
   if (callbackIsIndexed) {
     thisArg = thisArg || array
-    if (isHomogeneous) {
-      return recurseIndexedHomogeneous(array, [], 0)
-    } else {
-      return array.map((value, index) => recurseIndexedHeterogeneous(value, [index], 1))
-    }
+    if (isHomogeneous) return recurseIndexedHomogeneous(array, [], 0)
+    else return array.map((value, index) => recurseIndexedHeterogeneous(value, [index], 1))
   } else {
     // not indexed
-    if (isHomogeneous) {
-      return recurseHomogeneous(array)
-    } else {
+    if (isHomogeneous) return recurseHomogeneous(array)
+    else {
       return array.map(function rec (value) {
         if (Array.isArray(value)) {
-          return value.map(rec)
+          if (value.every(ele => !Array.isArray(ele))) {
+            return value.map(callback)
+          } else {
+            return value.map(rec)
+          }
         } else {
           return callback(value)
         }
@@ -35,11 +35,8 @@ export function map (array, callback, isHomogeneous = false, callbackIsIndexed =
   }
 
   function recurseHomogeneous (value) {
-    if (Array.isArray(value[0])) {
-      return value.map(recurseHomogeneous)
-    } else {
-      return value.map(callback)
-    }
+    if (Array.isArray(value[0])) return value.map(recurseHomogeneous)
+    else return value.map(callback)
   }
 
   function recurseIndexedHeterogeneous (value, index, depth) {
@@ -50,9 +47,7 @@ export function map (array, callback, isHomogeneous = false, callbackIsIndexed =
         index[depth] = null
         return results
       })
-    } else {
-      return callback(value, index.slice(), thisArg)
-    }
+    } else return callback(value, index.slice(0, depth + 1), thisArg)
   }
 
   function recurseIndexedHomogeneous (value, index, depth) {
@@ -66,7 +61,7 @@ export function map (array, callback, isHomogeneous = false, callbackIsIndexed =
     } else {
       return value.map((v, i) => {
         index[depth] = i
-        return callback(v, index.slice(), thisArg)
+        return callback(v, index.slice(0, depth + 1), thisArg)
       })
     }
   }
@@ -88,15 +83,11 @@ export function forEach (array, callback, isHomogeneous = false, callbackIsIndex
 
   if (callbackIsIndexed) {
     thisArg = thisArg || array
-    if (isHomogeneous) {
-      array.forEach((value, index) => recurseIndexedHomogeneous(value, [index], 1))
-    } else {
-      array.forEach((value, index) => recurseIndexedHeterogeneous(value, [index], 1))
-    }
+    if (isHomogeneous) recurseIndexedHomogeneous(array, [], 0)
+    else array.forEach((value, index) => recurseIndexedHeterogeneous(value, [index], 1))
   } else {
-    if (isHomogeneous) {
-      recurseHomogeneous(array)
-    } else {
+    if (isHomogeneous) recurseHomogeneous(array)
+    else {
       array.forEach(function rec (value) {
         if (Array.isArray(value)) {
           value.forEach(rec)
@@ -108,11 +99,8 @@ export function forEach (array, callback, isHomogeneous = false, callbackIsIndex
   }
 
   function recurseHomogeneous (value) {
-    if (Array.isArray(value[0])) {
-      value.forEach(recurseHomogeneous)
-    } else {
-      value.forEach(callback)
-    }
+    if (Array.isArray(value[0])) value.forEach(recurseHomogeneous)
+    else value.forEach(callback)
   }
 
   function recurseIndexedHeterogeneous (value, index, depth) {
@@ -122,9 +110,7 @@ export function forEach (array, callback, isHomogeneous = false, callbackIsIndex
         recurseIndexedHeterogeneous(child, index, depth + 1)
         index[depth] = null
       })
-    } else {
-      callback(value, index.slice(), thisArg)
-    }
+    } else callback(value, index.slice(0, depth + 1), thisArg)
   }
 
   function recurseIndexedHomogeneous (value, index, depth) {
@@ -137,7 +123,7 @@ export function forEach (array, callback, isHomogeneous = false, callbackIsIndex
     } else {
       value.forEach((v, i) => {
         index[depth] = i
-        callback(v, index.slice(), thisArg)
+        callback(v, index.slice(0, depth + 1), thisArg)
       })
     }
   }
