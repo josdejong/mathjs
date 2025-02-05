@@ -4,6 +4,10 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20240205-1421">2024-02-05, 14.2.1 <a href="#20240205-1421" title="Permalink">#</a></h1>
+
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3377">#3377</a> remove redundant dependency `@lambdatest/node-tunnel`.
+
 <h1 id="20240130-1420">2024-01-30, 14.2.0 <a href="#20240130-1420" title="Permalink">#</a></h1>
 
 - Feat: <a href="https://github.com/josdejong/mathjs/issues/3041">#3041</a>, <a href="https://github.com/josdejong/mathjs/issues/3340">#3340</a> rename `apply` to `mapSlices` (<a href="https://github.com/josdejong/mathjs/issues/3357">#3357</a>). Function
