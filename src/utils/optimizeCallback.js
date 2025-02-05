@@ -1,5 +1,5 @@
 import typed from 'typed-function'
-import { get, arraySize } from './array.js'
+import { findFirst } from './array.js'
 import { typeOf as _typeOf } from './is.js'
 
 /**
@@ -42,13 +42,16 @@ export function optimizeCallback (callback, array, name, options) {
 }
 
 function findFirstValueAndIndex (array) {
-  if((array.isMatrix && array.valueOf().length === 0) || (Array.isArray(array) && array.length === 0)) {
-    return [undefined, []]
+  if (array.isMatrix) {
+    if (array.valueOf().length === 0) return [undefined, []]
+    const firstIndex = array.size().map(() => 0)
+    const firstValue = array.get(firstIndex)
+    return [firstValue, firstIndex]
+  } else {
+    if (array.length === 0) return [undefined, []]
+    const { value, index } = findFirst(array)
+    return [value, index]
   }
-  const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
-  const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
-
-  return [firstValue, firstIndex]
 }
 
 export function findNumberOfArguments (callback, array) {
