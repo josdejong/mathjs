@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 14.2.0
+# 2024-02-05, 14.2.1
 
 - Fix: #3377 remove redundant dependency `@lambdatest/node-tunnel`.
 
