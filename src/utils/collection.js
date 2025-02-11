@@ -53,15 +53,21 @@ export function deepForEach (array, callback) {
  *
  * @return {Array | Matrix} res
  */
-export function deepMap (array, callback, skipZeros) {
-  if (array && (typeof array.map === 'function')) {
-    // TODO: replace array.map with a for loop to improve performance
-    return array.map(function (x) {
-      return deepMap(x, callback, skipZeros)
-    })
-  } else {
-    return callback(array)
+export function deepMap(array, callback, skipZeros) {
+  const result = [];
+  for (let i = 0; i < array.length; i++) {
+    const value = array[i];
+    if (Array.isArray(value)) {
+      result.push(deepMap(value, callback, skipZeros));
+    } else {
+      if (!skipZeros || value !== 0) {
+        result.push(callback(value));
+      } else {
+        result.push(value);
+      }
+    }
   }
+  return result;
 }
 
 /**
