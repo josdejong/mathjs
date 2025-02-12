@@ -7,7 +7,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![Version](https://img.shields.io/npm/v/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Downloads](https://img.shields.io/npm/dm/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Build Status](https://github.com/josdejong/mathjs/workflows/Node.js%20CI/badge.svg)](https://github.com/josdejong/mathjs/actions)
-[![Maintenance](https://img.shields.io/maintenance/yes/2024.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/maintenance/yes/2025.svg)](https://github.com/josdejong/mathjs/graphs/commit-activity)
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
 [![Codecov](https://codecov.io/gh/josdejong/mathjs/branch/develop/graph/badge.svg)](https://codecov.io/gh/josdejong/mathjs)
@@ -168,9 +168,9 @@ Additionally, the tests can be run on FireFox using [headless mode](https://deve
 
     npm run test:browser
 
-To run the tests remotely on BrowserStack, first set the environment variables `BROWSER_STACK_USERNAME` and `BROWSER_STACK_ACCESS_KEY` with your username and access key and then execute:
+To run the tests remotely on LambdaTest, first set the environment variables `LT_USERNAME` and `LT_ACCESS_KEY` with your username and access key and then execute:
 
-    npm run test:browserstack
+    npm run test:lambdatest
 
 You can separately run the code linter, though it is also executed with `npm test`:
 
@@ -191,18 +191,18 @@ To see the coverage results, open the generated report in your browser:
 
 ### Continuous integration testing
 
-Continuous integration tests are run on [Github Actions](https://github.com/josdejong/mathjs/actions) and [BrowserStack](https://www.browserstack.com) every time a commit is pushed to github. Github Actions runs the tests for different versions of node.js, and BrowserStack runs the tests on all major browsers.
+Continuous integration tests are run on [Github Actions](https://github.com/josdejong/mathjs/actions) and [LambdaTest](https://www.lambdatest.com) every time a commit is pushed to github. Github Actions runs the tests for different versions of node.js, and LambdaTest runs the tests on all major browsers.
 
-[![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)](https://www.browserstack.com)
+[![LambdaTest](https://raw.github.com/josdejong/mathjs/master/misc/lambdatest.svg)](https://www.lambdatest.com)
 
-Thanks Github Actions and BrowserStack for the generous free hosting of this open source project!
+Thanks, GitHub Actions and LambdaTest for the generous free hosting of this open source project!
 
 ## License
 
 mathjs is published under the Apache 2.0 license:
 
 ```
-Copyright (C) 2013-2024 Jos de Jong <wjosdejong@gmail.com>
+Copyright (C) 2013-2025 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

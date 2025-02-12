@@ -20,16 +20,6 @@ export function isInteger (value) {
 }
 
 /**
- * Check if a string contains an integer
- * @param {string} str
- * @return {boolean} isInteger
- */
-export function isIntegerStr (str) {
-  // regex matching strings like "123" and "-123"
-  return /^-?\d+$/.test(str)
-}
-
-/**
  * Ensure the number type is compatible with the provided value.
  * If not, return 'number' instead.
  *
@@ -48,8 +38,12 @@ export function isIntegerStr (str) {
  * @returns {'number' | 'BigNumber' | 'bigint' | 'Fraction'}
  */
 export function safeNumberType (numberStr, config) {
-  if (config.number === 'bigint' && !isIntegerStr(numberStr)) {
-    return config.numberFallback
+  if (config.number === 'bigint') {
+    try {
+      BigInt(numberStr)
+    } catch {
+      return config.numberFallback
+    }
   }
 
   return config.number
@@ -644,11 +638,6 @@ export function digits (value) {
     .replace(/^0\.?0*|\./, '') // remove decimal point and leading zeros
     .length
 }
-
-/**
- * Minimum number added to one that makes the result different than one
- */
-export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
 
 /**
  * Compares two floating point numbers.

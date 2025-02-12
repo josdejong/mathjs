@@ -83,7 +83,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     deepForEach(array, function (value) {
       try {
-        if (isNaN(value) && typeof value === 'number') {
+        if (typeof value === 'number' && isNaN(value)) {
           res = NaN
         } else if (res === undefined || larger(value, res)) {
           res = value

@@ -11,13 +11,14 @@ const name = 'larger'
 const dependencies = [
   'typed',
   'config',
+  'bignumber',
   'matrix',
   'DenseMatrix',
   'concat',
   'SparseMatrix'
 ]
 
-export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, DenseMatrix, concat, SparseMatrix }) => {
+export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, bignumber, matrix, DenseMatrix, concat, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
@@ -55,19 +56,29 @@ export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
    */
+  function bignumLarger (x, y) {
+    return x.gt(y) && !bigNearlyEqual(x, y, config.relTol, config.absTol)
+  }
+
   return typed(
     name,
     createLargerNumber({ typed, config }),
     {
       'boolean, boolean': (x, y) => x > y,
 
-      'BigNumber, BigNumber': function (x, y) {
-        return x.gt(y) && !bigNearlyEqual(x, y, config.relTol, config.absTol)
-      },
+      'BigNumber, BigNumber': bignumLarger,
 
       'bigint, bigint': (x, y) => x > y,
 
       'Fraction, Fraction': (x, y) => (x.compare(y) === 1),
+
+      'Fraction, BigNumber': function (x, y) {
+        return bignumLarger(bignumber(x), y)
+      },
+
+      'BigNumber, Fraction': function (x, y) {
+        return bignumLarger(x, bignumber(y))
+      },
 
       'Complex, Complex': function () {
         throw new TypeError('No ordering relation is defined for complex numbers')

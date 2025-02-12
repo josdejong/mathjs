@@ -18,7 +18,7 @@ export const createAcoth = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * Examples:
    *
-   *    math.acoth(0.5)       // returns 0.8047189562170503
+   *    math.acoth(0.5)     // returns 0.5493061443340548 - 1.5707963267948966i
    *
    * See also:
    *

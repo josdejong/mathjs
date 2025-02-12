@@ -87,6 +87,11 @@ describe('log10', function () {
     approxDeepEqual(log10(complex(1, 0)), complex(0, 0))
   })
 
+  it('should return the log base 10 of a large bigint', function () {
+    const ten16 = 10000000000000000n
+    assert.strictEqual(log10(ten16), 16)
+  })
+
   it('should throw an error when used on a unit', function () {
     assert.throws(function () { log10(unit('5cm')) })
   })

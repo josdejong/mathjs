@@ -829,7 +829,7 @@ describe('parse', function () {
 
       assert.throws(function () {
         parseAndEval('a[2, 2+3i]', scope)
-      }, /TypeError: Dimension must be an Array, Matrix, number, string, or Range/)
+      }, /TypeError: Dimension must be an Array,.*or Range/)
     })
 
     it('should throw an error for invalid matrix', function () {
@@ -1476,6 +1476,12 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('[1,2;3,4] [2,2]'), 4) // index
       assert.deepStrictEqual(parseAndEval('([1,2;3,4])[2,2]'), 4) // index
       assert.throws(function () { parseAndEval('2[1,2,3]') }, /Unexpected operator/)// index
+    })
+
+    it('should index when the number config is bigint', function () {
+      const bimath = math.create({ number: 'bigint' })
+      assert.strictEqual(bimath.evaluate('[1,2;3,4][2,2]'), 4n)
+      assert.strictEqual(bimath.evaluate('[5,6,7][2]'), 6n)
     })
 
     it('should tell the OperatorNode about implicit multiplications', function () {
@@ -2246,6 +2252,12 @@ describe('parse', function () {
       assert.strictEqual(bigmath.evaluate('-123123123123123123123'), -123123123123123123123n)
       assert.strictEqual(bigmath.evaluate('2.3'), 2.3)
       assert.strictEqual(bigmath.evaluate('-2.3'), -2.3)
+    })
+
+    it('should parse hex, bin, oct numbers as bigint', function () {
+      assert.strictEqual(bigmath.evaluate('0xA2'), 162n)
+      assert.strictEqual(bigmath.evaluate('0b1011'), 11n)
+      assert.strictEqual(bigmath.evaluate('0o70'), 56n)
     })
 
     it('should fallback on the configured numberFallback when parsing as bigint', function () {

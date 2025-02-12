@@ -13,7 +13,7 @@ module.exports = function (config) {
     'LT:Options': {
       build: 'OSS',
       name: 'mathjs',
-      video: true,
+      video: false,
       visual: false,
       network: false,
       console: false,

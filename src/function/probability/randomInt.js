@@ -4,9 +4,11 @@ import { createRng } from './util/seededRNG.js'
 import { isMatrix } from '../../utils/is.js'
 
 const name = 'randomInt'
-const dependencies = ['typed', 'config', '?on']
+const dependencies = ['typed', 'config', 'log2', '?on']
 
-export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, on }) => {
+const simpleCutoff = 2n ** 30n
+
+export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, log2, on }) => {
   // seeded pseudo random number generator
   let rng = createRng(config.randomSeed)
 
@@ -24,7 +26,7 @@ export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * Syntax:
    *
-   *     math.randomInt()                // generate a random integer between 0 and 1
+   *     math.randomInt()                // generate either 0 or 1, randomly
    *     math.randomInt(max)             // generate a random integer between 0 and max
    *     math.randomInt(min, max)        // generate a random integer between min and max
    *     math.randomInt(size)            // generate a matrix with random integer between 0 and 1
@@ -48,9 +50,11 @@ export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @return {number | Array | Matrix} A random integer value
    */
   return typed(name, {
-    '': () => _randomInt(0, 1),
+    '': () => _randomInt(0, 2),
     number: (max) => _randomInt(0, max),
     'number, number': (min, max) => _randomInt(min, max),
+    bigint: (max) => _randomBigint(0n, max),
+    'bigint, bigint': _randomBigint,
     'Array | Matrix': (size) => _randomIntMatrix(size, 0, 1),
     'Array | Matrix, number': (size, max) => _randomIntMatrix(size, 0, max),
     'Array | Matrix, number, number': (size, min, max) => _randomIntMatrix(size, min, max)
@@ -63,5 +67,24 @@ export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
   function _randomInt (min, max) {
     return Math.floor(min + rng() * (max - min))
+  }
+
+  function _randomBigint (min, max) {
+    const width = max - min // number of choices
+    if (width <= simpleCutoff) { // do it with number type
+      return min + BigInt(_randomInt(0, Number(width)))
+    }
+    // Too big to choose accurately that way. Instead, choose the correct
+    // number of random bits to cover the width, and repeat until the
+    // resulting number falls within the width
+    const bits = log2(width)
+    let picked = width
+    while (picked >= width) {
+      picked = 0n
+      for (let i = 0; i < bits; ++i) {
+        picked = 2n * picked + ((rng() < 0.5) ? 0n : 1n)
+      }
+    }
+    return min + picked
   }
 })
