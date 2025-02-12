@@ -630,16 +630,34 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @return {Iterable<{ value, index: number[] }>}
    */
   DenseMatrix.prototype[Symbol.iterator] = function * () {
-    const recurse = function * (value, index) {
-      if (isArray(value)) {
-        for (let i = 0; i < value.length; i++) {
-          yield * recurse(value[i], index.concat(i))
+    const size = this._size
+    const N = size.length
+
+    if (N === 0) return
+    if (N === 1) {
+      for (let i = 0; i < size[0]; i++) {
+        yield { value: this._data[i], index: [i] }
+      }
+      return
+    }
+
+    const recurse = function * (value, depth) {
+      const thisSize = size[depth]
+      if (depth < N - 1) {
+        for (let i = 0; i < thisSize; i++) {
+          index[depth] = i
+          yield * recurse(value[i], depth + 1)
         }
       } else {
-        yield ({ value, index })
+        for (let i = 0; i < thisSize; i++) {
+          index[depth] = i
+          yield { value: value[i], index: index.slice() }
+        }
       }
     }
-    yield * recurse(this._data, [])
+
+    const index = Array(N)
+    yield * recurse(this._data, 0)
   }
 
   /**
