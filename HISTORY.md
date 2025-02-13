@@ -1,5 +1,9 @@
 # History
 
+# 2024-02-05, 14.2.1
+
+- Fix: #3377 remove redundant dependency `@lambdatest/node-tunnel`.
+
 # 2024-01-30, 14.2.0
 
 - Feat: #3041, #3340 rename `apply` to `mapSlices` (#3357). Function
