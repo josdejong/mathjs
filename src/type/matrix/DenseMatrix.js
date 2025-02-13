@@ -606,7 +606,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     if (maxDepth === 0) return me.clone()
 
     const result = new DenseMatrix(me)
-    const fastCallback = optimizeCallback(callback, me._data, 'map')
+    const fastCallback = optimizeCallback(callback, me, 'map')
     if (maxDepth === 1) {
       return new DenseMatrix(
         me._data.map((value, index) => fastCallback(value, [index], me))
@@ -629,7 +629,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    */
   DenseMatrix.prototype.forEach = function (callback) {
     const me = this
-    const fastCallback = optimizeCallback(callback, me._data, 'map')
+    const fastCallback = optimizeCallback(callback, me, 'map')
     me._forEach(function (arr, i, index) {
       fastCallback(arr[i], index, me)
     })

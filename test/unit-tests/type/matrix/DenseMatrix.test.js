@@ -818,22 +818,22 @@ describe('DenseMatrix', function () {
       ])
       expected = []
       m.forEach((value, index) => { expected.push({ value, index }) })
-      assert.deepStrictEqual(expected, [...m])
+      assert.deepStrictEqual([...m], expected)
 
       m = new DenseMatrix([1])
       expected = []
       m.forEach((value, index) => { expected.push({ value, index }) })
-      assert.deepStrictEqual(expected, [...m])
+      assert.deepStrictEqual([...m], expected)
 
       m = new DenseMatrix([1, 2, 3])
       expected = []
       m.forEach((value, index) => { expected.push({ value, index }) })
-      assert.deepStrictEqual(expected, [...m])
+      assert.deepStrictEqual([...m], expected)
 
       m = new DenseMatrix([])
       expected = []
       m.forEach((value, index) => { expected.push({ value, index }) })
-      assert.deepStrictEqual(expected, [...m])
+      assert.deepStrictEqual([...m], expected)
     })
   })
 

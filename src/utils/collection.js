@@ -27,14 +27,13 @@ export function containsCollections (array) {
  */
 export function deepForEach (array, callback) {
   if (isMatrix(array)) {
-    array = array.valueOf()
+    array.forEach(callback)
+  } else {
+    recurseForEach(array, callback)
   }
-
-  for (let i = 0, ii = array.length; i < ii; i++) {
-    const value = array[i]
-
+  function recurseForEach (value) {
     if (Array.isArray(value)) {
-      deepForEach(value, callback)
+      value.forEach(recurseForEach)
     } else {
       callback(value)
     }
@@ -54,13 +53,21 @@ export function deepForEach (array, callback) {
  * @return {Array | Matrix} res
  */
 export function deepMap (array, callback, skipZeros) {
-  if (array && (typeof array.map === 'function')) {
-    // TODO: replace array.map with a for loop to improve performance
-    return array.map(function (x) {
-      return deepMap(x, callback, skipZeros)
-    })
+  const skipZerosCallback = skipZeros
+    ? value => value === 0 ? 0 : callback(value)
+    : callback
+  if (isMatrix(array)) {
+    // TODO: use a callback that uses only one arguemnt
+    return array.map(v => skipZerosCallback(v))
   } else {
-    return callback(array)
+    return recurseMap(array)
+  }
+  function recurseMap (value) {
+    if (Array.isArray(value)) {
+      return value.map(recurseMap)
+    } else {
+      return skipZerosCallback(value)
+    }
   }
 }
 

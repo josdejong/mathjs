@@ -43,6 +43,32 @@ const bench = new Bench({ time: 100, iterations: 100 })
   .add('numberMatrix.forEach(abs.signatures.number)', () => {
     numberMatrix.forEach(abs.signatures.number)
   })
+  .add('genericMatrix.forEach(abs+idx)', () => {
+    genericMatrix.forEach((x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add('numberMatrix.forEach(abs+idx)', () => {
+    numberMatrix.forEach((x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add('forEach(genericMatrix, abs+idx)', () => {
+    forEach(genericMatrix, (x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add('genericMatrix.forEach(abs+idx+arr)', () => {
+    genericMatrix.forEach((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
+  })
+  .add('numberMatrix.forEach(abs+idx+arr)', () => {
+    numberMatrix.forEach((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
+  })
+  .add('forEach(genericMatrix, abs+idx+arr)', () => {
+    forEach(genericMatrix, (x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
+  })
+  .add('forEach(array, abs+idx+arr)', () => {
+    forEach(array, (x, idx, X) => abs(x) + idx[0] - idx[1] + X[0][0])
+  })
+  .add('genericMatrix iterate', () => {
+    for (const v of genericMatrix) {
+      abs(v.value)
+    }
+  })
 
 bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
 await bench.run()

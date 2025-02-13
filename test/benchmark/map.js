@@ -43,6 +43,30 @@ const bench = new Bench({ time: 100, iterations: 100 })
   .add('numberMatrix.map(abs.signatures.number)', () => {
     numberMatrix.map(abs.signatures.number)
   })
+  .add('map(array, abs + idx)', () => {
+    map(array, (x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add('genericMatrix.map(abs + idx)', () => {
+    genericMatrix.map((x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add('numberMatrix.map(abs + idx)', () => {
+    numberMatrix.map((x, idx) => abs(x) + idx[0] - idx[1])
+  })
+  .add('map(array, abs + idx + arr)', () => {
+    map(array, (x, idx, X) => abs(x) + idx[0] - idx[1] + X[0][0])
+  })
+  .add('genericMatrix.map(abs + idx + matrix)', () => {
+    genericMatrix.map((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
+  })
+  .add('numberMatrix.map(abs + idx + matrix)', () => {
+    numberMatrix.map((x, idx, X) => abs(x) + idx[0] - idx[1] + X.get([0, 0]))
+  })
+  .add('genericMatrix iterate', () => {
+    const result = genericMatrix.clone()
+    for (const v of genericMatrix) {
+      result.set(v.index, abs(v.value))
+    }
+  })
 
 bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
 await bench.run()
