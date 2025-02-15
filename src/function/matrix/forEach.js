@@ -1,4 +1,4 @@
-import { optimizeCallback } from '../../utils/optimizeCallback.js'
+import { optimizeCallback } from '../../utils/callback.js'
 import { factory } from '../../utils/factory.js'
 import { deepForEach } from '../../utils/array.js'
 
@@ -52,6 +52,6 @@ export const createForEach = /* #__PURE__ */ factory(name, dependencies, ({ type
  * @private
  */
 function _forEach (array, callback) {
-  const fastCallback = optimizeCallback(callback, array, name, { detailedError: true })
+  const fastCallback = optimizeCallback(callback, array, name, { detailedError: true }).func
   deepForEach(array, fastCallback, fastCallback.length)
 }

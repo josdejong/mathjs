@@ -6,7 +6,7 @@ import { isInteger } from '../../utils/number.js'
 import { clone, deepStrictEqual } from '../../utils/object.js'
 import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
-import { optimizeCallback } from '../../utils/optimizeCallback.js'
+import { optimizeCallback } from '../../utils/callback.js'
 
 const name = 'DenseMatrix'
 const dependencies = [
@@ -601,7 +601,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.map = function (callback) {
     const me = this
     const result = new DenseMatrix(me)
-    const fastCallback = optimizeCallback(callback, me._data, 'map')
+    const fastCallback = optimizeCallback(callback, me._data, 'map').func
 
     result._forEach(function (arr, i, index) {
       arr[i] = fastCallback(arr[i], index, me)
@@ -619,7 +619,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    */
   DenseMatrix.prototype.forEach = function (callback) {
     const me = this
-    const fastCallback = optimizeCallback(callback, me._data, 'map')
+    const fastCallback = optimizeCallback(callback, me._data, 'map').func
     me._forEach(function (arr, i, index) {
       fastCallback(arr[i], index, me)
     })

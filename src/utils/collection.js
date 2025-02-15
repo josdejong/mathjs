@@ -1,6 +1,6 @@
 import { isCollection, isMatrix } from './is.js'
 import { IndexError } from '../error/IndexError.js'
-import { arraySize, findFirst as arrayFindFirst } from './array.js'
+import { arraySize, findFirst as findFirstFromArray } from './array.js'
 import { _switch } from './switch.js'
 import { forEach as iterableForEach, map as iterableMap } from './iterable.js'
 
@@ -19,13 +19,14 @@ export function containsCollections (array) {
   return false
 }
 
+/**
+ * Recursively finds the first non-array element in a nested array structure.
+ *
+ * @param {Array | Matrix} array - The nested array to search through.
+ * @returns {{value: *, index: number[]}} An object containing the first non-array element found and its index path.
+ */
 export function findFirst (array) {
-  if (isMatrix(array)) {
-    const idx = array.size().map(() => 0)
-    return { value: array.get(idx), index: idx }
-  } else {
-    return arrayFindFirst(array)
-  }
+  return findFirstFromArray(isMatrix(array) ? array.valueOf() : array)
 }
 
 /**

@@ -1,6 +1,6 @@
 import typed from 'typed-function'
-import { findFirst } from './array.js'
 import { typeOf as _typeOf } from './is.js'
+import { findFirst } from './collection.js'
 
 /**
  * Simplifies a callback function by reducing its complexity and potentially improving its performance.
@@ -8,75 +8,44 @@ import { typeOf as _typeOf } from './is.js'
  * @param {Function} callback The original callback function to simplify.
  * @param {Array|Matrix} array The array that will be used with the callback function.
  * @param {string} name The name of the function that is using the callback.
- * @returns {Array} Returns an array with the simplified version of the callback function and it's number of arguments
+ * @returns {Object} Returns an object with the limited version of the callback function and information about its arity.
  */
-export function optimizeCallback (callback, array, name, options) {
+export function optimizeCallback(callback, array, name, options) {
+  const {value:firstValue, index:firstIndex} = findFirst(array)
+  const arity = typed.isTypedFunction(callback) 
+  ? _findArityOfTypedFunction(callback, firstValue, firstIndex, array)
+  : callback.length
+  const isIndexed = arity > 1
   if (typed.isTypedFunction(callback)) {
-    const [firstValue, firstIndex] = findFirstValueAndIndex(array)
-    const hasSingleSignature = Object.keys(callback.signatures).length === 1
-    const numberOfArguments = _typedFindNumberOfArguments(callback, firstValue, firstIndex, array)
     if (options && options.detailedError) {
-      const fastCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback
-      switch (numberOfArguments) {
-        case 1:
-          return (val) => tryFunctionWithArgs(fastCallback, [val], name, callback.name)
-        case 2:
-          return (val, idx) => tryFunctionWithArgs(fastCallback, [val, idx], name, callback.name)
-        default:
-          return (...args) => tryFunctionWithArgs(fastCallback, args, name, callback.name)
-      }
-    } else if (hasSingleSignature) {
-      return Object.values(callback.signatures)[0]
+        return {
+          func: (...args) => tryFunctionWithArgs(callback, args.slice(0, arity), name, callback.name),
+          isIndexed,
+          hasEhancedError: true,
+          isLimited: true
+        }
     } else {
-      switch (numberOfArguments) {
-        case 1:
-          return val => callback(val)
-        case 2:
-          return (val, idx) => callback(val, idx)
-        default:
-          return callback
+      return {
+        func: (...args) => callback(...args.slice(0, arity)),
+        isIndexed,
+        hasEhancedError: false,
+        isLimited: true
       }
     }
   }
-  return callback
+  return {func:callback, isIndexed, hasEhancedError: false, isLimited: false}
 }
 
-function findFirstValueAndIndex (array) {
-  if (array.isMatrix) {
-    if (array.valueOf().length === 0) return [undefined, []]
-    const firstIndex = array.size().map(() => 0)
-    const firstValue = array.get(firstIndex)
-    return [firstValue, firstIndex]
-  } else {
-    if (array.length === 0) return [undefined, []]
-    const { value, index } = findFirst(array)
-    return [value, index]
-  }
-}
-
-export function findNumberOfArguments (callback, array) {
-  const [firstValue, firstIndex] = findFirstValueAndIndex(array)
-  if (typed.isTypedFunction(callback)) {
-    return _typedFindNumberOfArguments(callback, firstValue, firstIndex, array)
-  } else {
-    return _fnFindNumberOfArguments(callback, firstValue, firstIndex)
-  }
-}
-
-function _fnFindNumberOfArguments (callback, value, index) {
-  if (callback.length === 0) return 3
-  try {
-    callback(value)
-    return 1
-  } catch {}
-  try {
-    callback(value, index)
-    return 2
-  } catch {}
-  return 3
-}
-
-function _typedFindNumberOfArguments (callback, value, index, array) {
+/**
+ * Determine the arity of a given callback function based on the provided arguments.
+ * 
+ * @param {Function} callback - The callback function whose arity is to be determined.
+ * @param {*} value - The value to be passed as the first argument to the callback.
+ * @param {number} index - The index to be passed as the second argument to the callback.
+ * @param {Array} array - The array to be passed as the third argument to the callback.
+ * @returns {number} - The arity of the callback function (1, 2, or 3).
+ */
+function _findArityOfTypedFunction (callback, value, index, array) {
   const testArgs = [value, index, array]
   for (let i = 3; i > 0; i--) {
     const args = testArgs.slice(0, i)
@@ -94,7 +63,7 @@ function _typedFindNumberOfArguments (callback, value, index, array) {
    * @returns {*} Returns the return value of the invoked signature
    * @throws {TypeError} Throws an error when no matching signature was found
    */
-export function tryFunctionWithArgs (func, args, mappingFnName, callbackName) {
+export function tryFunctionWithArgs(func, args, mappingFnName, callbackName) {
   try {
     return func(...args)
   } catch (err) {
@@ -111,7 +80,7 @@ export function tryFunctionWithArgs (func, args, mappingFnName, callbackName) {
  * @param {string} callbackName The name of the callback function.
  * @throws {TypeError} Throws a detailed TypeError with enriched error message.
  */
-function _createCallbackError (err, args, mappingFnName, callbackName) {
+function _createCallbackError(err, args, mappingFnName, callbackName) {
   // Enrich the error message so the user understands that it took place inside the callback function
   if (err instanceof TypeError && err.data?.category === 'wrongType') {
     const argsDesc = []

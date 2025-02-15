@@ -5,7 +5,7 @@ import { clone, deepStrictEqual } from '../../utils/object.js'
 import { arraySize, getArrayDataType, processSizesWildcard, unsqueeze, validateIndex } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import { DimensionError } from '../../error/DimensionError.js'
-import { optimizeCallback } from '../../utils/optimizeCallback.js'
+import { optimizeCallback } from '../../utils/callback.js'
 
 const name = 'SparseMatrix'
 const dependencies = [
@@ -853,7 +853,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
-    const fastCallback = optimizeCallback(callback, me, 'map')
+    const fastCallback = optimizeCallback(callback, me, 'map').func
     // invoke callback
     const invoke = function (v, i, j) {
       // invoke callback
@@ -962,7 +962,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // rows and columns
     const rows = this._size[0]
     const columns = this._size[1]
-    const fastCallback = optimizeCallback(callback, me, 'forEach')
+    const fastCallback = optimizeCallback(callback, me, 'forEach').func
     // loop columns
     for (let j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
