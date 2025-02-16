@@ -753,6 +753,12 @@ describe('DenseMatrix', function () {
           ]
         ])
     })
+
+    it("should throw an error if it the typed function doesn't accept the type of argument", function () {
+      const matrix = new DenseMatrix([1, 'two'])
+      const callback = math.typed({ number: function (value) { return value + 1 } })
+      assert.throws(() => matrix.map(callback), /TypeError: Function map cannot apply callback arguments/)
+    })
   })
 
   describe('forEach', function () {
