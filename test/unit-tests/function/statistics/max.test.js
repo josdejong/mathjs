@@ -94,6 +94,7 @@ describe('max', function () {
     assert(isNaN((max(BigNumber(123), BigNumber(NaN), NaN))))
     assert(isNaN(max(unit(NaN, 's'), unit(123, 's')).value))
     assert(isNaN(max(unit(123, 's'), unit(NaN, 's')).value))
+    assert(isNaN(max(1, 3, fraction(2, 3), fraction(1, 2), NaN, BigNumber(1), BigNumber(NaN), 5, Infinity, -Infinity)))
   })
 
   it('should return the largest of mixed types', function () {

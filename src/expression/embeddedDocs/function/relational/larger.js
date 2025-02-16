@@ -6,7 +6,7 @@ export const largerDocs = {
     'larger(x, y)'
   ],
   description:
-      'Check if value x is larger than y. Returns true if x is larger than y, and false if not.',
+      'Check if value x is larger than y. Returns true if x is larger than y, and false if not. Comparing a value with NaN returns false.',
   examples: [
     '2 > 3',
     '5 > 2*2',

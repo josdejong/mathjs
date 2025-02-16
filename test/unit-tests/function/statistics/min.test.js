@@ -103,6 +103,7 @@ describe('min', function () {
     assert(isNaN((min(BigNumber(123), BigNumber(NaN), NaN))))
     assert(isNaN(min(unit(NaN, 's'), unit(123, 's')).value))
     assert(isNaN(min(unit(123, 's'), unit(NaN, 's')).value))
+    assert(isNaN(min(1, 3, fraction(2, 3), fraction(1, 2), NaN, BigNumber(1), BigNumber(NaN), 5, Infinity, -Infinity)))
   })
 
   it('should return the smallest of mixed types', function () {
