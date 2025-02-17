@@ -1,7 +1,8 @@
 import { isCollection, isMatrix } from './is.js'
 import { IndexError } from '../error/IndexError.js'
-import { arraySize } from './array.js'
+import { arraySize, findFirst as arrayFindFirst } from './array.js'
 import { _switch } from './switch.js'
+import { forEach as iterableForEach, map as iterableMap } from './iterable.js'
 
 /**
  * Test whether an array contains collections
@@ -18,6 +19,15 @@ export function containsCollections (array) {
   return false
 }
 
+export function findFirst (array) {
+  if (isMatrix(array)) {
+    const idx = array.size().map(() => 0)
+    return { value: array.get(idx), index: idx }
+  } else {
+    return arrayFindFirst(array)
+  }
+}
+
 /**
  * Recursively loop over all elements in a given multi dimensional array
  * and invoke the callback on each of the elements.
@@ -27,17 +37,9 @@ export function containsCollections (array) {
  */
 export function deepForEach (array, callback) {
   if (isMatrix(array)) {
-    array = array.valueOf()
-  }
-
-  for (let i = 0, ii = array.length; i < ii; i++) {
-    const value = array[i]
-
-    if (Array.isArray(value)) {
-      deepForEach(value, callback)
-    } else {
-      callback(value)
-    }
+    array.forEach(callback)
+  } else {
+    iterableForEach(array, callback, false, false, array)
   }
 }
 
@@ -54,13 +56,11 @@ export function deepForEach (array, callback) {
  * @return {Array | Matrix} res
  */
 export function deepMap (array, callback, skipZeros) {
-  if (array && (typeof array.map === 'function')) {
-    // TODO: replace array.map with a for loop to improve performance
-    return array.map(function (x) {
-      return deepMap(x, callback, skipZeros)
-    })
+  const callbackSkip = skipZeros ? x => x === 0 ? 0 : callback(x) : x => callback(x)
+  if (isMatrix(array)) {
+    return array.map(callbackSkip)
   } else {
-    return callback(array)
+    return iterableMap(array, callbackSkip, false, false, array)
   }
 }
 

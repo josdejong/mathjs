@@ -2,6 +2,7 @@ import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
 import {
   arraySize,
+  findFirst,
   flatten,
   generalize,
   identify,
@@ -57,6 +58,24 @@ describe('util.array', function () {
     it('should not validate whether all dimensions match', function () {
       assert.deepStrictEqual(arraySize([[1, 2], [3, 4, 5]]), [2, 2])
     })
+  })
+
+  describe('findFirst', function () {
+    it('should find first value and index of a 1D array', assert.deepStrictEqual(
+      findFirst([1]), { value: 1, index: [0] }
+    ))
+
+    it('should find first value and index of a 2D array', assert.deepStrictEqual(
+      findFirst([[1]]), { value: 1, index: [0, 0] }
+    ))
+
+    it('should find first value and index of a 3D array', assert.deepStrictEqual(
+      findFirst([[[1]]]), { value: 1, index: [0, 0, 0] }
+    ))
+
+    it('should find first value and index of an array with non homogeneous size', assert.deepStrictEqual(
+      findFirst([[[1]], 1]), { value: 1, index: [0, 0, 0] }
+    ))
   })
 
   describe('resize', function () {

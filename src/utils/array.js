@@ -4,6 +4,7 @@ import { format } from './string.js'
 import { DimensionError } from '../error/DimensionError.js'
 import { IndexError } from '../error/IndexError.js'
 import { deepStrictEqual } from './object.js'
+import { map as iterableMap, forEach as iterableForEach } from './iterable.js'
 
 /**
  * Calculate the size of a multi dimensional array.
@@ -21,6 +22,22 @@ export function arraySize (x) {
   }
 
   return s
+}
+
+/**
+ * Recursively finds the first non-array element in a nested array structure.
+ *
+ * @param {Array} x - The nested array to search through.
+ * @returns {{value: *, index: number[]}} An object containing the first non-array element found and its index path.
+ */
+export function findFirst (x) {
+  const idx = []
+
+  while (Array.isArray(x)) {
+    idx.push(0)
+    x = x[0]
+  }
+  return { value: x, index: idx }
 }
 
 /**
@@ -834,16 +851,21 @@ export function get (array, index) {
  * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
  * @returns {*} The new array with each element being the result of the callback function.
  */
-export function recurse (value, index, array, callback) {
-  if (Array.isArray(value)) {
-    return value.map(function (child, i) {
-      // we create a copy of the index array and append the new index value
-      return recurse(child, index.concat(i), array, callback)
-    })
-  } else {
-    // invoke the callback function with the right number of arguments
-    return callback(value, index, array)
-  }
+export function deepMap (array, callback, numberOfArguments) {
+  return iterableMap(array, callback, false, numberOfArguments !== 1, array)
+}
+
+/**
+ * Recursive function to map a multi-dimensional array.
+ *
+ * @param {*} value - The current value being processed in the array.
+ * @param {Array} index - The index of the current value being processed in the array.
+ * @param {Array} array - The array being processed.
+ * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
+ * @returns {*} The new array with each element being the result of the callback function.
+ */
+export function deepForEach (array, callback, numberOfArguments) {
+  iterableForEach(array, callback, false, numberOfArguments !== 1, array)
 }
 
 /**
