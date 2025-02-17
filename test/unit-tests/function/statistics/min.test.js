@@ -5,6 +5,7 @@ const Complex = math.Complex
 const DenseMatrix = math.DenseMatrix
 const fraction = math.fraction
 const min = math.min
+const unit = math.unit
 
 describe('min', function () {
   it('should return the min between several numbers', function () {
@@ -98,6 +99,11 @@ describe('min', function () {
     assert(isNaN(min([1, 3, NaN])))
     assert(isNaN(min([NaN, NaN, NaN])))
     assert(isNaN(min(NaN, NaN, NaN)))
+    assert(isNaN(min(BigNumber(NaN), BigNumber(123))))
+    assert(isNaN((min(BigNumber(123), BigNumber(NaN), NaN))))
+    assert(isNaN(min(unit(NaN, 's'), unit(123, 's')).value))
+    assert(isNaN(min(unit(123, 's'), unit(NaN, 's')).value))
+    assert(isNaN(min(1, 3, fraction(2, 3), fraction(1, 2), NaN, BigNumber(1), BigNumber(NaN), 5, Infinity, -Infinity)))
   })
 
   it('should return the smallest of mixed types', function () {
@@ -137,8 +143,8 @@ describe('min', function () {
     assert.throws(function () { min([[2, new Date(), 4]]) }, /TypeError: Cannot calculate min, unexpected type of argument/)
     assert.throws(function () { min([2, null, 4]) }, /TypeError: Cannot calculate min, unexpected type of argument/)
     assert.throws(function () { min([[2, 5], [4, null], [1, 7]], 0) }, /TypeError: Cannot calculate min, unexpected type of argument/)
-    assert.throws(function () { min('a', 'b') }, /Error: Cannot convert "b" to a number/)
-    assert.throws(function () { min('a') }, /SyntaxError: String "a" is not a valid number/)
+    assert.throws(function () { min('a', 'b') }, /Error: Cannot convert "a" to a number/)
+    assert.throws(function () { min('a') }, /Error: Cannot convert "a" to a number/)
   })
 
   it('should LaTeX min', function () {

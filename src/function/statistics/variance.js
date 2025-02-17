@@ -8,7 +8,7 @@ const DEFAULT_NORMALIZATION = 'unbiased'
 const name = 'variance'
 const dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'mapSlices', 'isNaN']
 
-export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract, multiply, divide, mapSlices, isNaN }) => {
+export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract, multiply, divide, mapSlices, isNaN: mathIsNaN }) => {
   /**
    * Compute the variance of a matrix or a  list with values.
    * In case of a multidimensional array or matrix, the variance over all
@@ -124,7 +124,7 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
       sum = sum === undefined ? multiply(diff, diff) : add(sum, multiply(diff, diff))
     })
 
-    if (isNaN(sum)) {
+    if (mathIsNaN(sum)) {
       return sum
     }
 
