@@ -14,15 +14,32 @@ export function optimizeCallback (callback, array, name) {
   if (typed.isTypedFunction(callback)) {
     const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
     const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
-    const hasSingleSignature = Object.keys(callback.signatures).length === 1
     const numberOfArguments = _findNumberOfArguments(callback, firstValue, firstIndex, array)
-    const fastCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback
+    let fastCallback
+    if (array.isMatrix && (array.dataType !== 'mixed' && array.dataType !== undefined)) {
+      const singleSignature = _findSingleSignatureWithArity(callback, numberOfArguments)
+      fastCallback = (singleSignature !== undefined) ? singleSignature : callback
+    } else {
+      fastCallback = callback
+    }
     if (numberOfArguments >= 1 && numberOfArguments <= 3) {
       return (...args) => _tryFunctionWithArgs(fastCallback, args.slice(0, numberOfArguments), name, callback.name)
     }
     return (...args) => _tryFunctionWithArgs(fastCallback, args, name, callback.name)
   }
   return callback
+}
+
+function _findSingleSignatureWithArity (callback, arity) {
+  const matchingFunctions = []
+  Object.entries(callback.signatures).forEach(([signature, func]) => {
+    if (signature.split(',').length === arity) {
+      matchingFunctions.push(func)
+    }
+  })
+  if (matchingFunctions.length === 1) {
+    return matchingFunctions[0]
+  }
 }
 
 function _findNumberOfArguments (callback, value, index, array) {
