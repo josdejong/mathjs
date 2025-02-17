@@ -5,8 +5,14 @@ import { approxEqual, approxDeepEqual } from '../../tools/approx.js'
 import { collectDocs } from '../../tools/docgenerator.js'
 import { create, all } from '../../lib/esm/index.js'
 
+// Really stupid mock of the numbers module, for the core import.js doc test:
+const numbers = {
+  fibonacci: x => 13
+}
+numbers.useItForLint = true
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const math = create(all)
+let math = create(all)
 const debug = process.argv.includes('--debug-docs')
 
 function extractExpectation (comment, optional = false) {
@@ -40,7 +46,8 @@ function extractValue (spec) {
   }
   const keywords = {
     number: 'Number(_)',
-    BigNumber: 'math.bignumber(_)',
+    Number: 'Number(_)',
+    BigNumber: "math.bignumber('_')",
     Fraction: 'math.fraction(_)',
     Complex: "math.complex('_')",
     Unit: "math.unit('_')",
@@ -217,9 +224,7 @@ const knownUndocumented = new Set([
   'off',
   'once',
   'emit',
-  'config',
   'expression',
-  'import',
   'create',
   'factory',
   'AccessorNode',
@@ -228,16 +233,12 @@ const knownUndocumented = new Set([
   'atomicMass',
   'avogadro',
   'BigNumber',
-  'bignumber',
   'BlockNode',
   'bohrMagneton',
   'bohrRadius',
   'boltzmann',
-  'boolean',
-  'chain',
   'Chain',
   'classicalElectronRadius',
-  'complex',
   'Complex',
   'ConditionalNode',
   'conductanceQuantum',
@@ -256,7 +257,6 @@ const knownUndocumented = new Set([
   'fermiCoupling',
   'fineStructure',
   'firstRadiation',
-  'fraction',
   'Fraction',
   'FunctionAssignmentNode',
   'FunctionNode',
@@ -267,7 +267,6 @@ const knownUndocumented = new Set([
   'Help',
   'i',
   'ImmutableDenseMatrix',
-  'index',
   'Index',
   'IndexNode',
   'Infinity',
@@ -280,7 +279,6 @@ const knownUndocumented = new Set([
   'loschmidt',
   'magneticConstant',
   'magneticFluxQuantum',
-  'matrix',
   'Matrix',
   'molarMass',
   'molarMassC12',
@@ -291,12 +289,9 @@ const knownUndocumented = new Set([
   'Node',
   'nuclearMagneton',
   'null',
-  'number',
-  'bigint',
   'ObjectNode',
   'OperatorNode',
   'ParenthesisNode',
-  'parse',
   'Parser',
   'phi',
   'pi',
@@ -321,19 +316,15 @@ const knownUndocumented = new Set([
   'sackurTetrode',
   'secondRadiation',
   'Spa',
-  'sparse',
   'SparseMatrix',
   'speedOfLight',
   'splitUnit',
   'stefanBoltzmann',
-  'string',
   'SymbolNode',
   'tau',
   'thomsonCrossSection',
   'true',
-  'typed',
   'Unit',
-  'unit',
   'E',
   'PI',
   'vacuumImpedance',
@@ -371,6 +362,7 @@ describe('Testing examples from (jsdoc) comments', function () {
     describe('category: ' + category, function () {
       for (const doc of byCategory[category]) {
         it('satisfies ' + doc.name, function () {
+          math = create(all)
           if (debug) {
             console.log(`      Testing ${doc.name} ...`) // can remove once no known failures; for now it clarifies "PLEASE RESOLVE"
           }
@@ -399,6 +391,7 @@ describe('Testing examples from (jsdoc) comments', function () {
                 expectation = extractExpectation(expectationFrom)
                 parts[1] = ''
               }
+              let clearAccumulation = false
               if (accumulation && !accumulation.includes('console.log(')) {
                 // note: we ignore examples that contain a console.log to keep the output of the tests clean
                 let value
@@ -406,10 +399,11 @@ describe('Testing examples from (jsdoc) comments', function () {
                   value = eval(accumulation) // eslint-disable-line no-eval
                 } catch (err) {
                   value = err.toString()
+                  clearAccumulation = true
                 }
                 maybeCheckExpectation(
                   doc.name, expectation, expectationFrom, value, accumulation)
-                accumulation = ''
+                if (clearAccumulation) accumulation = ''
               }
               expectationFrom = parts[1]
               expectation = extractExpectation(expectationFrom, 'requireSignal')
@@ -417,6 +411,8 @@ describe('Testing examples from (jsdoc) comments', function () {
               if (line !== '') {
                 if (accumulation) { accumulation += '\n' }
                 accumulation += line
+              } else {
+                accumulation = ''
               }
             }
           }

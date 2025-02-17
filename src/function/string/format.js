@@ -109,7 +109,6 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    function formatCurrency(value) {
    *      // return currency notation with two digits:
    *      return '$' + value.toFixed(2)
-   *
    *      // you could also use math.format inside the callback:
    *      // return '$' + math.format(value, {notation: 'fixed', precision: 2})
    *    }
@@ -118,6 +117,14 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * See also:
    *
    *    print
+   *
+   * History:
+   *
+   *    v0.4   Created
+   *    v0.7   Round to a consistent number of digits (rather than decimals)
+   *    v0.15  Added multiple number notations and configurable precision
+   *    v3     Added support for JSON objects
+   *    v9     Added binary, hexadecimal, and octal notations
    *
    * @param {*} value                               Value to be stringified
    * @param {Object | Function | number} [options]  Formatting options

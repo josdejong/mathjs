@@ -58,6 +58,11 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *    equal, unequal, smaller, smallerEq, larger, largerEq, compareNatural, compareText
    *
+   * History:
+   *
+   *    v0.19  Created
+   *    v4     Changed to compare strings by numerical value
+   *
    * @param  {number | BigNumber | bigint | Fraction | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | Fraction | Unit | string | Array | Matrix} y Second value to compare
    * @return {number | BigNumber | bigint | Fraction | Array | Matrix} Returns the result of the comparison:
