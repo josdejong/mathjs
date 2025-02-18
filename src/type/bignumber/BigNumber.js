@@ -1,4 +1,4 @@
-import Decimal from 'decimal.js'
+import Decimal from 'decimal.js/decimal.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'BigNumber'
