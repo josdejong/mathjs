@@ -1,6 +1,6 @@
 import { isCollection, isMatrix } from './is.js'
 import { IndexError } from '../error/IndexError.js'
-import { arraySize } from './array.js'
+import { arraySize, deepMap as arrayDeepMap, deepForEach as arrayDeepForEach } from './array.js'
 import { _switch } from './switch.js'
 
 /**
@@ -27,17 +27,9 @@ export function containsCollections (array) {
  */
 export function deepForEach (array, callback) {
   if (isMatrix(array)) {
-    array = array.valueOf()
-  }
-
-  for (let i = 0, ii = array.length; i < ii; i++) {
-    const value = array[i]
-
-    if (Array.isArray(value)) {
-      deepForEach(value, callback)
-    } else {
-      callback(value)
-    }
+    array.forEach(x => callback(x))
+  } else {
+    arrayDeepForEach(array, callback, true)
   }
 }
 
@@ -54,13 +46,10 @@ export function deepForEach (array, callback) {
  * @return {Array | Matrix} res
  */
 export function deepMap (array, callback, skipZeros) {
-  if (array && (typeof array.map === 'function')) {
-    // TODO: replace array.map with a for loop to improve performance
-    return array.map(function (x) {
-      return deepMap(x, callback, skipZeros)
-    })
+  if (isMatrix(array)) {
+    return array.map(x => callback(x))
   } else {
-    return callback(array)
+    return arrayDeepMap(array, callback, true)
   }
 }
 
