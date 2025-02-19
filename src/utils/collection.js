@@ -46,10 +46,18 @@ export function deepForEach (array, callback) {
  * @return {Array | Matrix} res
  */
 export function deepMap (array, callback, skipZeros) {
+  if (!skipZeros) {
+    if (isMatrix(array)) {
+      return array.map(x => callback(x))
+    } else {
+      return arrayDeepMap(array, callback, true)
+    }
+  }
+  const skipZerosCallback = (x) => x === 0 ? x : callback(x)
   if (isMatrix(array)) {
-    return array.map(x => callback(x))
+    return array.map(x => skipZerosCallback(x))
   } else {
-    return arrayDeepMap(array, callback, true)
+    return arrayDeepMap(array, skipZerosCallback, true)
   }
 }
 
