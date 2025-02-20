@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory.js'
 const name = 'mode'
 const dependencies = ['typed', 'isNaN', 'isNumeric']
 
-export const createMode = /* #__PURE__ */ factory(name, dependencies, ({ typed, isNaN, isNumeric }) => {
+export const createMode = /* #__PURE__ */ factory(name, dependencies, ({ typed, isNaN: mathIsNaN, isNumeric }) => {
   /**
   * Computes the mode of a set of numbers or a list with values(numbers or characters).
   * If there are multiple modes, it returns a list of those values.
@@ -57,7 +57,7 @@ export const createMode = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     for (let i = 0; i < values.length; i++) {
       const value = values[i]
 
-      if (isNumeric(value) && isNaN(value)) {
+      if (isNumeric(value) && mathIsNaN(value)) {
         throw new Error('Cannot calculate mode of an array containing NaN values')
       }
 
