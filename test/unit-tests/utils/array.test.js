@@ -195,7 +195,7 @@ describe('util.array', function () {
         [0, 0],
         [0, 0]
       ])
-      // TODO: would be nicer if this returns uninit everwhere and not undefined on some places
+      // TODO: would be nicer if this returns uninit everywhere and not undefined in some places
     })
 
     it('should resize a 2 dimensional array to 1 dimensional', function () {
@@ -604,7 +604,7 @@ describe('util.array', function () {
     })
 
     it('should throw an error when the broadcasting rules are not followed', function () {
-      assert.throws(function () { broadcastSizes([2, 2], [3, 2]) }, /Error: shape missmatch: missmatch is found in arg with shape.*/)
+      assert.throws(function () { broadcastSizes([2, 2], [3, 2]) }, /Error: shape mismatch: mismatch is found in arg with shape.*/)
     })
   })
 

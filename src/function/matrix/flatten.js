@@ -32,7 +32,7 @@ export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ type
     Matrix: function (x) {
       // Return the same matrix type as x (Dense or Sparse Matrix)
       // Return the same data type as x
-      return x.create(flattenArray(x.toArray()), x.datatype())
+      return x.create(flattenArray(x.valueOf()), x.datatype())
     }
   })
 })
