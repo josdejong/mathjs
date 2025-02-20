@@ -963,6 +963,14 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('sqrt(4)(1+2)(2)'), 12)
     })
 
+    it('should allow calling a function-valued expression', function () {
+      assert.deepStrictEqual(parseAndEval('(f()=7)()'), 7)
+      assert.deepStrictEqual(parseAndEval('(f(x)=x+3)(4,)'), 7)
+      assert.deepStrictEqual(parseAndEval('(f(x,y)=x+y)(4,3)'), 7)
+      assert.deepStrictEqual(parseAndEval('(f(x,y)=x+y)(4,3,)'), 7)
+      assert.deepStrictEqual(parseAndEval('(f(g)=(_(x)=g(x)+1))(floor,)(6.5,)'), 7)
+    })
+
     it('should invoke a function on an object with the right context', function () {
       approxEqual(parseAndEval('(2.54 cm).toNumeric("inch")'), 1)
       assert.deepStrictEqual(parseAndEval('bignumber(2).plus(3)'), math.bignumber(5))
