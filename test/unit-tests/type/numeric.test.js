@@ -85,6 +85,30 @@ describe('numeric', function () {
     assert.throws(function () { numeric(math.complex(2, 3), 'number') }, TypeError)
   })
 
+  it('should convert various types to bigint', function () {
+    const tobi = x => numeric(x, 'bigint')
+    const big = 12345678901234567890n
+    const bigs = big.toString()
+    assert.strictEqual(tobi('-5723'), -5723n)
+    assert.strictEqual(tobi(bigs), big)
+    assert.strictEqual(tobi(2e10), 20000000000n)
+    assert.strictEqual(tobi(big), big)
+    assert.strictEqual(tobi(math.bignumber(bigs)), big)
+    assert.strictEqual(
+      tobi(math.bignumber('123456789012345678901234567890')),
+      123456789012345678901234567890n)
+    assert.strictEqual(tobi(math.fraction(18, -3)), -6n)
+    assert.strictEqual(
+      tobi(math.fraction('1234567890123456789012345678901234567890/2')),
+      617283945061728394506172839450617283945n
+    )
+
+    assert.throws(() => tobi(math.bignumber(27.4)), RangeError)
+    assert.throws(
+      () => tobi(math.fraction('123456789012345678901234567890123456789/2')),
+      RangeError)
+  })
+
   it('should LaTeX numeric', function () {
     const expr1 = math.parse('numeric(3.14, "number")')
     const expr2 = math.parse('numeric("3.141592653589793238462643383279501", "BigNumber")')
