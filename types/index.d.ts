@@ -4006,6 +4006,7 @@ export const {
   coulombDependencies,
   deuteronMassDependencies,
   efimovFactorDependencies,
+  eigsDependencies,
   electricConstantDependencies,
   electronMassDependencies,
   elementaryChargeDependencies,
