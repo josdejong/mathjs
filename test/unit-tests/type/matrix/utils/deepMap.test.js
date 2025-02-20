@@ -53,9 +53,11 @@ describe('deepMap', function () {
     assert.deepStrictEqual(result, [math.complex(4, 6), [math.complex(8, 10)]])
   })
 
-  it("should throw an error if it the typed function doesn't accepth the type of argument", function () {
+  it("should throw an error if it the typed function doesn't accept the type of argument", function () {
     const array = [1, 'two']
-    const callback = math.typed({ number: function (value) { return value + 1 } })
+    const callback = math.typed('callback', {
+      number: function (value) { return value + 1 }
+    })
     assert.throws(() => deepMap(array, callback), /Error: Cannot convert "two" to a number/)
   })
 
