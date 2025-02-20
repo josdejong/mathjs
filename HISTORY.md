@@ -7,6 +7,8 @@
   Thanks @dvd101x.
 - Fix: #3390 issue in callback optimization and add error handling for invalid
   argument types (#3394). Thanks @dvd101x.
+- Fix: #3356 add missing eigsDependencies export to TypeScript definitions 
+  (#3397). Thanks @porst17.
 
 # 2024-02-05, 14.2.1
 
