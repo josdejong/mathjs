@@ -538,6 +538,10 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     const index = Array(s.length)
     const maxDepth = s.length - 1
 
+    if(maxDepth < 0) {
+      return
+    }
+
     if (maxDepth === 0) {
       const thisSize = s[0]
       for (let i = 0; i < thisSize; i++) {
