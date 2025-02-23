@@ -535,12 +535,21 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype._forEach = function (callback) {
     const me = this
     const s = me.size()
-    const index = Array(s.length)
     const maxDepth = s.length - 1
 
     if (maxDepth < 0) {
       return
     }
+
+    if (maxDepth === 0) {
+      const thisSize = s[0]
+      for (let i = 0; i < thisSize; i++) {
+        callback(me._data, i, [i])
+      }
+      return
+    }
+
+    const index = Array(s.length)
 
     function recurse (data, depth) {
       const thisSize = s[depth]
@@ -573,7 +582,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.map = function (callback) {
     const me = this
     const result = new DenseMatrix(me)
-    const fastCallback = optimizeCallback(callback, me, 'map')
+    const fastCallback = optimizeCallback(callback, me._data, 'map')
 
     result._forEach(function (arr, i, index) {
       arr[i] = fastCallback(arr[i], index, me)
@@ -591,7 +600,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    */
   DenseMatrix.prototype.forEach = function (callback) {
     const me = this
-    const fastCallback = optimizeCallback(callback, me, 'map')
+    const fastCallback = optimizeCallback(callback, me._data, 'map')
     me._forEach(function (arr, i, index) {
       fastCallback(arr[i], index, me)
     })
