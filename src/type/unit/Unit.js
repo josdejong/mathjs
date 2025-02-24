@@ -805,6 +805,41 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+ * Converts to the most appropriate display unit. Without preferred units, finds a prefix for values between 1-1000.
+ * With preferred units, converts to the unit closest to value 1.
+ * @memberof Unit
+ * @param {string[]} [preferredUnits=[]] - Optional preferred target units
+ * @returns {Unit} Unit with optimized prefix/unit
+ */
+  Unit.prototype.toBest = function (preferredUnits = []) {
+    if (preferredUnits.length === 0) {
+      const baseUnit = this.units[0].unit.name
+      let bestMatch = new Unit(this.value, baseUnit)
+      Object.values(Unit.PREFIXES).forEach(prefixGroup => {
+        Object.keys(prefixGroup).forEach(prefix => {
+          const testUnit = prefix + baseUnit
+          if (Unit.isValuelessUnit(testUnit)) {
+            const converted = this.to(testUnit)
+            if (Math.abs(converted.value) >= 1 && Math.abs(converted.value) < 1000) {
+              bestMatch = converted
+            }
+          }
+        })
+      })
+      return bestMatch
+    }
+    return preferredUnits.reduce((best, unit) => {
+      if (!this.equalBase(Unit.parse(unit))) return best
+      const converted = this.to(unit)
+      const value = Math.abs(converted.value)
+      return (value >= 1 && value < 1000 &&
+              (!best || Math.abs(value - 1) < Math.abs(Math.abs(best.value) - 1)))
+        ? converted
+        : best
+    }, this.clone())
+  }
+
+  /**
    * Convert the unit to a specific unit name.
    * @memberof Unit
    * @param {string | Unit} valuelessUnit   A unit without value. Can have prefix, like "cm"
