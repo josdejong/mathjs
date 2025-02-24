@@ -1673,6 +1673,10 @@ Units examples
   // units can be converted to a specific type, or to a number
   b.to('cm')
   math.to(b, 'inch')
+  b.toBest()
+  b.toBest(['m'])
+  math.unit('1000 m').toBest()
+  math.unit('1000 m').toBest(['km'])
   b.toNumber('cm')
   math.number(b, 'cm')
 
