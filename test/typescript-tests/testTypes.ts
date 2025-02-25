@@ -1525,8 +1525,9 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   const efg: MathArray = [1, 2, 3, 4, 5]
   const fgh: MathArray = [2, 3, 4, 5, 6]
 
-  const ijk: number[] = [1, 2, 3, 4]
-  const lmn: number[][] = [[1], [2], [3], [4]]
+  const ghi: number[] = [1, 2, 3, 4]
+  const hij: number[][] = [[1], [2], [3], [4]]
+  const ijk: number[][] = [[1, 2, 3, 4]]
 
   const Mbcd = math.matrix(bcd)
   const Mabc = math.matrix(abc)
@@ -1542,7 +1543,7 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   // 1D JS Array
   const r3 = math.multiply(abc, bcd) // 1D * 2D => Array
   const r3a = math.multiply(efg, fgh) // 1D * 1D => Scalar
-  const r3b = math.multiply(ijk, ijk) // 1D * 1D => Scalar
+  const r3b = math.multiply(ghi, ghi) // 1D * 1D => Scalar
 
   const _r31 = r3[1]
   assert.strictEqual(typeof r3a, 'number')
@@ -1557,7 +1558,7 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
     const _r1211 = r12[1][1]
   }
 
-  const r12a = math.multiply(lmn, lmn)
+  const r12a = math.multiply(hij, ijk)
 
   const _r12a00 = r12a[0][0]
 
