@@ -475,28 +475,43 @@ export function flatten (array, maxDepth) {
   }
   const flat = []
 
-  if (maxDepth && maxDepth >= 0) {
-    flattenWithDepth(array, maxDepth)
+  if (maxDepth && maxDepth > 0) {
+    if (maxDepth === 0) {
+      return array
+    } else if (maxDepth >= 1) {
+      flattenWithDepth(array, maxDepth)
+    }
   } else {
-    array.forEach(function callback (value) {
-      if (Array.isArray(value)) {
-        value.forEach(callback) // traverse through sub-arrays recursively
-      } else {
-        flat.push(value)
-      }
-    })
+    _flatten(array)
   }
 
   return flat
+
+  function _flatten (value) {
+    if (Array.isArray(value)) {
+      const N = value.length
+      for (let i = 0; i < N; i++) {
+        _flatten(value[i])
+      }
+    } else {
+      flat.push(value)
+    }
+  }
+
   function flattenWithDepth (array, maxDepth) {
     recursiveFlattenWithDepth(array, 0)
     // this function assumbes an array with a validated size (like a matrix)
 
     function recursiveFlattenWithDepth (array, depth) {
+      const N = array.length
       if (depth < maxDepth) {
-        array.forEach((child) => recursiveFlattenWithDepth(child, depth + 1))
+        for (let i = 0; i < N; i++) {
+          recursiveFlattenWithDepth(array[i], depth + 1)
+        }
       } else {
-        array.forEach(child => flat.push(child))
+        for (let i = 0; i < N; i++) {
+          flat.push(array[i])
+        }
       }
     }
   }
