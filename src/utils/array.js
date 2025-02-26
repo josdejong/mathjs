@@ -850,17 +850,25 @@ export function deepMap (array, callback, skipIndex = false) {
 
   function recursiveMapWithIndex (value, depth) {
     if (Array.isArray(value)) {
-      return value.map((child, i) => {
+      const N = value.length
+      const result = Array(N)
+      for (let i = 0; i < N; i++) {
         index[depth] = i
-        return recursiveMapWithIndex(child, depth + 1)
-      })
+        result[i] = recursiveMapWithIndex(value[i], depth + 1)
+      }
+      return result
     } else {
       return callback(value, index.slice(0, depth), array)
     }
   }
   function recursiveMap (value) {
     if (Array.isArray(value)) {
-      return value.map(recursiveMap)
+      const N = value.length
+      const result = Array(N)
+      for (let i = 0; i < N; i++) {
+        result[i] = recursiveMap(value[i])
+      }
+      return result
     } else {
       return callback(value)
     }
@@ -891,17 +899,21 @@ export function deepForEach (array, callback, skipIndex = false) {
 
   function recursiveForEachWithIndex (value, depth) {
     if (Array.isArray(value)) {
-      value.forEach((child, i) => {
+      const N = value.length
+      for (let i = 0; i < N; i++) {
         index[depth] = i
-        recursiveForEachWithIndex(child, depth + 1)
-      })
+        recursiveForEachWithIndex(value[i], depth + 1)
+      }
     } else {
       callback(value, index.slice(0, depth), array)
     }
   }
   function recursiveForEach (value) {
     if (Array.isArray(value)) {
-      value.forEach(recursiveForEach)
+      const N = value.length
+      for (let i = 0; i < N; i++) {
+        recursiveForEach(value[i])
+      }
     } else {
       callback(value)
     }
