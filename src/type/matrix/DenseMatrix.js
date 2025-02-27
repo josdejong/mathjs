@@ -533,59 +533,40 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    *                              array, and the Matrix being traversed.
    */
   DenseMatrix.prototype._forEach = function (callback) {
-    // matrix instance
     const me = this
     const s = me.size()
+    const maxDepth = s.length - 1
 
-    // if there is only one dimension, just loop through it
-    if (s.length === 1) {
-      for (let i = 0; i < s[0]; i++) {
+    if (maxDepth < 0) {
+      return
+    }
+
+    if (maxDepth === 0) {
+      const thisSize = s[0]
+      for (let i = 0; i < thisSize; i++) {
         callback(me._data, i, [i])
       }
       return
     }
 
-    // keep track of the current index permutation
-    const index = Array(s.length).fill(0)
+    const index = Array(s.length)
 
-    // store a reference of each dimension of the matrix for faster access
-    const data = Array(s.length - 1)
-    const last = data.length - 1
-
-    data[0] = me._data[0]
-    for (let i = 0; i < last; i++) {
-      data[i + 1] = data[i][0]
-    }
-
-    index[last] = -1
-    while (true) {
-      let i
-      for (i = last; i >= 0; i--) {
-        // march index to the next permutation
-        index[i]++
-        if (index[i] === s[i]) {
-          index[i] = 0
-          continue
+    function recurse (data, depth) {
+      const thisSize = s[depth]
+      if (depth < maxDepth) {
+        for (let i = 0; i < thisSize; i++) {
+          index[depth] = i
+          recurse(data[i], depth + 1)
         }
-
-        // update references to matrix dimensions
-        data[i] = i === 0 ? me._data[index[i]] : data[i - 1][index[i]]
-        for (let j = i; j < last; j++) {
-          data[j + 1] = data[j][0]
+      } else {
+        for (let i = 0; i < thisSize; i++) {
+          index[depth] = i
+          callback(data, i, index.slice())
         }
-
-        // loop through the last dimension and map each value
-        for (let j = 0; j < s[data.length]; j++) {
-          index[data.length] = j
-          callback(data[last], j, index.slice(0))
-        }
-        break
-      }
-
-      if (i === -1) {
-        break
       }
     }
+
+    recurse(me._data, 0)
   }
 
   /**
