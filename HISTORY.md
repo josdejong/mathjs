@@ -9,6 +9,8 @@
   argument types (#3394). Thanks @dvd101x.
 - Fix: #3356 add missing eigsDependencies export to TypeScript definitions 
   (#3397). Thanks @porst17.
+- Fix: #3406 infer the correct type for multi-dimensional arrays in function 
+  `multiply` (#3408). Thanks @orelbn.
 
 # 2024-02-05, 14.2.1
 
