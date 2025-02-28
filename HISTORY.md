@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 14.2.1
+# 2024-02-28, 14.3.0
 
 - Feat: improved performance of function `flatten` (#3354). Thanks @dvd101x.
 - Feat: improved performance of `DenseMatrix` Symbol.iterator (#3395). 
