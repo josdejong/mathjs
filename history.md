@@ -4,6 +4,22 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20240228-1430">2024-02-28, 14.3.0 <a href="#20240228-1430" title="Permalink">#</a></h1>
+
+- Feat: improved performance of function `flatten` (<a href="https://github.com/josdejong/mathjs/issues/3354">#3354</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: improved performance of `DenseMatrix` Symbol.iterator (<a href="https://github.com/josdejong/mathjs/issues/3395">#3395</a>). 
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: improved performance of functions `map` and `forEach` (<a href="https://github.com/josdejong/mathjs/issues/3399">#3399</a>).
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3390">#3390</a> issue in callback optimization and add error handling for invalid
+  argument types (<a href="https://github.com/josdejong/mathjs/issues/3394">#3394</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3356">#3356</a> add missing eigsDependencies export to TypeScript definitions 
+  (<a href="https://github.com/josdejong/mathjs/issues/3397">#3397</a>). Thanks <a href="https://github.com/porst17">@porst17</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3406">#3406</a> infer the correct type for multi-dimensional arrays in function 
+  `multiply` (<a href="https://github.com/josdejong/mathjs/issues/3408">#3408</a>). Thanks <a href="https://github.com/orelbn">@orelbn</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3387">#3387</a> use utility `math.isNaN` for consistent `max` and `min` results 
+  (<a href="https://github.com/josdejong/mathjs/issues/3389">#3389</a>). Thanks <a href="https://github.com/orelbn">@orelbn</a>.
+
 <h1 id="20240205-1421">2024-02-05, 14.2.1 <a href="#20240205-1421" title="Permalink">#</a></h1>
 
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3377">#3377</a> remove redundant dependency `@lambdatest/node-tunnel`.
