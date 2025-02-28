@@ -6,7 +6,7 @@ export const maxDocs = {
     'max(A)',
     'max(A, dimension)'
   ],
-  description: 'Compute the maximum value of a list of values.',
+  description: 'Compute the maximum value of a list of values. If any NaN values are found, the function yields the last NaN in the input.',
   examples: [
     'max(2, 3, 4, 1)',
     'max([2, 3, 4, 1])',

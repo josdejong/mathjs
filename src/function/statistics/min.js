@@ -4,9 +4,9 @@ import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'min'
-const dependencies = ['typed', 'config', 'numeric', 'smaller']
+const dependencies = ['typed', 'config', 'numeric', 'smaller', 'isNaN']
 
-export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, smaller }) => {
+export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, smaller, isNaN: mathIsNaN }) => {
   /**
    * Compute the minimum value of a matrix or a  list of values.
    * In case of a multidimensional array, the minimum of the flattened array
@@ -83,8 +83,8 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     deepForEach(array, function (value) {
       try {
-        if (typeof value === 'number' && isNaN(value)) {
-          min = NaN
+        if (mathIsNaN(value)) {
+          min = value
         } else if (min === undefined || smaller(value, min)) {
           min = value
         }
