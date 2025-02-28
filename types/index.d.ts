@@ -3484,6 +3484,15 @@ export interface MathJsInstance extends MathJsFactory {
    */
   to(x: Unit | MathCollection, unit: Unit | string): Unit | MathCollection
 
+  /**
+   * Converts to the most appropriate display unit. Without preferred units, finds a prefix for values between 1-1000.
+   * With preferred units, converts to the unit closest to value 1.
+   * @param preferredUnits - Optional preferred target units
+   * @returns Unit with optimized prefix/unit
+   */
+  toBest(): Unit
+  toBest(preferredUnits: string[]): Unit
+
   /*************************************************************************
    * Utils
    ************************************************************************/
@@ -3830,6 +3839,7 @@ export const {
   formatDependencies,
   printDependencies,
   toDependencies,
+  toBestDependencies,
   isPrimeDependencies,
   numericDependencies,
   divideScalarDependencies,
@@ -4173,6 +4183,8 @@ export interface Unit {
   pow(unit: Unit): Unit
   abs(unit: Unit): Unit
   to(unit: string): Unit
+  toBest(): Unit
+  toBest(preferredUnits: string[]): Unit
   toNumber(unit?: string): number
   toNumeric(unit?: string): number | Fraction | BigNumber
   toSI(): Unit
@@ -6975,6 +6987,14 @@ export interface MathJsChain<TValue> {
     unit: Unit | string
   ): MathJsChain<Unit | MathCollection>
 
+  /**
+   * Converts to the most appropriate display unit. Without preferred units, finds a prefix for values between 1-1000.
+   * With preferred units, converts to the unit closest to value 1.
+   * @param preferredUnits - Optional preferred target units
+   */
+  toBest(this: MathJsChain<Unit>): MathJsChain<Unit>
+  toBest(this: MathJsChain<Unit>, preferredUnits: string[]): MathJsChain<Unit>
+
   /*************************************************************************
    * Utils functions
    ************************************************************************/
@@ -7357,6 +7377,7 @@ export const {
 
   // unit functions
   to,
+  toBest,
 
   // util functions
   isNumber,
