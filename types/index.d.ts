@@ -1456,7 +1456,7 @@ export interface MathJsInstance extends MathJsFactory {
 
   multiply<T extends MathArray>(x: T, y: T[]): T
   multiply<T extends MathArray>(x: T[], y: T): T
-  multiply<T extends MathArray>(x: T[], y: T[]): T
+  multiply<T extends MathArray>(x: T[], y: T[]): T[]
   multiply<T extends MathArray>(x: T, y: T): MathScalarType
   multiply(x: Unit, y: Unit): Unit
   multiply(x: number, y: number): number
@@ -4006,6 +4006,7 @@ export const {
   coulombDependencies,
   deuteronMassDependencies,
   efimovFactorDependencies,
+  eigsDependencies,
   electricConstantDependencies,
   electronMassDependencies,
   elementaryChargeDependencies,

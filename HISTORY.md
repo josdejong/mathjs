@@ -3,6 +3,12 @@
 # unpublished changes since 14.2.1
 
 - Feat: improved performance of function `flatten` (#3354). Thanks @dvd101x.
+- Feat: improved performance of `DenseMatrix` Symbol.iterator (#3395). 
+  Thanks @dvd101x.
+- Fix: #3390 issue in callback optimization and add error handling for invalid
+  argument types (#3394). Thanks @dvd101x.
+- Fix: #3356 add missing eigsDependencies export to TypeScript definitions 
+  (#3397). Thanks @porst17.
 
 # 2024-02-05, 14.2.1
 
