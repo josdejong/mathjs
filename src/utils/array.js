@@ -465,24 +465,56 @@ function _unsqueeze (array, dims, dim) {
  * Flatten a multi dimensional array, put all elements in a one dimensional
  * array
  * @param {Array} array   A multi dimensional array
+ * @param {number} maxDepth Optional. The max depth of the validated array
  * @return {Array}        The flattened array (1 dimensional)
  */
-export function flatten (array) {
+export function flatten (array, maxDepth) {
   if (!Array.isArray(array)) {
     // if not an array, return as is
     return array
   }
   const flat = []
 
-  array.forEach(function callback (value) {
+  if (maxDepth && maxDepth > 0) {
+    if (maxDepth === 0) {
+      return array
+    } else if (maxDepth >= 1) {
+      flattenWithDepth(array, maxDepth)
+    }
+  } else {
+    _flatten(array)
+  }
+
+  return flat
+
+  function _flatten (value) {
     if (Array.isArray(value)) {
-      value.forEach(callback) // traverse through sub-arrays recursively
+      const N = value.length
+      for (let i = 0; i < N; i++) {
+        _flatten(value[i])
+      }
     } else {
       flat.push(value)
     }
-  })
+  }
 
-  return flat
+  function flattenWithDepth (array, maxDepth) {
+    recursiveFlattenWithDepth(array, 0)
+    // this function assumbes an array with a validated size (like a matrix)
+
+    function recursiveFlattenWithDepth (array, depth) {
+      const N = array.length
+      if (depth < maxDepth) {
+        for (let i = 0; i < N; i++) {
+          recursiveFlattenWithDepth(array[i], depth + 1)
+        }
+      } else {
+        for (let i = 0; i < N; i++) {
+          flat.push(array[i])
+        }
+      }
+    }
+  }
 }
 
 /**
