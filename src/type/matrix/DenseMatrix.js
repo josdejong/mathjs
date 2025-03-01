@@ -526,11 +526,44 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   }
 
   /**
+ * Applies a callback function to each element of the matrix without requiring the index.
+ * @memberof DenseMatrix
+ * @param {Function} callback   The callback function is invoked with two parameters:
+ *                              the array containing the element and the index of the
+ *                              element within that array (as an integer).
+ */
+  DenseMatrix.prototype._forEachUnary = function (callback) {
+    const me = this
+    const s = me.size()
+    const maxDepth = s.length - 1
+
+    if (maxDepth < 0) {
+      return
+    }
+
+    function recurse (data, depth) {
+      const thisSize = s[depth]
+      if (depth < maxDepth) {
+        for (let i = 0; i < thisSize; i++) {
+          recurse(data[i], depth + 1)
+        }
+      } else {
+        for (let i = 0; i < thisSize; i++) {
+          callback(data, i)
+        }
+      }
+    }
+
+    recurse(me._data, 0)
+  }
+
+  /**
    * Applies a callback function to a reference to each element of the matrix
    * @memberof DenseMatrix
    * @param {Function} callback   The callback function is invoked with three
-   *                              parameters: an array, an integer index to that
-   *                              array, and the Matrix being traversed.
+   *                              parameters: the array containing the element,
+   *                              the index of the element within that array (as an integer),
+   *                              and a copy of the current index (as an array of integers).
    */
   DenseMatrix.prototype._forEach = function (callback) {
     const me = this
@@ -576,17 +609,25 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @param {Function} callback   The callback function is invoked with three
    *                              parameters: the value of the element, the index
    *                              of the element, and the Matrix being traversed.
+   * @param {boolean} skipZeros   If true, the callback function is invoked only for non-zero entries
+   * @param {boolean} isUnary     If true, the callback function is invoked with one parameter
    *
    * @return {DenseMatrix} matrix
    */
-  DenseMatrix.prototype.map = function (callback) {
+  DenseMatrix.prototype.map = function (callback, skipZeros = false, isUnary = false) {
     const me = this
     const result = new DenseMatrix(me)
-    const fastCallback = optimizeCallback(callback, me._data, 'map')
+    const fastCallback = optimizeCallback(callback, me._data, 'map', isUnary)
 
-    result._forEach(function (arr, i, index) {
-      arr[i] = fastCallback(arr[i], index, me)
-    })
+    if (isUnary) {
+      result._forEachUnary(function (arr, i) {
+        arr[i] = fastCallback(arr[i])
+      })
+    } else {
+      result._forEach(function (arr, i, index) {
+        arr[i] = fastCallback(arr[i], index, me)
+      })
+    }
 
     return result
   }
@@ -597,13 +638,21 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @param {Function} callback   The callback function is invoked with three
    *                              parameters: the value of the element, the index
    *                              of the element, and the Matrix being traversed.
+   * @param {boolean} skipZeros   If true, the callback function is invoked only for non-zero entries
+   * @param {boolean} isUnary     If true, the callback function is invoked with one parameter
    */
-  DenseMatrix.prototype.forEach = function (callback) {
+  DenseMatrix.prototype.forEach = function (callback, skipZeros = false, isUnary = false) {
     const me = this
-    const fastCallback = optimizeCallback(callback, me._data, 'map')
-    me._forEach(function (arr, i, index) {
-      fastCallback(arr[i], index, me)
-    })
+    const fastCallback = optimizeCallback(callback, me._data, 'map', isUnary)
+    if (isUnary) {
+      me._forEachUnary(function (arr, i) {
+        fastCallback(arr[i])
+      })
+    } else {
+      me._forEach(function (arr, i, index) {
+        fastCallback(arr[i], index, me)
+      })
+    }
   }
 
   /**
