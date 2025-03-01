@@ -8,13 +8,19 @@ import { typeOf as _typeOf } from './is.js'
  * @param {Function} callback The original callback function to simplify.
  * @param {Array|Matrix} array The array that will be used with the callback function.
  * @param {string} name The name of the function that is using the callback.
+ * @param {boolean} [isUnary=false] If true, the callback function is unary and will be optimized as such.
  * @returns {Function} Returns a simplified version of the callback function.
  */
-export function optimizeCallback (callback, array, name) {
+export function optimizeCallback (callback, array, name, isUnary = false) {
   if (typed.isTypedFunction(callback)) {
-    const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
-    const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
-    const numberOfArguments = _findNumberOfArguments(callback, firstValue, firstIndex, array)
+    let numberOfArguments
+    if (isUnary) {
+      numberOfArguments = 1
+    } else {
+      const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
+      const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
+      numberOfArguments = _findNumberOfArguments(callback, firstValue, firstIndex, array)
+    }
     let fastCallback
     if (array.isMatrix && (array.dataType !== 'mixed' && array.dataType !== undefined)) {
       const singleSignature = _findSingleSignatureWithArity(callback, numberOfArguments)
