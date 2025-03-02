@@ -31,11 +31,19 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    const a = math.matrix([[1, 2], [3, 4]])
    *    a.subset(math.index(0, 1))             // returns 2
-   *    a.subset(math.index(0, [false, true])) // returns 2
+   *    a.subset(math.index(0, [false, true])) // returns [2]
    *
    * See also:
    *
    *    bignumber, boolean, complex, matrix, number, string, unit
+   *
+   * History:
+   *
+   *    v?      Created
+   *    v2      Dropped support for `[start, end, step]` arguments in favor
+   *            of lists of arbitrary values; added support for Range
+   *            objects.
+   *    v11.10  Added support for arrays of booleans as indices.
    *
    * @param {...*} ranges   Zero or more ranges or numbers.
    * @return {Index}        Returns the created index

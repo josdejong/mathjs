@@ -30,12 +30,20 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *     math.fraction(1, 3)              // returns Fraction 1/3
    *     math.fraction('2/3')             // returns Fraction 2/3
    *     math.fraction({n: 2, d: 3})      // returns Fraction 2/3
-   *     math.fraction([0.2, 0.25, 1.25]) // returns Array [1/5, 1/4, 5/4]
+   *     math.fraction([0.2, 0.25, 1.25]) // returns Array [fraction(1,5), fraction(1,4), fraction(5,4)]
    *     math.fraction(4, 5.1)            // throws Error: Parameters must be integer
    *
    * See also:
    *
-   *    bignumber, number, string, unit
+   *    bigint, bignumber, number, string, unit
+   *
+   * History:
+   *
+   *    v2     Created
+   *    v3     Added conversion from BigNumber
+   *    v11.8  Added conversion from Unit
+   *    v13    Added conversion from bigint
+   *    v14    Move to bigint-based fraction.js@5; construct from two bigints
    *
    * @param {number | string | Fraction | BigNumber | bigint | Unit | Array | Matrix} [args]
    *            Arguments specifying the value, or numerator and denominator of

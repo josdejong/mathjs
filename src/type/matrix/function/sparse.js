@@ -24,7 +24,7 @@ export const createSparse = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    m.size()                        // Array [2, 2]
    *    m.resize([3, 2], 5)
    *    m.valueOf()                     // Array [[1, 2], [3, 4], [5, 5]]
-   *    m.get([1, 0])                    // number 3
+   *    m.get([1, 0])                   // number 3
    *    let v = math.sparse([0, 0, 1])
    *    v.size()                        // Array [3, 1]
    *    v.get([2, 0])                   // number 1
@@ -32,6 +32,10 @@ export const createSparse = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * See also:
    *
    *    bignumber, boolean, complex, index, number, string, unit, matrix
+   *
+   * History:
+   *
+   *    v1.5  Created
    *
    * @param {Array | Matrix} [data]    A two dimensional array
    *
