@@ -247,8 +247,9 @@ describe('security', function () {
 
   it('should not allow replacing validateSafeMethod with a local variant', function () {
     assert.throws(function () {
-      math.evaluate("evaluate(\"f(validateSafeMethod)=cos.constructor(\\\"return evaluate\\\")()\")(evaluate(\"f(x,y)=0\"))(\"console.log('hacked...')\")")
-    }, /SyntaxError: Value expected/)
+      const hack = "evaluate(\"f(validateSafeMethod)=cos.constructor(\\\"return evaluate\\\")()\")(evaluate(\"f(x,y)=0\"),)(\"console.log('hacked...')\",)"
+      math.evaluate(hack)
+    }, /Error: No access .*constructor/)
   })
 
   it('should not allow abusing toString', function () {
@@ -259,14 +260,16 @@ describe('security', function () {
 
   it('should not allow creating a bad FunctionAssignmentNode', function () {
     assert.throws(function () {
-      math.evaluate("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:evaluate(\"f(a)=\\\"\\\"\")},params:{\"forEach\":evaluate(\"f(x)=1\"),\"join\":evaluate(\"f(x)=\\\"){return evaluate;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(evaluate(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().evaluate()()()(\"console.log('hacked...')\")")
-    }, /SyntaxError: Value expected/)
+      math.evaluate("badNode={isNode:true,constructor:{prototype:{isNode:true}},type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:evaluate(\"f(a)=\\\"\\\"\")},params:{\"forEach\":evaluate(\"f(x)=1\"),\"join\":evaluate(\"f(x)=\\\"){return evaluate;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(evaluate(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().evaluate()()()(\"console.log('hacked...')\")")
+    }, /Error: No access to property "isNode"/)
   })
 
+  // FIXME: Appears to be identical to prior test; is it supposed to be
+  //        testing something else?
   it('should not allow creating a bad OperatorNode (1)', function () {
     assert.throws(function () {
-      math.evaluate("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:evaluate(\"f(a)=\\\"\\\"\")},params:{\"forEach\":evaluate(\"f(x)=1\"),\"join\":evaluate(\"f(x)=\\\"){return evaluate;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(evaluate(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().evaluate()()()(\"console.log('hacked...')\")")
-    }, /SyntaxError: Value expected/)
+      math.evaluate("badNode={isNode:true,constructor:{prototype:{isNode:true}},type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:evaluate(\"f(a)=\\\"\\\"\")},params:{\"forEach\":evaluate(\"f(x)=1\"),\"join\":evaluate(\"f(x)=\\\"){return evaluate;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(evaluate(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().evaluate()()()(\"console.log('hacked...')\")")
+    }, /Error: No access to property "isNode"/)
   })
 
   it('should not allow creating a bad OperatorNode (2)', function () {
@@ -316,7 +319,7 @@ describe('security', function () {
           'evilMath=x.create().done();' +
           'evilMath.import({"_compile":f(a,b,c)="evaluate","isNode":f()=true}); ' +
           "parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().evaluate()(\"console.log('hacked...')\")")
-    }, /SyntaxError: Value expected/)
+    }, /Error: Undefined symbol Chain/)
   })
 
   it('should not allow passing a function name containg bad contents', function () {
