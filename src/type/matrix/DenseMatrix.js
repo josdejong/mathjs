@@ -619,13 +619,13 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     const result = new DenseMatrix(me)
     const fastCallback = optimizeCallback(callback, me._data, 'map', isUnary)
 
-    if (isUnary) {
+    if (isUnary || fastCallback.isUnary) {
       result._forEachUnary(function (arr, i) {
-        arr[i] = fastCallback(arr[i])
+        arr[i] = fastCallback.fn(arr[i])
       })
     } else {
       result._forEach(function (arr, i, index) {
-        arr[i] = fastCallback(arr[i], index, me)
+        arr[i] = fastCallback.fn(arr[i], index, me)
       })
     }
 
@@ -644,13 +644,13 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.forEach = function (callback, skipZeros = false, isUnary = false) {
     const me = this
     const fastCallback = optimizeCallback(callback, me._data, 'map', isUnary)
-    if (isUnary) {
+    if (isUnary || fastCallback.isUnary) {
       me._forEachUnary(function (arr, i) {
-        fastCallback(arr[i])
+        fastCallback.fn(arr[i])
       })
     } else {
       me._forEach(function (arr, i, index) {
-        fastCallback(arr[i], index, me)
+        fastCallback.fn(arr[i], index, me)
       })
     }
   }
