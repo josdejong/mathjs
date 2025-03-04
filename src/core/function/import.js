@@ -1,4 +1,4 @@
-import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is.js'
+import { isBigNumber, isComplex, isFraction, isMatrix, isObject, isUnit } from '../../utils/is.js'
 import { isFactory, stripOptionalNotation } from '../../utils/factory.js'
 import { hasOwnProperty, lazy } from '../../utils/object.js'
 import { ArgumentsError } from '../../error/ArgumentsError.js'
@@ -72,7 +72,7 @@ export function importFactory (typed, load, math, importedFactories) {
     function flattenImports (flatValues, value, name) {
       if (Array.isArray(value)) {
         value.forEach(item => flattenImports(flatValues, item))
-      } else if (typeof value === 'object') {
+      } else if (isObject(value) || isModule(value)) {
         for (const name in value) {
           if (hasOwnProperty(value, name)) {
             flattenImports(flatValues, value[name], name)
@@ -354,6 +354,10 @@ export function importFactory (typed, load, math, importedFactories) {
         isFraction(object) ||
         isMatrix(object) ||
         Array.isArray(object)
+  }
+
+  function isModule (object) {
+    return typeof object === 'object' && object[Symbol.toStringTag] === 'Module'
   }
 
   function hasTypedFunctionSignature (fn) {

@@ -13,8 +13,8 @@ const dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'mapSlic
  * This transform changed the `dim` parameter of function var
  * from one-based to zero based
  */
-export const createVarianceTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract, multiply, divide, mapSlices, isNaN }) => {
-  const variance = createVariance({ typed, add, subtract, multiply, divide, mapSlices, isNaN })
+export const createVarianceTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract, multiply, divide, mapSlices, isNaN: mathIsNaN }) => {
+  const variance = createVariance({ typed, add, subtract, multiply, divide, mapSlices, isNaN: mathIsNaN })
 
   return typed(name, {
     '...any': function (args) {

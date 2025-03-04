@@ -1,14 +1,20 @@
 # History
 
-# unpublished changes since 14.2.1
+# 2024-02-28, 14.3.0
 
 - Feat: improved performance of function `flatten` (#3354). Thanks @dvd101x.
 - Feat: improved performance of `DenseMatrix` Symbol.iterator (#3395). 
+  Thanks @dvd101x.
+- Feat: improved performance of functions `map` and `forEach` (#3399).
   Thanks @dvd101x.
 - Fix: #3390 issue in callback optimization and add error handling for invalid
   argument types (#3394). Thanks @dvd101x.
 - Fix: #3356 add missing eigsDependencies export to TypeScript definitions 
   (#3397). Thanks @porst17.
+- Fix: #3406 infer the correct type for multi-dimensional arrays in function 
+  `multiply` (#3408). Thanks @orelbn.
+- Fix: #3387 use utility `math.isNaN` for consistent `max` and `min` results 
+  (#3389). Thanks @orelbn.
 
 # 2024-02-05, 14.2.1
 

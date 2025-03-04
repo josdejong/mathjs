@@ -858,23 +858,97 @@ export function get (array, index) {
 }
 
 /**
- * Recursive function to map a multi-dimensional array.
+ * Recursively maps over each element of nested array using a provided callback function.
  *
- * @param {*} value - The current value being processed in the array.
- * @param {Array} index - The index of the current value being processed in the array.
- * @param {Array} array - The array being processed.
- * @param {Function} callback - Function that produces the element of the new Array, taking three arguments: the value of the element, the index of the element, and the Array being processed.
- * @returns {*} The new array with each element being the result of the callback function.
+ * @param {Array} array - The array to be mapped.
+ * @param {Function} callback - The function to execute on each element, taking three arguments:
+ *   - `value` (any): The current element being processed in the array.
+ *   - `index` (Array<number>): The index of the current element being processed in the array.
+ *   - `array` (Array): The array `deepMap` was called upon.
+ * @param {boolean} [skipIndex=false] - If true, the callback function is called with only the value.
+ * @returns {Array} A new array with each element being the result of the callback function.
  */
-export function recurse (value, index, array, callback) {
-  if (Array.isArray(value)) {
-    return value.map(function (child, i) {
-      // we create a copy of the index array and append the new index value
-      return recurse(child, index.concat(i), array, callback)
-    })
-  } else {
-    // invoke the callback function with the right number of arguments
-    return callback(value, index, array)
+export function deepMap (array, callback, skipIndex = false) {
+  if (array.length === 0) {
+    return []
+  }
+
+  if (skipIndex) {
+    return recursiveMap(array)
+  }
+  const index = []
+
+  return recursiveMapWithIndex(array, 0)
+
+  function recursiveMapWithIndex (value, depth) {
+    if (Array.isArray(value)) {
+      const N = value.length
+      const result = Array(N)
+      for (let i = 0; i < N; i++) {
+        index[depth] = i
+        result[i] = recursiveMapWithIndex(value[i], depth + 1)
+      }
+      return result
+    } else {
+      return callback(value, index.slice(0, depth), array)
+    }
+  }
+  function recursiveMap (value) {
+    if (Array.isArray(value)) {
+      const N = value.length
+      const result = Array(N)
+      for (let i = 0; i < N; i++) {
+        result[i] = recursiveMap(value[i])
+      }
+      return result
+    } else {
+      return callback(value)
+    }
+  }
+}
+
+/**
+ * Recursively iterates over each element in a multi-dimensional array and applies a callback function.
+ *
+ * @param {Array} array - The multi-dimensional array to iterate over.
+ * @param {Function} callback - The function to execute for each element. It receives three arguments:
+ *   - {any} value: The current element being processed in the array.
+ *   - {Array<number>} index: The index of the current element in each dimension.
+ *   - {Array} array: The original array being processed.
+ * @param {boolean} [skipIndex=false] - If true, the callback function is called with only the value.
+ */
+export function deepForEach (array, callback, skipIndex = false) {
+  if (array.length === 0) {
+    return
+  }
+
+  if (skipIndex) {
+    recursiveForEach(array)
+    return
+  }
+  const index = []
+  recursiveForEachWithIndex(array, 0)
+
+  function recursiveForEachWithIndex (value, depth) {
+    if (Array.isArray(value)) {
+      const N = value.length
+      for (let i = 0; i < N; i++) {
+        index[depth] = i
+        recursiveForEachWithIndex(value[i], depth + 1)
+      }
+    } else {
+      callback(value, index.slice(0, depth), array)
+    }
+  }
+  function recursiveForEach (value) {
+    if (Array.isArray(value)) {
+      const N = value.length
+      for (let i = 0; i < N; i++) {
+        recursiveForEach(value[i])
+      }
+    } else {
+      callback(value)
+    }
   }
 }
 

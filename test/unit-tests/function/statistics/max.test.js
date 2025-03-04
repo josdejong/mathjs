@@ -5,6 +5,7 @@ const Complex = math.Complex
 const DenseMatrix = math.DenseMatrix
 const fraction = math.fraction
 const max = math.max
+const unit = math.unit
 
 describe('max', function () {
   it('should return the max of numbers', function () {
@@ -89,6 +90,11 @@ describe('max', function () {
     assert(isNaN(max([1, 3, NaN])))
     assert(isNaN(max([NaN, NaN, NaN])))
     assert(isNaN(max(NaN, NaN)))
+    assert(isNaN(max(BigNumber(NaN), BigNumber(123))))
+    assert(isNaN((max(BigNumber(123), BigNumber(NaN), NaN))))
+    assert(isNaN(max(unit(NaN, 's'), unit(123, 's')).value))
+    assert(isNaN(max(unit(123, 's'), unit(NaN, 's')).value))
+    assert(isNaN(max(1, 3, fraction(2, 3), fraction(1, 2), NaN, BigNumber(1), BigNumber(NaN), 5, Infinity, -Infinity)))
   })
 
   it('should return the largest of mixed types', function () {
@@ -124,8 +130,8 @@ describe('max', function () {
     assert.throws(function () { max([[2, new Date(), 4]]) }, /TypeError: Cannot calculate max, unexpected type of argument/)
     assert.throws(function () { max([2, null, 4]) }, /TypeError: Cannot calculate max, unexpected type of argument/)
     assert.throws(function () { max([[2, 5], [4, null], [1, 7]], 0) }, /TypeError: Cannot calculate max, unexpected type of argument/)
-    assert.throws(function () { max('a', 'b') }, /Error: Cannot convert "b" to a number/)
-    assert.throws(function () { max('a') }, /SyntaxError: String "a" is not a valid number/)
+    assert.throws(function () { max('a', 'b') }, /Error: Cannot convert "a" to a number/)
+    assert.throws(function () { max('a') }, /Error: Cannot convert "a" to a number/)
   })
 
   it('should return undefined if called with an empty array', function () {
