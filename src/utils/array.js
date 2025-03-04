@@ -469,18 +469,14 @@ function _unsqueeze (array, dims, dim) {
  * @return {Array}        The flattened array (1 dimensional)
  */
 export function flatten (array, maxDepth) {
-  if (!Array.isArray(array)) {
+  if (!Array.isArray(array) || maxDepth === 0) {
     // if not an array, return as is
     return array
   }
   const flat = []
 
-  if (maxDepth && maxDepth > 0) {
-    if (maxDepth === 0) {
-      return array
-    } else if (maxDepth >= 1) {
-      flattenWithDepth(array, maxDepth)
-    }
+  if (maxDepth > 0) {
+    _flattenWithDepth(array)
   } else {
     _flatten(array)
   }
@@ -498,20 +494,15 @@ export function flatten (array, maxDepth) {
     }
   }
 
-  function flattenWithDepth (array, maxDepth) {
-    recursiveFlattenWithDepth(array, 0)
-    // this function assumbes an array with a validated size (like a matrix)
-
-    function recursiveFlattenWithDepth (array, depth) {
-      const N = array.length
-      if (depth < maxDepth) {
-        for (let i = 0; i < N; i++) {
-          recursiveFlattenWithDepth(array[i], depth + 1)
-        }
-      } else {
-        for (let i = 0; i < N; i++) {
-          flat.push(array[i])
-        }
+  function _flattenWithDepth (array, depth = 0) {
+    const N = array.length
+    if (depth < maxDepth) {
+      for (let i = 0; i < N; i++) {
+        _flattenWithDepth(array[i], depth + 1)
+      }
+    } else {
+      for (let i = 0; i < N; i++) {
+        flat.push(array[i])
       }
     }
   }
