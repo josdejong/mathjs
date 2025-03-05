@@ -473,11 +473,10 @@ export function flatten (array, isHomogeneous = false) {
     // if not an array, return as is
     return array
   }
-  const flat = []
-
-  if (typeof isHomogeneous === 'number') {
+  if (typeof isHomogeneous !== 'boolean') {
     throw new TypeError('Boolean expected for isHomogeneous')
   }
+  const flat = []
 
   if (isHomogeneous) {
     _flattenHomogeneous(array)
