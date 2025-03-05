@@ -246,7 +246,7 @@ function _resize (array, size, dim, defaultValue) {
  *                                not equal that of the old ones
  */
 export function reshape (array, sizes) {
-  const flatArray = flatten(array)
+  const flatArray = flatten(array, true) // since it has rectangular
   const currentLength = flatArray.length
 
   if (!Array.isArray(array) || !Array.isArray(sizes)) {
@@ -465,43 +465,46 @@ function _unsqueeze (array, dims, dim) {
  * Flatten a multi dimensional array, put all elements in a one dimensional
  * array
  * @param {Array} array   A multi dimensional array
- * @param {number} maxDepth Optional. The max depth of the validated array
+ * @param {boolean} isHomogeneous Optional. If the array has an homogeneous size
  * @return {Array}        The flattened array (1 dimensional)
  */
-export function flatten (array, maxDepth) {
-  if (!Array.isArray(array) || maxDepth === 0) {
+export function flatten (array, isHomogeneous = false) {
+  if (!Array.isArray(array)) {
     // if not an array, return as is
     return array
   }
   const flat = []
 
-  if (maxDepth > 0) {
-    _flattenWithDepth(array)
+  if (typeof isHomogeneous === 'number') {
+    throw new TypeError('Boolean expected for isHomogeneous')
+  }
+
+  if (isHomogeneous) {
+    _flattenHomogeneous(array)
   } else {
     _flatten(array)
   }
 
   return flat
 
-  function _flatten (value) {
-    if (Array.isArray(value)) {
-      const N = value.length
-      for (let i = 0; i < N; i++) {
-        _flatten(value[i])
+  function _flatten (array) {
+    for (let i = 0; i < array.length; i++) {
+      const item = array[i]
+      if (Array.isArray(item)) {
+        _flatten(item)
+      } else {
+        flat.push(item)
       }
-    } else {
-      flat.push(value)
     }
   }
 
-  function _flattenWithDepth (array, depth = 0) {
-    const N = array.length
-    if (depth < maxDepth) {
-      for (let i = 0; i < N; i++) {
-        _flattenWithDepth(array[i], depth + 1)
+  function _flattenHomogeneous (array) {
+    if (Array.isArray(array[0])) {
+      for (let i = 0; i < array.length; i++) {
+        _flattenHomogeneous(array[i])
       }
     } else {
-      for (let i = 0; i < N; i++) {
+      for (let i = 0; i < array.length; i++) {
         flat.push(array[i])
       }
     }
