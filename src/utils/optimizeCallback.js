@@ -8,13 +8,19 @@ import { typeOf as _typeOf } from './is.js'
  * @param {Function} callback The original callback function to simplify.
  * @param {Array|Matrix} array The array that will be used with the callback function.
  * @param {string} name The name of the function that is using the callback.
+ * @param {boolean} [isUnary=false] If true, the callback function is unary and will be optimized as such.
  * @returns {Function} Returns a simplified version of the callback function.
  */
-export function optimizeCallback (callback, array, name) {
+export function optimizeCallback (callback, array, name, isUnary = false) {
   if (typed.isTypedFunction(callback)) {
-    const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
-    const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
-    const numberOfArguments = _findNumberOfArguments(callback, firstValue, firstIndex, array)
+    let numberOfArguments
+    if (isUnary) {
+      numberOfArguments = 1
+    } else {
+      const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
+      const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
+      numberOfArguments = _findNumberOfArgumentsTyped(callback, firstValue, firstIndex, array)
+    }
     let fastCallback
     if (array.isMatrix && (array.dataType !== 'mixed' && array.dataType !== undefined)) {
       const singleSignature = _findSingleSignatureWithArity(callback, numberOfArguments)
@@ -23,11 +29,18 @@ export function optimizeCallback (callback, array, name) {
       fastCallback = callback
     }
     if (numberOfArguments >= 1 && numberOfArguments <= 3) {
-      return (...args) => _tryFunctionWithArgs(fastCallback, args.slice(0, numberOfArguments), name, callback.name)
+      return {
+        isUnary: numberOfArguments === 1,
+        fn: (...args) => _tryFunctionWithArgs(fastCallback, args.slice(0, numberOfArguments), name, callback.name)
+      }
     }
-    return (...args) => _tryFunctionWithArgs(fastCallback, args, name, callback.name)
+    return { isUnary: false, fn: (...args) => _tryFunctionWithArgs(fastCallback, args, name, callback.name) }
   }
-  return callback
+  if (isUnary === undefined) {
+    return { isUnary: _findIfCallbackIsUnary(callback), fn: callback }
+  } else {
+    return { isUnary, fn: callback }
+  }
 }
 
 function _findSingleSignatureWithArity (callback, arity) {
@@ -42,7 +55,21 @@ function _findSingleSignatureWithArity (callback, arity) {
   }
 }
 
-function _findNumberOfArguments (callback, value, index, array) {
+function _findIfCallbackIsUnary (callback) {
+  const callbackStr = callback.toString()
+  const firstParenthesisIndex = callbackStr.indexOf('(')
+  const firstClosingParenthesisIndex = callbackStr.indexOf(')', firstParenthesisIndex)
+  const paramsStr = callbackStr.slice(firstParenthesisIndex + 1, firstClosingParenthesisIndex)
+
+  if (callback.length === 1) {
+    if (/arguments/.test(callbackStr)) return false
+    if (/\.\.\.\w*/.test(paramsStr)) return false
+    return true
+  }
+  return false
+}
+
+function _findNumberOfArgumentsTyped (callback, value, index, array) {
   const testArgs = [value, index, array]
   for (let i = 3; i > 0; i--) {
     const args = testArgs.slice(0, i)
