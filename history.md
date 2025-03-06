@@ -4,6 +4,10 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20240306-1431">2024-03-06, 14.3.1 <a href="#20240306-1431" title="Permalink">#</a></h1>
+
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3350">#3350</a> cannot import a constant that is a complex number.
+
 <h1 id="20240228-1430">2024-02-28, 14.3.0 <a href="#20240228-1430" title="Permalink">#</a></h1>
 
 - Feat: improved performance of function `flatten` (<a href="https://github.com/josdejong/mathjs/issues/3354">#3354</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
