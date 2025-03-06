@@ -1,5 +1,9 @@
 # History
 
+# 2024-03-06, 14.3.1
+
+- Fix: #3350 cannot import a constant that is a complex number.
+
 # 2024-02-28, 14.3.0
 
 - Feat: improved performance of function `flatten` (#3354). Thanks @dvd101x.
