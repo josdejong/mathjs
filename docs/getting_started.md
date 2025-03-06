@@ -49,7 +49,9 @@ You can create a mathjs instance allowing [configuration](core/configuration.htm
 ```js
 import { create, all } from 'mathjs'
 
-const config = { }
+const config = {
+  // ...
+}
 const math = create(all, config)
 
 console.log(math.sqrt(-4).toString()) // 2i
@@ -69,6 +71,19 @@ const { sqrt } = require('mathjs')
 console.log(sqrt(-4).toString()) // 2i
 ```
 
+You can create a mathjs instance allowing [configuration](core/configuration.html) and importing of external functions as follows:
+
+```js
+const { create, all } = require('mathjs')
+
+const config = {
+  // ...
+}
+const math = create(all, config)
+
+console.log(math.sqrt(-4).toString()) // 2i
+```
+
 
 <h3 id="browser">Browser <a href="#browser" title="Permalink">#</a></h3>
 
@@ -84,6 +99,27 @@ variable `math` to access the libary once loaded:
 <body>
   <script type="text/javascript">
     console.log(math.sqrt(-4).toString()) // 2i
+  </script>
+</body>
+</html>
+```
+
+You can create a mathjs instance allowing [configuration](core/configuration.html) and importing of external functions as follows:
+
+```html
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="math.js" type="text/javascript"></script>
+</head>
+<body>
+  <script type="text/javascript">
+    const config = {
+      // ...
+    }
+    const mathInstance = math.create(math.all, config)
+
+    console.log(mathInstance.sqrt(-4).toString()) // 2i
   </script>
 </body>
 </html>
