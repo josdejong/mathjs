@@ -531,10 +531,10 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @param {Function} callback   The callback function is invoked with three
    *                              parameters: the array containing the element,
    *                              the index of the element within that array (as an integer),
-   *                              and a copy of the current index (as an array of integers).
-   * @param {boolean} [isUnary]   If true, the callback function is invoked with one parameter
+   *                              and for non unarry callbacks copy of the current index (as an array of integers).
    */
-  DenseMatrix.prototype._forEach = function (callback, isUnary = false) {
+  DenseMatrix.prototype._forEach = function (callback) {
+    const isUnary = callback.length === 2 // callback has 2 parameters: value, index
     const maxDepth = this._size.length - 1
 
     if (maxDepth < 0) return
@@ -551,11 +551,11 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       return
     }
 
-    const index = new Array(this._size.length)
+    const index = new Array(maxDepth + 1)
 
     iterate(this._data)
     function iterate (data, depth = 0) {
-      if (depth < maxDepth) {
+      if (Array.isArray(data[0])) {
         for (let i = 0; i < data.length; i++) {
           index[depth] = i
           iterate(data[i], depth + 1)
@@ -567,10 +567,10 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         }
       }
     }
-    function iterateUnary (data, depth = 0) {
-      if (depth < maxDepth) {
+    function iterateUnary (data) {
+      if (Array.isArray(data[0])) {
         for (let i = 0; i < data.length; i++) {
-          iterateUnary(data[i], depth + 1)
+          iterateUnary(data[i])
         }
       } else {
         for (let i = 0; i < data.length; i++) {
@@ -601,7 +601,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       ? (arr, i) => { arr[i] = fastCallback.fn(arr[i]) }
       : (arr, i, index) => { arr[i] = fastCallback.fn(arr[i], index, me) }
 
-    result._forEach(applyCallback, isUnary || fastCallback.isUnary)
+    result._forEach(applyCallback)
 
     return result
   }
@@ -623,7 +623,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       ? (arr, i) => { fastCallback.fn(arr[i]) }
       : (arr, i, index) => { fastCallback.fn(arr[i], index, me) }
 
-    me._forEach(applyCallback, isUnary || fastCallback.isUnary)
+    me._forEach(applyCallback)
   }
 
   /**
@@ -646,7 +646,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     const index = []
     const recurse = function * (value, depth) {
-      if (depth < maxDepth) {
+      if (Array.isArray(value[0])) {
         for (let i = 0; i < value.length; i++) {
           index[depth] = i
           yield * recurse(value[i], depth + 1)
