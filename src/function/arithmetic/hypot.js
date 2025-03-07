@@ -48,7 +48,7 @@ export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     Array: _hypot,
 
-    Matrix: M => _hypot(flatten(M.toArray()))
+    Matrix: M => _hypot(flatten(M.toArray(), true))
   })
 
   /**
