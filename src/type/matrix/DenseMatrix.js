@@ -555,7 +555,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     iterate(this._data)
     function iterate (data, depth = 0) {
-      if (Array.isArray(data[0])) {
+      if (depth < maxDepth) {
         for (let i = 0; i < data.length; i++) {
           index[depth] = i
           iterate(data[i], depth + 1)
@@ -567,10 +567,10 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         }
       }
     }
-    function iterateUnary (data) {
-      if (Array.isArray(data[0])) {
+    function iterateUnary (data, depth = 0) {
+      if (depth < maxDepth) {
         for (let i = 0; i < data.length; i++) {
-          iterateUnary(data[i])
+          iterateUnary(data[i], depth + 1)
         }
       } else {
         for (let i = 0; i < data.length; i++) {
@@ -646,7 +646,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     const index = []
     const recurse = function * (value, depth) {
-      if (Array.isArray(value[0])) {
+      if (depth < maxDepth) {
         for (let i = 0; i < value.length; i++) {
           index[depth] = i
           yield * recurse(value[i], depth + 1)
