@@ -55,18 +55,30 @@ function _findSingleSignatureWithArity (callback, arity) {
   }
 }
 
+/**
+ * Determines if a given callback function is unary (i.e., takes exactly one argument).
+ *
+ * This function checks the following conditions to determine if the callback is unary:
+ * 1. The callback function should have exactly one parameter.
+ * 2. The callback function should not use the `arguments` object.
+ * 3. The callback function should not use rest parameters (`...`).
+ * If in doubt, this function shall return `false` to be safe
+ *
+ * @param {Function} callback - The callback function to be checked.
+ * @returns {boolean} - Returns `true` if the callback is unary, otherwise `false`.
+ */
 function _findIfCallbackIsUnary (callback) {
-  const callbackStr = callback.toString()
-  const firstParenthesisIndex = callbackStr.indexOf('(')
-  const firstClosingParenthesisIndex = callbackStr.indexOf(')', firstParenthesisIndex)
-  const paramsStr = callbackStr.slice(firstParenthesisIndex + 1, firstClosingParenthesisIndex)
+  if (callback.length !== 1) return false
 
-  if (callback.length === 1) {
-    if (/arguments/.test(callbackStr)) return false
-    if (/\.\.\.\w*/.test(paramsStr)) return false
-    return true
-  }
-  return false
+  const callbackStr = callback.toString()
+  // Check if the callback function uses `arguments`
+  if (/arguments/.test(callbackStr)) return false
+
+  // Extract the parameters of the callback function
+  const paramsStr = callbackStr.match(/\(.*?\)/)
+  // Check if the callback function uses rest parameters
+  if (/\.\.\./.test(paramsStr)) return false
+  return true
 }
 
 function _findNumberOfArgumentsTyped (callback, value, index, array) {
