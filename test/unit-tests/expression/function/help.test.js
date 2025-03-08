@@ -2,6 +2,38 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { embeddedDocs } from '../../../../src/expression/embeddedDocs/embeddedDocs.js'
 
+const mathDocs = math.create(math.all)
+const originalConfig = mathDocs.config()
+// if a function has errors in the examples of the embedded docs and it's OK,
+// add it to the skipDocs array
+const skipDocs = ['import']
+
+function runExamplesInDocs (name) {
+  mathDocs.config(originalConfig)
+  if (skipDocs.includes(name)) {
+    return
+  }
+  let helpDoc
+  try {
+    helpDoc = mathDocs.evaluate(`help("${name}")`)
+  } catch {
+    return
+  }
+  if (!helpDoc.doc || !helpDoc.doc.examples) {
+    // if it doesn't have examples, return
+    return
+  }
+  try {
+    // try to run the examples
+    mathDocs.evaluate(helpDoc.doc.examples)
+    return
+  } catch {
+  }
+  // if they still have errors try with a new math instance
+  const math2 = math.create(math.all)
+  math2.evaluate(helpDoc.doc.examples)
+}
+
 describe('help', function () {
   it('should find documentation for a function by its name', function () {
     const help = math.help('sin')
@@ -66,4 +98,10 @@ describe('help', function () {
     const expression = math.parse('help(parse)')
     assert.strictEqual(expression.toTex(), '\\mathrm{help}\\left( parse\\right)')
   })
+
+  for (const name of Object.keys(embeddedDocs)) {
+    it(`should not throw an error when the examples for ${name} are run`, function () {
+      assert.doesNotThrow(() => runExamplesInDocs(name))
+    })
+  }
 })
