@@ -13,25 +13,17 @@ function runExamplesInDocs (name) {
   if (skipDocs.includes(name)) {
     return
   }
-  let helpDoc
+  // every funciton should have doc.examples
+  const examples = mathDocs.evaluate(`help("${name}")`).doc.examples
   try {
-    helpDoc = mathDocs.evaluate(`help("${name}")`)
-  } catch {
-    return
-  }
-  if (!helpDoc.doc || !helpDoc.doc.examples) {
-    // if it doesn't have examples, return
-    return
-  }
-  try {
-    // try to run the examples
-    mathDocs.evaluate(helpDoc.doc.examples)
+    // validate if the examples run without errors
+    mathDocs.evaluate(examples)
     return
   } catch {
   }
   // if they still have errors try with a new math instance
   const math2 = math.create(math.all)
-  math2.evaluate(helpDoc.doc.examples)
+  math2.evaluate(examples)
 }
 
 describe('help', function () {
