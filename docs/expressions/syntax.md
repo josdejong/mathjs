@@ -755,8 +755,11 @@ math.evaluate('(1+2)(3+4)')   // 21
 ```
 
 Parentheses are parsed as a function call when there is a symbol or accessor on
-the left hand side, like `sqrt(4)` or `obj.method(4)`. In other cases the
-parentheses are interpreted as an implicit multiplication.
+the left hand side, like `sqrt(4)` or `obj.method(4)`, when the argument
+list is empty, like `(f()=1)()`, or when the argument list contains a comma,
+like `(f(x,y) = 2x-y)(3,1)`. To enable calling a unary function this way, you
+may add a final comma in the argument list, as in `(f(x)=(x+1)x/2)(3,)`. In all
+other cases the parentheses are interpreted as an implicit multiplication.
 
 Math.js will always evaluate implicit multiplication before explicit multiplication `*`, so that the expression `x * y z` is parsed as `x * (y * z)`. Math.js also gives implicit multiplication higher precedence than division, *except* when the division matches the pattern `[unaryPrefixOp]?[number] / [number] [symbol]` or `[unaryPrefixOp]?[number] / [number] [left paren]`. In that special case, the division is evaluated first:
 
