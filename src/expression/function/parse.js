@@ -165,13 +165,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     '<<': true,
     '>>': true,
-    '>>>': true
-  }
+    '>>>': true,
 
-  const MAX_DELIMITER_LENGTH = 3
-
-  // map with all named delimiters
-  const NAMED_DELIMITERS = {
     mod: true,
     to: true,
     in: true,
@@ -180,6 +175,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     or: true,
     not: true
   }
+
+  const MAX_DELIMITER_LENGTH = 3
 
   // These are identifiers that create constants, not symbols
   const CONSTANTS = {
@@ -211,9 +208,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function getToken (state) {
-    doGetToken(state)
-  }
-  function doGetToken (state) {
     state.tokenType = TOKENTYPE.NULL
     state.token = ''
     state.comment = ''
@@ -247,6 +241,13 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       maybeDelimiter = maybeDelimiter.slice(0, -1)
     ) {
       if (DELIMITERS[maybeDelimiter]) {
+        // delimiters that end with alpha character must be followed
+        // by non-alpha
+        if (parse.isAlpha(maybeDelimiter.slice(-1)) &&
+            parse.isAlpha(state.character(maybeDelimiter.length + 1).slice(-1))
+        ) {
+          continue
+        }
         state.tokenType = TOKENTYPE.DELIMITER
         state.token = maybeDelimiter
         state.next(maybeDelimiter.length)
@@ -328,11 +329,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     if (state.token) {
-      if (hasOwnProperty(NAMED_DELIMITERS, state.token)) {
-        state.tokenType = TOKENTYPE.DELIMITER
-      } else {
-        state.tokenType = TOKENTYPE.SYMBOL
-      }
+      state.tokenType = TOKENTYPE.SYMBOL
       return
     }
 
@@ -1191,7 +1188,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     let node, name
 
     if (state.tokenType === TOKENTYPE.SYMBOL ||
-        (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
+        (state.tokenType === TOKENTYPE.DELIMITER &&
+         state.token &&
+         Array.from(state.token).every(parse.isAlpha))
+    ) {
       name = state.token
 
       getToken(state)
@@ -1287,7 +1287,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         getToken(state)
 
         const isPropertyName = state.tokenType === TOKENTYPE.SYMBOL ||
-          (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)
+          (state.tokenType === TOKENTYPE.DELIMITER &&
+            state.token &&
+            Array.from(state.token).every(parse.isAlpha))
         if (!isPropertyName) {
           throw createSyntaxError(state, 'Property name expected after dot')
         }
@@ -1482,7 +1484,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           // parse key
           if (state.token === '"' || state.token === "'") {
             key = parseStringToken(state, state.token)
-          } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
+          } else if (state.tokenType === TOKENTYPE.SYMBOL ||
+            (state.tokenType === TOKENTYPE.DELIMITER &&
+              state.token &&
+              Array.from(state.token).every(parse.isAlpha))
+          ) {
             key = state.token
             getToken(state)
           } else {
