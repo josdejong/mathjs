@@ -212,18 +212,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     state.token = ''
     state.comment = ''
 
-    // skip over ignored characters:
+    // skip over comments and whitespace:
     while (true) {
-      // comments:
-      if (state.character() === '#') {
-        while ((state.character() || '\n') !== '\n') {
-          state.comment += state.next()
-        }
-      }
-      // whitespace: space, tab, and newline when inside parameters
-      if (parse.isWhitespace(state.character(), state.nestingLevel)) {
-        state.next()
-      } else {
+      state.readComment('#', '\n')
+      if (!state.skipCharactersThat(
+        c => parse.isWhitespace(c, state.nestingLevel))
+      ) {
         break
       }
     }
