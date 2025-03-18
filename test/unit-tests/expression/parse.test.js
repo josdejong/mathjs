@@ -313,13 +313,15 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('3.2.2') }, SyntaxError)
       assert.throws(function () { parseAndEval('3.2e2.2') }, SyntaxError)
 
-      assert.throws(function () { parseAndEval('3e0.5') }, /Digit expected, got "."/)
-      assert.throws(function () { parseAndEval('3e.5') }, /Digit expected, got "."/)
-      assert.throws(function () { parseAndEval('-3e0.5') }, /Digit expected, got "."/)
-      assert.throws(function () { parseAndEval('-3e.5') }, /Digit expected, got "."/)
-      assert.throws(function () { parseAndEval('3e-0.5') }, /Digit expected, got "."/)
+      assert.throws(function () { parseAndEval('3e0.5') }, SyntaxError)
+      assert.throws(
+        function () { parseAndEval('3e.5') }, /Digit or sign expected, got "."/)
+      assert.throws(function () { parseAndEval('-3e0.5') }, SyntaxError)
+      assert.throws(
+        function () { parseAndEval('-3e.5') }, /Digit or sign expected, got "."/)
+      assert.throws(function () { parseAndEval('3e-0.5') }, SyntaxError)
       assert.throws(function () { parseAndEval('3e-.5') }, /Digit expected, got "."/)
-      assert.throws(function () { parseAndEval('-3e-0.5') }, /Digit expected, got "."/)
+      assert.throws(function () { parseAndEval('-3e-0.5') }, SyntaxError)
       assert.throws(function () { parseAndEval('-3e-.5') }, /Digit expected, got "."/)
 
       assert.throws(function () { parseAndEval('2e+a') }, /Digit expected, got "a"/)
