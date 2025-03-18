@@ -1,6 +1,10 @@
 # History
 
-# 2024-02-28, 14.3.0
+# 2025-03-06, 14.3.1
+
+- Fix: #3350 cannot import a constant that is a complex number.
+
+# 2025-02-28, 14.3.0
 
 - Feat: improved performance of function `flatten` (#3354). Thanks @dvd101x.
 - Feat: improved performance of `DenseMatrix` Symbol.iterator (#3395). 
@@ -16,11 +20,11 @@
 - Fix: #3387 use utility `math.isNaN` for consistent `max` and `min` results 
   (#3389). Thanks @orelbn.
 
-# 2024-02-05, 14.2.1
+# 2025-02-05, 14.2.1
 
 - Fix: #3377 remove redundant dependency `@lambdatest/node-tunnel`.
 
-# 2024-01-30, 14.2.0
+# 2025-01-30, 14.2.0
 
 - Feat: #3041, #3340 rename `apply` to `mapSlices` (#3357). Function
   `apply` is still available but is now marked deprecated. Thanks @gwhitney.
