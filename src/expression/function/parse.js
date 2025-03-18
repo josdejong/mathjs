@@ -169,6 +169,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   // token types enumeration
+  // Each key is a token type, and the corresponding value
+  // is a scanner function that looks for that token in the current state,
+  // and consumes it into state.token and returns true if it is there,
+  // and returns false if it is not there. The scanners are called in the
+  // order they appear in the object.
   parse.tokens = {
     SKIP_IGNORED: state => {
       while (true) {
