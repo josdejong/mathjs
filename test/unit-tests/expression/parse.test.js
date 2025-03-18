@@ -341,6 +341,11 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is not a valid number/)
       assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is not a valid number/)
     })
+
+    it('should allow a variable named E to access .-operators', function () {
+      assert.deepStrictEqual(
+        parse('3E.*[2,3]').evaluate({ E: [1, 2] }), math.matrix([6, 18]))
+    })
   })
 
   describe('bignumber', function () {
