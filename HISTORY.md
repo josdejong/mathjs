@@ -1,5 +1,9 @@
 # History
 
+# Unpublished changes since 14.3.1
+
+- Feat: improve the performance of function `flatten` (#3400). Thanks @dvd101x.
+
 # 2025-03-06, 14.3.1
 
 - Fix: #3350 cannot import a constant that is a complex number.
