@@ -306,6 +306,8 @@ describe('parse', function () {
       approxEqual(parseAndEval('2e.*3'), 2 * Math.E * 3)
       approxEqual(parseAndEval('2e./3'), 2 * Math.E / 3)
       approxEqual(parseAndEval('2e.^3'), 2 * Math.E ** 3)
+      assert.deepStrictEqual(
+        parse('3E.*[2,3]').evaluate({ E: [1, 2] }), math.matrix([6, 18]))
     })
 
     it('should throw an error with invalid numbers', function () {
@@ -340,11 +342,6 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is not a valid number/)
       assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is not a valid number/)
       assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is not a valid number/)
-    })
-
-    it('should allow a variable named E to access .-operators', function () {
-      assert.deepStrictEqual(
-        parse('3E.*[2,3]').evaluate({ E: [1, 2] }), math.matrix([6, 18]))
     })
   })
 
