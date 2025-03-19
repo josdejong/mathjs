@@ -143,7 +143,7 @@ export const latexFunctions = {
     2: undefined // use default template
   },
   nthRoot: { 2: '\\sqrt[${args[1]}]{${args[0]}}' },
-  nthRoots: { 2: '\\{y : $y^{args[1]} = {${args[0]}}\\}' },
+  nthRoots: { 2: '\\{y : y^${args[1]} = {${args[0]}}\\}' },
   pow: { 2: `\\left(\${args[0]}\\right)${latexOperators.pow}{\${args[1]}}` },
   round: {
     1: '\\left\\lfloor${args[0]}\\right\\rceil',
