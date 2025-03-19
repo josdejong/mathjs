@@ -3,8 +3,9 @@
 # Unpublished changes since 14.3.1
 
 - Feat: improve the performance of function `flatten` (#3400). Thanks @dvd101x.
-- Feat: improve the performance of `map` and `forEach` (#3409). 
+- Feat: improve the performance of `map` and `forEach` (#3409).
   Thanks @dvd101x.
+- Fix: #3422 allow dot operators after symbol E (#3425).
 
 # 2025-03-06, 14.3.1
 
