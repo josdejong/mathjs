@@ -78,7 +78,7 @@
     "karma-webdriver-launcher": "1.0.8",
     "karma-webpack": "5.0.1",
     "mkdirp": "3.0.1",
-    "mocha": "^11.1.0",
+    "mocha": "11.1.0",
     "mocha-junit-reporter": "2.2.1",
     "ndarray": "1.0.19",
     "ndarray-determinant": "1.0.0",
