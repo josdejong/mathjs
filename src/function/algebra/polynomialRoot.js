@@ -61,6 +61,10 @@ export const createPolynomialRoot = /* #__PURE__ */ factory(name, dependencies, 
    * See also:
    *     cbrt, sqrt
    *
+   * History:
+   *
+   *     v11.4  Created
+   *
    * @param {... number | Complex} coeffs
    *     The coefficients of the polynomial, starting with with the constant coefficent, followed
    *     by the linear coefficient and subsequent coefficients of increasing powers.
