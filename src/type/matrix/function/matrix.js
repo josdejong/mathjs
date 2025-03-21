@@ -31,6 +31,12 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    bignumber, boolean, complex, index, number, string, unit, sparse
    *
+   * History:
+   *
+   *    v0.5  Created
+   *    v1.5  Support dense or sparse Matrix types; allow construction
+   *          from string, Array, or another Matrix.
+   *
    * @param {Array | Matrix} [data]    A multi dimensional array
    * @param {string} [format]          The Matrix storage format, either `'dense'` or `'sparse'`
    * @param {string} [datatype]        Type of the values
