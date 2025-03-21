@@ -6,6 +6,8 @@
 - Feat: improve the performance of `map` and `forEach` (#3409).
   Thanks @dvd101x.
 - Fix: #3422 allow dot operators after symbol E (#3425).
+- Fix: issue in the `nthRoots` latex function template string (#3427).
+  Thanks @aitee.
 
 # 2025-03-06, 14.3.1
 
