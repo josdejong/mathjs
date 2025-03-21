@@ -32,10 +32,9 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
    *
    *    math.or(2, 4)   // returns true
    *
-   *    a = [2, 5, 0]
-   *    b = [0, 22, 0]
-   *    c = 0
-   *
+   *    const a = [2, 5, 0]
+   *    const b = [0, 22, 0]
+   *    const c = 0
    *    math.or(a, b)   // returns [true, true, false]
    *    math.or(b, c)   // returns [false, true, false]
    *

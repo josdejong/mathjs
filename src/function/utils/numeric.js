@@ -7,6 +7,7 @@ const dependencies = ['number', 'bigint', '?bignumber', '?fraction']
 
 export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ number, bigint, bignumber, fraction }) => {
   const validInputTypes = {
+    boolean: true,
     string: true,
     number: true,
     bigint: true,
@@ -20,7 +21,7 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
     BigNumber: bignumber
       ? (x) => bignumber(x)
       : noBignumber,
-    bigint: (x) => bigint(x, { round: 'throw', safe: false }),
+    bigint: (x) => bigint(x, { safe: false }),
     Fraction: fraction
       ? (x) => fraction(x)
       : noFraction

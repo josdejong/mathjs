@@ -28,6 +28,7 @@ describe('bigint', function () {
   it('should convert a number to a bigint', function () {
     assert.strictEqual(bigint(123), 123n)
     assert.strictEqual(bigint(2.3), 2n)
+    assert.strictEqual(bigint(3 ** 50), 717897987691852578422784n)
   })
 
   it('should convert a Fraction to a bigint', function () {
