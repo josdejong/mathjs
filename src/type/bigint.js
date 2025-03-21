@@ -64,11 +64,6 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    number, bignumber, boolean, complex, index, matrix, string, unit
    *    round, floor, ceil, fix
    *
-   * History:
-   *
-   *    v13      Created
-   *    v14.2.1  Added conversion options
-   *
    * @param {string | number | BigNumber | bigint | Fraction | boolean | Array | Matrix | null} [value]  Value to be converted
    * @param {Object} [options]  Conversion options with keys `safe` and/or `round`
    * @return {bigint | Array | Matrix} The created bigint

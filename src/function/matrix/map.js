@@ -45,12 +45,6 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *
    *    filter, forEach, sort
    *
-   * History:
-   *
-   *    v0.13  Created
-   *    v1.1   Clone the indices on each callback in case callback mutates
-   *    v13.1  Support multiple inputs to the callback
-   *
    * @param {Matrix | Array} x    The input to iterate on.
    * @param {Function} callback
    *     The function to call (as described above) on each entry of the input
