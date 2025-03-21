@@ -290,6 +290,21 @@ describe('parse', function () {
       approxEqual(parseAndEval('2e'), 2 * Math.E)
     })
 
+    it('should parse dot operators after a value', function () {
+      approxEqual(parseAndEval('2.*3'), 6)
+      approxEqual(parseAndEval('2./3'), 2 / 3)
+      approxEqual(parseAndEval('2.^3'), 2 ** 3)
+    })
+
+    it('should parse dot operators after an implicit multiplication with symbol E', function () {
+      approxEqual(parseAndEval('2E.*3'), 2 * Math.E * 3)
+      approxEqual(parseAndEval('2E./3'), 2 * Math.E / 3)
+      approxEqual(parseAndEval('2E.^3'), 2 * Math.E ** 3)
+      approxEqual(parseAndEval('2e.*3'), 2 * Math.E * 3)
+      approxEqual(parseAndEval('2e./3'), 2 * Math.E / 3)
+      approxEqual(parseAndEval('2e.^3'), 2 * Math.E ** 3)
+    })
+
     it('should throw an error with invalid numbers', function () {
       assert.throws(function () { parseAndEval('.') }, /Value expected/)
       assert.throws(function () { parseAndEval('3.2.2') }, SyntaxError)
