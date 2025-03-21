@@ -20,7 +20,7 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
    * Examples:
    *
    *    math.unit('23 kg')              // returns Unit 23 kg
-   *       // Valueless Units can be used to specify the unit type:
+   *    // Valueless Units can be used to specify the unit type:
    *    const kph = math.unit('km/h')
    *    math.unit(25, kph)              // returns Unit 25 km/h
    *    const a = math.unit(5, 'cm')

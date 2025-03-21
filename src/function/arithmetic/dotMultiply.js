@@ -31,9 +31,8 @@ export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    *    math.dotMultiply(2, 4) // returns 8
    *
-   *    a = [[9, 5], [6, 1]]
-   *    b = [[3, 2], [5, 2]]
-   *
+   *    const a = [[9, 5], [6, 1]]
+   *    const b = [[3, 2], [5, 2]]
    *    math.dotMultiply(a, b) // returns [[27, 10], [30, 2]]
    *    math.multiply(a, b)    // returns [[52, 28], [23, 14]]
    *

@@ -45,7 +45,7 @@ export function importFactory (typed, load, math, importedFactories) {
    *        return 'hello, ' + name + '!'
    *      }
    *    })
-   *        // use the imported function and variable
+   *    // use the imported function and variable
    *    math.myvalue * 2               // 84
    *
    *    math.hello('user')             // 'hello, user!'

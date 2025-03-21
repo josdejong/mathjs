@@ -45,7 +45,7 @@ export const createAdd = /* #__PURE__ */ factory(
      *
      *    const c = math.unit('5 cm')
      *    const d = math.unit('2.1 mm')
-     *    math.add(c, d)               // returns Unit 52.1 mm
+     *    math.add(c, d)               // returns Unit 5.21 cm
      *
      *    math.add("2.3", "4")         // returns number 6.3
      *

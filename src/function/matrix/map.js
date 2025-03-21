@@ -38,8 +38,8 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *    //    callback(value, index, Array)
    *    // If you want to call with only one argument, use:
    *    math.map([1, 2, 3], x => math.format(x)) // returns ['1', '2', '3']
-   *        // It can also be called with 2N + 1 arguments: for N arrays
-   *        //    callback(value1, value2, index, BroadcastedArray1, BroadcastedArray2)
+   *    // It can also be called with 2N + 1 arguments: for N arrays
+   *    //    callback(value1, value2, index, BroadcastedArray1, BroadcastedArray2)
    *
    * See also:
    *
