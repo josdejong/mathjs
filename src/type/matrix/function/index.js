@@ -39,11 +39,11 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * History:
    *
-   *    v?      Created
+   *    v11.10  Added support for arrays of booleans as indices.
    *    v2      Dropped support for `[start, end, step]` arguments in favor
    *            of lists of arbitrary values; added support for Range
    *            objects.
-   *    v11.10  Added support for arrays of booleans as indices.
+   *    v0.4    Created
    *
    * @param {...*} ranges   Zero or more ranges or numbers.
    * @return {Index}        Returns the created index

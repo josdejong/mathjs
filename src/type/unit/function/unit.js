@@ -32,19 +32,11 @@ export const createUnitFunction = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * History:
    *
-   *    v0.5   Created
-   *    v0.16  Support conversion from BigNumber
-   *    v2.5   Support BigNumber and Fraction values in units
-   *    v2.6   Support Complex values in units
    *    v11.1  Allow the type of unit to be specifed by a unit (not just string)
-   *
-   * History:
-   *
-   *    v0.5   Created
-   *    v0.16  Support conversion from BigNumber
-   *    v2.5   Support BigNumber and Fraction values in units
    *    v2.6   Support Complex values in units
-   *    v11.1  Allow the type of unit to be specifed by a unit (not just string)
+   *    v2.5   Support BigNumber and Fraction values in units
+   *    v0.16  Support conversion from BigNumber
+   *    v0.5   Created
    *
    * @param {* | Array | Matrix} args   A number and unit.
    * @return {Unit | Array | Matrix}    The created unit

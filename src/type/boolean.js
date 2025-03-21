@@ -31,15 +31,9 @@ export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * History:
    *
-   *    v0.11    Created
-   *    v0.16    Added conversion from BigNumber
    *    v14.2.1  Added conversion from bigint
-   *
-   * History:
-   *
-   *    v0.11    Created
    *    v0.16    Added conversion from BigNumber
-   *    v14.2.1  Added conversion from bigint
+   *    v0.11    Created
    *
    * @param {string | number | boolean | Array | Matrix | null} value  A value of any type
    * @return {boolean | Array | Matrix} The boolean value

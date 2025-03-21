@@ -39,19 +39,11 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    * History:
    *
-   *    v2     Created
-   *    v3     Added conversion from BigNumber
-   *    v11.8  Added conversion from Unit
-   *    v13    Added conversion from bigint
    *    v14    Move to bigint-based fraction.js@5; construct from two bigints
-   *
-   * History:
-   *
-   *    v2     Created
-   *    v3     Added conversion from BigNumber
-   *    v11.8  Added conversion from Unit
    *    v13    Added conversion from bigint
-   *    v14    Move to bigint-based fraction.js@5; construct from two bigints
+   *    v11.8  Added conversion from Unit
+   *    v3     Added conversion from BigNumber
+   *    v2     Created
    *
    * @param {number | string | Fraction | BigNumber | bigint | Unit | Array | Matrix} [args]
    *            Arguments specifying the value, or numerator and denominator of

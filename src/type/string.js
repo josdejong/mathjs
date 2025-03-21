@@ -32,10 +32,6 @@ export const createString = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    v0.9  Created
    *
-   * History:
-   *
-   *    v0.9  Created
-   *
    * @param {* | Array | Matrix | null} [value]  A value to convert to a string
    * @return {string | Array | Matrix} The created string
    */

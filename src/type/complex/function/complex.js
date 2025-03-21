@@ -44,15 +44,9 @@ export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * History:
    *
-   *    v0.5   Created
-   *    v0.16  Added conversion from BigNumber
    *    v6     Added conversion from Fraction
-   *
-   * History:
-   *
-   *    v0.5   Created
    *    v0.16  Added conversion from BigNumber
-   *    v6     Added conversion from Fraction
+   *    v0.5   Created
    *
    * @param {* | Array | Matrix} [args]
    *            Arguments specifying the real and imaginary part of the complex number

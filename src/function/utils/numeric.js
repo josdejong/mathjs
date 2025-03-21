@@ -51,9 +51,9 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
    *
    * History:
    *
-   *    v6       Created
-   *    v13      Added `bigint` support
    *    v14.2.1  Prefer mathjs `bigint()` to built-in `BigInt()`
+   *    v13      Added `bigint` support
+   *    v6       Created
    *
    * @param {string | number | BigNumber | bigint | Fraction } value
    *              A numeric value or a string containing a numeric value

@@ -43,9 +43,9 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *
    * History:
    *
-   *    v0.13  Created
-   *    v1.1   Clone the indices on each callback in case callback mutates
    *    v13.1  Support multiple inputs to the callback
+   *    v1.1   Clone the indices on each callback in case callback mutates
+   *    v0.13  Created
    *
    * See also:
    *
