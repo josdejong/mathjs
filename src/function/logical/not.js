@@ -20,7 +20,7 @@ export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *    math.not(0)      // returns true
    *    math.not(true)   // returns false
    *
-   *    a = [2, -7, 0]
+   *    const a = [2, -7, 0]
    *    math.not(a)      // returns [false, false, true]
    *
    * See also:

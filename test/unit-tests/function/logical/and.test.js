@@ -129,6 +129,7 @@ describe('and', function () {
     it('should and array - scalar', function () {
       assert.deepStrictEqual(and(10, [0, 2]), [false, true])
       assert.deepStrictEqual(and([0, 2], 10), [false, true])
+      assert.deepStrictEqual(and([0, 2], 0), [false, false])
     })
 
     it('should and array - array', function () {
@@ -154,6 +155,9 @@ describe('and', function () {
     it('should and dense matrix - scalar', function () {
       assert.deepStrictEqual(and(10, matrix([0, 2])), matrix([false, true]))
       assert.deepStrictEqual(and(matrix([0, 2]), 10), matrix([false, true]))
+      assert.deepStrictEqual(
+        and(matrix([[9], [0]]), 0),
+        matrix([[false], [false]]))
     })
 
     it('should and dense matrix - array', function () {
@@ -175,6 +179,9 @@ describe('and', function () {
     it('should and sparse matrix - scalar', function () {
       assert.deepStrictEqual(and(10, sparse([[0], [2]])), sparse([[false], [true]]))
       assert.deepStrictEqual(and(sparse([[0], [2]]), 10), sparse([[false], [true]]))
+      assert.deepStrictEqual(
+        and(sparse([0, 0, 3]), 0),
+        sparse([false, false, false]))
     })
 
     it('should and sparse matrix - array', function () {

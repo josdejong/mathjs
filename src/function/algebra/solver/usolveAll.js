@@ -28,7 +28,7 @@ export const createUsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    const a = [[-2, 3], [2, 1]]
    *    const b = [11, 9]
-   *    const x = usolveAll(a, b)  // [ [[8], [9]] ]
+   *    math.usolveAll(a, b)  // [ [[8], [9]] ]
    *
    * See also:
    *

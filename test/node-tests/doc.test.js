@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { approxEqual, approxDeepEqual } from '../../tools/approx.js'
 import { collectDocs } from '../../tools/docgenerator.js'
 import { create, all } from '../../lib/esm/index.js'
+import { isNode } from '../../src/utils/is.js'
 
 // Really stupid mock of the numbers module, for the core import.js doc test:
 const numbers = {
@@ -118,11 +119,8 @@ const knownProblems = new Set([
   'parser', 'compile',
   'subset', 'squeeze', 'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
-  'matrixFromColumns', 'getMatrixDataType', 'diff', 'slu',
-  'rationalize', 'lusolve',
-  'schur', 'sylvester', 'freqz', 'round',
-  'import', 'typed',
-  'unit', 'sparse', 'matrix', 'index', 'bignumber', 'fraction', 'complex'
+  'getMatrixDataType', 'diff', 'slu', 'lusolve',
+  'schur', 'sylvester', 'freqz',
 ])
 
 let issueCount = 0
@@ -152,7 +150,7 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
 function checkExpectation (want, got) {
   if (Array.isArray(want)) {
     if (!Array.isArray(got)) {
-      got = want.valueOf()
+      got = got.valueOf()
     }
     return approxDeepEqual(got, want, 1e-9)
   }
@@ -178,6 +176,9 @@ function checkExpectation (want, got) {
       console.log(`  Note: return value ${got} not exactly as expected: ${want}`)
     }
     return approxEqual(got, want, 1e-9)
+  }
+  if (typeof want === 'string' && isNode(got)) {
+    return got.toString() === want
   }
   if (
     typeof want === 'string' &&
@@ -455,10 +456,8 @@ describe('Testing examples from (jsdoc) comments', function () {
           for (const line of lines) {
             if (line.includes('//')) {
               let parts = line.split('//')
-              if (parts[0] && !parts[0].trim()) {
-                // Indented comment, unusual in examples
-                // assume this is a comment within some code to evaluate
-                // i.e., ignore it
+              if (!parts[0].trim() && !/^\s*(returns|throws)/.test(parts[1])) {
+                // Only a comment without "returns/throws" so ignore it
                 continue
               }
               // Comment specifying a future value or the return of prior code

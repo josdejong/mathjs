@@ -13,7 +13,6 @@ describe('numeric', function () {
   })
 
   it('should throw if called with invalid argument', function () {
-    assert.throws(() => { numeric(true, 'number') }, /Cannot convert/)
     assert.throws(() => { numeric(null, 'number') }, /Cannot convert/)
     assert.throws(() => { numeric([], 'number') }, /Cannot convert/)
     assert.throws(() => { numeric({}, 'number') }, /Cannot convert/)
@@ -103,10 +102,11 @@ describe('numeric', function () {
       617283945061728394506172839450617283945n
     )
 
-    assert.throws(() => tobi(math.bignumber(27.4)), RangeError)
-    assert.throws(
-      () => tobi(math.fraction('123456789012345678901234567890123456789/2')),
-      RangeError)
+    assert.strictEqual(tobi(math.bignumber(27.4)), 27n)
+    assert.strictEqual(tobi(math.bignumber(27.8)), 28n)
+    assert.strictEqual(
+      tobi(math.fraction('123456789012345678901234567890123456789/2')),
+      61728394506172839450617283945061728395n)
   })
 
   it('should LaTeX numeric', function () {

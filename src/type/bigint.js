@@ -46,7 +46,7 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    math.bigint([true, false, true, true])   // returns [1n, 0n, 1n, 1n]
    *    math.bigint(3**50)                       // returns 717897987691852578422784n
    *        // note inexactness above from number precision; actual 3n**50n is
-   *        // 717897987691852588770249n
+   *        // the bigint 717897987691852588770249n
    *    math.bigint(3**50, {safe: true})         // throws RangeError
    *    math.bigint(math.pow(math.bignumber(11), 64)) // returns 4457915684525902395869512133369841539490161434991526715513934826000n
    *        // similarly inaccurate; last three digits should be 241
