@@ -191,29 +191,6 @@ export function generateDoc (name, code) {
     return false
   }
 
-  function parseHistory () {
-    if (/^history/i.test(line)) {
-      next()
-      skipEmptyLines()
-
-      while (exists() && !empty()) {
-        let [_all, indent, version, entry] = line.match(/^(\s*)(\S*)\s+(.*)$/)
-        const moreIndent = indent + ' '
-        next()
-        while (exists() && !empty() && line.startsWith(moreIndent)) {
-          entry += ' ' + line.trim()
-          next()
-        }
-        doc.history[version] = entry
-      }
-
-      skipEmptyLines()
-
-      return true
-    }
-    return false
-  }
-
   function parseExamples () {
     if (/^example/i.test(line)) {
       next()
@@ -361,7 +338,6 @@ export function generateDoc (name, code) {
     description: '',
     syntax: [],
     where: [],
-    history: {},
     examples: [],
     seeAlso: [],
     parameters: [],
@@ -378,7 +354,6 @@ export function generateDoc (name, code) {
 
     const handled = parseSyntax() ||
         parseWhere() ||
-        parseHistory() ||
         parseExamples() ||
         parseSeeAlso() ||
         parseParameters() ||
@@ -541,15 +516,6 @@ export function generateMarkdown (doc, functions) {
           return '[' + name + '](' + name + '.md)'
         }).join(',\n') +
         '\n'
-  }
-
-  if (Object.keys(doc.history).length > 0) {
-    text += '## History\n\n' +
-      'Version | Comment\n' +
-      '------- | -------\n'
-    for (const version in doc.history) {
-      text += `${version} | ${doc.history[version]}\n`
-    }
   }
 
   return text
