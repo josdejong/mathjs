@@ -45,15 +45,19 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    math.bigint(true)                        // returns 1n
    *    math.bigint([true, false, true, true])   // returns [1n, 0n, 1n, 1n]
    *    math.bigint(3**50)                       // returns 717897987691852578422784n
-   *        // note inexactness above from number precision; actual 3n**50n is
-   *        // the bigint 717897987691852588770249n
+   *    // note inexactness above from number precision; actual 3n**50n is
+   *    // the bigint 717897987691852588770249n
+   *
    *    math.bigint(3**50, {safe: true})         // throws RangeError
    *    math.bigint(math.pow(math.bignumber(11), 64)) // returns 4457915684525902395869512133369841539490161434991526715513934826000n
-   *        // similarly inaccurate; last three digits should be 241
+   *    // similarly inaccurate; last three digits should be 241
+   *
    *    math.bigint(
    *      math.pow(math.bignumber(11), 64),
    *      {safe: true})                         // throws RangeError
    *    math.bigint(math.fraction(13, 2))       // returns 7n
+   *    math.bigint(math.complex(2.5, -0.3))    // returns 3n
+   *    math.bigint(math.complex(-17, 1))       // throws RangeError
    *    math.bigint(6.5, {round: 'throw'})      // throws RangeError
    *    math.bigint(6.5, {round: 'floor'})      // returns 6n
    *    math.bigint(-6.5, {round: 'ceil'})      // returns -6n
@@ -72,7 +76,6 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
     '': function () {
       return 0n
     },
-
     null: function (x) {
       return 0n
     },
@@ -100,6 +103,9 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     'number | BigNumber | Fraction': numericToBigint,
     'number | BigNumber | Fraction, Object': numericToBigint,
+
+    Complex: complexToBigint,
+    'Complex, Object': complexToBigint,
 
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
@@ -156,7 +162,9 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
     if (/^0[box]/.test(value)) return BigInt(value)
 
     // Otherwise, have to parse ourselves, because BigInt() doesn't allow
-    // rounding; it throws on all decimals.
+    // rounding; it throws on all decimals. We also can't use parseFloat
+    // because it will go through the `number` type with its potential loss
+    // of accuracy.
     const match = value.match(/^([+-])?(\d*)([.,]\d*)?([eE][+-]?\d+)?$/)
     if (!match) {
       throw new SyntaxError('invalid BigInt syntax')
@@ -194,6 +202,16 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
     // 0-4 mean 'fix'; 5-9 'fix' + sgn. This is the half-round rule "away".
     if (/[0-4]/.test(fracPart[0])) return intVal
     return intVal + sgn
+  }
+
+  function complexToBigint (z, options = {}) {
+    if (numericToBigint(z.im, options) !== 0n) {
+      throw new RangeError(
+        `Complex number with nonzero imaginary part ${z.im} cannot ` +
+          'be converted to bigint.'
+      )
+    }
+    return numericToBigint(z.re, options)
   }
 
   return bigint
