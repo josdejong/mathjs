@@ -44,6 +44,12 @@ describe('bigint', function () {
     )
   })
 
+  it('should convert a Complex to a bigint', function () {
+    assert.strictEqual(bigint(math.complex(0)), 0n)
+    assert.strictEqual(bigint(math.complex(6543210.9, 0.49)), 6543211n)
+    assert.throws(() => bigint(math.complex(0, -0.6)), RangeError)
+  })
+
   it('should accept a bigint as argument', function () {
     assert.strictEqual(bigint(3n), 3n)
     assert.strictEqual(bigint(-3n), -3n)
@@ -126,10 +132,6 @@ describe('bigint', function () {
   it('should throw an error if called with a wrong number of arguments', function () {
     assert.throws(function () { bigint(1, 2, 3) }, TypeError)
     assert.throws(function () { bigint(1, {}, 3) }, /TypeError: Too many arguments/)
-  })
-
-  it('should throw an error if called with a complex number', function () {
-    assert.throws(function () { bigint(math.complex(2, 3)) }, TypeError)
   })
 
   it('should throw an error with wrong type of arguments', function () {
