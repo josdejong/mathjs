@@ -25,7 +25,7 @@
     "unit"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.25.7",
+    "@babel/runtime": "^7.26.10",
     "complex.js": "^2.2.5",
     "decimal.js": "^10.4.3",
     "escape-latex": "^1.2.0",

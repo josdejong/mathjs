@@ -8,6 +8,7 @@
 - Fix: #3422 allow dot operators after symbol E (#3425).
 - Fix: issue in the `nthRoots` latex function template string (#3427).
   Thanks @aitee.
+- Fix: upgrade to the latest version of `@babel/runtime`.
 
 # 2025-03-06, 14.3.1
 
