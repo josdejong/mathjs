@@ -114,8 +114,9 @@ Operators                         | Description
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
 `+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
+`%`                               | Unary percentage
 See section below                 | Implicit multiplication
-`*`, `/`, `.*`, `./`,`%`, `mod`   | Multiply, divide , percentage, modulus
+`*`, `/`, `.*`, `./`,`%`, `mod`   | Multiply, divide, modulus
 `+`, `-`                          | Add, subtract
 `:`                               | Range
 `to`, `in`                        | Unit conversion
@@ -134,8 +135,8 @@ See section below                 | Implicit multiplication
 `\n`, `;`                         | Statement separators
 
 Lazy evaluation is used where logically possible for bitwise and logical
-operators. In the following example, the value of `x` will not even be 
-evaluated because it cannot effect the final result: 
+operators. In the following example, the value of `x` will not even be
+evaluated because it cannot effect the final result:
 ```js
 math.evaluate('false and x')        // false, no matter what x equals
 ```
@@ -652,7 +653,7 @@ at 1, when the end is undefined, the range will end at the end of the matrix.
 
 There is a context variable `end` available as well to denote the end of the
 matrix. This variable cannot be used in multiple nested indices. In that case,
-`end` will be resolved as the end of the innermost matrix. To solve this, 
+`end` will be resolved as the end of the innermost matrix. To solve this,
 resolving of the nested index needs to be split in two separate operations.
 
 *IMPORTANT: matrix indexes and ranges work differently from the math.js indexes
