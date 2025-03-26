@@ -169,9 +169,9 @@
 Breaking changes:
 
 - Change `isZero`, `isPositive`, and `isNegative` to respect `config.epsilon`
-  (#3139, #2838).
+  (#3139, #2838). Thanks @dvd101x.
 - Change the behavior of the internal `nearlyEqual` to align with Python and
-  Julia (#3152, #2838)
+  Julia (#3152, #2838). Thanks @dvd101x.
 - Upgrade to `fraction.js@4.3.7`,
   see <https://github.com/rawify/Fraction.js/issues/68>.
 - Dropped support for JavaScript engines that do not fully support ES6 or
