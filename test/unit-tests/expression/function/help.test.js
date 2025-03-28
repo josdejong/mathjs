@@ -2,6 +2,32 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { embeddedDocs } from '../../../../src/expression/embeddedDocs/embeddedDocs.js'
 
+let mathDocs = math.create(math.all)
+const originalConfig = mathDocs.config()
+// Add functions to the skipDocs array if their examples in the embedded docs contain acceptable errors
+const skipDocs = ['import', 'addScalar', 'divideScalar', 'equalScalar', 'multiplyScalar',
+  'subtractScalar', 'apply', 'replacer', 'reviver']
+
+const testDocs = Array.from(new Set([
+  ...Object.keys(embeddedDocs),
+  ...Object.keys(math.expression.mathWithTransform)]))
+  .filter(name => !skipDocs.includes(name))
+
+function runExamplesInDocs (name) {
+  mathDocs.config(originalConfig)
+  // every funciton should have doc.examples
+  const examples = mathDocs.evaluate(`help("${name}")`).doc.examples
+  try {
+    // validate if the examples run without errors
+    mathDocs.evaluate(examples)
+    return
+  } catch {
+  }
+  // if they still have errors try with a new math instance
+  mathDocs = math.create(math.all)
+  mathDocs.evaluate(examples)
+}
+
 describe('help', function () {
   it('should find documentation for a function by its name', function () {
     const help = math.help('sin')
@@ -66,4 +92,22 @@ describe('help', function () {
     const expression = math.parse('help(parse)')
     assert.strictEqual(expression.toTex(), '\\mathrm{help}\\left( parse\\right)')
   })
+
+  for (const name of testDocs) {
+    it(`should find documentation for ${name}`, function () {
+      assert.doesNotThrow(() => mathDocs.help(name).doc)
+    })
+  }
+
+  for (const name of testDocs) {
+    it(`should find examples for ${name}`, function () {
+      assert.doesNotThrow(() => mathDocs.help(name).doc.examples)
+    })
+  }
+
+  for (const name of testDocs) {
+    it(`should run examples for ${name} without errors`, function () {
+      assert.doesNotThrow(() => runExamplesInDocs(name))
+    })
+  }
 })
