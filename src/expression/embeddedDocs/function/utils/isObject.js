@@ -9,6 +9,9 @@
  *
  *    math.isObject({ a: 1 })
  *
+ * See also:
+ *  isArray
+ *
  * @param {*} x   Value to be tested
  * @return {boolean}  Returns true when `x` is an object, false otherwise.
  */
@@ -18,5 +21,5 @@ export const isObjectDocs = {
   syntax: ['isObject(x)'],
   description: 'Check if a value is an object.',
   examples: ['isObject({ a: 1 })'],
-  seealso: []
+  seealso: ['isArray']
 }

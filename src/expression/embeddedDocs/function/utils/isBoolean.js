@@ -9,6 +9,9 @@
  *
  *    math.isBoolean(true)
  *
+ * See also:
+ *  isNumber, isString, isArray, isObject
+ *
  * @param {*} x   Value to be tested
  * @return {boolean}  Returns true when `x` is a boolean, false otherwise.
  */
@@ -18,5 +21,5 @@ export const isBooleanDocs = {
   syntax: ['isBoolean(x)'],
   description: 'Check if a value is a boolean.',
   examples: ['isBoolean(true)', 'isBoolean(false)'],
-  seealso: []
+  seealso: ['isNumber', 'isString', 'isArray', 'isObject']
 }

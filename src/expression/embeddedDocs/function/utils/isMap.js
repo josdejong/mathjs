@@ -9,6 +9,9 @@
  *
  *    math.isMap(new Map())
  *
+ * See also:
+ *  isObject
+ *
  * @param {*} x   Value to be tested
  * @return {boolean}  Returns true when `x` is a Map, false otherwise.
  */
@@ -18,5 +21,5 @@ export const isMapDocs = {
   syntax: ['isMap(x)'],
   description: 'Check if a value is a Map.',
   examples: ['isMap(new Map())'],
-  seealso: []
+  seealso: ['isObject']
 }

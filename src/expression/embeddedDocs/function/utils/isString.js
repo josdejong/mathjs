@@ -13,6 +13,10 @@
  * See also:
  *
  *    isNumber, isArray
+ *
+ * @param {*} x   Value to be tested
+ * @return {boolean}  Returns true when `x` is a string, false otherwise.
+ *
  */
 export const isStringDocs = {
   name: 'isString',

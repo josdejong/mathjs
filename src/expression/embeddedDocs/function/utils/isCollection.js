@@ -13,6 +13,9 @@
  * See also:
  *
  *    isArray, isMatrix
+ *
+ * @param {*} x   Value to be tested
+ * @return {boolean}  Returns true when `x` is a Collection, false otherwise.
  */
 export const isCollectionDocs = {
   name: 'isCollection',

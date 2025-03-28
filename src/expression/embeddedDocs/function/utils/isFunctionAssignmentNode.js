@@ -9,6 +9,9 @@
  *
  *    math.isFunctionAssignmentNode()
  *
+ * See also:
+ *  isFunction
+ *
  * @param {*} x   Node to be tested
  * @return {boolean}  Returns true when `x` is a function assignment node, false otherwise.
  */
@@ -18,5 +21,5 @@ export const isFunctionAssignmentNodeDocs = {
   syntax: ['isFunctionAssignmentNode(x)'],
   description: 'Check if a node is a function assignment node.',
   examples: ['isFunctionAssignmentNode(/* example node */)'],
-  seealso: []
+  seealso: ['isFunction']
 }

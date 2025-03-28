@@ -9,6 +9,9 @@
  *
  *    math.isNull(null)
  *
+ * See also:
+ *  isUndefined
+ *
  * @param {*} x   Value to be tested
  * @return {boolean}  Returns true when `x` is null, false otherwise.
  */
@@ -18,5 +21,5 @@ export const isNullDocs = {
   syntax: ['isNull(x)'],
   description: 'Check if a value is null.',
   examples: ['isNull(null)'],
-  seealso: []
+  seealso: ['isUndefined']
 }

@@ -8,6 +8,10 @@
  * Examples:
  *
  *    math.isParenthesisNode()
+ *
+ * See also:
+ * ParenthesisNode
+ *
  * @param {*} x   Node to be tested
  * @return {boolean}  Returns true when `x` is a parenthesis node, false otherwise.
  */
@@ -17,5 +21,5 @@ export const isParenthesisNodeDocs = {
   syntax: ['isParenthesisNode(x)'],
   description: 'Check if a node is a parenthesis node.',
   examples: ['isParenthesisNode(/* example node */)'],
-  seealso: []
+  seealso: ['ParenthesisNode']
 }

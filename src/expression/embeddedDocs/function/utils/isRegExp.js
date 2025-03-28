@@ -9,6 +9,9 @@
  *
  *    math.isRegExp(/abc/)
  *
+ * See also:
+ *  isString
+ *
  * @param {*} x   Value to be tested
  * @return {boolean}  Returns true when `x` is a RegExp, false otherwise.
  */
@@ -18,5 +21,5 @@ export const isRegExpDocs = {
   syntax: ['isRegExp(x)'],
   description: 'Check if a value is a regular expression.',
   examples: ['isRegExp(/abc/)'],
-  seealso: []
+  seealso: ['isString']
 }

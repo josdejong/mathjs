@@ -12,7 +12,10 @@
  *
  * See also:
  *
- *    isNumber, isString
+ *    Unit
+ *
+ * @param {*} x   Value to be tested
+ * @return {boolean}  Returns true when `x` is a unit, false otherwise.
  */
 export const isUnitDocs = {
   name: 'isUnit',
@@ -20,5 +23,5 @@ export const isUnitDocs = {
   syntax: ['isUnit(x)'],
   description: 'Test whether a value is a Unit.',
   examples: ['isUnit(math.unit("5cm"))', 'isUnit(5)'],
-  seealso: ['isNumber', 'isString']
+  seealso: ['Unit']
 }

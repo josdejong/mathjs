@@ -13,6 +13,9 @@
  * See also:
  *
  *    isMatrix, isSparseMatrix
+ *
+ * @param {*} x   Value to be tested
+ * @return {boolean}  Returns true when `x` is a Dense Matrix, false otherwise.
  */
 export const isDenseMatrixDocs = {
   name: 'isDenseMatrix',

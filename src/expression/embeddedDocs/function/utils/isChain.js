@@ -9,6 +9,9 @@
  *
  *   math.isChain(math.chain(3))
  *
+ * See also:
+ *  chain
+ *
  * @param {*} x   Value to be tested
  * @return {boolean}  Returns true when `x` is a Chain, false otherwise.
  *

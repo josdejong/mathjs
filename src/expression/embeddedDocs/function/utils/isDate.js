@@ -9,6 +9,9 @@
  *
  *    math.isDate(new Date())
  *
+ * See also:
+ *  isNumber
+ *
  * @param {*} x   Value to be tested
  * @return {boolean}  Returns true when `x` is a Date, false otherwise.
  */
@@ -18,5 +21,5 @@ export const isDateDocs = {
   syntax: ['isDate(x)'],
   description: 'Check if a value is a Date object.',
   examples: ['isDate(new Date())'],
-  seealso: []
+  seealso: ['isNumber']
 }

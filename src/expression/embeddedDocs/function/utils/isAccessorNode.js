@@ -9,6 +9,9 @@
  *
  *    math.isAccessorNode()
  *
+ * See also:
+ *  isNode
+ *
  * @param {*} x   Node to be tested
  * @return {boolean}  Returns true when `x` is a accessor node, false otherwise.
  */

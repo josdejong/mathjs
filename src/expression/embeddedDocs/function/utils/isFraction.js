@@ -13,6 +13,9 @@
  * See also:
  *
  *    isNumber, isBigNumber, isBigInt
+ *
+ * @param {*} x   Value to be tested
+ * @return {boolean}  Returns true when `x` is a Fraction, false otherwise.
  */
 export const isFractionDocs = {
   name: 'isFraction',

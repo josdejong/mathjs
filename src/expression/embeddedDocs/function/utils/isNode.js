@@ -9,6 +9,9 @@
  *
  *    math.isNode()
  *
+ * See also:
+ *  Node
+ *
  * @param {*} x   Value to be tested
  * @return {boolean}  Returns true when `x` is a node, false otherwise.
  */
@@ -18,5 +21,5 @@ export const isNodeDocs = {
   syntax: ['isNode(x)'],
   description: 'Check if a value is a node.',
   examples: ['isNode(/* example node */)'],
-  seealso: []
+  seealso: ['Node']
 }

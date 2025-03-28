@@ -9,6 +9,9 @@
  *
  *    math.isResultSet()
  *
+ * See also:
+ *   ResultSet
+ *
  * @param {*} x   Value to be tested
  * @return {boolean}  Returns true when `x` is a result set, false otherwise.
  */
@@ -18,5 +21,5 @@ export const isResultSetDocs = {
   syntax: ['isResultSet(x)'],
   description: 'Check if a value is a result set.',
   examples: ['isResultSet(/* example value */)'],
-  seealso: []
+  seealso: ['ResultSet']
 }

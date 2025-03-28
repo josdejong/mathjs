@@ -9,6 +9,9 @@
  *
  *    math.isHelp()
  *
+ * See also:
+ *  help
+ *
  * @param {*} x   Value to be tested
  * @return {boolean}  Returns true when `x` is a help request, false otherwise.
  */
@@ -18,5 +21,5 @@ export const isHelpDocs = {
   syntax: ['isHelp(x)'],
   description: 'Check if a value requests help.',
   examples: ['isHelp(/* example value */)'],
-  seealso: []
+  seealso: ['help']
 }

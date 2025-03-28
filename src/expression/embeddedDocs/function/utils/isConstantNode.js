@@ -9,6 +9,9 @@
  *
  *    math.isConstantNode(new math.ConstantNode(1)) // returns true
  *
+ * See also:
+ *  isNode
+ *
  * @param {*} x   Node to be tested
  * @return {boolean}  Returns true when `x` is a constant node, false otherwise.
  */

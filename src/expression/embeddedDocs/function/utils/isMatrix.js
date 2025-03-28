@@ -13,6 +13,9 @@
  * See also:
  *
  *    isArray, isDenseMatrix, isSparseMatrix
+ *
+ * @param {*} x   Value to be tested
+ * @return {boolean}  Returns true when `x` is a Matrix, false otherwise.
  */
 export const isMatrixDocs = {
   name: 'isMatrix',
