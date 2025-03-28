@@ -5,6 +5,7 @@
 - Feat: improve the performance of function `flatten` (#3400). Thanks @dvd101x.
 - Feat: improve the performance of `map` and `forEach` (#3409).
   Thanks @dvd101x.
+- Feat: add LaTeX representation for fractions (#3434, #3419). Thanks @orelbn.
 - Fix: #3422 allow dot operators after symbol E (#3425).
 - Fix: issue in the `nthRoots` latex function template string (#3427).
   Thanks @aitee.
