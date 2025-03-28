@@ -27,7 +27,7 @@ export function containsCollections (array) {
  */
 export function deepForEach (array, callback) {
   if (isMatrix(array)) {
-    array.forEach(x => callback(x))
+    array.forEach(x => callback(x), false, true)
   } else {
     arrayDeepForEach(array, callback, true)
   }
@@ -48,14 +48,14 @@ export function deepForEach (array, callback) {
 export function deepMap (array, callback, skipZeros) {
   if (!skipZeros) {
     if (isMatrix(array)) {
-      return array.map(x => callback(x))
+      return array.map(x => callback(x), false, true)
     } else {
       return arrayDeepMap(array, callback, true)
     }
   }
   const skipZerosCallback = (x) => x === 0 ? x : callback(x)
   if (isMatrix(array)) {
-    return array.map(x => skipZerosCallback(x))
+    return array.map(x => skipZerosCallback(x), false, true)
   } else {
     return arrayDeepMap(array, skipZerosCallback, true)
   }
