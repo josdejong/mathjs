@@ -124,6 +124,7 @@ export const latexFunctions = {
   expm1: `\\left(e${latexOperators.pow}{\${args[0]}}-1\\right)`,
   fix: { 1: '\\mathrm{${name}}\\left(${args[0]}\\right)' },
   floor: { 1: '\\left\\lfloor${args[0]}\\right\\rfloor' },
+  fraction: { 2: '\\frac{${args[0]}}{${args[1]}}' },
   gcd: '\\gcd\\left(${args}\\right)',
   hypot: '\\hypot\\left(${args}\\right)',
   log: {
