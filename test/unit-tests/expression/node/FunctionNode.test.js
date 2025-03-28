@@ -519,6 +519,9 @@ describe('FunctionNode', function () {
     const o = new OperatorNode('+', 'add', [c1, c2])
     const n3 = new FunctionNode(new SymbolNode('permutations'), [o])
     assert.strictEqual(n3.toTex(), '\\mathrm{permutations}\\left(4+5\\right)')
+
+    const n4 = new FunctionNode(new SymbolNode('nthRoots'), [c1, c2])
+    assert.strictEqual(n4.toTex(), '\\{y : y^5 = {4}\\}')
   })
 
   it('should have an identifier', function () {
