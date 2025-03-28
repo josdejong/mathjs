@@ -4,11 +4,22 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
-<h1 id="20240306-1431">2024-03-06, 14.3.1 <a href="#20240306-1431" title="Permalink">#</a></h1>
+<h1 id="20250328-1440">2025-03-28, 14.4.0 <a href="#20250328-1440" title="Permalink">#</a></h1>
+
+- Feat: improve the performance of function `flatten` (<a href="https://github.com/josdejong/mathjs/issues/3400">#3400</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: improve the performance of `map` and `forEach` (<a href="https://github.com/josdejong/mathjs/issues/3409">#3409</a>).
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: add LaTeX representation for fractions (<a href="https://github.com/josdejong/mathjs/issues/3434">#3434</a>, <a href="https://github.com/josdejong/mathjs/issues/3419">#3419</a>). Thanks <a href="https://github.com/orelbn">@orelbn</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3422">#3422</a> allow dot operators after symbol E (<a href="https://github.com/josdejong/mathjs/issues/3425">#3425</a>).
+- Fix: issue in the `nthRoots` latex function template string (<a href="https://github.com/josdejong/mathjs/issues/3427">#3427</a>).
+  Thanks <a href="https://github.com/aitee">@aitee</a>.
+- Fix: upgrade to the latest version of `@babel/runtime`.
+
+<h1 id="20250306-1431">2025-03-06, 14.3.1 <a href="#20250306-1431" title="Permalink">#</a></h1>
 
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3350">#3350</a> cannot import a constant that is a complex number.
 
-<h1 id="20240228-1430">2024-02-28, 14.3.0 <a href="#20240228-1430" title="Permalink">#</a></h1>
+<h1 id="20250228-1430">2025-02-28, 14.3.0 <a href="#20250228-1430" title="Permalink">#</a></h1>
 
 - Feat: improved performance of function `flatten` (<a href="https://github.com/josdejong/mathjs/issues/3354">#3354</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Feat: improved performance of `DenseMatrix` Symbol.iterator (<a href="https://github.com/josdejong/mathjs/issues/3395">#3395</a>). 
@@ -24,11 +35,11 @@ layout: default
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3387">#3387</a> use utility `math.isNaN` for consistent `max` and `min` results 
   (<a href="https://github.com/josdejong/mathjs/issues/3389">#3389</a>). Thanks <a href="https://github.com/orelbn">@orelbn</a>.
 
-<h1 id="20240205-1421">2024-02-05, 14.2.1 <a href="#20240205-1421" title="Permalink">#</a></h1>
+<h1 id="20250205-1421">2025-02-05, 14.2.1 <a href="#20250205-1421" title="Permalink">#</a></h1>
 
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3377">#3377</a> remove redundant dependency `@lambdatest/node-tunnel`.
 
-<h1 id="20240130-1420">2024-01-30, 14.2.0 <a href="#20240130-1420" title="Permalink">#</a></h1>
+<h1 id="20250130-1420">2025-01-30, 14.2.0 <a href="#20250130-1420" title="Permalink">#</a></h1>
 
 - Feat: <a href="https://github.com/josdejong/mathjs/issues/3041">#3041</a>, <a href="https://github.com/josdejong/mathjs/issues/3340">#3340</a> rename `apply` to `mapSlices` (<a href="https://github.com/josdejong/mathjs/issues/3357">#3357</a>). Function
   `apply` is still available but is now marked deprecated. Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
@@ -163,9 +174,9 @@ layout: default
 Breaking changes:
 
 - Change `isZero`, `isPositive`, and `isNegative` to respect `config.epsilon`
-  (<a href="https://github.com/josdejong/mathjs/issues/3139">#3139</a>, <a href="https://github.com/josdejong/mathjs/issues/2838">#2838</a>).
+  (<a href="https://github.com/josdejong/mathjs/issues/3139">#3139</a>, <a href="https://github.com/josdejong/mathjs/issues/2838">#2838</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Change the behavior of the internal `nearlyEqual` to align with Python and
-  Julia (<a href="https://github.com/josdejong/mathjs/issues/3152">#3152</a>, <a href="https://github.com/josdejong/mathjs/issues/2838">#2838</a>)
+  Julia (<a href="https://github.com/josdejong/mathjs/issues/3152">#3152</a>, <a href="https://github.com/josdejong/mathjs/issues/2838">#2838</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Upgrade to `fraction.js@4.3.7`,
   see <https://github.com/rawify/Fraction.js/issues/68>.
 - Dropped support for JavaScript engines that do not fully support ES6 or
