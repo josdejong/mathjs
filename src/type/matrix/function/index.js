@@ -31,7 +31,7 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    const a = math.matrix([[1, 2], [3, 4]])
    *    a.subset(math.index(0, 1))             // returns 2
-   *    a.subset(math.index(0, [false, true])) // returns 2
+   *    a.subset(math.index(0, [false, true])) // returns [[2]]
    *
    * See also:
    *
