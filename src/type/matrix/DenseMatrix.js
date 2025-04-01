@@ -546,8 +546,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     const fastCallback = optimizeCallback(callback, me, 'map', isUnary)
     const fastCallbackFn = fastCallback.fn
 
-    const result = me.create(undefined, me._datatype).resize(me._size)
-
+    const result = me.create(undefined, me._datatype)
+    result._size = me._size
     if (isUnary || fastCallback.isUnary) {
       result._data = iterateUnary(me._data)
       return result
