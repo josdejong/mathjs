@@ -25,7 +25,7 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
       : noFraction
   }
 
-/**
+  /**
  * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
  *
  * Syntax:
