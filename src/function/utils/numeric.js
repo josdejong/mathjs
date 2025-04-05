@@ -25,35 +25,36 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
       : noFraction
   }
 
-  /**
-   * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
-   *
-   * Syntax:
-   *
-   *    math.numeric(x)
-   *
-   * Examples:
-   *
-   *    math.numeric('4')                           // returns 4
-   *    math.numeric('4', 'number')                 // returns 4
-   *    math.numeric('4', 'bigint')                 // returns 4n
-   *    math.numeric('4', 'BigNumber')              // returns BigNumber 4
-   *    math.numeric('4', 'Fraction')               // returns Fraction 4
-   *    math.numeric(4, 'Fraction')                 // returns Fraction 4
-   *    math.numeric(math.fraction(2, 5), 'number') // returns 0.4
-   *
-   * See also:
-   *
-   *    number, fraction, bignumber, bigint, string, format
-   *
-   * @param {string | number | BigNumber | bigint | Fraction } value
-   *              A numeric value or a string containing a numeric value
-   * @param {string} outputType
-   *              Desired numeric output type.
-   *              Available values: 'number', 'BigNumber', or 'Fraction'
-   * @return {number | BigNumber | bigint | Fraction}
-   *              Returns an instance of the numeric in the requested type
-   */
+/**
+ * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
+ *
+ * Syntax:
+ *
+ *    math.numeric(value)
+ *    math.numeric(value, outputType)
+ *
+ * Examples:
+ *    math.numeric('4')                           // returns 4
+ *    math.numeric('4', 'number')                 // returns 4
+ *    math.numeric('4', 'bigint')                 // returns 4n
+ *    math.numeric('4', 'BigNumber')              // returns BigNumber 4
+ *    math.numeric('4', 'Fraction')               // returns Fraction 4
+ *    math.numeric(4, 'Fraction')                 // returns Fraction 4
+ *    math.numeric(math.fraction(2, 5), 'number') // returns 0.4
+ *
+ * See also:
+ *
+ *    number, fraction, bignumber, bigint, string, format
+ *
+ * @param {string | number | BigNumber | bigint | Fraction } value
+ *              A numeric value or a string containing a numeric value
+ * @param {string} [outputType]
+ *              Desired numeric output type.
+ *              Available values: 'number', 'BigNumber', 'bigint', or 'Fraction'
+ * @return {number | BigNumber | bigint | Fraction}
+ *              Returns an instance of the numeric in the requested type
+ */
+
   return function numeric (value, outputType = 'number', check) {
     if (check !== undefined) {
       throw new SyntaxError('numeric() takes one or two arguments')
