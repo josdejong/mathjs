@@ -1,5 +1,10 @@
 # History
 
+# Unpublished changes since 14.4.0
+
+- Feat: increase performance of the `map` and `forEach` methods of 
+  `DenseMatrix` (#3446). Thanks @dvd101x.
+
 # 2025-03-28, 14.4.0
 
 - Feat: improve the performance of function `flatten` (#3400). Thanks @dvd101x.
