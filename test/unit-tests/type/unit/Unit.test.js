@@ -1098,6 +1098,14 @@ describe('Unit', function () {
       assert.deepStrictEqual(unit4.divide(unit5), unit6)
     })
 
+    it('should multiply a unit having a number value with a BigNumber', function () {
+      assert.deepStrictEqual(new Unit(null, 'fahrenheit').multiply(math.bignumber(123)).format(12), '123 fahrenheit')
+    })
+
+    it('should divide a unit having a number value with a BigNumber', function () {
+      assert.deepStrictEqual(new Unit(null, 'fahrenheit').divide(math.bignumber(1).div(123)).format(12), '123 fahrenheit')
+    })
+
     // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should cancel units in numerator and denominator', function () {
       assert.strictEqual(math.evaluate('2 J/K/g * 2 g').toString(), '4 J / K')
