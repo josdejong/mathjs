@@ -1370,18 +1370,29 @@ describe('parse', function () {
     })
 
     it('should parse % with division', function () {
-      approxEqual(parseAndEval('100/50%'), 0.02) // should be treated as ((100/50)%)
-      approxEqual(parseAndEval('100/50%*2'), 0.04) // should be treated as ((100/50)%))×2
+      approxEqual(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
+      approxEqual(parseAndEval('100/50%*2'), 400) // should be treated as (100/(50%))×2
       approxEqual(parseAndEval('50%/100'), 0.005)
+      approxEqual(parseAndEval('50%(13)'), 11) // should be treated as 50 % (13)
       assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
     })
 
-    it('should parse % with addition', function () {
+    it('should parse unary % before division, binary % with division', function () {
+      approxEqual(parseAndEval('10/200%%3'), 2) // should be treated as (10/(200%))%3
+    })
+
+    it('should reject repeated unary percentage operators', function () {
+      assert.throws(function () { math.parse('17%%') }, /Unexpected operator %/)
+      assert.throws(function () { math.parse('17%%*5') }, /Unexpected operator %/)
+      assert.throws(function () { math.parse('10/200%%%3') }, /Unexpected operator %/)
+    })
+
+    it('should parse unary % with addition', function () {
       approxEqual(parseAndEval('100+3%'), 103)
       approxEqual(parseAndEval('3%+100'), 100.03)
     })
 
-    it('should parse % with subtraction', function () {
+    it('should parse unary % with subtraction', function () {
       approxEqual(parseAndEval('100-3%'), 97)
       approxEqual(parseAndEval('3%-100'), -99.97)
     })
@@ -1390,12 +1401,12 @@ describe('parse', function () {
       approxEqual(parseAndEval('8 mod 3'), 2)
     })
 
-    it('should give equal precedence to % and * operators', function () {
+    it('should give equal precedence to binary % and * operators', function () {
       approxEqual(parseAndStringifyWithParens('10 % 3 * 2'), '(10 % 3) * 2')
       approxEqual(parseAndStringifyWithParens('10 * 3 % 4'), '(10 * 3) % 4')
     })
 
-    it('should give equal precedence to % and / operators', function () {
+    it('should give equal precedence to binary % and / operators', function () {
       approxEqual(parseAndStringifyWithParens('10 % 4 / 2'), '(10 % 4) / 2')
       approxEqual(parseAndStringifyWithParens('10 / 2 % 3'), '(10 / 2) % 3')
     })
@@ -1410,12 +1421,12 @@ describe('parse', function () {
       approxEqual(parseAndStringifyWithParens('8 / 3 mod 2'), '(8 / 3) mod 2')
     })
 
-    it('should give equal precedence to % and .* operators', function () {
+    it('should give equal precedence to binary % and .* operators', function () {
       approxEqual(parseAndStringifyWithParens('10 % 3 .* 2'), '(10 % 3) .* 2')
       approxEqual(parseAndStringifyWithParens('10 .* 3 % 4'), '(10 .* 3) % 4')
     })
 
-    it('should give equal precedence to % and ./ operators', function () {
+    it('should give equal precedence to binary % and ./ operators', function () {
       approxEqual(parseAndStringifyWithParens('10 % 4 ./ 2'), '(10 % 4) ./ 2')
       approxEqual(parseAndStringifyWithParens('10 ./ 2 % 3'), '(10 ./ 2) % 3')
     })
