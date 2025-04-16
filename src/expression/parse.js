@@ -1161,21 +1161,13 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseUnaryPercentage (state) {
-    let node
+    let node = parseUnary(state)
 
-    node = parseUnary(state)
-
-    const operators = {
-      '%': 'unaryPercentage'
-    }
-
-    if (hasOwnProperty(operators, state.token)) {
-      const name = state.token
-
+    if (state.token === '%') {
       const previousState = Object.assign({}, state)
       getTokenSkipNewline(state)
 
-      if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
+      if (state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
         // This is unary postfix %, then treat that as /100
         node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
       } else {
