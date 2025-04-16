@@ -657,12 +657,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // If at least one operand has a value, then the result should also have a value
     if (this.value !== null || other.value !== null) {
-      const valThis = this.value === null
-        ? this._normalize(convertToTypeOf(1, other.value))
-        : this.value
-      const valOther = other.value === null
-        ? other._normalize(convertToTypeOf(1, this.value))
-        : other.value
+      const valThis = this.value === null ? this._normalize(one(other.value)) : this.value
+      const valOther = other.value === null ? other._normalize(one(this.value)) : other.value
 
       res.value = multiplyScalar(valThis, valOther)
     } else {
@@ -714,12 +710,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // If at least one operand has a value, the result should have a value
     if (this.value !== null || other.value !== null) {
-      const valThis = this.value === null
-        ? this._normalize(convertToTypeOf(1, other.value))
-        : this.value
-      const valOther = other.value === null
-        ? other._normalize(convertToTypeOf(1, this.value))
-        : other.value
+      const valThis = this.value === null ? this._normalize(one(other.value)) : this.value
+      const valOther = other.value === null ? other._normalize(one(this.value)) : other.value
       res.value = divideScalar(valThis, valOther)
     } else {
       res.value = null
@@ -782,20 +774,19 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * convert `value` into the numeric type of `typeOfValue`.
-   * For example convertToTypeOf(2, new BigNumber(3)) returns a BigNumber(2)
-   * @param {number | Fraction | BigNumber} value
+   * Create a value one with the numeric type of `typeOfValue`.
+   * For example, `one(new BigNumber(3))` returns `BigNumber(1)`
    * @param {number | Fraction | BigNumber} typeOfValue
    * @returns {number | Fraction | BigNumber}
    */
-  function convertToTypeOf (value, typeOfValue) {
+  function one (typeOfValue) {
     // TODO: this is a workaround to prevent the following BigNumber conversion error from throwing:
     //  "TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber"
     //  see https://github.com/josdejong/mathjs/issues/3450
     //      https://github.com/josdejong/mathjs/pull/3375
     const convert = Unit._getNumberConverter(typeOf(typeOfValue))
 
-    return convert(value)
+    return convert(1)
   }
 
   /**
