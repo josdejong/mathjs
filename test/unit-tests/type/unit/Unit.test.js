@@ -1098,6 +1098,22 @@ describe('Unit', function () {
       assert.deepStrictEqual(unit4.divide(unit5), unit6)
     })
 
+    it('should multiply valueless units by any supported numeric type', function () {
+      const valuelessF = new Unit(null, 'fahrenheit')
+      assert.strictEqual(valuelessF.multiply(math.bignumber(123)).format(12), '123 fahrenheit')
+      assert.strictEqual(valuelessF.multiply(math.fraction(123, 2)).format(12), '123/2 fahrenheit')
+      assert.strictEqual(valuelessF.multiply(math.complex(123, 123)).format(12), '(123 + 123i) fahrenheit')
+      assert.strictEqual(valuelessF.multiply(123).format(12), '123 fahrenheit')
+    })
+
+    it('should divide valueless units by any supported numeric type', function () {
+      const valuelessF = new Unit(null, 'fahrenheit')
+      assert.strictEqual(valuelessF.divide(math.bignumber(1).div(123)).format(12), '123 fahrenheit')
+      assert.strictEqual(valuelessF.divide(math.fraction(2, 123)).format(12), '123/2 fahrenheit')
+      assert.strictEqual(valuelessF.divide(math.complex(0.25, 0.25)).format(12), '(2 - 2i) fahrenheit')
+      assert.strictEqual(valuelessF.divide(1 / 123).format(12), '123 fahrenheit')
+    })
+
     // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('should cancel units in numerator and denominator', function () {
       assert.strictEqual(math.evaluate('2 J/K/g * 2 g').toString(), '4 J / K')
