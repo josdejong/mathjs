@@ -1,4 +1,4 @@
-![math.js](https://raw.github.com/josdejong/mathjs/master/misc/img/mathjs_330x100.svg)
+![math.js](https://raw.github.com/josdejong/mathjs/master/misc/img/mathjs.svg)
 
 [https://mathjs.org](https://mathjs.org)
 

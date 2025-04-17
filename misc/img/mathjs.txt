@@ -1,7 +1,7 @@
 Description of the logo:
 
 size: 330x100px
-font: Source Sans Pro, 96px
+font: Source Sans 3, 96px
 
 math:
     size:    243x100px
@@ -13,3 +13,7 @@ js:
     color:   202020ff
     bgcolor: ffffffff
 
+To update the logo:
+- install Source Sans 3
+- open mathjs_source.svg in inkscape
+- use use Path menu > Object to Path on the text and export to mathjs.svg
