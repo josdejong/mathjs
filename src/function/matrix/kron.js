@@ -56,6 +56,20 @@ export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
      * @private
      */
   function _kron (a, b) {
+    if (size(a).length > 2 || size(b).length > 2) {
+      throw new RangeError('Vectors with dimensions greater then 2 are not supported expected ' +
+        '(Size x = ' + JSON.stringify(a.length) + ', y = ' + JSON.stringify(b.length) + ')')
+    }
+
+    if (size(a).length === 1 && size(b).length === 1) {
+      const r = []
+      return a.map(function (y) {
+        return b.map(function (x) {
+          return r.push(multiplyScalar(y, x))
+        })
+      }) && r
+    }
+
     // Deal with the dimensions of the matricies.
     if (size(a).length === 1) {
       // Wrap it in a 2D Matrix
@@ -65,10 +79,7 @@ export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       // Wrap it in a 2D Matrix
       b = [b]
     }
-    if (size(a).length > 2 || size(b).length > 2) {
-      throw new RangeError('Vectors with dimensions greater then 2 are not supported expected ' +
-            '(Size x = ' + JSON.stringify(a.length) + ', y = ' + JSON.stringify(b.length) + ')')
-    }
+
     const t = []
     let r = []
 
