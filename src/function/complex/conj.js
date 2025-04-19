@@ -25,13 +25,13 @@ export const createConj = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *
    *    re, im, arg, abs
    *
-   * @param {number | BigNumber | Complex | Array | Matrix} x
+   * @param {number | BigNumber | Complex | Array | Matrix | Unit} x
    *            A complex number or array with complex numbers
-   * @return {number | BigNumber | Complex | Array | Matrix}
+   * @return {number | BigNumber | Complex | Array | Matrix | Unit}
    *            The complex conjugate of x
    */
   return typed(name, {
-    'number | BigNumber | Fraction': x => x,
+    'number | BigNumber | Fraction | Unit': x => x,
     Complex: x => x.conjugate(),
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
