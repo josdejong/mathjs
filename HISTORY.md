@@ -1,5 +1,13 @@
 # History
 
+# Unpublished changes scheduled for v15
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Feat: #3349 Decouple precedence of unary percentage operator and binary
+  modulus operator (that both use symbol `%`), and raise the former (#3432).
+  Thanks @kiprobinsonknack.
+
 # 2025-07-02, 14.5.3
 
 - Fix: #2199 parse non-breaking white space `&nbsp;` as white space 

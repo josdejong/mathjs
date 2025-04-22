@@ -135,8 +135,8 @@ See section below                 | Implicit multiplication
 `\n`, `;`                         | Statement separators
 
 Lazy evaluation is used where logically possible for bitwise and logical
-operators. In the following example, the value of `x` will not even be
-evaluated because it cannot effect the final result:
+operators. In the following example, the sub-expression `x` will not even be
+evaluated because it cannot affect the final result:
 ```js
 math.evaluate('false and x')        // false, no matter what x equals
 ```
