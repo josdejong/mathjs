@@ -1,5 +1,13 @@
 # History
 
+# Unpublished changes scheduled for v15
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Feat: #3349 Decouple precedence of unary percentage operator and binary
+  modulus operator (that both use symbol `%`), and raise the former (#3432).
+  Thanks @kiprobinsonknack.
+
 # Unpublished changes since 14.4.0
 
 - Fix: #3450 support multiplication of valueless units by arbitrary types
