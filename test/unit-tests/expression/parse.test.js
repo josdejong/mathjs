@@ -287,18 +287,18 @@ describe('parse', function () {
     })
 
     it('should require hex, bin, oct values to be followed by whitespace or a delimiter', function () {
-      assert.throws(() => parseAndEval('0b0a'), /SyntaxError: String "0b0a" is not a valid number/ )
-      assert.throws(() => parseAndEval('0x1k'), /SyntaxError: String "0x1k" is not a valid number/ )
-      assert.throws(() => parseAndEval('0o1k'), /SyntaxError: String "0o1k" is not a valid number/ )
-      assert.throws(() => parseAndEval('0b1k'), /SyntaxError: String "0b1k" is not a valid number/ )
+      assert.throws(() => parseAndEval('0b0a'), /SyntaxError: String "0b0a" is not a valid number/)
+      assert.throws(() => parseAndEval('0x1k'), /SyntaxError: String "0x1k" is not a valid number/)
+      assert.throws(() => parseAndEval('0o1k'), /SyntaxError: String "0o1k" is not a valid number/)
+      assert.throws(() => parseAndEval('0b1k'), /SyntaxError: String "0b1k" is not a valid number/)
 
-      assert.strictEqual(parseAndEval('0x1 k', { k: 2}), 2 )
-      assert.strictEqual(parseAndEval('0o1 k', { k: 2}), 2 )
-      assert.strictEqual(parseAndEval('0b1 k', { k: 2}), 2 )
+      assert.strictEqual(parseAndEval('0x1 k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0o1 k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0b1 k', { k: 2 }), 2)
 
-      assert.strictEqual(parseAndEval('0x1 * k', { k: 2}), 2 )
-      assert.strictEqual(parseAndEval('0o1 * k', { k: 2}), 2 )
-      assert.strictEqual(parseAndEval('0b1 * k', { k: 2}), 2 )
+      assert.strictEqual(parseAndEval('0x1*k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0o1*k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0b1*k', { k: 2 }), 2)
     })
 
     it('should parse a number followed by e', function () {
