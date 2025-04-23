@@ -4,6 +4,8 @@
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
+- Fix: #1753 Correct dimensionality of Kronecker product on vectors (and
+  extend to arbitrary dimension) (#3455). Thanks @Delaney.
 - Feat: #3349 Decouple precedence of unary percentage operator and binary
   modulus operator (that both use symbol `%`), and raise the former (#3432).
   Thanks @kiprobinsonknack.
