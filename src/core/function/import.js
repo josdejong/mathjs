@@ -45,16 +45,19 @@ export function importFactory (typed, load, math, importedFactories) {
    *        return 'hello, ' + name + '!'
    *      }
    *    })
-   *
    *    // use the imported function and variable
    *    math.myvalue * 2               // 84
+   *
    *    math.hello('user')             // 'hello, user!'
    *
    *    // import the npm module 'numbers'
    *    // (must be installed first with `npm install numbers`)
    *    math.import(numbers, {wrap: true})
-   *
    *    math.fibonacci(7) // returns 13
+   *
+   * See also:
+   *
+   *    create, all
    *
    * @param {Object | Array} functions  Object with functions to be imported.
    * @param {Object} [options]          Import options.

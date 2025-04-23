@@ -567,19 +567,22 @@ export function collectDocs (functionNames, inputPath) {
     if (!path.includes('docs') && functionIndex !== -1) {
       if (path.includes('expression')) {
         category = 'expression'
-      } else if (/\/lib\/cjs\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
-        // for type/bignumber/function/bignumber.js, type/fraction/function/fraction.js, etc
-        category = 'construction'
-      } else if (/\/lib\/cjs\/core\/function/.test(fullPath)) {
-        category = 'core'
+      } else if (functionIndex == path.length - 1) {
+        if (path[functionIndex - 1] === 'core') {
+          category = 'core'
+        } else {
+          // for type/bignumber/function/bignumber.js, type/fraction/function/fraction.js, etc
+          category = 'construction'
+        }
       } else {
+        // typical case, e.g. src/function/algebra/lsolve.js
         category = path[functionIndex + 1]
       }
-    } else if (fullPath.endsWith('/lib/cjs/expression/parse.js')) {
+    } else if (path[path.length - 1] === 'expression' && name === 'parse') {
       // TODO: this is an ugly special case
       category = 'expression'
-    } else if (path.join('/').endsWith('/lib/cjs/type')) {
-      // for boolean.js, number.js, string.js
+    } else if (path[path.length - 1] === 'type') {
+      // for boolean.js, number.js, string.js, bigint.js
       category = 'construction'
     }
 

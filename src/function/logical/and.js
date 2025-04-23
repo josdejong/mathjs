@@ -35,10 +35,9 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    *    math.and(2, 4)   // returns true
    *
-   *    a = [2, 0, 0]
-   *    b = [3, 7, 0]
-   *    c = 0
-   *
+   *    const a = [2, 0, 0]
+   *    const b = [3, 7, 0]
+   *    const c = 0
    *    math.and(a, b)   // returns [true, false, false]
    *    math.and(a, c)   // returns [false, false, false]
    *
@@ -72,8 +71,8 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       'SparseMatrix, any': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (not(y)) {
-          // return zero matrix
-          return zeros(x.size(), x.storage())
+          // return all false matrix
+          return matrix([], x.storage()).resize(x.size(), false)
         }
         return matAlgo11xS0s(x, y, self, false)
       }),
@@ -81,8 +80,8 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       'DenseMatrix, any': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (not(y)) {
-          // return zero matrix
-          return zeros(x.size(), x.storage())
+          // return all false matrix
+          return matrix().resize(x.size(), false)
         }
         return matAlgo14xDs(x, y, self, false)
       }),

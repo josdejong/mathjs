@@ -66,14 +66,17 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    *     node1.compile().evaluate() // 5
    *
    *     let scope = {a:3, b:4}
-   *     const node2 = math.parse('a * b') // 12
+   *     const node2 = math.parse('a * b')
+   *     node2.evaluate(scope) // 12
    *     const code2 = node2.compile()
-   *     code2.evaluate(scope) // 12
+   *     scope.b = 5
+   *     code2.evaluate(scope) // 15
    *     scope.a = 5
-   *     code2.evaluate(scope) // 20
+   *     code2.evaluate(scope) // 25
    *
-   *     const nodes = math.parse(['a = 3', 'b = 4', 'a * b'])
-   *     nodes[2].compile().evaluate() // 12
+   *     const nodes = math.parse(['a = 3', 'b = 2', 'a * b'])
+   *     const newscope = {}
+   *     nodes.map(node => node.compile().evaluate(newscope)) // [3, 2, 6]
    *
    * See also:
    *

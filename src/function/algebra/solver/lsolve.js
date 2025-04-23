@@ -28,7 +28,7 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    const a = [[-2, 3], [2, 1]]
    *    const b = [11, 9]
-   *    const x = lsolve(a, b)  // [[-5.5], [20]]
+   *    math.lsolve(a, b)  // [[-5.5], [20]]
    *
    * See also:
    *

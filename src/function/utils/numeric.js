@@ -3,12 +3,14 @@ import { factory } from '../../utils/factory.js'
 import { noBignumber, noFraction } from '../../utils/noop.js'
 
 const name = 'numeric'
-const dependencies = ['number', '?bignumber', '?fraction']
+const dependencies = ['number', 'bigint', '?bignumber', '?fraction']
 
-export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ number, bignumber, fraction }) => {
+export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ number, bigint, bignumber, fraction }) => {
   const validInputTypes = {
+    boolean: true,
     string: true,
     number: true,
+    bigint: true,
     BigNumber: true,
     Fraction: true
   }
@@ -19,7 +21,7 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
     BigNumber: bignumber
       ? (x) => bignumber(x)
       : noBignumber,
-    bigint: (x) => BigInt(x),
+    bigint: (x) => bigint(x, { safe: false }),
     Fraction: fraction
       ? (x) => fraction(x)
       : noFraction

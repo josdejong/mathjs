@@ -37,9 +37,8 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    math.dotDivide(2, 4)   // returns 0.5
    *
-   *    a = [[9, 5], [6, 1]]
-   *    b = [[3, 2], [5, 2]]
-   *
+   *    const a = [[9, 5], [6, 1]]
+   *    const b = [[3, 2], [5, 2]]
    *    math.dotDivide(a, b)   // returns [[3, 2.5], [1.2, 0.5]]
    *    math.divide(a, b)      // returns [[1.75, 0.75], [-1.75, 2.25]]
    *

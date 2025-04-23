@@ -32,10 +32,9 @@ export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    *    math.xor(2, 4)   // returns false
    *
-   *    a = [2, 0, 0]
-   *    b = [2, 7, 0]
-   *    c = 0
-   *
+   *    const a = [2, 0, 0]
+   *    const b = [2, 7, 0]
+   *    const c = 0
    *    math.xor(a, b)   // returns [false, true, false]
    *    math.xor(a, c)   // returns [true, false, false]
    *

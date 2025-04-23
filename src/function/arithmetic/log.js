@@ -13,6 +13,13 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, t
    * To avoid confusion with the matrix logarithm, this function does not
    * apply to matrices.
    *
+   * Note that when the value is a Fraction, then the
+   * base must be specified as a Fraction, and the log() will only be
+   * returned when the result happens to be rational. When there is an
+   * attempt to take a log of Fractions that would result in an irrational
+   * value, a TypeError against implicit conversion of BigInt to Fraction
+   * is thrown.
+   *
    * Syntax:
    *
    *    math.log(x)
@@ -38,7 +45,8 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, t
    *            Value for which to calculate the logarithm.
    * @param {number | BigNumber | Fraction | Complex} [base=e]
    *            Optional base for the logarithm. If not provided, the natural
-   *            logarithm of `x` is calculated.
+   *            logarithm of `x` is calculated, unless x is a Fraction, in
+   *            which case an error is thrown.
    * @return {number | BigNumber | Fraction | Complex}
    *            Returns the logarithm of `x`
    */
