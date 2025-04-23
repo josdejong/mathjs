@@ -151,6 +151,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
  * @private
  */
   function _mapArray (array, callback) {
-    return deepMap(array, optimizeCallback(callback, array, name))
+    const fastCallback = optimizeCallback(callback, array, name)
+    return deepMap(array, fastCallback.fn, fastCallback.isUnary)
   }
 })

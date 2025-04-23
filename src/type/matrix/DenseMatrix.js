@@ -526,69 +526,75 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   }
 
   /**
-   * Applies a callback function to a reference to each element of the matrix
-   * @memberof DenseMatrix
-   * @param {Function} callback   The callback function is invoked with three
-   *                              parameters: an array, an integer index to that
-   *                              array, and the Matrix being traversed.
-   */
-  DenseMatrix.prototype._forEach = function (callback) {
-    const me = this
-    const s = me.size()
-    const maxDepth = s.length - 1
-
-    if (maxDepth < 0) {
-      return
-    }
-
-    if (maxDepth === 0) {
-      const thisSize = s[0]
-      for (let i = 0; i < thisSize; i++) {
-        callback(me._data, i, [i])
-      }
-      return
-    }
-
-    const index = Array(s.length)
-
-    function recurse (data, depth) {
-      const thisSize = s[depth]
-      if (depth < maxDepth) {
-        for (let i = 0; i < thisSize; i++) {
-          index[depth] = i
-          recurse(data[i], depth + 1)
-        }
-      } else {
-        for (let i = 0; i < thisSize; i++) {
-          index[depth] = i
-          callback(data, i, index.slice())
-        }
-      }
-    }
-
-    recurse(me._data, 0)
-  }
-
-  /**
    * Create a new matrix with the results of the callback function executed on
    * each entry of the matrix.
    * @memberof DenseMatrix
    * @param {Function} callback   The callback function is invoked with three
    *                              parameters: the value of the element, the index
    *                              of the element, and the Matrix being traversed.
+   * @param {boolean} skipZeros   If true, the callback function is invoked only for non-zero entries
+   * @param {boolean} isUnary     If true, the callback function is invoked with one parameter
    *
    * @return {DenseMatrix} matrix
    */
-  DenseMatrix.prototype.map = function (callback) {
+  DenseMatrix.prototype.map = function (callback, skipZeros = false, isUnary = false) {
     const me = this
-    const result = new DenseMatrix(me)
-    const fastCallback = optimizeCallback(callback, me._data, 'map')
+    const maxDepth = me._size.length - 1
 
-    result._forEach(function (arr, i, index) {
-      arr[i] = fastCallback(arr[i], index, me)
-    })
+    if (maxDepth < 0) return me.clone()
 
+    const fastCallback = optimizeCallback(callback, me, 'map', isUnary)
+    const fastCallbackFn = fastCallback.fn
+
+    const result = me.create(undefined, me._datatype)
+    result._size = me._size
+    if (isUnary || fastCallback.isUnary) {
+      result._data = iterateUnary(me._data)
+      return result
+    }
+    if (maxDepth === 0) {
+      const inputData = me.valueOf()
+      const data = Array(inputData.length)
+      for (let i = 0; i < inputData.length; i++) {
+        data[i] = fastCallbackFn(inputData[i], [i], me)
+      }
+      result._data = data
+      return result
+    }
+
+    const index = []
+    result._data = iterate(me._data)
     return result
+
+    function iterate (data, depth = 0) {
+      const result = Array(data.length)
+      if (depth < maxDepth) {
+        for (let i = 0; i < data.length; i++) {
+          index[depth] = i
+          result[i] = iterate(data[i], depth + 1)
+        }
+      } else {
+        for (let i = 0; i < data.length; i++) {
+          index[depth] = i
+          result[i] = fastCallbackFn(data[i], index.slice(), me)
+        }
+      }
+      return result
+    }
+
+    function iterateUnary (data, depth = 0) {
+      const result = Array(data.length)
+      if (depth < maxDepth) {
+        for (let i = 0; i < data.length; i++) {
+          result[i] = iterateUnary(data[i], depth + 1)
+        }
+      } else {
+        for (let i = 0; i < data.length; i++) {
+          result[i] = fastCallbackFn(data[i])
+        }
+      }
+      return result
+    }
   }
 
   /**
@@ -597,13 +603,55 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @param {Function} callback   The callback function is invoked with three
    *                              parameters: the value of the element, the index
    *                              of the element, and the Matrix being traversed.
+   * @param {boolean} skipZeros   If true, the callback function is invoked only for non-zero entries
+   * @param {boolean} isUnary     If true, the callback function is invoked with one parameter
    */
-  DenseMatrix.prototype.forEach = function (callback) {
+  DenseMatrix.prototype.forEach = function (callback, skipZeros = false, isUnary = false) {
     const me = this
-    const fastCallback = optimizeCallback(callback, me._data, 'map')
-    me._forEach(function (arr, i, index) {
-      fastCallback(arr[i], index, me)
-    })
+    const maxDepth = me._size.length - 1
+
+    if (maxDepth < 0) return
+
+    const fastCallback = optimizeCallback(callback, me, 'map', isUnary)
+    const fastCallbackFn = fastCallback.fn
+    if (isUnary || fastCallback.isUnary) {
+      iterateUnary(me._data)
+      return
+    }
+    if (maxDepth === 0) {
+      for (let i = 0; i < me._data.length; i++) {
+        fastCallbackFn(me._data[i], [i], me)
+      }
+      return
+    }
+    const index = []
+    iterate(me._data)
+
+    function iterate (data, depth = 0) {
+      if (depth < maxDepth) {
+        for (let i = 0; i < data.length; i++) {
+          index[depth] = i
+          iterate(data[i], depth + 1)
+        }
+      } else {
+        for (let i = 0; i < data.length; i++) {
+          index[depth] = i
+          fastCallbackFn(data[i], index.slice(), me)
+        }
+      }
+    }
+
+    function iterateUnary (data, depth = 0) {
+      if (depth < maxDepth) {
+        for (let i = 0; i < data.length; i++) {
+          iterateUnary(data[i], depth + 1)
+        }
+      } else {
+        for (let i = 0; i < data.length; i++) {
+          fastCallbackFn(data[i])
+        }
+      }
+    }
   }
 
   /**

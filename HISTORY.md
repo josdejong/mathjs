@@ -1,5 +1,23 @@
 # History
 
+# Unpublished changes since 14.4.0
+
+- Fix: #3450 support multiplication of valueless units by arbitrary types
+  (#3454).
+- Feat: increase performance of the `map` and `forEach` methods of 
+  `DenseMatrix` (#3446). Thanks @dvd101x.
+
+# 2025-03-28, 14.4.0
+
+- Feat: improve the performance of function `flatten` (#3400). Thanks @dvd101x.
+- Feat: improve the performance of `map` and `forEach` (#3409).
+  Thanks @dvd101x.
+- Feat: add LaTeX representation for fractions (#3434, #3419). Thanks @orelbn.
+- Fix: #3422 allow dot operators after symbol E (#3425).
+- Fix: issue in the `nthRoots` latex function template string (#3427).
+  Thanks @aitee.
+- Fix: upgrade to the latest version of `@babel/runtime`.
+
 # 2025-03-06, 14.3.1
 
 - Fix: #3350 cannot import a constant that is a complex number.
@@ -159,9 +177,9 @@
 Breaking changes:
 
 - Change `isZero`, `isPositive`, and `isNegative` to respect `config.epsilon`
-  (#3139, #2838).
+  (#3139, #2838). Thanks @dvd101x.
 - Change the behavior of the internal `nearlyEqual` to align with Python and
-  Julia (#3152, #2838)
+  Julia (#3152, #2838). Thanks @dvd101x.
 - Upgrade to `fraction.js@4.3.7`,
   see <https://github.com/rawify/Fraction.js/issues/68>.
 - Dropped support for JavaScript engines that do not fully support ES6 or

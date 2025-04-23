@@ -857,7 +857,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // invoke callback
     const invoke = function (v, i, j) {
       // invoke callback
-      return fastCallback(v, [i, j], me)
+      return fastCallback.fn(v, [i, j], me)
     }
     // invoke _map
     return _map(this, 0, rows - 1, 0, columns - 1, invoke, skipZeros)
@@ -976,7 +976,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
           const i = this._index[k]
 
           // value @ k
-          fastCallback(this._values[k], [i, j], me)
+          // TODO apply a non indexed version of algorithm in case fastCallback is not optimized
+          fastCallback.fn(this._values[k], [i, j], me)
         }
       } else {
         // create a cache holding all defined values
@@ -990,7 +991,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         // and either read the value or zero
         for (let i = 0; i < rows; i++) {
           const value = (i in values) ? values[i] : 0
-          fastCallback(value, [i, j], me)
+          fastCallback.fn(value, [i, j], me)
         }
       }
     }

@@ -420,7 +420,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           if (parse.isDecimalMark(currentCharacter(state), nextCharacter(state))) {
             throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
           }
-        } else if (nextCharacter(state) === '.') {
+        } else if (parse.isDecimalMark(nextCharacter(state), state.expression.charAt(state.index + 2))) {
           next(state)
           throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
         }

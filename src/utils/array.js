@@ -246,7 +246,7 @@ function _resize (array, size, dim, defaultValue) {
  *                                not equal that of the old ones
  */
 export function reshape (array, sizes) {
-  const flatArray = flatten(array)
+  const flatArray = flatten(array, true) // since it has rectangular
   const currentLength = flatArray.length
 
   if (!Array.isArray(array) || !Array.isArray(sizes)) {
@@ -465,24 +465,49 @@ function _unsqueeze (array, dims, dim) {
  * Flatten a multi dimensional array, put all elements in a one dimensional
  * array
  * @param {Array} array   A multi dimensional array
+ * @param {boolean} isRectangular Optional. If the array is rectangular (not jagged)
  * @return {Array}        The flattened array (1 dimensional)
  */
-export function flatten (array) {
+export function flatten (array, isRectangular = false) {
   if (!Array.isArray(array)) {
     // if not an array, return as is
     return array
   }
+  if (typeof isRectangular !== 'boolean') {
+    throw new TypeError('Boolean expected for second argument of flatten')
+  }
   const flat = []
 
-  array.forEach(function callback (value) {
-    if (Array.isArray(value)) {
-      value.forEach(callback) // traverse through sub-arrays recursively
-    } else {
-      flat.push(value)
-    }
-  })
+  if (isRectangular) {
+    _flattenRectangular(array)
+  } else {
+    _flatten(array)
+  }
 
   return flat
+
+  function _flatten (array) {
+    for (let i = 0; i < array.length; i++) {
+      const item = array[i]
+      if (Array.isArray(item)) {
+        _flatten(item)
+      } else {
+        flat.push(item)
+      }
+    }
+  }
+
+  function _flattenRectangular (array) {
+    if (Array.isArray(array[0])) {
+      for (let i = 0; i < array.length; i++) {
+        _flattenRectangular(array[i])
+      }
+    } else {
+      for (let i = 0; i < array.length; i++) {
+        flat.push(array[i])
+      }
+    }
+  }
 }
 
 /**
