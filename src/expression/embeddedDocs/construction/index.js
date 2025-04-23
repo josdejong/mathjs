@@ -20,6 +20,6 @@ export const indexDocs = {
     'B[B>1 and B<3]'
   ],
   seealso: [
-    'bignumber', 'boolean', 'complex', 'matrix,', 'number', 'range', 'string', 'unit'
+    'bignumber', 'boolean', 'complex', 'matrix', 'number', 'range', 'string', 'unit'
   ]
 }

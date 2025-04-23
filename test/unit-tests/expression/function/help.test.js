@@ -28,6 +28,26 @@ function runExamplesInDocs (name) {
   mathDocs.evaluate(examples)
 }
 
+function hasValidSeeAlso (name) {
+  let seeAlso = []
+  try {
+    seeAlso = mathDocs.evaluate(`help("${name}")`).doc.seealso
+  } catch (err) {
+    return
+  }
+  if (seeAlso && seeAlso.length > 0) {
+    seeAlso.forEach(see => {
+      if (testDocs.includes(see)) {
+        if (see === name) {
+          throw new Error(`See also name "${see}" should not be the same as "${name}" in docs for "${name}".`)
+        }
+      } else {
+        throw new Error(`See also with name "${see}" is not a valid documentation name used in docs for "${name}".`)
+      }
+    })
+  }
+}
+
 describe('help', function () {
   it('should find documentation for a function by its name', function () {
     const help = math.help('sin')
@@ -108,6 +128,11 @@ describe('help', function () {
   for (const name of testDocs) {
     it(`should run examples for ${name} without errors`, function () {
       assert.doesNotThrow(() => runExamplesInDocs(name))
+    })
+  }
+  for (const name of testDocs) {
+    it(`should have all valid See Also for ${name} that are not ${name}`, function () {
+      assert.doesNotThrow(() => hasValidSeeAlso(name))
     })
   }
 })
