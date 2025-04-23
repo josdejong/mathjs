@@ -5,13 +5,13 @@ import { embeddedDocs } from '../../../../src/expression/embeddedDocs/embeddedDo
 let mathDocs = math.create(math.all)
 const originalConfig = mathDocs.config()
 // Add functions to the skipDocs array if their examples in the embedded docs contain acceptable errors
-const skipDocs = ['import', 'addScalar', 'divideScalar', 'equalScalar', 'multiplyScalar',
-  'subtractScalar', 'apply', 'replacer', 'reviver']
+const skipDocs = new Set(['import', 'addScalar', 'divideScalar', 'equalScalar', 'multiplyScalar',
+  'subtractScalar', 'apply', 'replacer', 'reviver'])
 
-const testDocs = Array.from(new Set([
+const testDocs = new Set([
   ...Object.keys(embeddedDocs),
-  ...Object.keys(math.expression.mathWithTransform)]))
-  .filter(name => !skipDocs.includes(name))
+  ...Object.keys(math.expression.mathWithTransform)])
+  .difference(skipDocs)
 
 function runExamplesInDocs (name) {
   mathDocs.config(originalConfig)
@@ -37,7 +37,7 @@ function hasValidSeeAlso (name) {
   }
   if (seeAlso && seeAlso.length > 0) {
     seeAlso.forEach(see => {
-      if (testDocs.includes(see)) {
+      if (testDocs.has(see)) {
         if (see === name) {
           throw new Error(`See also name "${see}" should not be the same as "${name}" in docs for "${name}".`)
         }
