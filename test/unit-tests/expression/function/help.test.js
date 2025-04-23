@@ -85,7 +85,7 @@ describe('help', function () {
     // assert.throws(function () {math.help(undefined)}, /No documentation found/);
     assert.throws(function () { math.help(new Date()) }, /No documentation found/)
     assert.throws(function () { math.help('nonExistingFunction') }, /No documentation found/)
-    assert.throws(function () { math.help('parse') }, /No documentation found/)
+    assert.throws(function () { math.help('addScalar') }, /No documentation found/)
   })
 
   it('should LaTeX help', function () {
