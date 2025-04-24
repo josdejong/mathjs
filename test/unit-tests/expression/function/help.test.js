@@ -4,10 +4,12 @@ import { embeddedDocs } from '../../../../src/expression/embeddedDocs/embeddedDo
 
 let mathDocs = math.create(math.all)
 const originalConfig = mathDocs.config()
-// Add functions to the skipDocs array if they are not meant to have embedded docs
-// or if their examples in the embedded docs contain acceptable errors
+// Add names to the skipDocs array if they are not meant to have embedded docs
 const skipDocs = new Set(['import', 'addScalar', 'divideScalar', 'equalScalar', 'multiplyScalar',
   'subtractScalar', 'apply', 'replacer', 'reviver'])
+
+// Add names to skipDocsExamples if their examples in the embedded docs contain acceptable errors
+const skipDocsExamples = new Set([])
 
 const testDocs = new Set([
   ...Object.keys(embeddedDocs),
@@ -126,7 +128,7 @@ describe('help', function () {
     })
   }
 
-  for (const name of testDocs) {
+  for (const name of testDocs.difference(skipDocsExamples)) {
     it(`should run examples for ${name} without errors`, function () {
       assert.doesNotThrow(() => runExamplesInDocs(name))
     })
