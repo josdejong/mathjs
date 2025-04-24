@@ -4,7 +4,8 @@ import { embeddedDocs } from '../../../../src/expression/embeddedDocs/embeddedDo
 
 let mathDocs = math.create(math.all)
 const originalConfig = mathDocs.config()
-// Add functions to the skipDocs array if their examples in the embedded docs contain acceptable errors
+// Add functions to the skipDocs array if they are not meant to have embedded docs
+// or if their examples in the embedded docs contain acceptable errors
 const skipDocs = new Set(['import', 'addScalar', 'divideScalar', 'equalScalar', 'multiplyScalar',
   'subtractScalar', 'apply', 'replacer', 'reviver'])
 
