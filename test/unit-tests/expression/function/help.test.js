@@ -5,16 +5,20 @@ import { embeddedDocs } from '../../../../src/expression/embeddedDocs/embeddedDo
 let mathDocs = math.create(math.all)
 const originalConfig = mathDocs.config()
 // Add names to the skipDocs array if they are not meant to have embedded docs
-const skipDocs = new Set(['import', 'addScalar', 'divideScalar', 'equalScalar', 'multiplyScalar',
-  'subtractScalar', 'apply', 'replacer', 'reviver'])
+const skipDocs = ['import', 'addScalar', 'divideScalar', 'equalScalar', 'multiplyScalar',
+  'subtractScalar', 'apply', 'replacer', 'reviver']
 
 // Add names to skipExamples if their examples in the embedded docs contain acceptable errors
-const skipExamples = new Set([])
+const skipExamples = []
 
-const testDocs = new Set([
+const testDocs = [...new Set([
   ...Object.keys(embeddedDocs),
-  ...Object.keys(math.expression.mathWithTransform)])
-  .difference(skipDocs)
+  ...Object.keys(math.expression.mathWithTransform)
+])].filter(name => !skipDocs.includes(name))
+
+const testExamples = testDocs.filter(name => {
+  return !skipExamples.includes(name)
+})
 
 function runExamplesInDocs (name) {
   mathDocs.config(originalConfig)
@@ -40,7 +44,7 @@ function hasValidSeeAlso (name) {
   }
   if (seeAlso && seeAlso.length > 0) {
     seeAlso.forEach(see => {
-      if (testDocs.has(see)) {
+      if (testDocs.includes(see)) {
         if (see === name) {
           throw new Error(`See also name "${see}" should not be the same as "${name}" in docs for "${name}".`)
         }
@@ -127,8 +131,7 @@ describe('help', function () {
       assert.doesNotThrow(() => mathDocs.help(name).doc.examples)
     })
   }
-
-  for (const name of testDocs.difference(skipExamples)) {
+  for (const name of testExamples) {
     it(`should run examples for ${name} without errors`, function () {
       assert.doesNotThrow(() => runExamplesInDocs(name))
     })
