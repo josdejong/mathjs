@@ -8,8 +8,8 @@ const originalConfig = mathDocs.config()
 const skipDocs = new Set(['import', 'addScalar', 'divideScalar', 'equalScalar', 'multiplyScalar',
   'subtractScalar', 'apply', 'replacer', 'reviver'])
 
-// Add names to skipDocsExamples if their examples in the embedded docs contain acceptable errors
-const skipDocsExamples = new Set([])
+// Add names to skipExamples if their examples in the embedded docs contain acceptable errors
+const skipExamples = new Set([])
 
 const testDocs = new Set([
   ...Object.keys(embeddedDocs),
@@ -128,7 +128,7 @@ describe('help', function () {
     })
   }
 
-  for (const name of testDocs.difference(skipDocsExamples)) {
+  for (const name of testDocs.difference(skipExamples)) {
     it(`should run examples for ${name} without errors`, function () {
       assert.doesNotThrow(() => runExamplesInDocs(name))
     })
