@@ -104,6 +104,9 @@ import { conjDocs } from './function/complex/conj.js'
 import { imDocs } from './function/complex/im.js'
 import { reDocs } from './function/complex/re.js'
 import { evaluateDocs } from './function/expression/evaluate.js'
+import { parserDocs } from './function/expression/parser.js'
+import { parseDocs } from './function/expression/parse.js'
+import { compileDocs } from './function/expression/compile.js'
 import { helpDocs } from './function/expression/help.js'
 import { distanceDocs } from './function/geometry/distance.js'
 import { intersectDocs } from './function/geometry/intersect.js'
@@ -429,6 +432,9 @@ export const embeddedDocs = {
   // functions - expression
   evaluate: evaluateDocs,
   help: helpDocs,
+  parse: parseDocs,
+  parser: parserDocs,
+  compile: compileDocs,
 
   // functions - geometry
   distance: distanceDocs,
