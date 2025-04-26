@@ -238,8 +238,12 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       }
 
       // retrieve submatrix
-      // TODO: more efficient when creating an empty matrix and setting _data and _size manually
-      return new DenseMatrix(_getSubmatrix(matrix._data, index, size.length, 0), matrix._datatype)
+      const returnMatrix = new DenseMatrix([])
+      const submatrix = _extractSubmatrix(matrix._data, index)
+      returnMatrix._size = submatrix.size
+      returnMatrix._datatype = matrix._datatype
+      returnMatrix._data = submatrix.data
+      return returnMatrix
     }
   }
 
@@ -249,26 +253,34 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @memberof DenseMatrix
    * @param {Array} data
    * @param {Index} index
-   * @param {number} dims   Total number of dimensions
-   * @param {number} dim    Current dimension
    * @return {Array} submatrix
    * @private
    */
-  function _getSubmatrix (data, index, dims, dim) {
-    const last = (dim === dims - 1)
-    const range = index.dimension(dim)
+  function _extractSubmatrix (data, index) {
+    const maxDepth = index.size().length - 1
+    const size = Array(maxDepth)
+    return { data: extractSubmatrixRecursive(data), size }
 
-    if (last) {
-      return range.map(function (i) {
-        validateIndex(i, data.length)
-        return data[i]
-      }).valueOf()
-    } else {
-      return range.map(function (i) {
-        validateIndex(i, data.length)
-        const child = data[i]
-        return _getSubmatrix(child, index, dims, dim + 1)
-      }).valueOf()
+    function extractSubmatrixRecursive (data, depth = 0) {
+      const range = index.dimension(depth).valueOf()
+      const rangeLength = range.length
+      size[depth] = rangeLength
+      const result = Array(rangeLength)
+
+      if (depth < maxDepth) {
+        for (let i = 0; i < rangeLength; i++) {
+          const rangeIndex = range[i]
+          validateIndex(rangeIndex, data.length)
+          result[i] = extractSubmatrixRecursive(data[rangeIndex], depth + 1)
+        }
+      } else {
+        for (let i = 0; i < rangeLength; i++) {
+          const rangeIndex = range[i]
+          validateIndex(rangeIndex, data.length)
+          result[i] = data[rangeIndex]
+        }
+      }
+      return result
     }
   }
 
