@@ -239,7 +239,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
       // retrieve submatrix
       const returnMatrix = new DenseMatrix([])
-      const submatrix = _extractSubmatrix(matrix._data, index)
+      const submatrix = _getSubmatrix(matrix._data, index)
       returnMatrix._size = submatrix.size
       returnMatrix._datatype = matrix._datatype
       returnMatrix._data = submatrix.data
@@ -248,7 +248,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   }
 
   /**
-   * Recursively get a submatrix of a multi dimensional matrix.
+   * Get a submatrix of a multi dimensional matrix.
    * Index is not checked for correct number or length of dimensions.
    * @memberof DenseMatrix
    * @param {Array} data
@@ -256,12 +256,12 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @return {Array} submatrix
    * @private
    */
-  function _extractSubmatrix (data, index) {
+  function _getSubmatrix (data, index) {
     const maxDepth = index.size().length - 1
     const size = Array(maxDepth)
-    return { data: extractSubmatrixRecursive(data), size }
+    return { data: getSubmatrixRecursive(data), size }
 
-    function extractSubmatrixRecursive (data, depth = 0) {
+    function getSubmatrixRecursive (data, depth = 0) {
       const range = index.dimension(depth).valueOf()
       const rangeLength = range.length
       size[depth] = rangeLength
@@ -271,7 +271,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         for (let i = 0; i < rangeLength; i++) {
           const rangeIndex = range[i]
           validateIndex(rangeIndex, data.length)
-          result[i] = extractSubmatrixRecursive(data[rangeIndex], depth + 1)
+          result[i] = getSubmatrixRecursive(data[rangeIndex], depth + 1)
         }
       } else {
         for (let i = 0; i < rangeLength; i++) {
@@ -371,9 +371,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       _fit(matrix, size, defaultValue)
 
       // insert the sub matrix
-      const dims = iSize.length
-      const dim = 0
-      _setSubmatrix(matrix._data, index, submatrix, dims, dim)
+      _setSubmatrix(matrix._data, index, submatrix)
     }
 
     return matrix
@@ -385,24 +383,30 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @param {Array} data
    * @param {Index} index
    * @param {Array} submatrix
-   * @param {number} dims   Total number of dimensions
-   * @param {number} dim
    * @private
    */
-  function _setSubmatrix (data, index, submatrix, dims, dim) {
-    const last = (dim === dims - 1)
-    const range = index.dimension(dim)
+  function _setSubmatrix (data, index, submatrix) {
+    const maxDepth = index.size().length - 1
 
-    if (last) {
-      range.forEach(function (dataIndex, subIndex) {
-        validateIndex(dataIndex)
-        data[dataIndex] = submatrix[subIndex[0]]
-      })
-    } else {
-      range.forEach(function (dataIndex, subIndex) {
-        validateIndex(dataIndex)
-        _setSubmatrix(data[dataIndex], index, submatrix[subIndex[0]], dims, dim + 1)
-      })
+    setSubmatrixRecursive(data, submatrix)
+
+    function setSubmatrixRecursive (data, submatrix, depth = 0) {
+      const range = index.dimension(depth).valueOf()
+      const rangeLength = range.length
+
+      if (depth < maxDepth) {
+        for (let i = 0; i < rangeLength; i++) {
+          const rangeIndex = range[i]
+          validateIndex(rangeIndex, data.length)
+          setSubmatrixRecursive(data[rangeIndex], submatrix[i], depth + 1)
+        }
+      } else {
+        for (let i = 0; i < rangeLength; i++) {
+          const rangeIndex = range[i]
+          validateIndex(rangeIndex, data.length)
+          data[rangeIndex] = submatrix[i]
+        }
+      }
     }
   }
 
