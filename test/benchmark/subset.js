@@ -8,7 +8,7 @@ const arrayOfBooleans = [true, false, false, true, true, true, false, true, fals
 const fiveNumbers = [0, 1, 5, 7, 9]
 const twoNumbers = [4, 6]
 const range = new Range(2, 9, 3)
-const rangeAll = new Range()
+const rangeAll = new Range(0, 10)
 
 // console.log('data', array)
 // console.log('abs(data)', abs(array))npm run
