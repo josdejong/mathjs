@@ -9,9 +9,7 @@ const fiveNumbers = [0, 1, 5, 7, 9]
 const twoNumbers = [4, 6]
 const range = new Range(2, 9, 3)
 const rangeAll = new Range(0, 10)
-
-// console.log('data', array)
-// console.log('abs(data)', abs(array))npm run
+const replacement = [1]
 
 const bench = new Bench({ time: 100, iterations: 100 })
   .add('subset(matrix, rows and columns)', () => {
@@ -55,6 +53,48 @@ const bench = new Bench({ time: 100, iterations: 100 })
   })
   .add('subset(array, all and all)', () => {
     subset(array, index(rangeAll, rangeAll))
+  })
+  .add('subset(matrix, rows and columns, replacement)', () => {
+    subset(matrix, index(fiveNumbers, twoNumbers), replacement)
+  })
+  .add('subset(array, rows and columns, replacement)', () => {
+    subset(array, index(fiveNumbers, twoNumbers), replacement)
+  })
+  .add('subset(matrix, booleans and columns, replacement)', () => {
+    subset(matrix, index(arrayOfBooleans, twoNumbers), replacement)
+  })
+  .add('subset(array, booleans and columns, replacement)', () => {
+    subset(array, index(arrayOfBooleans, twoNumbers), replacement)
+  })
+  .add('subset(matrix, columns and booleans, replacement)', () => {
+    subset(matrix, index(arrayOfBooleans, twoNumbers), replacement)
+  })
+  .add('subset(array, columns and booleans, replacement)', () => {
+    subset(array, index(arrayOfBooleans, twoNumbers), replacement)
+  })
+  .add('subset(matrix, range and rows, replacement)', () => {
+    subset(matrix, index(range, twoNumbers), replacement)
+  })
+  .add('subset(array, range and rows, replacement)', () => {
+    subset(array, index(range, twoNumbers), replacement)
+  })
+  .add('subset(matrix, range and all, replacement)', () => {
+    subset(matrix, index(range, rangeAll), replacement)
+  })
+  .add('subset(array, range and all, replacement)', () => {
+    subset(array, index(range, rangeAll), replacement)
+  })
+  .add('subset(matrix, all and range, replacement)', () => {
+    subset(matrix, index(rangeAll, range), replacement)
+  })
+  .add('subset(array, all and range, replacement)', () => {
+    subset(array, index(rangeAll, range), replacement)
+  })
+  .add('subset(matrix, all and all, replacement)', () => {
+    subset(matrix, index(rangeAll, rangeAll), replacement)
+  })
+  .add('subset(array, all and all, replacement)', () => {
+    subset(array, index(rangeAll, rangeAll), replacement)
   })
 
 bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))

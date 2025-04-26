@@ -262,25 +262,19 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     return { data: getSubmatrixRecursive(data), size }
 
     function getSubmatrixRecursive (data, depth = 0) {
-      const range = index.dimension(depth).valueOf()
-      const rangeLength = range.length
-      size[depth] = rangeLength
-      const result = Array(rangeLength)
-
+      const ranges = index.dimension(depth)
+      size[depth] = ranges.size()[0]
       if (depth < maxDepth) {
-        for (let i = 0; i < rangeLength; i++) {
-          const rangeIndex = range[i]
+        return ranges.map(rangeIndex => {
           validateIndex(rangeIndex, data.length)
-          result[i] = getSubmatrixRecursive(data[rangeIndex], depth + 1)
-        }
+          return getSubmatrixRecursive(data[rangeIndex], depth + 1)
+        }).valueOf()
       } else {
-        for (let i = 0; i < rangeLength; i++) {
-          const rangeIndex = range[i]
+        return ranges.map(rangeIndex => {
           validateIndex(rangeIndex, data.length)
-          result[i] = data[rangeIndex]
-        }
+          return data[rangeIndex]
+        }).valueOf()
       }
-      return result
     }
   }
 
@@ -391,21 +385,17 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     setSubmatrixRecursive(data, submatrix)
 
     function setSubmatrixRecursive (data, submatrix, depth = 0) {
-      const range = index.dimension(depth).valueOf()
-      const rangeLength = range.length
-
+      const range = index.dimension(depth)
       if (depth < maxDepth) {
-        for (let i = 0; i < rangeLength; i++) {
-          const rangeIndex = range[i]
+        range.forEach((rangeIndex, i) => {
           validateIndex(rangeIndex, data.length)
-          setSubmatrixRecursive(data[rangeIndex], submatrix[i], depth + 1)
-        }
+          setSubmatrixRecursive(data[rangeIndex], submatrix[i[0]], depth + 1)
+        })
       } else {
-        for (let i = 0; i < rangeLength; i++) {
-          const rangeIndex = range[i]
+        range.forEach((rangeIndex, i) => {
           validateIndex(rangeIndex, data.length)
-          data[rangeIndex] = submatrix[i]
-        }
+          data[rangeIndex] = submatrix[i[0]]
+        })
       }
     }
   }
