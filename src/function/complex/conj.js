@@ -31,8 +31,9 @@ export const createConj = /* #__PURE__ */ factory(name, dependencies, ({ typed }
    *            The complex conjugate of x
    */
   return typed(name, {
-    'number | BigNumber | Fraction | Unit': x => x,
+    'number | BigNumber | Fraction': x => x,
     Complex: x => x.conjugate(),
+    Unit: typed.referToSelf(self => x => new x.constructor(self(x.toNumeric()), x.formatUnits())),
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
 })
