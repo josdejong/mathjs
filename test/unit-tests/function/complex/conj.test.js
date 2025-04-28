@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
-const { conj, complex, fraction } = math
+const conj = math.conj
 
 describe('conj', function () {
   it('should compute the conjugate of a boolean', function () {
@@ -30,10 +30,10 @@ describe('conj', function () {
   })
 
   it('should calculate the conjugate of a units with complex, Fraction and BigNumber values', function () {
-    assert.strictEqual(conj(math.unit(complex('300+250i'), 'ohm')).toString(), '(300 - 250i) ohm')
+    assert.strictEqual(conj(math.unit(math.complex('300+250i'), 'ohm')).toString(), '(300 - 250i) ohm')
     assert.strictEqual(conj(math.unit(math.bignumber('0.3'), 'm/s')).toString(), '0.3 m / s')
-    assert.strictEqual(conj(math.unit(fraction('0.(285714)'), 'fahrenheit')).toString(), '2/7 fahrenheit')
-    assert.strictEqual(conj(math.unit(fraction(0.125), 'hp')).toString(), '1/8 hp')
+    assert.strictEqual(conj(math.unit(math.fraction('0.(285714)'), 'fahrenheit')).toString(), '2/7 fahrenheit')
+    assert.strictEqual(conj(math.unit(math.fraction(0.125), 'hp')).toString(), '1/8 hp')
   })
 
   it('should calculate the conjugate for each element in a matrix', function () {
