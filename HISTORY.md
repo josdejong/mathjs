@@ -6,6 +6,8 @@
   (#3454).
 - Feat: increase performance of the `map` and `forEach` methods of 
   `DenseMatrix` (#3446). Thanks @dvd101x.
+- Feat: define embedded docs for `compile`, `evaluate`, `parse`, and `parser`,
+  and add tests for the examples in embedded docs (#3413). Thanks @dvd101x.
 
 # 2025-03-28, 14.4.0
 
