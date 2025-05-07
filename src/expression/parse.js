@@ -1002,7 +1002,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseAddSubtract (state) {
     let node, name, fn, params
 
-    node = parseMultiplyDivideModulusPercentage(state)
+    node = parseMultiplyDivideModulus(state)
 
     const operators = {
       '+': 'add',
@@ -1013,7 +1013,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       fn = operators[name]
 
       getTokenSkipNewline(state)
-      const rightNode = parseMultiplyDivideModulusPercentage(state)
+      const rightNode = parseMultiplyDivideModulus(state)
       if (rightNode.isPercentage) {
         params = [node, new OperatorNode('*', 'multiply', [node, rightNode])]
       } else {
@@ -1026,11 +1026,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * multiply, divide, modulus, percentage
+   * multiply, divide, modulus
    * @return {Node} node
    * @private
    */
-  function parseMultiplyDivideModulusPercentage (state) {
+  function parseMultiplyDivideModulus (state) {
     let node, last, name, fn
 
     node = parseImplicitMultiplication(state)
@@ -1054,17 +1054,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         getTokenSkipNewline(state)
 
         if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
-          // If the expression contains only %, then treat that as /100
-          if (state.token !== '' && operators[state.token]) {
-            const left = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
-            name = state.token
-            fn = operators[name]
-            getTokenSkipNewline(state)
-            last = parseImplicitMultiplication(state)
-
-            node = new OperatorNode(name, fn, [left, last])
-          } else { node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true) }
-          // return node
+          // This % cannot be interpreted as a modulus, and it wasn't handled by parseUnaryPostfix
+          throw createSyntaxError(state, 'Unexpected operator %')
         } else {
           last = parseImplicitMultiplication(state)
           node = new OperatorNode(name, fn, [node, last])
@@ -1121,7 +1112,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseRule2 (state) {
-    let node = parseUnary(state)
+    let node = parseUnaryPercentage(state)
     let last = node
     const tokenStates = []
 
@@ -1144,7 +1135,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             Object.assign(state, tokenStates.pop())
             tokenStates.pop()
-            last = parseUnary(state)
+            last = parseUnaryPercentage(state)
             node = new OperatorNode('/', 'divide', [node, last])
           } else {
             // Not a match, so rewind
@@ -1159,6 +1150,30 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
       } else {
         break
+      }
+    }
+
+    return node
+  }
+
+  /**
+   * Unary percentage operator (treated as `value / 100`)
+   * @return {Node} node
+   * @private
+   */
+  function parseUnaryPercentage (state) {
+    let node = parseUnary(state)
+
+    if (state.token === '%') {
+      const previousState = Object.assign({}, state)
+      getTokenSkipNewline(state)
+
+      if (state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
+        // This is unary postfix %, then treat that as /100
+        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
+      } else {
+        // Not a match, so rewind
+        Object.assign(state, previousState)
       }
     }
 
