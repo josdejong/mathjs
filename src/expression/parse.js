@@ -1184,7 +1184,15 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       name = state.token
 
       getTokenSkipNewline(state)
+
+      state.silentParseEnd = true
       params = [parseUnary(state)]
+      state.silentParseEnd = false
+
+      if (name === 'not' && state.end) {
+        // not without a param on the right side, for example `help(not)`
+        return new SymbolNode(name)
+      }
 
       return new OperatorNode(name, fn, params)
     }
@@ -1709,7 +1717,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseEnd (state) {
-    if (state.token === '') {
+    if (state.silentParseEnd) {
+      state.end = true
+    } else if (state.token === '') {
       // syntax error or unexpected end of expression
       throw createSyntaxError(state, 'Unexpected end of expression')
     } else {

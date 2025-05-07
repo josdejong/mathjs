@@ -1750,6 +1750,8 @@ describe('parse', function () {
 
     it('should parse logical not', function () {
       assert.strictEqual(parseAndEval('not 2'), false)
+      assert.strictEqual(parseAndEval('not (2)'), false)
+      assert.strictEqual(parseAndEval('not -2'), false)
       assert.strictEqual(parseAndEval('not not 2'), true)
       assert.strictEqual(parseAndEval('not not not 2'), false)
       assert.strictEqual(parseAndEval('not true'), false)
@@ -1762,6 +1764,13 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('4 + not 2'), 4)
 
       assert.strictEqual(parseAndEval('10+not not 3'), 11)
+    })
+
+    it('should parse logical not returning the function', function () {
+      assert.strictEqual(math.parse('help(not)').toString(), 'help(not)')
+      assert.strictEqual(math.parse('help(not )').toString(), 'help(not)')
+      assert.strictEqual(parseAndEval('not'), math.not)
+      assert.strictEqual(parseAndEval('cond ? not : and', { cond: true }), math.not)
     })
 
     it('should parse minus -', function () {
