@@ -1,7 +1,19 @@
 # History
 
+# Unpublished changes scheduled for v15
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Fix: #1753 Correct dimensionality of Kronecker product on vectors (and
+  extend to arbitrary dimension) (#3455). Thanks @Delaney.
+- Feat: #3349 Decouple precedence of unary percentage operator and binary
+  modulus operator (that both use symbol `%`), and raise the former (#3432).
+  Thanks @kiprobinsonknack.
+
 # Unpublished changes since 14.4.0
 
+- Fix: #3450 support multiplication of valueless units by arbitrary types
+  (#3454).
 - Feat: increase performance of the `map` and `forEach` methods of 
   `DenseMatrix` (#3446). Thanks @dvd101x.
 
