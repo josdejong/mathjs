@@ -718,6 +718,105 @@ describe('Unit', function () {
     })
   })
 
+  describe('toBest', function () {
+    const valuelessUnitFirst = new Unit(null, 'mm')
+    const valuelessUnitSecond = new Unit(null, 'km')
+    const valuelessUnitThird = new Unit(null, 'cm')
+    const littleKilometerUnit = new Unit(0.01, 'km')
+
+    it('should return the best unit without any parameters', function () {
+      assert.strictEqual(new Unit(2 / 3, 'cm').toBest().equals(new Unit(0.6666666666666666, 'cm')), true)
+      assert.strictEqual(new Unit(2 / 3, 'm').toBest().equals(new Unit(0.6666666666666666, 'm')), true)
+    })
+
+    it('should format a unit without value', function () {
+      assert.strictEqual(new Unit(null, 'm').toBest().equals(new Unit(0, 'm')), true)
+      assert.strictEqual(new Unit(null, 'cm').toBest().equals(new Unit(0, 'cm')), true)
+      assert.strictEqual(new Unit(null, 'kg m/s').toBest().equals(new Unit(0, 'kg m/s')), true)
+    })
+
+    it('should return the best unit with given precision', function () {
+      assert.strictEqual(new Unit(2 / 3, 'm').toBest([], {}, 3).equals(new Unit(0.667, 'm')), true)
+      assert.strictEqual(new Unit(2 / 3, 'm').toBest([], {}, 5).equals(new Unit(0.66667, 'm')), true)
+      assert.strictEqual(new Unit(2 / 3, 'm').toBest([], {}).equals(new Unit(0.6666666666666666, 'm')), true)
+    })
+
+    // TODO: da rimuovere - tutti i test sopra sono funzionanti
+    it('should return the best unit with only given unit array (valorized and empty)', function () {
+      assert.strictEqual(new Unit(2 / 3, 'cm').toBest(['cm']).equals(new Unit(0.6666666666666666, 'cm')), true)
+      assert.strictEqual(new Unit(10, 'm').toBest(['mm', 'km', 'cm']).equals(littleKilometerUnit), true)
+
+      assert.strictEqual(new Unit(10, 'm').toBest([]).equals(new Unit(10, 'm')), true)
+      // return in km because the switchpoint is set by default to 501 (1.2 offset) and 1000 cm is greater than 501
+      assert.strictEqual(new Unit(10, 'm').toBest(['cm', 'km']).equals(littleKilometerUnit), true)
+      // return in cm even if the switchpoint is set to 501 (1.2 offset) because 1000 cm is better than 10000 mm
+      assert.strictEqual(new Unit(10, 'm').toBest(['cm', 'mm']).equals(new Unit(1000, 'cm')), true)
+    })
+
+    it('should return the best unit with valueless unit as parameter', function () {
+      assert.strictEqual(new Unit(2 / 3, 'cm').toBest([new Unit(null, 'cm')]).equals(new Unit(0.6666666666666666, 'cm')), true)
+      assert.strictEqual(new Unit(10, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird]).equals(littleKilometerUnit), true)
+    })
+
+    it('should return the best unit with given array and offset', function () {
+      // return in km because is chosen as the only unit
+      assert.strictEqual(new Unit(10, 'm').toBest(['km'], { offset: 1.5 }).equals(littleKilometerUnit), true)
+      assert.strictEqual(new Unit(10, 'm').toBest(['cm', 'km'], { offset: 1.5 }).equals(new Unit(1000, 'cm')), true)
+      assert.strictEqual(new Unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 }).equals(littleKilometerUnit), true)
+      assert.strictEqual(new Unit(10, 'm').toBest(['cm', 'mm'], { offset: 1.5 }).equals(new Unit(1000, 'cm')), true)
+    })
+
+    it('should return the best unit with bias passed', function () {
+      assert.strictEqual(new Unit(0.1, 'W').toBest([], { notation: 'fixed' }).equals(new Unit(0.1, 'W')), true)
+      assert.strictEqual(new Unit(0.0001, 'W').toBest([], { notation: 'fixed' }).equals(new Unit(100, 'uW')), true)
+      // bias set to false
+      assert.strictEqual(new Unit(0.1, 'W').toBest([], { notation: 'fixed', bias: false }).equals(new Unit(100, 'uW')), true)
+      assert.strictEqual(new Unit(0.0001, 'W').toBest([], { notation: 'fixed', bias: false }).equals(new Unit(100, 'uW')), true)
+    })
+
+    it('should handle negative values correctly', function () {
+      assert.strictEqual(new Unit(-0.1, 'km').toBest().equals(new Unit(-100, 'm')), true)
+      assert.strictEqual(new Unit(-1000, 'cm').toBest().equals(new Unit(-10, 'm')), true)
+      assert.strictEqual(new Unit(-0.0001, 'km').toBest().equals(new Unit(-100, 'mm')), true)
+    })
+
+    it('should handle zero values correctly', function () {
+      assert.strictEqual(new Unit(0, 'km').toBest().equals(new Unit(0, 'm')), true)
+      assert.strictEqual(new Unit(0, 'cm').toBest(['km', 'm', 'cm', 'mm']).equals(new Unit(0, 'm')), true)
+    })
+
+    it('should handle very large values correctly', function () {
+      assert.strictEqual(new Unit(1e6, 'm').toBest().equals(new Unit(1000, 'km')), true)
+      assert.strictEqual(new Unit(1e9, 'mm').toBest().equals(new Unit(1000, 'km')), true)
+    })
+
+    it('should handle very small values correctly', function () {
+      assert.strictEqual(new Unit(1e-6, 'm').toBest().equals(new Unit(1, 'um')), true)
+      assert.strictEqual(new Unit(1e-9, 'm').toBest().equals(new Unit(1, 'nm')), true)
+    })
+
+    it('should handle different unit types correctly', function () {
+      assert.strictEqual(new Unit(1000, 'g').toBest().equals(new Unit(1, 'kg')), true)
+      assert.strictEqual(new Unit(1e6, 'W').toBest().equals(new Unit(1, 'MW')), true)
+      assert.strictEqual(new Unit(0.0001, 'T').toBest().equals(new Unit(100, 'mT')), true)
+    })
+
+    it('should handle temperature units correctly', function () {
+      assert.strictEqual(new Unit(273.15, 'K').toBest(['degC', 'fahrenheit']).equals(new Unit(0, 'degC')), true)
+      // assert.strictEqual(new Unit(273.15, 'K').toBest(['fahrenheit']).equals(new Unit(48707.33, 'fahrenheit')), true)
+    })
+
+    it('should handle mixed units correctly', function () {
+      assert.strictEqual(new Unit(1, 'N').toBest(['kg m/s^2']).equals(new Unit(1, 'kg m/s^2')), true)
+      assert.strictEqual(new Unit(1, 'J').toBest(['N m']).equals(new Unit(1, 'N m')), true)
+    })
+
+    it('should throw error for incompatible units', function () {
+      assert.throws(() => new Unit(1, 'm').toBest(['kg']), /Units do not match/)
+      assert.throws(() => new Unit(1, 's').toBest(['m']), /Units do not match/)
+    })
+  })
+
   describe('format', function () {
     it('should format units with given precision', function () {
       assert.strictEqual(new Unit(2 / 3, 'm').format(3), '0.667 m')
