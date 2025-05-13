@@ -1100,42 +1100,48 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @memberof Unit
    * @param {string[] | Unit[]} [units]  Array of units strings or valueLess Unit objects in wich choose the best one
    * @param {Object} [options]  Options for parsing the unit. See parseUnit for details.
-   * @param {Object} [formatOptions]  Options for formatting the unit. See lib/utils/number:format for details.
    *
    * @return {Unit} Returns a new Unit with the given value and unit.
    */
-  Unit.prototype.toBest = function (units, options, formatOptions) {
-    console.dir(this, { depth: 3, colors: true })
+  Unit.prototype.toBest = function (units, options) {
+    // check if the units has the right type
+    if (units && !Array.isArray(units)) {
+      throw new Error('Invalid unit type. Expected string array or Unit array.')
+    }
+
     let simp = this.skipAutomaticSimplification || this.value === null
       ? this.clone()
       : this.simplify()
+
     simp = formatTemp(simp, options)
     const value = simp._denormalize(simp.value)
-    const finalValue = (simp.value !== null) ? format(value, formatOptions || {}) : ''
-    console.log('finalValue: ', finalValue)
+    const parsedValue = (simp.value !== null) ? format(value, options || {}) : ''
     const unitStr = simp.formatUnits()
-    let best = new Unit(Number(finalValue), unitStr)
-    let bestDiff = -Infinity
-    if (Array.isArray(units) && units.length > 0) {
+    let best = new Unit(Number(parsedValue), unitStr)
+    let bestDiff = 0
+    if ((Array.isArray(units) && units.length > 0) || units instanceof Unit) {
+      // check if the units are valid
       const unitObjects = units.map(u => new Unit(null, u)).filter(u => !!this.to(u.formatUnits()))
-      if (unitObjects.length === 0) {
-        throw new Error('Some Units are not comparable')
-      }
-      // bestUnit = unitObjects[0]
-      // const tempUnit = best.units[0].prefix.name + best.units[0].unit.name
-      // let bestDiff = Math.abs(Math.log10(Math.abs(this.toNumeric(tempUnit))) - (options?.offset ?? 1.2))
-      // bestUnit.value = this.toNumeric(tempUnit)
       for (const unit of unitObjects) {
-        // const val = this.toNumeric(unit.units[0].prefix.name + unit.units[0].unit.name)
         const val = this.to(unit.formatUnits())
-        const diff = Math.abs(Math.log10(Math.abs(val)) - (options?.offset ?? 1.2))
-        if (diff < bestDiff) {
+        let diff = null
+        console.dir(val, { depth: 3 })
+        const unitValue = val.value / unit.units[0].prefix.value
+        console.log('unitValue', unitValue)
+        if (options?.bias) {
+          diff = Math.abs(Math.log10(Math.abs(unitValue)))
+        } else {
+          diff = Math.abs(Math.log10(Math.abs(unitValue)) - (options?.offset ?? 1.2))
+        }
+        console.log('diff', diff)
+        console.log('bestDiff', bestDiff)
+        if (bestDiff < diff) {
           bestDiff = diff
           best = val
         }
       }
     }
-    console.log('valore finale: ', finalValue, ' unita finale: ', unitStr)
+    // console.dir(best, { depth: 3 })
     return best
   }
 
