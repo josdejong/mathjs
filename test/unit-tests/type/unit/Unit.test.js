@@ -724,12 +724,12 @@ describe('Unit', function () {
       const u1 = new Unit(2 / 3, 'cm').toBest()
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'c')
-      assert.equal(u1.value / u1.units[0].prefix.value, 0.6666666666666666)
+      assert.equal(u1.value, 0.6666666666666666)
 
       const u2 = new Unit(2 / 3, 'm').toBest()
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, '')
-      assert.equal(u2.value / u2.units[0].prefix.value, 0.6666666666666666)
+      assert.equal(u2.value, 0.6666666666666666)
     })
 
     // 2
@@ -737,12 +737,12 @@ describe('Unit', function () {
       const u1 = new Unit(null, 'm').toBest()
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, '')
-      assert.equal(u1.value / u1.units[0].prefix.value, 0)
+      assert.equal(u1.value, 0)
 
       const u2 = new Unit(null, 'cm').toBest()
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'c')
-      assert.equal(u2.value / u2.units[0].prefix.value, 0)
+      assert.equal(u2.value, 0)
 
       const u3 = new Unit(null, 'kg m/s').toBest()
       assert.equal(u3.units[0].unit.name, 'g')
@@ -751,9 +751,7 @@ describe('Unit', function () {
       assert.equal(u3.units[0].prefix.name, 'k')
       assert.equal(u3.units[1].prefix.name, '')
       assert.equal(u3.units[2].prefix.name, '')
-      assert.equal(u3.value / u3.units[0].prefix.value, 0)
-      assert.equal(u3.value / u3.units[1].prefix.value, 0)
-      assert.equal(u3.value / u3.units[2].prefix.value, 0)
+      assert.equal(u3.value, 0)
     })
 
     // 3
@@ -761,52 +759,51 @@ describe('Unit', function () {
       const u1 = new Unit(2 / 3, 'm').toBest([], { precision: 3 })
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, '')
-      assert.equal(u1.value / u1.units[0].prefix.value, 0.667)
+      assert.equal(u1.value, 0.667)
 
       const u2 = new Unit(0.667, 'm').toBest([], { precision: 3 })
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, '')
-      assert.equal(u2.value / u2.units[0].prefix.value, 0.667)
+      assert.equal(u2.value, 0.667)
 
       const u3 = new Unit(2 / 3, 'm').toBest([], { precision: 5 })
       assert.equal(u3.units[0].unit.name, 'm')
       assert.equal(u3.units[0].prefix.name, '')
-      assert.equal(u3.value / u3.units[0].prefix.value, 0.66667)
+      assert.equal(u3.value, 0.66667)
     })
 
     // 4
     it('should return the best unit with only given unit array - valorized and empty', function () {
-      const u1 = new Unit(10, 'm').toBest(['km', 'mm', 'cm'])
+      const u1 = new Unit(10, 'm').toBest(['km', 'mm', 'cm'], { offset: 0.5 })
       u1.fixPrefix = false
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'k')
-      assert.equal(u1.value / u1.units[0].prefix.value, 0.01)
+      assert.equal(u1.value, 0.01)
 
       const u2 = new Unit(2 / 3, 'cm').toBest(['cm'])
       u2.fixPrefix = false
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'c')
-      assert.equal(u2.value / u2.units[0].prefix.value, 0.6666666666666666)
-
+      assert.equal(u2.value, 0.6666666666666666)
 
       const u3 = new Unit(10, 'm').toBest([])
       u3.fixPrefix = false
       assert.equal(u3.units[0].unit.name, 'm')
       assert.equal(u3.units[0].prefix.name, '')
-      assert.equal(u3.value / u3.units[0].prefix.value, 10)
+      assert.equal(u3.value, 10)
 
       // // // return in km because the switchpoint is set by default to 501 (1.2 offset) and 1000 cm is greater than 501
       const u4 = new Unit(10, 'm').toBest(['cm', 'km'])
       assert.equal(u4.units[0].unit.name, 'm')
       assert.equal(u4.units[0].prefix.name, 'c')
-      assert.equal(u4.value / u4.units[0].prefix.value, 0.01)
+      assert.equal(u4.value, 1000)
 
       // return in cm even if the switchpoint is set to 501 (1.2 offset) because 5000 cm is better than 50000 mm
       const u5 = new Unit(5, 'm').toBest(['cm', 'mm'])
       u5.fixPrefix = false
       assert.equal(u5.units[0].unit.name, 'm')
       assert.equal(u5.units[0].prefix.name, 'c')
-      assert.equal(u5.value / u5.units[0].prefix.value, 500)
+      assert.equal(u5.value, 500)
     })
 
     // 5
@@ -816,46 +813,40 @@ describe('Unit', function () {
       const valuelessUnitThird = new Unit(null, 'cm')
 
       const u1 = new Unit(2 / 3, 'cm').toBest([valuelessUnitThird])
-      u1.fixPrefix = false
+      const u2 = new Unit(1000, 'cm').toBest([valuelessUnitSecond])
+      const u3 = new Unit(50 / 5, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
+      const u4 = new Unit(0.000001, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
+      const u5 = new Unit(0.00099, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
+      const u6 = new Unit(999999, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
+      const u7 = new Unit(100, 'm').toBest([valuelessUnitFirst])
+
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'c')
-      assert.equal(u1.value / u1.units[0].prefix.value, 0.6666666666666666)
+      assert.equal(u1.value, 0.6666666666666666)
 
-      const u2 = new Unit(1000, 'cm').toBest([valuelessUnitSecond])
-      u2.fixPrefix = false
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'k')
-      assert.equal(u2.value / u2.units[0].prefix.value, 0.01)
+      assert.equal(u2.value, 0.01)
 
-      const u3 = new Unit(50 / 5, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
-      u3.fixPrefix = false
       assert.equal(u3.units[0].unit.name, 'm')
       assert.equal(u3.units[0].prefix.name, 'm')
-      assert.equal(u3.value / u3.units[0].prefix.value, 10000)
+      assert.equal(u3.value, 10000)
 
-      const u4 = new Unit(0.000001, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
-      u4.fixPrefix = false
       assert.equal(u4.units[0].unit.name, 'm')
       assert.equal(u4.units[0].prefix.name, 'm')
-      assert.equal(u4.value / u4.units[0].prefix.value, 0.001)
+      assert.equal(u4.value, 0.001)
 
-      const u5 = new Unit(0.00099, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
-      u5.fixPrefix = false
       assert.equal(u5.units[0].unit.name, 'm')
       assert.equal(u5.units[0].prefix.name, 'm')
-      assert.equal(u5.value / u5.units[0].prefix.value, 0.99)
+      assert.equal(u5.value, 0.99)
 
-      const u6 = new Unit(999999, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
-      u6.fixPrefix = false
       assert.equal(u6.units[0].unit.name, 'm')
       assert.equal(u6.units[0].prefix.name, 'k')
-      assert.equal(u6.value / u6.units[0].prefix.value, 999.999)
+      assert.equal(u6.value, 999.999)
 
-      const u7 = new Unit(100, 'm').toBest([valuelessUnitFirst])
-      u7.fixPrefix = false
       assert.equal(u7.units[0].unit.name, 'm')
       assert.equal(u7.units[0].prefix.name, 'm')
-      assert.equal(u7.value / u7.units[0].prefix.value, 100000)
+      assert.equal(u7.value, 100000)
     })
 
     // 6
@@ -864,19 +855,19 @@ describe('Unit', function () {
       u1.fixPrefix = false
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'k')
-      assert.equal(u1.value / u1.units[0].prefix.value, 0.01)
+      assert.equal(u1.value, 0.01)
 
       const u2 = new Unit(10, 'm').toBest(['mm', 'cm'], { offset: 1.5 })
       u2.fixPrefix = false
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'c')
-      assert.equal(u2.value / u2.units[0].prefix.value, 1000)
+      assert.equal(u2.value, 1000)
 
       const u3 = new Unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 })
       u3.fixPrefix = false
       assert.equal(u3.units[0].unit.name, 'm')
       assert.equal(u3.units[0].prefix.name, 'k')
-      assert.equal(u3.value / u3.units[0].prefix.value, 0.01)
+      assert.equal(u3.value, 0.01)
     })
 
     // 7
@@ -893,17 +884,17 @@ describe('Unit', function () {
       const u1 = new Unit(-0.1, 'm').toBest()
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, '')
-      assert.equal(u1.value / u1.units[0].prefix.value, -0.1)
+      assert.equal(u1.value, -0.1)
 
       const u2 = new Unit(-1000, 'cm').toBest()
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'c')
-      assert.equal(u2.value / u2.units[0].prefix.value, -1000)
+      assert.equal(u2.value, -1000)
 
       const u3 = new Unit(-0.0001, 'km').toBest()
       assert.equal(u3.units[0].unit.name, 'm')
       assert.equal(u3.units[0].prefix.name, 'm')
-      assert.equal(u3.value / u3.units[0].prefix.value, -100)
+      assert.equal(u3.value, -100)
     })
 
     // 9
@@ -913,18 +904,18 @@ describe('Unit', function () {
 
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'k')
-      assert.equal(u1.value / u1.units[0].prefix.value, 0)
+      assert.equal(u1.value, 0)
 
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'k')
-      assert.equal(u2.value / u2.units[0].prefix.value, 0)
+      assert.equal(u2.value, 0)
 
       // Zero with different prefixes
       const u3 = new Unit(0, 'mm').toBest()
 
       assert.equal(u3.units[0].unit.name, 'm')
       assert.equal(u3.units[0].prefix.name, 'm')
-      assert.equal(u3.value / u3.units[0].prefix.value, 0)
+      assert.equal(u3.value, 0)
     })
 
     // 10
@@ -934,11 +925,11 @@ describe('Unit', function () {
 
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'k')
-      assert.equal(u1.value / u1.units[0].prefix.value, 1000)
+      assert.equal(u1.value, 1000)
 
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'M')
-      assert.equal(u2.value / u2.units[0].prefix.value, 1000)
+      assert.equal(u2.value, 1000)
     })
 
     // 11
@@ -948,12 +939,12 @@ describe('Unit', function () {
 
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'u')
-      assert.equal(u1.value / u1.units[0].prefix.value, 1)
+      assert.equal(u1.value, 1)
       // assert.deepStrictEqual(new Unit(1e-6, 'm').toBest(), new Unit(1, 'um'))
 
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'n')
-      assert.equal(u2.value / u2.units[0].prefix.value, 1)
+      assert.equal(u2.value, 1)
     })
 
     // 12
@@ -981,37 +972,37 @@ describe('Unit', function () {
       u1.fixPrefix = false
       assert.equal(u1.units[0].unit.name, 'degC')
       assert.equal(u1.units[0].prefix.name, '')
-      assert.equal(u1.value / u1.units[0].prefix.value, 0)
+      assert.equal(u1.value, 0)
 
       const u2 = new Unit(273.15, 'K').toBest(['fahrenheit'])
       u2.fixPrefix = false
       assert.equal(u2.units[0].unit.name, 'fahrenheit')
       assert.equal(u2.units[0].prefix.name, '')
-      assert.equal(u2.value / u2.units[0].prefix.value, 32)
+      assert.equal(u2.value, 32)
 
       const u3 = new Unit(0, 'degC').toBest(['K'])
       u3.fixPrefix = false
       assert.equal(u3.units[0].unit.name, 'K')
       assert.equal(u3.units[0].prefix.name, '')
-      assert.equal(u3.value / u3.units[0].prefix.value, 273.15)
+      assert.equal(u3.value, 273.15)
 
       const u4 = new Unit(0, 'fahrenheit').toBest(['degC'])
       u4.fixPrefix = false
       assert.equal(u4.units[0].unit.name, 'degC')
       assert.equal(u4.units[0].prefix.name, '')
-      assert.equal(u4.value / u4.units[0].prefix.value, -17.77777777777778)
+      assert.equal(u4.value, -17.77777777777778)
 
       const u5 = new Unit(2000, 'K').toBest(['degC'])
       u5.fixPrefix = false
       assert.equal(u5.units[0].unit.name, 'degC')
       assert.equal(u5.units[0].prefix.name, '')
-      assert.equal(u5.value / u5.units[0].prefix.value, 1726.85)
+      assert.equal(u5.value, 1726.85)
 
       const u6 = new Unit(2000, 'K').toBest(['fahrenheit'])
       u6.fixPrefix = false
       assert.equal(u6.units[0].unit.name, 'fahrenheit')
       assert.equal(u6.units[0].prefix.name, '')
-      assert.equal(u6.value / u6.units[0].prefix.value, 3140.33)
+      assert.equal(u6.value, 3140.33)
     })
 
     // 14
@@ -1024,9 +1015,8 @@ describe('Unit', function () {
       assert.equal(u1.units[0].prefix.name, 'k')
       assert.equal(u1.units[1].prefix.name, '')
       assert.equal(u1.units[2].prefix.name, '')
-      assert.equal(u1.value / u1.units[0].prefix.value, 1)
-      assert.equal(u1.value / u1.units[1].prefix.value, 1)
-      assert.equal(u1.value / u1.units[2].prefix.value, 1)
+      assert.equal(u1.value, 1)
+
 
       const u2 = new Unit(1, 'N').toBest(['J/m', 'kg m/s^2'])
       u2.fixPrefix = false
@@ -1036,9 +1026,7 @@ describe('Unit', function () {
       assert.equal(u2.units[0].prefix.name, 'k')
       assert.equal(u2.units[1].prefix.name, '')
       assert.equal(u2.units[2].prefix.name, '')
-      assert.equal(u2.value / u2.units[0].prefix.value, 1)
-      assert.equal(u2.value / u2.units[1].prefix.value, 1)
-      assert.equal(u2.value / u2.units[2].prefix.value, 1)
+      assert.equal(u2.value, 1)
     })
 
     // 15
