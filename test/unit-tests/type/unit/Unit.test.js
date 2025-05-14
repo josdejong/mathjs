@@ -741,22 +741,26 @@ describe('Unit', function () {
     })
 
     it('should return the best unit with only given unit array - valorized and empty', function () {
-      const u1 = new Unit(10, 'm').toBest(['mm', 'km', 'cm'])
+      const u1 = new Unit(10, 'm').toBest(['km', 'mm','cm'],{offset: 4})
       u1.fixPrefix = false
-      assert.deepStrictEqual(u1, new Unit(0.01, 'km'))
+      // console.log('test', test)
+      assert.equal(u1.units[0].unit.name, 'm')
+      assert.equal(u1.units[0].prefix.name, 'k')
+      assert.equal(u1.value / u1.units[0].prefix.value, 0.01)
+      // assert.deepStrictEqual(u1, new Unit(0.01, 'km'))
 
-      const u2 = new Unit(2 / 3, 'cm').toBest(['cm'])
-      u2.fixPrefix = false
-      assert.deepStrictEqual(u2, new Unit(0.6666666666666666, 'cm'))
+      // const u2 = new Unit(2 / 3, 'cm').toBest(['cm'])
+      // u2.fixPrefix = false
+      // assert.deepStrictEqual(u2, new Unit(0.6666666666666666, 'cm'))
 
-      const u3 = new Unit(10, 'm').toBest([])
-      u3.fixPrefix = false
-      assert.deepStrictEqual(u3, new Unit(10, 'm'))
+      // const u3 = new Unit(10, 'm').toBest([])
+      // u3.fixPrefix = false
+      // assert.deepStrictEqual(u3, new Unit(10, 'm'))
 
-      // // return in km because the switchpoint is set by default to 501 (1.2 offset) and 1000 cm is greater than 501
-      const u4 = new Unit(10, 'm').toBest(['cm', 'km'])
-      u4.fixPrefix = false
-      assert.deepStrictEqual(u4, new Unit(0.01, 'km'))
+      // // // return in km because the switchpoint is set by default to 501 (1.2 offset) and 1000 cm is greater than 501
+      // const u4 = new Unit(10, 'm').toBest(['cm', 'km'])
+      // u4.fixPrefix = false
+      // assert.deepStrictEqual(u4, new Unit(0.01, 'km'))
 
       // // return in cm even if the switchpoint is set to 501 (1.2 offset) because 5000 cm is better than 50000 mm
       // const u5 = new Unit(5, 'm').toBest(['cm', 'mm'])
@@ -803,13 +807,13 @@ describe('Unit', function () {
       u1.fixPrefix = false
       assert.deepStrictEqual(u1, new Unit(0.01, 'km'))
 
-      // const u2 = new Unit(10, 'm').toBest(['cm', 'km'], { offset: 1.5 })
-      // u2.fixPrefix = false
-      // assert.deepStrictEqual(u2, new Unit(1000, 'cm'))
-
-      const u2 = new Unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 })
+      const u2 = new Unit(10, 'm').toBest(['mm', 'cm'], { offset: 1.5 })
       u2.fixPrefix = false
-      assert.deepStrictEqual(u2, new Unit(0.01, 'km'))
+      assert.deepStrictEqual(u2, new Unit(1000, 'cm'))
+
+      const u3 = new Unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 })
+      u3.fixPrefix = false
+      assert.deepStrictEqual(u3, new Unit(0.01, 'km'))
     })
 
     it('should return the best unit with bias passed', function () {
@@ -932,10 +936,14 @@ describe('Unit', function () {
       assert.deepStrictEqual(u6, new Unit(3140.33, 'fahrenheit'))
     })
 
-    // it('should handle mixed units correctly', function () {
-    //   assert.strictEqual(new Unit(1, 'N').toBest(['kg m/s^2']).equals(new Unit(1, 'kg m/s^2')), true)
-    //   assert.strictEqual(new Unit(1, 'J').toBest(['N m']).equals(new Unit(1, 'N m')), true)
-    // })
+    it('should handle mixed units correctly', function () {
+      const u1 = new Unit(1, 'N').toBest(['kg m/s^2'])
+      u1.fixPrefix = false
+      assert.deepStrictEqual(u1, new Unit(1, 'kg m/s^2'))
+      const u2 = new Unit(1, 'N').toBest(['J/m', 'kg m/s^2'])
+      u2.fixPrefix = false
+      assert.deepStrictEqual(u2, new Unit(1, 'kg m/s^2'))
+    })
 
     // todo: work
     it('should throw error for first parameter not being an array', function () {

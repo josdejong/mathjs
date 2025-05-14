@@ -1108,41 +1108,61 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (units && !Array.isArray(units)) {
       throw new Error('Invalid unit type. Expected string array or Unit array.')
     }
-
-    let simp = this.skipAutomaticSimplification || this.value === null
-      ? this.clone()
-      : this.simplify()
-
-    simp = formatTemp(simp, options)
-    const value = simp._denormalize(simp.value)
-    const parsedValue = (simp.value !== null) ? format(value, options || {}) : ''
-    const unitStr = simp.formatUnits()
-    let best = new Unit(Number(parsedValue), unitStr)
-    let bestDiff = 0
-    if ((Array.isArray(units) && units.length > 0) || units instanceof Unit) {
+    // let bestDiff = 0
+    if ((Array.isArray(units) && units.length > 0)) {
       // check if the units are valid
-      const unitObjects = units.map(u => new Unit(null, u)).filter(u => !!this.to(u.formatUnits()))
-      for (const unit of unitObjects) {
-        const val = this.to(unit.formatUnits())
-        let diff = null
-        console.dir(val, { depth: 3 })
-        const unitValue = val.value / unit.units[0].prefix.value
-        console.log('unitValue', unitValue)
-        if (options?.bias) {
-          diff = Math.abs(Math.log10(Math.abs(unitValue)))
-        } else {
-          diff = Math.abs(Math.log10(Math.abs(unitValue)) - (options?.offset ?? 1.2))
+      const unitObjects = units.map(u => {
+        const unit = typeof u === 'string' ? Unit.parse(u) : isUnit(u) ? u : null
+        if (unit === null) {
+          throw new Error('Invalid unit type. Expected string or Unit.')
         }
-        console.log('diff', diff)
-        console.log('bestDiff', bestDiff)
-        if (bestDiff < diff) {
-          bestDiff = diff
-          best = val
+        // check if the unit is valueless
+        if (!this.equalBase(unit)) {
+          throw new Error('Invalid unit type. Expected valueless unit.')
         }
-      }
+        return unit
+      })
+      const prefixes = unitObjects.map(u => u.units[0].prefix)
+      this.units[0].unit.prefixes = prefixes.reduce((acc, prefix) => {
+        acc[prefix.name] = prefix
+        return acc
+      }, {})
+      this.units[0].prefix = prefixes[0]
+      console.log(this.units[0].unit.prefixes)
+      // for (const unit of unitObjects) {
+      //   console.log('sssssss', unit.formatUnits())
+      //   const val = this.to(unit.formatUnits())
+      //   let diff = null
+      //   // console.dir(val, { depth: 3 })
+      //   // console.log('val', val)
+      //   console.log(unit.units[0].prefix)
+      //   const unitValue = val.value / unit.units[0].prefix.value
+      //   // console.log('unitValue', unitValue)
+      //   if (options?.bias) {
+      //     diff = Math.abs(Math.log10(Math.abs(unitValue)))
+      //   } else {
+      //     diff = Math.abs(Math.log10(Math.abs(unitValue)) - (options?.offset ?? 1.2))
+      //   }
+      //   // console.log('diff', diff)
+      //   // console.log('bestDiff', bestDiff)
+      //   if (bestDiff < diff) {
+      //     bestDiff = diff
+      //     best = val
+      //   }
+      // }
     }
+
+    // let simp = this.skipAutomaticSimplification || this.value === null
+    //   ? this.clone()
+    //   : this.simplify()
+
+    const simp = formatTemp(this, options)
+    console.log('simp', simp.formatUnits())
+    // const value = simp._denormalize(simp.value)
+    // const parsedValue = (simp.value !== null) ? format(value, options || {}) : ''
+    // const unitStr = simp.formatUnits()
     // console.dir(best, { depth: 3 })
-    return best
+    return simp
   }
 
   /**
@@ -1238,7 +1258,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       // outputted value by not-an-integer-power-of-ten
       if (Math.abs(simp.units[0].power - Math.round(simp.units[0].power)) < 1e-14) {
         // Apply the best prefix
+        console.log('OFSETT', options?.offset || 1.2)
         simp.units[0].prefix = simp._bestPrefix(options?.offset || 1.2)
+        console.log('simp.units[0].prefix',options?.offset, simp._bestPrefix(),simp.units[0].unit.prefixes )
       }
     }
 
@@ -1269,23 +1291,27 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // prefix it's enough to work with limited precision of a regular number
     // Update: using mathjs abs since we also allow complex numbers
     const absValue = this.value !== null ? abs(this.value) : 0
+    console.log('absValue', absValue)
     const absUnitValue = abs(this.units[0].unit.value)
     let bestPrefix = this.units[0].prefix
     if (absValue === 0) {
       return bestPrefix
     }
     const power = this.units[0].power
+    console.log('power', power, bestPrefix, offset)
     let bestDiff = Math.log(absValue / Math.pow(bestPrefix.value * absUnitValue, power)) / Math.LN10 - offset
+    console.log('bestDiff', bestDiff)
     if (bestDiff > -2.200001 && bestDiff < 1.800001) return bestPrefix // Allow the original prefix
     bestDiff = Math.abs(bestDiff)
     const prefixes = this.units[0].unit.prefixes
     for (const p in prefixes) {
       if (hasOwnProperty(prefixes, p)) {
         const prefix = prefixes[p]
+        console.log('prefix', prefix)
         if (prefix.scientific) {
           const diff = Math.abs(
             Math.log(absValue / Math.pow(prefix.value * absUnitValue, power)) / Math.LN10 - offset)
-
+            console.log('diff', diff)
           if (diff < bestDiff ||
             (diff === bestDiff && prefix.name.length < bestPrefix.name.length)) {
             // choose the prefix with the smallest diff, or if equal, choose the one
@@ -1296,7 +1322,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         }
       }
     }
-
+    console.log('bestPrefix', bestPrefix)
     return bestPrefix
   }
 
