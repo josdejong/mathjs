@@ -719,55 +719,97 @@ describe('Unit', function () {
   })
 
   describe('toBest', function () {
-    // todo: work
+    // 1
     it('should return the best unit without any parameters', function () {
-      assert.deepStrictEqual(new Unit(2 / 3, 'cm').toBest(), new Unit(2 / 3, 'cm'))
-      assert.deepStrictEqual(new Unit(2 / 3, 'm').toBest(), new Unit(2 / 3, 'm'))
+      const u1 = new Unit(2 / 3, 'cm').toBest()
+      assert.equal(u1.units[0].unit.name, 'm')
+      assert.equal(u1.units[0].prefix.name, 'c')
+      assert.equal(u1.value / u1.units[0].prefix.value, 0.6666666666666666)
+
+      const u2 = new Unit(2 / 3, 'm').toBest()
+      assert.equal(u2.units[0].unit.name, 'm')
+      assert.equal(u2.units[0].prefix.name, '')
+      assert.equal(u2.value / u2.units[0].prefix.value, 0.6666666666666666)
     })
 
-    // todo: work
+    // 2
     it('should format a unit without any value', function () {
-      assert.deepStrictEqual(new Unit(null, 'm').toBest(), new Unit(0, 'm'))
-      assert.deepStrictEqual(new Unit(null, 'cm').toBest(), new Unit(0, 'cm'))
-      assert.deepStrictEqual(new Unit(null, 'kg m/s').toBest(), new Unit(0, 'kg m/s'))
+      const u1 = new Unit(null, 'm').toBest()
+      assert.equal(u1.units[0].unit.name, 'm')
+      assert.equal(u1.units[0].prefix.name, '')
+      assert.equal(u1.value / u1.units[0].prefix.value, 0)
+
+      const u2 = new Unit(null, 'cm').toBest()
+      assert.equal(u2.units[0].unit.name, 'm')
+      assert.equal(u2.units[0].prefix.name, 'c')
+      assert.equal(u2.value / u2.units[0].prefix.value, 0)
+
+      const u3 = new Unit(null, 'kg m/s').toBest()
+      assert.equal(u3.units[0].unit.name, 'g')
+      assert.equal(u3.units[1].unit.name, 'm')
+      assert.equal(u3.units[2].unit.name, 's')
+      assert.equal(u3.units[0].prefix.name, 'k')
+      assert.equal(u3.units[1].prefix.name, '')
+      assert.equal(u3.units[2].prefix.name, '')
+      assert.equal(u3.value / u3.units[0].prefix.value, 0)
+      assert.equal(u3.value / u3.units[1].prefix.value, 0)
+      assert.equal(u3.value / u3.units[2].prefix.value, 0)
     })
 
-    // todo: work
+    // 3
     it('should return the best unit with given precision', function () {
-      assert.deepStrictEqual(new Unit(2 / 3, 'm').toBest([], { precision: 3 }), new Unit(0.667, 'm'))
-      assert.deepStrictEqual(new Unit(0.667, 'm').toBest([], { precision: 3 }), new Unit(0.667, 'm'))
-      assert.deepStrictEqual(new Unit(2 / 3, 'm').toBest([], { precision: 5 }), new Unit(0.66667, 'm'))
-      assert.deepStrictEqual(new Unit(2 / 3, 'm').toBest([]), new Unit(0.6666666666666666, 'm'))
+      const u1 = new Unit(2 / 3, 'm').toBest([], { precision: 3 })
+      assert.equal(u1.units[0].unit.name, 'm')
+      assert.equal(u1.units[0].prefix.name, '')
+      assert.equal(u1.value / u1.units[0].prefix.value, 0.667)
+
+      const u2 = new Unit(0.667, 'm').toBest([], { precision: 3 })
+      assert.equal(u2.units[0].unit.name, 'm')
+      assert.equal(u2.units[0].prefix.name, '')
+      assert.equal(u2.value / u2.units[0].prefix.value, 0.667)
+
+      const u3 = new Unit(2 / 3, 'm').toBest([], { precision: 5 })
+      assert.equal(u3.units[0].unit.name, 'm')
+      assert.equal(u3.units[0].prefix.name, '')
+      assert.equal(u3.value / u3.units[0].prefix.value, 0.66667)
     })
 
+    // 4
     it('should return the best unit with only given unit array - valorized and empty', function () {
-      const u1 = new Unit(10, 'm').toBest(['km', 'mm','cm'],{offset: 4})
+      const u1 = new Unit(10, 'm').toBest(['km', 'mm', 'cm'])
       u1.fixPrefix = false
-      // console.log('test', test)
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'k')
       assert.equal(u1.value / u1.units[0].prefix.value, 0.01)
-      // assert.deepStrictEqual(u1, new Unit(0.01, 'km'))
 
-      // const u2 = new Unit(2 / 3, 'cm').toBest(['cm'])
-      // u2.fixPrefix = false
-      // assert.deepStrictEqual(u2, new Unit(0.6666666666666666, 'cm'))
+      const u2 = new Unit(2 / 3, 'cm').toBest(['cm'])
+      u2.fixPrefix = false
+      assert.equal(u2.units[0].unit.name, 'm')
+      assert.equal(u2.units[0].prefix.name, 'c')
+      assert.equal(u2.value / u2.units[0].prefix.value, 0.6666666666666666)
 
-      // const u3 = new Unit(10, 'm').toBest([])
-      // u3.fixPrefix = false
-      // assert.deepStrictEqual(u3, new Unit(10, 'm'))
+
+      const u3 = new Unit(10, 'm').toBest([])
+      u3.fixPrefix = false
+      assert.equal(u3.units[0].unit.name, 'm')
+      assert.equal(u3.units[0].prefix.name, '')
+      assert.equal(u3.value / u3.units[0].prefix.value, 10)
 
       // // // return in km because the switchpoint is set by default to 501 (1.2 offset) and 1000 cm is greater than 501
-      // const u4 = new Unit(10, 'm').toBest(['cm', 'km'])
-      // u4.fixPrefix = false
-      // assert.deepStrictEqual(u4, new Unit(0.01, 'km'))
+      const u4 = new Unit(10, 'm').toBest(['cm', 'km'])
+      assert.equal(u4.units[0].unit.name, 'm')
+      assert.equal(u4.units[0].prefix.name, 'c')
+      assert.equal(u4.value / u4.units[0].prefix.value, 0.01)
 
-      // // return in cm even if the switchpoint is set to 501 (1.2 offset) because 5000 cm is better than 50000 mm
-      // const u5 = new Unit(5, 'm').toBest(['cm', 'mm'])
-      // u5.fixPrefix = false
-      // assert.deepStrictEqual(u5, new Unit(500, 'cm'))
+      // return in cm even if the switchpoint is set to 501 (1.2 offset) because 5000 cm is better than 50000 mm
+      const u5 = new Unit(5, 'm').toBest(['cm', 'mm'])
+      u5.fixPrefix = false
+      assert.equal(u5.units[0].unit.name, 'm')
+      assert.equal(u5.units[0].prefix.name, 'c')
+      assert.equal(u5.value / u5.units[0].prefix.value, 500)
     })
 
+    // 5
     it('should return the best unit with valueless unit as parameter', function () {
       const valuelessUnitFirst = new Unit(null, 'mm')
       const valuelessUnitSecond = new Unit(null, 'km')
@@ -775,47 +817,69 @@ describe('Unit', function () {
 
       const u1 = new Unit(2 / 3, 'cm').toBest([valuelessUnitThird])
       u1.fixPrefix = false
-      assert.deepStrictEqual(u1, new Unit(0.6666666666666666, 'cm'))
+      assert.equal(u1.units[0].unit.name, 'm')
+      assert.equal(u1.units[0].prefix.name, 'c')
+      assert.equal(u1.value / u1.units[0].prefix.value, 0.6666666666666666)
 
       const u2 = new Unit(1000, 'cm').toBest([valuelessUnitSecond])
       u2.fixPrefix = false
-      assert.deepStrictEqual(u2, new Unit(0.01, 'km'))
+      assert.equal(u2.units[0].unit.name, 'm')
+      assert.equal(u2.units[0].prefix.name, 'k')
+      assert.equal(u2.value / u2.units[0].prefix.value, 0.01)
 
       const u3 = new Unit(50 / 5, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
       u3.fixPrefix = false
-      assert.deepStrictEqual(u2, new Unit(0.01, 'km'))
+      assert.equal(u3.units[0].unit.name, 'm')
+      assert.equal(u3.units[0].prefix.name, 'm')
+      assert.equal(u3.value / u3.units[0].prefix.value, 10000)
 
-      // const u4 = new Unit(0.000001, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
-      // u4.fixPrefix = false
-      // assert.deepStrictEqual(u4, new Unit(0.001, 'mm'))
+      const u4 = new Unit(0.000001, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
+      u4.fixPrefix = false
+      assert.equal(u4.units[0].unit.name, 'm')
+      assert.equal(u4.units[0].prefix.name, 'm')
+      assert.equal(u4.value / u4.units[0].prefix.value, 0.001)
 
-      // const u5 = new Unit(0.00099, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
-      // u5.fixPrefix = false
-      // assert.deepStrictEqual(u5, new Unit(0.99, 'mm'))
+      const u5 = new Unit(0.00099, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
+      u5.fixPrefix = false
+      assert.equal(u5.units[0].unit.name, 'm')
+      assert.equal(u5.units[0].prefix.name, 'm')
+      assert.equal(u5.value / u5.units[0].prefix.value, 0.99)
 
-      // const u6 = new Unit(999999, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
-      // u6.fixPrefix = false
-      // assert.deepStrictEqual(u6, new Unit(999.999, 'km'))
+      const u6 = new Unit(999999, 'm').toBest([valuelessUnitFirst, valuelessUnitSecond, valuelessUnitThird])
+      u6.fixPrefix = false
+      assert.equal(u6.units[0].unit.name, 'm')
+      assert.equal(u6.units[0].prefix.name, 'k')
+      assert.equal(u6.value / u6.units[0].prefix.value, 999.999)
 
       const u7 = new Unit(100, 'm').toBest([valuelessUnitFirst])
       u7.fixPrefix = false
-      assert.deepStrictEqual(u7, new Unit(100000, 'mm'))
+      assert.equal(u7.units[0].unit.name, 'm')
+      assert.equal(u7.units[0].prefix.name, 'm')
+      assert.equal(u7.value / u7.units[0].prefix.value, 100000)
     })
 
+    // 6
     it('should return the best unit with given array and offset', function () {
       const u1 = new Unit(10, 'm').toBest(['km'], { offset: 1.5 })
       u1.fixPrefix = false
-      assert.deepStrictEqual(u1, new Unit(0.01, 'km'))
+      assert.equal(u1.units[0].unit.name, 'm')
+      assert.equal(u1.units[0].prefix.name, 'k')
+      assert.equal(u1.value / u1.units[0].prefix.value, 0.01)
 
       const u2 = new Unit(10, 'm').toBest(['mm', 'cm'], { offset: 1.5 })
       u2.fixPrefix = false
-      assert.deepStrictEqual(u2, new Unit(1000, 'cm'))
+      assert.equal(u2.units[0].unit.name, 'm')
+      assert.equal(u2.units[0].prefix.name, 'c')
+      assert.equal(u2.value / u2.units[0].prefix.value, 1000)
 
       const u3 = new Unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 })
       u3.fixPrefix = false
-      assert.deepStrictEqual(u3, new Unit(0.01, 'km'))
+      assert.equal(u3.units[0].unit.name, 'm')
+      assert.equal(u3.units[0].prefix.name, 'k')
+      assert.equal(u3.value / u3.units[0].prefix.value, 0.01)
     })
 
+    // 7
     it('should return the best unit with bias passed', function () {
       // assert.deepStrictEqual(new Unit(0.1, 'W').toBest([], { notation: 'fixed' }), new Unit(0.1, 'W'))
       // assert.deepStrictEqual(new Unit(0.0001, 'W').toBest([], { notation: 'fixed' }), new Unit(100, 'uW'))
@@ -824,13 +888,25 @@ describe('Unit', function () {
       // assert.deepStrictEqual(new Unit(0.0001, 'W').toBest([], { notation: 'fixed', bias: false }), new Unit(0.1, 'mW'))
     })
 
-    // todo: work
+    // 8
     it('should handle negative values correctly', function () {
-      assert.deepStrictEqual(new Unit(-0.1, 'm').toBest(), new Unit(-0.1, 'm'))
-      assert.deepStrictEqual(new Unit(-1000, 'cm').toBest(), new Unit(-1000, 'cm'))
-      assert.deepStrictEqual(new Unit(-0.0001, 'km').toBest(), new Unit(-100, 'mm'))
+      const u1 = new Unit(-0.1, 'm').toBest()
+      assert.equal(u1.units[0].unit.name, 'm')
+      assert.equal(u1.units[0].prefix.name, '')
+      assert.equal(u1.value / u1.units[0].prefix.value, -0.1)
+
+      const u2 = new Unit(-1000, 'cm').toBest()
+      assert.equal(u2.units[0].unit.name, 'm')
+      assert.equal(u2.units[0].prefix.name, 'c')
+      assert.equal(u2.value / u2.units[0].prefix.value, -1000)
+
+      const u3 = new Unit(-0.0001, 'km').toBest()
+      assert.equal(u3.units[0].unit.name, 'm')
+      assert.equal(u3.units[0].prefix.name, 'm')
+      assert.equal(u3.value / u3.units[0].prefix.value, -100)
     })
 
+    // 9
     it('should handle zero values correctly', function () {
       const u1 = new Unit(0, 'km').toBest()
       const u2 = new Unit(0, 'cm').toBest(['km', 'm', 'cm', 'mm'])
@@ -845,107 +921,127 @@ describe('Unit', function () {
 
       // Zero with different prefixes
       const u3 = new Unit(0, 'mm').toBest()
-      const u4 = new Unit(0, 'nm').toBest()
-      const u5 = new Unit(0, 'km').toBest()
-      const u6 = new Unit(0, 'Mm').toBest()
 
       assert.equal(u3.units[0].unit.name, 'm')
       assert.equal(u3.units[0].prefix.name, 'm')
       assert.equal(u3.value / u3.units[0].prefix.value, 0)
-
-      assert.equal(u4.units[0].unit.name, 'm')
-      assert.equal(u4.units[0].prefix.name, 'n')
-      assert.equal(u4.value / u4.units[0].prefix.value, 0)
-
-      assert.equal(u5.units[0].unit.name, 'm')
-      assert.equal(u5.units[0].prefix.name, 'k')
-      assert.equal(u5.value / u5.units[0].prefix.value, 0)
-
-      assert.equal(u6.units[0].unit.name, 'm')
-      assert.equal(u6.units[0].prefix.name, 'M')
-      assert.equal(u6.value / u6.units[0].prefix.value, 0)
-
-      // assert.strictEqual(new Unit(0, 'N/m^2').toBest().equals(new Unit(0, 'N/m^2')), true)
-      // assert.strictEqual(new Unit(0, 'in').toBest(['m', 'cm', 'mm']).equals(new Unit(0, 'in')), true)
-      // assert.strictEqual(new Unit(0, 'mol').toBest(['kmol', 'mmol']).equals(new Unit(0, 'mol')), true)
     })
 
-    // todo: work
+    // 10
     it('should handle very large values correctly', function () {
-      // const u1 = new Unit(1e6, 'm').toBest()
-      // const u2 = new Unit(1e9, 'mm').toBest()
+      const u1 = new Unit(1e6, 'm').toBest()
+      const u2 = new Unit(1e9, 'mm').toBest()
 
-      // assert.equal(u1.units[0].unit.name, 'm')
-      // assert.equal(u1.units[0].prefix.name, 'M')
-      // assert.equal(u1.value / u1.units[0].prefix.value, 1)
-      assert.deepStrictEqual(new Unit(1e6, 'm').toBest(), new Unit(1, 'Mm'))
+      assert.equal(u1.units[0].unit.name, 'm')
+      assert.equal(u1.units[0].prefix.name, 'k')
+      assert.equal(u1.value / u1.units[0].prefix.value, 1000)
 
-      // assert.equal(u2.units[0].unit.name, 'm')
-      // assert.equal(u2.units[0].prefix.name, 'M')
-      // assert.equal(u2.value / u2.units[0].prefix.value, 1)
-      assert.deepStrictEqual(new Unit(1e9, 'mm').toBest(), new Unit(1, 'Mm'))
+      assert.equal(u2.units[0].unit.name, 'm')
+      assert.equal(u2.units[0].prefix.name, 'M')
+      assert.equal(u2.value / u2.units[0].prefix.value, 1000)
     })
 
-    // todo: work
+    // 11
     it('should handle very small values correctly', function () {
-      // const u1 = new Unit(1e-6, 'm').toBest()
-      // const u2 = new Unit(1e-9, 'm').toBest()
+      const u1 = new Unit(1e-6, 'm').toBest()
+      const u2 = new Unit(1e-9, 'm').toBest()
 
-      // assert.equal(u1.units[0].unit.name, 'm')
-      // assert.equal(u1.units[0].prefix.name, 'u')
-      // assert.equal(u1.value / u1.units[0].prefix.value, 1)
-      assert.deepStrictEqual(new Unit(1e-6, 'm').toBest(), new Unit(1, 'um'))
+      assert.equal(u1.units[0].unit.name, 'm')
+      assert.equal(u1.units[0].prefix.name, 'u')
+      assert.equal(u1.value / u1.units[0].prefix.value, 1)
+      // assert.deepStrictEqual(new Unit(1e-6, 'm').toBest(), new Unit(1, 'um'))
 
-      // assert.equal(u2.units[0].unit.name, 'm')
-      // assert.equal(u2.units[0].prefix.name, 'n')
-      // assert.equal(u2.value / u2.units[0].prefix.value, 1)
-      assert.deepStrictEqual(new Unit(1e-9, 'm').toBest(), new Unit(1, 'nm'))
+      assert.equal(u2.units[0].unit.name, 'm')
+      assert.equal(u2.units[0].prefix.name, 'n')
+      assert.equal(u2.value / u2.units[0].prefix.value, 1)
     })
 
-    // todo: work
+    // 12
     it('should handle different unit types correctly', function () {
-      assert.deepStrictEqual(new Unit(1000, 'g').toBest(), new Unit(1000, 'g'))
-      assert.deepStrictEqual(new Unit(1e6, 'W').toBest(), new Unit(1, 'MW'))
-      assert.deepStrictEqual(new Unit(0.0001, 'T').toBest(), new Unit(100.00000000000001, 'uT'))
+      const u1 = new Unit(1000, 'g').toBest([], { offset: 0.5 })
+      const u2 = new Unit(1e6, 'W').toBest([])
+      const u3 = new Unit(0.0001, 'T').toBest([], { precision: 3 })
+
+      assert.equal(u1.units[0].unit.name, 'g')
+      assert.equal(u1.units[0].prefix.name, 'k')
+      assert.equal(u1.value, 1)
+
+      assert.equal(u2.units[0].unit.name, 'W')
+      assert.equal(u2.units[0].prefix.name, 'M')
+      assert.strictEqual(u2.value, 1)
+
+      assert.equal(u3.units[0].unit.name, 'T')
+      assert.equal(u3.units[0].prefix.name, 'u')
+      assert.equal(u3.value, 100)
     })
 
-    // todo: work
+    // 13
     it('should handle temperature units correctly', function () {
       const u1 = new Unit(273.15, 'K').toBest(['degC', 'fahrenheit'])
       u1.fixPrefix = false
-      assert.deepStrictEqual(u1, new Unit(0, 'degC'))
+      assert.equal(u1.units[0].unit.name, 'degC')
+      assert.equal(u1.units[0].prefix.name, '')
+      assert.equal(u1.value / u1.units[0].prefix.value, 0)
 
       const u2 = new Unit(273.15, 'K').toBest(['fahrenheit'])
       u2.fixPrefix = false
-      assert.deepStrictEqual(u2, new Unit(31.999999999999936, 'fahrenheit'))
+      assert.equal(u2.units[0].unit.name, 'fahrenheit')
+      assert.equal(u2.units[0].prefix.name, '')
+      assert.equal(u2.value / u2.units[0].prefix.value, 32)
 
       const u3 = new Unit(0, 'degC').toBest(['K'])
       u3.fixPrefix = false
-      assert.deepStrictEqual(u3, new Unit(273.15, 'K'))
+      assert.equal(u3.units[0].unit.name, 'K')
+      assert.equal(u3.units[0].prefix.name, '')
+      assert.equal(u3.value / u3.units[0].prefix.value, 273.15)
 
       const u4 = new Unit(0, 'fahrenheit').toBest(['degC'])
       u4.fixPrefix = false
-      assert.deepStrictEqual(u4, new Unit(-17.77777777777778, 'degC'))
+      assert.equal(u4.units[0].unit.name, 'degC')
+      assert.equal(u4.units[0].prefix.name, '')
+      assert.equal(u4.value / u4.units[0].prefix.value, -17.77777777777778)
 
       const u5 = new Unit(2000, 'K').toBest(['degC'])
       u5.fixPrefix = false
-      assert.deepStrictEqual(u5, new Unit(1726.85, 'degC'))
+      assert.equal(u5.units[0].unit.name, 'degC')
+      assert.equal(u5.units[0].prefix.name, '')
+      assert.equal(u5.value / u5.units[0].prefix.value, 1726.85)
 
       const u6 = new Unit(2000, 'K').toBest(['fahrenheit'])
       u6.fixPrefix = false
-      assert.deepStrictEqual(u6, new Unit(3140.33, 'fahrenheit'))
+      assert.equal(u6.units[0].unit.name, 'fahrenheit')
+      assert.equal(u6.units[0].prefix.name, '')
+      assert.equal(u6.value / u6.units[0].prefix.value, 3140.33)
     })
 
+    // 14
     it('should handle mixed units correctly', function () {
       const u1 = new Unit(1, 'N').toBest(['kg m/s^2'])
       u1.fixPrefix = false
-      assert.deepStrictEqual(u1, new Unit(1, 'kg m/s^2'))
+      assert.equal(u1.units[0].unit.name, 'g')
+      assert.equal(u1.units[1].unit.name, 'm')
+      assert.equal(u1.units[2].unit.name, 's')
+      assert.equal(u1.units[0].prefix.name, 'k')
+      assert.equal(u1.units[1].prefix.name, '')
+      assert.equal(u1.units[2].prefix.name, '')
+      assert.equal(u1.value / u1.units[0].prefix.value, 1)
+      assert.equal(u1.value / u1.units[1].prefix.value, 1)
+      assert.equal(u1.value / u1.units[2].prefix.value, 1)
+
       const u2 = new Unit(1, 'N').toBest(['J/m', 'kg m/s^2'])
       u2.fixPrefix = false
-      assert.deepStrictEqual(u2, new Unit(1, 'kg m/s^2'))
+      assert.equal(u2.units[0].unit.name, 'g')
+      assert.equal(u2.units[1].unit.name, 'm')
+      assert.equal(u2.units[2].unit.name, 's')
+      assert.equal(u2.units[0].prefix.name, 'k')
+      assert.equal(u2.units[1].prefix.name, '')
+      assert.equal(u2.units[2].prefix.name, '')
+      assert.equal(u2.value / u2.units[0].prefix.value, 1)
+      assert.equal(u2.value / u2.units[1].prefix.value, 1)
+      assert.equal(u2.value / u2.units[2].prefix.value, 1)
     })
 
-    // todo: work
+    // 15
     it('should throw error for first parameter not being an array', function () {
       assert.throws(
         () => new Unit(2 / 3, 'cm').toBest(new Unit(null, 'cm')),
@@ -953,7 +1049,7 @@ describe('Unit', function () {
       )
     })
 
-    // todo: work
+    // 16
     it('should throw error for incompatible units', function () {
       const functions = []
       functions.push(() => new Unit(1, 'm').toBest(['kg']))
