@@ -4,10 +4,13 @@ import { formatTaskResult } from './utils/formatTaskResult.js'
 
 const matrix = map(ones(10, 10, 'dense'), _ => round(random(-5, 5), 2))
 const array = matrix.toArray()
+const bigMatrix = map(ones(150, 150, 'dense'), _ => round(random(-5, 5), 2))
+const bigArray = map(ones(150, 150, 'dense'), _ => round(random(-5, 5), 2))
 const arrayOfBooleans = [true, false, false, true, true, true, false, true, false, true]
 const fiveNumbers = [0, 1, 5, 7, 9]
 const twoNumbers = [4, 6]
 const range = new Range(2, 9, 3)
+const bigRange = new Range(1, 150, 10)
 const rangeAll = new Range(0, 10)
 const replacement = [1]
 
@@ -95,6 +98,18 @@ const bench = new Bench({ time: 100, iterations: 100 })
   })
   .add('subset(array, all and all, replacement)', () => {
     subset(array, index(rangeAll, rangeAll), replacement)
+  })
+  .add('subset(bigMatrix, rows and columns)', () => {
+    subset(bigMatrix, index(fiveNumbers, twoNumbers))
+  })
+  .add('subset(bigArray, rows and columns)', () => {
+    subset(bigArray, index(fiveNumbers, twoNumbers))
+  })
+  .add('subset(bigMatrix, range and columns)', () => {
+    subset(bigMatrix, index(bigRange, twoNumbers))
+  })
+  .add('subset(bigArray, rows and range)', () => {
+    subset(bigArray, index(fiveNumbers, bigRange))
   })
 
 bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
