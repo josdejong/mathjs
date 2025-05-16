@@ -1103,39 +1103,55 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * @return {Unit} Returns a new Unit with the given value and unit.
    */
-  Unit.prototype.toBest = function (units, options) {
-    if ((Array.isArray(units) && units.length > 0)) {
-      const unitObjects = units.map(u => {
-        if (typeof u === 'string') {
-          const unit = Unit.parse(u)
-          if (unit) {
-            return unit
-          } else {
-            throw new Error('Invalid unit type. Expected string or Unit.')
-          }
-        } else if (isUnit(u)) {
-          return u
+  Unit.prototype.toBest = function (unitList = [], options = {}) {
+    // Validate unitList is an array
+    if (unitList && !Array.isArray(unitList)) {
+      throw new Error('Invalid unit type. Expected string or Unit.')
+    }
+
+    if (!Array.isArray(unitList) || unitList.length === 0) {
+      let resultFormatted = null
+      try {
+        resultFormatted = formatBest(this.clone(), options)
+        if (resultFormatted === null) {
+          throw new Error('Invalid unit type. Expected string or Unit.')
+        }
+      } catch (e) {
+        throw new Error('Invalid unit type. Expected string or Unit.')
+      }
+      const { simp, valueStr } = resultFormatted
+      simp.value = Number(valueStr)
+      return simp
+    }
+
+    const unitObjects = unitList.map(u => {
+      if (typeof u === 'string') {
+        const unit = Unit.parse(u)
+        try {
+          this.to(unit.formatUnits())
+        } catch (e) {
+          throw new Error('Invalid unit type. Expected compatible string or Unit.')
+        }
+
+        if (unit) {
+          return unit
         } else {
           throw new Error('Invalid unit type. Expected string or Unit.')
         }
-      })
-      const prefixes = unitObjects.map(u => u.units[0].prefix)
-      this.units[0].unit.prefixes = prefixes.reduce((acc, prefix) => {
-        acc[prefix.name] = prefix
-        return acc
-      }, {})
-      this.units[0].prefix = prefixes[0]
-    }
-    let resultFormatted = null
-    try {
-      resultFormatted = formatBest(this.clone(), options)
-      if (resultFormatted === null) {
+      } else if (isUnit(u)) {
+        return u
+      } else {
         throw new Error('Invalid unit type. Expected string or Unit.')
       }
-    } catch (e) {
-      throw new Error('Invalid unit type. Expected string or Unit.')
-    }
-    const { simp, valueStr } = resultFormatted
+    })
+
+    const prefixes = unitObjects.map(u => u.units[0].prefix)
+    this.units[0].unit.prefixes = prefixes.reduce((acc, prefix) => {
+      acc[prefix.name] = prefix
+      return acc
+    }, {})
+    this.units[0].prefix = prefixes[0]
+    const { simp, valueStr } = formatBest(this.clone(), options)
     simp.value = Number(valueStr)
     return simp
   }

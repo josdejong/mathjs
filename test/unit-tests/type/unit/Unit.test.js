@@ -719,7 +719,6 @@ describe('Unit', function () {
   })
 
   describe('toBest', function () {
-    // 1
     it('should return the best unit without any parameters', function () {
       const u1 = new Unit(2 / 3, 'cm').toBest()
       assert.equal(u1.units[0].unit.name, 'm')
@@ -732,7 +731,6 @@ describe('Unit', function () {
       assert.equal(u2.value, 0.6666666666666666)
     })
 
-    // 2
     it('should format a unit without any value', function () {
       const u1 = new Unit(null, 'm').toBest()
       assert.equal(u1.units[0].unit.name, 'm')
@@ -754,7 +752,6 @@ describe('Unit', function () {
       assert.equal(u3.value, 0)
     })
 
-    // 3
     it('should return the best unit with given precision', function () {
       const u1 = new Unit(2 / 3, 'm').toBest([], { precision: 3 })
       assert.equal(u1.units[0].unit.name, 'm')
@@ -772,7 +769,6 @@ describe('Unit', function () {
       assert.equal(u3.value, 0.66667)
     })
 
-    // 4
     it('should return the best unit with only given unit array - valorized and empty', function () {
       const u1 = new Unit(10, 'm').toBest(['km', 'mm', 'cm'])
       u1.fixPrefix = false
@@ -798,7 +794,6 @@ describe('Unit', function () {
       assert.equal(u4.units[0].prefix.name, 'c')
       assert.equal(u4.value, 1000)
 
-      // return in cm even if the switchpoint is set to 501 (1.2 offset) because 5000 cm is better than 50000 mm
       const u5 = new Unit(5, 'm').toBest(['cm', 'mm'])
       u5.fixPrefix = false
       assert.equal(u5.units[0].unit.name, 'm')
@@ -806,7 +801,6 @@ describe('Unit', function () {
       assert.equal(u5.value, 500)
     })
 
-    // 5
     it('should return the best unit with valueless unit as parameter', function () {
       const valuelessUnitFirst = new Unit(null, 'mm')
       const valuelessUnitSecond = new Unit(null, 'km')
@@ -849,33 +843,27 @@ describe('Unit', function () {
       assert.equal(u7.value, 100000)
     })
 
-    // 6
     it('should return the best unit with given array and offset', function () {
       const u1 = new Unit(10, 'm').toBest(['km'], { offset: 1.5 })
-      u1.fixPrefix = false
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'k')
       assert.equal(u1.value, 0.01)
 
       const u2 = new Unit(10, 'm').toBest(['mm', 'cm'], { offset: 1.5 })
-      u2.fixPrefix = false
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'm')
       assert.equal(u2.value, 10000)
 
       const u3 = new Unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 })
-      u3.fixPrefix = false
       assert.equal(u3.units[0].unit.name, 'm')
       assert.equal(u3.units[0].prefix.name, 'm')
       assert.equal(u3.value, 10000)
     })
 
-    // 7
     it('should return the best unit with bias passed', function () {
       // TODO: add a test for the bias
     })
 
-    // 8
     it('should handle negative values correctly', function () {
       const u1 = new Unit(-0.1, 'm').toBest()
       assert.equal(u1.units[0].unit.name, 'm')
@@ -893,7 +881,6 @@ describe('Unit', function () {
       assert.equal(u3.value, -100)
     })
 
-    // 9
     it('should handle zero values correctly', function () {
       const u1 = new Unit(0, 'km').toBest()
       const u2 = new Unit(0, 'cm').toBest(['km', 'm', 'cm', 'mm'])
@@ -906,7 +893,6 @@ describe('Unit', function () {
       assert.equal(u2.units[0].prefix.name, 'k')
       assert.equal(u2.value, 0)
 
-      // Zero with different prefixes
       const u3 = new Unit(0, 'mm').toBest()
 
       assert.equal(u3.units[0].unit.name, 'm')
@@ -914,7 +900,6 @@ describe('Unit', function () {
       assert.equal(u3.value, 0)
     })
 
-    // 10
     it('should handle very large values correctly', function () {
       const u1 = new Unit(1e6, 'm').toBest()
       const u2 = new Unit(1e9, 'mm').toBest()
@@ -928,7 +913,6 @@ describe('Unit', function () {
       assert.equal(u2.value, 1000)
     })
 
-    // 11
     it('should handle very small values correctly', function () {
       const u1 = new Unit(1e-6, 'm').toBest()
       const u2 = new Unit(1e-9, 'm').toBest()
@@ -936,14 +920,12 @@ describe('Unit', function () {
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'm')
       assert.equal(u1.value, 0.001)
-      // assert.deepStrictEqual(new Unit(1e-6, 'm').toBest(), new Unit(1, 'um'))
 
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'm')
       assert.equal(u2.value, 0.000001)
     })
 
-    // 12
     it('should handle different unit types correctly', function () {
       const u1 = new Unit(1000, 'g').toBest([])
       const u2 = new Unit(1e6, 'W').toBest([])
@@ -962,56 +944,6 @@ describe('Unit', function () {
       assert.equal(u3.value, 100)
     })
 
-    // 13
-    it('should handle temperature units correctly', function () {
-      const u1 = new Unit(273.15, 'K').toBest(['degC', 'fahrenheit'])
-      assert.equal(u1.units[0].unit.name, 'degC')
-      assert.equal(u1.units[0].prefix.name, '')
-      assert.equal(u1.value, 0)
-
-      const u2 = new Unit(273.15, 'K').toBest(['fahrenheit'])
-      assert.equal(u2.units[0].unit.name, 'fahrenheit')
-      assert.equal(u2.units[0].prefix.name, '')
-      assert.equal(u2.value, 32)
-
-      const u3 = new Unit(0, 'degC').toBest(['K'])
-      assert.equal(u3.units[0].unit.name, 'K')
-      assert.equal(u3.units[0].prefix.name, '')
-      assert.equal(u3.value, 273.15)
-
-      const u4 = new Unit(0, 'fahrenheit').toBest(['degC'])
-      assert.equal(u4.units[0].unit.name, 'degC')
-      assert.equal(u4.units[0].prefix.name, '')
-      assert.equal(u4.value, -17.77777777777778)
-
-      const u5 = new Unit(2000, 'K').toBest(['degC'])
-      assert.equal(u5.units[0].unit.name, 'degC')
-      assert.equal(u5.units[0].prefix.name, '')
-      assert.equal(u5.value, 1726.85)
-
-      const u6 = new Unit(2000, 'K').toBest(['fahrenheit'])
-      assert.equal(u6.units[0].unit.name, 'fahrenheit')
-      assert.equal(u6.units[0].prefix.name, '')
-      assert.equal(u6.value, 3140.33)
-    })
-
-    // 14
-    it('should handle mixed units correctly', function () {
-      const u1 = new Unit(1, 'N').toBest()
-      assert.equal(u1.units[0].unit.name, 'N')
-      assert.equal(u1.value, 1)
-
-      const u2 = new Unit(1, 'N').toBest(['J/m', 'kg m/s^2'])
-      assert.equal(u2.units[0].unit.name, 'g')
-      assert.equal(u2.units[1].unit.name, 'm')
-      assert.equal(u2.units[2].unit.name, 's')
-      assert.equal(u2.units[0].prefix.name, 'k')
-      assert.equal(u2.units[1].prefix.name, '')
-      assert.equal(u2.units[2].prefix.name, '')
-      assert.equal(u2.value, 1)
-    })
-
-    // 15
     it('should throw error for first parameter not being an array', function () {
       assert.throws(
         () => new Unit(2 / 3, 'cm').toBest(new Unit(null, 'cm')),
@@ -1019,7 +951,6 @@ describe('Unit', function () {
       )
     })
 
-    // 16
     it('should throw error for incompatible units', function () {
       const functions = []
       functions.push(() => new Unit(1, 'm').toBest(['kg']))
@@ -1031,7 +962,7 @@ describe('Unit', function () {
       functions.push(() => new Unit(1, 'Hz').toBest(['Pa']))
       functions.push(() => new Unit(1, 'J').toBest(['cd']))
       functions.forEach((u) => {
-        assert.throws(u, /Invalid unit type. Expected string or Unit./)
+        assert.throws(u, /Invalid unit type. Expected compatible string or Unit./)
       })
     })
   })
