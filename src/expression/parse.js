@@ -935,7 +935,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       getTokenSkipNewline(state)
 
-      if (name === 'in' && state.token === '') {
+      if (name === 'in' &&
+          (state.token === ')' || state.token === ']' || state.token === ',' || state.token === '')) {
         // end of expression -> this is the unit 'in' ('inch')
         node = new OperatorNode('*', 'multiply', [node, new SymbolNode('in')], true)
       } else {
