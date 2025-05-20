@@ -1104,12 +1104,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Unit} Returns a new Unit with the given value and unit.
    */
   Unit.prototype.toBest = function (unitList = [], options = {}) {
-    // Validate unitList is an array
     if (unitList && !Array.isArray(unitList)) {
       throw new Error('Invalid unit type. Expected string or Unit.')
     }
 
-    if (!Array.isArray(unitList) || unitList.length === 0) {
+    if (unitList.length === 0) {
       let resultFormatted = null
       try {
         resultFormatted = formatBest(this.clone(), options)
@@ -1127,13 +1126,12 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     const unitObjects = unitList.map(u => {
       if (typeof u === 'string') {
         const unit = Unit.parse(u)
-        try {
-          this.to(unit.formatUnits())
-        } catch (e) {
-          throw new Error('Invalid unit type. Expected compatible string or Unit.')
-        }
-
         if (unit) {
+          try {
+            this.to(unit.formatUnits())
+          } catch (e) {
+            throw new Error('Invalid unit type. Expected compatible string or Unit.')
+          }
           return unit
         } else {
           throw new Error('Invalid unit type. Expected string or Unit.')
