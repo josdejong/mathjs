@@ -1190,7 +1190,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       ? unit.clone()
       : unit.simplify()
 
+    // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
     handleVAandVARUnits(simp)
+    // Now apply the best prefix
+    // Units must have only one unit and not have the fixPrefix flag set
     applyBestPrefixIfNeeded(simp)
 
     const value = simp._denormalize(simp.value)
@@ -1210,6 +1213,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   function handleVAandVARUnits (simp) {
     let isImaginary = false
     if (typeof (simp.value) !== 'undefined' && simp.value !== null && isComplex(simp.value)) {
+      // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
       isImaginary = Math.abs(simp.value.re) < 1e-14
     }
     for (const i in simp.units) {
@@ -1231,7 +1235,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function applyBestPrefixIfNeeded (simp) {
     if (simp.units.length === 1 && !simp.fixPrefix) {
+      // Units must have integer powers, otherwise the prefix will change the
+      // outputted value by not-an-integer-power-of-ten
       if (Math.abs(simp.units[0].power - Math.round(simp.units[0].power)) < 1e-14) {
+        // Apply the best prefix
         simp.units[0].prefix = simp._bestPrefix()
       }
     }
