@@ -1,6 +1,6 @@
 # History
 
-# Unpublished changes since 14.4.0
+# 2025-05-21, 14.5.0
 
 - Feat: improve the performance of the `map` and `forEach` methods of 
   `DenseMatrix` (#3446). Thanks @dvd101x.
