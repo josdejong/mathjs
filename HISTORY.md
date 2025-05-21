@@ -4,8 +4,9 @@
 
 - Fix: #3450 support multiplication of valueless units by arbitrary types
   (#3454).
-- Feat: increase performance of the `map` and `forEach` methods of 
+- Feat: improve the performance of the `map` and `forEach` methods of 
   `DenseMatrix` (#3446). Thanks @dvd101x.
+- Feat: improve the performance of `subset` (#3467). Thanks @dvd101x.
 - Feat: define embedded docs for `compile`, `evaluate`, `parse`, and `parser`,
   and add tests for the examples in embedded docs (#3413). Thanks @dvd101x.
 
