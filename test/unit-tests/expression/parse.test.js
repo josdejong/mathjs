@@ -599,6 +599,10 @@ describe('parse', function () {
     it('should evaluate unit "in" (should not conflict with operator "in")', function () {
       approxDeepEqual(parseAndEval('2 in'), new Unit(2, 'in'))
       approxEqual(parseAndEval('(2 lbf in).toNumeric("lbf in")'), 2)
+      approxEqual(parseAndEval('[2 lbf in][1].toNumeric("lbf in")'), 2)
+      approxEqual(parseAndEval('[2 lbf in, 5][1].toNumeric("lbf in")'), 2)
+      approxEqual(parseAndEval('[2 lbf in; 5][1,1].toNumeric("lbf in")'), 2)
+      approxEqual(parseAndEval('{foo:2 lbf in}["foo"].toNumeric("lbf in")'), 2)
       approxDeepEqual(parseAndEval('5.08 cm in in'), new Unit(2, 'in').to('in'))
       approxDeepEqual(parseAndEval('5 in in in'), new Unit(5, 'in').to('in'))
       approxDeepEqual(parseAndEval('2 in to meter'), new Unit(2, 'inch').to('meter'))
