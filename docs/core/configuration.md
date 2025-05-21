@@ -12,6 +12,7 @@ const config = {
   absTol: 1e-15,
   matrix: 'Matrix',
   number: 'number',
+  numberFallback: 'number',
   precision: 64,
   predictable: false,
   randomSeed: null
