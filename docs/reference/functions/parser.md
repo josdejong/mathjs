@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-parser">Function parser <a href="#function-parser" title="Permalink">#</a></h1>
 
-Create a parser. The function creates a new `math.Parser` object.
+Create a `math.Parser` object that keeps a context of variables and their values, allowing the evaluation of expressions in that context.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>

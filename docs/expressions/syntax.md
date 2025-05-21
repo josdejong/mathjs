@@ -4,7 +4,7 @@ layout: default
 
 <h1 id="expression-syntax">Expression syntax <a href="#expression-syntax" title="Permalink">#</a></h1>
 
-This page describes the syntax of expression parser of math.js. It describes
+This page describes the syntax of the expression parser of math.js. It describes
 how to work with the available data types, functions, operators, variables,
 and more.
 
@@ -252,6 +252,26 @@ Operator Expression  | Equivalent Function Expression
 Note that math.js embodies a preference for the operator forms, in that calling
 `simplify` (see [Algebra](./algebra.html)) converts any instances of the function
 form into the corresponding operator.
+
+<h2 id="methods">Methods <a href="#methods" title="Permalink">#</a></h2>
+
+Some data types have methods which can be used in the parser using the dot notation, for example:
+
+```js
+const parser = math.parser()
+
+parser.evaluate('a = 1 m') // Unit 1 m
+parser.evaluate('a.toNumber("mm")') // 1000
+```
+
+Or a method on a Matrix or Array:
+
+```js
+const parser = math.parser()
+
+parser.evaluate('M = [4, 9, 25]') // Matrix [4, 9, 25]
+parser.evaluate('M.map(sqrt)')    // Matrix [2, 3, 5]
+```
 
 <h2 id="map-and-foreach">Map and forEach <a href="#map-and-foreach" title="Permalink">#</a></h2>
 

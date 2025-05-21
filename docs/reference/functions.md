@@ -11,7 +11,7 @@ Function | Description
 [math.compile(expr)](functions/compile.html) | Parse and compile an expression.
 [math.evaluate(expr&nbsp;[,&nbsp;scope])](functions/evaluate.html) | Evaluate an expression.
 [math.help(search)](functions/help.html) | Retrieve help on a function or data type.
-[math.parser()](functions/parser.html) | Create a parser.
+[math.parser()](functions/parser.html) | Create a `math.
 
 <h2 id="algebra-functions">Algebra functions <a href="#algebra-functions" title="Permalink">#</a></h2>
 

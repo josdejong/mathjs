@@ -4,6 +4,17 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20250521-1450">2025-05-21, 14.5.0 <a href="#20250521-1450" title="Permalink">#</a></h1>
+
+- Feat: improve the performance of the `map` and `forEach` methods of 
+  `DenseMatrix` (<a href="https://github.com/josdejong/mathjs/issues/3446">#3446</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: improve the performance of `subset` (<a href="https://github.com/josdejong/mathjs/issues/3467">#3467</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: define embedded docs for `compile`, `evaluate`, `parse`, and `parser`,
+  and add tests for the examples in embedded docs (<a href="https://github.com/josdejong/mathjs/issues/3413">#3413</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3450">#3450</a> support multiplication of valueless units by arbitrary types
+  (<a href="https://github.com/josdejong/mathjs/issues/3454">#3454</a>).
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3474">#3474</a> correctly parse `(lbf in)` (<a href="https://github.com/josdejong/mathjs/issues/3476">#3476</a>). Thanks <a href="https://github.com/costerwi">@costerwi</a>.
+
 <h1 id="20250328-1440">2025-03-28, 14.4.0 <a href="#20250328-1440" title="Permalink">#</a></h1>
 
 - Feat: improve the performance of function `flatten` (<a href="https://github.com/josdejong/mathjs/issues/3400">#3400</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
