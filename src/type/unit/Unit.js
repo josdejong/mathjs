@@ -1124,26 +1124,26 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     const unitObjects = unitList.map(u => {
+      let unit = null
       if (typeof u === 'string') {
-        const unit = Unit.parse(u)
-        if (unit) {
-          try {
-            this.to(unit.formatUnits())
-          } catch (e) {
-            throw new Error('Invalid unit type. Expected compatible string or Unit.')
-          }
-          return unit
-        } else {
-          throw new Error('Invalid unit type. Expected string or Unit.')
+        unit = Unit.parse(u)
+        if (!unit) {
+          throw new Error('Invalid unit type. Expected compatible string or Unit.')
         }
-      } else if (isUnit(u)) {
-        return u
-      } else {
-        throw new Error('Invalid unit type. Expected string or Unit.')
+      } else if (!isUnit(u)) {
+        throw new Error('Invalid unit type. Expected compatible string or Unit.')
+      }
+      if (unit === null) {
+        unit = u.clone()
+      }
+      try {
+        this.to(unit.formatUnits())
+        return unit
+      } catch (e) {
+        throw new Error('Invalid unit type. Expected compatible string or Unit.')
       }
     })
-
-    const prefixes = unitObjects.map(u => u.units[0].prefix)
+    const prefixes = unitObjects.map(el => el.units[0].prefix)
     this.units[0].unit.prefixes = prefixes.reduce((acc, prefix) => {
       acc[prefix.name] = prefix
       return acc
