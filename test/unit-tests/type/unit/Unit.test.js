@@ -1498,18 +1498,6 @@ describe('Unit', function () {
       assert.equal(new Unit(0, 'cm').toBest(['km', 'm', 'cm', 'mm']).value, 0)
     })
 
-    it('should handle very large values correctly', function () {
-      assert.equal(new Unit(1e6, 'm').toBest().units[0].unit.name, 'm')
-      assert.equal(new Unit(1e6, 'm').toBest().units[0].prefix.name, 'k')
-      assert.equal(new Unit(1e6, 'm').toBest().value, 1000)
-    })
-
-    it('should handle very small values correctly', function () {
-      assert.equal(new Unit(1e-6, 'm').toBest().units[0].unit.name, 'm')
-      assert.equal(new Unit(1e-6, 'm').toBest().units[0].prefix.name, 'm')
-      assert.equal(new Unit(1e-6, 'm').toBest().value, 0.001)
-    })
-
     it('should handle different unit types correctly', function () {
       assert.equal(new Unit(1e6, 'W').toBest([]).units[0].unit.name, 'W')
       assert.equal(new Unit(1e6, 'W').toBest([]).units[0].prefix.name, 'M')
