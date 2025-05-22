@@ -1183,7 +1183,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
  * @return {Object} Object with normalized unit and value
  * @private
  */
-  function formatBest (unit, options) {
+  function formatBest (unit, options = {}) {
     // Simplfy the unit list, unless it is valueless or was created directly in the
     // constructor or as the result of to or toSI
     const simp = unit.skipAutomaticSimplification || unit.value === null
@@ -1194,7 +1194,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     handleVAandVARUnits(simp)
     // Now apply the best prefix
     // Units must have only one unit and not have the fixPrefix flag set
-    applyBestPrefixIfNeeded(simp)
+    applyBestPrefixIfNeeded(simp, options.offset)
 
     const value = simp._denormalize(simp.value)
     const valueStr = (simp.value !== null) ? format(value, options || {}) : ''
@@ -1233,13 +1233,16 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Helper to apply the best prefix if needed
    * @param {Unit} simp The unit to be normalized
    */
-  function applyBestPrefixIfNeeded (simp) {
+  function applyBestPrefixIfNeeded (simp, offset) {
     if (simp.units.length === 1 && !simp.fixPrefix) {
       // Units must have integer powers, otherwise the prefix will change the
       // outputted value by not-an-integer-power-of-ten
       if (Math.abs(simp.units[0].power - Math.round(simp.units[0].power)) < 1e-14) {
         // Apply the best prefix
-        simp.units[0].prefix = simp._bestPrefix()
+        if (!offset) {
+          offset = 1.2
+        }
+        simp.units[0].prefix = simp._bestPrefix(offset)
       }
     }
   }

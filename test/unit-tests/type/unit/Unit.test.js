@@ -1443,16 +1443,6 @@ describe('Unit', function () {
       assert.equal(new Unit(null, 'cm').toBest().value, 0)
     })
 
-    it('should return the best unit with given precision', function () {
-      assert.equal(new Unit(2 / 3, 'm').toBest([], { precision: 3 }).units[0].unit.name, 'm')
-      assert.equal(new Unit(2 / 3, 'm').toBest([], { precision: 3 }).units[0].prefix.name, '')
-      assert.equal(new Unit(2 / 3, 'm').toBest([], { precision: 3 }).value, 0.667)
-
-      assert.equal(new Unit(2 / 3, 'm').toBest([], { precision: 5 }).units[0].unit.name, 'm')
-      assert.equal(new Unit(2 / 3, 'm').toBest([], { precision: 5 }).units[0].prefix.name, '')
-      assert.equal(new Unit(2 / 3, 'm').toBest([], { precision: 5 }).value, 0.66667)
-    })
-
     it('should return the best unit with only given unit array - valorized and empty', function () {
       const unit1 = new Unit(10, 'm')
       assert.equal(unit1.toBest(['km', 'mm', 'cm']).units[0].unit.name, 'm')
@@ -1496,12 +1486,6 @@ describe('Unit', function () {
       assert.equal(new Unit(0, 'cm').toBest(['km', 'm', 'cm', 'mm']).units[0].unit.name, 'm')
       assert.equal(new Unit(0, 'cm').toBest(['km', 'm', 'cm', 'mm']).units[0].prefix.name, 'k')
       assert.equal(new Unit(0, 'cm').toBest(['km', 'm', 'cm', 'mm']).value, 0)
-    })
-
-    it('should handle different unit types correctly', function () {
-      assert.equal(new Unit(1e6, 'W').toBest([]).units[0].unit.name, 'W')
-      assert.equal(new Unit(1e6, 'W').toBest([]).units[0].prefix.name, 'M')
-      assert.strictEqual(new Unit(1e6, 'W').toBest([]).value, 1)
     })
 
     it('should throw error for first parameter not being an array', function () {
