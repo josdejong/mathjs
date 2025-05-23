@@ -318,6 +318,19 @@ describe('multiply', function () {
       approxDeepEqual(multiply(matrix(a), matrix(b)), 32)
     })
 
+    it('should multiply vectors with units correctly (dot product)', function () {
+      const a = [1, 2, 3]
+      const b = [unit('4cm'), unit('5cm'), unit('6cm')]
+
+      approxDeepEqual(multiply(a, b), unit('32cm'))
+      approxDeepEqual(multiply(matrix(a), matrix(b)), unit('32cm'))
+
+      const e = [unit('1cm'), unit('2cm'), unit('3cm')]
+
+      assert.strictEqual(multiply(e, b).format(5), '32 cm^2')
+      assert.strictEqual(multiply(matrix(e), matrix(b)).format(5), '32 cm^2')
+    })
+
     it('should conjugate the first argument in dot product', function () {
       const a = [complex(1, 2), complex(3, 4)]
       const b = [complex(5, 6), complex(7, 8)]
