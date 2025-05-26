@@ -503,6 +503,8 @@ export interface FractionDefinition {
   b: number
 }
 
+
+
 export interface MathJsInstance extends MathJsFactory {
   e: number
   pi: number
@@ -3518,7 +3520,7 @@ export interface MathJsInstance extends MathJsFactory {
 
   isBoolean(x: unknown): x is boolean
 
-  isResultSet(x: unknown): boolean
+  isResultSet(x: unknown): x is ResultSet;
 
   isHelp(x: unknown): x is Help
 
@@ -4318,6 +4320,17 @@ export interface EvalFunction {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   evaluate(scope?: any): any
 }
+
+// ResultSet type and helper
+export interface ResultSet {
+  entries: unknown[];
+  valueOf(): unknown[];
+  toString(): string;
+  [key: string]: any;
+}
+
+
+
 
 export interface MathNode {
   isNode: true
