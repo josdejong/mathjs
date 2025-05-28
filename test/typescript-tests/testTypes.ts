@@ -48,6 +48,8 @@ import {
   SLUDecomposition,
   SymbolNode,
   Unit,
+  evaluate,
+  isResultSet,
   UnitPrefix
 } from 'mathjs'
 
@@ -171,16 +173,12 @@ Bignumbers examples
     )
   }
 }
-
-import { evaluate, isResultSet } from 'mathjs';
-
-const result = evaluate('1 + 1; 2 + 2;'); // multi-expression input
+const result = evaluate('1 + 1; 2 + 2;') // multi-expression input
 
 if (isResultSet(result)) {
-  const entries = result.valueOf();       // ✅ should be typed as unknown[]
-  const last = entries.slice(-1)[0];       // ✅ access last result safely
+  const entries = result.valueOf() // ✅ should be typed as unknown[]
+  const _last = entries.slice(-1)[0] // ✅ access last result safely
 }
-
 
 /*
   Arithmetic function examples
