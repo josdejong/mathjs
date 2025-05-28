@@ -41,9 +41,11 @@ math.add(300000000000000000n, 1n) // 300000000000000001n
 // use Fractions
 math.add(math.fraction(1), math.fraction(3)) // Fraction, 0.(3)
 
-// use strings
-math.add('hello ', 'world')      // 'hello world'
-math.max('A', 'D', 'C')          // 'D'
+// use strings containing numbers
+math.add('2', '3')               // 5
+math.concat('2', '3')            // '23'
+math.max('3', '2', '7')          // 7
+math.compareNatural('10', '2')   // 1
 
 // use complex numbers
 const a = math.complex(2, 3)     // 2 + 3i

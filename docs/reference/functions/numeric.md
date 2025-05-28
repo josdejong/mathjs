@@ -13,6 +13,7 @@ Convert a numeric input to a specific numeric type: number, BigNumber, bigint, o
 
 ```js
 math.numeric(x)
+math.numeric(value, outputType)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

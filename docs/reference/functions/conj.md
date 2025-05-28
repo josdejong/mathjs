@@ -22,13 +22,13 @@ math.conj(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  A complex number or array with complex numbers
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  A complex number or array with complex numbers
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  The complex conjugate of x
+number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  The complex conjugate of x
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

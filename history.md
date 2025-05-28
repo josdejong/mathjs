@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20250528-1451">2025-05-28, 14.5.1 <a href="#20250528-1451" title="Permalink">#</a></h1>
+
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3482">#3482</a> mathjs throwing an error related to `BigInt`  when loading in
+  specific environments.
+- Fix: syntax section of function `numeric` (see <a href="https://github.com/josdejong/mathjs/issues/3448">#3448</a>).
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3472">#3472</a> rename physical constant `coulomb` to `coulombConstant`. The old
+  name is still available for backward compatibility.
+- Fix: support multiplication of arrays with units (<a href="https://github.com/josdejong/mathjs/issues/3456">#3456</a>). Thanks <a href="https://github.com/Delaney">@Delaney</a>.
+
 <h1 id="20250521-1450">2025-05-21, 14.5.0 <a href="#20250521-1450" title="Permalink">#</a></h1>
 
 - Feat: improve the performance of the `map` and `forEach` methods of 
