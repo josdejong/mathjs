@@ -9,6 +9,7 @@ import {
   createClassicalElectronRadius,
   createConductanceQuantum,
   createCoulomb,
+  createCoulombConstant,
   createDeuteronMass,
   createEfimovFactor,
   createElectricConstant,
@@ -78,6 +79,8 @@ describe('physical constants', function () {
     assert.strictEqual(createElectricConstant(dependencies).toString(), '8.8541878128e-12 F / m')
     assert.strictEqual(createVacuumImpedance(dependencies).toString(), '376.730313667 ohm')
     assert.strictEqual(createCoulomb(dependencies).toString(), '8.987551792261171e+9 (N m^2) / C^2')
+    assert.strictEqual(createCoulombConstant(dependencies).toString(), '8.987551792261171e+9 (N m^2) / C^2')
+    assert.strictEqual(math.coulombConstant.toString(), '8.987551792261171e+9 (N m^2) / C^2')
     assert.strictEqual(createElementaryCharge(dependencies).toString(), '1.602176634e-19 C')
     assert.strictEqual(createBohrMagneton(dependencies).toString(), '9.2740100783e-24 J / T')
     assert.strictEqual(createConductanceQuantum(dependencies).toString(), '7.748091729863649e-5 S')

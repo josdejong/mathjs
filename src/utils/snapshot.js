@@ -159,6 +159,7 @@ export function createSnapshotFromFactories (factories) {
     'compile',
     'parser',
     'chain',
+    'coulomb',
     'reviver',
     'replacer'
   ])

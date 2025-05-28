@@ -5,6 +5,8 @@
 - Fix: #3482 mathjs throwing an error related to `BigInt`  when loading in
   specific environments.
 - Fix: syntax section of function `numeric` (see #3448).
+- Fix: #3472 rename physical constant `coulomb` to `coulombConstant`. The old
+  name is still available for backward compatibility.
 
 # 2025-05-21, 14.5.0
 
