@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 14.5.0
+
+- Fix: #3482 mathjs throwing an error related to `BigInt`  when loading in
+  specific environments.
+
 # 2025-05-21, 14.5.0
 
 - Feat: improve the performance of the `map` and `forEach` methods of 
