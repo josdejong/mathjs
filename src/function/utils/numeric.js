@@ -31,6 +31,7 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
    * Syntax:
    *
    *    math.numeric(x)
+   *    math.numeric(value, outputType)
    *
    * Examples:
    *
