@@ -1,7 +1,7 @@
 import math from '../../../../src/defaultInstance.js'
 import assert from 'assert'
 
-const Unit = math.Unit
+const Unit = math.create().Unit
 
 describe('toBest', function () {
   it('should return the best unit without any parameters', function () {
