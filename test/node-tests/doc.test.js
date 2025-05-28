@@ -243,6 +243,7 @@ const knownUndocumented = new Set([
   'conductanceQuantum',
   'ConstantNode',
   'coulomb',
+  'coulombConstant',
   'createUnit',
   'DenseMatrix',
   'deuteronMass',

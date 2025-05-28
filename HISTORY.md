@@ -1,13 +1,23 @@
 # History
 
-# Unpublished changes since 14.4.0
+# unpublished changes since 14.5.0
 
-- Fix: #3450 support multiplication of valueless units by arbitrary types
-  (#3454).
-- Feat: increase performance of the `map` and `forEach` methods of 
+- Fix: #3482 mathjs throwing an error related to `BigInt`  when loading in
+  specific environments.
+- Fix: syntax section of function `numeric` (see #3448).
+- Fix: #3472 rename physical constant `coulomb` to `coulombConstant`. The old
+  name is still available for backward compatibility.
+
+# 2025-05-21, 14.5.0
+
+- Feat: improve the performance of the `map` and `forEach` methods of 
   `DenseMatrix` (#3446). Thanks @dvd101x.
+- Feat: improve the performance of `subset` (#3467). Thanks @dvd101x.
 - Feat: define embedded docs for `compile`, `evaluate`, `parse`, and `parser`,
   and add tests for the examples in embedded docs (#3413). Thanks @dvd101x.
+- Fix: #3450 support multiplication of valueless units by arbitrary types
+  (#3454).
+- Fix: #3474 correctly parse `(lbf in)` (#3476). Thanks @costerwi.
 
 # 2025-03-28, 14.4.0
 

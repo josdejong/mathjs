@@ -6,7 +6,7 @@ let mathDocs = math.create(math.all)
 const originalConfig = mathDocs.config()
 // Add names to the skipDocs array if they are not meant to have embedded docs
 const skipDocs = new Set(['import', 'addScalar', 'divideScalar', 'equalScalar', 'multiplyScalar',
-  'subtractScalar', 'apply', 'replacer', 'reviver'])
+  'subtractScalar', 'apply', 'replacer', 'reviver', 'coulomb'])
 
 // Add names to skipExamples if their examples in the embedded docs contain acceptable errors
 const skipExamples = new Set([])
@@ -22,7 +22,7 @@ const testExamples = new Set([...testDocs].filter(name => {
 
 function runExamplesInDocs (name) {
   mathDocs.config(originalConfig)
-  // every funciton should have doc.examples
+  // every function should have doc.examples
   const examples = mathDocs.evaluate(`help("${name}")`).doc.examples
   try {
     // validate if the examples run without errors
