@@ -3494,7 +3494,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Unit with optimized prefix/unit
    */
   toBest(): Unit
-  toBest(units: string[] | Unit[], options: Object): Unit
+  toBest(units: string[] | Unit[], options: object): Unit
 
   /*************************************************************************
    * Utils
@@ -4187,7 +4187,7 @@ export interface Unit {
   abs(unit: Unit): Unit
   to(unit: string): Unit
   toBest(): Unit
-  toBest(units?: string[] | Unit[], options?: Object): Unit
+  toBest(units?: string[] | Unit[], options?: object): Unit
   toNumber(unit?: string): number
   toNumeric(unit?: string): number | Fraction | BigNumber
   toSI(): Unit
@@ -6990,7 +6990,6 @@ export interface MathJsChain<TValue> {
     unit: Unit | string
   ): MathJsChain<Unit | MathCollection>
 
-  
   /**
    * Converts a unit to the most appropriate display unit.
    * When no preferred units are provided, the function automatically find the best prefix.
@@ -7000,7 +6999,11 @@ export interface MathJsChain<TValue> {
    * @param options - Optional options object
    */
   toBest(this: MathJsChain<Unit>): MathJsChain<Unit>
-  toBest(this: MathJsChain<Unit>, units: string[] | Unit[], options: Object): MathJsChain<Unit>
+  toBest(
+    this: MathJsChain<Unit>,
+    units: string[] | Unit[],
+    options: object
+  ): MathJsChain<Unit>
 
   /*************************************************************************
    * Utils functions
