@@ -4324,7 +4324,7 @@ export interface ResultSet {
   entries: unknown[]
   valueOf(): unknown[]
   toString(): string
-  toJSON(): unknown[]
+  toJSON(): MathJSON
 }
 
 export interface MathNode {
