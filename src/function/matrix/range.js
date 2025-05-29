@@ -25,14 +25,20 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * - `str: string`
    *   A string 'start:end' or 'start:step:end'
-   * - `start: {number | BigNumber | Unit}`
+   * - `start: {number | bigint | BigNumber | Fraction | Unit}`
    *   Start of the range
-   * - `end: number | BigNumber | Unit`
+   * - `end: number | bigint | BigNumber | Fraction | Unit`
    *   End of the range, excluded by default, included when parameter includeEnd=true
-   * - `step: number | BigNumber | Unit`
+   * - `step: number | bigint | BigNumber | Fraction | Unit`
    *   Step size. Default value is 1.
    * - `includeEnd: boolean`
    *   Option to specify whether to include the end or not. False by default.
+   *
+   * Note that the return type of the range is taken from the type of
+   * the start/end. If only one these is a built-in `number` type, it will
+   * be promoted to the type of the other endpoint. However, in the case of
+   * Unit values, both endpoints must have compatible units, and the return
+   * value will have compatible units as well.
    *
    * Examples:
    *
@@ -40,21 +46,29 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *     math.range(2, -3, -1)   // [2, 1, 0, -1, -2]
    *     math.range('2:1:6')     // [2, 3, 4, 5]
    *     math.range(2, 6, true)  // [2, 3, 4, 5, 6]
+   *     math.range(2, math.fraction(8,3), math.fraction(1,3)) // [fraction(2), fraction(7,3)]
    *     math.range(math.unit(2, 'm'), math.unit(-3, 'm'), math.unit(-1, 'm')) // [2 m, 1 m, 0 m , -1 m, -2 m]
    *
    * See also:
    *
    *     ones, zeros, size, subset
    *
-   * @param {*} args   Parameters describing the ranges `start`, `end`, and optional `step`.
+   * @param {*} args   Parameters describing the range's `start`, `end`, and optional `step`.
    * @return {Array | Matrix} range
    */
   return typed(name, {
     // TODO: simplify signatures when typed-function supports default values and optional arguments
 
-    // TODO: a number or boolean should not be converted to string here
     string: _strRange,
     'string, boolean': _strRange,
+
+    number: function (oops) {
+      throw new TypeError(`Too few arguments to function range(): ${oops}`)
+    },
+
+    boolean: function (oops) {
+      throw new TypeError(`Unexpected type of argument 1 to function range(): ${oops}, number|bigint|BigNumber|Fraction`)
+    },
 
     'number, number': function (start, end) {
       return _out(_range(start, end, 1, false))
@@ -67,6 +81,32 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
     'number, number, number, boolean': function (start, end, step, includeEnd) {
       return _out(_range(start, end, step, includeEnd))
+    },
+
+    // Handle bigints; if either limit is bigint, range should be too
+    'bigint, bigint|number': function (start, end) {
+      return _out(_range(start, end, 1n, false))
+    },
+    'number, bigint': function (start, end) {
+      return _out(_range(BigInt(start), end, 1n, false))
+    },
+    'bigint, bigint|number, bigint|number': function (start, end, step) {
+      return _out(_range(start, end, BigInt(step), false))
+    },
+    'number, bigint, bigint|number': function (start, end, step) {
+      return _out(_range(BigInt(start), end, BigInt(step), false))
+    },
+    'bigint, bigint|number, boolean': function (start, end, includeEnd) {
+      return _out(_range(start, end, 1n, includeEnd))
+    },
+    'number, bigint, boolean': function (start, end, includeEnd) {
+      return _out(_range(BigInt(start), end, 1n, includeEnd))
+    },
+    'bigint, bigint|number, bigint|number, boolean': function (start, end, step, includeEnd) {
+      return _out(_range(start, end, BigInt(step), includeEnd))
+    },
+    'number, bigint, bigint|number, boolean': function (start, end, step, includeEnd) {
+      return _out(_range(BigInt(start), end, BigInt(step), includeEnd))
     },
 
     'BigNumber, BigNumber': function (start, end) {
@@ -85,6 +125,20 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     'BigNumber, BigNumber, BigNumber, boolean': function (start, end, step, includeEnd) {
       return _out(_range(start, end, step, includeEnd))
     },
+
+    'Fraction, Fraction': function (start, end) {
+      return _out(_range(start, end, 1, false))
+    },
+    'Fraction, Fraction, Fraction': function (start, end, step) {
+      return _out(_range(start, end, step, false))
+    },
+    'Fraction, Fraction, boolean': function (start, end, includeEnd) {
+      return _out(_range(start, end, 1, includeEnd))
+    },
+    'Fraction, Fraction, Fraction, boolean': function (start, end, step, includeEnd) {
+      return _out(_range(start, end, step, includeEnd))
+    },
+
     'Unit, Unit, Unit': function (start, end, step) {
       return _out(_range(start, end, step, false))
     },

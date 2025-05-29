@@ -50,6 +50,24 @@ describe('range', function () {
     assert.deepStrictEqual(math2.range(5, 0, -1), [5, 4, 3, 2, 1])
   })
 
+  it('should create a range with bigints', function () {
+    assert.deepStrictEqual(range(1n, 3n), matrix([1n, 2n]))
+    assert.deepStrictEqual(range(3n, 1n, -1n), matrix([3n, 2n]))
+    assert.deepStrictEqual(range(1n, 3n, true), matrix([1n, 2n, 3n]))
+    assert.deepStrictEqual(range(3n, 1n, -1n, true), matrix([3n, 2n, 1n]))
+  })
+
+  it('should handle mixed numbers and bigints appropriately', function () {
+    assert.deepStrictEqual(range(1n, 3), matrix([1n, 2n]))
+    assert.deepStrictEqual(range(3, 1n, -1n), matrix([3n, 2n]))
+    assert.deepStrictEqual(range(3n, 1, -1), matrix([3n, 2n]))
+    assert.deepStrictEqual(range(1, 3n, true), matrix([1n, 2n, 3n]))
+    assert.deepStrictEqual(range(3n, 1, -1n, true), matrix([3n, 2n, 1n]))
+    assert.deepStrictEqual(range(3, 1n, -1, true), matrix([3n, 2n, 1n]))
+    assert.deepStrictEqual(range(1, 5, 2n), matrix([1, 3]))
+    assert.deepStrictEqual(range(5, 1, -2n, true), matrix([5, 3, 1]))
+  })
+
   it('should create a range with bignumbers', function () {
     assert.deepStrictEqual(range(bignumber(1), bignumber(3)), matrix([bignumber(1), bignumber(2)]))
     assert.deepStrictEqual(range(bignumber(3), bignumber(1), bignumber(-1)), matrix([bignumber(3), bignumber(2)]))
@@ -132,6 +150,38 @@ describe('range', function () {
       assert.deepStrictEqual(range(bignumber(3), bignumber(1), bignumber(-1), true), matrix([bignumber(3), bignumber(2), bignumber(1)]))
     })
 
+    it('should handle Fractions', function () {
+      const frac = math.fraction
+      assert.deepStrictEqual(
+        range(frac(1, 3), frac(10, 3)),
+        matrix([frac(1, 3), frac(4, 3), frac(7, 3)]))
+      assert.deepStrictEqual(
+        range(frac(1, 3), frac(7, 3), true),
+        matrix([frac(1, 3), frac(4, 3), frac(7, 3)]))
+      assert.deepStrictEqual(
+        range(frac(1, 3), frac(4, 3), frac(1, 3)),
+        matrix([frac(1, 3), frac(2, 3), frac(1)]))
+      assert.deepStrictEqual(
+        range(frac(1, 3), frac(4, 3), frac(1, 3), true),
+        matrix([frac(1, 3), frac(2, 3), frac(1), frac(4, 3)]))
+    })
+
+    it('should allow mixed number and Fraction', function () {
+      const frac = math.fraction
+      assert.deepStrictEqual(
+        range(1, frac(10, 3)),
+        matrix([frac(1), frac(2), frac(3)]))
+      assert.deepStrictEqual(
+        range(frac(1, 3), 3, true),
+        matrix([frac(1, 3), frac(4, 3), frac(7, 3)]))
+      assert.deepStrictEqual(
+        range(frac(1, 3), 2, frac(1, 3)),
+        matrix([frac(1, 3), frac(2, 3), frac(1), frac(4, 3), frac(5, 3)]))
+      assert.deepStrictEqual(
+        range(0, frac(4, 3), frac(1, 3), true),
+        matrix([frac(0), frac(1, 3), frac(2, 3), frac(1), frac(4, 3)]))
+    })
+
     it('should throw an error in case of invalid type of include end', function () {
       assert.throws(function () { range(0, 10, 2, 0) }, /TypeError: Unexpected type of argument/)
       assert.throws(function () { range(0, 10, 2, 1) }, /TypeError: Unexpected type of argument/)
@@ -147,8 +197,14 @@ describe('range', function () {
     assert.throws(function () { range(math.unit('5cm')) }, TypeError)
   })
 
-  it('should throw an error if called with a single only two units value', function () {
+  it('should throw an error if called with only two units value', function () {
     assert.throws(function () { range(math.unit('0cm'), math.unit('5cm')) }, TypeError)
+  })
+
+  it('should throw an error when called with mismatching units', function () {
+    assert.throws(function () {
+      range(math.unit('0cm'), math.unit('2kg'), math.unit('1cm'))
+    }, Error, 'Cannot compare units with different base')
   })
 
   it('should throw an error if called with a complex number', function () {
@@ -169,9 +225,7 @@ describe('range', function () {
     assert.throws(function () { range(1, 2, 3, true, 5) }, /TypeError: Too many arguments/)
   })
 
-  // FIXME: should give the right error
-  // eslint-disable-next-line mocha/no-skipped-tests
-  it.skip('should not cast a single number or boolean to string', function () {
+  it('should not cast a single number or boolean to string', function () {
     assert.throws(function () { range(2) }, /TypeError: Too few arguments/)
     assert.throws(function () { range(true) }, /TypeError: Unexpected type of argument/)
   })

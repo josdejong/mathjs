@@ -1,5 +1,5 @@
 import { optimizeCallback } from '../../utils/optimizeCallback.js'
-import { arraySize, broadcastSizes, broadcastTo, get, recurse } from '../../utils/array.js'
+import { arraySize, broadcastSizes, broadcastTo, get, deepMap } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'map'
@@ -151,6 +151,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
  * @private
  */
   function _mapArray (array, callback) {
-    return recurse(array, [], array, optimizeCallback(callback, array, name))
+    const fastCallback = optimizeCallback(callback, array, name)
+    return deepMap(array, fastCallback.fn, fastCallback.isUnary)
   }
 })

@@ -1,5 +1,71 @@
 # History
 
+# 2025-05-28, 14.5.1
+
+- Fix: #3482 mathjs throwing an error related to `BigInt`  when loading in
+  specific environments.
+- Fix: syntax section of function `numeric` (see #3448).
+- Fix: #3472 rename physical constant `coulomb` to `coulombConstant`. The old
+  name is still available for backward compatibility.
+- Fix: support multiplication of arrays with units (#3456). Thanks @Delaney.
+
+# 2025-05-21, 14.5.0
+
+- Feat: improve the performance of the `map` and `forEach` methods of 
+  `DenseMatrix` (#3446). Thanks @dvd101x.
+- Feat: improve the performance of `subset` (#3467). Thanks @dvd101x.
+- Feat: define embedded docs for `compile`, `evaluate`, `parse`, and `parser`,
+  and add tests for the examples in embedded docs (#3413). Thanks @dvd101x.
+- Fix: #3450 support multiplication of valueless units by arbitrary types
+  (#3454).
+- Fix: #3474 correctly parse `(lbf in)` (#3476). Thanks @costerwi.
+
+# 2025-03-28, 14.4.0
+
+- Feat: improve the performance of function `flatten` (#3400). Thanks @dvd101x.
+- Feat: improve the performance of `map` and `forEach` (#3409).
+  Thanks @dvd101x.
+- Feat: add LaTeX representation for fractions (#3434, #3419). Thanks @orelbn.
+- Fix: #3422 allow dot operators after symbol E (#3425).
+- Fix: issue in the `nthRoots` latex function template string (#3427).
+  Thanks @aitee.
+- Fix: upgrade to the latest version of `@babel/runtime`.
+
+# 2025-03-06, 14.3.1
+
+- Fix: #3350 cannot import a constant that is a complex number.
+
+# 2025-02-28, 14.3.0
+
+- Feat: improved performance of function `flatten` (#3354). Thanks @dvd101x.
+- Feat: improved performance of `DenseMatrix` Symbol.iterator (#3395). 
+  Thanks @dvd101x.
+- Feat: improved performance of functions `map` and `forEach` (#3399).
+  Thanks @dvd101x.
+- Fix: #3390 issue in callback optimization and add error handling for invalid
+  argument types (#3394). Thanks @dvd101x.
+- Fix: #3356 add missing eigsDependencies export to TypeScript definitions 
+  (#3397). Thanks @porst17.
+- Fix: #3406 infer the correct type for multi-dimensional arrays in function 
+  `multiply` (#3408). Thanks @orelbn.
+- Fix: #3387 use utility `math.isNaN` for consistent `max` and `min` results 
+  (#3389). Thanks @orelbn.
+
+# 2025-02-05, 14.2.1
+
+- Fix: #3377 remove redundant dependency `@lambdatest/node-tunnel`.
+
+# 2025-01-30, 14.2.0
+
+- Feat: #3041, #3340 rename `apply` to `mapSlices` (#3357). Function
+  `apply` is still available but is now marked deprecated. Thanks @gwhitney.
+- Fix: #3247 don't override type-native floor/ceil within tolerance of value 
+  (#3369). Thanks @gwhitney.
+- Fix: #3360 add bigint support to matrix indices and ranges (#3361).
+  Thanks @gwhitney.
+- Fix: #3115 type definitions for matrixFrom* (#3371). Thanks @Hudsxn 
+  and @gwhitney.
+
 # 2025-01-24, 14.1.0
 
 - Feat: implement `bigint` support in functions `log`, `log2`, `log10`, 
@@ -124,9 +190,9 @@
 Breaking changes:
 
 - Change `isZero`, `isPositive`, and `isNegative` to respect `config.epsilon`
-  (#3139, #2838).
+  (#3139, #2838). Thanks @dvd101x.
 - Change the behavior of the internal `nearlyEqual` to align with Python and
-  Julia (#3152, #2838)
+  Julia (#3152, #2838). Thanks @dvd101x.
 - Upgrade to `fraction.js@4.3.7`,
   see <https://github.com/rawify/Fraction.js/issues/68>.
 - Dropped support for JavaScript engines that do not fully support ES6 or

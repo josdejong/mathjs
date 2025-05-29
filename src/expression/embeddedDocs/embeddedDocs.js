@@ -104,6 +104,9 @@ import { conjDocs } from './function/complex/conj.js'
 import { imDocs } from './function/complex/im.js'
 import { reDocs } from './function/complex/re.js'
 import { evaluateDocs } from './function/expression/evaluate.js'
+import { parserDocs } from './function/expression/parser.js'
+import { parseDocs } from './function/expression/parse.js'
+import { compileDocs } from './function/expression/compile.js'
 import { helpDocs } from './function/expression/help.js'
 import { distanceDocs } from './function/geometry/distance.js'
 import { intersectDocs } from './function/geometry/intersect.js'
@@ -111,6 +114,7 @@ import { andDocs } from './function/logical/and.js'
 import { notDocs } from './function/logical/not.js'
 import { orDocs } from './function/logical/or.js'
 import { xorDocs } from './function/logical/xor.js'
+import { mapSlicesDocs } from './function/matrix/mapSlices.js'
 import { columnDocs } from './function/matrix/column.js'
 import { concatDocs } from './function/matrix/concat.js'
 import { countDocs } from './function/matrix/count.js'
@@ -291,7 +295,7 @@ export const embeddedDocs = {
   magneticConstant: { description: 'Magnetic constant (vacuum permeability)', examples: ['magneticConstant'] },
   electricConstant: { description: 'Electric constant (vacuum permeability)', examples: ['electricConstant'] },
   vacuumImpedance: { description: 'Characteristic impedance of vacuum', examples: ['vacuumImpedance'] },
-  coulomb: { description: 'Coulomb\'s constant', examples: ['coulomb'] },
+  coulombConstant: { description: 'Coulomb\'s constant', examples: ['coulombConstant'] },
   elementaryCharge: { description: 'Elementary charge', examples: ['elementaryCharge'] },
   bohrMagneton: { description: 'Bohr magneton', examples: ['bohrMagneton'] },
   conductanceQuantum: { description: 'Conductance quantum', examples: ['conductanceQuantum'] },
@@ -428,6 +432,9 @@ export const embeddedDocs = {
   // functions - expression
   evaluate: evaluateDocs,
   help: helpDocs,
+  parse: parseDocs,
+  parser: parserDocs,
+  compile: compileDocs,
 
   // functions - geometry
   distance: distanceDocs,
@@ -440,6 +447,7 @@ export const embeddedDocs = {
   xor: xorDocs,
 
   // functions - matrix
+  mapSlices: mapSlicesDocs,
   concat: concatDocs,
   count: countDocs,
   cross: crossDocs,

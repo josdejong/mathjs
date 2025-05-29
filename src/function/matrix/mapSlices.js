@@ -3,10 +3,10 @@ import { arraySize } from '../../utils/array.js'
 import { isMatrix } from '../../utils/is.js'
 import { IndexError } from '../../error/IndexError.js'
 
-const name = 'apply'
+const name = 'mapSlices'
 const dependencies = ['typed', 'isInteger']
 
-export const createApply = /* #__PURE__ */ factory(name, dependencies, ({ typed, isInteger }) => {
+export const createMapSlices = /* #__PURE__ */ factory(name, dependencies, ({ typed, isInteger }) => {
   /**
    * Apply a function that maps an array to a scalar
    * along a given axis of a matrix or array.
@@ -14,7 +14,7 @@ export const createApply = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * Syntax:
    *
-   *     math.apply(A, dim, callback)
+   *     math.mapSlices(A, dim, callback)
    *
    * Where:
    *
@@ -25,19 +25,24 @@ export const createApply = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *    const A = [[1, 2], [3, 4]]
    *    const sum = math.sum
    *
-   *    math.apply(A, 0, sum)             // returns [4, 6]
-   *    math.apply(A, 1, sum)             // returns [3, 7]
+   *    math.mapSlices(A, 0, sum)             // returns [4, 6]
+   *    math.mapSlices(A, 1, sum)             // returns [3, 7]
    *
    * See also:
    *
    *    map, filter, forEach
+   *
+   * Note:
+   *
+   *    `mapSlices()` is also currently available via its deprecated
+   *    synonym `apply()`.
    *
    * @param {Array | Matrix} array   The input Matrix
    * @param {number} dim             The dimension along which the callback is applied
    * @param {Function} callback      The callback function that is applied. This Function
    *                                 should take an array or 1-d matrix as an input and
    *                                 return a number.
-   * @return {Array | Matrix} res    The residual matrix with the function applied over some dimension.
+   * @return {Array | Matrix} res    The residual matrix with the function mapped on the slices over some dimension.
    */
   return typed(name, {
     'Array | Matrix, number | BigNumber, function': function (mat, dim, callback) {
@@ -51,13 +56,13 @@ export const createApply = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
 
       if (isMatrix(mat)) {
-        return mat.create(_apply(mat.valueOf(), dim, callback), mat.datatype())
+        return mat.create(_mapSlices(mat.valueOf(), dim, callback), mat.datatype())
       } else {
-        return _apply(mat, dim, callback)
+        return _mapSlices(mat, dim, callback)
       }
     }
   })
-})
+}, { formerly: 'apply' })
 
 /**
  * Recursively reduce a matrix
@@ -67,7 +72,7 @@ export const createApply = /* #__PURE__ */ factory(name, dependencies, ({ typed,
  * @returns {Array} ret
  * @private
  */
-function _apply (mat, dim, callback) {
+function _mapSlices (mat, dim, callback) {
   let i, ret, tran
 
   if (dim <= 0) {
@@ -77,14 +82,14 @@ function _apply (mat, dim, callback) {
       tran = _switch(mat)
       ret = []
       for (i = 0; i < tran.length; i++) {
-        ret[i] = _apply(tran[i], dim - 1, callback)
+        ret[i] = _mapSlices(tran[i], dim - 1, callback)
       }
       return ret
     }
   } else {
     ret = []
     for (i = 0; i < mat.length; i++) {
-      ret[i] = _apply(mat[i], dim - 1, callback)
+      ret[i] = _mapSlices(mat[i], dim - 1, callback)
     }
     return ret
   }

@@ -290,6 +290,21 @@ describe('parse', function () {
       approxEqual(parseAndEval('2e'), 2 * Math.E)
     })
 
+    it('should parse dot operators after a value', function () {
+      approxEqual(parseAndEval('2.*3'), 6)
+      approxEqual(parseAndEval('2./3'), 2 / 3)
+      approxEqual(parseAndEval('2.^3'), 2 ** 3)
+    })
+
+    it('should parse dot operators after an implicit multiplication with symbol E', function () {
+      approxEqual(parseAndEval('2E.*3'), 2 * Math.E * 3)
+      approxEqual(parseAndEval('2E./3'), 2 * Math.E / 3)
+      approxEqual(parseAndEval('2E.^3'), 2 * Math.E ** 3)
+      approxEqual(parseAndEval('2e.*3'), 2 * Math.E * 3)
+      approxEqual(parseAndEval('2e./3'), 2 * Math.E / 3)
+      approxEqual(parseAndEval('2e.^3'), 2 * Math.E ** 3)
+    })
+
     it('should throw an error with invalid numbers', function () {
       assert.throws(function () { parseAndEval('.') }, /Value expected/)
       assert.throws(function () { parseAndEval('3.2.2') }, SyntaxError)
@@ -583,6 +598,11 @@ describe('parse', function () {
 
     it('should evaluate unit "in" (should not conflict with operator "in")', function () {
       approxDeepEqual(parseAndEval('2 in'), new Unit(2, 'in'))
+      approxEqual(parseAndEval('(2 lbf in).toNumeric("lbf in")'), 2)
+      approxEqual(parseAndEval('[2 lbf in][1].toNumeric("lbf in")'), 2)
+      approxEqual(parseAndEval('[2 lbf in, 5][1].toNumeric("lbf in")'), 2)
+      approxEqual(parseAndEval('[2 lbf in; 5][1,1].toNumeric("lbf in")'), 2)
+      approxEqual(parseAndEval('{foo:2 lbf in}["foo"].toNumeric("lbf in")'), 2)
       approxDeepEqual(parseAndEval('5.08 cm in in'), new Unit(2, 'in').to('in'))
       approxDeepEqual(parseAndEval('5 in in in'), new Unit(5, 'in').to('in'))
       approxDeepEqual(parseAndEval('2 in to meter'), new Unit(2, 'inch').to('meter'))
@@ -829,7 +849,7 @@ describe('parse', function () {
 
       assert.throws(function () {
         parseAndEval('a[2, 2+3i]', scope)
-      }, /TypeError: Dimension must be an Array, Matrix, number, string, or Range/)
+      }, /TypeError: Dimension must be an Array,.*or Range/)
     })
 
     it('should throw an error for invalid matrix', function () {
@@ -1476,6 +1496,12 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('[1,2;3,4] [2,2]'), 4) // index
       assert.deepStrictEqual(parseAndEval('([1,2;3,4])[2,2]'), 4) // index
       assert.throws(function () { parseAndEval('2[1,2,3]') }, /Unexpected operator/)// index
+    })
+
+    it('should index when the number config is bigint', function () {
+      const bimath = math.create({ number: 'bigint' })
+      assert.strictEqual(bimath.evaluate('[1,2;3,4][2,2]'), 4n)
+      assert.strictEqual(bimath.evaluate('[5,6,7][2]'), 6n)
     })
 
     it('should tell the OperatorNode about implicit multiplications', function () {

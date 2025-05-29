@@ -4,9 +4,9 @@ import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'max'
-const dependencies = ['typed', 'config', 'numeric', 'larger']
+const dependencies = ['typed', 'config', 'numeric', 'larger', 'isNaN']
 
-export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, larger }) => {
+export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, larger, isNaN: mathIsNaN }) => {
   /**
    * Compute the maximum value of a matrix or a  list with values.
    * In case of a multidimensional array, the maximum of the flattened array
@@ -83,8 +83,8 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     deepForEach(array, function (value) {
       try {
-        if (typeof value === 'number' && isNaN(value)) {
-          res = NaN
+        if (mathIsNaN(value)) {
+          res = value
         } else if (res === undefined || larger(value, res)) {
           res = value
         }

@@ -156,6 +156,33 @@ describe('smaller', function () {
     assert.throws(function () { smaller('A', 'B') }, /Cannot convert "A" to a number/)
   })
 
+  it('should result in false when comparing a something with NaN', function () {
+    // Number
+    assert.strictEqual(smaller(NaN, 3), false)
+    assert.strictEqual(smaller(3, NaN), false)
+    assert.strictEqual(smaller(NaN, NaN), false)
+
+    // BigNumber
+    assert.strictEqual(smaller(NaN, bignumber(3)), false)
+    assert.strictEqual(smaller(bignumber(3), NaN), false)
+    assert.strictEqual(smaller(3, bignumber(NaN)), false)
+    assert.strictEqual(smaller(bignumber(NaN), 3), false)
+    assert.strictEqual(smaller(bignumber(NaN), bignumber(3)), false)
+    assert.strictEqual(smaller(bignumber(3), bignumber(NaN)), false)
+
+    // Fraction
+    assert.strictEqual(smaller(NaN, fraction(3)), false)
+    assert.strictEqual(smaller(fraction(3), NaN), false)
+    assert.strictEqual(smaller(fraction(3), bignumber(NaN)), false)
+    assert.strictEqual(smaller(bignumber(NaN), fraction(3)), false)
+    // A fraction itself will throw an error when it's NaN
+
+    // Unit
+    assert.strictEqual(smaller(unit('3', 's'), unit(NaN, 's')), false)
+    assert.strictEqual(smaller(unit(NaN, 's'), unit('3', 's')), false)
+    assert.strictEqual(smaller(unit(NaN, 's'), unit(NaN, 's')), false)
+  })
+
   describe('Array', function () {
     it('should compare array - scalar', function () {
       assert.deepStrictEqual(smaller(2, [1, 2, 3]), [false, false, true])

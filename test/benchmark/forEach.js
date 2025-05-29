@@ -43,6 +43,11 @@ const bench = new Bench({ time: 100, iterations: 100 })
   .add('numberMatrix.forEach(abs.signatures.number)', () => {
     numberMatrix.forEach(abs.signatures.number)
   })
+  .add('genericMatrix iterate', () => {
+    for (const v of genericMatrix) {
+      abs(v.value)
+    }
+  })
 
 bench.addEventListener('cycle', (event) => console.log(formatTaskResult(bench, event.task)))
 await bench.run()

@@ -270,6 +270,16 @@ describe('import', function () {
     assert.strictEqual(math.expression.mathWithTransform.mean, mean)
   })
 
+  it('should import a constant with a Complex value', function () {
+    const myComplexConst = math.complex(2, 3)
+
+    math.import({
+      myComplexConst
+    })
+
+    assert.strictEqual(math.myComplexConst, myComplexConst)
+  })
+
   describe('factory', function () {
     it('should import a factory function', function () {
       const math2 = create()

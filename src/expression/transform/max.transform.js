@@ -4,10 +4,10 @@ import { createMax } from '../../function/statistics/max.js'
 import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 
 const name = 'max'
-const dependencies = ['typed', 'config', 'numeric', 'larger']
+const dependencies = ['typed', 'config', 'numeric', 'larger', 'isNaN']
 
-export const createMaxTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, larger }) => {
-  const max = createMax({ typed, config, numeric, larger })
+export const createMaxTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, larger, isNaN: mathIsNaN }) => {
+  const max = createMax({ typed, config, numeric, larger, isNaN: mathIsNaN })
 
   /**
    * Attach a transform function to math.max

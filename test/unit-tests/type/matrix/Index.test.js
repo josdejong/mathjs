@@ -21,6 +21,17 @@ describe('Index', function () {
     assert.deepStrictEqual(new Index(10)._dimensions, [new ImmutableDenseMatrix([10])])
   })
 
+  it('should create an Index from bigints', function () {
+    assert.deepStrictEqual(new Index(0n, 2n)._dimensions, [new ImmutableDenseMatrix([0]), new ImmutableDenseMatrix([2])])
+
+    assert.deepStrictEqual(new Index(new Range(0n, 10n))._dimensions, [new Range(0, 10, 1)])
+    assert.deepStrictEqual(new Index(new Range(0n, 10n, 2))._dimensions, [new Range(0, 10, 2)])
+    assert.deepStrictEqual(new Index(new Range(0n, 10n), new Range(4, 6))._dimensions, [
+      new Range(0, 10, 1),
+      new Range(4, 6, 1)
+    ])
+  })
+
   it('should create an Index from a Range', function () {
     assert.deepStrictEqual(new Index(new Range(0, 10))._dimensions, [new Range(0, 10, 1)])
   })

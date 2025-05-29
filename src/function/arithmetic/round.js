@@ -133,6 +133,11 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return xSelected.toDecimalPlaces(n.toNumber())
     },
 
+    // bigints can't be rounded
+    bigint: b => b,
+    'bigint, number': (b, _dummy) => b,
+    'bigint, BigNumber': (b, _dummy) => b,
+
     Fraction: function (x) {
       return x.round()
     },

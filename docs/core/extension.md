@@ -220,6 +220,11 @@ where:
         created again when there is a change in the configuration. This is for
         example used for the constants like `pi`, which is different depending
         on the configsetting `number` which can be numbers or BigNumbers.
+    -   `formerly: string`. If present, the created function will also be
+        accessible on the instance under the name given by the value of
+        `formerly` as a (deprecated) synonym for the specified `name`. This
+        facility should only be used when a function is renamed, to allow
+        temporary use of the previous name, for backward compatibility.
 
 Here an example of a factory function which depends on `multiply`:
 

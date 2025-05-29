@@ -21,6 +21,12 @@ export type MathCollection<T = MathGeneric> = MathArray<T> | Matrix<T>
 export type MathType = MathScalarType | MathCollection
 export type MathExpression = string | string[] | MathCollection
 
+// add type for Matrix Callback Function and Matrix Storage Format
+export type MatrixStorageFormat = 'dense' | 'sparse'
+export type MatrixFromFunctionCallback<T extends MathScalarType> = (
+  index: number[]
+) => T
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FactoryFunction<T> = (scope: any) => T
 
@@ -743,7 +749,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param format The Matrix storage format
    * @returns The created Matrix
    */
-  matrix(format?: 'sparse' | 'dense'): Matrix
+  matrix(format?: MatrixStorageFormat): Matrix
   /**
    * @param data A multi dimensional array
    * @param format The Matrix storage format
@@ -752,12 +758,12 @@ export interface MathJsInstance extends MathJsFactory {
    */
   matrix(
     data: MathCollection | string[],
-    format?: 'sparse' | 'dense',
+    format?: MatrixStorageFormat,
     dataType?: string
   ): Matrix
   matrix<T extends MathScalarType>(
     data: MathCollection<T>,
-    format?: 'sparse' | 'dense',
+    format?: MatrixStorageFormat,
     dataType?: string
   ): Matrix<T>
 
@@ -1323,6 +1329,58 @@ export interface MathJsInstance extends MathJsFactory {
   hypot<T extends number | BigNumber>(args: T[]): T
 
   /**
+   * Create a dense matrix from vectors as individual rows. If you pass column vectors, they will be transposed (but not conjugated!)
+   * @param rows - a multi-dimensional number array or matrix
+   */
+  matrixFromRows(...rows: Matrix[]): Matrix
+  matrixFromRows<T extends MathScalarType>(
+    ...rows: (T[] | [T][] | Matrix)[]
+  ): T[][]
+
+  /**
+   * Create a dense matrix from vectors as individual columns. If you pass row vectors, they will be transposed (but not conjugated!)
+   * @param cols - a multi-dimensional number array or matrix
+   */
+  matrixFromColumns(...cols: Matrix[]): Matrix
+  matrixFromColumns<T extends MathScalarType>(
+    ...cols: (T[] | [T][] | Matrix)[]
+  ): T[][]
+  /**
+   * Create a matrix by evaluating a generating function at each index. The simplest overload returns a multi-dimensional array as long as size is an array. Passing size as a Matrix or specifying a format will result in returning a Matrix.
+   * @param size - the size of the matrix to be created
+   * @param fn - Callback function invoked for every entry in the matrix
+   * @param format - The Matrix storage format, either 'dense' or 'sparse'
+   * @param datatype - Type of the values
+   */
+  matrixFromFunction<T extends MathScalarType>(
+    size: [number],
+    fn: MatrixFromFunctionCallback<T>
+  ): T[]
+  matrixFromFunction<T extends MathScalarType>(
+    size: [number, number],
+    fn: MatrixFromFunctionCallback<T>
+  ): T[][]
+  matrixFromFunction<T extends MathScalarType>(
+    size: number[],
+    fn: MatrixFromFunctionCallback<T>
+  ): MathArray<T>
+  matrixFromFunction(
+    size: Matrix<number>,
+    fn: MatrixFromFunctionCallback<MathScalarType>
+  ): Matrix
+  matrixFromFunction(
+    size: number[] | Matrix<number>,
+    fn: MatrixFromFunctionCallback<MathScalarType>,
+    format: MatrixStorageFormat,
+    datatype?: string
+  ): Matrix
+  matrixFromFunction(
+    size: number[] | Matrix<number>,
+    format: MatrixStorageFormat,
+    fn: MatrixFromFunctionCallback<MathScalarType>,
+    datatype?: string
+  ): Matrix
+  /**
    * Calculate the least common multiple for two or more values or arrays.
    * lcm is defined as: lcm(a, b) = abs(a * b) / gcd(a, b) For matrices,
    * the function is evaluated element wise.
@@ -1398,7 +1456,7 @@ export interface MathJsInstance extends MathJsFactory {
 
   multiply<T extends MathArray>(x: T, y: T[]): T
   multiply<T extends MathArray>(x: T[], y: T): T
-  multiply<T extends MathArray>(x: T[], y: T[]): T
+  multiply<T extends MathArray>(x: T[], y: T[]): T[]
   multiply<T extends MathArray>(x: T, y: T): MathScalarType
   multiply(x: Unit, y: Unit): Unit
   multiply(x: number, y: number): number
@@ -1805,11 +1863,15 @@ export interface MathJsInstance extends MathJsFactory {
    * array or 1-d matrix as an input and return a number.
    * @returns The residual matrix with the function applied over some dimension.
    */
-  apply<T extends MathCollection>(
+  mapSlices<T extends MathCollection>(
     array: T,
     dim: number,
     callback: (array: MathCollection) => number
   ): T
+  /**
+   * @deprecated backwards-compatibility old name of mapSlices
+   */
+  apply: MathJsInstance['mapSlices']
 
   /**
    * Concatenate two or more matrices. dim: number is a zero-based
@@ -3714,7 +3776,7 @@ export const {
   unaryMinusDependencies,
   unaryPlusDependencies,
   absDependencies,
-  applyDependencies,
+  mapSlicesDependencies,
   addScalarDependencies,
   cbrtDependencies,
   ceilDependencies,
@@ -3954,6 +4016,7 @@ export const {
   coulombDependencies,
   deuteronMassDependencies,
   efimovFactorDependencies,
+  eigsDependencies,
   electricConstantDependencies,
   electronMassDependencies,
   elementaryChargeDependencies,
@@ -3994,7 +4057,7 @@ export const {
   vacuumImpedanceDependencies,
   weakMixingAngleDependencies,
   wienDisplacementDependencies,
-  applyTransformDependencies,
+  mapSlicesTransformDependencies,
   columnTransformDependencies,
   filterTransformDependencies,
   forEachTransformDependencies,
@@ -4020,10 +4083,6 @@ export interface Matrix<T = MathGeneric> {
   density(): number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subset(index: Index, replacement?: any, defaultValue?: any): Matrix
-  apply(
-    dim: number,
-    callback: (array: MathCollection) => number
-  ): MathCollection
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get(index: number[]): any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -5008,11 +5067,15 @@ export interface MathJsChain<TValue> {
    * array or 1-d matrix as an input and return a number.
    * @returns The residual matrix with the function applied over some dimension.
    */
-  apply<T extends MathCollection>(
+  mapSlices<T extends MathCollection>(
     this: MathJsChain<T>,
     dim: number,
     callback: (array: Array<MathType> | Matrix) => number
   ): MathJsChain<T>
+  /**
+   * @deprecated backwards-compatibility old name of mapSlices
+   **/
+  apply: MathJsChain<TValue>['mapSlices']
 
   /**
    * Calculate the cubic root of a value. For matrices, the function is
@@ -7183,7 +7246,8 @@ export const {
   xor,
 
   // matrix functions
-  apply,
+  mapSlices,
+  apply, // @deprecated prior name of mapSlices
   concat,
   cross,
   det,

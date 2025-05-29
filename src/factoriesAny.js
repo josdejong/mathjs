@@ -32,7 +32,7 @@ export { createSplitUnit } from './type/unit/function/splitUnit.js'
 export { createUnaryMinus } from './function/arithmetic/unaryMinus.js'
 export { createUnaryPlus } from './function/arithmetic/unaryPlus.js'
 export { createAbs } from './function/arithmetic/abs.js'
-export { createApply } from './function/matrix/apply.js'
+export { createMapSlices } from './function/matrix/mapSlices.js'
 export { createAddScalar } from './function/arithmetic/addScalar.js'
 export { createSubtractScalar } from './function/arithmetic/subtractScalar.js'
 export { createCbrt } from './function/arithmetic/cbrt.js'
@@ -298,6 +298,7 @@ export {
   createClassicalElectronRadius,
   createConductanceQuantum,
   createCoulomb,
+  createCoulombConstant,
   createDeuteronMass,
   createEfimovFactor,
   createElectricConstant,
@@ -341,7 +342,7 @@ export {
   createWeakMixingAngle,
   createWienDisplacement
 } from './type/unit/physicalConstants.js'
-export { createApplyTransform } from './expression/transform/apply.transform.js'
+export { createMapSlicesTransform } from './expression/transform/mapSlices.transform.js'
 export { createColumnTransform } from './expression/transform/column.transform.js'
 export { createFilterTransform } from './expression/transform/filter.transform.js'
 export { createForEachTransform } from './expression/transform/forEach.transform.js'

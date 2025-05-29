@@ -104,6 +104,10 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
       return x.isNegative() ? ceil(x, n) : floor(x, n)
     },
 
+    bigint: b => b,
+    'bigint, number': (b, _dummy) => b,
+    'bigint, BigNumber': (b, _dummy) => b,
+
     Fraction: function (x) {
       return x.s < 0n ? x.ceil() : x.floor()
     },

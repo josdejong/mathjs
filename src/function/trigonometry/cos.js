@@ -25,7 +25,7 @@ export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *    math.cos(math.unit(60, 'deg'))   // returns number  0.5
    *
    *    const angle = 0.2
-   *    math.pow(math.sin(angle), 2) + math.pow(math.cos(angle), 2) // returns number ~1
+   *    math.pow(math.sin(angle), 2) + math.pow(math.cos(angle), 2) // returns number 1
    *
    * See also:
    *

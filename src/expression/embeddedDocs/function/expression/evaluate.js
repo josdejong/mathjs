@@ -15,5 +15,5 @@ export const evaluateDocs = {
     'evaluate("sin(x * pi)", { "x": 1/2 })',
     'evaluate(["width=2", "height=4","width*height"])'
   ],
-  seealso: []
+  seealso: ['parser', 'parse', 'compile']
 }

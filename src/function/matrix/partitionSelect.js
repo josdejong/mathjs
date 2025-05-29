@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory.js'
 const name = 'partitionSelect'
 const dependencies = ['typed', 'isNumeric', 'isNaN', 'compare']
 
-export const createPartitionSelect = /* #__PURE__ */ factory(name, dependencies, ({ typed, isNumeric, isNaN, compare }) => {
+export const createPartitionSelect = /* #__PURE__ */ factory(name, dependencies, ({ typed, isNumeric, isNaN: mathIsNaN, compare }) => {
   const asc = compare
   const desc = (a, b) => -compare(a, b)
 
@@ -99,7 +99,7 @@ export const createPartitionSelect = /* #__PURE__ */ factory(name, dependencies,
 
     // check for NaN values since these can cause an infinite while loop
     for (let i = 0; i < arr.length; i++) {
-      if (isNumeric(arr[i]) && isNaN(arr[i])) {
+      if (isNumeric(arr[i]) && mathIsNaN(arr[i])) {
         return arr[i] // return NaN
       }
     }

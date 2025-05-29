@@ -50,6 +50,12 @@ describe('fix', function () {
     assert.deepStrictEqual(fix(-1.888, bignumber(2)), bignumber(-1.88))
   })
 
+  it('should be safe to call with a bigint', function () {
+    const b = 12345678901234567890n
+    assert.strictEqual(fix(b), b)
+    assert.strictEqual(fix(b, 7), b)
+  })
+
   it('should round big numbers correctly', function () {
     assert.deepStrictEqual(fix(bignumber(0)), bignumber(0))
     assert.deepStrictEqual(fix(bignumber(1)), bignumber(1))

@@ -8,24 +8,80 @@ import { typeOf as _typeOf } from './is.js'
  * @param {Function} callback The original callback function to simplify.
  * @param {Array|Matrix} array The array that will be used with the callback function.
  * @param {string} name The name of the function that is using the callback.
+ * @param {boolean} [isUnary=false] If true, the callback function is unary and will be optimized as such.
  * @returns {Function} Returns a simplified version of the callback function.
  */
-export function optimizeCallback (callback, array, name) {
+export function optimizeCallback (callback, array, name, isUnary = false) {
   if (typed.isTypedFunction(callback)) {
-    const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
-    const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
-    const hasSingleSignature = Object.keys(callback.signatures).length === 1
-    const numberOfArguments = _findNumberOfArguments(callback, firstValue, firstIndex, array)
-    const fastCallback = hasSingleSignature ? Object.values(callback.signatures)[0] : callback
-    if (numberOfArguments >= 1 && numberOfArguments <= 3) {
-      return (...args) => _tryFunctionWithArgs(fastCallback, args.slice(0, numberOfArguments), name, callback.name)
+    let numberOfArguments
+    if (isUnary) {
+      numberOfArguments = 1
+    } else {
+      const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
+      const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
+      numberOfArguments = _findNumberOfArgumentsTyped(callback, firstValue, firstIndex, array)
     }
-    return (...args) => _tryFunctionWithArgs(fastCallback, args, name, callback.name)
+    let fastCallback
+    if (array.isMatrix && (array.dataType !== 'mixed' && array.dataType !== undefined)) {
+      const singleSignature = _findSingleSignatureWithArity(callback, numberOfArguments)
+      fastCallback = (singleSignature !== undefined) ? singleSignature : callback
+    } else {
+      fastCallback = callback
+    }
+    if (numberOfArguments >= 1 && numberOfArguments <= 3) {
+      return {
+        isUnary: numberOfArguments === 1,
+        fn: (...args) => _tryFunctionWithArgs(fastCallback, args.slice(0, numberOfArguments), name, callback.name)
+      }
+    }
+    return { isUnary: false, fn: (...args) => _tryFunctionWithArgs(fastCallback, args, name, callback.name) }
   }
-  return callback
+  if (isUnary === undefined) {
+    return { isUnary: _findIfCallbackIsUnary(callback), fn: callback }
+  } else {
+    return { isUnary, fn: callback }
+  }
 }
 
-function _findNumberOfArguments (callback, value, index, array) {
+function _findSingleSignatureWithArity (callback, arity) {
+  const matchingFunctions = []
+  Object.entries(callback.signatures).forEach(([signature, func]) => {
+    if (signature.split(',').length === arity) {
+      matchingFunctions.push(func)
+    }
+  })
+  if (matchingFunctions.length === 1) {
+    return matchingFunctions[0]
+  }
+}
+
+/**
+ * Determines if a given callback function is unary (i.e., takes exactly one argument).
+ *
+ * This function checks the following conditions to determine if the callback is unary:
+ * 1. The callback function should have exactly one parameter.
+ * 2. The callback function should not use the `arguments` object.
+ * 3. The callback function should not use rest parameters (`...`).
+ * If in doubt, this function shall return `false` to be safe
+ *
+ * @param {Function} callback - The callback function to be checked.
+ * @returns {boolean} - Returns `true` if the callback is unary, otherwise `false`.
+ */
+function _findIfCallbackIsUnary (callback) {
+  if (callback.length !== 1) return false
+
+  const callbackStr = callback.toString()
+  // Check if the callback function uses `arguments`
+  if (/arguments/.test(callbackStr)) return false
+
+  // Extract the parameters of the callback function
+  const paramsStr = callbackStr.match(/\(.*?\)/)
+  // Check if the callback function uses rest parameters
+  if (/\.\.\./.test(paramsStr)) return false
+  return true
+}
+
+function _findNumberOfArgumentsTyped (callback, value, index, array) {
   const testArgs = [value, index, array]
   for (let i = 3; i > 0; i--) {
     const args = testArgs.slice(0, i)

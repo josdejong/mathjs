@@ -1,6 +1,6 @@
 import assert from 'assert'
-import math from '../../../../../src/defaultInstance.js'
 import Fraction from 'fraction.js'
+import math from '../../../../../src/defaultInstance.js'
 
 describe('fraction', function () {
   it('should create a fraction', function () {
@@ -80,6 +80,13 @@ describe('fraction', function () {
     assert.throws(function () { math.fraction(Infinity) }, /Error: Infinity cannot be represented as a fraction/)
     assert.throws(function () { math.fraction(-Infinity) }, /Error: -Infinity cannot be represented as a fraction/)
     assert.throws(function () { math.fraction(NaN) }, /Error: NaN cannot be represented as a fraction/)
+  })
+
+  it('should show a Latex Fraction as one over another', function () {
+    const node1 = math.parse('fraction(1,2)')
+    assert.strictEqual(node1.toTex(), '\\frac{1}{2}')
+    const node2 = math.parse('fraction(a,b)')
+    assert.strictEqual(node2.toTex(), '\\frac{ a}{\\mathrm{b}}')
   })
 })
 

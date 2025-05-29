@@ -17,7 +17,7 @@ export const createCtranspose = /* #__PURE__ */ factory(name, dependencies, ({ t
    * Examples:
    *
    *     const A = [[1, 2, 3], [4, 5, math.complex(6,7)]]
-   *     math.ctranspose(A)               // returns [[1, 4], [2, 5], [3, {re:6,im:7}]]
+   *     math.ctranspose(A)      // returns [[1, 4], [2, 5], [3, {re:6,im:-7}]]
    *
    * See also:
    *

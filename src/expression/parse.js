@@ -48,7 +48,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 }) => {
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
-   * invoking node.evaluate().
+   * invoking node.evaluate() or transformed into a functional object via node.compile().
    *
    * Note the evaluating arbitrary expressions may involve security risks,
    * see [https://mathjs.org/docs/expressions/security.html](https://mathjs.org/docs/expressions/security.html) for more information.
@@ -67,6 +67,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    *
    *     let scope = {a:3, b:4}
    *     const node2 = math.parse('a * b') // 12
+   *     node2.evaluate(scope) // 12
    *     const code2 = node2.compile()
    *     code2.evaluate(scope) // 12
    *     scope.a = 5
@@ -420,7 +421,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           if (parse.isDecimalMark(currentCharacter(state), nextCharacter(state))) {
             throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
           }
-        } else if (nextCharacter(state) === '.') {
+        } else if (parse.isDecimalMark(nextCharacter(state), state.expression.charAt(state.index + 2))) {
           next(state)
           throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
         }
@@ -934,7 +935,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       getTokenSkipNewline(state)
 
-      if (name === 'in' && state.token === '') {
+      if (name === 'in' && '])},;'.includes(state.token)) {
         // end of expression -> this is the unit 'in' ('inch')
         node = new OperatorNode('*', 'multiply', [node, new SymbolNode('in')], true)
       } else {

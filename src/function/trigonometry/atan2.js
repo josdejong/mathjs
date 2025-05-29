@@ -39,9 +39,10 @@ export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    math.atan2(2, 2) / math.pi       // returns number 0.25
    *
-   *    const angle = math.unit(60, 'deg') // returns Unit 60 deg
+   *    const angle = math.unit(60, 'deg')
    *    const x = math.cos(angle)
    *    const y = math.sin(angle)
+   *    math.atan2(y, x) * 180 / math.pi  // returns 60
    *
    *    math.atan(2)             // returns number 1.1071487177940904
    *

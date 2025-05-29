@@ -80,9 +80,6 @@ function extractValue (spec) {
       throw err
     }
   }
-  if (words[0] === 'Unit') { // more hackishness here :(
-    value.fixPrefix = true
-  }
   if (words[0] === 'Node') { // and even more :(
     delete value.comment
   }
@@ -90,20 +87,17 @@ function extractValue (spec) {
 }
 
 const knownProblems = new Set([
-  'isZero', 'isPositive', 'isNumeric', 'isNegative', 'isNaN',
-  'hasNumericValue', 'clone', 'hex', 'format', 'to', 'sin',
-  'cos', 'atan2', 'atan', 'asin', 'asec', 'acsc', 'acoth', 'acot', 'max',
   'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
-  'random', 'pickRandom', 'kldivergence', 'xor', 'or', 'not', 'and', 'distance',
-  'parser', 'compile', 're', 'im', 'rightLogShift', 'rightArithShift',
-  'leftShift', 'bitNot', 'apply', 'subset', 'squeeze', 'rotationMatrix',
-  'rotate', 'reshape', 'partitionSelect', 'matrixFromRows', 'matrixFromFunction',
-  'matrixFromColumns', 'getMatrixDataType', 'forEach', 'eigs', 'diff',
-  'ctranspose', 'concat', 'sqrtm', 'subtract', 'nthRoots', 'nthRoot', 'multiply',
-  'mod', 'invmod', 'floor', 'fix', 'expm1', 'exp', 'dotPow', 'dotMultiply',
-  'dotDivide', 'divide', 'ceil', 'cbrt', 'add', 'usolveAll', 'usolve', 'slu',
-  'rationalize', 'qr', 'lusolve', 'lup', 'lsolveAll', 'lsolve', 'derivative',
-  'symbolicEqual', 'map', 'schur', 'sylvester', 'freqz', 'round'
+  'random', 'pickRandom', 'kldivergence',
+  'parser', 'compile', 're', 'im',
+  'subset', 'squeeze', 'rotationMatrix',
+  'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
+  'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff',
+  'nthRoots', 'nthRoot',
+  'mod', 'floor', 'fix', 'expm1', 'exp',
+  'ceil', 'cbrt', 'add', 'slu',
+  'rationalize', 'qr', 'lusolve', 'lup', 'derivative',
+  'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round'
 ])
 
 let issueCount = 0
@@ -133,6 +127,13 @@ function checkExpectation (want, got) {
     return approxDeepEqual(got, want, 1e-9)
   }
   if (want instanceof math.Unit && got instanceof math.Unit) {
+    if (got.fixPrefix !== want.fixPrefix) {
+      issueCount++
+      if (debug) {
+        console.log('  Note: Ignoring different fixPrefix in Unit comparison')
+      }
+      got.fixPrefix = want.fixPrefix
+    }
     return approxDeepEqual(got, want, 1e-9)
   }
   if (want instanceof math.Complex && got instanceof math.Complex) {
@@ -161,6 +162,7 @@ function checkExpectation (want, got) {
 }
 
 const OKundocumented = new Set([
+  'apply', // deprecated backwards-compatibility synonym of mapSlices
   'addScalar', 'subtractScalar', 'divideScalar', 'multiplyScalar', 'equalScalar',
   'docs', 'FibonacciHeap',
   'IndexError', 'DimensionError', 'ArgumentsError'
@@ -241,6 +243,7 @@ const knownUndocumented = new Set([
   'conductanceQuantum',
   'ConstantNode',
   'coulomb',
+  'coulombConstant',
   'createUnit',
   'DenseMatrix',
   'deuteronMass',

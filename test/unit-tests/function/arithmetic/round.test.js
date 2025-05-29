@@ -72,6 +72,12 @@ describe('round', function () {
     assert.throws(function () { round(null) }, /TypeError: Unexpected type of argument/)
   })
 
+  it('should be safe to call with a bigint', function () {
+    const b = 12345678901234567890n
+    assert.strictEqual(round(b), b)
+    assert.strictEqual(round(b, 7), b)
+  })
+
   it('should round bignumbers', function () {
     assert.deepStrictEqual(round(bignumber(0.145 * 100)), bignumber(15))
     assert.deepStrictEqual(round(bignumber(0.145 * 100), bignumber(0)), bignumber(15))

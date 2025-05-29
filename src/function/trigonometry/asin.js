@@ -17,7 +17,7 @@ export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * Examples:
    *
    *    math.asin(0.5)           // returns number 0.5235987755982989
-   *    math.asin(math.sin(1.5)) // returns number ~1.5
+   *    math.asin(math.sin(1.5)) // returns number 1.5
    *
    *    math.asin(2)             // returns Complex 1.5707963267948966 -1.3169578969248166i
    *

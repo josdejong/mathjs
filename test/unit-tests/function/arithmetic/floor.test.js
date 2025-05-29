@@ -45,6 +45,12 @@ describe('floor', function () {
     assert.strictEqual(floor(-2.178, 2), -2.18)
   })
 
+  it('should be safe to call with a bigint', function () {
+    const b = 12345678901234567890n
+    assert.strictEqual(floor(b), b)
+    assert.strictEqual(floor(b, 7), b)
+  })
+
   it('should floor big numbers correctly', function () {
     assert.deepStrictEqual(floor(bignumber(0)), bignumber(0))
     assert.deepStrictEqual(floor(bignumber(1)), bignumber(1))
@@ -127,6 +133,7 @@ describe('floor', function () {
     assert.strictEqual(floor(-7.999999999999999), -8)
     assert.strictEqual(floor(30000.000000000004), 30000)
     assert.strictEqual(floor(799999.9999999999), 800000)
+    assert.strictEqual(floor(799999999.9999999), 800000000)
     assert.strictEqual(floor(-30000.000000000004), -30000)
 
     assert.strictEqual(floor(3.0000000000000004, 2), 3)
@@ -135,7 +142,15 @@ describe('floor', function () {
     assert.strictEqual(floor(-7.999999999999999, 2), -8)
     assert.strictEqual(floor(30000.000000000004, 2), 30000)
     assert.strictEqual(floor(799999.9999999999, 2), 800000)
+    assert.strictEqual(floor(799999.9999999999, 3), 800000)
     assert.strictEqual(floor(-30000.000000000004, 2), -30000)
+  })
+
+  it('should not be confused by default tolerances', function () {
+    assert.strictEqual(floor(1234567890123.5), 1234567890123)
+    assert.strictEqual(
+      floor(bignumber('12345678901234567890.5')).toFixed(),
+      '12345678901234567890')
   })
 
   it('should gracefully handle round-off errors with bignumbers', function () {

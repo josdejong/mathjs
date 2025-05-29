@@ -1,4 +1,4 @@
-import { isBigNumber } from '../../utils/is.js'
+import { isBigInt, isBigNumber } from '../../utils/is.js'
 import { format, sign } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 
@@ -7,13 +7,20 @@ const dependencies = []
 
 export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
-   * Create a range. A range has a start, step, and end, and contains functions
-   * to iterate over the range.
+   * Create a range of numbers. A range has a start, step, and end,
+   * and contains functions to iterate over the range.
    *
    * A range can be constructed as:
    *
    *     const range = new Range(start, end)
    *     const range = new Range(start, end, step)
+   *
+   * Note that the endpoints and step may be specified with other numeric
+   * types such as bigint or BigNumber, but they will be demoted to the
+   * built-in `number` type and the Range will only contain numbers. The
+   * rationale for this demotion is that Range objects are primarily used
+   * for indexing Matrix objects, and Matrix objects may only be indexed
+   * with `number`s.
    *
    * To get the result of the range:
    *     range.forEach(function (x) {
@@ -49,22 +56,22 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () =
     if (hasStart) {
       if (isBigNumber(start)) {
         start = start.toNumber()
-      } else if (typeof start !== 'number') {
-        throw new TypeError('Parameter start must be a number')
+      } else if (typeof start !== 'number' && !isBigInt(start)) {
+        throw new TypeError('Parameter start must be a number or bigint')
       }
     }
     if (hasEnd) {
       if (isBigNumber(end)) {
         end = end.toNumber()
-      } else if (typeof end !== 'number') {
-        throw new TypeError('Parameter end must be a number')
+      } else if (typeof end !== 'number' && !isBigInt(end)) {
+        throw new TypeError('Parameter end must be a number or bigint')
       }
     }
     if (hasStep) {
       if (isBigNumber(step)) {
         step = step.toNumber()
-      } else if (typeof step !== 'number') {
-        throw new TypeError('Parameter step must be a number')
+      } else if (typeof step !== 'number' && !isBigInt(step)) {
+        throw new TypeError('Parameter step must be a number or bigint')
       }
     }
 

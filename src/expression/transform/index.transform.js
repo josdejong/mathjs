@@ -1,4 +1,6 @@
-import { isArray, isBigNumber, isMatrix, isNumber, isRange } from '../../utils/is.js'
+import {
+  isArray, isBigInt, isBigNumber, isMatrix, isNumber, isRange
+} from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'index'
@@ -26,14 +28,14 @@ export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, 
         if (getMatrixDataType(arg) !== 'boolean') {
           arg = arg.map(function (v) { return v - 1 })
         }
-      } else if (isNumber(arg)) {
+      } else if (isNumber(arg) || isBigInt(arg)) {
         arg--
       } else if (isBigNumber(arg)) {
         arg = arg.toNumber() - 1
       } else if (typeof arg === 'string') {
       // leave as is
       } else {
-        throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range')
+        throw new TypeError('Dimension must be an Array, Matrix, number, bigint, string, or Range')
       }
 
       args[i] = arg

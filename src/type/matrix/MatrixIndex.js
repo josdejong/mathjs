@@ -42,6 +42,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
       const arg = arguments[i]
       const argIsArray = isArray(arg)
       const argIsMatrix = isMatrix(arg)
+      const argType = typeof arg
       let sourceSize = null
       if (isRange(arg)) {
         this._dimensions.push(arg)
@@ -65,13 +66,15 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
         if (size.length !== 1 || size[0] !== 1 || sourceSize !== null) {
           this._isScalar = false
         }
-      } else if (typeof arg === 'number') {
+      } else if (argType === 'number') {
         this._dimensions.push(_createImmutableMatrix([arg]))
-      } else if (typeof arg === 'string') {
+      } else if (argType === 'bigint') {
+        this._dimensions.push(_createImmutableMatrix([Number(arg)]))
+      } else if (argType === 'string') {
         // object property (arguments.count should be 1)
         this._dimensions.push(arg)
       } else {
-        throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range')
+        throw new TypeError('Dimension must be an Array, Matrix, number, bigint, string, or Range')
       }
       this._sourceSize.push(sourceSize)
       // TODO: implement support for wildcard '*'

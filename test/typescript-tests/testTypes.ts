@@ -613,8 +613,8 @@ Chaining examples
     )
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
-  // apply
-  expectTypeOf(math.chain([1, 2, 3]).apply(0, () => 1)).toMatchTypeOf<
+  // mapSlices
+  expectTypeOf(math.chain([1, 2, 3]).mapSlices(0, () => 1)).toMatchTypeOf<
     MathJsChain<number[]>
   >()
 
@@ -1251,6 +1251,7 @@ Matrices examples
 
   // perform operations with matrices
   math.map(a, math.sqrt)
+  math.mapSlices(b, 1, math.sum)
   math.factorial(a)
 
   // create and manipulate matrices. Arrays and Matrices can be used mixed.
@@ -1268,6 +1269,28 @@ Matrices examples
     const _c = math.multiply(a, b)
     const f: Matrix = math.matrix([1, 0])
     const _d: Matrix = f.subset(math.index(1))
+    const g: number[] = math.matrixFromFunction(
+      [3],
+      (i: number[]) => i[0] * i[0]
+    )
+    assert.strictEqual(g[2], 4)
+    const h: Matrix = math.matrixFromFunction(
+      [2, 2],
+      (i: number[]) => math.fraction(i[0], i[1] + 1),
+      'dense'
+    )
+    const j: number[][] = math.matrixFromRows(
+      [1, 2, 3],
+      math.matrix([[4], [5], [6]])
+    )
+    assert.strictEqual(j[1][2], 6)
+    const _k: Matrix = math.matrixFromRows(f, math.row(h, 1))
+    const l: number[][] = math.matrixFromColumns(
+      [1, 2, 3],
+      math.matrix([[4], [5], [6]])
+    )
+    assert.strictEqual(l[2][1], 6)
+    const _m: Matrix = math.matrixFromColumns(f, math.row(h, 1))
   }
 
   // get a sub matrix
@@ -1502,6 +1525,10 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   const efg: MathArray = [1, 2, 3, 4, 5]
   const fgh: MathArray = [2, 3, 4, 5, 6]
 
+  const ghi: number[] = [1, 2, 3, 4]
+  const hij: number[][] = [[1], [2], [3], [4]]
+  const ijk: number[][] = [[1, 2, 3, 4]]
+
   const Mbcd = math.matrix(bcd)
   const Mabc = math.matrix(abc)
 
@@ -1516,9 +1543,11 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   // 1D JS Array
   const r3 = math.multiply(abc, bcd) // 1D * 2D => Array
   const r3a = math.multiply(efg, fgh) // 1D * 1D => Scalar
+  const r3b = math.multiply(ghi, ghi) // 1D * 1D => Scalar
 
   const _r31 = r3[1]
   assert.strictEqual(typeof r3a, 'number')
+  assert.strictEqual(typeof r3b, 'number')
 
   // 2D JS Array
   const r12 = math.multiply(bcd, bcd)
@@ -1529,7 +1558,9 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
     const _r1211 = r12[1][1]
   }
 
-  const _r121 = r12[1]
+  const r12a = math.multiply(hij, ijk)
+
+  const _r12a00 = r12a[0][0]
 
   // Matrix: matrix * vector
   const r7 = math.multiply(Mabc, bcd)

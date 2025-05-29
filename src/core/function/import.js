@@ -1,4 +1,4 @@
-import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is.js'
+import { isBigNumber, isComplex, isFraction, isMatrix, isObject, isUnit } from '../../utils/is.js'
 import { isFactory, stripOptionalNotation } from '../../utils/factory.js'
 import { hasOwnProperty, lazy } from '../../utils/object.js'
 import { ArgumentsError } from '../../error/ArgumentsError.js'
@@ -72,7 +72,7 @@ export function importFactory (typed, load, math, importedFactories) {
     function flattenImports (flatValues, value, name) {
       if (Array.isArray(value)) {
         value.forEach(item => flattenImports(flatValues, item))
-      } else if (typeof value === 'object') {
+      } else if (isObject(value) || isModule(value)) {
         for (const name in value) {
           if (hasOwnProperty(value, name)) {
             flattenImports(flatValues, value[name], name)
@@ -294,27 +294,38 @@ export function importFactory (typed, load, math, importedFactories) {
       }
     }
 
+    const former = factory.meta?.formerly ?? ''
+    const needsTransform = isTransformFunctionFactory(factory) ||
+      factoryAllowedInExpressions(factory)
+    const withTransform = math.expression.mathWithTransform
+
     // TODO: add unit test with non-lazy factory
     if (!factory.meta || factory.meta.lazy !== false) {
       lazy(namespace, name, resolver)
+      if (former) lazy(namespace, former, resolver)
 
       // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
       if (existing && existingTransform) {
         _deleteTransform(name)
+        if (former) _deleteTransform(former)
       } else {
-        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
-          lazy(math.expression.mathWithTransform, name, () => namespace[name])
+        if (needsTransform) {
+          lazy(withTransform, name, () => namespace[name])
+          if (former) lazy(withTransform, former, () => namespace[name])
         }
       }
     } else {
       namespace[name] = resolver()
+      if (former) namespace[former] = namespace[name]
 
       // FIXME: remove the `if (existing &&` condition again. Can we make sure subset is loaded before subset.transform? (Name collision, and no dependencies between the two)
       if (existing && existingTransform) {
         _deleteTransform(name)
+        if (former) _deleteTransform(former)
       } else {
-        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
-          lazy(math.expression.mathWithTransform, name, () => namespace[name])
+        if (needsTransform) {
+          lazy(withTransform, name, () => namespace[name])
+          if (former) lazy(withTransform, former, () => namespace[name])
         }
       }
     }
@@ -343,6 +354,10 @@ export function importFactory (typed, load, math, importedFactories) {
         isFraction(object) ||
         isMatrix(object) ||
         Array.isArray(object)
+  }
+
+  function isModule (object) {
+    return typeof object === 'object' && object[Symbol.toStringTag] === 'Module'
   }
 
   function hasTypedFunctionSignature (fn) {
