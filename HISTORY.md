@@ -1,5 +1,11 @@
 # History
 
+# unpublished changes since 14.5.1
+
+- Fix: add embedded docs for the deprecated physical constant `coulomb`, 
+  see #3472.
+
+
 # 2025-05-28, 14.5.1
 
 - Fix: #3482 mathjs throwing an error related to `BigInt`  when loading in
