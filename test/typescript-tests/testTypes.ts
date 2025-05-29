@@ -1706,6 +1706,12 @@ Units examples
   math.to(b, 'inch')
   b.toNumber('cm')
   math.number(b, 'cm')
+  b.toBest()
+  b.toBest(['m'])
+  b.toBest(['m', 'cm'], { offset: 1.5 })
+  math.unit('1000 m').toBest()
+  math.unit('1000 m').toBest(['km'])
+  math.unit('1000 m').toBest(['m', 'cm'], { offset: 1.5 })
 
   // the expression parser supports units too
   math.evaluate('2 inch to cm')

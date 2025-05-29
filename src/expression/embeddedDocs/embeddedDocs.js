@@ -229,6 +229,7 @@ import { sinhDocs } from './function/trigonometry/sinh.js'
 import { tanDocs } from './function/trigonometry/tan.js'
 import { tanhDocs } from './function/trigonometry/tanh.js'
 import { toDocs } from './function/units/to.js'
+import { toBestDocs } from './function/units/toBest.js'
 import { binDocs } from './function/utils/bin.js'
 import { cloneDocs } from './function/utils/clone.js'
 import { formatDocs } from './function/utils/format.js'
@@ -585,6 +586,7 @@ export const embeddedDocs = {
 
   // functions - units
   to: toDocs,
+  toBest: toBestDocs,
 
   // functions - utils
   clone: cloneDocs,

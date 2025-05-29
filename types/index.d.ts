@@ -3485,13 +3485,16 @@ export interface MathJsInstance extends MathJsFactory {
   to(x: Unit | MathCollection, unit: Unit | string): Unit | MathCollection
 
   /**
-   * Converts to the most appropriate display unit. Without preferred units, finds a prefix for values between 1-1000.
-   * With preferred units, converts to the unit closest to value 1.
+   * Converts a unit to the most appropriate display unit.
+   * When no preferred units are provided, the function automatically find the best prefix.
+   * When preferred units are provided, it converts to
+   * the unit that gives a value closest to 1.
    * @param preferredUnits - Optional preferred target units
+   * @param options - Optional options object
    * @returns Unit with optimized prefix/unit
    */
   toBest(): Unit
-  toBest(units: string[] | Unit[], options: Object, formatOptions: Object): Unit
+  toBest(units: string[] | Unit[], options: Object): Unit
 
   /*************************************************************************
    * Utils
@@ -4184,7 +4187,7 @@ export interface Unit {
   abs(unit: Unit): Unit
   to(unit: string): Unit
   toBest(): Unit
-  toBest(units: string[] | Unit[], options: Object, formatOptions: Object): Unit
+  toBest(units?: string[] | Unit[], options?: Object): Unit
   toNumber(unit?: string): number
   toNumeric(unit?: string): number | Fraction | BigNumber
   toSI(): Unit
@@ -6989,12 +6992,15 @@ export interface MathJsChain<TValue> {
 
   
   /**
-   * Converts to the most appropriate display unit. Without preferred units, finds a prefix for values between 1-1000.
-   * With preferred units, converts to the unit closest to value 1.
+   * Converts a unit to the most appropriate display unit.
+   * When no preferred units are provided, the function automatically find the best prefix.
+   * When preferred units are provided, it converts to
+   * the unit that gives a value closest to 1.
    * @param preferredUnits - Optional preferred target units
+   * @param options - Optional options object
    */
   toBest(this: MathJsChain<Unit>): MathJsChain<Unit>
-  toBest(this: MathJsChain<Unit>, units: string[] | Unit[], options: Object, formatOptions: Object): MathJsChain<Unit>
+  toBest(this: MathJsChain<Unit>, units: string[] | Unit[], options: Object): MathJsChain<Unit>
 
   /*************************************************************************
    * Utils functions
