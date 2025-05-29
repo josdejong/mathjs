@@ -19,7 +19,7 @@ export const createToBest = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * Where:
    * - `unitList` is an optional array of preferred target units as string or Unit.
    * - `options` is an optional object with options, formed as follows:
-   *  - `offset`: number | BigNumber
+   * - `offset`: number | BigNumber
    *
    * Examples:
    *
@@ -37,10 +37,10 @@ export const createToBest = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @return {Unit}                           Value converted to the best matching unit
    */
   return typed(name, {
-    '': function (x) {
-      return x.toBest()
-    },
-    Unit: (x, units, options) => x.toBest(units, options)
-  }
-  )
+    Unit: x => x.toBest(),
+    'Unit, string': (x, unitList) => x.toBest(unitList.split(',')),
+    'Unit, string, Object': (x, unitList, options) => x.toBest(unitList.split(','), options),
+    'Unit, Array': (x, unitList) => x.toBest(unitList),
+    'Unit, Array, Object': (x, unitList, options) => x.toBest(unitList, options)
+  })
 })
