@@ -296,6 +296,7 @@ export const embeddedDocs = {
   magneticConstant: { description: 'Magnetic constant (vacuum permeability)', examples: ['magneticConstant'] },
   electricConstant: { description: 'Electric constant (vacuum permeability)', examples: ['electricConstant'] },
   vacuumImpedance: { description: 'Characteristic impedance of vacuum', examples: ['vacuumImpedance'] },
+  coulomb: { description: 'Coulomb\'s constant. Deprecated in favor of coulombConstant', examples: ['coulombConstant'] },
   coulombConstant: { description: 'Coulomb\'s constant', examples: ['coulombConstant'] },
   elementaryCharge: { description: 'Elementary charge', examples: ['elementaryCharge'] },
   bohrMagneton: { description: 'Bohr magneton', examples: ['bohrMagneton'] },
