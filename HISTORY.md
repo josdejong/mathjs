@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 14.5.1
+# 2025-05-30, 14.5.2
 
 - Fix: add embedded docs for the deprecated physical constant `coulomb`, 
   see #3472.
