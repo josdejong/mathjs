@@ -24,7 +24,7 @@ File: [angle_configuration.html](angle_configuration.html) (click for a live dem
     }
   </style>
 
-  <script src="https://unpkg.com/mathjs@14.5.1/lib/browser/math.js"></script>
+  <script src="https://unpkg.com/mathjs@14.5.2/lib/browser/math.js"></script>
 </head>
 <body>
 

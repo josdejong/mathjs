@@ -12,7 +12,7 @@ File: [plot.html](plot.html) (click for a live demo)
 <head>
   <meta charset="utf-8">
   <title>math.js | plot</title>
-  <script src="https://unpkg.com/mathjs@14.5.1/lib/browser/math.js"></script>
+  <script src="https://unpkg.com/mathjs@14.5.2/lib/browser/math.js"></script>
 
   <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
 

@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20250530-1452">2025-05-30, 14.5.2 <a href="#20250530-1452" title="Permalink">#</a></h1>
+
+- Fix: add embedded docs for the deprecated physical constant `coulomb`, 
+  see <a href="https://github.com/josdejong/mathjs/issues/3472">#3472</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3469">#3469</a> add `ResultSet` interface and improve `isResultSet` typing 
+  (<a href="https://github.com/josdejong/mathjs/issues/3481">#3481</a>). Thanks <a href="https://github.com/ranidam">@ranidam</a>.
+
 <h1 id="20250528-1451">2025-05-28, 14.5.1 <a href="#20250528-1451" title="Permalink">#</a></h1>
 
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3482">#3482</a> mathjs throwing an error related to `BigInt`  when loading in
