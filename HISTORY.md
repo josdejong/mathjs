@@ -1,9 +1,19 @@
 # History
 
-# unpublished changes since 14.5.0
+# unpublished changes since 14.5.1
+
+- Fix: add embedded docs for the deprecated physical constant `coulomb`, 
+  see #3472.
+
+
+# 2025-05-28, 14.5.1
 
 - Fix: #3482 mathjs throwing an error related to `BigInt`  when loading in
   specific environments.
+- Fix: syntax section of function `numeric` (see #3448).
+- Fix: #3472 rename physical constant `coulomb` to `coulombConstant`. The old
+  name is still available for backward compatibility.
+- Fix: support multiplication of arrays with units (#3456). Thanks @Delaney.
 
 # 2025-05-21, 14.5.0
 

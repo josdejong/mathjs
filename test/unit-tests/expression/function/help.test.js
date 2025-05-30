@@ -22,7 +22,7 @@ const testExamples = new Set([...testDocs].filter(name => {
 
 function runExamplesInDocs (name) {
   mathDocs.config(originalConfig)
-  // every funciton should have doc.examples
+  // every function should have doc.examples
   const examples = mathDocs.evaluate(`help("${name}")`).doc.examples
   try {
     // validate if the examples run without errors
