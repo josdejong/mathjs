@@ -295,13 +295,13 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     const pv = []
 
     // loop rows in resulting matrix
-    function rowsCallback(i, r) {
+    function rowsCallback (i, r) {
       // update permutation vector
       pv[i] = r[0]
       // mark i in workspace
       w[i] = true
     }
-    if(Number.isInteger(rows)) rowsCallback(rows, [0])
+    if (Number.isInteger(rows)) rowsCallback(rows, [0])
     else rows.forEach(rowsCallback)
 
     // result matrix arrays
@@ -310,7 +310,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     const ptr = []
 
     // loop columns in result matrix
-    function columnsCallback(j) {
+    function columnsCallback (j) {
       // update ptr
       ptr.push(index.length)
       // loop values in column j
@@ -326,7 +326,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         }
       }
     }
-    if(Number.isInteger(columns)) columnsCallback(columns)
+    if (Number.isInteger(columns)) columnsCallback(columns)
     else columns.forEach(columnsCallback)
     // update ptr
     ptr.push(index.length)
@@ -402,10 +402,12 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       if (iSize.length === 1) {
         // if the replacement index only has 1 dimension, go trough each one and set its value
         const range = index.dimension(0)
-        function callback (dataIndex, subIndex) {
+
+        const callback = (dataIndex, subIndex) => {
           validateIndex(dataIndex)
           matrix.set([dataIndex, 0], submatrix[subIndex[0]], defaultValue)
         }
+
         if (Number.isInteger(range)) callback(range, [0])
         else range.forEach(callback)
       } else {
@@ -413,16 +415,16 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         const firstDimensionRange = index.dimension(0)
         const secondDimensionRange = index.dimension(1)
 
-        function firstCallback (firstDataIndex, firstSubIndex) {
+        const firstCallback = (firstDataIndex, firstSubIndex) => {
+          const secondCallback = (secondDataIndex, secondSubIndex) => {
+            validateIndex(secondDataIndex)
+            matrix.set([firstDataIndex, secondDataIndex], submatrix[firstSubIndex[0]][secondSubIndex[0]], defaultValue)
+          }
           validateIndex(firstDataIndex)
           if (Number.isInteger(secondDimensionRange)) {
             secondCallback(secondDimensionRange, [0])
           } else {
             secondDimensionRange.forEach(secondCallback)
-          }
-          function secondCallback (secondDataIndex, secondSubIndex) {
-            validateIndex(secondDataIndex)
-            matrix.set([firstDataIndex, secondDataIndex], submatrix[firstSubIndex[0]][secondSubIndex[0]], defaultValue)
           }
         }
 

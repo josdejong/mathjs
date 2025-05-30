@@ -263,8 +263,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     function getSubmatrixRecursive (data, depth = 0) {
       const ranges = index.dimension(depth)
-      if(ranges === null)
-      console.log("null range")
+      if (ranges === null) { console.log('null range') }
       function callback (rangeIndex) {
         validateIndex(rangeIndex, data.length)
         return getSubmatrixRecursive(data[rangeIndex], depth + 1)
@@ -407,7 +406,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
       if (depth < maxDepth) {
         if (Number.isInteger(range)) recursiveCallback(range, [0])
-          else range.forEach(recursiveCallback)
+        else range.forEach(recursiveCallback)
       } else {
         if (Number.isInteger(range)) finalCallback(range, [0])
         else range.forEach(finalCallback)
