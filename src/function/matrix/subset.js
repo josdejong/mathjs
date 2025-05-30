@@ -160,9 +160,14 @@ function _getSubstring (str, index) {
   const range = index.dimension(0)
 
   let substr = ''
-  range.forEach(function (v) {
+  function callback (v) {
     substr += str.charAt(v)
-  })
+  }
+  if (Number.isInteger(range)) {
+    callback(range)
+  } else {
+    range.forEach(callback)
+  }
 
   return substr
 }
@@ -196,7 +201,7 @@ function _setSubstring (str, index, replacement, defaultValue) {
   }
 
   const range = index.dimension(0)
-  const len = range.size()[0]
+  const len = Number.isInteger(range) ? 1 : range.size()[0]
 
   if (len !== replacement.length) {
     throw new DimensionError(range.size()[0], replacement.length)
@@ -213,9 +218,15 @@ function _setSubstring (str, index, replacement, defaultValue) {
     chars[i] = str.charAt(i)
   }
 
-  range.forEach(function (v, i) {
+  function callback (v, i) {
     chars[v] = replacement.charAt(i[0])
-  })
+  }
+
+  if (Number.isInteger(range)) {
+    callback(range, [0])
+  } else {
+    range.forEach(callback)
+  }
 
   // initialize undefined characters with a space
   if (chars.length > strLen) {

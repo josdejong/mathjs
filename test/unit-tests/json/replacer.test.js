@@ -59,7 +59,7 @@ describe('replacer', function () {
     const i = new math.Index(new math.Range(0, 10), 2)
     const json = '{"mathjs":"Index","dimensions":[' +
         '{"mathjs":"Range","start":0,"end":10,"step":1},' +
-        '{"mathjs":"ImmutableDenseMatrix","data":[2],"size":[1]}' +
+        '2' +
         ']}'
     assert.deepStrictEqual(JSON.stringify(i), json)
     assert.deepStrictEqual(JSON.stringify(i, replacer), json)

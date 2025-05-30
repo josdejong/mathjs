@@ -263,17 +263,27 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     function getSubmatrixRecursive (data, depth = 0) {
       const ranges = index.dimension(depth)
-      size[depth] = ranges.size()[0]
-      if (depth < maxDepth) {
-        return ranges.map(rangeIndex => {
-          validateIndex(rangeIndex, data.length)
-          return getSubmatrixRecursive(data[rangeIndex], depth + 1)
-        }).valueOf()
+      if(ranges === null)
+      console.log("null range")
+      function callback (rangeIndex) {
+        validateIndex(rangeIndex, data.length)
+        return getSubmatrixRecursive(data[rangeIndex], depth + 1)
+      }
+      function finalCallback (rangeIndex) {
+        validateIndex(rangeIndex, data.length)
+        return data[rangeIndex]
+      }
+      if (Number.isInteger(ranges)) {
+        size[depth] = 1
       } else {
-        return ranges.map(rangeIndex => {
-          validateIndex(rangeIndex, data.length)
-          return data[rangeIndex]
-        }).valueOf()
+        size[depth] = ranges.size()[0]
+      }
+      if (depth < maxDepth) {
+        if (Number.isInteger(ranges)) return [callback(ranges)]
+        else return ranges.map(callback).valueOf()
+      } else {
+        if (Number.isInteger(ranges)) return [finalCallback(ranges)]
+        else return ranges.map(finalCallback).valueOf()
       }
     }
   }
@@ -386,16 +396,21 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     function setSubmatrixRecursive (data, submatrix, depth = 0) {
       const range = index.dimension(depth)
+      const recursiveCallback = (rangeIndex, i) => {
+        validateIndex(rangeIndex, data.length)
+        setSubmatrixRecursive(data[rangeIndex], submatrix[i[0]], depth + 1)
+      }
+      const finalCallback = (rangeIndex, i) => {
+        validateIndex(rangeIndex, data.length)
+        data[rangeIndex] = submatrix[i[0]]
+      }
+
       if (depth < maxDepth) {
-        range.forEach((rangeIndex, i) => {
-          validateIndex(rangeIndex, data.length)
-          setSubmatrixRecursive(data[rangeIndex], submatrix[i[0]], depth + 1)
-        })
+        if (Number.isInteger(range)) recursiveCallback(range, [0])
+          else range.forEach(recursiveCallback)
       } else {
-        range.forEach((rangeIndex, i) => {
-          validateIndex(rangeIndex, data.length)
-          data[rangeIndex] = submatrix[i[0]]
-        })
+        if (Number.isInteger(range)) finalCallback(range, [0])
+        else range.forEach(finalCallback)
       }
     }
   }

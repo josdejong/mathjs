@@ -29,7 +29,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @Constructor Index
    * @param {...*} ranges
    */
-  function Index (ranges) {
+  function Index (...ranges) {
     if (!(this instanceof Index)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -38,8 +38,8 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
     this._sourceSize = []
     this._isScalar = true
 
-    for (let i = 0, ii = arguments.length; i < ii; i++) {
-      const arg = arguments[i]
+    for (let i = 0, ii = ranges.length; i < ii; i++) {
+      const arg = ranges[i]
       const argIsArray = isArray(arg)
       const argIsMatrix = isMatrix(arg)
       const argType = typeof arg
@@ -67,9 +67,9 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
           this._isScalar = false
         }
       } else if (argType === 'number') {
-        this._dimensions.push(_createImmutableMatrix([arg]))
+        this._dimensions.push(arg)
       } else if (argType === 'bigint') {
-        this._dimensions.push(_createImmutableMatrix([Number(arg)]))
+        this._dimensions.push(Number(arg))
       } else if (argType === 'string') {
         // object property (arguments.count should be 1)
         this._dimensions.push(arg)
@@ -134,7 +134,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const d = this._dimensions[i]
-      size[i] = (typeof d === 'string') ? 1 : d.size()[0]
+      size[i] = ((typeof d === 'string') || (typeof d === 'number')) ? 1 : d.size()[0]
     }
 
     return size
@@ -150,7 +150,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const range = this._dimensions[i]
-      values[i] = (typeof range === 'string') ? range : range.max()
+      values[i] = ((typeof range === 'string') || (typeof range === 'number')) ? range : range.max()
     }
 
     return values
@@ -166,7 +166,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const range = this._dimensions[i]
-      values[i] = (typeof range === 'string') ? range : range.min()
+      values[i] = ((typeof range === 'string') || (typeof range === 'number')) ? range : range.min()
     }
 
     return values
@@ -196,7 +196,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
       return null
     }
 
-    return this._dimensions[dim] || null
+    return this._dimensions[dim] ?? null
   }
 
   /**
@@ -238,7 +238,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
     const array = []
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const dimension = this._dimensions[i]
-      array.push((typeof dimension === 'string') ? dimension : dimension.toArray())
+      array.push((typeof dimension === 'string' || typeof dimension === 'number') ? dimension : dimension.toArray())
     }
     return array
   }
