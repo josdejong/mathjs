@@ -3518,7 +3518,7 @@ export interface MathJsInstance extends MathJsFactory {
 
   isBoolean(x: unknown): x is boolean
 
-  isResultSet(x: unknown): boolean
+  isResultSet(x: unknown): x is ResultSet
 
   isHelp(x: unknown): x is Help
 
@@ -4317,6 +4317,14 @@ export interface ObjectWrappingMap<T extends string | number | symbol, U> {
 export interface EvalFunction {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   evaluate(scope?: any): any
+}
+
+// ResultSet type and helper
+export interface ResultSet {
+  entries: unknown[]
+  valueOf(): unknown[]
+  toString(): string
+  toJSON(): MathJSON
 }
 
 export interface MathNode {
