@@ -95,7 +95,10 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
       }
     }
     // create matrix
-    return new ImmutableDenseMatrix(arg)
+    const matrix = new ImmutableDenseMatrix()
+    matrix._data = arg
+    matrix._size = [arg.length]
+    return matrix
   }
 
   /**
