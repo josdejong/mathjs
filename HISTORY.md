@@ -1,5 +1,12 @@
 # History
 
+# 2025-05-30, 14.5.2
+
+- Fix: add embedded docs for the deprecated physical constant `coulomb`, 
+  see #3472.
+- Fix: #3469 add `ResultSet` interface and improve `isResultSet` typing 
+  (#3481). Thanks @ranidam.
+
 # 2025-05-28, 14.5.1
 
 - Fix: #3482 mathjs throwing an error related to `BigInt`  when loading in
