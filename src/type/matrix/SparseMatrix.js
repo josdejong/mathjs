@@ -402,40 +402,30 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       if (iSize.length === 1) {
         // if the replacement index only has 1 dimension, go trough each one and set its value
         const range = index.dimension(0)
-
-        const callback = (dataIndex, subIndex) => {
+        _forEachIndex(range, (dataIndex, subIndex) => {
           validateIndex(dataIndex)
           matrix.set([dataIndex, 0], submatrix[subIndex[0]], defaultValue)
-        }
-
-        if (Number.isInteger(range)) callback(range, [0])
-        else range.forEach(callback)
+        })
       } else {
         // if the replacement index has 2 dimensions, go through each one and set the value in the correct index
         const firstDimensionRange = index.dimension(0)
         const secondDimensionRange = index.dimension(1)
-
-        const firstCallback = (firstDataIndex, firstSubIndex) => {
-          const secondCallback = (secondDataIndex, secondSubIndex) => {
+        _forEachIndex(firstDimensionRange, (firstDataIndex, firstSubIndex) => {
+          validateIndex(firstDataIndex)
+          _forEachIndex(secondDimensionRange, (secondDataIndex, secondSubIndex) => {
             validateIndex(secondDataIndex)
             matrix.set([firstDataIndex, secondDataIndex], submatrix[firstSubIndex[0]][secondSubIndex[0]], defaultValue)
-          }
-          validateIndex(firstDataIndex)
-          if (Number.isInteger(secondDimensionRange)) {
-            secondCallback(secondDimensionRange, [0])
-          } else {
-            secondDimensionRange.forEach(secondCallback)
-          }
-        }
-
-        if (Number.isInteger(firstDimensionRange)) {
-          firstCallback(firstDimensionRange, [0])
-        } else {
-          firstDimensionRange.forEach(firstCallback)
-        }
+          })
+        })
       }
     }
     return matrix
+    
+    function _forEachIndex (index, callback) {
+      // iterate cases where index is a Matrix or a Number
+      if (isNumber(index)) callback(index, [0])
+      else index.forEach(callback)
+    }
   }
 
   /**

@@ -271,17 +271,21 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         validateIndex(rangeIndex, data.length)
         return data[rangeIndex]
       }
+      function _mapIndex (range, callback) {
+        // returns a callback for when the index is a Number or a Matrix
+        if (isNumber(range)) return callback(range)
+        else return range.map(callback).valueOf()
+      }
+
       if (isNumber(ranges)) {
         size[depth] = null
       } else {
         size[depth] = ranges.size()[0]
       }
       if (depth < maxDepth) {
-        if (isNumber(ranges)) return callback(ranges)
-        else return ranges.map(callback).valueOf()
+        return _mapIndex(ranges, callback)
       } else {
-        if (isNumber(ranges)) return finalCallback(ranges)
-        else return ranges.map(finalCallback).valueOf()
+        return _mapIndex(ranges, finalCallback)
       }
     }
   }
