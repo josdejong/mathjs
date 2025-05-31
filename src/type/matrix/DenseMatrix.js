@@ -329,16 +329,15 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
       // broadcast submatrix
       if (!deepStrictEqual(submatrixSize, iSize)) {
-        // TODO: remove try catch if possible
-        try {
-          if (submatrixSize.length === 0) {
-            submatrix = broadcastTo([submatrix], iSize)
-          } else {
+        if (submatrixSize.length === 0) {
+          submatrix = broadcastTo([submatrix], iSize)
+        } else {
+          try {
             submatrix = broadcastTo(submatrix, iSize)
+          } catch (error) {
           }
-          submatrixSize = arraySize(submatrix)
-        } catch {
         }
+        submatrixSize = arraySize(submatrix)
       }
 
       // validate dimensions
