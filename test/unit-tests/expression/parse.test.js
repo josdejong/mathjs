@@ -697,18 +697,18 @@ describe('parse', function () {
           [7, 8, 9]
         ])
       }
-      assert.deepStrictEqual(parseAndEval('a[2, :]', scope), math.matrix([[4, 5, 6]]))
-      assert.deepStrictEqual(parseAndEval('a[2, :2]', scope), math.matrix([[4, 5]]))
-      assert.deepStrictEqual(parseAndEval('a[2, :end-1]', scope), math.matrix([[4, 5]]))
-      assert.deepStrictEqual(parseAndEval('a[2, 2:]', scope), math.matrix([[5, 6]]))
-      assert.deepStrictEqual(parseAndEval('a[2, 2:3]', scope), math.matrix([[5, 6]]))
-      assert.deepStrictEqual(parseAndEval('a[2, 1:2:3]', scope), math.matrix([[4, 6]]))
-      assert.deepStrictEqual(parseAndEval('a[:, 2]', scope), math.matrix([[2], [5], [8]]))
-      assert.deepStrictEqual(parseAndEval('a[:2, 2]', scope), math.matrix([[2], [5]]))
-      assert.deepStrictEqual(parseAndEval('a[:end-1, 2]', scope), math.matrix([[2], [5]]))
-      assert.deepStrictEqual(parseAndEval('a[2:, 2]', scope), math.matrix([[5], [8]]))
-      assert.deepStrictEqual(parseAndEval('a[2:3, 2]', scope), math.matrix([[5], [8]]))
-      assert.deepStrictEqual(parseAndEval('a[1:2:3, 2]', scope), math.matrix([[2], [8]]))
+      assert.deepStrictEqual(parseAndEval('a[2, :]', scope), math.matrix([4, 5, 6]))
+      assert.deepStrictEqual(parseAndEval('a[2, :2]', scope), math.matrix([4, 5]))
+      assert.deepStrictEqual(parseAndEval('a[2, :end-1]', scope), math.matrix([4, 5]))
+      assert.deepStrictEqual(parseAndEval('a[2, 2:]', scope), math.matrix([5, 6]))
+      assert.deepStrictEqual(parseAndEval('a[2, 2:3]', scope), math.matrix([5, 6]))
+      assert.deepStrictEqual(parseAndEval('a[2, 1:2:3]', scope), math.matrix([4, 6]))
+      assert.deepStrictEqual(parseAndEval('a[:, 2]', scope), math.matrix([2, 5, 8]))
+      assert.deepStrictEqual(parseAndEval('a[:2, [2]]', scope), math.matrix([[2], [5]]))
+      assert.deepStrictEqual(parseAndEval('a[:end-1, [2]]', scope), math.matrix([[2], [5]]))
+      assert.deepStrictEqual(parseAndEval('a[2:, [2]]', scope), math.matrix([[5], [8]]))
+      assert.deepStrictEqual(parseAndEval('a[2:3, [2]]', scope), math.matrix([[5], [8]]))
+      assert.deepStrictEqual(parseAndEval('a[1:2:3, [2]]', scope), math.matrix([[2], [8]]))
     })
 
     it('should get a matrix subset of a matrix subset', function () {
@@ -719,7 +719,7 @@ describe('parse', function () {
           [7, 8, 9]
         ])
       }
-      assert.deepStrictEqual(parseAndEval('a[2, :][1,1]', scope), 4)
+      assert.deepStrictEqual(parseAndEval('a[[2], :][1,1]', scope), 4)
     })
 
     it('should get BigNumber value from an array', function () {
@@ -768,7 +768,7 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('a[1:3,1:2]', scope), math.matrix([[100, 2], [3, 10], [0, 12]]))
 
       scope.b = [[1, 2], [3, 4]]
-      assert.deepStrictEqual(parseAndEval('b[1,:]', scope), [[1, 2]])
+      assert.deepStrictEqual(parseAndEval('b[1,:]', scope), [1, 2])
     })
 
     it('should get/set the matrix correctly for 3d matrices', function () {
@@ -789,10 +789,10 @@ describe('parse', function () {
       ]))
 
       assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2, 2], 'dense', 'number'))
-      assert.deepStrictEqual(parseAndEval('f[:,:,1]', scope), math.matrix([[[1], [2]], [[3], [4]]]))
-      assert.deepStrictEqual(parseAndEval('f[:,:,2]', scope), math.matrix([[[5], [6]], [[7], [8]]]))
-      assert.deepStrictEqual(parseAndEval('f[:,2,:]', scope), math.matrix([[[2, 6]], [[4, 8]]]))
-      assert.deepStrictEqual(parseAndEval('f[2,:,:]', scope), math.matrix([[[3, 7], [4, 8]]]))
+      assert.deepStrictEqual(parseAndEval('f[:,:,1]', scope), math.matrix([[1, 2], [3, 4]]))
+      assert.deepStrictEqual(parseAndEval('f[:,:,2]', scope), math.matrix([[5, 6], [7, 8]]))
+      assert.deepStrictEqual(parseAndEval('f[:,2,:]', scope), math.matrix([[2, 6], [4, 8]]))
+      assert.deepStrictEqual(parseAndEval('f[2,:,:]', scope), math.matrix([[3, 7], [4, 8]]))
 
       parseAndEval('a=diag([1,2,3,4])', scope)
       assert.deepStrictEqual(parseAndEval('a[3:end, 3:end]', scope), math.matrix([[3, 0], [0, 4]]))

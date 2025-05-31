@@ -115,7 +115,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
     if (typeof replacement === 'string') {
       throw new Error('can\'t boradcast a string')
     }
-    if (index._isScalar) {
+    if (index.isScalar()) {
       return replacement
     }
 

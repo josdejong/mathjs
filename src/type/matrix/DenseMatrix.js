@@ -238,7 +238,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       }
 
       // retrieve submatrix
-      const returnMatrix = new DenseMatrix([])
+      const returnMatrix = new DenseMatrix()
       const submatrix = _getSubmatrix(matrix._data, index)
       returnMatrix._size = submatrix.size
       returnMatrix._datatype = matrix._datatype
@@ -259,11 +259,10 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   function _getSubmatrix (data, index) {
     const maxDepth = index.size().length - 1
     const size = Array(maxDepth)
-    return { data: getSubmatrixRecursive(data), size }
+    return { data: getSubmatrixRecursive(data), size: size.filter(x => x !== null) }
 
     function getSubmatrixRecursive (data, depth = 0) {
       const ranges = index.dimension(depth)
-      if (ranges === null) { console.log('null range') }
       function callback (rangeIndex) {
         validateIndex(rangeIndex, data.length)
         return getSubmatrixRecursive(data[rangeIndex], depth + 1)
@@ -272,16 +271,16 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         validateIndex(rangeIndex, data.length)
         return data[rangeIndex]
       }
-      if (Number.isInteger(ranges)) {
-        size[depth] = 1
+      if (isNumber(ranges)) {
+        size[depth] = null
       } else {
         size[depth] = ranges.size()[0]
       }
       if (depth < maxDepth) {
-        if (Number.isInteger(ranges)) return [callback(ranges)]
+        if (isNumber(ranges)) return callback(ranges)
         else return ranges.map(callback).valueOf()
       } else {
-        if (Number.isInteger(ranges)) return [finalCallback(ranges)]
+        if (isNumber(ranges)) return finalCallback(ranges)
         else return ranges.map(finalCallback).valueOf()
       }
     }
@@ -309,19 +308,19 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     const isScalar = index.isScalar()
 
     // calculate the size of the submatrix, and convert it into an Array if needed
-    let sSize
+    let submatrixSize
     if (isMatrix(submatrix)) {
-      sSize = submatrix.size()
+      submatrixSize = submatrix.size()
       submatrix = submatrix.valueOf()
     } else {
-      sSize = arraySize(submatrix)
+      submatrixSize = arraySize(submatrix)
     }
 
     if (isScalar) {
       // set a scalar
 
       // check whether submatrix is a scalar
-      if (sSize.length !== 0) {
+      if (submatrixSize.length !== 0) {
         throw new TypeError('Scalar expected')
       }
       matrix.set(index.min(), submatrix, defaultValue)
@@ -329,14 +328,15 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       // set a submatrix
 
       // broadcast submatrix
-      if (!deepStrictEqual(sSize, iSize)) {
+      if (!deepStrictEqual(submatrixSize, iSize)) {
+        // TODO: remove try catch if possible
         try {
-          if (sSize.length === 0) {
+          if (submatrixSize.length === 0) {
             submatrix = broadcastTo([submatrix], iSize)
           } else {
             submatrix = broadcastTo(submatrix, iSize)
           }
-          sSize = arraySize(submatrix)
+          submatrixSize = arraySize(submatrix)
         } catch {
         }
       }
@@ -346,11 +346,11 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         throw new DimensionError(iSize.length, matrix._size.length, '<')
       }
 
-      if (sSize.length < iSize.length) {
+      if (submatrixSize.length < iSize.length) {
         // calculate number of missing outer dimensions
         let i = 0
         let outer = 0
-        while (iSize[i] === 1 && sSize[i] === 1) {
+        while (iSize[i] === 1 && submatrixSize[i] === 1) {
           i++
         }
         while (iSize[i] === 1) {
@@ -359,12 +359,12 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         }
 
         // unsqueeze both outer and inner dimensions
-        submatrix = unsqueeze(submatrix, iSize.length, outer, sSize)
+        submatrix = unsqueeze(submatrix, iSize.length, outer, submatrixSize)
       }
 
       // check whether the size of the submatrix matches the index size
-      if (!deepStrictEqual(iSize, sSize)) {
-        throw new DimensionError(iSize, sSize, '>')
+      if (!deepStrictEqual(iSize, submatrixSize)) {
+        throw new DimensionError(iSize, submatrixSize, '>')
       }
 
       // enlarge matrix when needed
@@ -405,10 +405,10 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       }
 
       if (depth < maxDepth) {
-        if (Number.isInteger(range)) recursiveCallback(range, [0])
+        if (isNumber(range)) recursiveCallback(range, [0])
         else range.forEach(recursiveCallback)
       } else {
-        if (Number.isInteger(range)) finalCallback(range, [0])
+        if (isNumber(range)) finalCallback(range, [0])
         else range.forEach(finalCallback)
       }
     }

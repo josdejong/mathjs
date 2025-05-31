@@ -11,13 +11,13 @@ describe('subset', function () {
   const b = math.matrix(a)
 
   it('should get the right subset of an array', function () {
-    assert.deepStrictEqual(subset(a, index(new Range(0, 2), 1)), [[2], [4]])
+    assert.deepStrictEqual(subset(a, index(new Range(0, 2), 1)), [2, 4])
     assert.deepStrictEqual(subset(a, index(1, 0)), 3)
     assert.deepStrictEqual(subset([math.bignumber(2)], index(0)), math.bignumber(2))
   })
 
   it('should get the right subset of an array of booleans', function () {
-    assert.deepStrictEqual(subset(a, index([true, true], 1)), [[2], [4]])
+    assert.deepStrictEqual(subset(a, index([true, true], [1])), [[2], [4]])
     assert.deepStrictEqual(subset(a, index([false, true], [true, false])), [[3]])
     assert.deepStrictEqual(subset([math.bignumber(2)], index([true])), [math.bignumber(2)])
   })
@@ -32,7 +32,7 @@ describe('subset', function () {
   })
 
   it('should get the right subset of an array of booleans in the parser', function () {
-    assert.deepStrictEqual(math.evaluate('a[[true, true], 2]', { a }), [[2], [4]])
+    assert.deepStrictEqual(math.evaluate('a[[true, true], 2]', { a }), [2, 4])
     assert.deepStrictEqual(math.evaluate('a[[false, true], [true, false]]', { a }), [[3]])
     assert.deepStrictEqual(math.evaluate('[bignumber(2)][[true]]'), math.matrix([math.bignumber(2)]))
   })
@@ -75,7 +75,7 @@ describe('subset', function () {
   })
 
   it('should get the right subset of a matrix', function () {
-    assert.deepStrictEqual(subset(b, index(new Range(0, 2), 1)), matrix([[2], [4]]))
+    assert.deepStrictEqual(subset(b, index(new Range(0, 2), 1)), matrix([2, 4]))
     assert.deepStrictEqual(subset(b, index(1, 0)), 3)
   })
 

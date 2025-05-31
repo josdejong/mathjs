@@ -281,7 +281,7 @@ describe('map', function () {
   it('should operate from the parser with multiple inputs that need broadcasting and one based indices and the broadcasted arrays', function () {
     // this is a convoluted way of calculating f(a,b,idx) = 2a+2b+index
     // 2(1) + 2([3,4]) + [1, 2] # yields [9, 12]
-    const arr2 = math.evaluate('map([1],[3,4], f(a,b,idx,A,B)= a + A[idx] + b + B[idx] + idx[1])')
+    const arr2 = math.evaluate('map([1],[3,4], f(a,b,idx,A,B)= a + A[idx[1]] + b + B[idx[1]] + idx[1])')
     const expected = math.matrix([9, 12])
     assert.deepStrictEqual(arr2, expected)
   })

@@ -1,4 +1,4 @@
-import { isArray, isMatrix, isRange } from '../../utils/is.js'
+import { isArray, isMatrix, isRange, isNumber, isString } from '../../utils/is.js'
 import { clone } from '../../utils/object.js'
 import { isInteger } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
@@ -36,7 +36,6 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     this._dimensions = []
     this._sourceSize = []
-    this._isScalar = true
 
     for (let i = 0, ii = ranges.length; i < ii; i++) {
       const arg = ranges[i]
@@ -46,7 +45,6 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
       let sourceSize = null
       if (isRange(arg)) {
         this._dimensions.push(arg)
-        this._isScalar = false
       } else if (argIsArray || argIsMatrix) {
         // create matrix
         let m
@@ -60,12 +58,6 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
         }
 
         this._dimensions.push(m)
-        // size
-        const size = m.size()
-        // scalar
-        if (size.length !== 1 || size[0] !== 1 || sourceSize !== null) {
-          this._isScalar = false
-        }
       } else if (argType === 'number') {
         this._dimensions.push(arg)
       } else if (argType === 'bigint') {
@@ -109,7 +101,6 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
   Index.prototype.clone = function () {
     const index = new Index()
     index._dimensions = clone(this._dimensions)
-    index._isScalar = this._isScalar
     index._sourceSize = this._sourceSize
     return index
   }
@@ -228,7 +219,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @return {boolean} isScalar
    */
   Index.prototype.isScalar = function () {
-    return this._isScalar
+    return this._dimensions.every(dim => isNumber(dim) || isString(dim))
   }
 
   /**
