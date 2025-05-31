@@ -263,16 +263,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     function getSubmatrixRecursive (data, depth = 0) {
       const ranges = index.dimension(depth)
-      function callback (rangeIndex) {
-        validateIndex(rangeIndex, data.length)
-        return getSubmatrixRecursive(data[rangeIndex], depth + 1)
-      }
-      function finalCallback (rangeIndex) {
-        validateIndex(rangeIndex, data.length)
-        return data[rangeIndex]
-      }
       function _mapIndex (range, callback) {
-        // returns a callback for when the index is a Number or a Matrix
+        // applies a callback for when the index is a Number or a Matrix
         if (isNumber(range)) return callback(range)
         else return range.map(callback).valueOf()
       }
@@ -283,9 +275,15 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         size[depth] = ranges.size()[0]
       }
       if (depth < maxDepth) {
-        return _mapIndex(ranges, callback)
+        return _mapIndex(ranges, rangeIndex => {
+          validateIndex(rangeIndex, data.length)
+          return getSubmatrixRecursive(data[rangeIndex], depth + 1)
+        })
       } else {
-        return _mapIndex(ranges, finalCallback)
+        return _mapIndex(ranges, rangeIndex => {
+          validateIndex(rangeIndex, data.length)
+          return data[rangeIndex]
+        })
       }
     }
   }

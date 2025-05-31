@@ -420,7 +420,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       }
     }
     return matrix
-    
+
     function _forEachIndex (index, callback) {
       // iterate cases where index is a Matrix or a Number
       if (isNumber(index)) callback(index, [0])
