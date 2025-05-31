@@ -36,6 +36,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     this._dimensions = []
     this._sourceSize = []
+    this._isScalar = true
 
     for (let i = 0, ii = ranges.length; i < ii; i++) {
       const arg = ranges[i]
@@ -45,9 +46,11 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
       let sourceSize = null
       if (isRange(arg)) {
         this._dimensions.push(arg)
+        this._isScalar = false
       } else if (argIsArray || argIsMatrix) {
         // create matrix
         let m
+        this._isScalar = false
 
         if (getMatrixDataType(arg) === 'boolean') {
           if (argIsArray) m = _createImmutableMatrix(_booleansArrayToNumbersForIndex(arg).valueOf())
@@ -82,7 +85,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
   function _createImmutableMatrix (arg) {
     // loop array elements
     for (let i = 0, l = arg.length; i < l; i++) {
-      if (typeof arg[i] !== 'number' || !isInteger(arg[i])) {
+      if (!isNumber(arg[i]) || !isInteger(arg[i])) {
         throw new TypeError('Index parameters must be positive integer numbers')
       }
     }
@@ -101,6 +104,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
   Index.prototype.clone = function () {
     const index = new Index()
     index._dimensions = clone(this._dimensions)
+    index._isScalar = this._isScalar
     index._sourceSize = this._sourceSize
     return index
   }
@@ -128,7 +132,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const d = this._dimensions[i]
-      size[i] = ((typeof d === 'string') || (typeof d === 'number')) ? 1 : d.size()[0]
+      size[i] = (isString(d) || isNumber(d)) ? 1 : d.size()[0]
     }
 
     return size
@@ -144,7 +148,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const range = this._dimensions[i]
-      values[i] = ((typeof range === 'string') || (typeof range === 'number')) ? range : range.max()
+      values[i] = (isString(range) || isNumber(range)) ? range : range.max()
     }
 
     return values
@@ -160,7 +164,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const range = this._dimensions[i]
-      values[i] = ((typeof range === 'string') || (typeof range === 'number')) ? range : range.min()
+      values[i] = (isString(range) || isNumber(range)) ? range : range.min()
     }
 
     return values
@@ -186,7 +190,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @returns {Range | null} range
    */
   Index.prototype.dimension = function (dim) {
-    if (typeof dim !== 'number') {
+    if (!isNumber(dim)) {
       return null
     }
 
@@ -198,7 +202,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @returns {boolean} Returns true if the index is an object property
    */
   Index.prototype.isObjectProperty = function () {
-    return this._dimensions.length === 1 && typeof this._dimensions[0] === 'string'
+    return this._dimensions.length === 1 && isString(this._dimensions[0])
   }
 
   /**
@@ -219,7 +223,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @return {boolean} isScalar
    */
   Index.prototype.isScalar = function () {
-    return this._dimensions.every(dim => isNumber(dim) || isString(dim))
+    return this._isScalar
   }
 
   /**
@@ -232,7 +236,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
     const array = []
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const dimension = this._dimensions[i]
-      array.push((typeof dimension === 'string' || typeof dimension === 'number') ? dimension : dimension.toArray())
+      array.push(isString(dimension) || isNumber(dimension) ? dimension : dimension.toArray())
     }
     return array
   }
@@ -255,7 +259,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const dimension = this._dimensions[i]
-      if (typeof dimension === 'string') {
+      if (isString(dimension)) {
         strings.push(JSON.stringify(dimension))
       } else {
         strings.push(dimension.toString())
