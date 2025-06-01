@@ -72,7 +72,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
      * @return {function} Returns a function which can be called like:
      *                        evalNode(scope: Object, args: Object, context: *)
      */
-    _compile (math, argNames) {
+    _compile (_math, _argNames) {
       throw new Error('Method _compile must be implemented by type ' + this.type)
     }
 
@@ -80,7 +80,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
      * Execute a callback for each of the child nodes of this node
      * @param {function(child: Node, path: string, parent: Node)} callback
      */
-    forEach (callback) {
+    forEach (_callback) {
       // must be implemented by each of the Node implementations
       throw new Error('Cannot run forEach on a Node interface')
     }
@@ -91,7 +91,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
      * @param {function(child: Node, path: string, parent: Node): Node} callback
      * @returns {OperatorNode} Returns a transformed copy of the node
      */
-    map (callback) {
+    map (_callback) {
       // must be implemented by each of the Node implementations
       throw new Error('Cannot run map on a Node interface')
     }
@@ -341,7 +341,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
      * @param {Object} [options]
      * @throws {Error}
      */
-    _toTex (options) {
+    _toTex (_options) {
       // must be implemented by each of the Node implementations
       throw new Error('_toTex not implemented for ' + this.type)
     }

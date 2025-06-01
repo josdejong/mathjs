@@ -69,7 +69,7 @@ describe('ParenthesisNode', function () {
 
     let count = 0
 
-    const c = b.map(function (node, path, _parent) {
+    const c = b.map(function (node, _path, _parent) {
       count++
       assert.strictEqual(node.type, 'ConstantNode')
       assert.strictEqual(node.value, 1)

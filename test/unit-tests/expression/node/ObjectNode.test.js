@@ -243,7 +243,7 @@ describe('ObjectNode', function () {
   })
 
   it('should stringify an ObjectNode with custom toString', function () {
-    const customFunction = function (node, options) {
+    const customFunction = function (node, _options) {
       if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
@@ -257,7 +257,7 @@ describe('ObjectNode', function () {
   })
 
   it('should stringify an ObjectNode with custom toHTML', function () {
-    const customFunction = function (node, options) {
+    const customFunction = function (node, _options) {
       if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
@@ -304,7 +304,7 @@ describe('ObjectNode', function () {
   })
 
   it('should LaTeX an ObjectNode with custom toTex', function () {
-    const customFunction = function (node, options) {
+    const customFunction = function (node, _options) {
       if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }

@@ -221,7 +221,7 @@ describe('ConstantNode', function () {
 
   it('should LaTeX a ConstantNode with custom toTex', function () {
     // Also checks if the custom functions get passed on to the children
-    const customFunction = function (node, options) {
+    const customFunction = function (node, _options) {
       if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + '\\right)'
       }

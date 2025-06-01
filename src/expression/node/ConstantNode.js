@@ -44,7 +44,7 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @return {function} Returns a function which can be called like:
      *                        evalNode(scope: Object, args: Object, context: *)
      */
-    _compile (math, argNames) {
+    _compile (_math, _argNames) {
       const value = this.value
 
       return function evalConstantNode () {
@@ -56,7 +56,7 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      * Execute a callback for each of the child nodes of this node
      * @param {function(child: Node, path: string, parent: Node)} callback
      */
-    forEach (callback) {
+    forEach (_callback) {
       // nothing to do, we don't have any children
     }
 
@@ -66,7 +66,7 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {function(child: Node, path: string, parent: Node) : Node} callback
      * @returns {ConstantNode} Returns a clone of the node
      */
-    map (callback) {
+    map (_callback) {
       return this.clone()
     }
 

@@ -179,7 +179,7 @@ describe('FunctionAssignmentNode', function () {
   })
 
   it('should pass function arguments in scope to functions with rawArgs and transform', function () {
-    const outputScope = function (x) {
+    const outputScope = function (_x) {
       return 'should not occur'
     }
     outputScope.transform = function (args, math, scope) {

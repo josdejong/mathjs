@@ -99,7 +99,7 @@ describe('IndexNode', function () {
   it('should copy dotNotation property when mapping an IndexNode', function () {
     const b = new ConstantNode('objprop')
     const n = new IndexNode([b], true)
-    const f = n.map(function (node, path, parent) {
+    const f = n.map(function (node, _path, _parent) {
       return node
     })
 

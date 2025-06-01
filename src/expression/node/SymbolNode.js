@@ -61,11 +61,11 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
         // this is a FunctionAssignment argument
         // (like an x when inside the expression of a function
         // assignment `f(x) = ...`)
-        return function (scope, args, context) {
+        return function (scope, args, _context) {
           return getSafeProperty(args, name)
         }
       } else if (name in math) {
-        return function (scope, args, context) {
+        return function (scope, _args, _context) {
           return scope.has(name)
             ? scope.get(name)
             : getSafeProperty(math, name)
@@ -73,7 +73,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
       } else {
         const isUnit = isValuelessUnit(name)
 
-        return function (scope, args, context) {
+        return function (scope, _args, _context) {
           return scope.has(name)
             ? scope.get(name)
             : isUnit
@@ -87,7 +87,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * Execute a callback for each of the child nodes of this node
      * @param {function(child: Node, path: string, parent: Node)} callback
      */
-    forEach (callback) {
+    forEach (_callback) {
       // nothing to do, we don't have any children
     }
 
@@ -97,7 +97,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @param {function(child: Node, path: string, parent: Node) : Node} callback
      * @returns {SymbolNode} Returns a clone of the node
      */
-    map (callback) {
+    map (_callback) {
       return this.clone()
     }
 
@@ -123,7 +123,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @return {string} str
      * @override
      */
-    _toString (options) {
+    _toString (_options) {
       return this.name
     }
 
@@ -133,7 +133,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @return {string} str
      * @override
      */
-    _toHTML (options) {
+    _toHTML (_options) {
       const name = escape(this.name)
 
       if (name === 'true' || name === 'false') {
@@ -184,7 +184,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @return {string} str
      * @override
      */
-    _toTex (options) {
+    _toTex (_options) {
       let isUnit = false
       if ((typeof math[this.name] === 'undefined') &&
           isValuelessUnit(this.name)) {

@@ -2433,16 +2433,16 @@ describe('parse', function () {
       CustomNode.prototype.toString = function () {
         return 'CustomNode'
       }
-      CustomNode.prototype._compile = function (math, argNames) {
+      CustomNode.prototype._compile = function (_math, _argNames) {
         const strArgs = []
         this.args.forEach(function (arg) {
           strArgs.push(arg.toString())
         })
-        return function (scope, args, context) {
+        return function (_scope, _args, _context) {
           return 'CustomNode(' + strArgs.join(', ') + ')'
         }
       }
-      CustomNode.prototype.forEach = function (callback) {
+      CustomNode.prototype.forEach = function (_callback) {
         // we don't have childs
       }
 
@@ -2507,7 +2507,7 @@ describe('parse', function () {
       const originalIsAlpha = math.parse.isAlpha
 
       // override isAlpha with one accepting $ characters too
-      math.parse.isAlpha = function (c, cPrev, cNext) {
+      math.parse.isAlpha = function (c, _cPrev, _cNext) {
         return /^[a-zA-Z_$]$/.test(c)
       }
 
@@ -2525,7 +2525,9 @@ describe('parse', function () {
 
     try {
       mathClone.evaluate('f(x)=1;config({clone:f})')
-    } catch (err) { }
+    } catch (err) {
+      // Expected: do nothing, the test is to ensure the evaluate call doesn't crash.
+    }
 
     assert.strictEqual(mathClone.evaluate('2'), 2)
   })

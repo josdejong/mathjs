@@ -107,12 +107,12 @@ describe('FunctionNode', function () {
 
   it('should compile a FunctionNode with a raw function', function () {
     const mymath = math.create()
-    function myFunction (args, _math, _scope) {
-      assert.strictEqual(args.length, 2)
-      assert(args[0] instanceof mymath.Node)
-      assert(args[1] instanceof mymath.Node)
+    function myFunction (_args, _math, _scope) {
+      assert.strictEqual(_args.length, 2)
+      assert(_args[0] instanceof mymath.Node)
+      assert(_args[1] instanceof mymath.Node)
       assert.deepStrictEqual(toObject(_scope), scope)
-      return 'myFunction(' + args.join(', ') + ')'
+      return 'myFunction(' + _args.join(', ') + ')'
     }
     myFunction.rawArgs = true
     mymath.import({ myFunction })
@@ -472,10 +472,10 @@ describe('FunctionNode', function () {
   it('should stringify a FunctionNode with custom toString for a single function', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = {
-      add: function (node, options) {
-        return node.args[0].toString(options) +
+      add: function (node, _options) {
+        return node.args[0].toString(_options) +
           ' ' + node.name + ' ' +
-          node.args[1].toString(options)
+          node.args[1].toString(_options)
       }
     }
 

@@ -168,7 +168,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @param {Object} options
      * @return {string} str
      */
-    _toString (options) {
+    _toString (_options) {
       // format the parameters like "[1, 0:5]"
       return this.dotNotation
         ? ('.' + this.getObjectProperty())
@@ -204,7 +204,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @param {Object} options
      * @return {string} str
      */
-    _toHTML (options) {
+    _toHTML (_options) {
       // format the parameters like "[1, 0:5]"
       const dimensions = []
       for (let i = 0; i < this.dimensions.length; i++) {

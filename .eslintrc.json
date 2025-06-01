@@ -1,0 +1,19 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "browser": false,
+    "node": true,
+    "es2020": true,
+    "mocha": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-prototype-builtins": "off",
+    "no-undef": "warn",
+    "no-constant-condition": ["error", { "checkLoops": false }]
+  }
+}

@@ -123,7 +123,9 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
       const precedence =
           getPrecedence(this, parenthesis, options && options.implicit)
 
-      const paramStrings = this.params.map(function (p, index) {
+      const paramStrings = this.params.map(function (p, _index) {
+      const paramStrings = this.params.map(function (p, _index) {
+      const paramStrings = this.params.map(function (p, _index) {
         const paramPrecedence =
             getPrecedence(p, parenthesis, options && options.implicit)
         return (parenthesis === 'all' ||
