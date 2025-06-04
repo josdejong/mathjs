@@ -10,12 +10,39 @@
   modulus operator (that both use symbol `%`), and raise the former (#3432).
   Thanks @kiprobinsonknack.
 
+# unpublished changes since 14.5.2
+
+- Fix: #2199 fix #2199: parse non-breaking white space `&nbsp;` as white space 
+  (#3487). Thanks donmccurdy.
+
+# 2025-05-30, 14.5.2
+
+- Fix: add embedded docs for the deprecated physical constant `coulomb`, 
+  see #3472.
+- Fix: #3469 add `ResultSet` interface and improve `isResultSet` typing 
+  (#3481). Thanks @ranidam.
+
+# 2025-05-28, 14.5.1
+
 # Unpublished changes since 14.4.0
 
+- Fix: #3482 mathjs throwing an error related to `BigInt`  when loading in
+  specific environments.
+- Fix: syntax section of function `numeric` (see #3448).
+- Fix: #3472 rename physical constant `coulomb` to `coulombConstant`. The old
+  name is still available for backward compatibility.
+- Fix: support multiplication of arrays with units (#3456). Thanks @Delaney.
+
+# 2025-05-21, 14.5.0
+
+- Feat: improve the performance of the `map` and `forEach` methods of 
+  `DenseMatrix` (#3446). Thanks @dvd101x.
+- Feat: improve the performance of `subset` (#3467). Thanks @dvd101x.
+- Feat: define embedded docs for `compile`, `evaluate`, `parse`, and `parser`,
+  and add tests for the examples in embedded docs (#3413). Thanks @dvd101x.
 - Fix: #3450 support multiplication of valueless units by arbitrary types
   (#3454).
-- Feat: increase performance of the `map` and `forEach` methods of 
-  `DenseMatrix` (#3446). Thanks @dvd101x.
+- Fix: #3474 correctly parse `(lbf in)` (#3476). Thanks @costerwi.
 
 # 2025-03-28, 14.4.0
 

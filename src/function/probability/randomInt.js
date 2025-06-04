@@ -6,8 +6,6 @@ import { isMatrix } from '../../utils/is.js'
 const name = 'randomInt'
 const dependencies = ['typed', 'config', 'log2', '?on']
 
-const simpleCutoff = 2n ** 30n
-
 export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, log2, on }) => {
   // seeded pseudo random number generator
   let rng = createRng(config.randomSeed)
@@ -70,6 +68,7 @@ export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ ty
   }
 
   function _randomBigint (min, max) {
+    const simpleCutoff = 2n ** 30n
     const width = max - min // number of choices
     if (width <= simpleCutoff) { // do it with number type
       return min + BigInt(_randomInt(0, Number(width)))

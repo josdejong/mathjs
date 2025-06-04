@@ -297,6 +297,7 @@ export {
   createClassicalElectronRadius,
   createConductanceQuantum,
   createCoulomb,
+  createCoulombConstant,
   createDeuteronMass,
   createEfimovFactor,
   createElectricConstant,

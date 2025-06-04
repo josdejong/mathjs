@@ -104,6 +104,9 @@ import { conjDocs } from './function/complex/conj.js'
 import { imDocs } from './function/complex/im.js'
 import { reDocs } from './function/complex/re.js'
 import { evaluateDocs } from './function/expression/evaluate.js'
+import { parserDocs } from './function/expression/parser.js'
+import { parseDocs } from './function/expression/parse.js'
+import { compileDocs } from './function/expression/compile.js'
 import { helpDocs } from './function/expression/help.js'
 import { distanceDocs } from './function/geometry/distance.js'
 import { intersectDocs } from './function/geometry/intersect.js'
@@ -292,7 +295,8 @@ export const embeddedDocs = {
   magneticConstant: { description: 'Magnetic constant (vacuum permeability)', examples: ['magneticConstant'] },
   electricConstant: { description: 'Electric constant (vacuum permeability)', examples: ['electricConstant'] },
   vacuumImpedance: { description: 'Characteristic impedance of vacuum', examples: ['vacuumImpedance'] },
-  coulomb: { description: 'Coulomb\'s constant', examples: ['coulomb'] },
+  coulomb: { description: 'Coulomb\'s constant. Deprecated in favor of coulombConstant', examples: ['coulombConstant'] },
+  coulombConstant: { description: 'Coulomb\'s constant', examples: ['coulombConstant'] },
   elementaryCharge: { description: 'Elementary charge', examples: ['elementaryCharge'] },
   bohrMagneton: { description: 'Bohr magneton', examples: ['bohrMagneton'] },
   conductanceQuantum: { description: 'Conductance quantum', examples: ['conductanceQuantum'] },
@@ -429,6 +433,9 @@ export const embeddedDocs = {
   // functions - expression
   evaluate: evaluateDocs,
   help: helpDocs,
+  parse: parseDocs,
+  parser: parserDocs,
+  compile: compileDocs,
 
   // functions - geometry
   distance: distanceDocs,

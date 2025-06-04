@@ -26,6 +26,14 @@ describe('conj', function () {
     assert.strictEqual(conj(math.complex('2')).toString(), '2')
     assert.strictEqual(conj(math.complex('-4i')).toString(), '4i')
     assert.strictEqual(conj(math.i).toString(), '-i')
+    assert.strictEqual(conj(math.unit('5cm')).toString(), '5 cm')
+  })
+
+  it('should calculate the conjugate of a units with complex, Fraction and BigNumber values', function () {
+    assert.strictEqual(conj(math.unit(math.complex('300+250i'), 'ohm')).toString(), '(300 - 250i) ohm')
+    assert.strictEqual(conj(math.unit(math.bignumber('0.3'), 'm/s')).toString(), '0.3 m / s')
+    assert.strictEqual(conj(math.unit(math.fraction('0.(285714)'), 'fahrenheit')).toString(), '2/7 fahrenheit')
+    assert.strictEqual(conj(math.unit(math.fraction(0.125), 'hp')).toString(), '1/8 hp')
   })
 
   it('should calculate the conjugate for each element in a matrix', function () {
@@ -37,7 +45,6 @@ describe('conj', function () {
 
   it('should throw an error when called with an unsupported type of argument', function () {
     assert.throws(function () { conj(new Date()) }, /TypeError: Unexpected type of argument/)
-    assert.throws(function () { conj(math.unit('5cm')) }, /TypeError: Unexpected type of argument/)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
