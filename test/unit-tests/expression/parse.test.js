@@ -97,6 +97,9 @@ describe('parse', function () {
     math.evaluate('\uD835\uDD38 = 1', scope) // double struck capital A
     assert.strictEqual(scope['\uD835\uDD38'], 1)
 
+    math.evaluate('x\t=\u00A02 +\u00A04', scope) // Non-breaking space (&nbsp;)
+    assert.strictEqual(scope.x, 6)
+
     // should not allow the "holes"
     assert.throws(function () {
       math.evaluate('\uD835\uDCA3 = 1', scope)
