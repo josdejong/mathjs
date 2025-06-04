@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 14.5.2
+
+- Fix: #2199 fix #2199: parse non-breaking white space `&nbsp;` as white space 
+  (#3487). Thanks donmccurdy.
+
 # 2025-05-30, 14.5.2
 
 - Fix: add embedded docs for the deprecated physical constant `coulomb`, 
