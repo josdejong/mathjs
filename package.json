@@ -9,6 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.8.2"
+    "@tailwindcss/vite": "^4.1.8",
+    "astro": "^5.8.2",
+    "flyonui": "^2.2.0"
   }
 }
