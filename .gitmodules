@@ -1,3 +1,0 @@
-[submodule "mathjs-src"]
-	path = mathjs-src
-	url = git@github.com:josdejong/mathjs.git
