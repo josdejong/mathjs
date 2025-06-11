@@ -33,6 +33,7 @@ import {
   MathNodeCommon,
   MathNumericType,
   MathScalarType,
+  MathScope,
   MathType,
   Matrix,
   Node,
@@ -50,8 +51,7 @@ import {
   Unit,
   evaluate,
   isResultSet,
-  UnitPrefix,
-  ScopeType
+  UnitPrefix
 } from 'mathjs'
 
 // This file serves a dual purpose:
@@ -1117,14 +1117,14 @@ Expressions examples
 
   // scope can contain both variables and functions
   {
-    const scope: ScopeType = { hello: (name: string) => `hello, ${name}!` }
+    const scope: MathScope = { hello: (name: string) => `hello, ${name}!` }
     assert.strictEqual(math.evaluate('hello("hero")', scope), 'hello, hero!')
   }
 
   // define a function as an expression
   {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const scope: ScopeType = {
+    const scope: MathScope = {
       a: 3,
       b: 4
     }
@@ -1144,7 +1144,7 @@ Expressions examples
   {
     // provide a scope for the variable assignment
     const code2 = math.compile('a = a + 3')
-    const scope: ScopeType = { a: 7 }
+    const scope: MathScope = { a: 7 }
     code2.evaluate(scope)
   }
   // 4. using a parser
