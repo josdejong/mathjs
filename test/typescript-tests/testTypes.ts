@@ -25,6 +25,7 @@ import {
   IndexNode,
   isSymbolNode,
   LUDecomposition,
+  MapLike,
   MathArray,
   MathCollection,
   MathJsChain,
@@ -1131,6 +1132,96 @@ Expressions examples
     const f = math.evaluate('f(x) = x ^ a', scope)
     f(2)
     scope.f(2)
+  }
+
+  // using JavaScript's built-in Map as scope
+  {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mapScope = new Map<string, any>()
+    mapScope.set('x', 3)
+
+    assert.strictEqual(math.evaluate('x', mapScope), 3)
+    assert.strictEqual(math.evaluate('y = 2 * x', mapScope), 6)
+    assert.strictEqual(mapScope.get('y'), 6)
+
+    math.evaluate('area(length, width) = length * width', mapScope)
+    assert.strictEqual(math.evaluate('area(4, 5)', mapScope), 20)
+    assert.strictEqual(mapScope.get('area')(4, 5), 20)
+  }
+
+  // using custom implementation with type validation and additional utility methods.
+  {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    type ValueType = string | number | Function
+
+    class CustomMap implements MapLike<string, ValueType> {
+      private readonly map = new Map<string, ValueType>()
+
+      // ensure that the value being set is of a valid type
+      private validateValueType(value: ValueType): void | never {
+        if (
+          typeof value !== 'number' &&
+          typeof value !== 'function' &&
+          typeof value !== 'string'
+        ) {
+          throw new TypeError(
+            `CustomMap only supports values of type number, string, or function, got ${typeof value}`
+          )
+        }
+      }
+
+      get(key: string): ValueType {
+        return this.map.get(key)
+      }
+
+      set(key: string, value: ValueType): CustomMap {
+        // additional validation to ensure the value is of a valid type
+        this.validateValueType(value)
+        this.map.set(key, value)
+        return this
+      }
+
+      has(key: string): boolean {
+        return this.map.has(key)
+      }
+
+      keys(): IterableIterator<string> {
+        return this.map.keys()
+      }
+
+      // additional method to get all values in the map
+      getAllValues(): ValueType[] {
+        const values: ValueType[] = []
+        for (const key of this.keys()) {
+          values.push(this.get(key))
+        }
+        return values
+      }
+    }
+
+    const customMap = new CustomMap()
+    customMap.set('x', 4)
+
+    assert.strictEqual(math.evaluate('x + 2', customMap), 6)
+    assert.strictEqual(math.evaluate('z = x * 3', customMap), 12)
+    assert.strictEqual(customMap.get('z'), 12)
+
+    math.evaluate('multiply(a, b) = a * b', customMap)
+    assert.strictEqual(math.evaluate('multiply(3, 4)', customMap), 12)
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    const multiply = customMap.get('multiply') as Function
+    assert.strictEqual(multiply(3, 4), 12)
+
+    const x = customMap.get('x')
+    const z = customMap.get('z')
+    assert.deepStrictEqual(customMap.getAllValues(), [x, z, multiply])
+
+    assert.throws(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      () => math.evaluate('invalid = true', customMap),
+      TypeError
+    )
   }
 
   {
