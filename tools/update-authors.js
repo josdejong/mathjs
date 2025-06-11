@@ -21,7 +21,10 @@ class CaseIndifferentMap {
   }
 
   get (key) { return this._map.get(key.toLowerCase()) }
-  set (key, value) { return this._map.set(key.toLowerCase(), value) }
+  set (key, value) {
+    this._map.set(key.toLowerCase(), value)
+    return this
+  }
 }
 
 const log = spawn(
