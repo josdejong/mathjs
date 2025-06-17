@@ -28,7 +28,12 @@ export type MatrixFromFunctionCallback<T extends MathScalarType> = (
 ) => T
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type FactoryFunction<T> = (scope: any) => T
+export type FactoryFunction<T> = (scope: MathScope) => T
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type MathScope<TValue = any> =
+  | Record<string, TValue>
+  | MapLike<string, TValue>
 
 // FactoryFunctionMap can be nested; all nested objects will be flattened
 export interface FactoryFunctionMap {
@@ -891,12 +896,12 @@ export interface MathJsInstance extends MathJsFactory {
    */
   evaluate(
     expr: MathExpression | Matrix,
-    scope?: object
+    scope?: MathScope
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): any
   evaluate(
     expr: MathExpression[],
-    scope?: object
+    scope?: MathScope
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): any[]
 
@@ -1071,14 +1076,14 @@ export interface MathJsInstance extends MathJsFactory {
    * @param scope Scope to read/write variables
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resolve(node: MathNode | string, scope?: Record<string, any>): MathNode
+  resolve(node: MathNode | string, scope?: MathScope): MathNode
   resolve(
     node: (MathNode | string)[],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    scope?: Record<string, any>
+    scope?: MathScope
   ): MathNode[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resolve(node: Matrix, scope?: Record<string, any>): Matrix
+  resolve(node: Matrix, scope?: MathScope): Matrix
 
   /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -4301,10 +4306,14 @@ export interface Simplify {
   (
     expr: MathNode | string,
     rules: SimplifyRule[],
-    scope?: object,
+    scope?: MathScope,
     options?: SimplifyOptions
   ): MathNode
-  (expr: MathNode | string, scope: object, options?: SimplifyOptions): MathNode
+  (
+    expr: MathNode | string,
+    scope: MathScope,
+    options?: SimplifyOptions
+  ): MathNode
 
   rules: SimplifyRule[]
 }
@@ -4331,7 +4340,7 @@ export interface ObjectWrappingMap<T extends string | number | symbol, U> {
 
 export interface EvalFunction {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  evaluate(scope?: any): any
+  evaluate(scope?: MathScope): any
 }
 
 // ResultSet type and helper
@@ -4369,7 +4378,7 @@ export interface MathNode {
    * node.compile().evaluate(scope). Example:
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  evaluate(expr?: any): any
+  evaluate(scope?: MathScope): any
   /**
    * Test whether this node equals an other node. Does a deep comparison
    * of the values of both nodes.
@@ -4852,12 +4861,12 @@ export interface MathJsChain<TValue> {
    */
   evaluate(
     this: MathJsChain<MathExpression | Matrix>,
-    scope?: object
+    scope?: MathScope
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): MathJsChain<any>
   evaluate(
     this: MathJsChain<MathExpression[]>,
-    scope?: object
+    scope?: MathScope
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): MathJsChain<any[]>
 
@@ -4894,12 +4903,12 @@ export interface MathJsChain<TValue> {
   resolve(
     this: MathJsChain<MathNode>,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    scope?: Record<string, any>
+    scope?: MathScope
   ): MathJsChain<MathNode>
   resolve(
     this: MathJsChain<MathNode[]>,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    scope?: Record<string, any>
+    scope?: MathScope
   ): MathJsChain<MathNode[]>
 
   /*************************************************************************
@@ -7109,6 +7118,13 @@ export interface ImportOptions {
 export interface ImportObject {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
+}
+
+export interface MapLike<TKey = string, TValue = unknown> {
+  get(key: TKey): TValue
+  set(key: TKey, value: TValue): MapLike<TKey, TValue>
+  has(key: TKey): boolean
+  keys(): IterableIterator<TKey> | TKey[]
 }
 
 export const {

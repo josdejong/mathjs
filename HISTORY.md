@@ -4,6 +4,7 @@
 
 - Fix: #2199 fix #2199: parse non-breaking white space `&nbsp;` as white space 
   (#3487). Thanks donmccurdy.
+- Fix: refine the type definitions of `scope` (#3490). Thanks @JayChang4w.
 
 # 2025-05-30, 14.5.2
 
