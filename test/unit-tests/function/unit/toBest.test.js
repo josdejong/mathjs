@@ -6,6 +6,7 @@ const Unit = math.create().Unit
 function assertUnit (actualUnit, expectedName, expectedPrefix, expectedValue) {
   assert.equal(actualUnit.units[0].unit.name, expectedName)
   assert.equal(actualUnit.units[0].prefix.name, expectedPrefix)
+  assert.equal(actualUnit.units.length, 1)
   assert.equal(actualUnit.value, expectedValue)
 }
 
