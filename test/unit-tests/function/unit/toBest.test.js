@@ -57,18 +57,23 @@ describe('toBest', function () {
     assert.equal(new Unit(1000, 'cm').toBest(['m', 'km']).toString(), '10 m')
   })
 
-  it('should throw error for incompatible units', function () {
-    const functions = []
-    functions.push(() => new Unit(1, 'm').toBest(['kg']))
-    functions.push(() => new Unit(1, 'm').toBest(['kg m']))
-    functions.push(() => new Unit(1, 'N').toBest(['W']))
-    functions.push(() => new Unit(1, 'kg').toBest(['degC']))
-    functions.push(() => new Unit(1, 'mol').toBest(['rad']))
-    functions.push(() => new Unit(1, 'm^2').toBest(['m^3']))
-    functions.push(() => new Unit(1, 'Hz').toBest(['Pa']))
-    functions.push(() => new Unit(1, 'J').toBest(['cd']))
-    functions.forEach((u) => {
-      assert.throws(u, /Invalid unit type. Expected compatible string or Unit./)
+  const incompatibleUnits = [
+    ['length to mass', 'm', ['kg']],
+    ['length to mass times length', 'm', ['kg m']],
+    ['force to power', 'N', ['W']],
+    ['mass to temperature', 'kg', ['degC']],
+    ['amount of substance to angle', 'mol', ['rad']],
+    ['area to volume', 'm^2', ['m^3']],
+    ['frequency to pressure', 'Hz', ['Pa']],
+    ['energy to luminous intensity', 'J', ['cd']]
+  ]
+
+  incompatibleUnits.forEach(([description, sourceUnit, targetUnits]) => {
+    it(`should throw error when converting ${description}`, function () {
+      assert.throws(
+        () => new Unit(1, sourceUnit).toBest(targetUnits),
+        /Invalid unit type. Expected compatible string or Unit./
+      )
     })
   })
 })
