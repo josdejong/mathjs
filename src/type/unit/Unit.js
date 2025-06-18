@@ -1125,52 +1125,38 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       throw new Error('Invalid unit type. Expected string or Unit.')
     }
 
-    if (unitList.length === 0) {
-      let resultFormatted = null
-      try {
-        resultFormatted = formatBest(this.clone(), options)
-        if (resultFormatted === null) {
-          throw new Error('Invalid unit type. Expected string or Unit.')
-        }
-      } catch (e) {
-        throw new Error('Invalid unit type. Expected string or Unit.')
-      }
-      const { simp, valueStr } = resultFormatted
-      simp.value = Number(valueStr)
-      return simp
-    }
-
-    const unitObjects = unitList.map(u => {
-      let unit = null
-      if (typeof u === 'string') {
-        unit = Unit.parse(u)
-        if (!unit) {
+    if (unitList && unitList.length > 0) {
+      const unitObjects = unitList.map(u => {
+        let unit = null
+        if (typeof u === 'string') {
+          unit = Unit.parse(u)
+          if (!unit) {
+            throw new Error('Invalid unit type. Expected compatible string or Unit.')
+          }
+        } else if (!isUnit(u)) {
           throw new Error('Invalid unit type. Expected compatible string or Unit.')
         }
-      } else if (!isUnit(u)) {
-        throw new Error('Invalid unit type. Expected compatible string or Unit.')
-      }
-      if (unit === null) {
-        unit = u.clone()
-      }
-      try {
-        this.to(unit.formatUnits())
-        return unit
-      } catch (e) {
-        throw new Error('Invalid unit type. Expected compatible string or Unit.')
-      }
-    })
-    const prefixes = unitObjects.map(el => el.units[0].prefix)
-    this.units[0].unit.prefixes = prefixes.reduce((acc, prefix) => {
-      acc[prefix.name] = prefix
-      return acc
-    }, {})
-    this.units[0].prefix = prefixes[0]
-    const { simp, valueStr } = formatBest(this.clone(), options)
-    simp.value = Number(valueStr)
-    return simp
-  }
+        if (unit === null) {
+          unit = u.clone()
+        }
+        try {
+          this.to(unit.formatUnits())
+          return unit
+        } catch (e) {
+          throw new Error('Invalid unit type. Expected compatible string or Unit.')
+        }
+      })
+      const prefixes = unitObjects.map(el => el.units[0].prefix)
+      this.units[0].unit.prefixes = prefixes.reduce((acc, prefix) => {
+        acc[prefix.name] = prefix
+        return acc
+      }, {})
+      this.units[0].prefix = prefixes[0]
+    }
 
+    const result = formatBest(this, options).simp
+    return denormalizeBest(result)
+  }
   /**
    * Get a string representation of the Unit, with optional formatting options.
    * @memberof Unit
@@ -1221,6 +1207,21 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       valueStr,
       unitStr
     }
+  }
+
+  function denormalizeBest (initNormalizedResult) {
+    const denormalizedResult = initNormalizedResult.clone()
+    const denormalizedValue = initNormalizedResult.toNumeric()
+
+    denormalizedResult.value = denormalizedValue !== null ? denormalizedValue : 0
+    denormalizedResult.units[0].prefix = {
+      name: initNormalizedResult.units[0].prefix.name,
+      value: 1,
+      scientific: initNormalizedResult.units[0].prefix.scientific
+    }
+
+    denormalizedResult.fixPrefix = true
+    return denormalizedResult
   }
 
   /**

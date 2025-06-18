@@ -50,6 +50,12 @@ describe('toBest', function () {
     )
   })
 
+  it('should return the correct string representation', function () {
+    assert.equal(new Unit(2 / 3, 'cm').toBest().toString(), '0.6666666666666666 cm')
+    assert.equal(new Unit(5, 'm').toBest(['cm', 'mm']).toString(), '500 cm')
+    assert.equal(new Unit(1000, 'cm').toBest(['m', 'km']).toString(), '10 m')
+  })
+
   it('should throw error for incompatible units', function () {
     const functions = []
     functions.push(() => new Unit(1, 'm').toBest(['kg']))
