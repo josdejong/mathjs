@@ -1167,7 +1167,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {string}
    */
   Unit.prototype.format = function (options) {
-    const { simp, valueStr, unitStr } = formatBest(this.clone(), options)
+    const { simp, valueStr, unitStr } = formatBest(this, options)
     let str = valueStr
     if (simp.value && isComplex(simp.value)) {
       str = '(' + str + ')' // Surround complex values with ( ) to enable better parsing
