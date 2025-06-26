@@ -1741,6 +1741,34 @@ Units examples
 {
   const math = create(all, {})
 
+  /*
+  Unit function type tests
+  */
+  {
+    // Test unit function with string argument
+    expectTypeOf(math.unit('5 cm')).toExtend<Unit>()
+
+    // Test unit function with Unit argument
+    expectTypeOf(math.unit(math.unit('5 cm'))).toExtend<Unit>()
+
+    // Test unit function with MathNumericType and string
+    expectTypeOf(math.unit(5, 'cm')).toExtend<Unit>()
+    expectTypeOf(math.unit(math.bignumber(5), 'cm')).toExtend<Unit>()
+    expectTypeOf(math.unit(math.fraction(5, 2), 'cm')).toExtend<Unit>()
+    expectTypeOf(math.unit(math.complex(5, 0), 'cm')).toExtend<Unit>()
+
+    // Test unit function with just MathNumericType (optional unit parameter)
+    expectTypeOf(math.unit(5)).toExtend<Unit>()
+    expectTypeOf(math.unit(math.bignumber(5))).toExtend<Unit>()
+    expectTypeOf(math.unit(math.fraction(5, 2))).toExtend<Unit>()
+    // Shouldn't this also work? Currently it does not.
+    // expectTypeOf(math.unit(math.complex(5, 0))).toExtend<Unit>()
+
+    // Test unit function with just MathCollection
+    expectTypeOf(math.unit(math.matrix([1, 2, 3]))).toExtend<Unit[]>()
+    expectTypeOf(math.unit([1, 2, 3])).toExtend<Unit[]>()
+  }
+
   // units can be created by providing a value and unit name, or by providing
   // a string with a valued unit.
   const a = math.unit(45, 'cm') // 450 mm

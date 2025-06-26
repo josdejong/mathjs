@@ -868,7 +868,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created unit
    */
   unit(value: MathNumericType, unit?: string): Unit
-  unit(value: MathCollection, unit?: string): Unit[]
+  unit(value: MathCollection): Unit[]
 
   /*************************************************************************
    * Expression functions
