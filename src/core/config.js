@@ -30,9 +30,8 @@ export const DEFAULT_CONFIG = {
   // null = randomly seed
   randomSeed: null,
 
-  // legacy behavior for matrix subset, when false, the subset function
-  // return a matrix or array with the same size of the index (except for the scalar),
-  // when false returns a matrix or array with a size depending
-  // on the type of index
+  // legacy behavior for matrix subset. When true, the subset function
+  // returns a matrix or array with the same size as the index (except for scalars).
+  // When false, it returns a matrix or array with a size depending on the type of index.
   legacySubset: false
 }
