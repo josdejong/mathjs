@@ -28,5 +28,11 @@ export const DEFAULT_CONFIG = {
 
   // random seed for seeded pseudo random number generation
   // null = randomly seed
-  randomSeed: null
+  randomSeed: null,
+
+  // legacy behavior for matrix subset, when false, the subset function
+  // return a matrix or array with the same size of the index (except for the scalar),
+  // when false returns a matrix or array with a size depending
+  // on the type of index
+  legacySubset: false
 }

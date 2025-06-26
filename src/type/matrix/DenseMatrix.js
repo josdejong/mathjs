@@ -10,10 +10,11 @@ import { optimizeCallback } from '../../utils/optimizeCallback.js'
 
 const name = 'DenseMatrix'
 const dependencies = [
-  'Matrix'
+  'Matrix',
+  'config'
 ]
 
-export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ Matrix }) => {
+export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ Matrix, config }) => {
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
    * @class DenseMatrix
@@ -218,7 +219,9 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       throw new TypeError('Invalid index')
     }
 
-    const isScalar = index.isScalar()
+    const isScalar = config.legacySubset
+      ? index.size().every(idx => idx === 1)
+      : index.isScalar()
     if (isScalar) {
       // return a scalar
       return matrix.get(index.min())
@@ -243,7 +246,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       returnMatrix._size = submatrix.size
       returnMatrix._datatype = matrix._datatype
       returnMatrix._data = submatrix.data
-      return returnMatrix
+      return config.legacySubset ? returnMatrix.reshape(index.size()) : returnMatrix
     }
   }
 
@@ -262,27 +265,27 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
     return { data: getSubmatrixRecursive(data), size: size.filter(x => x !== null) }
 
     function getSubmatrixRecursive (data, depth = 0) {
-      const ranges = index.dimension(depth)
-      function _mapIndex (range, callback) {
+      const dims = index.dimension(depth)
+      function _mapIndex (dim, callback) {
         // applies a callback for when the index is a Number or a Matrix
-        if (isNumber(range)) return callback(range)
-        else return range.map(callback).valueOf()
+        if (isNumber(dim)) return callback(dim)
+        else return dim.map(callback).valueOf()
       }
 
-      if (isNumber(ranges)) {
+      if (isNumber(dims)) {
         size[depth] = null
       } else {
-        size[depth] = ranges.size()[0]
+        size[depth] = dims.size()[0]
       }
       if (depth < maxDepth) {
-        return _mapIndex(ranges, rangeIndex => {
-          validateIndex(rangeIndex, data.length)
-          return getSubmatrixRecursive(data[rangeIndex], depth + 1)
+        return _mapIndex(dims, dimIndex => {
+          validateIndex(dimIndex, data.length)
+          return getSubmatrixRecursive(data[dimIndex], depth + 1)
         })
       } else {
-        return _mapIndex(ranges, rangeIndex => {
-          validateIndex(rangeIndex, data.length)
-          return data[rangeIndex]
+        return _mapIndex(dims, dimIndex => {
+          validateIndex(dimIndex, data.length)
+          return data[dimIndex]
         })
       }
     }
