@@ -1,5 +1,20 @@
 # History
 
+# Unpublished changes scheduled for v15
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Fix: #1753 Correct dimensionality of Kronecker product on vectors (and
+  extend to arbitrary dimension) (#3455). Thanks @Delaney.
+- Feat: #3349 Decouple precedence of unary percentage operator and binary
+  modulus operator (that both use symbol `%`), and raise the former (#3432).
+  Thanks @kiprobinsonknack.
+
+# unpublished changes since 14.5.2
+
+- Fix: #2199 fix #2199: parse non-breaking white space `&nbsp;` as white space 
+  (#3487). Thanks donmccurdy.
+
 # 2025-05-30, 14.5.2
 
 - Fix: add embedded docs for the deprecated physical constant `coulomb`, 
@@ -8,6 +23,8 @@
   (#3481). Thanks @ranidam.
 
 # 2025-05-28, 14.5.1
+
+# Unpublished changes since 14.4.0
 
 - Fix: #3482 mathjs throwing an error related to `BigInt`  when loading in
   specific environments.
