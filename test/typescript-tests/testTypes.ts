@@ -1767,6 +1767,7 @@ Units examples
     // Test unit function with just MathCollection
     expectTypeOf(math.unit(math.matrix([1, 2, 3]))).toExtend<Unit[]>()
     expectTypeOf(math.unit([1, 2, 3])).toExtend<Unit[]>()
+    expectTypeOf(math.unit(math.matrix(['2cm', '5cm']))).toExtend<Unit[]>()
   }
 
   // units can be created by providing a value and unit name, or by providing

@@ -4827,7 +4827,7 @@ export interface MathJsChain<TValue> {
    */
   unit(this: MathJsChain<string>, unit?: string): MathJsChain<Unit>
   unit(this: MathJsChain<MathNumericType>, unit?: string): MathJsChain<Unit>
-  unit(this: MathJsChain<MathCollection>, unit?: string): MathJsChain<Unit[]>
+  unit(this: MathJsChain<MathCollection>): MathJsChain<Unit[]>
 
   /*************************************************************************
    * Expression functions
