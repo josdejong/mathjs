@@ -43,6 +43,10 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': [
           'error',
           { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+        ],
+        'prettier/prettier': [
+          'error',
+          { endOfLine: 'auto' }
         ]
       },
       plugins: ['@typescript-eslint'],
