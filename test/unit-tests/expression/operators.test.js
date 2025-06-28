@@ -14,12 +14,14 @@ describe('operators', function () {
     const b = new ConstantNode(2)
 
     const n1 = new AssignmentNode(new SymbolNode('a'), a)
-    const n2 = new OperatorNode('or', 'or', [a, b])
-    const n3 = math.parse("M'")
+    const n2 = new OperatorNode('??', 'nullish', [a, b])
+    const n3 = new OperatorNode('or', 'or', [a, b])
+    const n4 = math.parse("M'")
 
     assert.strictEqual(getPrecedence(n1, 'keep'), 0)
-    assert.strictEqual(getPrecedence(n2, 'keep'), 2)
-    assert.strictEqual(getPrecedence(n3, 'keep'), 18)
+    assert.strictEqual(getPrecedence(n2, 'keep'), 2) // nullish coalescing
+    assert.strictEqual(getPrecedence(n3, 'keep'), 3) // logical or
+    assert.strictEqual(getPrecedence(n4, 'keep'), 19) // adjusted for new precedence level
   })
 
   it('should return null if precedence is not defined for a node', function () {
@@ -31,7 +33,7 @@ describe('operators', function () {
   it('should return the precedence of a ParenthesisNode', function () {
     const c = new ConstantNode(1)
 
-    const op = new OperatorNode('or', 'or', [c, c])
+    const op = new OperatorNode('??', 'nullish', [c, c])
 
     const p = new ParenthesisNode(op)
 
@@ -59,7 +61,7 @@ describe('operators', function () {
   it('should return the associativity of a ParenthesisNode', function () {
     const c = new ConstantNode(1)
 
-    const op = new OperatorNode('or', 'or', [c, c])
+    const op = new OperatorNode('??', 'nullish', [c, c])
 
     const p = new ParenthesisNode(op)
 

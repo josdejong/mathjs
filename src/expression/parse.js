@@ -151,6 +151,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     '=': true,
     ':': true,
     '?': true,
+    '??': true,
 
     '==': true,
     '!=': true,
@@ -729,7 +730,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseConditional (state) {
-    let node = parseLogicalOr(state)
+    let node = parseNullishCoalescing(state)
 
     while (state.token === '?') { // eslint-disable-line no-unmodified-loop-condition
       // set a conditional level, the range operator will be ignored as long
@@ -752,6 +753,22 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       // restore the previous conditional level
       state.conditionalLevel = prev
+    }
+
+    return node
+  }
+
+  /**
+   * nullish coalescing, 'x ?? y'
+   * @return {Node} node
+   * @private
+   */
+  function parseNullishCoalescing (state) {
+    let node = parseLogicalOr(state)
+
+    while (state.token === '??') { // eslint-disable-line no-unmodified-loop-condition
+      getTokenSkipNewline(state)
+      node = new OperatorNode('??', 'nullish', [node, parseLogicalOr(state)])
     }
 
     return node

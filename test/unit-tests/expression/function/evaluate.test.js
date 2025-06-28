@@ -84,4 +84,101 @@ describe('evaluate', function () {
     assert.strictEqual(expr1.toTex(), '\\mathrm{evaluate}\\left( expr\\right)')
     assert.strictEqual(expr2.toTex(), '\\mathrm{evaluate}\\left( expr, scope\\right)')
   })
+
+  describe('nullish coalescing operator', function () {
+    it('should handle basic nullish coalescing', function () {
+      assert.strictEqual(math.evaluate('null ?? 42'), 42)
+      assert.strictEqual(math.evaluate('undefined ?? 42'), 42)
+      assert.strictEqual(math.evaluate('0 ?? 42'), 0)
+      assert.strictEqual(math.evaluate('false ?? 42'), false)
+      assert.strictEqual(math.evaluate('"" ?? 42'), '')
+      assert(isNaN(math.evaluate('NaN ?? 42'))) // Should return NaN, not 42
+    })
+
+    it('should handle nullish coalescing with variables', function () {
+      const scope1 = {}
+      assert.throws(() => math.evaluate('x ?? 42', scope1), /Undefined symbol x/)
+
+      const scope2 = { x: null }
+      assert.strictEqual(math.evaluate('x ?? 42', scope2), 42)
+
+      const scope3 = { x: 0 }
+      assert.strictEqual(math.evaluate('x ?? 42', scope3), 0)
+
+      const scope4 = { x: undefined }
+      assert.strictEqual(math.evaluate('x ?? 42', scope4), 42)
+
+      const scope5 = { x: 5 }
+      assert.strictEqual(math.evaluate('x ?? 42', scope5), 5)
+    })
+
+    it('should handle chained nullish coalescing', function () {
+      assert.strictEqual(math.evaluate('null ?? undefined ?? 42'), 42)
+      assert.strictEqual(math.evaluate('null ?? 10 ?? 42'), 10)
+      assert.strictEqual(math.evaluate('5 ?? null ?? 42'), 5)
+      assert.strictEqual(math.evaluate('null ?? null ?? null ?? 99'), 99)
+    })
+
+    it('should handle nullish coalescing with correct precedence', function () {
+      // ?? has lower precedence than arithmetic operators
+      assert.strictEqual(math.evaluate('null ?? 1 + 2'), 3) // null ?? (1 + 2)
+      assert.strictEqual(math.evaluate('null ?? 2 * 3'), 6) // null ?? (2 * 3)
+      assert.strictEqual(math.evaluate('null ?? 2^3'), 8) // null ?? (2^3)
+
+      // ?? has same precedence as logical OR, left associative
+      assert.strictEqual(math.evaluate('null ?? false or true'), true) // (null ?? false) or true
+      assert.strictEqual(math.evaluate('true or null ?? 42'), true) // (true or null) ?? 42 = true ?? 42 = true
+
+      // Parentheses can override precedence
+      assert.strictEqual(math.evaluate('null ?? (1 + 2)'), 3)
+      assert.strictEqual(math.evaluate('(null ?? 1) + 2'), 3) // (null ?? 1) + 2 = 1 + 2 = 3
+    })
+
+    it('should handle nullish coalescing with complex expressions', function () {
+      const scope = { a: null, b: 5, c: 0 }
+      assert.strictEqual(math.evaluate('a ?? b * 2', scope), 10) // null ?? (5 * 2)
+      assert.strictEqual(math.evaluate('c ?? b * 2', scope), 0) // 0 ?? (5 * 2) = 0
+      assert.strictEqual(math.evaluate('(a ?? b) * 2', scope), 10) // (null ?? 5) * 2 = 10
+    })
+
+    it('should handle nullish coalescing with strings', function () {
+      assert.strictEqual(math.evaluate('null ?? "hello"'), 'hello')
+      assert.strictEqual(math.evaluate('"world" ?? "hello"'), 'world')
+      assert.strictEqual(math.evaluate('"" ?? "hello"'), '') // empty string is not nullish
+    })
+
+    it('should handle nullish coalescing with matrices and arrays', function () {
+      assert.deepStrictEqual(math.evaluate(['null ?? 1', '2 ?? null', 'null ?? null ?? 3']), [1, 2, 3])
+      assert.deepStrictEqual(math.evaluate(math.matrix(['null ?? 1', '2 ?? null'])), math.matrix([1, 2]))
+    })
+
+    it('should handle nullish coalescing with function calls', function () {
+      const scope = {
+        getValue: function () { return null },
+        getDefault: function () { return 42 }
+      }
+      assert.strictEqual(math.evaluate('getValue() ?? getDefault()', scope), 42)
+
+      const scope2 = {
+        getValue: function () { return 10 },
+        getDefault: function () { return 42 }
+      }
+      assert.strictEqual(math.evaluate('getValue() ?? getDefault()', scope2), 10)
+    })
+
+    it('should handle nullish coalescing with conditional expressions', function () {
+      // Conditional has lower precedence than nullish coalescing
+      assert.strictEqual(math.evaluate('true ? null ?? 5 : 10'), 5) // true ? (null ?? 5) : 10
+      assert.strictEqual(math.evaluate('false ? null ?? 5 : 10'), 10)
+      assert.strictEqual(math.evaluate('null ?? true ? 5 : 10'), 5) // (null ?? true) ? 5 : 10
+    })
+
+    it('should handle nullish coalescing with object property access simulation', function () {
+      const obj = { foo: 7, bar: null }
+      assert.strictEqual(math.evaluate('foo ?? 0', obj), 7)
+      assert.strictEqual(math.evaluate('bar ?? 0', obj), 0)
+      // baz is undefined, would throw error without fallback
+      assert.throws(() => math.evaluate('baz ?? 0', obj), /Undefined symbol baz/)
+    })
+  })
 })
