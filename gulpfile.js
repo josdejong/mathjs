@@ -7,7 +7,7 @@ import log from 'fancy-log'
 import webpack from 'webpack'
 import babel from 'gulp-babel'
 import { mkdirp } from 'mkdirp'
-import { cleanup, iteratePath }  from './tools/docgenerator.js'
+import { cleanup, iteratePath } from './tools/docgenerator.js'
 import { generateEntryFiles } from './tools/entryGenerator.js'
 import { getAllFiles, validateChars } from './tools/validateAsciiChars.js'
 

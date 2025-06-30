@@ -6,6 +6,7 @@ import {
   isIndexNode,
   isNode,
   isObjectNode,
+  isOperatorNode,
   isParenthesisNode,
   isSymbolNode
 } from '../../utils/is.js'
@@ -92,6 +93,15 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
     _compile (math, argNames) {
       const evalObject = this.object._compile(math, argNames)
       const evalIndex = this.index._compile(math, argNames)
+
+      // If index contains operator node, evaluate result of the operation and access object with result
+      if (isOperatorNode(this.index.dimensions[0]) && isObjectNode(this.object)) {
+        const operatorNode = this.index.dimensions[0]
+        return function evalAccessorNode (scope, args, context) {
+          const result = operatorNode._compile(math, argNames)(scope, args, context)
+          return getSafeProperty(evalObject(scope, args, context), String(result))
+        }
+      }
 
       if (this.index.isObjectProperty()) {
         const prop = this.index.getObjectProperty()

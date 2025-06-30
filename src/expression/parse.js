@@ -1,5 +1,5 @@
 import { factory } from '../utils/factory.js'
-import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
+import { isAccessorNode, isConstantNode, isFunctionNode, isObjectNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
 import { deepMap } from '../utils/collection.js'
 import { safeNumberType } from '../utils/number.js'
 import { hasOwnProperty } from '../utils/object.js'
@@ -1413,6 +1413,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         closeParams(state)
         getToken(state)
 
+        // If param value is number and node is object node, make param value a string
+        if (typeof params[0].value === 'number' && isObjectNode(node) && params.length === 1 && isConstantNode(params[0])) {
+          params[0].value = String(params[0].value)
+        }
+
         node = new AccessorNode(node, new IndexNode(params))
       } else {
         // dot notation like variable.prop
@@ -1615,11 +1620,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           // parse key
           if (state.token === '"' || state.token === "'") {
             key = parseStringToken(state, state.token)
-          } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
+          } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS) || state.tokenType === TOKENTYPE.NUMBER) {
             key = state.token
             getToken(state)
           } else {
-            throw createSyntaxError(state, 'Symbol or string expected as object key')
+            throw createSyntaxError(state, 'Symbol, numeric literal or string expected as object key')
           }
 
           // parse key/value separator
