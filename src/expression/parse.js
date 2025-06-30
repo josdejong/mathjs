@@ -1415,7 +1415,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
         // If param value is number and node is object node, make param value a string
         if (typeof params[0].value === 'number' && isObjectNode(node) && params.length === 1 && isConstantNode(params[0])) {
-          params[0].value = String(params[0].value)
+          // Number constructor is first used to manage situations of numbers with preceding zero digit(s)
+          params[0].value = String(Number(params[0].value))
         }
 
         node = new AccessorNode(node, new IndexNode(params))
@@ -1621,7 +1622,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           if (state.token === '"' || state.token === "'") {
             key = parseStringToken(state, state.token)
           } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS) || state.tokenType === TOKENTYPE.NUMBER) {
-            key = state.token
+            key = state.tokenType === TOKENTYPE.NUMBER ? String(Number(state.token)) : state.token
             getToken(state)
           } else {
             throw createSyntaxError(state, 'Symbol, numeric literal or string expected as object key')
