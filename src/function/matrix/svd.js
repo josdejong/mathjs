@@ -4,32 +4,22 @@ import { factory } from '../../utils/factory.js'
 const name = 'svd'
 const dependencies = [
   'typed',
-  'matrix',
+  'dotDivide',
   'matrixFromColumns',
   'transpose',
-  'eigs',
   'multiply',
-  'norm',
-  'dot',
-  'dotDivide',
-  'divideScalar',
-  'equal',
-  'Complex'
+  'eigs',
+  'dot'
 ]
 
 export const createSvd = /* #__PURE__ */ factory(name, dependencies, ({
   typed,
-  matrix,
   dotDivide,
   matrixFromColumns,
   transpose,
   multiply,
   eigs,
-  norm,
-  dot,
-  divideScalar,
-  equal,
-  Complex
+  dot
 }) => {
   /**
    * Compute the Singular Value Decomposition (SVD) of a matrix or value.
