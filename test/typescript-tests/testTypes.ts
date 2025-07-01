@@ -86,8 +86,30 @@ Basic usage examples
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
   math.add(2, 3, 4)
   math.add(2, 3, math.bignumber(4))
+  // @ts-expect-error
+  math.add(2, '3') // currently not supported by the types, but turns out to work
+  // @ts-expect-error
+  assert.throws(() => math.add(2, '3 + 5'))
+  // @ts-expect-error
+  assert.throws(() => math.add(2, '3 cm'))
+  // @ts-expect-error
+  assert.throws(() => math.add())
+  // @ts-expect-error
+  assert.throws(() => math.add(1))
+
   math.multiply(2, 3, 4)
   math.multiply(2, 3, math.bignumber(4))
+  // @ts-expect-error
+  math.multiply(2, '2') // currently not supported by the types, but turns out to work
+  // @ts-expect-error
+  assert.throws(() => math.multiply(2, '3 + 5'))
+  // @ts-expect-error
+  assert.throws(() => math.multiply(2, '3 cm'))
+  // @ts-expect-error
+  assert.throws(() => math.multiply())
+  // @ts-expect-error
+  assert.throws(() => math.multiply(1))
+
 
   // std and variance check
 
