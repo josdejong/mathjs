@@ -33,8 +33,8 @@ export const createSvd = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Examples:
    *
-   *     math.svd([[1, 2], [3, 4]])          // TODO: Implement SVD for matrices
-   *     math.svd([[1, 0], [0, 1], [0, 1]])  // TODO: Implement SVD for matrices
+   *     math.svd([[1, 2], [3, 4]])          // returns { U, S, V }
+   *     math.svd([[1, 0], [0, 1], [0, 1]])  // returns { U, S, V }
    *     math.svd(4)                         // returns { U: [[1]], S: [[4]], V: [[1]] }
    *
    * See also:
@@ -88,8 +88,6 @@ export const createSvd = /* #__PURE__ */ factory(name, dependencies, ({
       (_, i) => Array.from({ length: n }, (_, j) => (i === j && i < zipped.length ? zipped[i].s : 0))
     )
 
-    // MxN : 3x2 -> U : 3x3 -> 3
-    // MxN : 2x3 -> U : 2x2 -> 2
     const Ucols = zipped.slice(0, m).map(({ s, v }) => {
       if (s === 0) return Array(m).fill(0)
       const Av = multiply(A, v)
@@ -102,11 +100,6 @@ export const createSvd = /* #__PURE__ */ factory(name, dependencies, ({
     const U = Array.from({ length: m }, (_, i) =>
       Ucols.map(col => col[i])
     )
-
-    console.log(`Am: ${m}, An: ${n}`)
-    console.log(`Um: ${U.length}, Un: ${U[0].length}`)
-    console.log(`Sm: ${S.length}, Sn: ${S[0].length}`)
-    console.log(`Vm: ${V.length}, Sn: ${V[0].length}`)
 
     return { U, S, V }
   }

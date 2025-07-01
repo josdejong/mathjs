@@ -130,6 +130,7 @@ import { flattenDocs } from './function/matrix/flatten.js'
 import { forEachDocs } from './function/matrix/forEach.js'
 import { getMatrixDataTypeDocs } from './function/matrix/getMatrixDataType.js'
 import { identityDocs } from './function/matrix/identity.js'
+import { svdDocs } from './function/matrix/svd.js'
 import { invDocs } from './function/matrix/inv.js'
 import { pinvDocs } from './function/matrix/pinv.js'
 import { kronDocs } from './function/matrix/kron.js'
@@ -463,6 +464,7 @@ export const embeddedDocs = {
   filter: filterDocs,
   flatten: flattenDocs,
   forEach: forEachDocs,
+  svd: svdDocs,
   inv: invDocs,
   pinv: pinvDocs,
   eigs: eigsDocs,
