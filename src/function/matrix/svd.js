@@ -1,12 +1,18 @@
 import { isMatrix } from '../../utils/is.js'
+import { arraySize } from '../../utils/array.js'
+import { format } from '../../utils/string.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'svd'
 const dependencies = [
   'typed',
   'dotDivide',
+  'identity',
+  'zeros',
   'matrixFromColumns',
   'transpose',
+  'diag',
+  'resize',
   'multiply',
   'eigs',
   'dot'
@@ -15,8 +21,12 @@ const dependencies = [
 export const createSvd = /* #__PURE__ */ factory(name, dependencies, ({
   typed,
   dotDivide,
+  identity,
+  zeros,
   matrixFromColumns,
   transpose,
+  diag,
+  resize,
   multiply,
   eigs,
   dot
@@ -42,13 +52,24 @@ export const createSvd = /* #__PURE__ */ factory(name, dependencies, ({
    *     inv
    *     pinv
    *
-   * @param {number | Array | Matrix} x     Matrix to be decomposed
+   * @param {number | Array | Matrix} x     Matrix to be decomposed. Real valued only.
    * @return {{ U: Array, S: Array, V: Array } | { U: Matrix, S: Matrix, V: Matrix }} Object containing U, S, and V matrices
    */
   return typed(name, {
     'Array | Matrix': function (x) {
+      const size = isMatrix(x) ? x.size() : arraySize(x)
       const arr = isMatrix(x) ? x.valueOf() : x
-      return _svd(arr)
+      switch (size.length) {
+        case 1:
+          // vector
+          return _svd([arr])
+        case 2:
+          // two dimensional
+          return _svd(arr)
+        default:
+          throw new RangeError('Matrix must be one or two dimensional ' +
+            '(size: ' + format(size) + ')')
+      }
     },
 
     any: function (x) {
@@ -68,64 +89,89 @@ export const createSvd = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function _svd (A) {
+    console.log()
+    console.log('Processing SVD of')
+    console.table(A)
+
     const m = A.length
     const n = A[0].length
 
-    // compute AtA
-    const At = transpose(A)
-    const AtA = multiply(At, A)
-
-    const eigens = eigs(AtA)
-    const eigVals = eigens.values
-    const eigVecs = eigens.eigenvectors
-
-    const singularValues = eigVals.map(val => Math.sqrt(Math.max(val, 0)))
-
-    const zipped = singularValues.map((s, i) => ({ s, v: eigVecs[i].vector })).sort((a, b) => b.s - a.s)
-
-    const V = matrixFromColumns(...zipped.map(obj => obj.v))
-    const S = Array.from({ length: m },
-      (_, i) => Array.from({ length: n }, (_, j) => (i === j && i < zipped.length ? zipped[i].s : 0))
-    )
-
-    const Ucols = zipped.slice(0, m).map(({ s, v }) => {
-      if (s === 0) return Array(m).fill(0)
-      const Av = multiply(A, v)
-      return dotDivide(Av, s)
-    })
-    while (Ucols.length < m) {
-      const next = _orthonormalTo(Ucols, m)
-      Ucols.push(next)
+    if (A.every(row => row.every(x => x === 0))) {
+      return {
+        U: identity(m),
+        S: zeros(m, n),
+        V: identity(n)
+      }
     }
-    const U = Array.from({ length: m }, (_, i) =>
-      Ucols.map(col => col[i])
+
+    const useAtA = m <= n
+
+    const M = useAtA
+      ? multiply(transpose(A), A)
+      : multiply(A, transpose(A))
+
+    console.log('Matrix M:')
+    console.table(M)
+
+    const eigens = eigs(M).eigenvectors
+    const singularVectors = eigens.map((ev) => {
+      if (ev.value < 1e-10) {
+        ev.value = 0
+      } else {
+        ev.value = Math.sqrt(Math.abs(ev.value))
+      }
+      return ev
+    }).sort((a, b) => b.value - a.value)
+
+    console.log('Singular Vectors:')
+    console.table(transpose(singularVectors.map((ev) => ev.vector)))
+    console.log('eigens:')
+    console.table(eigens)
+
+    let U, S, V
+
+    if (useAtA) {
+      // case 1: m <= n (M = AtA = R_nxm * R_mxn = R_nxn)
+      V = transpose(singularVectors.map((ev) => ev.vector))
+
+      const Ucols = singularVectors.map(
+        ({ value, vector }) => {
+          return value > 1e-10
+            ? dotDivide(multiply(A, vector), value)
+            : Array(n).fill(0)
+        }
+      )
+      U = Ucols.slice(0, m)
+      U = transpose(U)
+
+      S = resize(diag(singularVectors.map((ev) => ev.value)), [m, n])
+    } else {
+      // case 2: m > n (M = AAt = R_mxn * R_nxm = R_mxm)
+      U = transpose(singularVectors.map((ev) => ev.vector))
+
+      const Vcols = singularVectors.map(
+        ({ value, vector }) => {
+          return value > 1e-10
+            ? dotDivide(multiply(transpose(A), vector), -value)
+            : Array(n).fill(0)
+        }
+      )
+      V = Vcols.slice(0, n)
+
+      S = resize(diag(singularVectors.map((ev) => ev.value)), [m, n])
+    }
+
+    console.table(U)
+    console.table(S)
+    console.table(V)
+
+    const USVt = multiply(
+      U,
+      multiply(S, transpose(V))
     )
+    console.log('USVt:')
+    console.table(USVt)
 
     return { U, S, V }
-  }
-
-  /**
-    * Generates a new orthonormal vector that is orthogonal to all existing vectors.
-    *
-    * @param {Array[]} existingCols         An array of existing orthonormal column vectors (each vector is an array of numbers)
-    * @param {number} dim                   Dimension (length) of the vector space
-    * @return {Array<number>}               A new orthonormal vector of length `dim`, orthogonal to all vectors in `existingCols`
-    * @private
-    */
-  function _orthonormalTo (existingCols, dim) {
-    let vec
-    do {
-      // Create a random vector
-      vec = Array.from({ length: dim }, () => Math.random() - 0.5)
-
-      // Subtract projection onto existing columns
-      for (const col of existingCols) {
-        const proj = dot(vec, col) / dot(col, col)
-        vec = vec.map((v, i) => v - proj * col[i])
-      }
-
-      const norm = Math.sqrt(dot(vec, vec))
-      if (norm > 1e-10) return vec.map(v => v / norm)
-    } while (true)
   }
 })
