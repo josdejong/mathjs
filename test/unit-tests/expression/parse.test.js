@@ -919,6 +919,42 @@ describe('parse', function () {
       }, /Cannot apply a numeric index as object property/)
     })
 
+    it('should coerce numbers to string when trying to apply a numeric key in an object expression', function () {
+      assert.deepStrictEqual(parseAndEval('{2: 6}'), { 2: 6 })
+    })
+
+    it('should throw an error when negative numbers are applied as keys in an object expression', function () {
+      assert.throws(function () {
+        parseAndEval('{-1: 34}')
+      }, /Symbol, numeric literal or string expected as object key \(char 2\)/)
+    })
+
+    it('should coerce numbers to string when trying to access an object expression property with matrix index', function () {
+      assert.strictEqual(parseAndEval('{2: 6}[2]'), 6)
+      assert.strictEqual(parseAndEval('{2.5: 6}[2.5]'), 6)
+      assert.strictEqual(parseAndEval('{5: 16}[3]'), undefined)
+    })
+
+    it('should accept operations in a matrix when trying to access an object expression property', function () {
+      assert.strictEqual(parseAndEval('{2: 6}[2 * 1]'), 6)
+      assert.strictEqual(parseAndEval('{31: 7 - 4}[0.2 + 0.8]'), undefined)
+      assert.strictEqual(parseAndEval('{4: 11 * 4}[(2 ^ 2) * 1]'), 44)
+    })
+
+    it('should ignore leading zeros when trying to apply numeric keys in an object expression', function () {
+      assert.deepStrictEqual(parseAndEval('{02: 6}'), { 2: 6 })
+      assert.deepStrictEqual(parseAndEval('{0070: 6}'), { 70: 6 })
+      assert.deepStrictEqual(parseAndEval('{0.2: 6}'), { 0.2: 6 })
+      assert.deepStrictEqual(parseAndEval('{0010.0501: "haha"}'), { 10.0501: 'haha' })
+    })
+
+    it('should ignore leading zeros in a matrix index when trying to access an object expression property', function () {
+      assert.strictEqual(parseAndEval('{2: 6}[02]'), 6)
+      assert.strictEqual(parseAndEval('{70: 1 - 6}[0070]'), -5)
+      assert.strictEqual(parseAndEval('{0.2: 6}[000.2]'), 6)
+      assert.strictEqual(parseAndEval('{10.0501: "haha"}[0010.0501]'), 'haha')
+    })
+
     it('should set a nested matrix subset from an object property (1)', function () {
       const scope = { obj: { foo: [1, 2, 3] } }
       assert.deepStrictEqual(parseAndEval('obj.foo[2] = 6', scope), 6)
