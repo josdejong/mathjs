@@ -86,30 +86,29 @@ Basic usage examples
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
   math.add(2, 3, 4)
   math.add(2, 3, math.bignumber(4))
-  // @ts-expect-error
-  math.add(2, '3') // currently not supported by the types, but turns out to work
-  // @ts-expect-error
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number)
+  math.add(2, '3')
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
   assert.throws(() => math.add(2, '3 + 5'))
-  // @ts-expect-error
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
   assert.throws(() => math.add(2, '3 cm'))
-  // @ts-expect-error
+  // @ts-expect-error: no arguments are not supported by the types, and should throw an error
   assert.throws(() => math.add())
-  // @ts-expect-error
+  // @ts-expect-error: 1 argument is not supported by the types, and should throw an error
   assert.throws(() => math.add(1))
 
   math.multiply(2, 3, 4)
   math.multiply(2, 3, math.bignumber(4))
-  // @ts-expect-error
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number)
   math.multiply(2, '2') // currently not supported by the types, but turns out to work
-  // @ts-expect-error
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
   assert.throws(() => math.multiply(2, '3 + 5'))
-  // @ts-expect-error
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
   assert.throws(() => math.multiply(2, '3 cm'))
-  // @ts-expect-error
+  // @ts-expect-error: no arguments are not supported by the types, and should throw an error
   assert.throws(() => math.multiply())
-  // @ts-expect-error
+  // @ts-expect-error: 1 argument is not supported by the types, and should throw an error
   assert.throws(() => math.multiply(1))
-
 
   // std and variance check
 
@@ -1854,6 +1853,7 @@ Units examples
 
   // units can be converted to a specific type, or to a number
   b.to('cm')
+  b.to(math.unit('m'))
   math.to(b, 'inch')
   b.toNumber('cm')
   math.number(b, 'cm')

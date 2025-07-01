@@ -1138,7 +1138,7 @@ export interface MathJsInstance extends MathJsFactory {
   add<T extends MathType>(x: T, y: T): T
   add<T extends MathType>(x: T, y: T, ...values: T[]): T
   add(x: MathType, y: MathType): MathType
-  add(x: MathType, y: MathType,...values: MathType[]): MathType
+  add(x: MathType, y: MathType, ...values: MathType[]): MathType
 
   /**
    * Calculate the cubic root of a value.
@@ -4176,7 +4176,7 @@ export interface Unit {
   divide(unit: Unit): Unit | number
   pow(unit: Unit): Unit
   abs(unit: Unit): Unit
-  to(unit: string): Unit
+  to(unit: string | Unit): Unit
   toNumber(unit?: string): number
   toNumeric(unit?: string): number | Fraction | BigNumber
   toSI(): Unit
