@@ -4,7 +4,7 @@ import { createColumn } from '../../function/matrix/column.js'
 import { isNumber } from '../../utils/is.js'
 
 const name = 'column'
-const dependencies = ['typed', 'Index', 'matrix', 'range', 'config']
+const dependencies = ['typed', 'Index', 'matrix', 'range']
 
 /**
  * Attach a transform function to matrix.column
@@ -13,8 +13,8 @@ const dependencies = ['typed', 'Index', 'matrix', 'range', 'config']
  * This transform changed the last `index` parameter of function column
  * from zero-based to one-based
  */
-export const createColumnTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index, matrix, range, config }) => {
-  const column = createColumn({ typed, Index, matrix, range, config })
+export const createColumnTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index, matrix, range }) => {
+  const column = createColumn({ typed, Index, matrix, range })
 
   // @see: comment of column itself
   return typed('column', {

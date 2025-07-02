@@ -16,8 +16,7 @@ const dependencies = [
   'subtract',
   'identity',
   'lusolve',
-  'abs',
-  'config'
+  'abs'
 ]
 
 export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
@@ -94,10 +93,6 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
     }
   })
   function _sylvester (A, B, C) {
-    // chek if legacySubset is enabled and disable it temporarily
-    const originalConfigForLegacySubset = config().legacySubset
-    if (originalConfigForLegacySubset) config({ legacySubset: false })
-
     const n = B.size()[0]
     const m = A.size()[0]
 
@@ -145,9 +140,6 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
     }
     const Y = matrix(matrixFromColumns(...y))
     const X = multiply(U, multiply(Y, transpose(V)))
-
-    // restore original config for legacySubset
-    if (originalConfigForLegacySubset) config({ legacySubset: true })
     return X
   }
 })
