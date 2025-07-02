@@ -4,9 +4,9 @@ import { clone } from '../../utils/object.js'
 import { validateIndex } from '../../utils/array.js'
 
 const name = 'row'
-const dependencies = ['typed', 'Index', 'matrix', 'range']
+const dependencies = ['typed', 'Index', 'matrix', 'range', 'config']
 
-export const createRow = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index, matrix, range }) => {
+export const createRow = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index, matrix, range, config }) => {
   /**
    * Return a row from a Matrix.
    *
@@ -47,12 +47,19 @@ export const createRow = /* #__PURE__ */ factory(name, dependencies, ({ typed, I
     if (value.size().length !== 2) {
       throw new Error('Only two dimensional matrix is supported')
     }
+    // chek if legacySubset is enabled and disable it temporarily
+    const originalConfigForLegacySubset = config().legacySubset
+    if (originalConfigForLegacySubset) config({ legacySubset: false })
 
     validateIndex(row, value.size()[0])
 
     const columnRange = range(0, value.size()[1])
     const index = new Index([row], columnRange)
     const result = value.subset(index)
+
+    // restore original config for legacySubset
+    if (originalConfigForLegacySubset) config({ legacySubset: true })
+
     return isMatrix(result)
       ? result
       : matrix([[result]])

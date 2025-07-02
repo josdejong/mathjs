@@ -4,7 +4,7 @@ import { errorTransform } from './utils/errorTransform.js'
 import { isNumber } from '../../utils/is.js'
 
 const name = 'row'
-const dependencies = ['typed', 'Index', 'matrix', 'range']
+const dependencies = ['typed', 'Index', 'matrix', 'range', 'config']
 
 /**
  * Attach a transform function to matrix.column
@@ -13,8 +13,8 @@ const dependencies = ['typed', 'Index', 'matrix', 'range']
  * This transform changed the last `index` parameter of function column
  * from zero-based to one-based
  */
-export const createRowTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index, matrix, range }) => {
-  const row = createRow({ typed, Index, matrix, range })
+export const createRowTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index, matrix, range, config }) => {
+  const row = createRow({ typed, Index, matrix, range, config })
 
   // @see: comment of row itself
   return typed('row', {
