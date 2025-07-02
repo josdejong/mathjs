@@ -52,6 +52,27 @@ describe('config', function () {
     // Check if console.warn was called
     assert.strictEqual(warnStub.callCount, 1)
 
+    // Test legacy syntax for getting a subset of a matrix
+    const A = math2.matrix([[1, 2, 3], [4, 5, 6]])
+    const index = math2.index
+    assert.deepStrictEqual(math2.subset(A, index(1, 2)), 6)
+    assert.deepStrictEqual(math2.subset(A, index([1], 2)), 6)
+    assert.deepStrictEqual(math2.subset(A, index(1, [2])), 6)
+    assert.deepStrictEqual(math2.subset(A, index([1], [2])), 6)
+    assert.deepStrictEqual(math2.subset(A, index(1, [1, 2])).toArray(), [[5, 6]])
+    assert.deepStrictEqual(math2.subset(A, index([0, 1], 1)).toArray(), [[2], [5]])
+
+    // Test without legacy syntax
+    math2.config({ legacySubset: false })
+    assert.deepStrictEqual(math2.subset(A, index(1, 2)), 6)
+    assert.deepStrictEqual(math2.subset(A, index([1], 2)).toArray(), [6])
+    assert.deepStrictEqual(math2.subset(A, index(1, [2])).toArray(), [6])
+    assert.deepStrictEqual(math2.subset(A, index([1], [2])).toArray(), [[6]])
+    assert.deepStrictEqual(math2.subset(A, index(1, [1, 2])).toArray(), [5, 6])
+    assert.deepStrictEqual(math2.subset(A, index([1], [1, 2])).toArray(), [[5, 6]])
+    assert.deepStrictEqual(math2.subset(A, index([0, 1], 1)).toArray(), [2, 5])
+    assert.deepStrictEqual(math2.subset(A, index([0, 1], [1])).toArray(), [[2], [5]])
+
     // Restore console.warn
     warnStub.restore()
   })
