@@ -4,6 +4,17 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20250702-1453">2025-07-02, 14.5.3 <a href="#20250702-1453" title="Permalink">#</a></h1>
+
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/2199">#2199</a> fix <a href="https://github.com/josdejong/mathjs/issues/2199">#2199</a>: parse non-breaking white space `&nbsp;` as white space 
+  (<a href="https://github.com/josdejong/mathjs/issues/3487">#3487</a>). Thanks donmccurdy.
+- Fix: refine the type definitions of `scope` (<a href="https://github.com/josdejong/mathjs/issues/3490">#3490</a>). Thanks <a href="https://github.com/JayChang4w">@JayChang4w</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3493">#3493</a> type definitions of `unit(number)` (<a href="https://github.com/josdejong/mathjs/issues/3495">#3495</a>). Thanks <a href="https://github.com/mrft">@mrft</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3494">#3494</a> type definitions not supporting `unit.to(unit)` (<a href="https://github.com/josdejong/mathjs/issues/3495">#3495</a>).
+  Thanks <a href="https://github.com/mrft">@mrft</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3499">#3499</a> refine type definitions of `add` and `multiply` to not allow zero
+  or one argument (<a href="https://github.com/josdejong/mathjs/issues/3495">#3495</a>). Thanks <a href="https://github.com/mrft">@mrft</a>.
+
 <h1 id="20250530-1452">2025-05-30, 14.5.2 <a href="#20250530-1452" title="Permalink">#</a></h1>
 
 - Fix: add embedded docs for the deprecated physical constant `coulomb`, 
