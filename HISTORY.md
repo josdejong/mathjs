@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 14.5.2
+# 2025-07-02, 14.5.3
 
 - Fix: #2199 fix #2199: parse non-breaking white space `&nbsp;` as white space 
   (#3487). Thanks donmccurdy.
