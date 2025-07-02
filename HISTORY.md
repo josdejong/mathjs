@@ -5,6 +5,11 @@
 - Fix: #2199 fix #2199: parse non-breaking white space `&nbsp;` as white space 
   (#3487). Thanks donmccurdy.
 - Fix: refine the type definitions of `scope` (#3490). Thanks @JayChang4w.
+- Fix: #3493 type definitions of `unit(number)` (#3495). Thanks @mrft.
+- Fix: #3494 type definitions not supporting `unit.to(unit)` (#3495).
+  Thanks @mrft.
+- Fix: #3499 refine type definitions of `add` and `multiply` to not allow zero
+  or one argument (#3495). Thanks @mrft.
 
 # 2025-05-30, 14.5.2
 
