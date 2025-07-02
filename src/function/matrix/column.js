@@ -57,7 +57,7 @@ export const createColumn = /* #__PURE__ */ factory(name, dependencies, ({ typed
     const rowRange = range(0, value.size()[0])
     const index = new Index(rowRange, [column])
     const result = value.subset(index)
-    
+
     // restore original config for legacySubset
     if (originalConfigForLegacySubset) config({ legacySubset: true })
 
