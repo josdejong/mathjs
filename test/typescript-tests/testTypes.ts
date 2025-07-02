@@ -86,8 +86,29 @@ Basic usage examples
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
   math.add(2, 3, 4)
   math.add(2, 3, math.bignumber(4))
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number)
+  math.add(2, '3')
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
+  assert.throws(() => math.add(2, '3 + 5'))
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
+  assert.throws(() => math.add(2, '3 cm'))
+  // @ts-expect-error: no arguments are not supported by the types, and should throw an error
+  assert.throws(() => math.add())
+  // @ts-expect-error: 1 argument is not supported by the types, and should throw an error
+  assert.throws(() => math.add(1))
+
   math.multiply(2, 3, 4)
   math.multiply(2, 3, math.bignumber(4))
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number)
+  math.multiply(2, '2') // currently not supported by the types, but turns out to work
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
+  assert.throws(() => math.multiply(2, '3 + 5'))
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
+  assert.throws(() => math.multiply(2, '3 cm'))
+  // @ts-expect-error: no arguments are not supported by the types, and should throw an error
+  assert.throws(() => math.multiply())
+  // @ts-expect-error: 1 argument is not supported by the types, and should throw an error
+  assert.throws(() => math.multiply(1))
 
   // std and variance check
 
@@ -1741,6 +1762,35 @@ Units examples
 {
   const math = create(all, {})
 
+  /*
+  Unit function type tests
+  */
+  {
+    // Test unit function with string argument
+    expectTypeOf(math.unit('5 cm')).toExtend<Unit>()
+
+    // Test unit function with Unit argument
+    expectTypeOf(math.unit(math.unit('5 cm'))).toExtend<Unit>()
+
+    // Test unit function with MathNumericType and string
+    expectTypeOf(math.unit(5, 'cm')).toExtend<Unit>()
+    expectTypeOf(math.unit(math.bignumber(5), 'cm')).toExtend<Unit>()
+    expectTypeOf(math.unit(math.fraction(5, 2), 'cm')).toExtend<Unit>()
+    expectTypeOf(math.unit(math.complex(5, 0), 'cm')).toExtend<Unit>()
+
+    // Test unit function with just MathNumericType (optional unit parameter)
+    expectTypeOf(math.unit(5)).toExtend<Unit>()
+    expectTypeOf(math.unit(math.bignumber(5))).toExtend<Unit>()
+    expectTypeOf(math.unit(math.fraction(5, 2))).toExtend<Unit>()
+    // Shouldn't this also work? Currently it does not.
+    // expectTypeOf(math.unit(math.complex(5, 0))).toExtend<Unit>()
+
+    // Test unit function with just MathCollection
+    expectTypeOf(math.unit(math.matrix([1, 2, 3]))).toExtend<Unit[]>()
+    expectTypeOf(math.unit([1, 2, 3])).toExtend<Unit[]>()
+    expectTypeOf(math.unit(math.matrix(['2cm', '5cm']))).toExtend<Unit[]>()
+  }
+
   // units can be created by providing a value and unit name, or by providing
   // a string with a valued unit.
   const a = math.unit(45, 'cm') // 450 mm
@@ -1803,6 +1853,7 @@ Units examples
 
   // units can be converted to a specific type, or to a number
   b.to('cm')
+  b.to(math.unit('m'))
   math.to(b, 'inch')
   b.toNumber('cm')
   math.number(b, 'cm')
