@@ -1413,11 +1413,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         closeParams(state)
         getToken(state)
 
-        // If param value is number and node is object node, make param value a string
-        if (typeof params[0].value === 'number' && isObjectNode(node) && params.length === 1 && isConstantNode(params[0])) {
-          // Number constructor is first used to manage situations of numbers with preceding zero digit(s)
-          params[0].value = String(Number(params[0].value))
-        }
+        params[0].forObjectNode = isObjectNode(node)
 
         node = new AccessorNode(node, new IndexNode(params))
       } else {
@@ -1624,6 +1620,13 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS) || state.tokenType === TOKENTYPE.NUMBER) {
             key = state.tokenType === TOKENTYPE.NUMBER ? String(Number(state.token)) : state.token
             getToken(state)
+          } else if (state.token === '-') {
+            const minusNode = parseUnary(state)
+            if (isOperatorNode(minusNode) && minusNode.args.length === 1 && isConstantNode(minusNode.args[0]) && typeof minusNode.args[0].value === 'number') {
+              key = `-${minusNode.args[0].value}`
+            } else {
+              throw createSyntaxError(state, 'Numeric literal expected after "-" as object key')
+            }
           } else {
             throw createSyntaxError(state, 'Symbol, numeric literal or string expected as object key')
           }

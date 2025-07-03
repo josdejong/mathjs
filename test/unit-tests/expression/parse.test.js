@@ -921,12 +921,7 @@ describe('parse', function () {
 
     it('should coerce numbers to string when trying to apply a numeric key in an object expression', function () {
       assert.deepStrictEqual(parseAndEval('{2: 6}'), { 2: 6 })
-    })
-
-    it('should throw an error when negative numbers are applied as keys in an object expression', function () {
-      assert.throws(function () {
-        parseAndEval('{-1: 34}')
-      }, /Symbol, numeric literal or string expected as object key \(char 2\)/)
+      assert.deepStrictEqual(parseAndEval('{-2: 6}'), { '-2': 6 })
     })
 
     it('should coerce numbers to string when trying to access an object expression property with matrix index', function () {
@@ -939,6 +934,7 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('{2: 6}[2 * 1]'), 6)
       assert.strictEqual(parseAndEval('{31: 7 - 4}[0.2 + 0.8]'), undefined)
       assert.strictEqual(parseAndEval('{4: 11 * 4}[(2 ^ 2) * 1]'), 44)
+      assert.strictEqual(parseAndEval('{-4: 11 * 4}[-4]'), 44)
     })
 
     it('should ignore leading zeros when trying to apply numeric keys in an object expression', function () {
