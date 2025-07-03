@@ -867,8 +867,8 @@ export interface MathJsInstance extends MathJsFactory {
    * @param unit The unit to be created
    * @returns The created unit
    */
-  unit(value: MathNumericType, unit: string): Unit
-  unit(value: MathCollection, unit: string): Unit[]
+  unit(value: MathNumericType, unit?: string): Unit
+  unit(value: MathCollection): Unit[]
 
   /*************************************************************************
    * Expression functions
@@ -1136,9 +1136,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Sum of x and y
    */
   add<T extends MathType>(x: T, y: T): T
-  add<T extends MathType>(...values: T[]): T
+  add<T extends MathType>(x: T, y: T, ...values: T[]): T
   add(x: MathType, y: MathType): MathType
-  add(...values: MathType[]): MathType
+  add(x: MathType, y: MathType, ...values: MathType[]): MathType
 
   /**
    * Calculate the cubic root of a value.
@@ -1465,9 +1465,8 @@ export interface MathJsInstance extends MathJsFactory {
   multiply<T extends MathArray>(x: T, y: T): MathScalarType
   multiply(x: Unit, y: Unit): Unit
   multiply(x: number, y: number): number
-  multiply(x: MathType, y: MathType): MathType
-  multiply<T extends MathType>(...values: T[]): T
-  multiply(...values: MathType[]): MathType
+  multiply(x: MathType, y: MathType, ...values: MathType[]): MathType
+  multiply<T extends MathType>(x: T, y: T, ...values: T[]): T
 
   /**
    * Calculate the norm of a number, vector or matrix. The second
@@ -4190,7 +4189,7 @@ export interface Unit {
   divide(unit: Unit): Unit | number
   pow(unit: Unit): Unit
   abs(unit: Unit): Unit
-  to(unit: string): Unit
+  to(unit: string | Unit): Unit
   toBest(): Unit
   toBest(units?: string[] | Unit[], options?: object): Unit
   toNumber(unit?: string): number
@@ -4842,7 +4841,7 @@ export interface MathJsChain<TValue> {
    */
   unit(this: MathJsChain<string>, unit?: string): MathJsChain<Unit>
   unit(this: MathJsChain<MathNumericType>, unit?: string): MathJsChain<Unit>
-  unit(this: MathJsChain<MathCollection>, unit?: string): MathJsChain<Unit[]>
+  unit(this: MathJsChain<MathCollection>): MathJsChain<Unit[]>
 
   /*************************************************************************
    * Expression functions
