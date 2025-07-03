@@ -12,8 +12,24 @@
 
 # unpublished changes since 14.5.2
 
-- Fix: #2199 fix #2199: parse non-breaking white space `&nbsp;` as white space 
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Fix: #1753 Correct dimensionality of Kronecker product on vectors (and
+  extend to arbitrary dimension) (#3455). Thanks @Delaney.
+- Feat: #3349 Decouple precedence of unary percentage operator and binary
+  modulus operator (that both use symbol `%`), and raise the former (#3432).
+  Thanks @kiprobinsonknack.
+
+# 2025-07-02, 14.5.3
+
+- Fix: #2199 parse non-breaking white space `&nbsp;` as white space 
   (#3487). Thanks donmccurdy.
+- Fix: refine the type definitions of `scope` (#3490). Thanks @JayChang4w.
+- Fix: #3493 type definitions of `unit(number)` (#3495). Thanks @mrft.
+- Fix: #3494 type definitions not supporting `unit.to(unit)` (#3495).
+  Thanks @mrft.
+- Fix: #3499 refine type definitions of `add` and `multiply` to not allow zero
+  or one argument (#3495). Thanks @mrft.
 
 # 2025-05-30, 14.5.2
 
