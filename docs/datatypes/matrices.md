@@ -274,9 +274,30 @@ created using the function `index`. When getting a single value from a matrix,
 `subset` will return the value itself instead of a matrix containing just this 
 value.
 
-The function `subset` normally returns a subset, but when getting or setting a
-single value in a matrix, the value itself is returned.
+**New behavior:**  
+When using `subset`, indexing a dimension with a scalar removes that dimension from the result, while indexing with an array (even if it has only one element) preserves that dimension. In other words, scalar indices eliminate dimensions, and array indices retain them. To restore the previous behavior, where retrieving an index with an Array or Matrix with size 1 or a single value always returns the value itself regardless of index type, set the configuration option `{legacySubset: true}` using the `config` function.
 
+For example:
+
+```js
+const m = [
+  [10, 11, 12],
+  [20, 21, 22]
+]
+
+// Scalar index eliminates the dimension:
+math.subset(m, math.index(1, 2))           // 22 (both dimensions indexed by scalars, result is a value)
+math.subset(m, math.index(1, [2]))         // [22] (row dimension eliminated, column dimension preserved as array)
+math.subset(m, math.index([1], 2))         // [22] (column dimension eliminated, row dimension preserved as array)
+math.subset(m, math.index([1], [2]))       // [[22]] (both dimensions preserved as arrays)
+
+math.config({legacySubset: true}) // switch to legacy behavior
+math.subset(m, math.index(1, 2))           // 22
+math.subset(m, math.index(1, [2]))         // 22
+math.subset(m, math.index([1], 2))         // 22
+math.subset(m, math.index([1], [2]))       // 22
+
+```
 
 Matrix indexes in math.js are zero-based, like most programming languages
 including JavaScript itself. Note that mathematical applications like Matlab 
@@ -296,7 +317,7 @@ math.subset(a, math.index([2, 3]))            // Array, [2, 3]
 math.subset(a, math.index(math.range(0,4)))   // Array, [0, 1, 2, 3]
 math.subset(b, math.index(1, 0))              // 2
 math.subset(b, math.index(1, [0, 1]))         // Array, [2, 3]
-math.subset(b, math.index([0, 1], 0))         // Matrix, [[0], [2]]
+math.subset(b, math.index([0, 1], [0]))       // Matrix, [[0], [2]]
 
 // get a subset
 d.subset(math.index([1, 2], [0, 1]))          // Matrix, [[3, 4], [6, 7]]

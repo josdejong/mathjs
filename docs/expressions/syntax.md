@@ -680,6 +680,10 @@ resolving of the nested index needs to be split in two separate operations.
 in JavaScript: They are one-based with an included upper-bound, similar to most
 math applications.*
 
+*IMPORTANT: Matrix indexing behaves differently depending on the type of input.
+If an index for a dimension is a scalar (single value), that dimension is 
+removed from the result.*
+
 ```js
 parser = math.parser()
 
@@ -697,7 +701,7 @@ parser.evaluate('d = a * b')              // Matrix, [[19, 22], [43, 50]]
 
 // retrieve a subset of a matrix
 parser.evaluate('d[2, 1]')                // 43
-parser.evaluate('d[2, 1:end]')            // Matrix, [[43, 50]]
+parser.evaluate('d[2, 1:end]')            // Matrix, [43, 50]
 parser.evaluate('c[end - 1 : -1 : 2]')    // Matrix, [8, 7, 6]
 ```
 
