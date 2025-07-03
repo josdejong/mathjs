@@ -1125,6 +1125,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       throw new Error('Invalid unit type. Expected string or Unit.')
     }
 
+    const startPrefixes = this.units[0].unit.prefixes
     if (unitList && unitList.length > 0) {
       const unitObjects = unitList.map(u => {
         let unit = null
@@ -1155,6 +1156,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     const result = formatBest(this, options).simp
+    this.units[0].unit.prefixes = startPrefixes
     return denormalizeBest(result)
   }
   /**
