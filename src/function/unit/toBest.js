@@ -23,9 +23,9 @@ export const createToBest = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * Examples:
    *
-   *    math.unit(0.05, 'm').toBest(['cm', 'mm'])                         // Unit 500 cm
-   *    math.unit(2 / 3, 'cm').toBest()                                   // Unit 0.6666666666666666 cm
-   *    math.unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 })          // Unit 10000 mm
+   *   math.unit(0.05, 'm').toBest(['cm', 'mm']).toString()  // returns 5 cm
+   *   math.unit(2 / 3, 'cm').toBest().toString()  // returns 0.6666666666666666 cm
+   *   math.unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 }).toString()  // returns 10000 mm
    *
    * See also:
    *
