@@ -1050,16 +1050,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // explicit operators
         name = state.token
         fn = operators[name]
-
         getTokenSkipNewline(state)
-
-        if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
-          // This % cannot be interpreted as a modulus, and it wasn't handled by parseUnaryPostfix
-          throw createSyntaxError(state, 'Unexpected operator %')
-        } else {
-          last = parseImplicitMultiplication(state)
-          node = new OperatorNode(name, fn, [node, last])
-        }
+        last = parseImplicitMultiplication(state)
+        node = new OperatorNode(name, fn, [node, last])
       } else {
         break
       }
@@ -1167,13 +1160,19 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.token === '%') {
       const previousState = Object.assign({}, state)
       getTokenSkipNewline(state)
-
-      if (state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
-        // This is unary postfix %, then treat that as /100
-        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
-      } else {
-        // Not a match, so rewind
+      // We need to decide if this is a unary percentage % or binary modulo %
+      // So we attempt to parse a unary expression at this point.
+      // If it fails, then the only possibility is that this is a unary percentage.
+      // If it succeeds, then we presume that this must be binary modulo, since the
+      // only things that parseUnary can handle are _higher_ precedence than unary %.
+      try {
+        parseUnary(state)
+        // Not sure if we could somehow use the result of that parseUnary? Without
+        // further analysis/testing, safer just to discard and let the parse proceed
         Object.assign(state, previousState)
+      } catch {
+        // Not seeing a term at this point, so was a unary %
+        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
       }
     }
 

@@ -1374,7 +1374,7 @@ describe('parse', function () {
     it('should parse % with multiplication', function () {
       approxEqual(parseAndEval('100*50%'), 50)
       approxEqual(parseAndEval('50%*100'), 50)
-      assert.throws(function () { parseAndEval('50%(*100)') }, /Value expected/)
+      assert.throws(function () { parseAndEval('50%(*100)') }, SyntaxError)
     })
 
     it('should parse % with division', function () {
@@ -1382,7 +1382,7 @@ describe('parse', function () {
       approxEqual(parseAndEval('100/50%*2'), 400) // should be treated as (100/(50%))×2
       approxEqual(parseAndEval('50%/100'), 0.005)
       approxEqual(parseAndEval('50%(13)'), 11) // should be treated as 50 % (13)
-      assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
+      assert.throws(function () { parseAndEval('50%(/100)') }, SyntaxError)
     })
 
     it('should parse unary % before division, binary % with division', function () {
@@ -1390,19 +1390,24 @@ describe('parse', function () {
     })
 
     it('should reject repeated unary percentage operators', function () {
-      assert.throws(function () { math.parse('17%%') }, /Unexpected operator %/)
-      assert.throws(function () { math.parse('17%%*5') }, /Unexpected operator %/)
-      assert.throws(function () { math.parse('10/200%%%3') }, /Unexpected operator %/)
+      assert.throws(function () { math.parse('17%%') }, SyntaxError)
+      assert.throws(function () { math.parse('17%%*5') }, SyntaxError)
+      assert.throws(function () { math.parse('10/200%%%3') }, SyntaxError)
     })
 
     it('should parse unary % with addition', function () {
       approxEqual(parseAndEval('100+3%'), 103)
-      approxEqual(parseAndEval('3%+100'), 100.03)
+      assert.strictEqual(parseAndEval('3%+100'), 3) // treat as 3 mod 100
     })
 
     it('should parse unary % with subtraction', function () {
       approxEqual(parseAndEval('100-3%'), 97)
-      approxEqual(parseAndEval('3%-100'), -99.97)
+      assert.strictEqual(parseAndEval('3%-100'), -97) // treat as 3 mod -100
+    })
+
+    it('should parse binary % with bitwise negation', function () {
+      assert.strictEqual(parseAndEval('11%~1'), -1) // equivalent to 11 mod -2
+      assert.strictEqual(parseAndEval('11%~-3'), 1) // equivalent to 11 mod 2
     })
 
     it('should parse operator mod', function () {
