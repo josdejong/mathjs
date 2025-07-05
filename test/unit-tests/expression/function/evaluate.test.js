@@ -169,7 +169,24 @@ describe('evaluate', function () {
       assert.strictEqual(math.evaluate('"" ?? "hello"'), '') // empty string is not nullish
     })
 
-    it('should handle nullish coalescing with matrices and arrays', function () {
+    it('should handle nullish coalescing with matrices and arrays as operands', function () {
+      // Test arrays as operands
+      assert.deepStrictEqual(math.evaluate('null ?? [1, 2, 3]'), math.matrix([1, 2, 3]))
+      assert.deepStrictEqual(math.evaluate('[1, 2] ?? [3, 4]'), math.matrix([1, 2])) // arrays are not nullish
+      assert.deepStrictEqual(math.evaluate('undefined ?? [5, 6]'), math.matrix([5, 6]))
+      assert.deepStrictEqual(math.evaluate('[null, null] ?? [7, 8]'), math.matrix([7, 8])) // empty array is not nullish
+
+      // Test matrices as operands
+      const matrix1 = math.matrix([1, 2])
+      assert.deepStrictEqual(math.evaluate('null ?? matrix([1, 2])'), matrix1)
+      assert.deepStrictEqual(math.evaluate('matrix([1, 2]) ?? matrix([3, 4])'), matrix1) // matrices are not nullish
+      assert.deepStrictEqual(math.evaluate('undefined ?? matrix([5, 6])'), math.matrix([5, 6]))
+
+      // Test mixed arrays and matrices
+      assert.deepStrictEqual(math.evaluate('null ?? matrix([1, 2])'), matrix1)
+      assert.deepStrictEqual(math.evaluate('[1, 2] ?? matrix([3, 4])'), math.matrix([1, 2]))
+
+      // Test arrays/matrices containing expressions
       assert.deepStrictEqual(math.evaluate(['null ?? 1', '2 ?? null', 'null ?? null ?? 3']), [1, 2, 3])
       assert.deepStrictEqual(math.evaluate(math.matrix(['null ?? 1', '2 ?? null'])), math.matrix([1, 2]))
     })
@@ -188,11 +205,14 @@ describe('evaluate', function () {
       assert.strictEqual(math.evaluate('getValue() ?? getDefault()', scope2), 10)
     })
 
-    it('should handle nullish coalescing with conditional expressions', function () {
-      // Conditional has lower precedence than nullish coalescing
-      assert.strictEqual(math.evaluate('true ? null ?? 5 : 10'), 5) // true ? (null ?? 5) : 10
-      assert.strictEqual(math.evaluate('false ? null ?? 5 : 10'), 10)
-      assert.strictEqual(math.evaluate('null ?? true ? 5 : 10'), 5) // (null ?? true) ? 5 : 10
+    it('should handle nullish coalescing with conditional expressions and correct precedence', function () {
+      // ?? has higher precedence than conditional (?:), so these test cases show the difference
+      assert.strictEqual(math.evaluate('5 ?? null ? 1 : 2'), 1) // (5 ?? null) ? 1 : 2 = 5 ? 1 : 2 = 1
+      assert.strictEqual(math.evaluate('null ?? 0 ? 1 : 2'), 2) // (null ?? 0) ? 1 : 2 = 0 ? 1 : 2 = 2
+      assert.strictEqual(math.evaluate('undefined ?? true ? 1 : 2'), 1) // (undefined ?? true) ? 1 : 2 = true ? 1 : 2 = 1
+
+      assert.strictEqual(math.evaluate('(5 ?? null) ? 1 : 2'), 1) // Explicit precedence
+      assert.strictEqual(math.evaluate('5 ?? (null ? 1 : 2)'), 5) // Different precedence
     })
   })
 })
