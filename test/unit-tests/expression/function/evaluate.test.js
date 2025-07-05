@@ -90,6 +90,7 @@ describe('evaluate', function () {
       assert.strictEqual(math.evaluate('null ?? 42'), 42)
       assert.strictEqual(math.evaluate('undefined ?? 42'), 42)
       assert.strictEqual(math.evaluate('0 ?? 42'), 0)
+      assert.strictEqual(math.evaluate('nullish(null, 42)'), 42)
       assert.strictEqual(math.evaluate('false ?? 42'), false)
       assert.strictEqual(math.evaluate('"" ?? 42'), '')
       assert(isNaN(math.evaluate('NaN ?? 42'))) // Should return NaN, not 42
@@ -98,25 +99,33 @@ describe('evaluate', function () {
     it('should handle nullish coalescing with variables', function () {
       const scope1 = {}
       assert.throws(() => math.evaluate('x ?? 42', scope1), /Undefined symbol x/)
+      assert.throws(() => math.evaluate('nullish(x, 42)', scope1), /Undefined symbol x/)
 
       const scope2 = { x: null }
       assert.strictEqual(math.evaluate('x ?? 42', scope2), 42)
+      assert.strictEqual(math.evaluate('nullish(x, 42)', scope2), 42)
 
       const scope3 = { x: 0 }
       assert.strictEqual(math.evaluate('x ?? 42', scope3), 0)
+      assert.strictEqual(math.evaluate('nullish(x, 42)', scope3), 0)
 
       const scope4 = { x: undefined }
       assert.strictEqual(math.evaluate('x ?? 42', scope4), 42)
+      assert.strictEqual(math.evaluate('nullish(x, 42)', scope4), 42)
 
       const scope5 = { x: 5 }
       assert.strictEqual(math.evaluate('x ?? 42', scope5), 5)
+      assert.strictEqual(math.evaluate('nullish(x, 42)', scope5), 5)
     })
 
     it('should handle chained nullish coalescing', function () {
       assert.strictEqual(math.evaluate('null ?? undefined ?? 42'), 42)
+      assert.strictEqual(math.evaluate('nullish(null, undefined ?? 42)'), 42)
       assert.strictEqual(math.evaluate('null ?? 10 ?? 42'), 10)
       assert.strictEqual(math.evaluate('5 ?? null ?? 42'), 5)
+      assert.strictEqual(math.evaluate('nullish(5, null ?? 42)'), 5)
       assert.strictEqual(math.evaluate('null ?? null ?? null ?? 99'), 99)
+      assert.strictEqual(math.evaluate('nullish(null ?? null, null ?? 99)'), 99)
     })
 
     it('should handle nullish coalescing with correct precedence', function () {
@@ -131,10 +140,10 @@ describe('evaluate', function () {
       assert.strictEqual(math.evaluate('true or null ?? 42'), true) // true or (null ?? 42)
 
       // Parentheses can override precedence
-      assert.throws(() => math.evaluate('(1 + null) ?? 2'))
-      assert.throws(() => math.evaluate('(2 * null) ?? 3'))
-      assert.throws(() => math.evaluate('(2 ^ null) ?? 3'))
-      assert.strictEqual(math.evaluate('2 * (3 ?? null)'), 6)
+      assert.throws(() => math.evaluate('(1 + null) ?? 2'), /TypeError: Unexpected type of argument/)
+      assert.throws(() => math.evaluate('(2 * null) ?? 3'), /TypeError: Unexpected type of argument/)
+      assert.throws(() => math.evaluate('(2 ^ null) ?? 3'), /TypeError: Unexpected type of argument/)
+      assert.strictEqual(math.evaluate('2 * (null ?? 3)'), 6)
     })
 
     it('should handle nullish coalescing with higher precedence than exponentiation', function () {
@@ -145,11 +154,13 @@ describe('evaluate', function () {
       assert.strictEqual(math.evaluate('false ?? 3 ^ 2'), 0) // false is not nullish, so (false ?? 3) ^ 2 = false ^ 2 = 0 ^ 2 = 0
     })
 
-    it('should handle nullish coalescing with complex expressions', function () {
+    it('should handle nullish coalescing with scope lookup', function () {
       const scope = { a: null, b: 5, c: 0 }
       assert.strictEqual(math.evaluate('a ?? b * 2', scope), 10) // null ?? (5 * 2)
       assert.strictEqual(math.evaluate('c ?? b * 2', scope), 0) // 0 ?? (5 * 2) = 0
       assert.strictEqual(math.evaluate('(a ?? b) * 2', scope), 10) // (null ?? 5) * 2 = 10
+      // d is undefined, would throw error without fallback
+      assert.throws(() => math.evaluate('d ?? 0', scope), /Undefined symbol d/)
     })
 
     it('should handle nullish coalescing with strings', function () {
@@ -182,14 +193,6 @@ describe('evaluate', function () {
       assert.strictEqual(math.evaluate('true ? null ?? 5 : 10'), 5) // true ? (null ?? 5) : 10
       assert.strictEqual(math.evaluate('false ? null ?? 5 : 10'), 10)
       assert.strictEqual(math.evaluate('null ?? true ? 5 : 10'), 5) // (null ?? true) ? 5 : 10
-    })
-
-    it('should handle nullish coalescing with object property access simulation', function () {
-      const obj = { foo: 7, bar: null }
-      assert.strictEqual(math.evaluate('foo ?? 0', obj), 7)
-      assert.strictEqual(math.evaluate('bar ?? 0', obj), 0)
-      // baz is undefined, would throw error without fallback
-      assert.throws(() => math.evaluate('baz ?? 0', obj), /Undefined symbol baz/)
     })
   })
 })

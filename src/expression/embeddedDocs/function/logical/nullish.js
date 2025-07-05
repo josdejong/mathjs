@@ -5,7 +5,7 @@ export const nullishDocs = {
     'x ?? y',
     'nullish(x, y)'
   ],
-  description: 'Nullish coalescing operator. Returns the right-hand side operand when the left-hand side operand is null or undefined, and otherwise returns the left-hand side operand.',
+  description: 'Nullish coalescing operator. Returns the right-hand operand when the left-hand operand is null or undefined, and otherwise returns the left-hand operand.',
   examples: [
     'null ?? 42',
     'undefined ?? 42',
