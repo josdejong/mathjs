@@ -1,8 +1,8 @@
 # History
 
-# unpublished changes since 14.5.2
+# 2025-07-02, 14.5.3
 
-- Fix: #2199 fix #2199: parse non-breaking white space `&nbsp;` as white space 
+- Fix: #2199 parse non-breaking white space `&nbsp;` as white space 
   (#3487). Thanks donmccurdy.
 - Fix: refine the type definitions of `scope` (#3490). Thanks @JayChang4w.
 - Fix: #3493 type definitions of `unit(number)` (#3495). Thanks @mrft.
