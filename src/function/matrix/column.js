@@ -19,7 +19,7 @@ export const createColumn = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *     // get a column
    *     const d = [[1, 2], [3, 4]]
    *     math.column(d, 1) // returns [[2], [4]]
-   *np
+   *
    * See also:
    *
    *     row
