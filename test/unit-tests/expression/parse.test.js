@@ -912,13 +912,6 @@ describe('parse', function () {
       assert.deepStrictEqual(scope, { obj: { foo: { bar: 2 } } })
     })
 
-    it('should throw an error when trying to apply a matrix index as object property', function () {
-      const scope = { a: {} }
-      assert.throws(function () {
-        parseAndEval('a[2] = 6', scope)
-      }, /Cannot apply a numeric index as object property/)
-    })
-
     it('should coerce numbers to string when trying to apply a numeric key in an object expression', function () {
       assert.deepStrictEqual(parseAndEval('{2: 6}'), { 2: 6 })
       assert.deepStrictEqual(parseAndEval('{-2: 6}'), { '-2': 6 })
@@ -930,11 +923,29 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('{5: 16}[3]'), undefined)
     })
 
-    it('should accept operations in a matrix when trying to access an object expression property', function () {
+    it('should coerce numbers to string when trying to set an object property with matrix index', function () {
+      const scope = { obj: {} }
+      const res1 = parseAndEval('obj[2] = 6', scope)
+      const res2 = parseAndEval('obj[-2.5] = {4: "haha"}', scope)
+      assert.strictEqual(res1, 6)
+      assert.strictEqual(res2, { 4: 'haha' })
+      assert.deepStrictEqual(scope, { obj: { 2: 6, '-2.5': { 4: 'haha' } } })
+    })
+
+    it('should accept operations / expressions in a matrix when trying to access an object expression property', function () {
       assert.strictEqual(parseAndEval('{2: 6}[2 * 1]'), 6)
       assert.strictEqual(parseAndEval('{31: 7 - 4}[0.2 + 0.8]'), undefined)
-      assert.strictEqual(parseAndEval('{4: 11 * 4}[(2 ^ 2) * 1]'), 44)
+      assert.strictEqual(parseAndEval('{6: "haha"}[multiply(2, 3)]'), 'haha')
       assert.strictEqual(parseAndEval('{-4: 11 * 4}[-4]'), 44)
+    })
+
+    it('should accept operations / expressions in a matrix when trying to set an object property', function () {
+      const scope = { obj: {} }
+      const res1 = parseAndEval('obj[2^2] = 6', scope)
+      const res2 = parseAndEval('obj[multiply(2, add(3,1))] = "haha"', scope)
+      assert.strictEqual(res1, 6)
+      assert.strictEqual(res2, 'haha')
+      assert.deepStrictEqual(scope, { obj: { 4: 6, 8: 'haha' } })
     })
 
     it('should ignore leading zeros when trying to apply numeric keys in an object expression', function () {
@@ -949,6 +960,13 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('{70: 1 - 6}[0070]'), -5)
       assert.strictEqual(parseAndEval('{0.2: 6}[000.2]'), 6)
       assert.strictEqual(parseAndEval('{10.0501: "haha"}[0010.0501]'), 'haha')
+    })
+
+    it('should ignore leading zeros in a matrix index when trying to set an object property', function () {
+      const scope = { obj: {} }
+      const res = parseAndEval('obj[02] = 6', scope)
+      assert.strictEqual(res, 6)
+      assert.deepStrictEqual(scope, { obj: { 2: 6 } })
     })
 
     it('should set a nested matrix subset from an object property (1)', function () {

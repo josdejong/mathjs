@@ -1,5 +1,5 @@
 import { factory } from '../utils/factory.js'
-import { isAccessorNode, isConstantNode, isFunctionNode, isObjectNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
+import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
 import { deepMap } from '../utils/collection.js'
 import { safeNumberType } from '../utils/number.js'
 import { hasOwnProperty } from '../utils/object.js'
@@ -1412,8 +1412,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
         closeParams(state)
         getToken(state)
-
-        params[0].forObjectNode = isObjectNode(node)
 
         node = new AccessorNode(node, new IndexNode(params))
       } else {

@@ -149,12 +149,9 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @return {boolean}
      */
     isObjectProperty () {
-      if (this.dimensions.length !== 1) return false
-
-      return isConstantNode(this.dimensions[0]) &&
-        (typeof this.dimensions[0].value === 'string' ||
-          (!!this.dimensions[0].forObjectNode &&
-            typeof this.dimensions[0].value === 'number'))
+      return this.dimensions.length === 1 &&
+        isConstantNode(this.dimensions[0]) &&
+        typeof this.dimensions[0].value === 'string'
     }
 
     /**
@@ -163,7 +160,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @return {string | null}
      */
     getObjectProperty () {
-      return this.isObjectProperty() ? String(this.dimensions[0].value) : null
+      return this.isObjectProperty() ? this.dimensions[0].value : null
     }
 
     /**
