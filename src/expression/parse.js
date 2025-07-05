@@ -730,7 +730,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseConditional (state) {
-    let node = parseNullishCoalescing(state)
+    let node = parseLogicalOr(state)
 
     while (state.token === '?') { // eslint-disable-line no-unmodified-loop-condition
       // set a conditional level, the range operator will be ignored as long
@@ -753,22 +753,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       // restore the previous conditional level
       state.conditionalLevel = prev
-    }
-
-    return node
-  }
-
-  /**
-   * nullish coalescing, 'x ?? y'
-   * @return {Node} node
-   * @private
-   */
-  function parseNullishCoalescing (state) {
-    let node = parseLogicalOr(state)
-
-    while (state.token === '??') { // eslint-disable-line no-unmodified-loop-condition
-      getTokenSkipNewline(state)
-      node = new OperatorNode('??', 'nullish', [node, parseLogicalOr(state)])
     }
 
     return node
@@ -1210,6 +1194,22 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * nullish coalescing operator
+   * @return {Node} node
+   * @private
+   */
+  function parseNullishCoalescing (state) {
+    let node = parseLeftHandOperators(state)
+
+    while (state.token === '??') { // eslint-disable-line no-unmodified-loop-condition
+      getTokenSkipNewline(state)
+      node = new OperatorNode('??', 'nullish', [node, parseLeftHandOperators(state)])
+    }
+
+    return node
+  }
+
+  /**
    * power
    * Note: power operator is right associative
    * @return {Node} node
@@ -1218,7 +1218,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parsePow (state) {
     let node, name, fn, params
 
-    node = parseLeftHandOperators(state)
+    node = parseNullishCoalescing(state)
 
     if (state.token === '^' || state.token === '.^') {
       name = state.token

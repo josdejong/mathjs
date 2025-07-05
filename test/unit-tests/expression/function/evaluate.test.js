@@ -120,18 +120,29 @@ describe('evaluate', function () {
     })
 
     it('should handle nullish coalescing with correct precedence', function () {
-      // ?? has lower precedence than arithmetic operators
-      assert.strictEqual(math.evaluate('null ?? 1 + 2'), 3) // null ?? (1 + 2)
-      assert.strictEqual(math.evaluate('null ?? 2 * 3'), 6) // null ?? (2 * 3)
-      assert.strictEqual(math.evaluate('null ?? 2^3'), 8) // null ?? (2^3)
+      // ?? has higher precedence than arithmetic and logical operators
+      assert.strictEqual(math.evaluate('1 + null ?? 2'), 3) // 1 + (null ?? 2)
+      assert.strictEqual(math.evaluate('2 * null ?? 3'), 6) // 2 * (null ?? 3)
 
-      // ?? has same precedence as logical OR, left associative
+      // ?? has higher precedence than exponentiation
+      assert.strictEqual(math.evaluate('2 ^ null ?? 3'), 8) // 2 ^ (null ?? 3)
+
       assert.strictEqual(math.evaluate('null ?? false or true'), true) // (null ?? false) or true
-      assert.strictEqual(math.evaluate('true or null ?? 42'), true) // (true or null) ?? 42 = true ?? 42 = true
+      assert.strictEqual(math.evaluate('true or null ?? 42'), true) // true or (null ?? 42)
 
       // Parentheses can override precedence
-      assert.strictEqual(math.evaluate('null ?? (1 + 2)'), 3)
-      assert.strictEqual(math.evaluate('(null ?? 1) + 2'), 3) // (null ?? 1) + 2 = 1 + 2 = 3
+      assert.throws(() => math.evaluate('(1 + null) ?? 2'))
+      assert.throws(() => math.evaluate('(2 * null) ?? 3'))
+      assert.throws(() => math.evaluate('(2 ^ null) ?? 3'))
+      assert.strictEqual(math.evaluate('2 * (3 ?? null)'), 6)
+    })
+
+    it('should handle nullish coalescing with higher precedence than exponentiation', function () {
+      // These tests specifically verify that ?? has higher precedence than ^
+      assert.strictEqual(math.evaluate('5 ?? 2 ^ 3'), 125) // (5 ?? 2) ^ 3 = 5 ^ 3 = 125
+      assert.strictEqual(math.evaluate('5 ?? (2 ^ 3)'), 5)
+      assert.strictEqual(math.evaluate('3 ^ null ?? 2 ^ 2'), 81) // 3 ^ (null ?? 2) ^ 2 = 3 ^ 2 ^ 2 = 3 ^ 4 = 81
+      assert.strictEqual(math.evaluate('false ?? 3 ^ 2'), 0) // false is not nullish, so (false ?? 3) ^ 2 = false ^ 2 = 0 ^ 2 = 0
     })
 
     it('should handle nullish coalescing with complex expressions', function () {

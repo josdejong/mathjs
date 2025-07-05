@@ -33,13 +33,6 @@ export const properties = [
       // they are 2 dimensional
     }
   },
-  { // nullish coalescing
-    'OperatorNode:nullish': {
-      op: '??',
-      associativity: 'left',
-      associativeWith: []
-    }
-  },
   { // logical or
     'OperatorNode:or': {
       op: 'or',
@@ -242,6 +235,13 @@ export const properties = [
     'OperatorNode:dotPow': {
       op: '.^',
       associativity: 'right',
+      associativeWith: []
+    }
+  },
+  { // nullish coalescing
+    'OperatorNode:nullish': {
+      op: '??',
+      associativity: 'left',
       associativeWith: []
     }
   },

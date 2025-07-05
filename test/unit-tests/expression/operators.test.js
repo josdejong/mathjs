@@ -19,9 +19,9 @@ describe('operators', function () {
     const n4 = math.parse("M'")
 
     assert.strictEqual(getPrecedence(n1, 'keep'), 0)
-    assert.strictEqual(getPrecedence(n2, 'keep'), 2) // nullish coalescing
-    assert.strictEqual(getPrecedence(n3, 'keep'), 3) // logical or
-    assert.strictEqual(getPrecedence(n4, 'keep'), 19) // adjusted for new precedence level
+    assert.strictEqual(getPrecedence(n2, 'keep'), 17) // nullish coalescing
+    assert.strictEqual(getPrecedence(n3, 'keep'), 2) // logical or
+    assert.strictEqual(getPrecedence(n4, 'keep'), 19)
   })
 
   it('should return null if precedence is not defined for a node', function () {
@@ -33,7 +33,7 @@ describe('operators', function () {
   it('should return the precedence of a ParenthesisNode', function () {
     const c = new ConstantNode(1)
 
-    const op = new OperatorNode('??', 'nullish', [c, c])
+    const op = new OperatorNode('or', 'or', [c, c])
 
     const p = new ParenthesisNode(op)
 
@@ -61,7 +61,7 @@ describe('operators', function () {
   it('should return the associativity of a ParenthesisNode', function () {
     const c = new ConstantNode(1)
 
-    const op = new OperatorNode('??', 'nullish', [c, c])
+    const op = new OperatorNode('or', 'or', [c, c])
 
     const p = new ParenthesisNode(op)
 
