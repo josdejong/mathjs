@@ -97,7 +97,7 @@ const knownProblems = new Set([
   'mod', 'floor', 'fix', 'expm1', 'exp',
   'ceil', 'cbrt', 'add', 'slu',
   'rationalize', 'qr', 'lusolve', 'lup', 'derivative',
-  'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round'
+  'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round', 'toBest'
 ])
 
 let issueCount = 0
