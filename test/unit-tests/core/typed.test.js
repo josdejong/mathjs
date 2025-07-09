@@ -1,5 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
+import * as allFactories from '../../../src/factoriesAny.js' // Import all factories
 import Decimal from 'decimal.js'
 import { ObjectWrappingMap, PartitionedMap } from '../../../src/utils/map.js'
 const math2 = math.create()
@@ -397,5 +398,51 @@ describe('typed', function () {
 
     assert.deepStrictEqual(double(math.fraction(2)), math.fraction(4))
     assert.deepStrictEqual(double(2n), math.fraction(4))
+  })
+})
+
+describe('typedErrorHandling for missing type classes', function () {
+  // Helper to create a 'typed' instance with specific types missing
+  function getTypedWithMissingDeps (missingDeps) {
+    const createTypedFactoryFunc = allFactories.createTyped
+
+    // Get actual class constructors from the main math instance
+    const BigNumberClass = math.BigNumber
+    const ComplexClass = math.Complex
+    const DenseMatrixClass = math.DenseMatrix
+    const FractionClass = math.Fraction
+
+    const actualDeps = {
+      BigNumber: missingDeps.includes('BigNumber') ? undefined : BigNumberClass,
+      Complex: missingDeps.includes('Complex') ? undefined : ComplexClass,
+      DenseMatrix: missingDeps.includes('DenseMatrix') ? undefined : DenseMatrixClass,
+      Fraction: missingDeps.includes('Fraction') ? undefined : FractionClass
+    }
+
+    return createTypedFactoryFunc.factory(actualDeps)
+  }
+
+  it('should throw correct error when BigNumber class is missing for number conversion', function () {
+    const typedNoBigNumber = getTypedWithMissingDeps(['BigNumber'])
+    const fn = typedNoBigNumber('fn', { 'BigNumber': x => x })
+    assert.throws(() => fn(123), /Error: Cannot convert value 123 into a BigNumber: no class 'BigNumber' provided/)
+  })
+
+  it('should throw correct error when Complex class is missing for number conversion', function () {
+    const typedNoComplex = getTypedWithMissingDeps(['Complex'])
+    const fn = typedNoComplex('fn', { 'Complex': x => x })
+    assert.throws(() => fn(123), /Error: Cannot convert value 123 into a Complex number: no class 'Complex' provided/)
+  })
+
+  it('should throw correct error when Fraction class is missing for number conversion', function () {
+    const typedNoFraction = getTypedWithMissingDeps(['Fraction'])
+    const fn = typedNoFraction('fn', { 'Fraction': x => x })
+    assert.throws(() => fn(0.5), /Error: Cannot convert value 0.5 into a Fraction, no class 'Fraction' provided./)
+  })
+
+  it('should throw correct error when DenseMatrix class is missing for Array to Matrix conversion', function () {
+    const typedNoDenseMatrix = getTypedWithMissingDeps(['DenseMatrix'])
+    const fn = typedNoDenseMatrix('fn', { 'Matrix': x => x })
+    assert.throws(() => fn([1, 2]), /Error: Cannot convert array into a Matrix: no class 'DenseMatrix' provided/)
   })
 })
