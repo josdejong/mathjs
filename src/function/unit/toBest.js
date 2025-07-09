@@ -12,9 +12,9 @@ export const createToBest = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * Syntax:
    *
-   *    math.toBest()
-   *    math.toBest(unitList)
-   *    math.toBest(unitList, options)
+   *    math.toBest(unit)
+   *    math.toBest(unit, unitList)
+   *    math.toBest(unit, unitList, options)
    *
    * Where:
    * - `unitList` is an optional array of preferred target units as string or Unit.
