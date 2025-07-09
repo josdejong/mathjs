@@ -1245,9 +1245,6 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       // outputted value by not-an-integer-power-of-ten
       if (Math.abs(simp.units[0].power - Math.round(simp.units[0].power)) < 1e-14) {
         // Apply the best prefix
-        if (!offset) {
-          offset = 1.2
-        }
         simp.units[0].prefix = simp._bestPrefix(offset)
       }
     }
