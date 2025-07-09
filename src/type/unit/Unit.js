@@ -1157,7 +1157,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     const result = formatBest(this, options).simp
     this.units[0].unit.prefixes = startPrefixes
-    return denormalizeBest(result)
+    result.fixPrefix = true
+    return result
   }
   /**
    * Get a string representation of the Unit, with optional formatting options.
@@ -1209,21 +1210,6 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       valueStr,
       unitStr
     }
-  }
-
-  function denormalizeBest (initNormalizedResult) {
-    const denormalizedResult = initNormalizedResult.clone()
-    const denormalizedValue = initNormalizedResult.toNumeric()
-
-    denormalizedResult.value = denormalizedValue !== null ? denormalizedValue : 0
-    denormalizedResult.units[0].prefix = {
-      name: initNormalizedResult.units[0].prefix.name,
-      value: 1,
-      scientific: initNormalizedResult.units[0].prefix.scientific
-    }
-
-    denormalizedResult.fixPrefix = true
-    return denormalizedResult
   }
 
   /**

@@ -12,31 +12,31 @@ function assertUnit (actualUnit, expectedValue, expectedPrefix, expectedName) {
 
 describe('toBest', function () {
   it('should return the best unit without any parameters', function () {
-    assertUnit(new Unit(2 / 3, 'cm').toBest(), 0.6666666666666666, 'c', 'm')
+    assertUnit(new Unit(2 / 3, 'cm').toBest(), 0.006666666666666666, 'c', 'm')
   })
 
   it('should format a unit without any value', function () {
-    assertUnit(new Unit(null, 'cm').toBest(), 0, 'c', 'm')
+    assertUnit(new Unit(null, 'cm').toBest(), null, 'c', 'm')
   })
 
   it('should return the best unit with only given unit array - valorized and empty', function () {
     const unit1 = new Unit(10, 'm')
-    assertUnit(unit1.toBest(['km', 'mm', 'cm']), 10000, 'm', 'm')
+    assertUnit(unit1.toBest(['km', 'mm', 'cm']), 10, 'm', 'm')
 
     const unit2 = new Unit(5, 'm')
-    assertUnit(unit2.toBest(['cm', 'mm']), 500, 'c', 'm')
+    assertUnit(unit2.toBest(['cm', 'mm']), 5, 'c', 'm')
   })
 
   it('should return the best unit with valueless unit as parameter', function () {
-    assertUnit(new Unit(1000, 'cm').toBest([new Unit(null, 'km')]), 0.01, 'k', 'm')
+    assertUnit(new Unit(1000, 'cm').toBest([new Unit(null, 'km')]), 10, 'k', 'm')
   })
 
   it('should return the best unit with given array and offset', function () {
-    assertUnit(new Unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 }), 10000, 'm', 'm')
+    assertUnit(new Unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 }), 10, 'm', 'm')
   })
 
   it('should handle negative values correctly', function () {
-    assertUnit(new Unit(-1000, 'cm').toBest(), -1000, 'c', 'm')
+    assertUnit(new Unit(-1000, 'cm').toBest(), -10, 'c', 'm')
   })
 
   it('should handle zero values correctly', function () {
