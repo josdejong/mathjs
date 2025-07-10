@@ -58,6 +58,16 @@
   print(parser.evaluate('b + 2'));
   print(parser.evaluate('0.1 + 0.2'));
 
+  print(math.unit('5cm').toBest(['km', 'm', 'cm', 'mm', 'um', 'nm']).toString());
+  print("math.unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 }) => ", math.unit(10, 'm').toBest(['mm', 'km'], { offset: 1.5 }));
+  print("math.unit(10, 'm').toBest(['cm', 'km'], { offset: 0.5 }) => ", math.unit(10, 'm').toBest(['cm', 'km'], { offset: 0.5 }));
+  print("math.unit(10, 'm').toBest(['nm', 'km'], { offset: 1.5 }) => ", math.unit(10, 'm').toBest(['nm', 'km'], { offset: 1.5 }));
+  print("math.unit(10, 'm').toBest(['um', 'nm'], { offset: 1.5 }) => ", math.unit(10, 'm').toBest(['um', 'nm'], { offset: 1.5 }));
+
+  print("math.unit(10, 'm').toBest(['Mm', 'km'], { offset: 1.5 }) => ", math.unit(10, 'm').toBest(['Mm', 'km'], { offset: 1.5 }));
+  print("math.unit(10, 'm').toBest(['Gm', 'km'], { offset: 1.5 }) => ", math.unit(10, 'm').toBest(['Gm', 'km'], { offset: 1.5 }));
+  print("math.unit(2 / 3, 'cm').toBest() => ", math.unit(2 / 3, 'cm').toBest());
+
 </script>
 </body>
 </html>
