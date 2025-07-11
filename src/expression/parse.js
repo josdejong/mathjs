@@ -347,7 +347,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         next(state)
         state.token += currentCharacter(state)
         next(state)
-        while (parse.isHexDigit(currentCharacter(state))) {
+        while (
+          parse.isAlpha(currentCharacter(state), prevCharacter(state), nextCharacter(state)) ||
+          parse.isDigit(currentCharacter(state))
+        ) {
           state.token += currentCharacter(state)
           next(state)
         }
@@ -356,7 +359,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           state.token += '.'
           next(state)
           // get the digits after the radix
-          while (parse.isHexDigit(currentCharacter(state))) {
+          while (
+            parse.isAlpha(currentCharacter(state), prevCharacter(state), nextCharacter(state)) ||
+            parse.isDigit(currentCharacter(state))
+          ) {
             state.token += currentCharacter(state)
             next(state)
           }
@@ -573,17 +579,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   parse.isDigit = function isDigit (c) {
     return (c >= '0' && c <= '9')
-  }
-
-  /**
-   * checks if the given char c is a hex digit
-   * @param {string} c   a string with one character
-   * @return {boolean}
-   */
-  parse.isHexDigit = function isHexDigit (c) {
-    return ((c >= '0' && c <= '9') ||
-            (c >= 'a' && c <= 'f') ||
-            (c >= 'A' && c <= 'F'))
   }
 
   /**
