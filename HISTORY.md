@@ -6,11 +6,20 @@
 
 - Fix: #1753 Correct dimensionality of Kronecker product on vectors (and
   extend to arbitrary dimension) (#3455). Thanks @Delaney.
+- Fix: #3501 parse `%` as unary only when not followed by a term (#3505).
+  Thanks @gwhitney.
+- Fix #3421 require a space or delimiter after hex, bin, and oct values (#3463).
 - Feat: #3349 Decouple precedence of unary percentage operator and binary
   modulus operator (that both use symbol `%`), and raise the former (#3432).
   Thanks @kiprobinsonknack.
+- Feat: #1753 enhance Kronecker product to handle arbitrary dimension (#3461).
+  Thanks @gwhitney.
 
-# unpublished changes since 14.5.2
+# unpublished changes since 14.5.3
+
+- Feat: new function `toBest(unit, unitList, offset)`, and corresponding
+  method `unit.toBest(...)` (#3484). Thanks @Mundi93, @EliaAlesiani, and
+  @HeavyRainLQ.
 
 # 2025-07-02, 14.5.3
 
