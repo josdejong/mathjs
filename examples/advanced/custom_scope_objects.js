@@ -44,7 +44,8 @@ class CustomMap {
   }
 
   set (key, value) {
-    return this.localScope.set(key, value)
+    this.localScope.set(key, value)
+    return this
   }
 
   has (key) {

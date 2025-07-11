@@ -25,6 +25,7 @@ import {
   IndexNode,
   isSymbolNode,
   LUDecomposition,
+  MapLike,
   MathArray,
   MathCollection,
   MathJsChain,
@@ -33,6 +34,7 @@ import {
   MathNodeCommon,
   MathNumericType,
   MathScalarType,
+  MathScope,
   MathType,
   Matrix,
   Node,
@@ -84,8 +86,29 @@ Basic usage examples
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
   math.add(2, 3, 4)
   math.add(2, 3, math.bignumber(4))
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number)
+  math.add(2, '3')
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
+  assert.throws(() => math.add(2, '3 + 5'))
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
+  assert.throws(() => math.add(2, '3 cm'))
+  // @ts-expect-error: no arguments are not supported by the types, and should throw an error
+  assert.throws(() => math.add())
+  // @ts-expect-error: 1 argument is not supported by the types, and should throw an error
+  assert.throws(() => math.add(1))
+
   math.multiply(2, 3, 4)
   math.multiply(2, 3, math.bignumber(4))
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number)
+  math.multiply(2, '2') // currently not supported by the types, but turns out to work
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
+  assert.throws(() => math.multiply(2, '3 + 5'))
+  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
+  assert.throws(() => math.multiply(2, '3 cm'))
+  // @ts-expect-error: no arguments are not supported by the types, and should throw an error
+  assert.throws(() => math.multiply())
+  // @ts-expect-error: 1 argument is not supported by the types, and should throw an error
+  assert.throws(() => math.multiply(1))
 
   // std and variance check
 
@@ -1116,20 +1139,110 @@ Expressions examples
 
   // scope can contain both variables and functions
   {
-    const scope = { hello: (name: string) => `hello, ${name}!` }
+    const scope: MathScope = { hello: (name: string) => `hello, ${name}!` }
     assert.strictEqual(math.evaluate('hello("hero")', scope), 'hello, hero!')
   }
 
   // define a function as an expression
   {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const scope: any = {
+    const scope: MathScope = {
       a: 3,
       b: 4
     }
     const f = math.evaluate('f(x) = x ^ a', scope)
     f(2)
     scope.f(2)
+  }
+
+  // using JavaScript's built-in Map as scope
+  {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mapScope = new Map<string, any>()
+    mapScope.set('x', 3)
+
+    assert.strictEqual(math.evaluate('x', mapScope), 3)
+    assert.strictEqual(math.evaluate('y = 2 * x', mapScope), 6)
+    assert.strictEqual(mapScope.get('y'), 6)
+
+    math.evaluate('area(length, width) = length * width', mapScope)
+    assert.strictEqual(math.evaluate('area(4, 5)', mapScope), 20)
+    assert.strictEqual(mapScope.get('area')(4, 5), 20)
+  }
+
+  // using custom implementation with type validation and additional utility methods.
+  {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    type ValueType = string | number | Function
+
+    class CustomMap implements MapLike<string, ValueType> {
+      private readonly map = new Map<string, ValueType>()
+
+      // ensure that the value being set is of a valid type
+      private validateValueType(value: ValueType): void | never {
+        if (
+          typeof value !== 'number' &&
+          typeof value !== 'function' &&
+          typeof value !== 'string'
+        ) {
+          throw new TypeError(
+            `CustomMap only supports values of type number, string, or function, got ${typeof value}`
+          )
+        }
+      }
+
+      get(key: string): ValueType {
+        return this.map.get(key)
+      }
+
+      set(key: string, value: ValueType): CustomMap {
+        // additional validation to ensure the value is of a valid type
+        this.validateValueType(value)
+        this.map.set(key, value)
+        return this
+      }
+
+      has(key: string): boolean {
+        return this.map.has(key)
+      }
+
+      keys(): IterableIterator<string> {
+        return this.map.keys()
+      }
+
+      // additional method to get all values in the map
+      getAllValues(): ValueType[] {
+        const values: ValueType[] = []
+        for (const key of this.keys()) {
+          values.push(this.get(key))
+        }
+        return values
+      }
+    }
+
+    const customMap = new CustomMap()
+    customMap.set('x', 4)
+
+    assert.strictEqual(math.evaluate('x + 2', customMap), 6)
+    assert.strictEqual(math.evaluate('z = x * 3', customMap), 12)
+    assert.strictEqual(customMap.get('z'), 12)
+
+    math.evaluate('multiply(a, b) = a * b', customMap)
+    assert.strictEqual(math.evaluate('multiply(3, 4)', customMap), 12)
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    const multiply = customMap.get('multiply') as Function
+    assert.strictEqual(multiply(3, 4), 12)
+
+    const x = customMap.get('x')
+    const z = customMap.get('z')
+    assert.deepStrictEqual(customMap.getAllValues(), [x, z, multiply])
+
+    assert.throws(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      () => math.evaluate('invalid = true', customMap),
+      TypeError
+    )
   }
 
   {
@@ -1143,7 +1256,7 @@ Expressions examples
   {
     // provide a scope for the variable assignment
     const code2 = math.compile('a = a + 3')
-    const scope = { a: 7 }
+    const scope: MathScope = { a: 7 }
     code2.evaluate(scope)
   }
   // 4. using a parser
@@ -1649,6 +1762,35 @@ Units examples
 {
   const math = create(all, {})
 
+  /*
+  Unit function type tests
+  */
+  {
+    // Test unit function with string argument
+    expectTypeOf(math.unit('5 cm')).toExtend<Unit>()
+
+    // Test unit function with Unit argument
+    expectTypeOf(math.unit(math.unit('5 cm'))).toExtend<Unit>()
+
+    // Test unit function with MathNumericType and string
+    expectTypeOf(math.unit(5, 'cm')).toExtend<Unit>()
+    expectTypeOf(math.unit(math.bignumber(5), 'cm')).toExtend<Unit>()
+    expectTypeOf(math.unit(math.fraction(5, 2), 'cm')).toExtend<Unit>()
+    expectTypeOf(math.unit(math.complex(5, 0), 'cm')).toExtend<Unit>()
+
+    // Test unit function with just MathNumericType (optional unit parameter)
+    expectTypeOf(math.unit(5)).toExtend<Unit>()
+    expectTypeOf(math.unit(math.bignumber(5))).toExtend<Unit>()
+    expectTypeOf(math.unit(math.fraction(5, 2))).toExtend<Unit>()
+    // Shouldn't this also work? Currently it does not.
+    // expectTypeOf(math.unit(math.complex(5, 0))).toExtend<Unit>()
+
+    // Test unit function with just MathCollection
+    expectTypeOf(math.unit(math.matrix([1, 2, 3]))).toExtend<Unit[]>()
+    expectTypeOf(math.unit([1, 2, 3])).toExtend<Unit[]>()
+    expectTypeOf(math.unit(math.matrix(['2cm', '5cm']))).toExtend<Unit[]>()
+  }
+
   // units can be created by providing a value and unit name, or by providing
   // a string with a valued unit.
   const a = math.unit(45, 'cm') // 450 mm
@@ -1711,6 +1853,7 @@ Units examples
 
   // units can be converted to a specific type, or to a number
   b.to('cm')
+  b.to(math.unit('m'))
   math.to(b, 'inch')
   b.toNumber('cm')
   math.number(b, 'cm')

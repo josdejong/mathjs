@@ -289,6 +289,21 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('0x1.'), 1)
     })
 
+    it('should require hex, bin, oct values to be followed by whitespace or a delimiter', function () {
+      assert.throws(() => parseAndEval('0b0a'), /SyntaxError: String "0b0a" is not a valid number/)
+      assert.throws(() => parseAndEval('0x1k'), /SyntaxError: String "0x1k" is not a valid number/)
+      assert.throws(() => parseAndEval('0o1k'), /SyntaxError: String "0o1k" is not a valid number/)
+      assert.throws(() => parseAndEval('0b1k'), /SyntaxError: String "0b1k" is not a valid number/)
+
+      assert.strictEqual(parseAndEval('0x1 k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0o1 k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0b1 k', { k: 2 }), 2)
+
+      assert.strictEqual(parseAndEval('0x1*k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0o1*k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0b1*k', { k: 2 }), 2)
+    })
+
     it('should parse a number followed by e', function () {
       approxEqual(parseAndEval('2e'), 2 * Math.E)
     })
@@ -337,7 +352,7 @@ describe('parse', function () {
 
       assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is not a valid number/)
       assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is not a valid number/)
-      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is not a valid number/)
+      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0xghji.xyz" is not a valid number/)
     })
   })
 
@@ -1374,7 +1389,7 @@ describe('parse', function () {
     it('should parse % with multiplication', function () {
       approxEqual(parseAndEval('100*50%'), 50)
       approxEqual(parseAndEval('50%*100'), 50)
-      assert.throws(function () { parseAndEval('50%(*100)') }, /Value expected/)
+      assert.throws(function () { parseAndEval('50%(*100)') }, SyntaxError)
     })
 
     it('should parse % with division', function () {
@@ -1382,7 +1397,17 @@ describe('parse', function () {
       approxEqual(parseAndEval('100/50%*2'), 400) // should be treated as (100/(50%))×2
       approxEqual(parseAndEval('50%/100'), 0.005)
       approxEqual(parseAndEval('50%(13)'), 11) // should be treated as 50 % (13)
-      assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
+      assert.throws(function () { parseAndEval('50%(/100)') }, SyntaxError)
+    })
+
+    it('should parse unary % before division, binary % with division', function () {
+      approxEqual(parseAndEval('10/200%%3'), 2) // should be treated as (10/(200%))%3
+    })
+
+    it('should reject repeated unary percentage operators', function () {
+      assert.throws(function () { math.parse('17%%') }, SyntaxError)
+      assert.throws(function () { math.parse('17%%*5') }, SyntaxError)
+      assert.throws(function () { math.parse('10/200%%%3') }, SyntaxError)
     })
 
     it('should parse unary % before division, binary % with division', function () {
@@ -1397,12 +1422,17 @@ describe('parse', function () {
 
     it('should parse unary % with addition', function () {
       approxEqual(parseAndEval('100+3%'), 103)
-      approxEqual(parseAndEval('3%+100'), 100.03)
+      assert.strictEqual(parseAndEval('3%+100'), 3) // treat as 3 mod 100
     })
 
     it('should parse unary % with subtraction', function () {
       approxEqual(parseAndEval('100-3%'), 97)
-      approxEqual(parseAndEval('3%-100'), -99.97)
+      assert.strictEqual(parseAndEval('3%-100'), -97) // treat as 3 mod -100
+    })
+
+    it('should parse binary % with bitwise negation', function () {
+      assert.strictEqual(parseAndEval('11%~1'), -1) // equivalent to 11 mod -2
+      assert.strictEqual(parseAndEval('11%~-3'), 1) // equivalent to 11 mod 2
     })
 
     it('should parse operator mod', function () {
