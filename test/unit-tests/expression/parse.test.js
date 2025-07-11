@@ -1415,9 +1415,9 @@ describe('parse', function () {
     })
 
     it('should reject repeated unary percentage operators', function () {
-      assert.throws(function () { math.parse('17%%') }, /Unexpected operator %/)
-      assert.throws(function () { math.parse('17%%*5') }, /Unexpected operator %/)
-      assert.throws(function () { math.parse('10/200%%%3') }, /Unexpected operator %/)
+      assert.throws(function () { math.parse('17%%') }, /Unexpected end of expression/)
+      assert.throws(function () { math.parse('17%%*5') }, /Value expected \(char 5\)/)
+      assert.throws(function () { math.parse('10/200%%%3') }, /Value expected \(char 9\)/)
     })
 
     it('should parse unary % with addition', function () {
