@@ -1194,22 +1194,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * nullish coalescing operator
-   * @return {Node} node
-   * @private
-   */
-  function parseNullishCoalescing (state) {
-    let node = parseLeftHandOperators(state)
-
-    while (state.token === '??') { // eslint-disable-line no-unmodified-loop-condition
-      getTokenSkipNewline(state)
-      node = new OperatorNode('??', 'nullish', [node, parseLeftHandOperators(state)])
-    }
-
-    return node
-  }
-
-  /**
    * power
    * Note: power operator is right associative
    * @return {Node} node
@@ -1227,6 +1211,22 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getTokenSkipNewline(state)
       params = [node, parseUnary(state)] // Go back to unary, we can have '2^-3'
       node = new OperatorNode(name, fn, params)
+    }
+
+    return node
+  }
+
+  /**
+   * nullish coalescing operator
+   * @return {Node} node
+   * @private
+   */
+  function parseNullishCoalescing (state) {
+    let node = parseLeftHandOperators(state)
+
+    while (state.token === '??') { // eslint-disable-line no-unmodified-loop-condition
+      getTokenSkipNewline(state)
+      node = new OperatorNode('??', 'nullish', [node, parseLeftHandOperators(state)])
     }
 
     return node

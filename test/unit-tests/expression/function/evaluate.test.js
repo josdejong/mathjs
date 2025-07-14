@@ -138,6 +138,8 @@ describe('evaluate', function () {
 
       assert.strictEqual(math.evaluate('null ?? false or true'), true) // (null ?? false) or true
       assert.strictEqual(math.evaluate('true or null ?? 42'), true) // true or (null ?? 42)
+      assert.strictEqual(math.evaluate('false and null ?? 42'), false) // false and (null ?? 42)
+      assert.strictEqual(math.evaluate('true xor null ?? 42'), false) // true xor (null ?? 42)
 
       // Parentheses can override precedence
       assert.throws(() => math.evaluate('(1 + null) ?? 2'), /TypeError: Unexpected type of argument/)
@@ -185,6 +187,8 @@ describe('evaluate', function () {
       // Test mixed arrays and matrices
       assert.deepStrictEqual(math.evaluate('null ?? matrix([1, 2])'), matrix1)
       assert.deepStrictEqual(math.evaluate('[1, 2] ?? matrix([3, 4])'), math.matrix([1, 2]))
+      assert.deepStrictEqual(math.evaluate('[null, 5] ?? 42'), math.matrix([42, 5]))
+      assert.deepStrictEqual(math.evaluate('[null, 5] ?? [1, 2]'), math.matrix([1, 5]))
 
       // Test arrays/matrices containing expressions
       assert.deepStrictEqual(math.evaluate(['null ?? 1', '2 ?? null', 'null ?? null ?? 3']), [1, 2, 3])
@@ -203,6 +207,13 @@ describe('evaluate', function () {
         getDefault: function () { return 42 }
       }
       assert.strictEqual(math.evaluate('getValue() ?? getDefault()', scope2), 10)
+    })
+
+    it('should handle nullish function with arrays', function () {
+      assert.deepStrictEqual(math.evaluate('nullish(null, [1, 2, 3])'), math.matrix([1, 2, 3]))
+      assert.deepStrictEqual(math.evaluate('nullish([1, 2], [3, 4])'), math.matrix([1, 2]))
+      assert.deepStrictEqual(math.evaluate('nullish([null, 5], 42)'), math.matrix([42, 5]))
+      assert.deepStrictEqual(math.evaluate('nullish([null, 5], [1, 2])'), math.matrix([1, 5]))
     })
 
     it('should handle nullish coalescing with conditional expressions and correct precedence', function () {
