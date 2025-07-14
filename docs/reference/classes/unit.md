@@ -19,6 +19,7 @@
 	* [.toJSON()](#Unit+toJSON) ⇒ <code>Object</code>
 	* [.formatUnits()](#Unit+formatUnits) ⇒ <code>string</code>
 	* [.format([options])](#Unit+format) ⇒ <code>string</code>
+	* [.toBest(unitList, options)](#Unit+toBest) ⇒ <code>Unit</code>
 * _static_
 	* [.parse(str)](#Unit.parse) ⇒ <code>Unit</code>
 	* [.isValuelessUnit(name)](#Unit.isValuelessUnit) ⇒ <code>boolean</code>
@@ -202,6 +203,18 @@ Get a string representation of the Unit, with optional formatting options.
 | Param | Type | Description |
 | --- | --- | --- |
 | [options] | <code>Object</code> &#124; <code>number</code> &#124; <code>function</code> | Formatting options. See                                                lib/utils/number:format for a                                                description of the available                                                options. |
+
+<a name="Unit+toBest"></a>
+### unit.toBest(unitList, options) ⇒ <code>Unit</code>
+Converts a unit to the most appropriate display unit with optional unitList and options.
+
+**Kind**: instance method of <code>Unit</code>
+**Returns**: <code>Unit</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| unitList | <code>Array of strings</code> &#124; | Units strings array (optional).
+| options | <code>Object</code> &#124; | Only "offset" available right now - better prefix calculation
 
 <a name="Unit.parse"></a>
 ### Unit.parse(str) ⇒ <code>Unit</code>

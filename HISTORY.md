@@ -1,5 +1,11 @@
 # History
 
+# Unpublished changes since 14.5.3
+
+- Feat: new function `toBest(unit, unitList, offset)`, and corresponding
+  method `unit.toBest(...)` (#3484). Thanks @Mundi93, @EliaAlesiani, and 
+  @HeavyRainLQ.
+
 # 2025-07-02, 14.5.3
 
 - Fix: #2199 parse non-breaking white space `&nbsp;` as white space 

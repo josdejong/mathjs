@@ -20,6 +20,7 @@ const dependencies = [
   'equal',
   'isNumeric',
   'format',
+  'toBest',
   'number',
   'Complex',
   'BigNumber',
@@ -40,6 +41,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   equal,
   isNumeric,
   format,
+  toBest,
   number,
   Complex,
   BigNumber,
@@ -1111,6 +1113,54 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Get a unit, with optional formatting options.
+   * @memberof Unit
+   * @param {string[] | Unit[]} [units]  Array of units strings or valueLess Unit objects in wich choose the best one
+   * @param {Object} [options]  Options for parsing the unit. See parseUnit for details.
+   *
+   * @return {Unit} Returns a new Unit with the given value and unit.
+   */
+  Unit.prototype.toBest = function (unitList = [], options = {}) {
+    if (unitList && !Array.isArray(unitList)) {
+      throw new Error('Invalid unit type. Expected string or Unit.')
+    }
+
+    const startPrefixes = this.units[0].unit.prefixes
+    if (unitList && unitList.length > 0) {
+      const unitObjects = unitList.map(u => {
+        let unit = null
+        if (typeof u === 'string') {
+          unit = Unit.parse(u)
+          if (!unit) {
+            throw new Error('Invalid unit type. Expected compatible string or Unit.')
+          }
+        } else if (!isUnit(u)) {
+          throw new Error('Invalid unit type. Expected compatible string or Unit.')
+        }
+        if (unit === null) {
+          unit = u.clone()
+        }
+        try {
+          this.to(unit.formatUnits())
+          return unit
+        } catch (e) {
+          throw new Error('Invalid unit type. Expected compatible string or Unit.')
+        }
+      })
+      const prefixes = unitObjects.map(el => el.units[0].prefix)
+      this.units[0].unit.prefixes = prefixes.reduce((acc, prefix) => {
+        acc[prefix.name] = prefix
+        return acc
+      }, {})
+      this.units[0].prefix = prefixes[0]
+    }
+
+    const result = formatBest(this, options).simp
+    this.units[0].unit.prefixes = startPrefixes
+    result.fixPrefix = true
+    return result
+  }
+  /**
    * Get a string representation of the Unit, with optional formatting options.
    * @memberof Unit
    * @param {Object | number | Function} [options]  Formatting options. See
@@ -1120,45 +1170,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {string}
    */
   Unit.prototype.format = function (options) {
-    // Simplfy the unit list, unless it is valueless or was created directly in the
-    // constructor or as the result of to or toSI
-    const simp = this.skipAutomaticSimplification || this.value === null
-      ? this.clone()
-      : this.simplify()
-
-    // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
-    let isImaginary = false
-    if (typeof (simp.value) !== 'undefined' && simp.value !== null && isComplex(simp.value)) {
-      // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
-      isImaginary = Math.abs(simp.value.re) < 1e-14
-    }
-
-    for (const i in simp.units) {
-      if (hasOwnProperty(simp.units, i)) {
-        if (simp.units[i].unit) {
-          if (simp.units[i].unit.name === 'VA' && isImaginary) {
-            simp.units[i].unit = UNITS.VAR
-          } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
-            simp.units[i].unit = UNITS.VA
-          }
-        }
-      }
-    }
-
-    // Now apply the best prefix
-    // Units must have only one unit and not have the fixPrefix flag set
-    if (simp.units.length === 1 && !simp.fixPrefix) {
-      // Units must have integer powers, otherwise the prefix will change the
-      // outputted value by not-an-integer-power-of-ten
-      if (Math.abs(simp.units[0].power - Math.round(simp.units[0].power)) < 1e-14) {
-        // Apply the best prefix
-        simp.units[0].prefix = simp._bestPrefix()
-      }
-    }
-
-    const value = simp._denormalize(simp.value)
-    let str = (simp.value !== null) ? format(value, options || {}) : ''
-    const unitStr = simp.formatUnits()
+    const { simp, valueStr, unitStr } = formatBest(this, options)
+    let str = valueStr
     if (simp.value && isComplex(simp.value)) {
       str = '(' + str + ')' // Surround complex values with ( ) to enable better parsing
     }
@@ -1171,12 +1184,80 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+ * Helper function to normalize a unit for conversion and formatting
+ * @param {Unit} unit The unit to be normalized
+ * @return {Object} Object with normalized unit and value
+ * @private
+ */
+  function formatBest (unit, options = {}) {
+    // Simplfy the unit list, unless it is valueless or was created directly in the
+    // constructor or as the result of to or toSI
+    const simp = unit.skipAutomaticSimplification || unit.value === null
+      ? unit.clone()
+      : unit.simplify()
+
+    // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
+    handleVAandVARUnits(simp)
+    // Now apply the best prefix
+    // Units must have only one unit and not have the fixPrefix flag set
+    applyBestPrefixIfNeeded(simp, options.offset)
+
+    const value = simp._denormalize(simp.value)
+    const valueStr = (simp.value !== null) ? format(value, options || {}) : ''
+    const unitStr = simp.formatUnits()
+    return {
+      simp,
+      valueStr,
+      unitStr
+    }
+  }
+
+  /**
+   * Helper to handle VA and VAR units
+   * @param {Unit} simp The unit to be normalized
+   */
+  function handleVAandVARUnits (simp) {
+    let isImaginary = false
+    if (typeof (simp.value) !== 'undefined' && simp.value !== null && isComplex(simp.value)) {
+      // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
+      isImaginary = Math.abs(simp.value.re) < 1e-14
+    }
+    for (const i in simp.units) {
+      if (hasOwnProperty(simp.units, i)) {
+        if (simp.units[i].unit) {
+          if (simp.units[i].unit.name === 'VA' && isImaginary) {
+            simp.units[i].unit = UNITS.VAR
+          } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
+            simp.units[i].unit = UNITS.VA
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Helper to apply the best prefix if needed
+   * @param {Unit} simp The unit to be normalized
+   */
+  function applyBestPrefixIfNeeded (simp, offset) {
+    if (simp.units.length === 1 && !simp.fixPrefix) {
+      // Units must have integer powers, otherwise the prefix will change the
+      // outputted value by not-an-integer-power-of-ten
+      if (Math.abs(simp.units[0].power - Math.round(simp.units[0].power)) < 1e-14) {
+        // Apply the best prefix
+        simp.units[0].prefix = simp._bestPrefix(offset)
+      }
+    }
+  }
+
+  /**
    * Calculate the best prefix using current value.
    * @memberof Unit
    * @returns {Object} prefix
+   * @param {number} [offset]  Optional offset for the best prefix calculation (default 1.2)
    * @private
    */
-  Unit.prototype._bestPrefix = function () {
+  Unit.prototype._bestPrefix = function (offset = 1.2) {
     if (this.units.length !== 1) {
       throw new Error('Can only compute the best prefix for single units with integer powers, like kg, s^2, N^-1, and so forth!')
     }
@@ -1199,7 +1280,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       return bestPrefix
     }
     const power = this.units[0].power
-    let bestDiff = Math.log(absValue / Math.pow(bestPrefix.value * absUnitValue, power)) / Math.LN10 - 1.2
+    let bestDiff = Math.log(absValue / Math.pow(bestPrefix.value * absUnitValue, power)) / Math.LN10 - offset
     if (bestDiff > -2.200001 && bestDiff < 1.800001) return bestPrefix // Allow the original prefix
     bestDiff = Math.abs(bestDiff)
     const prefixes = this.units[0].unit.prefixes
@@ -1208,8 +1289,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         const prefix = prefixes[p]
         if (prefix.scientific) {
           const diff = Math.abs(
-            Math.log(absValue / Math.pow(prefix.value * absUnitValue, power)) / Math.LN10 - 1.2)
-
+            Math.log(absValue / Math.pow(prefix.value * absUnitValue, power)) / Math.LN10 - offset)
           if (diff < bestDiff ||
             (diff === bestDiff && prefix.name.length < bestPrefix.name.length)) {
             // choose the prefix with the smallest diff, or if equal, choose the one
@@ -1220,7 +1300,6 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         }
       }
     }
-
     return bestPrefix
   }
 
