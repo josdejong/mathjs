@@ -682,7 +682,7 @@ math applications.*
 
 *IMPORTANT: Matrix indexing behaves differently depending on the type of input.
 If an index for a dimension is a scalar (single value), that dimension is 
-removed from the result.*
+removed from the result. For more information of the changes go to [Migrate to V15](../datatypes/matrices.md#migrate-to-v15).*
 
 ```js
 parser = math.parser()
@@ -704,6 +704,29 @@ parser.evaluate('d[2, 1]')                // 43
 parser.evaluate('d[2, 1:end]')            // Matrix, [43, 50]
 parser.evaluate('c[end - 1 : -1 : 2]')    // Matrix, [8, 7, 6]
 ```
+
+#### Matrix Migration examples
+
+With v15, matrix indexing has changed to be more consistent and predictable. In v14, using a scalar index would sometimes reduce the dimensionality of the result. In v15, if you want to preserve dimensions, use array, matrix, or range indices. If you want a scalar value, use scalar indices.
+
+For example:
+
+```js
+parser = math.parser()
+parser.evaluate('m = [1, 2, 3; 4, 5, 6]')
+```
+
+| v14 code                | v15 equivalent code           | Result             |
+|-------------------------|-------------------------------|--------------------|
+| `m[1:2, 2:3]`           | No change needed              | `[[2, 3], [5, 6]]` |
+| `m[2, 2:3]`             | `m[[2], 2:3]`                 | `[[5, 6]]`         |
+| `m[1:2, 3]`             | `m[1:2, [3]]`                 | `[[3], [6]]`       |
+| `m[2, 3]`               | No change needed              | `6`                |
+
+> **Tip:**  
+> If you want to always get a scalar value, use scalar indices.  
+> If you want to preserve dimensions, use array, matrix or range indices.
+
 
 ## Objects
 

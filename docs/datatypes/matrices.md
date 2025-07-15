@@ -364,8 +364,7 @@ const m = math.matrix([[1, 2, 3], [4, 5, 6]])
 
 
 > **Tip:**  
-> If you want to always get a scalar value, use scalar indices.
-> 
+> If you want to get a scalar value, use scalar indices.  
 > If you want to preserve dimensions, use array, matrix or range indices.
 
 ## Getting and setting a value in a matrix
