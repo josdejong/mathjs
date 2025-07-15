@@ -352,18 +352,20 @@ With the release of math.js v15, the behavior of `subset` when indexing matrices
 ### Migration examples
 
 ```js
-const m = math.matrix([[10, 11, 12], [20, 21, 22]])
+const m = math.matrix([[1, 2, 3], [4, 5, 6]])
 ```
 
-| Code example                       | v15+ (default) result         | v14- and v15+ (legacy mode) result | How to get old result in v15+.   |
-|------------------------------------|-------------------------------|------------------------------------|----------------------------------|
-| `m.subset(math.index(1, [2]))`     | `[22]`                        | `22`                               | Use `m.subset(math.index(1, 2))` |
-| `m.subset(math.index([1], 2))`     | `[22]`                        | `22`                               | Use `m.subset(math.index(1, 2))` |
-| `m.subset(math.index([1], [2]))`   | `[[22]]`                      | `22`                               | Use `m.subset(math.index(1, 2))` |
-| `m.subset(math.index(1, 2))`       | `22`                          | `22`                               | No change needed                 |
+| v14 code                                     | v15 equivalent code                       | Result             |
+|----------------------------------------------|-------------------------------------------|--------------------|
+| `math.subset(m, math.index([0, 1], [1, 2]))` | No change needed                          | `[[2, 3], [5, 6]]` |
+| `math.subset(m, math.index(1, [1, 2]))`      | `math.subset(m, math.index([1], [1, 2]))` | `[[5, 6]]`         |
+| `math.subset(m, math.index([0, 1], 2))`      | `math.subset(m, math.index([0, 1], [2]))` | `[[3], [6]]`       |
+| `math.subset(m, math.index(1, 2))`           | No change needed                          | 6                  |
+
 
 > **Tip:**  
 > If you want to always get a scalar value, use scalar indices.
+> 
 > If you want to preserve dimensions, use array, matrix or range indices.
 
 ## Getting and setting a value in a matrix
