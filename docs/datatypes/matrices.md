@@ -270,13 +270,34 @@ in the matrix, and if not, a subset of the matrix will be returned.
 
 A subset can be defined using an `Index`. An `Index` contains a single value
 or a set of values for each dimension of a matrix. An `Index` can be
-created using the function `index`. When getting a single value from a matrix,
-`subset` will return the value itself instead of a matrix containing just this 
-value.
+created using the function `index`. The way `subset` returns results depends on how you specify indices for each dimension:
 
-The function `subset` normally returns a subset, but when getting or setting a
-single value in a matrix, the value itself is returned.
+- If you use a scalar (single number) as an index for a dimension, that dimension is removed from the result.
+- If you use an array, matrix or range (even with just one element) as an index, that dimension is preserved in the result.
 
+This means that scalar indices eliminate dimensions, while array, matrix or range indices retain them. See the section [Migrate to v15](#migrate-to-v15) for more details and examples of this behavior.
+
+For example:
+
+```js
+const m = [
+  [10, 11, 12],
+  [20, 21, 22]
+]
+
+// Scalar index eliminates the dimension:
+math.subset(m, math.index(1, 2))           // 22 (both dimensions indexed by scalars, result is a value)
+math.subset(m, math.index(1, [2]))         // [22] (row dimension eliminated, column dimension preserved as array)
+math.subset(m, math.index([1], 2))         // [22] (column dimension eliminated, row dimension preserved as array)
+math.subset(m, math.index([1], [2]))       // [[22]] (both dimensions preserved as arrays)
+
+math.config({legacySubset: true}) // switch to legacy behavior
+math.subset(m, math.index(1, 2))           // 22
+math.subset(m, math.index(1, [2]))         // 22
+math.subset(m, math.index([1], 2))         // 22
+math.subset(m, math.index([1], [2]))       // 22
+
+```
 
 Matrix indexes in math.js are zero-based, like most programming languages
 including JavaScript itself. Note that mathematical applications like Matlab 
@@ -296,7 +317,7 @@ math.subset(a, math.index([2, 3]))            // Array, [2, 3]
 math.subset(a, math.index(math.range(0,4)))   // Array, [0, 1, 2, 3]
 math.subset(b, math.index(1, 0))              // 2
 math.subset(b, math.index(1, [0, 1]))         // Array, [2, 3]
-math.subset(b, math.index([0, 1], 0))         // Matrix, [[0], [2]]
+math.subset(b, math.index([0, 1], [0]))       // Matrix, [[0], [2]]
 
 // get a subset
 d.subset(math.index([1, 2], [0, 1]))          // Matrix, [[3, 4], [6, 7]]
@@ -312,6 +333,39 @@ c.subset(math.index(1, [0, 1]), [2, 3])       // Matrix, [[0, 1], [2, 3]]
 e.resize([2, 3], 0)                           // Matrix, [[0, 0, 0], [0, 0, 0]]
 e.subset(math.index(1, 2), 5)                 // Matrix, [[0, 0, 0], [0, 0, 5]]
 ```
+## Migrate to v15
+
+With the release of math.js v15, the behavior of `subset` when indexing matrices and arrays has changed. If your code relies on the previous behavior (where indexing with an array or matrix of size 1 would always return the value itself), you may need to update your code or enable legacy mode.
+
+### How to migrate
+
+- **Option 1: Enable legacy behavior**  
+  If you want your code to work as before without changes, enable legacy mode by adding:
+  ```js
+  math.config({ legacySubset: true })
+  ```
+  This restores the old behavior for `subset`.
+
+- **Option 2: Update your code**  
+  Update your code to use scalar indices when you want to eliminate dimensions, or use array indices to preserve dimensions.
+
+### Migration examples
+
+```js
+const m = math.matrix([[1, 2, 3], [4, 5, 6]])
+```
+
+| v14 code                                     | v15 equivalent code                       | Result             |
+|----------------------------------------------|-------------------------------------------|--------------------|
+| `math.subset(m, math.index([0, 1], [1, 2]))` | No change needed                          | `[[2, 3], [5, 6]]` |
+| `math.subset(m, math.index(1, [1, 2]))`      | `math.subset(m, math.index([1], [1, 2]))` | `[[5, 6]]`         |
+| `math.subset(m, math.index([0, 1], 2))`      | `math.subset(m, math.index([0, 1], [2]))` | `[[3], [6]]`       |
+| `math.subset(m, math.index(1, 2))`           | No change needed                          | 6                  |
+
+
+> **Tip:**  
+> If you want to get a scalar value, use scalar indices.  
+> If you want to preserve dimensions, use array, matrix or range indices.
 
 ## Getting and setting a value in a matrix
 

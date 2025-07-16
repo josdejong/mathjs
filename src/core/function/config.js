@@ -61,6 +61,11 @@ export function configFactory (config, emit) {
         delete optionsFix.epsilon
         return _config(optionsFix)
       }
+
+      if (options.legacySubset === true) {
+        // this if is only for backwards compatibility, it can be removed in the future.
+        console.warn('Warning: The configuration option "legacySubset" is for compatibility only and might be deprecated in the future.')
+      }
       const prev = clone(config)
 
       // validate some of the options

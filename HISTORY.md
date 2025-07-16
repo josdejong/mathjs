@@ -21,6 +21,16 @@
   method `unit.toBest(...)` (#3484). Thanks @Mundi93, @EliaAlesiani, and
   @HeavyRainLQ.
 
+# unpublished changes since 14.5.2
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Fix: #1753 Correct dimensionality of Kronecker product on vectors (and
+  extend to arbitrary dimension) (#3455). Thanks @Delaney.
+- Feat: #3349 Decouple precedence of unary percentage operator and binary
+  modulus operator (that both use symbol `%`), and raise the former (#3432).
+  Thanks @kiprobinsonknack.
+
 # 2025-07-02, 14.5.3
 
 - Fix: #2199 parse non-breaking white space `&nbsp;` as white space 
@@ -40,6 +50,8 @@
   (#3481). Thanks @ranidam.
 
 # 2025-05-28, 14.5.1
+
+# Unpublished changes since 14.4.0
 
 - Fix: #3482 mathjs throwing an error related to `BigInt`  when loading in
   specific environments.
