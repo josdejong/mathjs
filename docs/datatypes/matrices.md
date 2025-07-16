@@ -333,23 +333,18 @@ c.subset(math.index(1, [0, 1]), [2, 3])       // Matrix, [[0, 1], [2, 3]]
 e.resize([2, 3], 0)                           // Matrix, [[0, 0, 0], [0, 0, 0]]
 e.subset(math.index(1, 2), 5)                 // Matrix, [[0, 0, 0], [0, 0, 5]]
 ```
-## Migrate to v15
+
+## Migrate indexing behavior to mathjs v15
 
 With the release of math.js v15, the behavior of `subset` when indexing matrices and arrays has changed. If your code relies on the previous behavior (where indexing with an array or matrix of size 1 would always return the value itself), you may need to update your code or enable legacy mode.
 
-### How to migrate
+To maintain the old indexing behavior without need for any code changes, use the configuration option `legacySubset`:
 
-- **Option 1: Enable legacy behavior**  
-  If you want your code to work as before without changes, enable legacy mode by adding:
-  ```js
-  math.config({ legacySubset: true })
-  ```
-  This restores the old behavior for `subset`.
+```js
+math.config({ legacySubset: true })
+```
 
-- **Option 2: Update your code**  
-  Update your code to use scalar indices when you want to eliminate dimensions, or use array indices to preserve dimensions.
-
-### Migration examples
+To migrate your code, you'll have to change all matrix indexes from the old index notation to the new index notation. Basically: scalar indexes have to be wrapped in array brackets if you want an array as output. Here some examples:
 
 ```js
 const m = math.matrix([[1, 2, 3], [4, 5, 6]])

@@ -680,9 +680,7 @@ resolving of the nested index needs to be split in two separate operations.
 in JavaScript: They are one-based with an included upper-bound, similar to most
 math applications.*
 
-*IMPORTANT: Matrix indexing behaves differently depending on the type of input.
-If an index for a dimension is a scalar (single value), that dimension is 
-removed from the result. For more information of the changes go to [Migrate to V15](../datatypes/matrices.md#migrate-to-v15).*
+*IMPORTANT: The matrix indexing behavior has been changed in mathjs `v15`, see section [Migrate matrix indexing to mathjs v15](#migrate-matrix-indexing-to-mathjs-v15).*
 
 ```js
 parser = math.parser()
@@ -705,11 +703,17 @@ parser.evaluate('d[2, 1:end]')            // Matrix, [43, 50]
 parser.evaluate('c[end - 1 : -1 : 2]')    // Matrix, [8, 7, 6]
 ```
 
-#### Matrix Migration examples
+#### Migrate matrix indexing to mathjs v15
 
-With v15, matrix indexing has changed to be more consistent and predictable. In v14, using a scalar index would sometimes reduce the dimensionality of the result. In v15, if you want to preserve dimensions, use array, matrix, or range indices. If you want a scalar value, use scalar indices.
+With mathjs v15, matrix indexing has changed to be more consistent and predictable. In v14, using a scalar index would sometimes reduce the dimensionality of the result. In v15, if you want to preserve dimensions, use array, matrix, or range indices. If you want a scalar value, use scalar indices.
 
-For example:
+To maintain the old indexing behavior without need for any code changes, use the configuration option `legacySubset`:
+
+```js
+math.config({ legacySubset: true })
+```
+
+To migrate your code, you'll have to change all matrix indexes from the old index notation to the new index notation. Basically: scalar indexes have to be wrapped in array brackets if you want an array as output. Here some examples:
 
 ```js
 parser = math.parser()
