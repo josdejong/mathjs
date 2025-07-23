@@ -37,6 +37,7 @@ describe('sign', function () {
     assert.strictEqual(math.sign(a).toString(), '1')
     assert.strictEqual(math.sign(fraction(-0.5)).toString(), '-1')
     assert.strictEqual(a.toString(), '0.5')
+    assert.deepStrictEqual(math.sign(math.fraction(0)), math.fraction(0))
   })
 
   it('should calculate the sign of a complex value', function () {
@@ -105,9 +106,6 @@ describe('sign', function () {
       assert.deepStrictEqual(math.sign(math.complex(0)), math.complex(0))
     })
 
-    it('fraction', function () {
-      assert.deepStrictEqual(math.sign(math.fraction(0)), math.fraction(0))
-    })
   })
 
   it('should throw an in case of wrong type of arguments', function () {
