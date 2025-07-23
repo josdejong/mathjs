@@ -104,6 +104,10 @@ describe('sign', function () {
     it('complex', function () {
       assert.deepStrictEqual(math.sign(math.complex(0)), math.complex(0))
     })
+
+    it('fraction', function () {
+      assert.deepStrictEqual(math.sign(math.fraction(0)), math.fraction(0))
+    })
   })
 
   it('should throw an in case of wrong type of arguments', function () {
