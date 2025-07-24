@@ -5,6 +5,8 @@
 - Feat: new function `toBest(unit, unitList, offset)`, and corresponding
   method `unit.toBest(...)` (#3484). Thanks @Mundi93, @EliaAlesiani, and 
   @HeavyRainLQ.
+- Fix: #3512 `sign` of zero not returning zero in case of a fraction (#3513). 
+  Thanks @kyle-compute.
 
 # 2025-07-02, 14.5.3
 
