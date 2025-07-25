@@ -1,6 +1,6 @@
 # History
 
-# Unpublished changes since 14.5.3
+# 2025-07-25, 14.6.0
 
 - Feat: new function `toBest(unit, unitList, offset)`, and corresponding
   method `unit.toBest(...)` (#3484). Thanks @Mundi93, @EliaAlesiani, and 
