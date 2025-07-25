@@ -301,6 +301,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.to(x,&nbsp;unit)](functions/to.html) | Change the unit of a value.
+[math.toBest(unit)](functions/toBest.html) | Converts a unit to the most appropriate display unit.
 
 <h2 id="utils-functions">Utils functions <a href="#utils-functions" title="Permalink">#</a></h2>
 

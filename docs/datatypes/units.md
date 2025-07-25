@@ -246,6 +246,11 @@ Get a string representation of the unit. The function
 will determine the best fitting prefix for the unit. See the [Format](../reference/functions/format.html)
 page for available options.
 
+<h3 id="unittobestunitlist-options">unit.toBest(unitList, options) <a href="#unittobestunitlist-options" title="Permalink">#</a></h3>
+Converts a unit to the most appropriate display unit by choosing 
+from the list of passed units (unitList) or doing it automatically if no list is passed.
+It also accepts options. At the moment, the only available one is offset which is used for a better prefix calculation
+
 <h3 id="unitfromjsonjson">unit.fromJSON(json) <a href="#unitfromjsonjson" title="Permalink">#</a></h3>
 Revive a unit from a JSON object. Accepts
 An object `{mathjs: 'Unit', value: number, unit: string, fixPrefix: boolean}`,

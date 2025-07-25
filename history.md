@@ -4,9 +4,17 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20250725-1460">2025-07-25, 14.6.0 <a href="#20250725-1460" title="Permalink">#</a></h1>
+
+- Feat: new function `toBest(unit, unitList, offset)`, and corresponding
+  method `unit.toBest(...)` (<a href="https://github.com/josdejong/mathjs/issues/3484">#3484</a>). Thanks <a href="https://github.com/Mundi93">@Mundi93</a>, <a href="https://github.com/EliaAlesiani">@EliaAlesiani</a>, and 
+  <a href="https://github.com/HeavyRainLQ">@HeavyRainLQ</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3512">#3512</a> `sign` of zero not returning zero in case of a fraction (<a href="https://github.com/josdejong/mathjs/issues/3513">#3513</a>). 
+  Thanks <a href="https://github.com/kyle-compute">@kyle-compute</a>.
+
 <h1 id="20250702-1453">2025-07-02, 14.5.3 <a href="#20250702-1453" title="Permalink">#</a></h1>
 
-- Fix: <a href="https://github.com/josdejong/mathjs/issues/2199">#2199</a> fix <a href="https://github.com/josdejong/mathjs/issues/2199">#2199</a>: parse non-breaking white space `&nbsp;` as white space 
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/2199">#2199</a> parse non-breaking white space `&nbsp;` as white space 
   (<a href="https://github.com/josdejong/mathjs/issues/3487">#3487</a>). Thanks donmccurdy.
 - Fix: refine the type definitions of `scope` (<a href="https://github.com/josdejong/mathjs/issues/3490">#3490</a>). Thanks <a href="https://github.com/JayChang4w">@JayChang4w</a>.
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3493">#3493</a> type definitions of `unit(number)` (<a href="https://github.com/josdejong/mathjs/issues/3495">#3495</a>). Thanks <a href="https://github.com/mrft">@mrft</a>.
