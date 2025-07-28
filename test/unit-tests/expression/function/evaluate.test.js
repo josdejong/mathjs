@@ -174,14 +174,14 @@ describe('evaluate', function () {
     it('should handle nullish coalescing with matrices and arrays as operands', function () {
       // Test arrays as operands
       assert.deepStrictEqual(math.evaluate('null ?? [1, 2, 3]'), math.matrix([1, 2, 3]))
-      assert.deepStrictEqual(math.evaluate('[1, 2] ?? [3, 4]'), math.matrix([1, 2])) // arrays are not nullish
+      assert.deepStrictEqual(math.evaluate('[1, 2] ?? [3, 4]'), math.matrix([1, 2])) // Neither 1 nor 2 is nullish
       assert.deepStrictEqual(math.evaluate('undefined ?? [5, 6]'), math.matrix([5, 6]))
-      assert.deepStrictEqual(math.evaluate('[null, null] ?? [7, 8]'), math.matrix([7, 8])) // empty array is not nullish
+      assert.deepStrictEqual(math.evaluate('[null, null] ?? [7, 8]'), math.matrix([7, 8])) // Both null elements are nullish, so use [7, 8]
 
       // Test matrices as operands
       const matrix1 = math.matrix([1, 2])
       assert.deepStrictEqual(math.evaluate('null ?? matrix([1, 2])'), matrix1)
-      assert.deepStrictEqual(math.evaluate('matrix([1, 2]) ?? matrix([3, 4])'), matrix1) // matrices are not nullish
+      assert.deepStrictEqual(math.evaluate('matrix([1, 2]) ?? matrix([3, 4])'), matrix1) // Neither 1 nor 2 is nullish
       assert.deepStrictEqual(math.evaluate('undefined ?? matrix([5, 6])'), math.matrix([5, 6]))
 
       // Test mixed arrays and matrices
@@ -193,6 +193,9 @@ describe('evaluate', function () {
       // Test arrays/matrices containing expressions
       assert.deepStrictEqual(math.evaluate(['null ?? 1', '2 ?? null', 'null ?? null ?? 3']), [1, 2, 3])
       assert.deepStrictEqual(math.evaluate(math.matrix(['null ?? 1', '2 ?? null'])), math.matrix([1, 2]))
+
+      // Test shape mismatch with empty array
+      assert.throws(() => math.evaluate('[] ?? [7, 8]'), /RangeError/)
     })
 
     it('should handle nullish coalescing with function calls', function () {

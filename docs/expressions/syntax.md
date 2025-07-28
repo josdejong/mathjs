@@ -24,7 +24,7 @@ the lower level syntax of math.js. Differences are:
   not bitwise xor.
 - Implicit multiplication, like `2 pi`, is supported and has special rules.
 - Relational operators (`<`, `>`, `<=`, `>=`, `==`, and `!=`) are chained, so the expression `5 < x < 10` is equivalent to `5 < x and x < 10`.
-- The precedence of the nullish coalescing operator `??` is higher than in JavaScript. For example, `2 ^ x ?? 0` is grouped as `2 ^ (x ?? 0)`.
+- The precedence of some operators is different; see a complete list at the precedence table below.
 - Multi-expression constructs like `a = 1; b = 2; a + b` or
   `"a = 1;\n cos(a)\n sin(a)"` (where `\n` denotes newline)
   produce a collection ("ResultSet") of values. Those expressions
@@ -93,7 +93,7 @@ Operator    | Name                       | Syntax      | Associativity | Example
 `xor`       | Logical xor                | `x xor y`   | Left to right | `true xor true`       | `false`
 `=`         | Assignment                 | `x = y`     | Right to left | `a = 5`               | `5`
 `?` `:`     | Conditional expression     | `x ? y : z` | Right to left | `15 > 100 ? 1 : -1`   | `-1`
-`??` `nullish` | Nullish coalescing | `x ?? y` | Right to left | `null ?? 2` | `2`
+`??`        | Nullish coalescing         | `x ?? y`    | Right to left | `null ?? 2` | `2`
 `:`         | Range                      | `x : y`     | Right to left | `1:4`                 | `[1,2,3,4]`
 `to`, `in`  | Unit conversion            | `x to y`    | Left to right | `2 inch to cm`        | `5.08 cm`
 `==`        | Equal                      | `x == y`    | Left to right | `2 == 4 - 2`          | `true`
@@ -114,8 +114,8 @@ Operators                         | Description
 `x(...)`<br>`x[...]`<br>`obj.prop`<br>`:`| Function call<br>Matrix index<br>Property accessor<br>Key/value separator
 `'`                               | Matrix transpose
 `!`                               | Factorial
-`^`, `.^`                         | Exponentiation
 `??`                              | Nullish coalescing
+`^`, `.^`                         | Exponentiation
 `+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
 See section below                 | Implicit multiplication
 `*`, `/`, `.*`, `./`,`%`, `mod`   | Multiply, divide , percentage, modulus
