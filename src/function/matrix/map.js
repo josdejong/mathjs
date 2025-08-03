@@ -79,12 +79,35 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     }
 
     const firstArrayIsMatrix = Arrays[0].isMatrix
-
-    const newSize = broadcastSizes(...Arrays.map(M => M.isMatrix ? M.size() : arraySize(M)))
+    const sizes = Arrays.map(M => M.isMatrix ? M.size() : arraySize(M))
+    const newSize = broadcastSizes(...sizes)
+    const numberOfArrays = Arrays.length
 
     const _get = firstArrayIsMatrix
       ? (matrix, idx) => matrix.get(idx)
       : get
+
+    const firstValues = Arrays.map((collection, i) => {
+      const firstIndex = sizes[i].map(x => 0)
+      return collection.isMatrix ? collection.get(firstIndex) : get(collection, firstIndex)
+    }
+    )
+
+    let callback
+    let callbackCase
+
+    if (typed.isTypedFunction(multiCallback)) {
+      const firstIndex = newSize.map(() => 0)
+      callbackCase = _getTypedCallbackCase(multiCallback, firstValues, firstIndex, Arrays)
+      callback = _getLimitedCallback(callbackCase)
+    } else {
+      callbackCase = _getCallbackCase(multiCallback, numberOfArrays)
+      callback = _getLimitedCallback(callbackCase)
+    }
+
+    if (callbackCase < 2) {
+      return mapMultiple(Arrays, callback)
+    }
 
     const broadcastedArrays = firstArrayIsMatrix
       ? Arrays.map(M => M.isMatrix
@@ -93,19 +116,6 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       : Arrays.map(M => M.isMatrix
         ? broadcastTo(M.toArray(), newSize)
         : broadcastTo(M, newSize))
-
-    let callback
-
-    if (typed.isTypedFunction(multiCallback)) {
-      const firstIndex = newSize.map(() => 0)
-      const firstValues = broadcastedArrays.map(array => _get(array, firstIndex))
-      const callbackCase = _getTypedCallbackCase(multiCallback, firstValues, firstIndex, broadcastedArrays)
-      callback = _getLimitedCallback(callbackCase)
-    } else {
-      const numberOfArrays = Arrays.length
-      const callbackCase = _getCallbackCase(multiCallback, numberOfArrays)
-      callback = _getLimitedCallback(callbackCase)
-    }
 
     const broadcastedArraysCallback = (x, idx) =>
       callback(
@@ -141,6 +151,69 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       if (typed.resolve(callback, values) !== null) { return 0 }
       // this should never happen
       return 0
+    }
+  }
+
+  function mapMultiple (Collections, callback) {
+  // collections can be matrices or arrays
+  // callback must be a function of the form (collcetions, [index])
+    const firstCollection = Collections[0]
+    const firstCollectionIsMatrix = Boolean(firstCollection.isMatrix)
+    const Arrays = Collections.map((collection) =>
+      collection.isMatrix ? collection.valueOf() : collection
+    )
+    const sizes = Collections.map((collection) =>
+      collection.isMatrix ? collection.size() : arraySize(collection)
+    )
+    // this should be changed for the specific function when impelemented
+    const finalSize = broadcastSizes(...sizes)
+    // the offset means for each initial array, how much smaller is it than the final size
+    const offsets = sizes.map((size) => finalSize.length - size.length)
+    // make the iteration algorithm
+    const maxDepth = finalSize.length - 1
+    const index = []
+    const resultsArray = iterate(Arrays, 0)
+    if (firstCollectionIsMatrix) {
+      const returnMatrix = firstCollection.create()
+      returnMatrix._data = resultsArray
+      returnMatrix._size = finalSize
+      return returnMatrix
+    } else {
+      return resultsArray
+    }
+    // will create references to the arrays depth, depending on the offset.
+
+    function iterate (arrays, depth = 0) {
+    // each array can have differt sizes
+      const N = finalSize[depth]
+      const result = Array(N)
+      if (depth < maxDepth) {
+        for (let i = 0; i < N; i++) {
+          index[depth] = i
+          // if there is an offset greather than the current dimension
+          // pass the array, if the size of the array is 1 pass the first
+          // element of the array
+          result[i] = iterate(
+            arrays.map((array, arrayIndex) =>
+              offsets[arrayIndex] > depth
+                ? array
+                : array.length === 1
+                  ? array[0]
+                  : array[i]
+            ),
+            depth + 1
+          )
+        }
+      } else {
+        for (let i = 0; i < N; i++) {
+          index[depth] = i
+          result[i] = callback(
+            arrays.map((a) => (a.length === 1 ? a[0] : a[i])),
+            index.slice()
+          )
+        }
+      }
+      return result
     }
   }
   /**
