@@ -140,6 +140,14 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     }
 
     function _getCallbackCase (callback, numberOfArrays) {
+      const callbackStr = callback.toString()
+      // Check if the callback function uses `arguments`
+      if (/arguments/.test(callbackStr)) return 2
+
+      // Extract the parameters of the callback function
+      const paramsStr = callbackStr.match(/\(.*?\)/)
+      // Check if the callback function uses rest parameters
+      if (/\.\.\./.test(paramsStr)) return 2
       if (callback.length > numberOfArrays + 1) { return 2 }
       if (callback.length === numberOfArrays + 1) { return 1 }
       return 0
