@@ -16,7 +16,10 @@ describe('nullish', function () {
   })
 
   it('should short-circuit scalar ?? dense', function () {
-    const d = matrix([[1, null], [undefined, 4]])
+    const d = matrix([
+      [1, null],
+      [undefined, 4]
+    ])
     assert.strictEqual(nullish(5, d), 5)
     assert.strictEqual(nullish(undefined, d), d)
   })
@@ -30,8 +33,129 @@ describe('nullish', function () {
   })
 
   it('should handle dense ?? scalar element-wise', function () {
-    const d = matrix([[null, 0], [undefined, 1]])
+    const d = matrix([
+      [null, 0],
+      [undefined, 1]
+    ])
     const res = nullish(d, 42)
-    assert.deepStrictEqual(res.toArray(), [[42, 0], [42, 1]])
+    assert.deepStrictEqual(res.toArray(), [
+      [42, 0],
+      [42, 1]
+    ])
+  })
+
+  it('should allow scalar broadcasting', function () {
+    assert.strictEqual(nullish(5, [7, 8]), 5)
+    assert.deepStrictEqual(nullish(null, [7, 8]), [7, 8])
+    assert.deepStrictEqual(nullish([null, undefined], 42), [42, 42])
+  })
+
+  describe('nullish with advanced types', function () {
+    it('should handle Complex numbers', function () {
+      const zeroComplex = math.complex(0, 0)
+      const nonZeroComplex = math.complex(1, 1)
+      assert.strictEqual(nullish(null, nonZeroComplex), nonZeroComplex)
+      assert.strictEqual(nullish(zeroComplex, nonZeroComplex), zeroComplex) // zero complex is not nullish
+      assert.strictEqual(nullish(nonZeroComplex, zeroComplex), nonZeroComplex)
+    })
+
+    it('should handle BigNumbers', function () {
+      const zeroBig = math.bignumber(0)
+      const nonZeroBig = math.bignumber(42)
+      assert.strictEqual(nullish(null, nonZeroBig), nonZeroBig)
+      assert.strictEqual(nullish(zeroBig, nonZeroBig), zeroBig) // zero BigNumber is not nullish
+      assert.strictEqual(nullish(nonZeroBig, zeroBig), nonZeroBig)
+    })
+
+    it('should handle Fractions', function () {
+      const zeroFrac = math.fraction(0)
+      const nonZeroFrac = math.fraction(3, 4)
+      assert.strictEqual(nullish(null, nonZeroFrac), nonZeroFrac)
+      assert.strictEqual(nullish(zeroFrac, nonZeroFrac), zeroFrac) // zero Fraction is not nullish
+      assert.strictEqual(nullish(nonZeroFrac, zeroFrac), nonZeroFrac)
+    })
+
+    it('should handle Units', function () {
+      const zeroUnit = math.unit(0, 'cm')
+      const nonZeroUnit = math.unit(5, 'cm')
+      assert.strictEqual(nullish(null, nonZeroUnit), nonZeroUnit)
+      assert.strictEqual(nullish(zeroUnit, nonZeroUnit), zeroUnit) // zero Unit is not nullish
+      assert.strictEqual(nullish(nonZeroUnit, zeroUnit), nonZeroUnit)
+    })
+  })
+
+  describe('nullish with n-dimensional matrices', function () {
+    it('should handle 3D matrices element-wise', function () {
+      const left = math.matrix([
+        [
+          [null, 1],
+          [undefined, 2]
+        ],
+        [
+          [3, null],
+          [4, 5]
+        ]
+      ])
+      const right = math.matrix([
+        [
+          [10, 20],
+          [30, 40]
+        ],
+        [
+          [50, 60],
+          [70, 80]
+        ]
+      ])
+      const res = nullish(left, right)
+      assert.deepStrictEqual(res.toArray(), [
+        [
+          [10, 1],
+          [30, 2]
+        ],
+        [
+          [3, 60],
+          [4, 5]
+        ]
+      ])
+    })
+  })
+
+  describe('shape handling and sparse matrices', function () {
+    it('should throw on mismatched shapes', function () {
+      assert.throws(() => nullish([1], [7, 8]), /Dimension mismatch/)
+      assert.throws(() => nullish(matrix([1]), matrix([7, 8])), /RangeError/)
+      assert.throws(() => nullish(sparse([[1]]), matrix([7, 8])), /RangeError/)
+    })
+
+    it('should throw on mismatched shapes for sparse ?? dense', function () {
+      const left = sparse([[1, 0]])
+      const right = matrix([7, 8])
+      assert.throws(() => nullish(left, right), /Dimension mismatch/)
+    })
+
+    it('should throw on mismatched shapes for sparse ?? dense with zeros', function () {
+      const left = sparse([[0, 1]])
+      const right = matrix([7, 8])
+      assert.throws(() => nullish(left, right), /Dimension mismatch/)
+    })
+
+    it('should handle sparse with explicit null', function () {
+      const d = math.matrix([[null, 1]])
+      const s = math.sparse([[10, 20]])
+      const res = nullish(d, s)
+      assert.deepStrictEqual(res.toArray(), [[10, 1]])
+    })
+
+    it('should handle explicit null in dense ?? sparse', function () {
+      const d = math.matrix([[null, 1]])
+      const s = math.sparse([[10, 20]])
+      const res = nullish(d, s)
+      assert.deepStrictEqual(res.toArray(), [[10, 1]])
+    })
+
+    it('should throw on broadcastable but mismatched sizes', function () {
+      assert.throws(() => nullish([1], [7, 8]), /Dimension mismatch/)
+      assert.throws(() => nullish(math.matrix([1]), math.matrix([7, 8])), /Dimension mismatch/)
+    })
   })
 })

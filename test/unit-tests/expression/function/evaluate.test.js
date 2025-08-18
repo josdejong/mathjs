@@ -196,6 +196,7 @@ describe('evaluate', function () {
 
       // Test shape mismatch with empty array
       assert.throws(() => math.evaluate('[] ?? [7, 8]'), /RangeError/)
+      assert.throws(() => math.evaluate('[1] ?? [7, 8]'), /RangeError/)
     })
 
     it('should handle nullish coalescing with function calls', function () {

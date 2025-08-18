@@ -54,6 +54,37 @@ interchangeably. For example, `x+y` will always evaluate identically to
 `add(x,y)`. For a full list of the equivalences, see the section on
 Functions below.
 
+
+### Nullish coalescing
+
+The nullish coalescing operator `??` returns the right-hand side when the left-hand side is `null` or `undefined`; otherwise it returns the left-hand side.
+
+Behavior with matrices/arrays:
+
+- Element-wise evaluation: for matrices/arrays, `a ?? b` is applied per element.
+- No broadcasting for non-scalars: shapes must match exactly. Scalar vs matrix/array is allowed (scalar applied to every element).
+- Mismatched shapes throw a Dimension mismatch error.
+- Sparse zeros are not nullish; only `null` and `undefined` are treated as nullish.
+
+Examples:
+
+```js
+// Scalar
+null ?? 2            // 2
+5 ?? 10              // 5
+
+// Dense matrix element-wise
+[[null, 0], [undefined, 1]] ?? [[10, 20], [30, 40]]
+// [[10, 0], [30, 1]]
+
+// Scalar vs matrix
+undefined ?? [7, 8]  // [7, 8]
+5 ?? [7, 8]          // 5
+
+// Mismatched shapes (throws)
+[1] ?? [7, 8]        // Dimension mismatch error
+```
+
 Operator    | Name                       | Syntax      | Associativity | Example               | Result
 ----------- | -------------------------- | ----------  | ------------- | --------------------- | ---------------
 `(`, `)`    | Grouping                   | `(x)`       | None          | `2 * (3 + 4)`         | `14`
@@ -93,7 +124,7 @@ Operator    | Name                       | Syntax      | Associativity | Example
 `xor`       | Logical xor                | `x xor y`   | Left to right | `true xor true`       | `false`
 `=`         | Assignment                 | `x = y`     | Right to left | `a = 5`               | `5`
 `?` `:`     | Conditional expression     | `x ? y : z` | Right to left | `15 > 100 ? 1 : -1`   | `-1`
-`??`        | Nullish coalescing         | `x ?? y`    | Right to left | `null ?? 2` | `2`
+`??`        | [Nullish coalescing](#nullish-coalescing) | `x ?? y`    | Right to left | `null ?? 2` | `2`
 `:`         | Range                      | `x : y`     | Right to left | `1:4`                 | `[1,2,3,4]`
 `to`, `in`  | Unit conversion            | `x to y`    | Left to right | `2 inch to cm`        | `5.08 cm`
 `==`        | Equal                      | `x == y`    | Left to right | `2 == 4 - 2`          | `true`
@@ -224,7 +255,7 @@ Operator Expression  | Equivalent Function Expression
 `a \| b`             |`bitOr(a,b)`
 `a ^\| b`            |`bitXor(a,b)`
 `a & b`              |`bitAnd(a,b)`
-`a ?? b`             |`nullish(a,b)`
+`a ?? b`             |[`nullish(a,b)`](#nullish-coalescing)
 `a == b`             |`equal(a,b)`
 `a != b`             |`unequal(a,b)`
 `a < b`              |`smaller(a,b)`
