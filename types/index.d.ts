@@ -1905,6 +1905,13 @@ export interface MathJsInstance extends MathJsFactory {
   det(x: MathCollection): number
 
   /**
+   * Calculate the difference between adjacent elements of a matrix or array.
+   * @param x A matrix or array
+   * @returns A matrix or array containing the differences
+   */
+  diff(x: MathCollection): MathCollection;
+
+  /**
    * Create a diagonal matrix or retrieve the diagonal of a matrix. When x
    * is a vector, a matrix with vector x on the diagonal will be returned.
    * When x is a two dimensional matrix, the matrixes kth diagonal will be
@@ -5804,6 +5811,11 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathCollection>,
     y: MathCollection
   ): MathJsChain<MathCollection>
+
+  /**
+   * Calculate the difference between adjacent elements of the chained matrix or array.
+   */
+  diff(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
   /**
    * Calculate the determinant of a matrix.
