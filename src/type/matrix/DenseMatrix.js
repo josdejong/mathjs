@@ -665,37 +665,35 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @return {Iterable<{ value, index: number[] }>}
    */
   DenseMatrix.prototype[Symbol.iterator] = function * () {
-    const size = this._size
-    const data = this._data
-    const dims = size.length
+    const maxDepth = this._size.length - 1
 
-    // No elements if no dimensions
-    if (dims === 0) return
+    if (maxDepth < 0) {
+      return
+    }
 
-    // 1D matrix: yield each element with its index
-    if (dims === 1) {
-      for (let i = 0; i < size[0]; i++) {
-        yield { value: data[i], index: [i] }
+    if (maxDepth === 0) {
+      for (let i = 0; i < this._data.length; i++) {
+        yield ({ value: this._data[i], index: [i] })
       }
       return
     }
 
     // Multi-dimensional matrix: iterate over all elements
-    const index = Array(dims).fill(0)
-    const totalElements = size.reduce((a, b) => a * b, 1)
+    const index = Array(maxDepth + 1).fill(0)
+    const totalElements = this._size.reduce((a, b) => a * b, 1)
 
     for (let count = 0; count < totalElements; count++) {
       // Traverse to the current element using indices
-      let current = data
-      for (let d = 0; d < dims - 1; d++) {
+      let current = this._data
+      for (let d = 0; d < maxDepth; d++) {
         current = current[index[d]]
       }
-      yield { value: current[index[dims - 1]], index: index.slice() }
+      yield { value: current[index[maxDepth]], index: index.slice() }
 
       // Increment indices for next element
-      for (let d = dims - 1; d >= 0; d--) {
+      for (let d = maxDepth; d >= 0; d--) {
         index[d]++
-        if (index[d] < size[d]) break
+        if (index[d] < this._size[d]) break
         index[d] = 0
       }
     }
