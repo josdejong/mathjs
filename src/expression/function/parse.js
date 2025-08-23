@@ -1,8 +1,9 @@
-import { factory } from '../utils/factory.js'
-import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
-import { deepMap } from '../utils/collection.js'
-import { safeNumberType } from '../utils/number.js'
-import { hasOwnProperty } from '../utils/object.js'
+import { factory } from '../../utils/factory.js'
+import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, rule2Node } from '../../utils/is.js'
+import { deepMap } from '../../utils/collection.js'
+import { safeNumberType } from '../../utils/number.js'
+import { hasOwnProperty } from '../../utils/object.js'
+import { ParseState } from '../ParseState.js'
 
 const name = 'parse'
 const dependencies = [
@@ -50,8 +51,59 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.evaluate() or transformed into a functional object via node.compile().
    *
-   * Note the evaluating arbitrary expressions may involve security risks,
+   * Note that evaluating arbitrary expressions may involve security risks,
    * see [https://mathjs.org/docs/expressions/security.html](https://mathjs.org/docs/expressions/security.html) for more information.
+   *
+   * This parse function carries many configuration properties that control
+   * the parsing process. Their default values correspond to the math.js
+   * expression syntax as documented on this site, but they may be modified to
+   * extend or alter that syntax. The configuration properties are:
+   * - parse.isAlpha:
+   *   A function of three single-character strings c, cNext, and cPrevious
+   *   (namely, the current, next, and previous characters in the expression)
+   *   that should return true if the current character should be considered
+   *   alphabetic and false otherwise.
+   * - parse.isValidLatinOrGreek:
+   *   A function of one character that should return true if it is a valid
+   *   Latin or Greek letter
+   * - parse.isValidMathSymbol:
+   *   A function of two 16-bit characters highWord and lowWord that should
+   *   return true if they encode a 32-bit alphabetic math symbol (such as
+   *   a math Fraktur letter).
+   * - parse.isWhitespace:
+   *   A function of one character and an integer nesting level (greater than
+   *   or equal to zero) which should return true if the character is
+   *   considered whitespace at that nesting level. For example, by default
+   *   a newline character is considered whitespace at positive nesting
+   *   levels (e.g., in the argument list of a function call), but is a
+   *   delimiter separating expressions in a block at the outermost (zero)
+   *   nesting level
+   * - parse.isDecimalMark:
+   *   A function of two single-character strings, the current and next
+   *   character, that should return true if the current character should
+   *   be considered the whole/fractional part separator of a number
+   *   literal. For example, the default `isDecimalMark` function considers
+   *   a dot to be such a separator if it is not followed by a character
+   *   that forms a two-character operator (like `.*`).
+   * - parse.isNumberStart:
+   *   A function of two single-character strings, the current and next
+   *   character, that should return true if a number literal starts at the
+   *   current character.
+   * - parse.isDigit:
+   *   A function of a single character that should return true if it is
+   *   considered a (decimal) numerical digit.
+   * - parse.isHexDigit:
+   *   A function of a single character that should return true if it is
+   *   considered a hexadecimal numerical digit.
+   * - parse.tokens:
+   *   A plain object whose keys are (string) token types. The value
+   *   associated with a token type should be a function that takes a
+   *   ParseState object, examines the state, and if a token of the
+   *   given type is present at the current location, consumes all of the
+   *   characters encoding that token, sets the `token` property of the
+   *   state to the contents of the token, and returns true. Otherwise
+   *   the function should return false. Note the tokenizer tries to decode
+   *   token types in the order they are listed in this object.
    *
    * Syntax:
    *
@@ -63,18 +115,22 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * Example:
    *
    *     const node1 = math.parse('sqrt(3^2 + 4^2)')
-   *     node1.compile().evaluate() // 5
+   *     node1.compile().evaluate()         // 5
    *
    *     let scope = {a:3, b:4}
-   *     const node2 = math.parse('a * b') // 12
+   *     const node2 = math.parse('a * b')
    *     node2.evaluate(scope) // 12
    *     const code2 = node2.compile()
-   *     code2.evaluate(scope) // 12
+   *     const val1 = code2.evaluate(scope)
    *     scope.a = 5
-   *     code2.evaluate(scope) // 20
+   *     const val2 = code2.evaluate(scope)
+   *     [val1, val2]                       // [12, 20]
    *
    *     const nodes = math.parse(['a = 3', 'b = 4', 'a * b'])
-   *     nodes[2].compile().evaluate() // 12
+   *     scope = {}
+   *     nodes.map(n => n.evaluate(scope))  // [3, 4, 12]
+   *     parse.isAlpha = (c, n, p) => c === '@' || parse.isAlpha(c, n, p)
+   *     math.evaluate('[@noon = 12, @noon - 3]')  // [12, 9]
    *
    * See also:
    *
@@ -113,16 +169,122 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   // token types enumeration
-  const TOKENTYPE = {
-    NULL: 0,
-    DELIMITER: 1,
-    NUMBER: 2,
-    SYMBOL: 3,
-    UNKNOWN: 4
+  // Each key is a token type, and the corresponding value
+  // is a scanner function that looks for that token in the current state,
+  // and consumes it into state.token and returns true if it is there,
+  // and returns false if it is not there. The scanners are called in the
+  // order they appear in the object.
+  parse.tokens = {
+    SKIP_IGNORED: state => {
+      while (true) {
+        state.readComment('#', '\n')
+        if (!state.skipCharactersThat(
+          c => parse.isWhitespace(c, state.nestingLevel))
+        ) {
+          break
+        }
+      }
+      return false // this step never produces a token
+    },
+    DELIMITER: state => {
+      if (state.character() === '') return true
+      for (let maybeDelimiter = state.character(MAX_DELIMITER_LENGTH);
+        maybeDelimiter;
+        maybeDelimiter = maybeDelimiter.slice(0, -1)
+      ) {
+        if (DELIMITERS[maybeDelimiter]) {
+          // delimiters that end with alpha character must be followed
+          // by non-alpha
+          if (parse.isAlpha(maybeDelimiter.slice(-1)) &&
+              parse.isAlpha(
+                state.character(maybeDelimiter.length + 1).slice(-1))
+          ) {
+            continue
+          }
+          state.token = state.next(maybeDelimiter.length)
+          return true
+        }
+      }
+      // special case `.` followed by non-digit:
+      if (state.character() === '.' && !parse.isDigit(state.nextCharacter())) {
+        state.token = state.next()
+        return true
+      }
+      return false
+    },
+    NUMBER: state => {
+      if (!parse.isNumberStart(state.character(), state.nextCharacter())) {
+        return false
+      }
+      // OK, we are definitely tokenizing this as a number
+      // First check for binary, octal, or hex
+      let areDigits = parse.isDigit
+      let decimal = true
+      const c2 = state.character(2)
+      if (c2 === '0b' || c2 === '0o' || c2 === '0x') {
+        state.token = c2
+        state.next(2)
+        decimal = false
+        areDigits = parse.isHexDigit
+      }
+      let fractional = false
+
+      state.addCharactersThat(areDigits)
+      if (parse.isDecimalMark(state.character(), state.nextCharacter())) {
+        state.token += state.next()
+        fractional = true
+        state.addCharactersThat(areDigits)
+      }
+
+      if (!decimal) {
+        if (!fractional & state.addCharactersThat(c => c === 'i')) {
+          // this number has a word size suffix; get the size
+          state.addCharactersThat(parse.isDigit)
+        }
+        return true // finished with hex, octal, or binary number
+      }
+
+      // check for exponential notation like "2.3e-4", "1.23e50" or "2e+4"
+      const c3 = state.character(3)
+      if (/^[Ee]/.test(c3)) {
+        const next = c3.charAt(1)
+        const after = c3.charAt(2)
+        if (parse.isDecimalMark(next, after)) { // disallow 3e.5
+          throw createSyntaxError(
+            state, `Digit or sign expected, got "${next}"`
+          )
+        }
+        if (next === '+' || next === '-' || parse.isDigit(next)) {
+          // OK, we have E or e followed by +, -, or digit
+          // so definitely looks like exponential notation
+          state.token += state.next() // consume the E or e
+          state.addCharactersThat(c => c === '+' || c === '-')
+          // Scientific notation MUST be followed by an exponent
+          if (!state.addCharactersThat(parse.isDigit)) {
+            throw createSyntaxError(
+              state, `Digit expected, got "${state.character()}"`
+            )
+          }
+        }
+      }
+
+      return true
+    },
+    SYMBOL: state => {
+      while (
+        parse.isAlpha(
+          state.character(), state.prevCharacter(), state.nextCharacter()) ||
+          parse.isDigit(state.character())
+      ) {
+        state.token += state.next()
+      }
+      return state.token
+    }
   }
 
   // map with all delimiters
   const DELIMITERS = {
+    '\n': true,
     ',': true,
     '(': true,
     ')': true,
@@ -161,11 +323,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     '<<': true,
     '>>': true,
-    '>>>': true
-  }
+    '>>>': true,
 
-  // map with all named delimiters
-  const NAMED_DELIMITERS = {
     mod: true,
     to: true,
     in: true,
@@ -175,17 +334,17 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     not: true
   }
 
+  const MAX_DELIMITER_LENGTH = 3
+
+  // These are identifiers that create constants, not symbols
   const CONSTANTS = {
     true: true,
     false: false,
     null: null,
+    NaN,
+    Infinity,
     undefined
   }
-
-  const NUMERIC_CONSTANTS = [
-    'NaN',
-    'Infinity'
-  ]
 
   const ESCAPE_CHARACTERS = {
     '"': '"',
@@ -200,258 +359,26 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     // note that \u is handled separately in parseStringToken()
   }
 
-  function initialState () {
-    return {
-      extraNodes: {}, // current extra nodes, must be careful not to mutate
-      expression: '', // current expression
-      comment: '', // last parsed comment
-      index: 0, // current index in expr
-      token: '', // current token
-      tokenType: TOKENTYPE.NULL, // type of the token
-      nestingLevel: 0, // level of nesting inside parameters, used to ignore newline characters
-      conditionalLevel: null // when a conditional is being parsed, the level of the conditional is stored here
-    }
-  }
-
-  /**
-   * View upto `length` characters of the expression starting at the current character.
-   *
-   * @param {Object} state
-   * @param {number} [length=1] Number of characters to view
-   * @returns {string}
-   * @private
-   */
-  function currentString (state, length) {
-    return state.expression.substr(state.index, length)
-  }
-
-  /**
-   * View the current character. Returns '' if end of expression is reached.
-   *
-   * @param {Object} state
-   * @returns {string}
-   * @private
-   */
-  function currentCharacter (state) {
-    return currentString(state, 1)
-  }
-
-  /**
-   * Get the next character from the expression.
-   * The character is stored into the char c. If the end of the expression is
-   * reached, the function puts an empty string in c.
-   * @private
-   */
-  function next (state) {
-    state.index++
-  }
-
-  /**
-   * Preview the previous character from the expression.
-   * @return {string} cNext
-   * @private
-   */
-  function prevCharacter (state) {
-    return state.expression.charAt(state.index - 1)
-  }
-
-  /**
-   * Preview the next character from the expression.
-   * @return {string} cNext
-   * @private
-   */
-  function nextCharacter (state) {
-    return state.expression.charAt(state.index + 1)
-  }
-
   /**
    * Get next token in the current string expr.
-   * The token and token type are available as token and tokenType
+   * Modifies the state by side effect
+   * @param {ParseState} state   the current parsing state
    * @private
    */
   function getToken (state) {
-    state.tokenType = TOKENTYPE.NULL
+    state.tokenType = 'UNKNOWN'
     state.token = ''
     state.comment = ''
 
-    // skip over ignored characters:
-    while (true) {
-      // comments:
-      if (currentCharacter(state) === '#') {
-        while (currentCharacter(state) !== '\n' &&
-               currentCharacter(state) !== '') {
-          state.comment += currentCharacter(state)
-          next(state)
-        }
-      }
-      // whitespace: space, tab, and newline when inside parameters
-      if (parse.isWhitespace(currentCharacter(state), state.nestingLevel)) {
-        next(state)
-      } else {
-        break
-      }
-    }
-
-    // check for end of expression
-    if (currentCharacter(state) === '') {
-      // token is still empty
-      state.tokenType = TOKENTYPE.DELIMITER
-      return
-    }
-
-    // check for new line character
-    if (currentCharacter(state) === '\n' && !state.nestingLevel) {
-      state.tokenType = TOKENTYPE.DELIMITER
-      state.token = currentCharacter(state)
-      next(state)
-      return
-    }
-
-    const c1 = currentCharacter(state)
-    const c2 = currentString(state, 2)
-    const c3 = currentString(state, 3)
-    if (c3.length === 3 && DELIMITERS[c3]) {
-      state.tokenType = TOKENTYPE.DELIMITER
-      state.token = c3
-      next(state)
-      next(state)
-      next(state)
-      return
-    }
-
-    // check for delimiters consisting of 2 characters
-    if (c2.length === 2 && DELIMITERS[c2]) {
-      state.tokenType = TOKENTYPE.DELIMITER
-      state.token = c2
-      next(state)
-      next(state)
-      return
-    }
-
-    // check for delimiters consisting of 1 character
-    if (DELIMITERS[c1]) {
-      state.tokenType = TOKENTYPE.DELIMITER
-      state.token = c1
-      next(state)
-      return
-    }
-
-    // check for a number
-    if (parse.isDigitDot(c1)) {
-      state.tokenType = TOKENTYPE.NUMBER
-
-      // check for binary, octal, or hex
-      const c2 = currentString(state, 2)
-      if (c2 === '0b' || c2 === '0o' || c2 === '0x') {
-        state.token += currentCharacter(state)
-        next(state)
-        state.token += currentCharacter(state)
-        next(state)
-        while (parse.isHexDigit(currentCharacter(state))) {
-          state.token += currentCharacter(state)
-          next(state)
-        }
-        if (currentCharacter(state) === '.') {
-          // this number has a radix point
-          state.token += '.'
-          next(state)
-          // get the digits after the radix
-          while (parse.isHexDigit(currentCharacter(state))) {
-            state.token += currentCharacter(state)
-            next(state)
-          }
-        } else if (currentCharacter(state) === 'i') {
-          // this number has a word size suffix
-          state.token += 'i'
-          next(state)
-          // get the word size
-          while (parse.isDigit(currentCharacter(state))) {
-            state.token += currentCharacter(state)
-            next(state)
-          }
-        }
+    for (const tokenType in parse.tokens) {
+      if (parse.tokens[tokenType](state)) {
+        state.tokenType = tokenType
         return
       }
-
-      // get number, can have a single dot
-      if (currentCharacter(state) === '.') {
-        state.token += currentCharacter(state)
-        next(state)
-
-        if (!parse.isDigit(currentCharacter(state))) {
-          // this is no number, it is just a dot (can be dot notation)
-          state.tokenType = TOKENTYPE.DELIMITER
-          return
-        }
-      } else {
-        while (parse.isDigit(currentCharacter(state))) {
-          state.token += currentCharacter(state)
-          next(state)
-        }
-        if (parse.isDecimalMark(currentCharacter(state), nextCharacter(state))) {
-          state.token += currentCharacter(state)
-          next(state)
-        }
-      }
-
-      while (parse.isDigit(currentCharacter(state))) {
-        state.token += currentCharacter(state)
-        next(state)
-      }
-      // check for exponential notation like "2.3e-4", "1.23e50" or "2e+4"
-      if (currentCharacter(state) === 'E' || currentCharacter(state) === 'e') {
-        if (parse.isDigit(nextCharacter(state)) || nextCharacter(state) === '-' || nextCharacter(state) === '+') {
-          state.token += currentCharacter(state)
-          next(state)
-
-          if (currentCharacter(state) === '+' || currentCharacter(state) === '-') {
-            state.token += currentCharacter(state)
-            next(state)
-          }
-          // Scientific notation MUST be followed by an exponent
-          if (!parse.isDigit(currentCharacter(state))) {
-            throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
-          }
-
-          while (parse.isDigit(currentCharacter(state))) {
-            state.token += currentCharacter(state)
-            next(state)
-          }
-
-          if (parse.isDecimalMark(currentCharacter(state), nextCharacter(state))) {
-            throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
-          }
-        } else if (parse.isDecimalMark(nextCharacter(state), state.expression.charAt(state.index + 2))) {
-          next(state)
-          throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
-        }
-      }
-
-      return
-    }
-
-    // check for variables, functions, named operators
-    if (parse.isAlpha(currentCharacter(state), prevCharacter(state), nextCharacter(state))) {
-      while (parse.isAlpha(currentCharacter(state), prevCharacter(state), nextCharacter(state)) || parse.isDigit(currentCharacter(state))) {
-        state.token += currentCharacter(state)
-        next(state)
-      }
-
-      if (hasOwnProperty(NAMED_DELIMITERS, state.token)) {
-        state.tokenType = TOKENTYPE.DELIMITER
-      } else {
-        state.tokenType = TOKENTYPE.SYMBOL
-      }
-
-      return
     }
 
     // something unknown is found, wrong characters -> a syntax error
-    state.tokenType = TOKENTYPE.UNKNOWN
-    while (currentCharacter(state) !== '') {
-      state.token += currentCharacter(state)
-      next(state)
-    }
+    state.addCharactersThat(c => c) // grab the rest of the expression
     throw createSyntaxError(state, 'Syntax error in part "' + state.token + '"')
   }
 
@@ -463,22 +390,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getToken(state)
     }
     while (state.token === '\n') // eslint-disable-line no-unmodified-loop-condition
-  }
-
-  /**
-   * Open parameters.
-   * New line characters will be ignored until closeParams(state) is called
-   */
-  function openParams (state) {
-    state.nestingLevel++
-  }
-
-  /**
-   * Close parameters.
-   * New line characters will no longer be ignored
-   */
-  function closeParams (state) {
-    state.nestingLevel--
   }
 
   /**
@@ -562,8 +473,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @param {string} c   a string with one character
    * @return {boolean}
    */
-  parse.isDigitDot = function isDigitDot (c) {
-    return ((c >= '0' && c <= '9') || c === '.')
+  parse.isNumberStart = function isNumberStart (c, cNext) {
+    return parse.isDigit(c) || parse.isDecimalMark(c, cNext)
   }
 
   /**
@@ -592,8 +503,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseStart (expression, extraNodes) {
-    const state = initialState()
-    Object.assign(state, { expression, extraNodes })
+    const state = new ParseState(expression, extraNodes)
     getToken(state)
 
     const node = parseBlock(state)
@@ -601,7 +511,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     // check for garbage at the end of the expression
     // an expression ends with a empty character '' and tokenType DELIMITER
     if (state.token !== '') {
-      if (state.tokenType === TOKENTYPE.DELIMITER) {
+      if (state.tokenType === 'DELIMITER') {
         // user entered a not existing operator like "//"
 
         // TODO: give hints for aliases, for example with "<>" give as hint " did you mean !== ?"
@@ -1053,7 +963,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
         getTokenSkipNewline(state)
 
-        if (name === '%' && state.tokenType === TOKENTYPE.DELIMITER && state.token !== '(') {
+        if (name === '%' && state.tokenType === 'DELIMITER' && state.token !== '(') {
           // If the expression contains only %, then treat that as /100
           if (state.token !== '' && operators[state.token]) {
             const left = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
@@ -1089,10 +999,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     last = node
 
     while (true) {
-      if ((state.tokenType === TOKENTYPE.SYMBOL) ||
+      if ((state.tokenType === 'SYMBOL') ||
           (state.token === 'in' && isConstantNode(node)) ||
           (state.token === 'in' && isOperatorNode(node) && node.fn === 'unaryMinus' && isConstantNode(node.args[0])) ||
-          (state.tokenType === TOKENTYPE.NUMBER &&
+          (state.tokenType === 'NUMBER' &&
               !isConstantNode(last) &&
               (!isOperatorNode(last) || last.op === '!')) ||
           (state.token === '(')) {
@@ -1133,13 +1043,13 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         getTokenSkipNewline(state)
 
         // Match the "number / number" part of the pattern
-        if (state.tokenType === TOKENTYPE.NUMBER) {
+        if (state.tokenType === 'NUMBER') {
           // Look ahead again
           tokenStates.push(Object.assign({}, state))
           getTokenSkipNewline(state)
 
           // Match the "symbol" part of the pattern, or a left parenthesis
-          if (state.tokenType === TOKENTYPE.SYMBOL || state.token === '(' || state.token === 'in') {
+          if (state.tokenType === 'SYMBOL' || state.token === '(' || state.token === 'in') {
             // We've matched the pattern "number / number symbol".
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             Object.assign(state, tokenStates.pop())
@@ -1275,7 +1185,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseCustomNodes (state) {
     let params = []
 
-    if (state.tokenType === TOKENTYPE.SYMBOL && hasOwnProperty(state.extraNodes, state.token)) {
+    if (state.tokenType === 'SYMBOL' && hasOwnProperty(state.extraNodes, state.token)) {
       const CustomNode = state.extraNodes[state.token]
 
       getToken(state)
@@ -1284,7 +1194,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       if (state.token === '(') {
         params = []
 
-        openParams(state)
+        state.openParams()
         getToken(state)
 
         if (state.token !== ')') {
@@ -1300,13 +1210,20 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         if (state.token !== ')') {
           throw createSyntaxError(state, 'Parenthesis ) expected')
         }
-        closeParams(state)
+        state.closeParams()
         getToken(state)
       }
 
       // create a new custom node
       // noinspection JSValidateTypes
       return new CustomNode(params)
+    }
+
+    // Allow interpretation of custom token types
+    if (hasOwnProperty(state.extraNodes, state.tokenType)) {
+      const custom = state.extraNodes[state.tokenType](state)
+      getToken(state)
+      return parseAccessors(state, custom)
     }
 
     return parseSymbol(state)
@@ -1320,16 +1237,17 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseSymbol (state) {
     let node, name
 
-    if (state.tokenType === TOKENTYPE.SYMBOL ||
-        (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
+    if (state.tokenType === 'SYMBOL' ||
+        (state.tokenType === 'DELIMITER' &&
+         state.token &&
+         Array.from(state.token).every(parse.isAlpha))
+    ) {
       name = state.token
 
       getToken(state)
 
       if (hasOwnProperty(CONSTANTS, name)) { // true, false, null, ...
         node = new ConstantNode(CONSTANTS[name])
-      } else if (NUMERIC_CONSTANTS.includes(name)) { // NaN, Infinity
-        node = new ConstantNode(numeric(name, 'number'))
       } else {
         node = new SymbolNode(name)
       }
@@ -1366,7 +1284,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       if (state.token === '(') {
         if (isSymbolNode(node) || isAccessorNode(node)) {
           // function invocation like fn(2, 3) or obj.fn(2, 3)
-          openParams(state)
+          state.openParams()
           getToken(state)
 
           if (state.token !== ')') {
@@ -1382,7 +1300,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           if (state.token !== ')') {
             throw createSyntaxError(state, 'Parenthesis ) expected')
           }
-          closeParams(state)
+          state.closeParams()
           getToken(state)
 
           node = new FunctionNode(node, params)
@@ -1394,7 +1312,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
       } else if (state.token === '[') {
         // index notation like variable[2, 3]
-        openParams(state)
+        state.openParams()
         getToken(state)
 
         if (state.token !== ']') {
@@ -1410,7 +1328,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         if (state.token !== ']') {
           throw createSyntaxError(state, 'Parenthesis ] expected')
         }
-        closeParams(state)
+        state.closeParams()
         getToken(state)
 
         node = new AccessorNode(node, new IndexNode(params))
@@ -1418,8 +1336,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // dot notation like variable.prop
         getToken(state)
 
-        const isPropertyName = state.tokenType === TOKENTYPE.SYMBOL ||
-          (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)
+        const isPropertyName = state.tokenType === 'SYMBOL' ||
+          (state.tokenType === 'DELIMITER' &&
+            state.token &&
+            Array.from(state.token).every(parse.isAlpha))
         if (!isPropertyName) {
           throw createSyntaxError(state, 'Property name expected after dot')
         }
@@ -1467,22 +1387,22 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseStringToken (state, quote) {
     let str = ''
 
-    while (currentCharacter(state) !== '' && currentCharacter(state) !== quote) {
-      if (currentCharacter(state) === '\\') {
-        next(state)
+    while (state.character() !== '' && state.character() !== quote) {
+      if (state.character() === '\\') {
+        state.next()
 
-        const char = currentCharacter(state)
+        const char = state.character()
         const escapeChar = ESCAPE_CHARACTERS[char]
         if (escapeChar !== undefined) {
           // an escaped control character like \" or \n
           str += escapeChar
-          state.index += 1
+          state.next()
         } else if (char === 'u') {
           // escaped unicode character
-          const unicode = state.expression.slice(state.index + 1, state.index + 5)
+          const unicode = state.character(5).slice(1)
           if (/^[0-9A-Fa-f]{4}$/.test(unicode)) { // test whether the string holds four hexadecimal values
             str += String.fromCharCode(parseInt(unicode, 16))
-            state.index += 5
+            state.next(5)
           } else {
             throw createSyntaxError(state, `Invalid unicode character \\u${unicode}`)
           }
@@ -1491,8 +1411,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
       } else {
         // any regular character
-        str += currentCharacter(state)
-        next(state)
+        str += state.next()
       }
     }
 
@@ -1515,7 +1434,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     if (state.token === '[') {
       // matrix [...]
-      openParams(state)
+      state.openParams()
       getToken(state)
 
       if (state.token !== ']') {
@@ -1540,7 +1459,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           if (state.token !== ']') {
             throw createSyntaxError(state, 'End of matrix ] expected')
           }
-          closeParams(state)
+          state.closeParams()
           getToken(state)
 
           // check if the number of columns matches in all rows
@@ -1558,14 +1477,14 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           if (state.token !== ']') {
             throw createSyntaxError(state, 'End of matrix ] expected')
           }
-          closeParams(state)
+          state.closeParams()
           getToken(state)
 
           array = row
         }
       } else {
         // this is an empty matrix "[ ]"
-        closeParams(state)
+        state.closeParams()
         getToken(state)
         array = new ArrayNode([])
       }
@@ -1604,7 +1523,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function parseObject (state) {
     if (state.token === '{') {
-      openParams(state)
+      state.openParams()
       let key
 
       const properties = {}
@@ -1615,7 +1534,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           // parse key
           if (state.token === '"' || state.token === "'") {
             key = parseStringToken(state, state.token)
-          } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
+          } else if (state.tokenType === 'SYMBOL' ||
+            (state.tokenType === 'DELIMITER' &&
+              state.token &&
+              Array.from(state.token).every(parse.isAlpha))
+          ) {
             key = state.token
             getToken(state)
           } else {
@@ -1637,7 +1560,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       if (state.token !== '}') {
         throw createSyntaxError(state, 'Comma , or bracket } expected after object value')
       }
-      closeParams(state)
+      state.closeParams()
       getToken(state)
 
       let node = new ObjectNode(properties)
@@ -1659,7 +1582,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseNumber (state) {
     let numberStr
 
-    if (state.tokenType === TOKENTYPE.NUMBER) {
+    if (state.tokenType === 'NUMBER') {
       // this is a number
       numberStr = state.token
       getToken(state)
@@ -1684,7 +1607,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     // check if it is a parenthesized expression
     if (state.token === '(') {
       // parentheses (...)
-      openParams(state)
+      state.openParams()
       getToken(state)
 
       node = parseAssignment(state) // start again
@@ -1692,7 +1615,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       if (state.token !== ')') {
         throw createSyntaxError(state, 'Parenthesis ) expected')
       }
-      closeParams(state)
+      state.closeParams()
       getToken(state)
 
       node = new ParenthesisNode(node)

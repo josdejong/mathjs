@@ -306,6 +306,8 @@ describe('parse', function () {
       approxEqual(parseAndEval('2e.*3'), 2 * Math.E * 3)
       approxEqual(parseAndEval('2e./3'), 2 * Math.E / 3)
       approxEqual(parseAndEval('2e.^3'), 2 * Math.E ** 3)
+      assert.deepStrictEqual(
+        parse('3E.*[2,3]').evaluate({ E: [1, 2] }), math.matrix([6, 18]))
     })
 
     it('should throw an error with invalid numbers', function () {
@@ -313,13 +315,15 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('3.2.2') }, SyntaxError)
       assert.throws(function () { parseAndEval('3.2e2.2') }, SyntaxError)
 
-      assert.throws(function () { parseAndEval('3e0.5') }, /Digit expected, got "."/)
-      assert.throws(function () { parseAndEval('3e.5') }, /Digit expected, got "."/)
-      assert.throws(function () { parseAndEval('-3e0.5') }, /Digit expected, got "."/)
-      assert.throws(function () { parseAndEval('-3e.5') }, /Digit expected, got "."/)
-      assert.throws(function () { parseAndEval('3e-0.5') }, /Digit expected, got "."/)
+      assert.throws(function () { parseAndEval('3e0.5') }, SyntaxError)
+      assert.throws(
+        function () { parseAndEval('3e.5') }, /Digit or sign expected, got "."/)
+      assert.throws(function () { parseAndEval('-3e0.5') }, SyntaxError)
+      assert.throws(
+        function () { parseAndEval('-3e.5') }, /Digit or sign expected, got "."/)
+      assert.throws(function () { parseAndEval('3e-0.5') }, SyntaxError)
       assert.throws(function () { parseAndEval('3e-.5') }, /Digit expected, got "."/)
-      assert.throws(function () { parseAndEval('-3e-0.5') }, /Digit expected, got "."/)
+      assert.throws(function () { parseAndEval('-3e-0.5') }, SyntaxError)
       assert.throws(function () { parseAndEval('-3e-.5') }, /Digit expected, got "."/)
 
       assert.throws(function () { parseAndEval('2e+a') }, /Digit expected, got "a"/)
