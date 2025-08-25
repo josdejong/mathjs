@@ -28,6 +28,7 @@ describe('nullish', function () {
     const s = sparse([[1, 0]])
     const d = matrix([[10, 20]])
     const res = nullish(s, d)
+    console.log(res)
     assert(res.isSparseMatrix) // but since 0 not nullish, res should have 1 and 0 (but sparse might skip 0)
     assert.deepStrictEqual(res.toArray(), [[1, 0]])
   })
@@ -124,7 +125,7 @@ describe('nullish', function () {
     it('should throw on mismatched shapes', function () {
       assert.throws(() => nullish([1], [7, 8]), /Dimension mismatch/)
       assert.throws(() => nullish(matrix([1]), matrix([7, 8])), /RangeError/)
-      assert.throws(() => nullish(sparse([[1]]), matrix([7, 8])), /RangeError/)
+      assert.throws(() => nullish(sparse([[1]]), matrix([7, 8])), /DimensionError/)
     })
 
     it('should throw on mismatched shapes for sparse ?? dense', function () {

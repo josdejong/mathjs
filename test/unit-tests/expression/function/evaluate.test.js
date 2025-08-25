@@ -156,6 +156,17 @@ describe('evaluate', function () {
       assert.strictEqual(math.evaluate('false ?? 3 ^ 2'), 0) // false is not nullish, so (false ?? 3) ^ 2 = false ^ 2 = 0 ^ 2 = 0
     })
 
+    it('should handle nullish coalescing precedence with dot power and left-hand operators', function () {
+      // dot power .^ should behave like ^ for scalars and bind lower than ??
+      assert.strictEqual(math.evaluate('2 .^ null ?? 3'), 8) // 2 .^ (null ?? 3)
+      assert.strictEqual(math.evaluate('5 ?? 2 .^ 3'), 125) // (5 ?? 2) .^ 3
+
+      // left-hand operators like factorial bind tighter than ??
+      assert.strictEqual(math.evaluate('5! ?? 2'), 120) // (5!) ?? 2
+      assert.strictEqual(math.evaluate('null ?? 3!'), 6) // null ?? (3!)
+      assert.strictEqual(math.evaluate('(null ?? 3)!'), 6) // parentheses with left-hand op
+    })
+
     it('should handle nullish coalescing with scope lookup', function () {
       const scope = { a: null, b: 5, c: 0 }
       assert.strictEqual(math.evaluate('a ?? b * 2', scope), 10) // null ?? (5 * 2)
@@ -228,6 +239,42 @@ describe('evaluate', function () {
 
       assert.strictEqual(math.evaluate('(5 ?? null) ? 1 : 2'), 1) // Explicit precedence
       assert.strictEqual(math.evaluate('5 ?? (null ? 1 : 2)'), 5) // Different precedence
+    })
+
+    it('should short-circuit evaluation of the right-hand side when left is not nullish', function () {
+      // RHS throws if evaluated; must not be called
+      const scope = {
+        boom: function () { throw new Error('RHS evaluated unexpectedly') }
+      }
+      assert.strictEqual(math.evaluate('5 ?? boom()', scope), 5)
+      assert.strictEqual(math.evaluate('0 ?? boom()', scope), 0)
+      assert.strictEqual(math.evaluate('false ?? boom()', scope), false)
+      assert.strictEqual(math.evaluate('"" ?? boom()', scope), '')
+    })
+
+    it('should evaluate the right-hand side when left is nullish', function () {
+      let count = 0
+      const scope = {
+        inc: function () { count++; return 7 }
+      }
+      assert.strictEqual(math.evaluate('null ?? inc()', scope), 7)
+      assert.strictEqual(count, 1)
+      assert.strictEqual(math.evaluate('undefined ?? inc()', scope), 7)
+      assert.strictEqual(count, 2)
+    })
+
+    it('should not short-circuit for collections (element-wise evaluation requires RHS)', function () {
+      // When left is a collection, element-wise nullish requires evaluating RHS
+      let called = 0
+      const scope = {
+        getDefault: function () {
+          called++
+          return math.matrix([1, 2])
+        }
+      }
+      const res = math.evaluate('matrix([null, 5]) ?? getDefault()', scope)
+      assert.deepStrictEqual(res, math.matrix([1, 5]))
+      assert.strictEqual(called, 1)
     })
   })
 })

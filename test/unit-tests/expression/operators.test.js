@@ -49,12 +49,14 @@ describe('operators', function () {
     const n2 = new OperatorNode('^', 'pow', [a, a])
     const n3 = new OperatorNode('-', 'unaryMinus', [a])
     const n4 = new OperatorNode('!', 'factorial', [a])
+    const n6 = new OperatorNode('??', 'nullish', [a, a])
     const n5 = math.parse("M'")
 
     assert.strictEqual(getAssociativity(n1, 'keep'), 'left')
     assert.strictEqual(getAssociativity(n2, 'keep'), 'right')
     assert.strictEqual(getAssociativity(n3, 'keep'), 'right')
     assert.strictEqual(getAssociativity(n4, 'keep'), 'left')
+    assert.strictEqual(getAssociativity(n6, 'keep'), 'left')
     assert.strictEqual(getAssociativity(n5, 'keep'), 'left')
   })
 
@@ -121,6 +123,7 @@ describe('operators', function () {
     assert.strictEqual(getOperator('multiply'), '*')
     assert.strictEqual(getOperator('ctranspose'), "'")
     assert.strictEqual(getOperator('mod'), 'mod')
+    assert.strictEqual(getOperator('nullish'), '??')
     assert.strictEqual(getOperator('square'), null)
   })
 })
