@@ -193,7 +193,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
       if (depth < maxDepth) {
         for (let i = 0; i < N; i++) {
           if (index) index[depth] = i
-          // if there is an offset greather than the current dimension
+          // if there is an offset greater than the current dimension
           // pass the array, if the size of the array is 1 pass the first
           // element of the array
           result[i] = iterate(
