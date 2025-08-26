@@ -162,9 +162,8 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
 
   function mapMultiple (Collections, callback) {
   // collections can be matrices or arrays
-  // callback must be a function of the form (collcetions, [index])
+  // callback must be a function of the form (collections, [index])
     const firstCollection = Collections[0]
-    const firstCollectionIsMatrix = Boolean(firstCollection.isMatrix)
     const Arrays = Collections.map((collection) =>
       collection.isMatrix ? collection.valueOf() : collection
     )
@@ -178,11 +177,11 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     const callbackUsesIndex = callback.length > 1
     const index = callbackUsesIndex ? [] : null
     const resultsArray = iterate(Arrays, 0)
-    if (firstCollectionIsMatrix) {
-      const returnMatrix = firstCollection.create()
-      returnMatrix._data = resultsArray
-      returnMatrix._size = finalSize
-      return returnMatrix
+    if (firstCollection.isMatrix) {
+      const resultsMatrix = firstCollection.create()
+      resultsMatrix._data = resultsArray
+      resultsMatrix._size = finalSize
+      return resultsMatrix
     } else {
       return resultsArray
     }
