@@ -93,17 +93,15 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     }
     )
 
-    let callback
     let callbackCase
 
     if (typed.isTypedFunction(multiCallback)) {
       const firstIndex = newSize.map(() => 0)
       callbackCase = _getTypedCallbackCase(multiCallback, firstValues, firstIndex, Arrays)
-      callback = _getLimitedCallback(callbackCase)
     } else {
       callbackCase = _getCallbackCase(multiCallback, numberOfArrays)
-      callback = _getLimitedCallback(callbackCase)
     }
+    const callback = _getLimitedCallback(callbackCase)
 
     if (callbackCase < 2) {
       return mapMultiple(Arrays, callback)
@@ -119,7 +117,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
 
     const broadcastedArraysCallback = (x, idx) =>
       callback(
-        [x, ...broadcastedArrays.slice(1).map(Array => _get(Array, idx))],
+        [x, ...broadcastedArrays.slice(1).map(array => _get(array, idx))],
         idx)
 
     if (firstArrayIsMatrix) {
@@ -173,13 +171,12 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     const sizes = Collections.map((collection) =>
       collection.isMatrix ? collection.size() : arraySize(collection)
     )
-    // this should be changed for the specific function when impelemented
     const finalSize = broadcastSizes(...sizes)
     // the offset means for each initial array, how much smaller is it than the final size
     const offsets = sizes.map((size) => finalSize.length - size.length)
-    // make the iteration algorithm
     const maxDepth = finalSize.length - 1
-    const index = []
+    const callbackUsesIndex = callback.length > 1
+    const index = callbackUsesIndex ? [] : null
     const resultsArray = iterate(Arrays, 0)
     if (firstCollectionIsMatrix) {
       const returnMatrix = firstCollection.create()
@@ -189,15 +186,14 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     } else {
       return resultsArray
     }
-    // will create references to the arrays depth, depending on the offset.
 
     function iterate (arrays, depth = 0) {
-    // each array can have differt sizes
+    // each array can have different sizes
       const N = finalSize[depth]
       const result = Array(N)
       if (depth < maxDepth) {
         for (let i = 0; i < N; i++) {
-          index[depth] = i
+          if (index) index[depth] = i
           // if there is an offset greather than the current dimension
           // pass the array, if the size of the array is 1 pass the first
           // element of the array
@@ -214,10 +210,10 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
         }
       } else {
         for (let i = 0; i < N; i++) {
-          index[depth] = i
+          if (index) index[depth] = i
           result[i] = callback(
             arrays.map((a) => (a.length === 1 ? a[0] : a[i])),
-            index.slice()
+            index ? index.slice() : undefined
           )
         }
       }
