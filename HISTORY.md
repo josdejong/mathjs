@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since 14.6.0
+
+- Fix: #3519, #3368 categories "Core functions" and "Construction functions"
+  missing from the generated function overview.
+
 # 2025-07-25, 14.6.0
 
 - Feat: new function `toBest(unit, unitList, offset)`, and corresponding
