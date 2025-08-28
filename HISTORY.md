@@ -4,6 +4,7 @@
 
 - Fix: #3519, #3368 categories "Core functions" and "Construction functions"
   missing from the generated function overview.
+- Fix #3517: `printTransformDependencies` not exported in the type definitions.
 
 # 2025-07-25, 14.6.0
 
