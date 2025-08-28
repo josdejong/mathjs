@@ -2,6 +2,7 @@
 
 # unpublished changes since 14.6.0
 
+- Feat: faster `DenseMatrix` symbol iterator (#3521). Thanks @dvd101x.
 - Fix: #3519, #3368 categories "Core functions" and "Construction functions"
   missing from the generated function overview.
 - Fix #3517: `printTransformDependencies` not exported in the type definitions.
