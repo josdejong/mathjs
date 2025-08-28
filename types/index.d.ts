@@ -4079,7 +4079,8 @@ export const {
   concatTransformDependencies,
   stdTransformDependencies,
   sumTransformDependencies,
-  varianceTransformDependencies
+  varianceTransformDependencies,
+  printTransformDependencies
 }: Record<string, FactoryFunctionMap>
 
 export interface Matrix<T = MathGeneric> {

@@ -16,13 +16,13 @@ export const createString = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * Examples:
    *
-   *    math.string(4.2)               // returns string '4.2'
-   *    math.string(math.complex(3, 2) // returns string '3 + 2i'
+   *    math.string(4.2)                // returns string '4.2'
+   *    math.string(math.complex(3, 2)) // returns string '3 + 2i'
    *
    *    const u = math.unit(5, 'km')
-   *    math.string(u.to('m'))         // returns string '5000 m'
+   *    math.string(u.to('m'))          // returns string '5000 m'
    *
-   *    math.string([true, false])     // returns ['true', 'false']
+   *    math.string([true, false])      // returns ['true', 'false']
    *
    * See also:
    *

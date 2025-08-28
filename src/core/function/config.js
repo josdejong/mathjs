@@ -17,7 +17,6 @@ export function configFactory (config, emit) {
    *
    * Examples:
    *
-   *
    *     import { create, all } from 'mathjs'
    *
    *     // create a mathjs instance
