@@ -1907,9 +1907,10 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Calculate the difference between adjacent elements of a matrix or array.
    * @param x A matrix or array
+   * @param dim The dimension to apply the difference on.
    * @returns A matrix or array containing the differences
    */
-  diff(x: MathCollection): MathCollection;
+  diff<T extends MathCollection>(x: T, dim?: number | BigNumber): T
 
   /**
    * Create a diagonal matrix or retrieve the diagonal of a matrix. When x
@@ -5814,8 +5815,12 @@ export interface MathJsChain<TValue> {
 
   /**
    * Calculate the difference between adjacent elements of the chained matrix or array.
+   * @param dim The dimension to apply the difference on.
    */
-  diff(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
+  diff<T extends MathCollection>(
+    this: MathJsChain<T>,
+    dim?: number | BigNumber
+  ): MathJsChain<T>
 
   /**
    * Calculate the determinant of a matrix.

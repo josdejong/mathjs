@@ -8,11 +8,7 @@
     "moduleResolution": "nodenext",
     "typeRoots": [],
     "types": [],
-    "lib": [
-      "ES6",
-      "DOM",
-      "es2020.bigint"
-    ],
+    "lib": ["ES6", "DOM", "es2020.bigint"],
     "module": "NodeNext",
     "noEmit": true,
     "noImplicitAny": true,
