@@ -678,21 +678,25 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       return
     }
 
-    const index = []
-    const recurse = function * (value, depth) {
-      if (depth < maxDepth) {
-        for (let i = 0; i < value.length; i++) {
-          index[depth] = i
-          yield * recurse(value[i], depth + 1)
-        }
-      } else {
-        for (let i = 0; i < value.length; i++) {
-          index[depth] = i
-          yield ({ value: value[i], index: index.slice() })
-        }
+    // Multi-dimensional matrix: iterate over all elements
+    const index = Array(maxDepth + 1).fill(0)
+    const totalElements = this._size.reduce((a, b) => a * b, 1)
+
+    for (let count = 0; count < totalElements; count++) {
+      // Traverse to the current element using indices
+      let current = this._data
+      for (let d = 0; d < maxDepth; d++) {
+        current = current[index[d]]
+      }
+      yield { value: current[index[maxDepth]], index: index.slice() }
+
+      // Increment indices for next element
+      for (let d = maxDepth; d >= 0; d--) {
+        index[d]++
+        if (index[d] < this._size[d]) break
+        index[d] = 0
       }
     }
-    yield * recurse(this._data, 0)
   }
 
   /**
