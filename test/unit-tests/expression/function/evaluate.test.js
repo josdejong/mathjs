@@ -250,6 +250,8 @@ describe('evaluate', function () {
       assert.strictEqual(math.evaluate('0 ?? boom()', scope), 0)
       assert.strictEqual(math.evaluate('false ?? boom()', scope), false)
       assert.strictEqual(math.evaluate('"" ?? boom()', scope), '')
+      assert.throws(() => math.evaluate('null ?? boom()', scope))
+      assert.throws(() => math.evaluate('undefined ?? boom()', scope))
     })
 
     it('should evaluate the right-hand side when left is nullish', function () {

@@ -28,7 +28,6 @@ describe('nullish', function () {
     const s = sparse([[1, 0]])
     const d = matrix([[10, 20]])
     const res = nullish(s, d)
-    console.log(res)
     assert(res.isSparseMatrix) // but since 0 not nullish, res should have 1 and 0 (but sparse might skip 0)
     assert.deepStrictEqual(res.toArray(), [[1, 0]])
   })

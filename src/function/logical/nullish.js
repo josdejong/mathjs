@@ -50,6 +50,20 @@ export const createNullish = /* #__PURE__ */ factory(
     // Helper function to check if a value is nullish
     const isNullish = (x) => x == null || x === undefined
 
+    const returnLeftIfSameSize = (x, y) => {
+      const xs = x.size()
+      const ys = y.size()
+      if (xs.length !== ys.length) {
+        throw new DimensionError(xs.length, ys.length)
+      }
+      for (let i = 0; i < xs.length; i++) {
+        if (xs[i] !== ys[i]) {
+          throw new DimensionError(xs, ys)
+        }
+      }
+      return x
+    }
+
     return typed(
       name,
       {
@@ -64,33 +78,8 @@ export const createNullish = /* #__PURE__ */ factory(
           matAlgo14xDs(x, y, self, false)
         ),
 
-        'SparseMatrix, DenseMatrix': (x, y) => {
-          const xs = x.size()
-          const ys = y.size()
-          if (xs.length !== ys.length) {
-            throw new DimensionError(xs.length, ys.length)
-          }
-          for (let i = 0; i < xs.length; i++) {
-            if (xs[i] !== ys[i]) {
-              throw new DimensionError(xs, ys)
-            }
-          }
-          return x
-        },
-        'SparseMatrix, Array': (x, y) => {
-          const ym = matrix(y)
-          const xs = x.size()
-          const ys = ym.size()
-          if (xs.length !== ys.length) {
-            throw new DimensionError(xs.length, ys.length)
-          }
-          for (let i = 0; i < xs.length; i++) {
-            if (xs[i] !== ys[i]) {
-              throw new DimensionError(xs, ys)
-            }
-          }
-          return x
-        },
+        'SparseMatrix, DenseMatrix': (x, y) => returnLeftIfSameSize(x, y),
+        'SparseMatrix, Array': (x, y) => returnLeftIfSameSize(x, matrix(y)),
 
         'any, SparseMatrix': (x, y) => (isNullish(x) ? y : x),
         'any, DenseMatrix': (x, y) => (isNullish(x) ? y : x),
