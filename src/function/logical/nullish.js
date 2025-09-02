@@ -36,7 +36,7 @@ export const createNullish = /* #__PURE__ */ factory(
      *
      *    // Object property access with fallback
      *    const obj = {foo: 7, bar: 3}
-     *    math.nullish(obj.baz, 0)      // returns 0 (undefined ?? 0)
+     *    math.nullish(obj.baz, 0)      // returns 0
      *
      * See also:
      *
