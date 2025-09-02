@@ -52,7 +52,6 @@
     "codecov": "3.8.3",
     "core-js": "3.44.0",
     "del": "8.0.0",
-    "dtslint": "4.2.1",
     "eigen": "0.2.2",
     "eslint": "8.57.1",
     "eslint-config-prettier": "9.1.0",
