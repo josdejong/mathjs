@@ -1,5 +1,6 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
-const assert = require('assert')
+const path = require('node:path')
+const assert = require('node:assert')
 const { createSnapshotFromFactories, validateBundle } = require('../../lib/cjs/utils/snapshot')
 const factoriesAny = require('../../lib/cjs/factoriesAny')
 const version = require('../../package.json').version
@@ -37,19 +38,20 @@ describe('lib/browser', function () {
   it('should be ES2020 compatible', async function () {
     const { runChecks } = require('es-check')
 
-    const configs = [{
-      ecmaVersion: 'es2020',
-      files: [mathjsBundle],
-      checkFeatures: true
-    }]
+    const absBundlePath = path.join(__dirname, mathjsBundle)
+      .replaceAll('\\', '/') // normalize as Unix path
 
-    const result = await runChecks(configs)
+    const result = await runChecks([{
+      ecmaVersion: 'es2020',
+      files: [absBundlePath],
+      checkFeatures: true
+    }])
 
     if (!result.success) {
-      console.error(`ES Check failed with ${result.errors.length} errors`)
-      result.errors.forEach(error => {
-        console.error(`- ${error.file}: ${error.err.message}`)
-      })
+      const message = `ES Check failed with ${result.errors.length} errors:\n` +
+        result.errors.map(error => `- ${error.file}: ${error.err.message}`).join('\n')
+
+      throw new Error(message)
     }
   })
 
