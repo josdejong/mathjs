@@ -7,9 +7,11 @@ const embeddedDocs = require('../../lib/cjs/expression/embeddedDocs/embeddedDocs
 
 const { expectedInstanceStructure } = createSnapshotFromFactories(factoriesAny)
 
+const mathjsBundle = '../../lib/browser/math.js'
+
 describe('lib/browser', function () {
   it('should load lib/browser/math.js', function () {
-    const math = require('../../lib/browser/math.js')
+    const math = require(mathjsBundle)
 
     assert.strictEqual(math.add(2, 3), 5)
     assert.strictEqual(math.version, version)
@@ -17,7 +19,7 @@ describe('lib/browser', function () {
 
   it('should have all expected functions in lib/browser/main.js', function () {
     // snapshot testing
-    const math = require('../../lib/browser/math.js')
+    const math = require(mathjsBundle)
 
     // don't output all warnings "math.foo.bar is move to math.bar, ..."
     const originalWarn = console.warn
@@ -32,8 +34,27 @@ describe('lib/browser', function () {
     console.warn = originalWarn
   })
 
+  it('should be ES2020 compatible', async function () {
+    const { runChecks } = require('es-check')
+
+    const configs = [{
+      ecmaVersion: 'es2020',
+      files: [mathjsBundle],
+      checkFeatures: true
+    }]
+
+    const result = await runChecks(configs)
+
+    if (!result.success) {
+      console.error(`ES Check failed with ${result.errors.length} errors`)
+      result.errors.forEach(error => {
+        console.error(`- ${error.file}: ${error.err.message}`)
+      })
+    }
+  })
+
   describe('typeOf should work on the minified bundle for all mathjs classes', function () {
-    const math = require('../../lib/browser/math.js')
+    const math = require(mathjsBundle)
 
     const typeOfTests = [
       { value: math.bignumber(2), expectedType: 'BigNumber' },
@@ -67,7 +88,7 @@ describe('lib/browser', function () {
   })
 
   it('should contain embedded docs for every function', function () {
-    const math = require('../../lib/browser/math.js')
+    const math = require(mathjsBundle)
 
     // names to ignore
     const ignore = [

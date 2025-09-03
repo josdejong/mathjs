@@ -99,16 +99,7 @@ const webpackConfig = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            ...babelConfig,
-            presets: [
-              ['@babel/preset-env', {
-                useBuiltIns: 'usage',
-                corejs: '3.15'
-              }]
-            ]
-          }
+          loader: 'babel-loader'
         }
       }
     ]
