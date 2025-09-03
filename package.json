@@ -148,7 +148,7 @@
     "test": "npm run test:src && npm run lint",
     "test:src": "mocha test/unit-tests",
     "test:generated": "mocha test/generated-code-tests",
-    "test:node": "mocha test/node-tests/*.test.js test/node-tests/**/*.test.js",
+    "test:node": "mocha test/node-tests/*.test.{js,cjs,mjs} test/node-tests/**/*.test.{js,cjs,mjs}",
     "test:all": "npm run test:src && npm run test:generated && npm run test:node && npm run test:types",
     "test:browser": "karma start test/browser-test-config/local-karma.js",
     "test:lambdatest": "karma start test/browser-test-config/lambdatest-karma.js",
