@@ -7,6 +7,7 @@
   missing from the generated function overview.
 - Fix #3517: `printTransformDependencies` not exported in the type definitions.
 - Fix: add missing type definition for function `diff` (#3520). Thanks @dodokw.
+- Fix: #3396 improve documentation of function `range`.
 
 # 2025-07-25, 14.6.0
 

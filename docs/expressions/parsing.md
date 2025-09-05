@@ -234,3 +234,31 @@ Some care is taken to mutate the same object that is passed into mathjs, so they
 For less reliance on this blacklist, scope can also be a `Map`, which allows mathjs expressions to define variables and functions of any name.
 
 For more, see [examples of custom scopes](../../examples/advanced/custom_scope_objects.js).
+
+## Serialization
+
+All mathjs data types can be serialized. A scope containing variables can therefore be safely serialized too. However, in the expression parser it is possible to define functions, like:
+
+```
+f(x) = x^2
+```
+
+Such a custom function cannot be serialized on its own, since it may be bound to other variables in the scope.
+
+A [`Parser`](#parser) can safely serialize all variables and functions evaluated via the expression parser:
+
+```js
+const parser = math.parser()
+
+// evaluate some expressions
+parser.evaluate('w = 2')
+parser.evaluate('f(x) = x^w')
+parser.evaluate('c = f(3)') // 9
+
+// serialize the parser with its state
+const str = JSON.stringify(parser)
+
+// deserialize the parser again
+const parser2 = JSON.parse(str, math.reviver)
+parser.evaluate('f(4)') // 16
+```

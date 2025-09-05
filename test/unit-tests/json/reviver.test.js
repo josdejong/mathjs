@@ -246,4 +246,25 @@ describe('reviver', function () {
     assert.strictEqual(node.type, 'OperatorNode')
     assert.strictEqual(node.toString(), '2 + sin(3 x)')
   })
+
+  it('should parse a stringified Parser', function () {
+    const json = JSON.stringify({
+      mathjs: 'Parser',
+      variables: {
+        a: 42,
+        c: { mathjs: 'BigNumber', value: '6' },
+        w: { mathjs: 'BigNumber', value: '2' }
+      },
+      functions: {
+        f: 'f(x) = w * x'
+      }
+    })
+
+    const parser = JSON.parse(json, reviver)
+
+    assert.deepStrictEqual(parser.get('a'), 42)
+    assert.deepStrictEqual(parser.get('c'), math.bignumber('6'))
+    assert.deepStrictEqual(parser.get('w'), math.bignumber('2'))
+    assert.deepStrictEqual(parser.evaluate('f(4)'), math.bignumber('8'))
+  })
 })
