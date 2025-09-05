@@ -32,7 +32,7 @@ math.fraction(matrix: Array | Matrix)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | number &#124; string &#124; Fraction &#124; BigNumber &#124; Array &#124; Matrix |  Arguments specifying the value, or numerator and denominator of the fraction
+`args` | number &#124; string &#124; Fraction &#124; BigNumber &#124; bigint &#124; Unit &#124; Array &#124; Matrix |  Arguments specifying the value, or numerator and denominator of the fraction
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

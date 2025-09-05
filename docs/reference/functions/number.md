@@ -51,7 +51,9 @@ math.number(math.unit('52cm'), 'm')    // returns 0.52
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [bignumber](bignumber.html),
+[bigint](bigint.html),
 [boolean](boolean.html),
+[numeric](numeric.html),
 [complex](complex.html),
 [index](index.html),
 [matrix](matrix.html),

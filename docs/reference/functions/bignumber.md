@@ -20,7 +20,7 @@ math.bignumber(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | number &#124; string &#124; Fraction &#124; BigNumber &#124; Array &#124; Matrix &#124; boolean &#124; null | Value for the big number, 0 by default.
+`value` | number &#124; string &#124; Fraction &#124; BigNumber &#124; bigint &#124; Array &#124; Matrix &#124; boolean &#124; null | Value for the big number, 0 by default.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -49,6 +49,8 @@ math.bignumber('7.2e500')                  // returns BigNumber 7.2e500
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
+[number](number.html),
+[bigint](bigint.html),
 [boolean](boolean.html),
 [complex](complex.html),
 [index](index.html),

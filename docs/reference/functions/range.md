@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-range">Function range <a href="#function-range" title="Permalink">#</a></h1>
 
-Create an array from a range.
+Create a matrix or array containing a range of values.
 By default, the range end is excluded. This can be customized by providing
 an extra parameter `includeEnd`.
 

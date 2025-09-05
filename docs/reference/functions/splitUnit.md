@@ -12,7 +12,7 @@ Split a unit in an array of units whose sum is equal to the original unit.
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-splitUnit(unit: Unit, parts: Array.<Unit>)
+math.splitUnit(unit: Unit, parts: Array.<Unit>)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

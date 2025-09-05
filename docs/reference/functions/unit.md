@@ -15,7 +15,8 @@ When a matrix is provided, all elements will be converted to units.
 
 ```js
 math.unit(unit : string)
-math.unit(value : number, unit : string)
+math.unit(value : number, valuelessUnit : Unit)
+math.unit(value : number, valuelessUnit : string)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -40,6 +41,8 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
+const kph = math.unit('km/h')   // returns Unit km/h (valueless)
+const v = math.unit(25, kph)    // returns Unit 25 km/h
 const a = math.unit(5, 'cm')    // returns Unit 50 mm
 const b = math.unit('23 kg')    // returns Unit 23 kg
 a.to('m')                       // returns Unit 0.05 m

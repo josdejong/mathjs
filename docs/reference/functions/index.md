@@ -22,7 +22,7 @@ math.index(range1, range2, ...)
 - A number
 - A string for getting/setting an object property
 - An instance of `Range`
-- A one-dimensional Array or a Matrix with numbers
+- A one-dimensional Array or a Matrix with numbers or booleans
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
@@ -47,10 +47,12 @@ Type | Description
 
 ```js
 const b = [1, 2, 3, 4, 5]
-math.subset(b, math.index([1, 2, 3]))     // returns [2, 3, 4]
+math.subset(b, math.index([1, 2, 3]))                         // returns [2, 3, 4]
+math.subset(b, math.index([false, true, true, true, false]))  // returns [2, 3, 4]
 
 const a = math.matrix([[1, 2], [3, 4]])
 a.subset(math.index(0, 1))             // returns 2
+a.subset(math.index(0, [false, true])) // returns 2
 ```
 
 

@@ -4,6 +4,18 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20250905-1470">2025-09-05, 14.7.0 <a href="#20250905-1470" title="Permalink">#</a></h1>
+
+- Feat: faster `DenseMatrix` symbol iterator (<a href="https://github.com/josdejong/mathjs/issues/3521">#3521</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Feat: implement serialization support for `Parser`, fixing <a href="https://github.com/josdejong/mathjs/issues/3509">#3509</a> (<a href="https://github.com/josdejong/mathjs/issues/3525">#3525</a>).
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3519">#3519</a>, <a href="https://github.com/josdejong/mathjs/issues/3368">#3368</a> categories "Core functions" and "Construction functions"
+  missing from the generated function overview.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3517">#3517</a> `printTransformDependencies` not exported in the type definitions.
+- Fix: add missing type definition for function `diff` (<a href="https://github.com/josdejong/mathjs/issues/3520">#3520</a>). Thanks <a href="https://github.com/dodokw">@dodokw</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3396">#3396</a> improve documentation of function `range`.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3523">#3523</a> cleanup old polyfills from the browser bundle 
+  by removing `core-js` (<a href="https://github.com/josdejong/mathjs/issues/3524">#3524</a>).
+
 <h1 id="20250725-1460">2025-07-25, 14.6.0 <a href="#20250725-1460" title="Permalink">#</a></h1>
 
 - Feat: new function `toBest(unit, unitList, offset)`, and corresponding
