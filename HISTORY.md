@@ -1,5 +1,17 @@
 # History
 
+# 2025-09-05, 14.7.0
+
+- Feat: faster `DenseMatrix` symbol iterator (#3521). Thanks @dvd101x.
+- Feat: implement serialization support for `Parser`, fixing #3509 (#3525).
+- Fix: #3519, #3368 categories "Core functions" and "Construction functions"
+  missing from the generated function overview.
+- Fix: #3517 `printTransformDependencies` not exported in the type definitions.
+- Fix: add missing type definition for function `diff` (#3520). Thanks @dodokw.
+- Fix: #3396 improve documentation of function `range`.
+- Fix: #3523 cleanup old polyfills from the browser bundle 
+  by removing `core-js` (#3524).
+
 # 2025-07-25, 14.6.0
 
 - Feat: new function `toBest(unit, unitList, offset)`, and corresponding

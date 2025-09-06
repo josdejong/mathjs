@@ -2,7 +2,7 @@
 
 /* eslint no-extend-native: ["error", { "exceptions": ["Object"] }] */
 // loading mathjs should not crash
-import { create, all } from '../../lib/esm/entry/mainAny'
+import { create, all } from '../../lib/esm/entry/mainAny.js'
 
 Object.prototype.foo = () => {}
 const math = create(all)

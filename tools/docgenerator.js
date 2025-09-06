@@ -567,18 +567,18 @@ export function collectDocs (functionNames, inputPath) {
     if (!path.includes('docs') && functionIndex !== -1) {
       if (path.includes('expression')) {
         category = 'expression'
-      } else if (/\/lib\/cjs\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
+      } else if (/\/src\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
         // for type/bignumber/function/bignumber.js, type/fraction/function/fraction.js, etc
         category = 'construction'
-      } else if (/\/lib\/cjs\/core\/function/.test(fullPath)) {
+      } else if (/\/src\/core\/function/.test(fullPath)) {
         category = 'core'
       } else {
         category = path[functionIndex + 1]
       }
-    } else if (fullPath.endsWith('/lib/cjs/expression/parse.js')) {
+    } else if (fullPath.endsWith('/src/expression/parse.js')) {
       // TODO: this is an ugly special case
       category = 'expression'
-    } else if (path.join('/').endsWith('/lib/cjs/type')) {
+    } else if (path.join('/').endsWith('/src/type')) {
       // for boolean.js, number.js, string.js
       category = 'construction'
     }

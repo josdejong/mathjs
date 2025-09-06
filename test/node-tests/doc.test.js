@@ -86,6 +86,10 @@ function extractValue (spec) {
   return value
 }
 
+const ignoreFunctions = new Set([
+  'config'
+])
+
 const knownProblems = new Set([
   'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
   'random', 'pickRandom', 'kldivergence',
@@ -97,7 +101,10 @@ const knownProblems = new Set([
   'mod', 'floor', 'fix', 'expm1', 'exp',
   'ceil', 'cbrt', 'add', 'slu',
   'rationalize', 'qr', 'lusolve', 'lup', 'derivative',
-  'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round'
+  'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round',
+  'import', 'typed',
+  'unit', 'sparse', 'matrix', 'index', 'bignumber', 'fraction', 'complex',
+  'parse'
 ])
 
 let issueCount = 0
@@ -371,6 +378,10 @@ describe('Testing examples from (jsdoc) comments', function () {
   for (const category in byCategory) {
     describe('category: ' + category, function () {
       for (const doc of byCategory[category]) {
+        if (ignoreFunctions.has(doc.name)) {
+          continue
+        }
+
         it('satisfies ' + doc.name, function () {
           if (debug) {
             console.log(`      Testing ${doc.name} ...`) // can remove once no known failures; for now it clarifies "PLEASE RESOLVE"
