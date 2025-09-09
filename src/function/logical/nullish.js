@@ -5,12 +5,12 @@ import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
 import { DimensionError } from '../../error/DimensionError.js'
 
 const name = 'nullish'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed', 'matrix', 'size']
 
 export const createNullish = /* #__PURE__ */ factory(
   name,
   dependencies,
-  ({ typed, matrix }) => {
+  ({ typed, matrix, size }) => {
     const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
     const matAlgo14xDs = createMatAlgo14xDs({ typed })
     const matAlgo13xDD = createMatAlgo13xDD({ typed })
@@ -47,12 +47,9 @@ export const createNullish = /* #__PURE__ */ factory(
      * @return {*} Returns y when x is null or undefined, otherwise returns x
      */
 
-    // Helper function to check if a value is nullish
-    const isNullish = (x) => x == null || x === undefined
-
     const returnLeftIfSameSize = (x, y) => {
-      const xs = x.size()
-      const ys = y.size()
+      const xs = x.size ? x.size() : size(x)
+      const ys = y && y.size ? y.size() : size(y)
       if (xs.length !== ys.length) {
         throw new DimensionError(xs.length, ys.length)
       }
@@ -67,35 +64,27 @@ export const createNullish = /* #__PURE__ */ factory(
     return typed(
       name,
       {
-        // Scalar handlers
+        // Scalar and SparseMatrix-first short-circuit handlers
         'number|bigint|Complex|BigNumber|Fraction|Unit|string|boolean|SparseMatrix, any': (x, _y) => x,
         'null, any': (_x, y) => y,
         'undefined, any': (_x, y) => y,
 
-        // Matrix-aware overloads and array bridging (no broadcasting)
-        'DenseMatrix, any': typed.referToSelf(self => (x, y) =>
-          // element-wise evaluation over dense with scalar/array-like
-          matAlgo14xDs(x, y, self, false)
-        ),
-
+        // SparseMatrix-first with collection RHS: enforce exact shape match
         'SparseMatrix, DenseMatrix': (x, y) => returnLeftIfSameSize(x, y),
-        'SparseMatrix, Array': (x, y) => returnLeftIfSameSize(x, matrix(y)),
+        'SparseMatrix, SparseMatrix': (x, y) => returnLeftIfSameSize(x, y),
+        'SparseMatrix, Array': (x, y) => returnLeftIfSameSize(x, y),
 
-        'any, SparseMatrix': (x, y) => (isNullish(x) ? y : x),
-        'any, DenseMatrix': (x, y) => (isNullish(x) ? y : x),
-
-        'Array, any': typed.referToSelf(self => (x, y) => self(matrix(x), y).valueOf()),
-        'any, Array': typed.referToSelf(self => (x, y) => self(x, matrix(y)).valueOf()),
-
-        // Dense-Dense without broadcasting
+        // DenseMatrix-first handlers (no broadcasting between collections)
         'DenseMatrix, DenseMatrix': typed.referToSelf(self => (x, y) => matAlgo13xDD(x, y, self)),
-        'Array, Array': typed.referToSelf(self => (x, y) => matAlgo13xDD(matrix(x), matrix(y), self).valueOf()),
-        'Array, DenseMatrix': typed.referToSelf(self => (x, y) => matAlgo13xDD(matrix(x), y, self).valueOf()),
-        'DenseMatrix, Array': typed.referToSelf(self => (x, y) => matAlgo13xDD(x, matrix(y), self).valueOf()),
-
-        // Dense-Sparse elementwise
         'DenseMatrix, SparseMatrix': typed.referToSelf(self => (x, y) => matAlgo03xDSf(x, y, self, false)),
-        'Array, SparseMatrix': typed.referToSelf(self => (x, y) => matAlgo03xDSf(matrix(x), y, self, false))
+        'DenseMatrix, Array': typed.referToSelf(self => (x, y) => matAlgo13xDD(x, matrix(y), self)),
+        'DenseMatrix, any': typed.referToSelf(self => (x, y) => matAlgo14xDs(x, y, self, false)),
+
+        // Array-first handlers (bridge via matrix() where needed)
+        'Array, Array': typed.referToSelf(self => (x, y) => matAlgo13xDD(matrix(x), matrix(y), self).valueOf()),
+        'Array, DenseMatrix': typed.referToSelf(self => (x, y) => matAlgo13xDD(matrix(x), y, self)),
+        'Array, SparseMatrix': typed.referToSelf(self => (x, y) => matAlgo03xDSf(matrix(x), y, self, false)),
+        'Array, any': typed.referToSelf(self => (x, y) => matAlgo14xDs(matrix(x), y, self, false).valueOf())
       }
     )
   }

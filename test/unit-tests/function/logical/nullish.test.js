@@ -157,5 +157,57 @@ describe('nullish', function () {
       assert.throws(() => nullish([1], [7, 8]), /Dimension mismatch/)
       assert.throws(() => nullish(math.matrix([1]), math.matrix([7, 8])), /Dimension mismatch/)
     })
+
+    it('should throw on mismatched shapes for sparse ?? array (no temp conversion)', function () {
+      const left = sparse([[1, 0]])
+      const right = [7, 8, 9]
+      assert.throws(() => nullish(left, right), /Dimension mismatch/)
+    })
+
+    it('should throw on mismatched shapes for sparse ?? sparse', function () {
+      const left = sparse([[1, 0]]) // 1x2
+      const right = sparse([[7], [8]]) // 2x1
+      assert.throws(() => nullish(left, right), /Dimension mismatch/)
+    })
+
+    it('should return left on matching shapes for sparse ?? sparse', function () {
+      const left = sparse([[1, 0]]) // 1x2
+      const right = sparse([[7, 8]]) // 1x2
+      const res = nullish(left, right)
+      assert(res && res.isSparseMatrix)
+      assert.deepStrictEqual(res.toArray(), [[1, 0]])
+    })
+  })
+
+  describe('result type conventions (function form)', function () {
+    it('Array, Array -> Array', function () {
+      const r = nullish([null, 2], [7, 8])
+      assert(Array.isArray(r))
+      assert.deepStrictEqual(r, [7, 2])
+    })
+
+    it('Array, DenseMatrix -> Matrix', function () {
+      const r = nullish([null, 2], math.matrix([7, 8]))
+      assert.strictEqual(!!(r && (r.isMatrix || r.isDenseMatrix || r.isSparseMatrix)), true)
+      assert.deepStrictEqual(r.toArray(), [7, 2])
+    })
+
+    it('DenseMatrix, Array -> Matrix', function () {
+      const r = nullish(math.matrix([null, 2]), [7, 8])
+      assert.strictEqual(!!(r && (r.isMatrix || r.isDenseMatrix || r.isSparseMatrix)), true)
+      assert.deepStrictEqual(r.toArray(), [7, 2])
+    })
+
+    it('SparseMatrix, Array -> Matrix (left returned on match)', function () {
+      const r = nullish(math.sparse([[1, 0]]), [[7, 8]])
+      assert.strictEqual(!!(r && (r.isMatrix || r.isDenseMatrix || r.isSparseMatrix)), true)
+      assert.deepStrictEqual(r.toArray(), [[1, 0]])
+    })
+
+    it('Array, any (scalar) -> Array', function () {
+      const r = nullish([null, 5], 42)
+      assert(Array.isArray(r))
+      assert.deepStrictEqual(r, [42, 5])
+    })
   })
 })
