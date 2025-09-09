@@ -10,6 +10,7 @@ describe('defaultInstance', function () {
     assert.deepStrictEqual(math.config(), {
       matrix: 'Matrix',
       number: 'number',
+      numberFallback: 'number',
       precision: 64,
       predictable: false,
       relTol: 1e-12,
@@ -28,6 +29,7 @@ describe('defaultInstance', function () {
     assert.deepStrictEqual(math1.config(), {
       matrix: 'Array',
       number: 'BigNumber',
+      numberFallback: 'number',
       precision: 64,
       predictable: false,
       relTol: 1e-12,
@@ -72,6 +74,7 @@ describe('defaultInstance', function () {
     assert.deepStrictEqual(config, {
       matrix: 'Matrix',
       number: 'BigNumber',
+      numberFallback: 'number',
       precision: 4,
       predictable: true,
       relTol: 1e-12,
@@ -93,6 +96,7 @@ describe('defaultInstance', function () {
     assert.deepStrictEqual(config2, {
       matrix: 'Matrix',
       number: 'number',
+      numberFallback: 'number',
       precision: 64,
       predictable: false,
       relTol: 1e-12,

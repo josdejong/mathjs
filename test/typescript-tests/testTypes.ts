@@ -809,6 +809,24 @@ Chaining examples
       .dotPow(2)
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
+  // diff
+  expectTypeOf(math.chain([1, 2, 3]).diff()).toMatchTypeOf<
+    MathJsChain<MathArray>
+  >()
+  expectTypeOf(math.chain([1, 2, 3]).diff(0)).toMatchTypeOf<
+    MathJsChain<MathArray>
+  >()
+  expectTypeOf(
+    math
+      .chain(
+        math.matrix([
+          [1, 2],
+          [3, 4]
+        ])
+      )
+      .diff(1)
+  ).toMatchTypeOf<MathJsChain<Matrix>>()
+
   // exp
   expectTypeOf(math.chain(1).exp()).toMatchTypeOf<MathJsChain<MathType>>()
   // @ts-expect-error ... verify exp does not run on arrays.
@@ -2381,6 +2399,44 @@ Function round examples
   assert.throws(() => math.round([3.21, 3.82], [1, 2]), TypeError)
 }
 
+/*
+Function diff examples
+*/
+{
+  const math = create(all, {})
+
+  // Array input
+  assert.deepStrictEqual(math.diff([1, 2, 4, 7, 0]), [1, 2, 3, -7])
+  assert.deepStrictEqual(math.diff([1, 2, 4, 7, 0], 0), [1, 2, 3, -7])
+
+  // Matrix input
+  assert.deepStrictEqual(
+    math.diff(math.matrix([1, 2, 4, 7, 0])),
+    math.matrix([1, 2, 3, -7])
+  )
+  assert.deepStrictEqual(
+    math.diff(math.matrix([1, 2, 4, 7, 0]), 0),
+    math.matrix([1, 2, 3, -7])
+  )
+
+  // with bignumber
+  assert.deepStrictEqual(
+    math.diff(
+      [
+        [1, 2],
+        [3, 4]
+      ],
+      math.bignumber(1)
+    ),
+    [[1], [1]]
+  )
+
+  // type checks
+  expectTypeOf(math.diff([1, 2, 3])).toMatchTypeOf<MathArray>()
+  expectTypeOf(math.diff([1, 2, 3], 0)).toMatchTypeOf<MathArray>()
+  expectTypeOf(math.diff(math.matrix([1, 2, 3]))).toMatchTypeOf<Matrix>()
+  expectTypeOf(math.diff(math.matrix([1, 2, 3]), 0)).toMatchTypeOf<Matrix>()
+}
 /*
  Clone examples
   */

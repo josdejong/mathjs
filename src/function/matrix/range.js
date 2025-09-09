@@ -6,7 +6,7 @@ const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'sm
 
 export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq, add, isPositive }) => {
   /**
-   * Create an array from a range.
+   * Create a matrix or array containing a range of values.
    * By default, the range end is excluded. This can be customized by providing
    * an extra parameter `includeEnd`.
    *
@@ -34,10 +34,12 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * - `includeEnd: boolean`
    *   Option to specify whether to include the end or not. False by default.
    *
-   * Note that the return type of the range is taken from the type of
-   * the start/end. If only one these is a built-in `number` type, it will
-   * be promoted to the type of the other endpoint. However, in the case of
-   * Unit values, both endpoints must have compatible units, and the return
+   * The function returns a `DenseMatrix` when the library is configured with
+   * `config = { matrix: 'Matrix' }, and returns an Array otherwise.
+   * Note that the type of the returned values is taken from the type of the
+   * provided start/end value. If only one of these is a built-in `number` type,
+   * it will be promoted to the type of the other endpoint. However, in the case
+   * of Unit values, both endpoints must have compatible units, and the return
    * value will have compatible units as well.
    *
    * Examples:
