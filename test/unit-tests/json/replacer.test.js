@@ -150,13 +150,15 @@ describe('replacer', function () {
       args: [
         {
           mathjs: 'ConstantNode',
-          value: 2
+          value: 2,
+          range: [0, 1]
         },
         {
           mathjs: 'FunctionNode',
           fn: {
             mathjs: 'SymbolNode',
-            name: 'sin'
+            name: 'sin',
+            range: [4, 7]
           },
           args: [
             {
@@ -166,11 +168,13 @@ describe('replacer', function () {
               args: [
                 {
                   mathjs: 'ConstantNode',
-                  value: 3
+                  value: 3,
+                  range: [8, 9]
                 },
                 {
                   mathjs: 'SymbolNode',
-                  name: 'x'
+                  name: 'x',
+                  range: [10, 11]
                 }
               ],
               implicit: true,
