@@ -70,9 +70,7 @@ export const createNullish = /* #__PURE__ */ factory(
         'undefined, any': (_x, y) => y,
 
         // SparseMatrix-first with collection RHS: enforce exact shape match
-        'SparseMatrix, DenseMatrix': (x, y) => returnLeftIfSameSize(x, y),
-        'SparseMatrix, SparseMatrix': (x, y) => returnLeftIfSameSize(x, y),
-        'SparseMatrix, Array': (x, y) => returnLeftIfSameSize(x, y),
+        'SparseMatrix, Array | Matrix': (x, y) => returnLeftIfSameSize(x, y),
 
         // DenseMatrix-first handlers (no broadcasting between collections)
         'DenseMatrix, DenseMatrix': typed.referToSelf(self => (x, y) => matAlgo13xDD(x, y, self)),
