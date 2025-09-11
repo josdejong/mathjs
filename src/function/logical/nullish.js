@@ -5,12 +5,12 @@ import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
 import { DimensionError } from '../../error/DimensionError.js'
 
 const name = 'nullish'
-const dependencies = ['typed', 'matrix', 'size']
+const dependencies = ['typed', 'matrix', 'size', 'deepEqual']
 
 export const createNullish = /* #__PURE__ */ factory(
   name,
   dependencies,
-  ({ typed, matrix, size }) => {
+  ({ typed, matrix, size, deepEqual }) => {
     const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
     const matAlgo14xDs = createMatAlgo14xDs({ typed })
     const matAlgo13xDD = createMatAlgo13xDD({ typed })
@@ -48,15 +48,10 @@ export const createNullish = /* #__PURE__ */ factory(
      */
 
     const returnLeftIfSameSize = (x, y) => {
-      const xs = x.size ? x.size() : size(x)
-      const ys = y && y.size ? y.size() : size(y)
-      if (xs.length !== ys.length) {
-        throw new DimensionError(xs.length, ys.length)
-      }
-      for (let i = 0; i < xs.length; i++) {
-        if (xs[i] !== ys[i]) {
-          throw new DimensionError(xs, ys)
-        }
+      const sx = x && typeof x.size === 'function' ? x.size() : size(x)
+      const sy = y && typeof y.size === 'function' ? y.size() : size(y)
+      if (!deepEqual(sx, sy)) {
+        throw new DimensionError(sx, sy)
       }
       return x
     }

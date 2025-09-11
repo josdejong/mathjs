@@ -3,10 +3,10 @@ import { factory } from '../../utils/factory.js'
 import { isCollection } from '../../utils/is.js'
 
 const name = 'nullish'
-const dependencies = ['typed', 'matrix', 'size']
+const dependencies = ['typed', 'matrix', 'size', 'deepEqual']
 
-export const createNullishTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, size }) => {
-  const nullish = createNullish({ typed, matrix, size })
+export const createNullishTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, size, deepEqual }) => {
+  const nullish = createNullish({ typed, matrix, size, deepEqual })
 
   function nullishTransform (args, math, scope) {
     const left = args[0].compile().evaluate(scope)
