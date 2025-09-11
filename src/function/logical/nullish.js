@@ -5,12 +5,12 @@ import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
 import { DimensionError } from '../../error/DimensionError.js'
 
 const name = 'nullish'
-const dependencies = ['typed', 'matrix', 'size', 'deepEqual']
+const dependencies = ['typed', 'matrix', 'size', 'flatten', 'deepEqual']
 
 export const createNullish = /* #__PURE__ */ factory(
   name,
   dependencies,
-  ({ typed, matrix, size, deepEqual }) => {
+  ({ typed, matrix, size, flatten, deepEqual }) => {
     const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
     const matAlgo14xDs = createMatAlgo14xDs({ typed })
     const matAlgo13xDD = createMatAlgo13xDD({ typed })
@@ -47,15 +47,6 @@ export const createNullish = /* #__PURE__ */ factory(
      * @return {*} Returns y when x is null or undefined, otherwise returns x
      */
 
-    const returnLeftIfSameSize = (x, y) => {
-      const sx = typeof x.size === 'function' ? x.size() : size(x)
-      const sy = typeof y.size === 'function' ? y.size() : size(y)
-      if (!deepEqual(sx, sy)) {
-        throw new DimensionError(sx, sy)
-      }
-      return x
-    }
-
     return typed(
       name,
       {
@@ -65,7 +56,12 @@ export const createNullish = /* #__PURE__ */ factory(
         'undefined, any': (_x, y) => y,
 
         // SparseMatrix-first with collection RHS: enforce exact shape match
-        'SparseMatrix, Array | Matrix': (x, y) => returnLeftIfSameSize(x, y),
+        'SparseMatrix, Array | Matrix': (x, y) => {
+          const sx = flatten(size(x).valueOf()) // work around #3529/#3530
+          const sy = flatten(size(y).valueOf())
+          if (deepEqual(sx, sy)) return x
+          throw new DimensionError(sx, sy)
+        },
 
         // DenseMatrix-first handlers (no broadcasting between collections)
         'DenseMatrix, DenseMatrix': typed.referToSelf(self => (x, y) => matAlgo13xDD(x, y, self)),
