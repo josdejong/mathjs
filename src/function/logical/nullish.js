@@ -48,8 +48,8 @@ export const createNullish = /* #__PURE__ */ factory(
      */
 
     const returnLeftIfSameSize = (x, y) => {
-      const sx = x && typeof x.size === 'function' ? x.size() : size(x)
-      const sy = y && typeof y.size === 'function' ? y.size() : size(y)
+      const sx = typeof x.size === 'function' ? x.size() : size(x)
+      const sy = typeof y.size === 'function' ? y.size() : size(y)
       if (!deepEqual(sx, sy)) {
         throw new DimensionError(sx, sy)
       }
