@@ -39,7 +39,6 @@ export const properties = [
       associativity: 'left',
       associativeWith: []
     }
-
   },
   { // logical xor
     'OperatorNode:xor': {
@@ -236,6 +235,13 @@ export const properties = [
     'OperatorNode:dotPow': {
       op: '.^',
       associativity: 'right',
+      associativeWith: []
+    }
+  },
+  { // nullish coalescing
+    'OperatorNode:nullish': {
+      op: '??',
+      associativity: 'left',
       associativeWith: []
     }
   },
