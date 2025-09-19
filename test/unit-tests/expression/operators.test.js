@@ -14,12 +14,14 @@ describe('operators', function () {
     const b = new ConstantNode(2)
 
     const n1 = new AssignmentNode(new SymbolNode('a'), a)
-    const n2 = new OperatorNode('or', 'or', [a, b])
-    const n3 = math.parse("M'")
+    const n2 = new OperatorNode('??', 'nullish', [a, b])
+    const n3 = new OperatorNode('or', 'or', [a, b])
+    const n4 = math.parse("M'")
 
     assert.strictEqual(getPrecedence(n1, 'keep'), 0)
-    assert.strictEqual(getPrecedence(n2, 'keep'), 2)
-    assert.strictEqual(getPrecedence(n3, 'keep'), 18)
+    assert.strictEqual(getPrecedence(n2, 'keep'), 17) // nullish coalescing
+    assert.strictEqual(getPrecedence(n3, 'keep'), 2) // logical or
+    assert.strictEqual(getPrecedence(n4, 'keep'), 19)
   })
 
   it('should return null if precedence is not defined for a node', function () {
@@ -47,12 +49,14 @@ describe('operators', function () {
     const n2 = new OperatorNode('^', 'pow', [a, a])
     const n3 = new OperatorNode('-', 'unaryMinus', [a])
     const n4 = new OperatorNode('!', 'factorial', [a])
+    const n6 = new OperatorNode('??', 'nullish', [a, a])
     const n5 = math.parse("M'")
 
     assert.strictEqual(getAssociativity(n1, 'keep'), 'left')
     assert.strictEqual(getAssociativity(n2, 'keep'), 'right')
     assert.strictEqual(getAssociativity(n3, 'keep'), 'right')
     assert.strictEqual(getAssociativity(n4, 'keep'), 'left')
+    assert.strictEqual(getAssociativity(n6, 'keep'), 'left')
     assert.strictEqual(getAssociativity(n5, 'keep'), 'left')
   })
 
@@ -119,6 +123,7 @@ describe('operators', function () {
     assert.strictEqual(getOperator('multiply'), '*')
     assert.strictEqual(getOperator('ctranspose'), "'")
     assert.strictEqual(getOperator('mod'), 'mod')
+    assert.strictEqual(getOperator('nullish'), '??')
     assert.strictEqual(getOperator('square'), null)
   })
 })
