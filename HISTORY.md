@@ -1,5 +1,10 @@
 # History
 
+# unpublished changes since, 14.7.0
+
+- Feat: #3353 support for the nullish coalescing operator `??` in the
+  expression parser (#3497). Thanks @ikemHood.
+
 # 2025-09-05, 14.7.0
 
 - Feat: faster `DenseMatrix` symbol iterator (#3521). Thanks @dvd101x.
