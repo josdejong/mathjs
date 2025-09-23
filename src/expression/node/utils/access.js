@@ -1,5 +1,6 @@
 import { errorTransform } from '../../transform/utils/errorTransform.js'
 import { getSafeProperty } from '../../../utils/customs.js'
+import { isDenseMatrix } from '../../../utils/is.js'
 
 export function accessFactory ({ subset }) {
   /**
@@ -23,11 +24,23 @@ export function accessFactory ({ subset }) {
         // TODO: move getStringSubset into a separate util file, use that
         return subset(object, index)
       } else if (typeof object === 'object') {
-        if (!index.isObjectProperty()) {
-          throw new TypeError('Cannot apply a numeric index as object property')
+        if (index.isObjectProperty()) {
+          return getSafeProperty(object, index.getObjectProperty())
         }
 
-        return getSafeProperty(object, index.getObjectProperty())
+        if (index._dimensions.length > 1) {
+          throw new SyntaxError('Cannot apply multi-element matrix as object property')
+        }
+
+        if (isDenseMatrix(index._dimensions[0])) {
+          const compiledIndex = index._dimensions[0].get([0])
+
+          // For some reason, the value in the generated Dense Matrix _data
+          // is always 1 less than the expected calculated value
+          return getSafeProperty(object, String(compiledIndex + 1))
+        }
+
+        throw new TypeError('Cannot apply unsupported value as object property')
       } else {
         throw new TypeError('Cannot apply index: unsupported type of object')
       }
