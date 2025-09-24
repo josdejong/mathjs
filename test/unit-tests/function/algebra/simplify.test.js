@@ -665,7 +665,7 @@ describe('simplify', function () {
     if (isNaN(a)) {
       assert(isNaN(b))
     } else {
-      assert.deepEqual(a.valueOf(), b.valueOf())
+      assert.deepEqual(a, b)
     }
   }
 
