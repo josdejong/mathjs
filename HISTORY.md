@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since, 14.7.0
+# 2025-09-24, 14.8.0
 
 - Feat: #3353 support for the nullish coalescing operator `??` in the
   expression parser (#3497). Thanks @ikemHood.
