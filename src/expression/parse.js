@@ -66,7 +66,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    *     node1.compile().evaluate() // 5
    *
    *     let scope = {a:3, b:4}
-   *     const node2 = math.parse('a * b') // 12
+   *     const node2 = math.parse('a * b')
    *     node2.evaluate(scope) // 12
    *     const code2 = node2.compile()
    *     code2.evaluate(scope) // 12
@@ -151,6 +151,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     '=': true,
     ':': true,
     '?': true,
+    '??': true,
 
     '==': true,
     '!=': true,
@@ -1210,7 +1211,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parsePow (state) {
     let node, name, fn, params
 
-    node = parseLeftHandOperators(state)
+    node = parseNullishCoalescing(state)
 
     if (state.token === '^' || state.token === '.^') {
       name = state.token
@@ -1219,6 +1220,22 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       getTokenSkipNewline(state)
       params = [node, parseUnary(state)] // Go back to unary, we can have '2^-3'
       node = new OperatorNode(name, fn, params)
+    }
+
+    return node
+  }
+
+  /**
+   * nullish coalescing operator
+   * @return {Node} node
+   * @private
+   */
+  function parseNullishCoalescing (state) {
+    let node = parseLeftHandOperators(state)
+
+    while (state.token === '??') { // eslint-disable-line no-unmodified-loop-condition
+      getTokenSkipNewline(state)
+      node = new OperatorNode('??', 'nullish', [node, parseLeftHandOperators(state)])
     }
 
     return node

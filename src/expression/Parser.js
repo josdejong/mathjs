@@ -1,4 +1,5 @@
 import { factory } from '../utils/factory.js'
+import { isFunction } from '../utils/is.js'
 import { createEmptyMap, toObject } from '../utils/map.js'
 
 const name = 'Parser'
@@ -157,5 +158,42 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
     this.scope.clear()
   }
 
+  Parser.prototype.toJSON = function () {
+    const json = {
+      mathjs: 'Parser',
+      variables: {},
+      functions: {}
+    }
+
+    for (const [name, value] of this.scope) {
+      if (isFunction(value)) {
+        if (!isExpressionFunction(value)) {
+          throw new Error(`Cannot serialize external function ${name}`)
+        }
+
+        json.functions[name] = `${value.syntax} = ${value.expr}`
+      } else {
+        json.variables[name] = value
+      }
+    }
+
+    return json
+  }
+
+  Parser.fromJSON = function (json) {
+    const parser = new Parser()
+
+    Object.entries(json.variables).forEach(([name, value]) => parser.set(name, value))
+    Object.entries(json.functions).forEach(([_name, fn]) => parser.evaluate(fn))
+
+    return parser
+  }
+
   return Parser
 }, { isClass: true })
+
+function isExpressionFunction (value) {
+  return typeof value === 'function' &&
+    typeof value.syntax === 'string' &&
+    typeof value.expr === 'string'
+}

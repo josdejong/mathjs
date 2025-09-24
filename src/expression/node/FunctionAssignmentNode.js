@@ -97,7 +97,8 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
       })
 
       // compile the function expression with the child args
-      const evalExpr = this.expr._compile(math, childArgNames)
+      const expr = this.expr
+      const evalExpr = expr._compile(math, childArgNames)
       const name = this.name
       const params = this.params
       const signature = join(this.types, ',')
@@ -116,6 +117,7 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
         }
         const fn = typed(name, signatures)
         fn.syntax = syntax
+        fn.expr = expr.toString()
 
         scope.set(name, fn)
 

@@ -1,5 +1,6 @@
 // Only use native node.js API's and references to ./lib here, this file is not transpiled!
-const assert = require('assert')
+const path = require('node:path')
+const assert = require('node:assert')
 const { createSnapshotFromFactories, validateBundle } = require('../../lib/cjs/utils/snapshot')
 const factoriesAny = require('../../lib/cjs/factoriesAny')
 const version = require('../../package.json').version
@@ -7,9 +8,11 @@ const embeddedDocs = require('../../lib/cjs/expression/embeddedDocs/embeddedDocs
 
 const { expectedInstanceStructure } = createSnapshotFromFactories(factoriesAny)
 
+const mathjsBundle = '../../lib/browser/math.js'
+
 describe('lib/browser', function () {
   it('should load lib/browser/math.js', function () {
-    const math = require('../../lib/browser/math.js')
+    const math = require(mathjsBundle)
 
     assert.strictEqual(math.add(2, 3), 5)
     assert.strictEqual(math.version, version)
@@ -17,7 +20,7 @@ describe('lib/browser', function () {
 
   it('should have all expected functions in lib/browser/main.js', function () {
     // snapshot testing
-    const math = require('../../lib/browser/math.js')
+    const math = require(mathjsBundle)
 
     // don't output all warnings "math.foo.bar is move to math.bar, ..."
     const originalWarn = console.warn
@@ -32,8 +35,28 @@ describe('lib/browser', function () {
     console.warn = originalWarn
   })
 
+  it('should be ES2020 compatible', async function () {
+    const { runChecks } = require('es-check')
+
+    const absBundlePath = path.join(__dirname, mathjsBundle)
+      .replaceAll('\\', '/') // normalize as Unix path
+
+    const result = await runChecks([{
+      ecmaVersion: 'es2020',
+      files: [absBundlePath],
+      checkFeatures: true
+    }])
+
+    if (!result.success) {
+      const message = `ES Check failed with ${result.errors.length} errors:\n` +
+        result.errors.map(error => `- ${error.file}: ${error.err.message}`).join('\n')
+
+      throw new Error(message)
+    }
+  })
+
   describe('typeOf should work on the minified bundle for all mathjs classes', function () {
-    const math = require('../../lib/browser/math.js')
+    const math = require(mathjsBundle)
 
     const typeOfTests = [
       { value: math.bignumber(2), expectedType: 'BigNumber' },
@@ -67,7 +90,7 @@ describe('lib/browser', function () {
   })
 
   it('should contain embedded docs for every function', function () {
-    const math = require('../../lib/browser/math.js')
+    const math = require(mathjsBundle)
 
     // names to ignore
     const ignore = [

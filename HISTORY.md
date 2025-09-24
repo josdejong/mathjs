@@ -14,14 +14,33 @@
   Thanks @kiprobinsonknack.
 - Feat: #1753 enhance Kronecker product to handle arbitrary dimension (#3461).
   Thanks @gwhitney.
-- Feat: #2344 matrix subset according to the type of input (#3485). 
+- Feat: #2344 matrix subset according to the type of input (#3485).
   Thanks @dvd101x.
 
-# Unpublished changes since 14.5.3
+# 2025-09-24, 14.8.0
+
+- Feat: #3353 support for the nullish coalescing operator `??` in the
+  expression parser (#3497). Thanks @ikemHood.
+
+# 2025-09-05, 14.7.0
+
+- Feat: faster `DenseMatrix` symbol iterator (#3521). Thanks @dvd101x.
+- Feat: implement serialization support for `Parser`, fixing #3509 (#3525).
+- Fix: #3519, #3368 categories "Core functions" and "Construction functions"
+  missing from the generated function overview.
+- Fix: #3517 `printTransformDependencies` not exported in the type definitions.
+- Fix: add missing type definition for function `diff` (#3520). Thanks @dodokw.
+- Fix: #3396 improve documentation of function `range`.
+- Fix: #3523 cleanup old polyfills from the browser bundle 
+  by removing `core-js` (#3524).
+
+# 2025-07-25, 14.6.0
 
 - Feat: new function `toBest(unit, unitList, offset)`, and corresponding
   method `unit.toBest(...)` (#3484). Thanks @Mundi93, @EliaAlesiani, and 
   @HeavyRainLQ.
+- Fix: #3512 `sign` of zero not returning zero in case of a fraction (#3513). 
+  Thanks @kyle-compute.
 
 # 2025-07-02, 14.5.3
 

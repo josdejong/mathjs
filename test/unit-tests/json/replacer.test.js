@@ -187,6 +187,36 @@ describe('replacer', function () {
     assert.deepStrictEqual(JSON.parse(JSON.stringify(node, replacer)), json)
   })
 
+  it('should stringify a Parser', function () {
+    const parser = new math.Parser()
+    parser.evaluate('a = 42')
+    parser.evaluate('w = bignumber(2)')
+    parser.evaluate('f(x) = w * x')
+    parser.evaluate('c = f(3)')
+
+    const json = {
+      mathjs: 'Parser',
+      variables: {
+        a: 42,
+        c: { mathjs: 'BigNumber', value: '6' },
+        w: { mathjs: 'BigNumber', value: '2' }
+      },
+      functions: {
+        f: 'f(x) = w * x'
+      }
+    }
+
+    assert.deepStrictEqual(JSON.parse(JSON.stringify(parser)), json)
+    assert.deepStrictEqual(JSON.parse(JSON.stringify(parser, replacer)), json)
+  })
+
+  it('should throw when stringifying a Parser containing external functions', function () {
+    const parser = new math.Parser()
+    parser.set('f', (x) => 2 * x)
+
+    assert.throws(() => JSON.stringify(parser), /Cannot serialize external function f/)
+  })
+
   it('should stringify Help', function () {
     const h = new math.Help({ name: 'foo', description: 'bar' })
     const json = '{"mathjs":"Help","name":"foo","description":"bar"}'

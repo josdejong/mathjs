@@ -112,6 +112,7 @@ import { distanceDocs } from './function/geometry/distance.js'
 import { intersectDocs } from './function/geometry/intersect.js'
 import { andDocs } from './function/logical/and.js'
 import { notDocs } from './function/logical/not.js'
+import { nullishDocs } from './function/logical/nullish.js'
 import { orDocs } from './function/logical/or.js'
 import { xorDocs } from './function/logical/xor.js'
 import { mapSlicesDocs } from './function/matrix/mapSlices.js'
@@ -229,6 +230,7 @@ import { sinhDocs } from './function/trigonometry/sinh.js'
 import { tanDocs } from './function/trigonometry/tan.js'
 import { tanhDocs } from './function/trigonometry/tanh.js'
 import { toDocs } from './function/units/to.js'
+import { toBestDocs } from './function/units/toBest.js'
 import { binDocs } from './function/utils/bin.js'
 import { cloneDocs } from './function/utils/clone.js'
 import { formatDocs } from './function/utils/format.js'
@@ -444,6 +446,7 @@ export const embeddedDocs = {
   // functions - logical
   and: andDocs,
   not: notDocs,
+  nullish: nullishDocs,
   or: orDocs,
   xor: xorDocs,
 
@@ -586,6 +589,7 @@ export const embeddedDocs = {
 
   // functions - units
   to: toDocs,
+  toBest: toBestDocs,
 
   // functions - utils
   clone: cloneDocs,
