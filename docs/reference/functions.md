@@ -149,6 +149,7 @@ Function | Description
 ---- | -----------
 [math.and(x,&nbsp;y)](functions/and.html) | Logical `and`.
 [math.not(x)](functions/not.html) | Logical `not`.
+[math.nullish(x,&nbsp;y)](functions/nullish.html) | Nullish coalescing operator (??).
 [math.or(x,&nbsp;y)](functions/or.html) | Logical `or`.
 [math.xor(x,&nbsp;y)](functions/xor.html) | Logical `xor`.
 

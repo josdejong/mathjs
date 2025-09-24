@@ -4,6 +4,11 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20250924-1480">2025-09-24, 14.8.0 <a href="#20250924-1480" title="Permalink">#</a></h1>
+
+- Feat: <a href="https://github.com/josdejong/mathjs/issues/3353">#3353</a> support for the nullish coalescing operator `??` in the
+  expression parser (<a href="https://github.com/josdejong/mathjs/issues/3497">#3497</a>). Thanks <a href="https://github.com/ikemHood">@ikemHood</a>.
+
 <h1 id="20250905-1470">2025-09-05, 14.7.0 <a href="#20250905-1470" title="Permalink">#</a></h1>
 
 - Feat: faster `DenseMatrix` symbol iterator (<a href="https://github.com/josdejong/mathjs/issues/3521">#3521</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
