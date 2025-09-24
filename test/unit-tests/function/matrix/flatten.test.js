@@ -2,6 +2,7 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 const matrix = math.matrix
 const flatten = math.flatten
+const sparse = math.sparse
 
 describe('flatten', function () {
   it('should flatten an empty array', function () {
@@ -37,6 +38,10 @@ describe('flatten', function () {
 
   it('should flatten a 3 dimensional matrix', function () {
     assert.deepStrictEqual(flatten(matrix([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])), matrix([1, 2, 3, 4, 5, 6, 7, 8]))
+  })
+
+  it('should throw an error in case of SparseMatrix input', function () {
+    assert.throws(function () { flatten(sparse([1, 2])) }, /TypeError: SparseMatrix is not supported/)
   })
 
   it('should throw an error on invalid arguments', function () {
