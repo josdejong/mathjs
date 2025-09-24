@@ -23,6 +23,7 @@ will return a `Matrix`. In case of mixed input, a `Matrix` is returned.
 For functions where the type of output cannot be determined from the
 input, the output is determined by the configuration option `matrix`,
 which can be a string `'Matrix'` (default) or `'Array'`.
+The function `size` is an exception: `size` always returns an `Array`.
 
 ```js
 // create an array and a matrix
