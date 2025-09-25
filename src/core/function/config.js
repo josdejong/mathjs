@@ -2,7 +2,7 @@ import { clone, deepExtend } from '../../utils/object.js'
 import { DEFAULT_CONFIG } from '../config.js'
 
 export const MATRIX_OPTIONS = ['Matrix', 'Array'] // valid values for option matrix
-export const NUMBER_OPTIONS = ['number', 'BigNumber', 'Fraction'] // valid values for option number
+export const NUMBER_OPTIONS = ['number', 'BigNumber', 'bigint', 'Fraction'] // valid values for option number
 
 export function configFactory (config, emit) {
   /**
