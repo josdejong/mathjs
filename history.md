@@ -4,6 +4,11 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20250926-1481">2025-09-26, 14.8.1 <a href="#20250926-1481" title="Permalink">#</a></h1>
+
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3538">#3538</a> `config` printing a warning when using `{ number: 'bigint' }` 
+  (<a href="https://github.com/josdejong/mathjs/issues/3540">#3540</a>).
+
 <h1 id="20250924-1480">2025-09-24, 14.8.0 <a href="#20250924-1480" title="Permalink">#</a></h1>
 
 - Feat: <a href="https://github.com/josdejong/mathjs/issues/3353">#3353</a> support for the nullish coalescing operator `??` in the
