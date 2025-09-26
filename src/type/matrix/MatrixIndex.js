@@ -1,4 +1,4 @@
-import { isArray, isMatrix, isRange } from '../../utils/is.js'
+import { isArray, isMatrix, isRange, isNumber, isString } from '../../utils/is.js'
 import { clone } from '../../utils/object.js'
 import { isInteger } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
@@ -29,7 +29,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @Constructor Index
    * @param {...*} ranges
    */
-  function Index (ranges) {
+  function Index (...ranges) {
     if (!(this instanceof Index)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
@@ -38,8 +38,8 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
     this._sourceSize = []
     this._isScalar = true
 
-    for (let i = 0, ii = arguments.length; i < ii; i++) {
-      const arg = arguments[i]
+    for (let i = 0, ii = ranges.length; i < ii; i++) {
+      const arg = ranges[i]
       const argIsArray = isArray(arg)
       const argIsMatrix = isMatrix(arg)
       const argType = typeof arg
@@ -50,6 +50,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
       } else if (argIsArray || argIsMatrix) {
         // create matrix
         let m
+        this._isScalar = false
 
         if (getMatrixDataType(arg) === 'boolean') {
           if (argIsArray) m = _createImmutableMatrix(_booleansArrayToNumbersForIndex(arg).valueOf())
@@ -60,16 +61,10 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
         }
 
         this._dimensions.push(m)
-        // size
-        const size = m.size()
-        // scalar
-        if (size.length !== 1 || size[0] !== 1 || sourceSize !== null) {
-          this._isScalar = false
-        }
       } else if (argType === 'number') {
-        this._dimensions.push(_createImmutableMatrix([arg]))
+        this._dimensions.push(arg)
       } else if (argType === 'bigint') {
-        this._dimensions.push(_createImmutableMatrix([Number(arg)]))
+        this._dimensions.push(Number(arg))
       } else if (argType === 'string') {
         // object property (arguments.count should be 1)
         this._dimensions.push(arg)
@@ -90,12 +85,15 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
   function _createImmutableMatrix (arg) {
     // loop array elements
     for (let i = 0, l = arg.length; i < l; i++) {
-      if (typeof arg[i] !== 'number' || !isInteger(arg[i])) {
+      if (!isNumber(arg[i]) || !isInteger(arg[i])) {
         throw new TypeError('Index parameters must be positive integer numbers')
       }
     }
     // create matrix
-    return new ImmutableDenseMatrix(arg)
+    const matrix = new ImmutableDenseMatrix()
+    matrix._data = arg
+    matrix._size = [arg.length]
+    return matrix
   }
 
   /**
@@ -134,7 +132,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const d = this._dimensions[i]
-      size[i] = (typeof d === 'string') ? 1 : d.size()[0]
+      size[i] = (isString(d) || isNumber(d)) ? 1 : d.size()[0]
     }
 
     return size
@@ -150,7 +148,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const range = this._dimensions[i]
-      values[i] = (typeof range === 'string') ? range : range.max()
+      values[i] = (isString(range) || isNumber(range)) ? range : range.max()
     }
 
     return values
@@ -166,7 +164,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const range = this._dimensions[i]
-      values[i] = (typeof range === 'string') ? range : range.min()
+      values[i] = (isString(range) || isNumber(range)) ? range : range.min()
     }
 
     return values
@@ -192,11 +190,11 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @returns {Range | null} range
    */
   Index.prototype.dimension = function (dim) {
-    if (typeof dim !== 'number') {
+    if (!isNumber(dim)) {
       return null
     }
 
-    return this._dimensions[dim] || null
+    return this._dimensions[dim] ?? null
   }
 
   /**
@@ -204,7 +202,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @returns {boolean} Returns true if the index is an object property
    */
   Index.prototype.isObjectProperty = function () {
-    return this._dimensions.length === 1 && typeof this._dimensions[0] === 'string'
+    return this._dimensions.length === 1 && isString(this._dimensions[0])
   }
 
   /**
@@ -238,7 +236,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
     const array = []
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const dimension = this._dimensions[i]
-      array.push((typeof dimension === 'string') ? dimension : dimension.toArray())
+      array.push(isString(dimension) || isNumber(dimension) ? dimension : dimension.toArray())
     }
     return array
   }
@@ -261,7 +259,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
 
     for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       const dimension = this._dimensions[i]
-      if (typeof dimension === 'string') {
+      if (isString(dimension)) {
         strings.push(JSON.stringify(dimension))
       } else {
         strings.push(dimension.toString())

@@ -15,6 +15,7 @@ describe('defaultInstance', function () {
       predictable: false,
       relTol: 1e-12,
       absTol: 1e-15,
+      legacySubset: false,
       randomSeed: null
     })
   })
@@ -34,6 +35,7 @@ describe('defaultInstance', function () {
       predictable: false,
       relTol: 1e-12,
       absTol: 1e-15,
+      legacySubset: false,
       randomSeed: null
     })
   })
@@ -79,6 +81,7 @@ describe('defaultInstance', function () {
       predictable: true,
       relTol: 1e-12,
       absTol: 1e-15,
+      legacySubset: false,
       randomSeed: null
     })
 
@@ -101,6 +104,7 @@ describe('defaultInstance', function () {
       predictable: false,
       relTol: 1e-12,
       absTol: 1e-15,
+      legacySubset: false,
       randomSeed: null
     })
 

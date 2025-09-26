@@ -35,7 +35,8 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
     subtract,
     identity,
     lusolve,
-    abs
+    abs,
+    config
   }
 ) => {
   /**
@@ -110,7 +111,7 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
 
     for (let k = 0; k < n; k++) {
       if (k < (n - 1) && abs(subset(G, index(k + 1, k))) > 1e-5) {
-        let RHS = vc(subset(D, index(all, k)), subset(D, index(all, k + 1)))
+        let RHS = vc(subset(D, index(all, [k])), subset(D, index(all, [k + 1])))
         for (let j = 0; j < k; j++) {
           RHS = add(RHS,
             vc(multiply(y[j], subset(G, index(j, k))), multiply(y[j], subset(G, index(j, k + 1))))
@@ -125,11 +126,11 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
           hc(gkm, add(F, gmm))
         )
         const yAux = lusolve(LHS, RHS)
-        y[k] = yAux.subset(index(range(0, m), 0))
-        y[k + 1] = yAux.subset(index(range(m, 2 * m), 0))
+        y[k] = yAux.subset(index(range(0, m), [0]))
+        y[k + 1] = yAux.subset(index(range(m, 2 * m), [0]))
         k++
       } else {
-        let RHS = subset(D, index(all, k))
+        let RHS = subset(D, index(all, [k]))
         for (let j = 0; j < k; j++) { RHS = add(RHS, multiply(y[j], subset(G, index(j, k)))) }
         const gkk = subset(G, index(k, k))
         const LHS = subtract(F, multiply(gkk, identity(m)))
@@ -139,7 +140,6 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
     }
     const Y = matrix(matrixFromColumns(...y))
     const X = multiply(U, multiply(Y, transpose(V)))
-
     return X
   }
 })

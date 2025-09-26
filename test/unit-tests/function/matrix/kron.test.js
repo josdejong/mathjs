@@ -5,6 +5,7 @@ import math from '../../../../src/defaultInstance.js'
 
 describe('kron', function () {
   it('should calculate the Kronecker product of two arrays', function () {
+    assert.deepStrictEqual(math.kron([[2]], [[3]]), [[6]])
     assert.deepStrictEqual(math.kron([
       [1, -2, 1],
       [1, 1, 0]
@@ -28,14 +29,27 @@ describe('kron', function () {
     ])
   })
 
+  it('should calculate product for empty 1D Arrays', function () {
+    assert.deepStrictEqual(math.kron([], []), [])
+  })
+
   it('should calculate product for empty 2D Arrays', function () {
     assert.deepStrictEqual(math.kron([[]], [[]]), [[]])
   })
 
   it('should calculate product for 1D Arrays', function () {
+    assert.deepStrictEqual(math.kron([2], [3]), [6])
+    assert.deepStrictEqual(math.kron([1, 2], [3, 4]), [3, 4, 6, 8])
+    assert.deepStrictEqual(math.kron([1, 2, 6, 8], [12, 1, 2, 3]), [12, 1, 2, 3, 24, 2, 4, 6, 72, 6, 12, 18, 96, 8, 16, 24])
+  })
+
+  it('should calculate product for 1D & 2D Arrays', function () {
     assert.deepStrictEqual(math.kron([1, 1], [[1, 0], [0, 1]]), [[1, 0, 1, 0], [0, 1, 0, 1]])
     assert.deepStrictEqual(math.kron([[1, 0], [0, 1]], [1, 1]), [[1, 1, 0, 0], [0, 0, 1, 1]])
-    assert.deepStrictEqual(math.kron([1, 2, 6, 8], [12, 1, 2, 3]), [[12, 1, 2, 3, 24, 2, 4, 6, 72, 6, 12, 18, 96, 8, 16, 24]])
+    assert.deepStrictEqual(math.kron([[1, 2]], [[1, 2, 3]]), [[1, 2, 3, 2, 4, 6]])
+    assert.deepStrictEqual(math.kron([[1], [2]], [[1], [2], [3]]), [[1], [2], [3], [2], [4], [6]])
+    assert.deepStrictEqual(math.kron([[1, 2]], [[1], [2], [3]]), [[1, 2], [2, 4], [3, 6]])
+    assert.deepStrictEqual(math.kron([[1], [2]], [[1, 2, 3]]), [[1, 2, 3], [2, 4, 6]])
   })
 
   it('should support complex numbers', function () {
@@ -55,10 +69,32 @@ describe('kron', function () {
     ])
   })
 
-  it('should throw an error for greater then 2 dimensions', function () {
-    assert.throws(function () {
-      math.kron([[[1, 1], [1, 1]], [[1, 1], [1, 1]]], [[[1, 2, 3], [4, 5, 6]], [[6, 7, 8], [9, 10, 11]]])
-    })
+  it('should calculate a 3D Kronecker product', function () {
+    assert.deepStrictEqual(
+      math.kron([
+        [[1, 2], [2, 3]],
+        [[2, 3], [3, 4]]
+      ], [
+        [[4, 3], [3, 2]],
+        [[3, 2], [2, 1]]
+      ]), [
+        /* eslint-disable no-multi-spaces, array-bracket-spacing */
+        [[4, 3,  8, 6], [3, 2, 6, 4], [ 8, 6, 12,  9], [6, 4,  9, 6]],
+        [[3, 2,  6, 4], [2, 1, 4, 2], [ 6, 4,  9,  6], [4, 2,  6, 3]],
+        [[8, 6, 12, 9], [6, 4, 9, 6], [12, 9, 16, 12], [9, 6, 12, 8]],
+        [[6, 4,  9, 6], [4, 2, 6, 3], [ 9, 6, 12,  8], [6, 3,  8, 4]]
+        /* eslint-enable */
+      ]
+    )
+  })
+
+  it('should allow mixed-dimensional Kronecker products', function () {
+    const b = [[[4, 3], [3, 2]], [[3, 2], [2, 1]]]
+    const a = [1, 2]
+    assert.deepStrictEqual(math.kron(a, b), math.kron([[a]], b))
+    assert.deepStrictEqual(math.kron([a], b), math.kron([[a]], b))
+    assert.deepStrictEqual(math.kron(b, a), math.kron(b, [[a]]))
+    assert.deepStrictEqual(math.kron(b, [a]), math.kron(b, [[a]]))
   })
 
   it('should throw an error if called with an invalid number of arguments', function () {
@@ -81,10 +117,12 @@ describe('kron', function () {
       assert.deepStrictEqual(product.toArray(), [[13, 26, 0, 0], [715, -13, 0, -0], [0, 0, -1, -2], [0, -0, -55, 1]])
     })
 
-    it('should throw an error for invalid Kronecker product of matrix', function () {
-      const y = math.matrix([[[]]])
+    it('should calculate the Kronecker product of 3d matrices', function () {
+      const y = math.matrix([[[3]]])
       const x = math.matrix([[[1, 1], [1, 1]], [[1, 1], [1, 1]]])
-      assert.throws(function () { math.kron(y, x) })
+      const product = math.kron(x, y)
+      assert.deepStrictEqual(
+        product.toArray(), [[[3, 3], [3, 3]], [[3, 3], [3, 3]]])
     })
   })
 

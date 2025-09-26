@@ -21,8 +21,8 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *     // get a subset
    *     const d = [[1, 2], [3, 4]]
    *     math.subset(d, math.index(1, 0))             // returns 3
-   *     math.subset(d, math.index([0, 1], 1))        // returns [[2], [4]]
-   *     math.subset(d, math.index([false, true], 0)) // returns [[3]]
+   *     math.subset(d, math.index([0, 1], [1]))        // returns [[2], [4]]
+   *     math.subset(d, math.index([false, true], [0])) // returns [[3]]
    *
    *     // replace a subset
    *     const e = []
@@ -32,9 +32,9 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *     // get submatrix using ranges
    *     const M = [
-   *       [1,2,3],
-   *       [4,5,6],
-   *       [7,8,9]
+   *       [1, 2, 3],
+   *       [4, 5, 6],
+   *       [7, 8, 9]
    *     ]
    *     math.subset(M, math.index(math.range(0,2), math.range(0,3))) // [[1, 2, 3], [4, 5, 6]]
    *
@@ -115,7 +115,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
     if (typeof replacement === 'string') {
       throw new Error('can\'t boradcast a string')
     }
-    if (index._isScalar) {
+    if (index.isScalar()) {
       return replacement
     }
 
@@ -160,9 +160,14 @@ function _getSubstring (str, index) {
   const range = index.dimension(0)
 
   let substr = ''
-  range.forEach(function (v) {
+  function callback (v) {
     substr += str.charAt(v)
-  })
+  }
+  if (Number.isInteger(range)) {
+    callback(range)
+  } else {
+    range.forEach(callback)
+  }
 
   return substr
 }
@@ -196,7 +201,7 @@ function _setSubstring (str, index, replacement, defaultValue) {
   }
 
   const range = index.dimension(0)
-  const len = range.size()[0]
+  const len = Number.isInteger(range) ? 1 : range.size()[0]
 
   if (len !== replacement.length) {
     throw new DimensionError(range.size()[0], replacement.length)
@@ -213,9 +218,15 @@ function _setSubstring (str, index, replacement, defaultValue) {
     chars[i] = str.charAt(i)
   }
 
-  range.forEach(function (v, i) {
+  function callback (v, i) {
     chars[v] = replacement.charAt(i[0])
-  })
+  }
+
+  if (Number.isInteger(range)) {
+    callback(range, [0])
+  } else {
+    range.forEach(callback)
+  }
 
   // initialize undefined characters with a space
   if (chars.length > strLen) {

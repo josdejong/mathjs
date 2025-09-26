@@ -1,5 +1,22 @@
 # History
 
+# Unpublished changes scheduled for v15
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Fix: #1753 Correct dimensionality of Kronecker product on vectors (and
+  extend to arbitrary dimension) (#3455). Thanks @Delaney.
+- Fix: #3501 parse `%` as unary only when not followed by a term (#3505).
+  Thanks @gwhitney.
+- Fix #3421 require a space or delimiter after hex, bin, and oct values (#3463).
+- Feat: #3349 Decouple precedence of unary percentage operator and binary
+  modulus operator (that both use symbol `%`), and raise the former (#3432).
+  Thanks @kiprobinsonknack.
+- Feat: #1753 enhance Kronecker product to handle arbitrary dimension (#3461).
+  Thanks @gwhitney.
+- Feat: #2344 matrix subset according to the type of input (#3485).
+  Thanks @dvd101x.
+
 # 2025-09-26, 14.8.1
 
 - Fix: #3538 `config` printing a warning when using `{ number: 'bigint' }` 

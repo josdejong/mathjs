@@ -1,5 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
+import sinon from 'sinon'
 
 const column = math.column
 const matrix = math.matrix
@@ -106,5 +107,38 @@ describe('column', function () {
     assert.deepStrictEqual(
       c.valueOf(), [[0], [0], [0], [0], [0]]
     )
+  })
+
+  it('should work with config legacySubset during deprecation', function () {
+    const math2 = math.create()
+    // Add a spy to temporarily disable console.warn
+    const warnStub = sinon.stub(console, 'warn')
+
+    math2.config({ legacySubset: true })
+
+    const a = [
+      [0, 2, 0, 0, 0],
+      [0, 1, 0, 2, 4],
+      [0, 0, 0, 0, 0],
+      [8, 4, 0, 3, 0],
+      [0, 0, 0, 6, 0]
+    ]
+    // Test column with legacySubset syntax
+    // This is not strictly necessary and shoudl be removed after the deprecation period
+
+    assert.deepStrictEqual(
+      math2.column(a, 4).valueOf(), [[0], [4], [0], [0], [0]]
+    )
+
+    // Test column with legacySubset syntax
+    math2.config({ legacySubset: false })
+
+    // Test column without legacySubset syntax
+    assert.deepStrictEqual(
+      math2.column(a, 4).valueOf(), [[0], [4], [0], [0], [0]]
+    )
+
+    // Restore console.warn
+    warnStub.restore()
   })
 })

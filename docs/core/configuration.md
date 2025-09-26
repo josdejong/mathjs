@@ -15,7 +15,8 @@ const config = {
   numberFallback: 'number',
   precision: 64,
   predictable: false,
-  randomSeed: null
+  randomSeed: null,
+  legacySubset: false
 }
 const math = create(all, config)
 
@@ -83,6 +84,8 @@ The following configuration options are available:
   equations.
 
 - `randomSeed`. Set this option to seed pseudo random number generation, making it deterministic. The pseudo random number generator is reset with the seed provided each time this option is set. For example, setting it to `'a'` will cause `math.random()` to return `0.43449421599986604` upon the first call after setting the option every time. Set to `null` to seed the pseudo random number generator with a random seed. Default value is `null`.
+
+- `legacySubset`. When set to `true`, the `subset` function behaves as in earlier versions of math.js: retrieving a subset where the index size contains only one element, returns the value itself. When set to `false` (default), `subset` eliminates dimensions from the result only if the index dimension is a scalar; if the index dimension is a range, matrix, or array, the dimensions are preserved. This option is helpful for maintaining compatibility with legacy code that depends on the previous behavior.
 
 
 ## Examples

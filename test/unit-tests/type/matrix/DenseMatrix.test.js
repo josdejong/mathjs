@@ -494,10 +494,10 @@ describe('DenseMatrix', function () {
       assert.deepStrictEqual(m.size(), [3, 3])
       assert.deepStrictEqual(m.subset(index(1, 1)), 5)
       assert.deepStrictEqual(m.subset(index(new Range(0, 2), new Range(0, 2))).valueOf(), [[1, 2], [4, 5]])
-      assert.deepStrictEqual(m.subset(index(1, new Range(1, 3))).valueOf(), [[5, 6]])
-      assert.deepStrictEqual(m.subset(index(0, new Range(1, 3))).valueOf(), [[2, 3]])
-      assert.deepStrictEqual(m.subset(index(new Range(1, 3), 1)).valueOf(), [[5], [8]])
-      assert.deepStrictEqual(m.subset(index(new Range(1, 3), 2)).valueOf(), [[6], [9]])
+      assert.deepStrictEqual(m.subset(index(1, new Range(1, 3))).valueOf(), [5, 6])
+      assert.deepStrictEqual(m.subset(index(0, new Range(1, 3))).valueOf(), [2, 3])
+      assert.deepStrictEqual(m.subset(index(new Range(1, 3), 1)).valueOf(), [5, 8])
+      assert.deepStrictEqual(m.subset(index(new Range(1, 3), 2)).valueOf(), [6, 9])
       assert.deepStrictEqual(m.subset(index([0, 1, 2], [1])).valueOf(), [[2], [5], [8]])
 
       // get n-dimensional
@@ -506,9 +506,9 @@ describe('DenseMatrix', function () {
       assert.deepStrictEqual(m.subset(index(new Range(0, 2), new Range(0, 2), new Range(0, 2))).valueOf(), m.valueOf())
       assert.deepStrictEqual(m.subset(index(0, 0, 0)), 1)
       assert.deepStrictEqual(m.subset(index(1, 1, 1)).valueOf(), 8)
-      assert.deepStrictEqual(m.subset(index(1, 1, new Range(0, 2))).valueOf(), [[[7, 8]]])
-      assert.deepStrictEqual(m.subset(index(1, new Range(0, 2), 1)).valueOf(), [[[6], [8]]])
-      assert.deepStrictEqual(m.subset(index(new Range(0, 2), 1, 1)).valueOf(), [[[4]], [[8]]])
+      assert.deepStrictEqual(m.subset(index(1, 1, new Range(0, 2))).valueOf(), [7, 8])
+      assert.deepStrictEqual(m.subset(index(1, new Range(0, 2), 1)).valueOf(), [6, 8])
+      assert.deepStrictEqual(m.subset(index(new Range(0, 2), 1, 1)).valueOf(), [4, 8])
     })
 
     it('should squeeze the output when index contains a scalar', function () {
@@ -518,8 +518,8 @@ describe('DenseMatrix', function () {
 
       m = new DenseMatrix([[1, 2], [3, 4]])
       assert.deepStrictEqual(m.subset(index(1, 1)), 4)
-      assert.deepStrictEqual(m.subset(index(new Range(1, 2), 1)), new DenseMatrix([[4]]))
-      assert.deepStrictEqual(m.subset(index(1, new Range(1, 2))), new DenseMatrix([[4]]))
+      assert.deepStrictEqual(m.subset(index(new Range(1, 2), 1)), new DenseMatrix([4]))
+      assert.deepStrictEqual(m.subset(index(1, new Range(1, 2))), new DenseMatrix([4]))
       assert.deepStrictEqual(m.subset(index(new Range(1, 2), new Range(1, 2))), new DenseMatrix([[4]]))
     })
 
