@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 14.8.0
+# 2025-09-26, 14.8.1
 
 - Fix: #3538 `config` printing a warning when using `{ number: 'bigint' }` 
   (#3540).
