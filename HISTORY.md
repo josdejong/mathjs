@@ -17,6 +17,11 @@
 - Feat: #2344 matrix subset according to the type of input (#3485).
   Thanks @dvd101x.
 
+# 2025-09-26, 14.8.1
+
+- Fix: #3538 `config` printing a warning when using `{ number: 'bigint' }` 
+  (#3540).
+
 # 2025-09-24, 14.8.0
 
 - Feat: #3353 support for the nullish coalescing operator `??` in the
