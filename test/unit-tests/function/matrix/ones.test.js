@@ -65,7 +65,7 @@ describe('ones', function () {
 
   it('should create a matrix with ones with the same size as original matrix', function () {
     const a = matrix([[1, 2, 3], [4, 5, 6]])
-    assert.deepStrictEqual(ones(math.size(a)).size(), a.size())
+    assert.deepStrictEqual(ones(math.size(a), 'dense').size(), a.size())
   })
 
   // TODO: test with invalid input

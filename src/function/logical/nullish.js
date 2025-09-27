@@ -57,8 +57,8 @@ export const createNullish = /* #__PURE__ */ factory(
 
         // SparseMatrix-first with collection RHS: enforce exact shape match
         'SparseMatrix, Array | Matrix': (x, y) => {
-          const sx = flatten(size(x).valueOf()) // work around #3529/#3530
-          const sy = flatten(size(y).valueOf())
+          const sx = size(x)
+          const sy = size(y)
           if (deepEqual(sx, sy)) return x
           throw new DimensionError(sx, sy)
         },

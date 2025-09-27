@@ -34,8 +34,8 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
   })
 
   function _validateDim (x, y) {
-    const xSize = _size(x)
-    const ySize = _size(y)
+    const xSize = size(x)
+    const ySize = size(y)
     let xLen, yLen
 
     if (xSize.length === 1) {
@@ -70,8 +70,8 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     const bdt = isMatrix(b) ? b._datatype || b.getDataType() : undefined
 
     // are these 2-dimensional column vectors? (as opposed to 1-dimensional vectors)
-    const aIsColumn = _size(a).length === 2
-    const bIsColumn = _size(b).length === 2
+    const aIsColumn = size(a).length === 2
+    const bIsColumn = size(b).length === 2
 
     let add = addScalar
     let mul = multiplyScalar
@@ -157,10 +157,5 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     }
 
     return c
-  }
-
-  // TODO remove this once #1771 is fixed
-  function _size (x) {
-    return isMatrix(x) ? x.size() : size(x)
   }
 })

@@ -33,10 +33,10 @@ describe('eigs', function () {
     const id2 = matrix([[1, 0], [0, 1]])
     const realSymMatrix = eigs(id2)
     assert(realSymMatrix.values instanceof Matrix)
-    assert.deepStrictEqual(size(realSymMatrix.values), matrix([2], 'dense', 'number'))
+    assert.deepStrictEqual(size(realSymMatrix.values), [2])
     testEigenvectors(realSymMatrix, vector => {
       assert(vector instanceof Matrix)
-      assert.deepStrictEqual(size(vector), matrix([2], 'dense', 'number'))
+      assert.deepStrictEqual(size(vector), [2])
     })
     // Check we get exact values in this trivial case with lower precision
     const rough = eigs(id2, { precision: 1e-6 })
@@ -44,10 +44,10 @@ describe('eigs', function () {
 
     const genericMatrix = eigs(matrix([[0, 1], [-1, 0]]))
     assert(genericMatrix.values instanceof Matrix)
-    assert.deepStrictEqual(size(genericMatrix.values), matrix([2], 'dense', 'number'))
+    assert.deepStrictEqual(size(genericMatrix.values), [2])
     testEigenvectors(genericMatrix, vector => {
       assert(vector instanceof Matrix)
-      assert.deepStrictEqual(size(vector), matrix([2], 'dense', 'number'))
+      assert.deepStrictEqual(size(vector), [2])
     })
   })
 
