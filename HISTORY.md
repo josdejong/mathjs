@@ -1,6 +1,15 @@
 # History
 
-# unpublished changes since 14.8.0
+# unpublished changes since 14.8.1
+
+- Fix: improve performance in functions like `map` when passing a unary 
+  function (#3546). Thanks @dvd101x.
+- Fix: improve the type definition of `abs(complex)` which returns a `number`
+  (#3543). Thanks @joshkel.
+- Fix: add missing type definitions for `ctranspose` (#3545). Thanks @joshkel.
+- Fix: typos in code comments (#3544). Thanks @joshkel.
+
+# 2025-09-26, 14.8.1
 
 - Fix: #3538 `config` printing a warning when using `{ number: 'bigint' }` 
   (#3540).
