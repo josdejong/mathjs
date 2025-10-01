@@ -1899,6 +1899,14 @@ export interface MathJsInstance extends MathJsFactory {
   cross(x: MathCollection, y: MathCollection): MathCollection
 
   /**
+   * Transpose and complex conjugate a matrix. All values of the matrix are
+   * reflected over its main diagonal and then the complex conjugate is taken.
+   * This is equivalent to complex conjugation for scalars and vectors.
+   * @param x Matrix to be ctransposed
+   */
+  ctranspose(x: MathCollection): MathCollection
+
+  /**
    * Calculate the determinant of a matrix.
    * @param x A Matrix
    * @returns the determinant of x
@@ -5817,6 +5825,13 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<MathCollection>
 
   /**
+   * Transpose and complex conjugate a matrix. All values of the matrix are
+   * reflected over its main diagonal and then the complex conjugate is taken.
+   * This is equivalent to complex conjugation for scalars and vectors.
+   */
+  ctranspose(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
+
+  /**
    * Calculate the difference between adjacent elements of the chained matrix or array.
    * @param dim The dimension to apply the difference on.
    */
@@ -7302,6 +7317,7 @@ export const {
   apply, // @deprecated prior name of mapSlices
   concat,
   cross,
+  ctranspose,
   det,
   diag,
   dot,
