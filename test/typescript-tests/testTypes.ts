@@ -615,7 +615,7 @@ Chaining examples
     MathJsChain<Fraction>
   >()
   expectTypeOf(math.chain(math.complex(1, 2)).abs()).toMatchTypeOf<
-    MathJsChain<Complex>
+    MathJsChain<number>
   >()
   expectTypeOf(math.chain([1, 2]).abs()).toMatchTypeOf<MathJsChain<MathArray>>()
   expectTypeOf(

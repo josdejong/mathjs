@@ -1126,6 +1126,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param x A number or matrix for which to get the absolute value
    * @returns Absolute value of x
    */
+  abs(x: Complex): number
   abs<T extends MathType>(x: T): T
 
   /**
@@ -5076,6 +5077,7 @@ export interface MathJsChain<TValue> {
    * Calculate the absolute value of a number. For matrices, the function
    * is evaluated element wise.
    */
+  abs(this: MathJsChain<Complex>): MathJsChain<number>
   abs<T extends MathType>(this: MathJsChain<T>): MathJsChain<T>
 
   /**
