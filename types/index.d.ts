@@ -1093,7 +1093,7 @@ export interface MathJsInstance extends MathJsFactory {
    * decomposition.
    * @param order The Symbolic Ordering and Analysis order: 0 - Natural
    * ordering, no permutation vector q is returned 1 - Matrix must be
-   * square, symbolic ordering and analisis is performed on M = A + A' 2 -
+   * square, symbolic ordering and analysis is performed on M = A + A' 2 -
    * Symbolic ordering and analysis is performed on M = A' * A. Dense
    * columns from A' are dropped, A recreated from A'. This is appropriate
    * for LU factorization of non-symmetric matrices. 3 - Symbolic ordering
@@ -1126,6 +1126,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param x A number or matrix for which to get the absolute value
    * @returns Absolute value of x
    */
+  abs(x: Complex): number
   abs<T extends MathType>(x: T): T
 
   /**
@@ -1328,7 +1329,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param args A list with numeric values or an Array or Matrix. Matrix
    * and Array input is flattened and returns a single number for the
    * whole matrix.
-   * @returns Returns the hypothenuse of the input values.
+   * @returns Returns the hypotenuse of the input values.
    */
   hypot<T extends number | BigNumber>(...args: T[]): T
   hypot<T extends number | BigNumber>(args: T[]): T
@@ -1546,7 +1547,7 @@ export interface MathJsInstance extends MathJsFactory {
    * strings will be converted to a number. For complex numbers, both real
    * and complex value are inverted.
    * @param x Number to be inverted
-   * @returns Retursn the value with inverted sign
+   * @returns Returns the value with inverted sign
    */
   unaryMinus<T extends MathType>(x: T): T
 
@@ -1757,7 +1758,7 @@ export interface MathJsInstance extends MathJsFactory {
    ************************************************************************/
 
   /**
-   * Calculates: The eucledian distance between two points in 2 and 3
+   * Calculates: The Euclidean distance between two points in 2 and 3
    * dimensional spaces. Distance between point and a line in 2 and 3
    * dimensional spaces. Pairwise distance between a set of 2D or 3D
    * points NOTE: When substituting coefficients of a line(a, b and c),
@@ -2089,7 +2090,7 @@ export interface MathJsInstance extends MathJsFactory {
 
   /**
    * Calculate the inverse of a square matrix.
-   * @param x Matrix to be inversed
+   * @param x Matrix to be inverted
    * @returns The inverse of x
    */
   inv<T extends number | Complex | MathCollection>(x: T): NoLiteralType<T>
@@ -2198,7 +2199,7 @@ export interface MathJsInstance extends MathJsFactory {
 
   /**
    * Calculate the Moore–Penrose inverse of a matrix.
-   * @param x Matrix to be inversed
+   * @param x Matrix to be inverted
    * @return The inverse of `x`.
    */
   pinv<T extends MathType>(x: T): T
@@ -2465,7 +2466,7 @@ export interface MathJsInstance extends MathJsFactory {
    * distributions
    * @param q First vector
    * @param p Second vector
-   * @returns Returns disance between q and p
+   * @returns Returns distance between q and p
    */
   kldivergence(q: MathCollection, p: MathCollection): number
 
@@ -2482,7 +2483,7 @@ export interface MathJsInstance extends MathJsFactory {
    * takes one array of integers as an argument. The following condition
    * must be enforced: every ai <= 0
    * @param a Integer number of objects in the subset
-   * @returns multinomial coefficent
+   * @returns multinomial coefficient
    */
   multinomial<T extends number | BigNumber>(a: T[]): NoLiteralType<T>
 
@@ -2587,7 +2588,7 @@ export interface MathJsInstance extends MathJsFactory {
    * Test element wise whether two matrices are equal. The function
    * accepts both matrices and scalar values.
    * @param x First matrix to compare
-   * @param y Second amtrix to compare
+   * @param y Second matrix to compare
    * @returns Returns true when the input matrices have the same size and
    * each of their elements is equal.
    */
@@ -2629,7 +2630,7 @@ export interface MathJsInstance extends MathJsFactory {
    * compare values smaller than approximately 2.22e-16. For matrices, the
    * function is evaluated element wise.
    * @param x First value to compare
-   * @param y Second value to vcompare
+   * @param y Second value to compare
    * @returns Returns true when x is larger than y, else returns false
    */
   larger(x: MathType | string, y: MathType | string): boolean | MathCollection
@@ -2641,7 +2642,7 @@ export interface MathJsInstance extends MathJsFactory {
    * to compare values smaller than approximately 2.22e-16. For matrices,
    * the function is evaluated element wise.
    * @param x First value to compare
-   * @param y Second value to vcompare
+   * @param y Second value to compare
    * @returns Returns true when x is larger than or equal to y, else
    * returns false
    */
@@ -2654,7 +2655,7 @@ export interface MathJsInstance extends MathJsFactory {
    * to compare values smaller than approximately 2.22e-16. For matrices,
    * the function is evaluated element wise.
    * @param x First value to compare
-   * @param y Second value to vcompare
+   * @param y Second value to compare
    * @returns Returns true when x is smaller than y, else returns false
    */
   smaller(x: MathType | string, y: MathType | string): boolean | MathCollection
@@ -2666,7 +2667,7 @@ export interface MathJsInstance extends MathJsFactory {
    * used to compare values smaller than approximately 2.22e-16. For
    * matrices, the function is evaluated element wise.
    * @param x First value to compare
-   * @param y Second value to vcompare
+   * @param y Second value to compare
    * @returns Returns true when x is smaller than or equal to y, else
    * returns false
    */
@@ -2700,7 +2701,7 @@ export interface MathJsInstance extends MathJsFactory {
    * strictly, thus null is unequal with everything except null, and
    * undefined is unequal with everything except undefined.
    * @param x First value to compare
-   * @param y Second value to vcompare
+   * @param y Second value to compare
    * @returns Returns true when the compared values are unequal, else
    * returns false
    */
@@ -5084,6 +5085,7 @@ export interface MathJsChain<TValue> {
    * Calculate the absolute value of a number. For matrices, the function
    * is evaluated element wise.
    */
+  abs(this: MathJsChain<Complex>): MathJsChain<number>
   abs<T extends MathType>(this: MathJsChain<T>): MathJsChain<T>
 
   /**

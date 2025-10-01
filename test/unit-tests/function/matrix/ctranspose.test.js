@@ -18,7 +18,7 @@ describe('ctranspose', function () {
     assert.deepStrictEqual(ctranspose(math.matrix([1, 2, 3]).toArray()), [1, 2, 3])
   })
 
-  it('should conjgate a complex vector', function () {
+  it('should conjugate a complex vector', function () {
     const a = math.complex(1, 2)
     const b = math.complex(3, 4)
     const c = math.complex(5, 6)
