@@ -277,13 +277,20 @@ Construction:
 
 ```
 new AccessorNode(object: Node, index: IndexNode)
+new AccessorNode(object: Node, index: IndexNode, optionalChaining: boolean)
 ```
+
+An optional property `optionalChaining` can be provided whether the accessor was 
+written as optional-chaining using `a?.b`, or `a?.["b"]` with bracket notation. 
+Default value is `false`. Forces evaluate to undefined if the given object is 
+undefined or null.
 
 Properties:
 
 - `object: Node`
 - `index: IndexNode`
 - `name: string` (read-only) The function or method name. Returns an empty string when undefined.
+- `optionalChaining: boolean`
 
 Examples:
 

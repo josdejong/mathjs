@@ -151,6 +151,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     '=': true,
     ':': true,
     '?': true,
+    '?.': true,
     '??': true,
 
     '==': true,
@@ -1361,9 +1362,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * parse accessors:
-   * - function invocation in round brackets (...), for example sqrt(2)
-   * - index enclosed in square brackets [...], for example A[2,3]
-   * - dot notation for properties, like foo.bar
+   * - function invocation in round brackets (...), for example sqrt(2) or sqrt?.(2) with optional chaining
+   * - index enclosed in square brackets [...], for example A[2,3] or A?.[2,3] with optional chaining
+   * - dot notation for properties, like foo.bar or foo?.bar with optional chaining
    * @param {Object} state
    * @param {Node} node    Node on which to apply the parameters. If there
    *                       are no parameters in the expression, the node
@@ -1375,6 +1376,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function parseAccessors (state, node, types) {
     let params
+
+    // Optional chaining syntax
+    const optionalChaining = state.token === '?.'
+    if (optionalChaining) {
+      getToken(state)
+    }
 
     while ((state.token === '(' || state.token === '[' || state.token === '.') &&
         (!types || types.includes(state.token))) { // eslint-disable-line no-unmodified-loop-condition
@@ -1430,7 +1437,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         closeParams(state)
         getToken(state)
 
-        node = new AccessorNode(node, new IndexNode(params))
+        node = new AccessorNode(node, new IndexNode(params), optionalChaining)
       } else {
         // dot notation like variable.prop
         getToken(state)
@@ -1445,7 +1452,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         getToken(state)
 
         const dotNotation = true
-        node = new AccessorNode(node, new IndexNode(params, dotNotation))
+        node = new AccessorNode(node, new IndexNode(params, dotNotation), optionalChaining)
       }
     }
 

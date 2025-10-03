@@ -47,8 +47,12 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Node} object                 The object from which to retrieve
      *                                      a property or subset.
      * @param {IndexNode} index             IndexNode containing ranges
+     * @param {boolean} [optionalChaining=false]
+     *     Optional property, if the accessor was written as optional-chaining
+     *     using `a?.b`, or `a?.["b"] with bracket notation.
+     *     Forces evaluate to undefined if the given object is undefined or null.
      */
-    constructor (object, index) {
+    constructor (object, index, optionalChaining) {
       super()
       if (!isNode(object)) {
         throw new TypeError('Node expected for parameter "object"')
@@ -59,6 +63,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
       this.object = object
       this.index = index
+      this.optionalChaining = optionalChaining || false
     }
 
     // readonly property name
@@ -93,18 +98,48 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
       const evalObject = this.object._compile(math, argNames)
       const evalIndex = this.index._compile(math, argNames)
 
-      if (this.index.isObjectProperty()) {
-        const prop = this.index.getObjectProperty()
-        return function evalAccessorNode (scope, args, context) {
-          // get a property from an object evaluated using the scope.
-          return getSafeProperty(evalObject(scope, args, context), prop)
+      if (this.optionalChaining) {
+        if (this.index.isObjectProperty()) {
+          const prop = this.index.getObjectProperty()
+          return function evalAccessorNode (scope, args, context) {
+            const object = evalObject(scope, args, context)
+
+            // proof for optional chaining:
+            if (object === null || object === undefined) {
+              return undefined
+            }
+
+            // get a property from an object evaluated using the scope.
+            return getSafeProperty(object, prop)
+          }
+        } else {
+          return function evalAccessorNode (scope, args, context) {
+            const object = evalObject(scope, args, context)
+
+            // proof for optional chaining:
+            if (object === null || object === undefined) {
+              return undefined
+            }
+
+            // we pass just object here instead of context:
+            const index = evalIndex(scope, args, object)
+            return access(object, index)
+          }
         }
       } else {
-        return function evalAccessorNode (scope, args, context) {
-          const object = evalObject(scope, args, context)
-          // we pass just object here instead of context:
-          const index = evalIndex(scope, args, object)
-          return access(object, index)
+        if (this.index.isObjectProperty()) {
+          const prop = this.index.getObjectProperty()
+          return function evalAccessorNode (scope, args, context) {
+            // get a property from an object evaluated using the scope.
+            return getSafeProperty(evalObject(scope, args, context), prop)
+          }
+        } else {
+          return function evalAccessorNode (scope, args, context) {
+            const object = evalObject(scope, args, context)
+            // we pass just object here instead of context:
+            const index = evalIndex(scope, args, object)
+            return access(object, index)
+          }
         }
       }
     }
@@ -136,7 +171,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @return {AccessorNode}
      */
     clone () {
-      return new AccessorNode(this.object, this.index)
+      return new AccessorNode(this.object, this.index, this.optionalChaining)
     }
 
     /**
@@ -150,7 +185,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
         object = '(' + object + ')'
       }
 
-      return object + this.index.toString(options)
+      return object + (this.optionalChaining ? '?.' : '') + this.index.toString(options)
     }
 
     /**
@@ -192,7 +227,8 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
       return {
         mathjs: name,
         object: this.object,
-        index: this.index
+        index: this.index,
+        optionalChaining: this.optionalChaining
       }
     }
 
@@ -205,7 +241,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @returns {AccessorNode}
      */
     static fromJSON (json) {
-      return new AccessorNode(json.object, json.index)
+      return new AccessorNode(json.object, json.index, json.optionalChaining)
     }
   }
 
