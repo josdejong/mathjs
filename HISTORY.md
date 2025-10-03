@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 14.8.1
+# 2025-10-03, 14.8.2
 
 - Fix: improve performance in functions like `map` when passing a unary 
   function (#3546). Thanks @dvd101x.
