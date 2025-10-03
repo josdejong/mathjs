@@ -1089,17 +1089,17 @@ describe('parse', function () {
 
     it('should parse constants', function () {
       assert.strictEqual(parse('true').type, 'ConstantNode')
-      assert.deepStrictEqual(parse('true'), new ConstantNode(true))
-      assert.deepStrictEqual(parse('false'), new ConstantNode(false))
-      assert.deepStrictEqual(parse('null'), new ConstantNode(null))
-      assert.deepStrictEqual(parse('undefined'), new ConstantNode(undefined))
+      assert.deepStrictEqual(parse('true'), new ConstantNode(true, [0, 4]))
+      assert.deepStrictEqual(parse('false'), new ConstantNode(false, [0, 5]))
+      assert.deepStrictEqual(parse('null'), new ConstantNode(null, [0, 4]))
+      assert.deepStrictEqual(parse('undefined'), new ConstantNode(undefined, [0, 9]))
     })
 
     it('should parse numeric constants', function () {
       const nanConstantNode = parse('NaN')
       assert.deepStrictEqual(nanConstantNode.type, 'ConstantNode')
       assert.ok(isNaN(nanConstantNode.value))
-      assert.deepStrictEqual(parse('Infinity'), new ConstantNode(Infinity))
+      assert.deepStrictEqual(parse('Infinity'), new ConstantNode(Infinity, [0, 8]))
     })
 
     it('should evaluate constants', function () {
