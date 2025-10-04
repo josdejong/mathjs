@@ -185,11 +185,13 @@ export interface AccessorNode<TObject extends MathNode = MathNode>
   object: TObject
   index: IndexNode
   name: string
+  optionalChaining: boolean
 }
 export interface AccessorNodeCtor {
   new <TObject extends MathNode = MathNode>(
     object: TObject,
-    index: IndexNode
+    index: IndexNode,
+    optionalChaining?: boolean
   ): AccessorNode<TObject>
 }
 
