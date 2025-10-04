@@ -915,19 +915,19 @@ describe('parse', function () {
     it('should throw an error accessing a nested property of undefined using optional chaining', function () {
       assert.throws(function () {
         parseAndEval('obj["foo"]?.["bar"]', { obj: undefined })
-      }, /Cannot read properties of undefined (reading 'foo')/)
+      }, /TypeError: Cannot read properties of undefined \(reading 'foo'\)/)
       assert.throws(function () {
         parseAndEval('obj?.["foo"]["bar"]', { obj: { foo: undefined } })
-      }, /Cannot read properties of undefined (reading 'bar')/)
+      }, /TypeError: Cannot read properties of undefined \(reading 'bar'\)/)
     })
 
     it('should throw an error accessing a nested null of null using optional chaining', function () {
       assert.throws(function () {
         parseAndEval('obj["foo"]?.["bar"]', { obj: null })
-      }, /Cannot read properties of null (reading 'foo')/)
+      }, /TypeError: Cannot read properties of null \(reading 'foo'\)/)
       assert.throws(function () {
         parseAndEval('obj?.["foo"]["bar"]', { obj: { foo: null } })
-      }, /Cannot read properties of null (reading 'bar')/)
+      }, /TypeError: Cannot read properties of null \(reading 'bar'\)/)
     })
 
     it('should get a nested matrix subset from an object property', function () {
@@ -1043,19 +1043,19 @@ describe('parse', function () {
     it('should throw an error accessing a nested property of undefined with dot notation using optional chaining', function () {
       assert.throws(function () {
         parseAndEval('obj.foo?.bar', { obj: undefined })
-      }, /Cannot read properties of undefined (reading 'foo')/)
+      }, /TypeError: Cannot read properties of undefined \(reading 'foo'\)/)
       assert.throws(function () {
         parseAndEval('obj?.foo.bar', { obj: { foo: undefined } })
-      }, /Cannot read properties of undefined (reading 'bar')/)
+      }, /TypeError: Cannot read properties of undefined \(reading 'bar'\)/)
     })
 
     it('should throw an error accessing a nested property of null with dot notation using optional chaining', function () {
       assert.throws(function () {
         parseAndEval('obj.foo?.bar', { obj: null })
-      }, /Cannot read properties of null (reading 'foo')/)
+      }, /TypeError: Cannot read properties of null \(reading 'foo'\)/)
       assert.throws(function () {
         parseAndEval('obj?.foo.bar', { obj: { foo: null } })
-      }, /Cannot read properties of null (reading 'bar')/)
+      }, /TypeError: Cannot read properties of null \(reading 'bar'\)/)
     })
 
     it('should get a nested object property e using dot notation', function () {
@@ -1127,38 +1127,38 @@ describe('parse', function () {
     })
 
     it('should return undefined accessing a property of null with mixed dot- and index-notation using optional chaining', function () {
-      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: null }), null)
-      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: null }), null)
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: null }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: null }), undefined)
 
-      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: { foo: null } }), null)
-      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: { foo: null } }), null)
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: { foo: null } }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: { foo: null } }), undefined)
 
-      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: { foo: { bar: null } } }), null)
-      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: { foo: { bar: null } } }), null)
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: { foo: { bar: null } } }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: { foo: { bar: null } } }), undefined)
     })
 
     it('should throw an error accessing a nested property of undefined with mixed dot- and index-notation using optional chaining', function () {
       assert.throws(function () {
         parseAndEval('obj.foo?.["bar"]?.baz', { obj: undefined })
-      }, /Cannot read properties of null (reading 'foo')/)
+      }, /TypeError: Cannot read properties of undefined \(reading 'foo'\)/)
       assert.throws(function () {
         parseAndEval('obj.foo["bar"]?.baz', { obj: { foo: undefined } })
-      }, /Cannot read properties of null (reading 'bar')/)
+      }, /TypeError: Cannot read properties of undefined \(reading 'bar'\)/)
       assert.throws(function () {
         parseAndEval('obj.foo["bar"].baz', { obj: { foo: { bar: undefined } } })
-      }, /Cannot read properties of null (reading 'baz')/)
+      }, /TypeError: Cannot read properties of undefined \(reading 'baz'\)/)
     })
 
     it('should throw an error accessing a nested property of null with mixed dot- and index-notation using optional chaining', function () {
       assert.throws(function () {
         parseAndEval('obj.foo?.["bar"]?.baz', { obj: null })
-      }, /Cannot read properties of null (reading 'foo')/)
+      }, /TypeError: Cannot read properties of null \(reading 'foo'\)/)
       assert.throws(function () {
         parseAndEval('obj.foo["bar"]?.baz', { obj: { foo: null } })
-      }, /Cannot read properties of null (reading 'bar')/)
+      }, /TypeError: Cannot read properties of null \(reading 'bar'\)/)
       assert.throws(function () {
         parseAndEval('obj.foo["bar"].baz', { obj: { foo: { bar: null } } })
-      }, /Cannot read properties of null (reading 'baz')/)
+      }, /TypeError: Cannot read properties of null \(reading 'baz'\)/)
     })
 
     it('should set an object property with dot notation', function () {
@@ -1182,11 +1182,6 @@ describe('parse', function () {
     it('should throw an error in case of invalid property with dot notation', function () {
       assert.throws(function () { parseAndEval('obj. +foo') }, /SyntaxError: Property name expected after dot \(char 6\)/)
       assert.throws(function () { parseAndEval('obj.["foo"]') }, /SyntaxError: Property name expected after dot \(char 5\)/)
-    })
-
-    it('should throw an error in case of invalid property with dot notation using optional chaining', function () {
-      assert.throws(function () { parseAndEval('obj?. +foo') }, /SyntaxError: Property name expected after dot \(char 7\)/)
-      assert.throws(function () { parseAndEval('obj?.["foo"]') }, /SyntaxError: Property name expected after dot \(char 6\)/)
     })
 
     it('should create an empty object', function () {

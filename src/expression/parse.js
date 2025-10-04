@@ -1377,10 +1377,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseAccessors (state, node, types) {
     let params
 
-    // Track whether an optional chain has started in this sequence of accessors.
-    // Once started, later accessors should short-circuit too when the object is null/undefined.
-    let optionalChain = false
-
     // Iterate and handle chained accessors, including repeated optional chaining
     while (true) { // eslint-disable-line no-unmodified-loop-condition
       // Track whether an optional chaining operator precedes the next accessor
@@ -1389,7 +1385,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       // Consume an optional chaining operator if present
       if (state.token === '?.') {
         optional = true
-        optionalChain = true
         // consume the '?.' token
         getToken(state)
 
@@ -1477,7 +1472,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         closeParams(state)
         getToken(state)
 
-        node = new AccessorNode(node, new IndexNode(params), optional || optionalChain)
+        node = new AccessorNode(node, new IndexNode(params), optional)
       } else {
         // dot notation like variable.prop
         getToken(state)
@@ -1492,7 +1487,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         getToken(state)
 
         const dotNotation = true
-        node = new AccessorNode(node, new IndexNode(params, dotNotation), optional || optionalChain)
+        node = new AccessorNode(node, new IndexNode(params, dotNotation), optional)
       }
     }
 

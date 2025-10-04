@@ -127,14 +127,31 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
           }
         }
       } else {
+        const prevIsOptionalAccessor = isAccessorNode(this.object) && !!this.object.optionalChaining
+        const evalPrevBase = prevIsOptionalAccessor ? this.object.object._compile(math, argNames) : null
+
         if (this.index.isObjectProperty()) {
           const prop = this.index.getObjectProperty()
           return function evalAccessorNode (scope, args, context) {
+            // If the previous accessor was optional and its base is nullish, short-circuit the rest of the chain
+            if (prevIsOptionalAccessor) {
+              const base = evalPrevBase(scope, args, context)
+              if (base === null || base === undefined) {
+                return undefined
+              }
+            }
             // get a property from an object evaluated using the scope.
             return getSafeProperty(evalObject(scope, args, context), prop)
           }
         } else {
           return function evalAccessorNode (scope, args, context) {
+            // If the previous accessor was optional and its base is nullish, short-circuit the rest of the chain
+            if (prevIsOptionalAccessor) {
+              const base = evalPrevBase(scope, args, context)
+              if (base === null || base === undefined) {
+                return undefined
+              }
+            }
             const object = evalObject(scope, args, context)
             // we pass just object here instead of context:
             const index = evalIndex(scope, args, object)
