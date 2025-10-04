@@ -1377,14 +1377,54 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseAccessors (state, node, types) {
     let params
 
-    // Optional chaining syntax
-    const optionalChaining = state.token === '?.'
-    if (optionalChaining) {
-      getToken(state)
-    }
+    // Track whether an optional chain has started in this sequence of accessors.
+    // Once started, later accessors should short-circuit too when the object is null/undefined.
+    let optionalChain = false
 
-    while ((state.token === '(' || state.token === '[' || state.token === '.') &&
-        (!types || types.includes(state.token))) { // eslint-disable-line no-unmodified-loop-condition
+    // Iterate and handle chained accessors, including repeated optional chaining
+    while (true) { // eslint-disable-line no-unmodified-loop-condition
+      // Track whether an optional chaining operator precedes the next accessor
+      let optional = false
+
+      // Consume an optional chaining operator if present
+      if (state.token === '?.') {
+        optional = true
+        optionalChain = true
+        // consume the '?.' token
+        getToken(state)
+
+        // Special case: property access via dot-notation following optional chaining (obj?.foo)
+        // After consuming '?.', the dot is already consumed as part of the token,
+        // so the next token is the property name itself. Handle that here.
+        const isPropertyNameAfterOptional = (!types || types.includes('.')) && (
+          state.tokenType === TOKENTYPE.SYMBOL ||
+          (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)
+        )
+        if (isPropertyNameAfterOptional) {
+          params = []
+          params.push(new ConstantNode(state.token))
+          getToken(state)
+          const dotNotation = true
+          node = new AccessorNode(node, new IndexNode(params, dotNotation), true)
+          // Continue parsing, allowing more chaining after this accessor
+          continue
+        }
+        // Otherwise, fall through to allow patterns like obj?.[...]
+      }
+
+      // If the next token does not start an accessor, we're done
+      const hasNextAccessor =
+        (state.token === '(' || state.token === '[' || state.token === '.') &&
+        (!types || types.includes(state.token))
+
+      if (!hasNextAccessor) {
+        // A dangling '?.' without a following accessor is a syntax error
+        if (optional) {
+          throw createSyntaxError(state, 'Unexpected operator ?.')
+        }
+        break
+      }
+
       params = []
 
       if (state.token === '(') {
@@ -1437,7 +1477,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         closeParams(state)
         getToken(state)
 
-        node = new AccessorNode(node, new IndexNode(params), optionalChaining)
+        node = new AccessorNode(node, new IndexNode(params), optional || optionalChain)
       } else {
         // dot notation like variable.prop
         getToken(state)
@@ -1452,7 +1492,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         getToken(state)
 
         const dotNotation = true
-        node = new AccessorNode(node, new IndexNode(params, dotNotation), optionalChaining)
+        node = new AccessorNode(node, new IndexNode(params, dotNotation), optional || optionalChain)
       }
     }
 

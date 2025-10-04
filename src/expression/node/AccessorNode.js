@@ -162,7 +162,8 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
     map (callback) {
       return new AccessorNode(
         this._ifNode(callback(this.object, 'object', this)),
-        this._ifNode(callback(this.index, 'index', this))
+        this._ifNode(callback(this.index, 'index', this)),
+        this.optionalChaining
       )
     }
 
