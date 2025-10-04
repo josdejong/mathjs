@@ -896,33 +896,39 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj["foo"]["bar"]', { obj: { foo: { bar: 2 } } }), 2)
     })
 
-    // it('should get a nested object property using optional chaining', function () {
-    //   assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.["bar"]', { obj: { foo: { bar: 2 } } }), 2)
-    // })
-    //
-    // it('should return undefined accessing a nested property of undefined using optional chaining', function () {
-    //   assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.["bar"]', { obj: undefined }), undefined)
-    // })
-    //
-    // it('should return undefined accessing a nested property of null using optional chaining', function () {
-    //   assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.["bar"]', { obj: null }), undefined)
-    // })
-    //
-    // it('should return undefined accessing a nested property of undefined using optional chaining (1)', function () {
-    //   assert.deepStrictEqual(parseAndEval('obj?.["foo"]["bar"]', { obj: undefined }), undefined)
-    // })
-    //
-    // it('should return undefined accessing a nested property of null using optional chaining (1)', function () {
-    //   assert.deepStrictEqual(parseAndEval('obj?.["foo"]["bar"]', { obj: null }), undefined)
-    // })
-    //
-    // it('should return undefined accessing a nested property of undefined using optional chaining (2)', function () {
-    //   assert.deepStrictEqual(parseAndEval('obj["foo"]?.["bar"]', { obj: { foo: undefined } }), undefined)
-    // })
-    //
-    // it('should return undefined accessing a nested property of null using optional chaining (2)', function () {
-    //   assert.deepStrictEqual(parseAndEval('obj["foo"]?.["bar"]', { obj: { foo: null } }), undefined)
-    // })
+    it('should get a nested object property using optional chaining', function () {
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.["bar"]', { obj: { foo: { bar: 2 } } }), 2)
+    })
+
+    it('should return undefined accessing a nested property of undefined using optional chaining', function () {
+      assert.deepStrictEqual(parseAndEval('obj["foo"]?.["bar"]', { obj: { foo: undefined } }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]["bar"]', { obj: undefined }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.["bar"]', { obj: undefined }), undefined)
+    })
+
+    it('should return undefined accessing a nested property of null using optional chaining', function () {
+      assert.deepStrictEqual(parseAndEval('obj["foo"]?.["bar"]', { obj: { foo: null } }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]["bar"]', { obj: null }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.["bar"]', { obj: null }), undefined)
+    })
+
+    it('should throw an error accessing a nested property of undefined using optional chaining', function () {
+      assert.throws(function () {
+        parseAndEval('obj["foo"]?.["bar"]', { obj: undefined })
+      }, /Cannot read properties of undefined (reading 'foo')/)
+      assert.throws(function () {
+        parseAndEval('obj?.["foo"]["bar"]', { obj: { foo: undefined } })
+      }, /Cannot read properties of undefined (reading 'bar')/)
+    })
+
+    it('should throw an error accessing a nested null of null using optional chaining', function () {
+      assert.throws(function () {
+        parseAndEval('obj["foo"]?.["bar"]', { obj: null })
+      }, /Cannot read properties of null (reading 'foo')/)
+      assert.throws(function () {
+        parseAndEval('obj?.["foo"]["bar"]', { obj: { foo: null } })
+      }, /Cannot read properties of null (reading 'bar')/)
+    })
 
     it('should get a nested matrix subset from an object property', function () {
       assert.deepStrictEqual(parseAndEval('obj.foo[2]', { obj: { foo: [1, 2, 3] } }), 2)
@@ -1022,32 +1028,34 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj?.foo?.bar', { obj: { foo: { bar: 2 } } }), 2)
     })
 
-    it('should get a nested object property with dot notation using optional chaining', function () {
-      assert.deepStrictEqual(parseAndEval('obj?.foo?.bar', { obj: { foo: { bar: 2 } } }), 2)
-    })
-
     it('should return undefined accessing a nested property of undefined with dot notation using optional chaining', function () {
+      assert.deepStrictEqual(parseAndEval('obj.foo?.bar', { obj: { foo: undefined } }), undefined)
       assert.deepStrictEqual(parseAndEval('obj?.foo?.bar', { obj: undefined }), undefined)
-    })
-
-    it('should return undefined accessing a nested property of null with dot notation using optional chaining', function () {
-      assert.deepStrictEqual(parseAndEval('obj?.foo?.bar', { obj: null }), undefined)
-    })
-
-    it('should return undefined accessing a nested property of undefined with dot notation using optional chaining (1)', function () {
       assert.deepStrictEqual(parseAndEval('obj?.foo.bar', { obj: undefined }), undefined)
     })
 
-    it('should return undefined accessing a nested property of null with dot notation using optional chaining (1)', function () {
-      assert.deepStrictEqual(parseAndEval('obj?.foo.bar', { obj: null }), undefined)
-    })
-
-    it('should return undefined accessing a nested property of undefined with dot notation using optional chaining (2)', function () {
-      assert.deepStrictEqual(parseAndEval('obj.foo?.bar', { obj: { foo: undefined } }), undefined)
-    })
-
-    it('should return undefined accessing a nested property of null with dot notation using optional chaining (2)', function () {
+    it('should return undefined accessing a nested property of null with dot notation using optional chaining', function () {
       assert.deepStrictEqual(parseAndEval('obj.foo?.bar', { obj: { foo: null } }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.foo.bar', { obj: null }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.bar', { obj: null }), undefined)
+    })
+
+    it('should throw an error accessing a nested property of undefined with dot notation using optional chaining', function () {
+      assert.throws(function () {
+        parseAndEval('obj.foo?.bar', { obj: undefined })
+      }, /Cannot read properties of undefined (reading 'foo')/)
+      assert.throws(function () {
+        parseAndEval('obj?.foo.bar', { obj: { foo: undefined } })
+      }, /Cannot read properties of undefined (reading 'bar')/)
+    })
+
+    it('should throw an error accessing a nested property of null with dot notation using optional chaining', function () {
+      assert.throws(function () {
+        parseAndEval('obj.foo?.bar', { obj: null })
+      }, /Cannot read properties of null (reading 'foo')/)
+      assert.throws(function () {
+        parseAndEval('obj?.foo.bar', { obj: { foo: null } })
+      }, /Cannot read properties of null (reading 'bar')/)
     })
 
     it('should get a nested object property e using dot notation', function () {
@@ -1102,6 +1110,57 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj["foo"].bar["baz"]', { obj: { foo: { bar: { baz: 2 } } } }), 2)
     })
 
+    it('should get nested object property with mixed dot- and index-notation using optional chaining', function () {
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: { foo: { bar: { baz: 2 } } } }), 2)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: { foo: { bar: { baz: 2 } } } }), 2)
+    })
+
+    it('should return undefined accessing a property of undefined with mixed dot- and index-notation using optional chaining', function () {
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: undefined }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: undefined }), undefined)
+
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: { foo: undefined } }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: { foo: undefined } }), undefined)
+
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: { foo: { bar: undefined } } }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: { foo: { bar: undefined } } }), undefined)
+    })
+
+    it('should return undefined accessing a property of null with mixed dot- and index-notation using optional chaining', function () {
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: null }), null)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: null }), null)
+
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: { foo: null } }), null)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: { foo: null } }), null)
+
+      assert.deepStrictEqual(parseAndEval('obj?.foo?.["bar"]?.baz', { obj: { foo: { bar: null } } }), null)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]?.bar?.["baz"]', { obj: { foo: { bar: null } } }), null)
+    })
+
+    it('should throw an error accessing a nested property of undefined with mixed dot- and index-notation using optional chaining', function () {
+      assert.throws(function () {
+        parseAndEval('obj.foo?.["bar"]?.baz', { obj: undefined })
+      }, /Cannot read properties of null (reading 'foo')/)
+      assert.throws(function () {
+        parseAndEval('obj.foo["bar"]?.baz', { obj: { foo: undefined } })
+      }, /Cannot read properties of null (reading 'bar')/)
+      assert.throws(function () {
+        parseAndEval('obj.foo["bar"].baz', { obj: { foo: { bar: undefined } } })
+      }, /Cannot read properties of null (reading 'baz')/)
+    })
+
+    it('should throw an error accessing a nested property of null with mixed dot- and index-notation using optional chaining', function () {
+      assert.throws(function () {
+        parseAndEval('obj.foo?.["bar"]?.baz', { obj: null })
+      }, /Cannot read properties of null (reading 'foo')/)
+      assert.throws(function () {
+        parseAndEval('obj.foo["bar"]?.baz', { obj: { foo: null } })
+      }, /Cannot read properties of null (reading 'bar')/)
+      assert.throws(function () {
+        parseAndEval('obj.foo["bar"].baz', { obj: { foo: { bar: null } } })
+      }, /Cannot read properties of null (reading 'baz')/)
+    })
+
     it('should set an object property with dot notation', function () {
       const scope = { obj: {} }
       parseAndEval('obj.foo = 2', scope)
@@ -1123,6 +1182,11 @@ describe('parse', function () {
     it('should throw an error in case of invalid property with dot notation', function () {
       assert.throws(function () { parseAndEval('obj. +foo') }, /SyntaxError: Property name expected after dot \(char 6\)/)
       assert.throws(function () { parseAndEval('obj.["foo"]') }, /SyntaxError: Property name expected after dot \(char 5\)/)
+    })
+
+    it('should throw an error in case of invalid property with dot notation using optional chaining', function () {
+      assert.throws(function () { parseAndEval('obj?. +foo') }, /SyntaxError: Property name expected after dot \(char 7\)/)
+      assert.throws(function () { parseAndEval('obj?.["foo"]') }, /SyntaxError: Property name expected after dot \(char 6\)/)
     })
 
     it('should create an empty object', function () {
@@ -1151,6 +1215,10 @@ describe('parse', function () {
 
     it('should get a property from a just created object', function () {
       assert.deepStrictEqual(parseAndEval('{foo:2}["foo"]'), 2)
+    })
+
+    it('should get a property from a just created object using optional chaining', function () {
+      assert.deepStrictEqual(parseAndEval('{foo:2}?.["foo"]'), 2)
     })
 
     it('should parse an object containing a function assignment', function () {
