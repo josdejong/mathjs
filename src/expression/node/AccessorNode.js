@@ -98,8 +98,6 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
       const evalObject = this.object._compile(math, argNames)
       const evalIndex = this.index._compile(math, argNames)
 
-      const OPT_FLAG = '__mathjsOptChain'
-
       if (this.optionalChaining) {
         if (this.index.isObjectProperty()) {
           const prop = this.index.getObjectProperty()
@@ -107,9 +105,8 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
             const ctx = context || {}
             const object = evalObject(scope, args, ctx)
 
-            // proof for optional chaining:
             if (object === null || object === undefined) {
-              ctx[OPT_FLAG] = true
+              ctx.optionalShortCircuit = true
               return undefined
             }
 
@@ -121,9 +118,37 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
             const ctx = context || {}
             const object = evalObject(scope, args, ctx)
 
-            // proof for optional chaining:
             if (object === null || object === undefined) {
-              ctx[OPT_FLAG] = true
+              ctx.optionalShortCircuit = true
+              return undefined
+            }
+
+            // we pass just object here instead of context:
+            const index = evalIndex(scope, args, object)
+            return access(object, index)
+          }
+        }
+      } else if (isAccessorNode(this.object) && this.object.optionalChaining) {
+        // previous accessor short-circuited -> propagate undefined
+        if (this.index.isObjectProperty()) {
+          const prop = this.index.getObjectProperty()
+          return function evalAccessorNode (scope, args, context) {
+            const ctx = context || {}
+            const object = evalObject(scope, args, ctx)
+
+            if (ctx?.optionalShortCircuit) {
+              return undefined
+            }
+
+            // get a property from an object evaluated using the scope.
+            return getSafeProperty(object, prop)
+          }
+        } else {
+          return function evalAccessorNode (scope, args, context) {
+            const ctx = context || {}
+            const object = evalObject(scope, args, ctx)
+
+            if (ctx?.optionalShortCircuit) {
               return undefined
             }
 
@@ -133,52 +158,19 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
           }
         }
       } else {
-        const prevIsOptionalAccessor = isAccessorNode(this.object) && !!this.object.optionalChaining
-        if (prevIsOptionalAccessor) {
-          if (this.index.isObjectProperty()) {
-            const prop = this.index.getObjectProperty()
-            return function evalAccessorNode (scope, args, context) {
-              const ctx = context || {}
-              const object = evalObject(scope, args, ctx)
-
-              // previous accessor short-circuited -> propagate undefined
-              if (ctx[OPT_FLAG] === true) {
-                return undefined
-              }
-
-              // get a property from an object evaluated using the scope.
-              return getSafeProperty(object, prop)
-            }
-          } else {
-            return function evalAccessorNode (scope, args, context) {
-              const ctx = context || {}
-              const object = evalObject(scope, args, ctx)
-
-              // previous accessor short-circuited -> propagate undefined
-              if (ctx[OPT_FLAG] === true) {
-                return undefined
-              }
-
-              // we pass just object here instead of context:
-              const index = evalIndex(scope, args, object)
-              return access(object, index)
-            }
+        // Normal access without any optional chaining
+        if (this.index.isObjectProperty()) {
+          const prop = this.index.getObjectProperty()
+          return function evalAccessorNode (scope, args, context) {
+            // get a property from an object evaluated using the scope.
+            return getSafeProperty(evalObject(scope, args, context), prop)
           }
         } else {
-          // Normal access without any optional chaining
-          if (this.index.isObjectProperty()) {
-            const prop = this.index.getObjectProperty()
-            return function evalAccessorNode (scope, args, context) {
-              // get a property from an object evaluated using the scope.
-              return getSafeProperty(evalObject(scope, args, context), prop)
-            }
-          } else {
-            return function evalAccessorNode (scope, args, context) {
-              const object = evalObject(scope, args, context)
-              // we pass just object here instead of context:
-              const index = evalIndex(scope, args, object)
-              return access(object, index)
-            }
+          return function evalAccessorNode (scope, args, context) {
+            const object = evalObject(scope, args, context)
+            // we pass just object here instead of context:
+            const index = evalIndex(scope, args, object)
+            return access(object, index)
           }
         }
       }
