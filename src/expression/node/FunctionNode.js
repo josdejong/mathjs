@@ -137,6 +137,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     _compile (math, argNames) {
       // compile arguments
       const evalArgs = this.args.map((arg) => arg._compile(math, argNames))
+      const fromOptionalChaining = isAccessorNode(this.fn) && this.fn.optionalChaining
 
       if (isSymbolNode(this.fn)) {
         const name = this.fn.name
@@ -239,16 +240,31 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         const evalObject = this.fn.object._compile(math, argNames)
         const prop = this.fn.index.getObjectProperty()
         const rawArgs = this.args
-        const fromOptionalChaining = !!this.fn.optionalChaining
+
+        if (fromOptionalChaining) {
+          return function evalFunctionNode (scope, args, context) {
+            const object = evalObject(scope, args, context)
+
+            // Optional chaining: if the base object is nullish, short-circuit to undefined
+            if (object === null || object === undefined) {
+              return undefined
+            }
+
+            const fn = getSafeMethod(object, prop)
+
+            if (fn?.rawArgs) {
+              // "Raw" evaluation
+              return fn(rawArgs, math, createSubScope(scope, args))
+            } else {
+              // "regular" evaluation
+              const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
+              return fn.apply(object, values)
+            }
+          }
+        }
 
         return function evalFunctionNode (scope, args, context) {
           const object = evalObject(scope, args, context)
-
-          // Optional chaining: if the base object is nullish, short-circuit to undefined
-          if (fromOptionalChaining && (object === null || object === undefined)) {
-            return undefined
-          }
-
           const fn = getSafeMethod(object, prop)
 
           if (fn?.rawArgs) {
@@ -267,16 +283,9 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         const fnExpr = this.fn.toString()
         const evalFn = this.fn._compile(math, argNames)
         const rawArgs = this.args
-        const fromOptionalChaining = isAccessorNode(this.fn) && !!this.fn.optionalChaining
 
         return function evalFunctionNode (scope, args, context) {
           const fn = evalFn(scope, args, context)
-
-          // Optional chaining: if callee is nullish due to an optional accessor, short-circuit
-          if (fromOptionalChaining && (fn === null || fn === undefined)) {
-            return undefined
-          }
-
           if (typeof fn !== 'function') {
             throw new TypeError(
               `Expression '${fnExpr}' did not evaluate to a function; value is:` +

@@ -1077,16 +1077,64 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('obj["fn"](2)', scope), 4)
     })
 
-    it('should return undefined when invoke a function of undefined using optional chaining', function () {
+    it('should invoke a function in an object using optional chaining', function () {
+      const scope = {
+        obj: {
+          fn: function (x) {
+            return x * x
+          }
+        }
+      }
+      assert.deepStrictEqual(parseAndEval('obj?.fn(2)', scope), 4)
+      assert.deepStrictEqual(parseAndEval('obj?.["fn"](2)', scope), 4)
+    })
+
+    it('should return undefined when invoking an undefined function using optional chaining', function () {
       const scope = { obj: undefined }
       assert.deepStrictEqual(parseAndEval('obj?.fn(2)', scope), undefined)
       assert.deepStrictEqual(parseAndEval('obj?.["fn"](2)', scope), undefined)
     })
 
-    it('should return undefined when invoke a function of null using optional chaining', function () {
+    it('should return undefined when invoking a null function using optional chaining', function () {
       const scope = { obj: null }
       assert.deepStrictEqual(parseAndEval('obj?.fn(2)', scope), undefined)
       assert.deepStrictEqual(parseAndEval('obj?.["fn"](2)', scope), undefined)
+    })
+
+    it('should get a object property from a function result using optional chaining', function () {
+      const scope = {
+        obj: {
+          fn: function (x) {
+            return { foo: x }
+          }
+        }
+      }
+      assert.deepStrictEqual(parseAndEval('obj.fn(2)?.foo', scope), 2)
+      assert.deepStrictEqual(parseAndEval('obj["fn"](2)?.foo', scope), 2)
+    })
+
+    it('should return undefined accessing an undefined function result using optional chaining', function () {
+      const scope = {
+        obj: {
+          fn: function () {
+            return undefined
+          }
+        }
+      }
+      assert.deepStrictEqual(parseAndEval('obj.fn(2)?.foo', scope), undefined)
+      assert.deepStrictEqual(parseAndEval('obj["fn"](2)?.foo', scope), undefined)
+    })
+
+    it('should return undefined accessing a null function result using optional chaining', function () {
+      const scope = {
+        obj: {
+          fn: function () {
+            return null
+          }
+        }
+      }
+      assert.deepStrictEqual(parseAndEval('obj.fn(2)?.foo', scope), undefined)
+      assert.deepStrictEqual(parseAndEval('obj["fn"](2)?.foo', scope), undefined)
     })
 
     it('should apply implicit multiplication after a function call', function () {
