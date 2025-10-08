@@ -41,6 +41,17 @@ describe('range', function () {
     assert.deepStrictEqual(range(0, 10, 0, true), matrix([]))
   })
 
+  it('should create an empty range when start and stop are equal', function () {
+    assert.deepStrictEqual(range(0, 0, 0), matrix([]))
+    assert.deepStrictEqual(range(0, 0, 0, true), matrix([]))
+    assert.deepStrictEqual(range(1, 1, 2), matrix([]))
+    assert.deepStrictEqual(range(1, 1, 2, true), matrix([]))
+    assert.deepStrictEqual(range('0:0'), matrix([]))
+    assert.deepStrictEqual(range('0:0:0'), matrix([]))
+    assert.deepStrictEqual(range('1:2:1'), matrix([]))
+    assert.deepStrictEqual(range('1:1:1'), matrix([]))
+  })
+
   it('should output an array when setting matrix==="array"', function () {
     const math2 = math.create({
       matrix: 'Array'
