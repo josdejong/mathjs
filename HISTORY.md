@@ -9,6 +9,7 @@
 - Fix: #3501 parse `%` as unary only when not followed by a term (#3505).
   Thanks @gwhitney.
 - Fix #3421 require a space or delimiter after hex, bin, and oct values (#3463).
+- Fix: #3530 throw an error when trying to flatten a `SparseMatrix` (#3536).
 - Feat: #3349 Decouple precedence of unary percentage operator and binary
   modulus operator (that both use symbol `%`), and raise the former (#3432).
   Thanks @kiprobinsonknack.
