@@ -124,14 +124,14 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     }
   }
 
-  function mapMultiple (Collections, callback) {
+  function mapMultiple (collections, callback) {
     // collections can be matrices or arrays
     // callback must be a function of the form (collections, [index])
-    const firstCollection = Collections[0]
-    const Arrays = Collections.map((collection) =>
+    const firstCollection = collections[0]
+    const arrays = collections.map((collection) =>
       collection.isMatrix ? collection.valueOf() : collection
     )
-    const sizes = Collections.map((collection) =>
+    const sizes = collections.map((collection) =>
       collection.isMatrix ? collection.size() : arraySize(collection)
     )
     const finalSize = broadcastSizes(...sizes)
@@ -140,7 +140,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     const maxDepth = finalSize.length - 1
     const callbackUsesIndex = callback.length > 1
     const index = callbackUsesIndex ? [] : null
-    const resultsArray = iterate(Arrays, 0)
+    const resultsArray = iterate(arrays, 0)
     if (firstCollection.isMatrix) {
       const resultsMatrix = firstCollection.create()
       resultsMatrix._data = resultsArray
@@ -152,10 +152,10 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
 
     function iterate (arrays, depth = 0) {
       // each array can have different sizes
-      const N = finalSize[depth]
-      const result = Array(N)
+      const currentDimensionSize = finalSize[depth]
+      const result = Array(currentDimensionSize)
       if (depth < maxDepth) {
-        for (let i = 0; i < N; i++) {
+        for (let i = 0; i < currentDimensionSize; i++) {
           if (index) index[depth] = i
           // if there is an offset greater than the current dimension
           // pass the array, if the size of the array is 1 pass the first
@@ -172,7 +172,7 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
           )
         }
       } else {
-        for (let i = 0; i < N; i++) {
+        for (let i = 0; i < currentDimensionSize; i++) {
           if (index) index[depth] = i
           result[i] = callback(
             arrays.map((a) => (a.length === 1 ? a[0] : a[i])),
