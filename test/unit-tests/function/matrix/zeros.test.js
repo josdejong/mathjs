@@ -4,6 +4,7 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 const zeros = math.zeros
 const matrix = math.matrix
+const size = math.size
 
 describe('zeros', function () {
   it('should create an empty matrix', function () {
@@ -66,7 +67,9 @@ describe('zeros', function () {
 
   it('should create a matrix with zeros with the same size as original matrix', function () {
     const a = matrix([[1, 2, 3], [4, 5, 6]])
-    assert.deepStrictEqual(zeros(math.size(a)).size(), a.size())
+    assert.deepStrictEqual(zeros(size(a)), [[0, 0, 0], [0, 0, 0]])
+    assert.deepStrictEqual(zeros(matrix(size(a))), matrix([[0, 0, 0], [0, 0, 0]]))
+    assert.deepStrictEqual(zeros(size(a), 'dense'), matrix([[0, 0, 0], [0, 0, 0]]))
   })
 
   // TODO: test with invalid input
