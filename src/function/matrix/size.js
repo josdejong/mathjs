@@ -36,9 +36,9 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed }
 
     Array: arraySize,
 
-    string: (x) => [x.length],
+    string: x => [x.length],
 
     // scalar
-    'number | Complex | BigNumber | Unit | boolean | null': (x) => []
+    'number | Complex | BigNumber | Unit | boolean | null': _x => []
   })
 })
