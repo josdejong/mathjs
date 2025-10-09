@@ -37,6 +37,7 @@ describe('range', function () {
   })
 
   it('should throw an error when step==0', function () {
+    assert.throws(function () { range(0, 0, 0) }, /Step must be non-zero/)
     assert.throws(function () { range(0, 10, 0) }, /Step must be non-zero/)
     assert.throws(function () { range(0, 10, 0, true) }, /Step must be non-zero/)
   })

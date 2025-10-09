@@ -1,5 +1,5 @@
 import { isBigInt, isBigNumber } from '../../utils/is.js'
-import { format, sign } from '../../utils/number.js'
+import { format, sign, nearlyEqual } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'Range'
@@ -68,6 +68,9 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () =
       }
     }
     if (hasStep) {
+      if ((isBigNumber(step) && step.isZero()) || (isBigInt(step) && step === 0n) || (typeof step === 'number' && nearlyEqual(step, 0))) {
+        throw new Error('Step must not be zero')
+      }
       if (isBigNumber(step)) {
         step = step.toNumber()
       } else if (typeof step !== 'number' && !isBigInt(step)) {
