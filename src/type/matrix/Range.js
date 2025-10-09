@@ -68,9 +68,6 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () =
       }
     }
     if (hasStep) {
-      if ((isBigNumber(step) && step.isZero()) || (isBigInt(step) && step === 0n) || (typeof step === 'number' && nearlyEqual(step, 0))) {
-        throw new Error('Step must not be zero')
-      }
       if (isBigNumber(step)) {
         step = step.toNumber()
       } else if (typeof step !== 'number' && !isBigInt(step)) {
@@ -81,6 +78,9 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () =
     this.start = hasStart ? parseFloat(start) : 0
     this.end = hasEnd ? parseFloat(end) : 0
     this.step = hasStep ? parseFloat(step) : 1
+    if (hasStep && nearlyEqual(this.step, 0)) {
+      throw new Error('Step must not be zero')
+    }
   }
 
   /**
