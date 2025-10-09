@@ -4,12 +4,6 @@
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
-- Fix: #1753 Correct dimensionality of Kronecker product on vectors (and
-  extend to arbitrary dimension) (#3455). Thanks @Delaney.
-- Fix: #3501 parse `%` as unary only when not followed by a term (#3505).
-  Thanks @gwhitney.
-- Fix #3421 require a space or delimiter after hex, bin, and oct values (#3463).
-- Fix: #3530 throw an error when trying to flatten a `SparseMatrix` (#3536).
 - Feat: #3349 Decouple precedence of unary percentage operator and binary
   modulus operator (that both use symbol `%`), and raise the former (#3432).
   Thanks @kiprobinsonknack.
@@ -17,6 +11,13 @@
   Thanks @gwhitney.
 - Feat: #2344 matrix subset according to the type of input (#3485).
   Thanks @dvd101x.
+- Fix: #1753 Correct dimensionality of Kronecker product on vectors (and
+  extend to arbitrary dimension) (#3455). Thanks @Delaney.
+- Fix: #3501 parse `%` as unary only when not followed by a term (#3505).
+  Thanks @gwhitney.
+- Fix: #3421 require a space or delimiter after hex, bin, and oct values (#3463).
+- Fix: #3529 Change function `size` to always return an `Array` (3535).
+- Fix: #3530 throw an error when trying to flatten a `SparseMatrix` (#3536).
 
 # 2025-09-26, 14.8.1
 
