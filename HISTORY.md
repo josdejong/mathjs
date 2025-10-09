@@ -2,6 +2,8 @@
 
 # 2025-10-03, 14.8.2
 
+- Feat: improve the performance of `map` with multiple arguments (#3526).
+  Thanks @dvd101x.
 - Fix: improve performance in functions like `map` when passing a unary 
   function (#3546). Thanks @dvd101x.
 - Fix: improve the type definition of `abs(complex)` which returns a `number`
