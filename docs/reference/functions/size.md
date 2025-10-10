@@ -6,7 +6,10 @@ layout: default
 
 <h1 id="function-size">Function size <a href="#function-size" title="Permalink">#</a></h1>
 
-Calculate the size of a matrix or scalar.
+Calculate the size of a matrix or scalar. Always returns an Array containing numbers.
+
+Note that in mathjs v14 and older, function size could return a Matrix depending on
+the input type and configuration.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -25,7 +28,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Array &#124; Matrix | A vector with size of `x`.
+Array | A vector with size of `x`.
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

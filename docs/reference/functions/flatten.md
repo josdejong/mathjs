@@ -20,13 +20,13 @@ math.flatten(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Matrix &#124; Array | Matrix to be flattened
+`x` | DenseMatrix &#124; Array | Matrix to be flattened
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Matrix &#124; Array | Returns the flattened matrix
+DenseMatrix &#124; Array | Returns the flattened matrix
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

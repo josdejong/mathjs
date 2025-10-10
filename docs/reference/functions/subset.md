@@ -44,8 +44,8 @@ Type | Description
 // get a subset
 const d = [[1, 2], [3, 4]]
 math.subset(d, math.index(1, 0))             // returns 3
-math.subset(d, math.index([0, 1], 1))        // returns [[2], [4]]
-math.subset(d, math.index([false, true], 0)) // returns [[3]]
+math.subset(d, math.index([0, 1], [1]))        // returns [[2], [4]]
+math.subset(d, math.index([false, true], [0])) // returns [[3]]
 
 // replace a subset
 const e = []
@@ -55,9 +55,9 @@ math.subset(g, math.index([false, true], 1), 8)          // returns [[5, 0, 6], 
 
 // get submatrix using ranges
 const M = [
-  [1,2,3],
-  [4,5,6],
-  [7,8,9]
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
 ]
 math.subset(M, math.index(math.range(0,2), math.range(0,3))) // [[1, 2, 3], [4, 5, 6]]
 ```

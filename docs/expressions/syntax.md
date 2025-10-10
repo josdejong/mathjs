@@ -122,8 +122,9 @@ Operators                         | Description
 `??`                              | Nullish coalescing
 `^`, `.^`                         | Exponentiation
 `+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
+`%`                               | Unary percentage
 See section below                 | Implicit multiplication
-`*`, `/`, `.*`, `./`,`%`, `mod`   | Multiply, divide , percentage, modulus
+`*`, `/`, `.*`, `./`,`%`, `mod`   | Multiply, divide, modulus
 `+`, `-`                          | Add, subtract
 `:`                               | Range
 `to`, `in`                        | Unit conversion
@@ -142,8 +143,8 @@ See section below                 | Implicit multiplication
 `\n`, `;`                         | Statement separators
 
 Lazy evaluation is used where logically possible for bitwise and logical
-operators. In the following example, the value of `x` will not even be 
-evaluated because it cannot effect the final result: 
+operators. In the following example, the sub-expression `x` will not even be
+evaluated because it cannot affect the final result:
 ```js
 math.evaluate('false and x')        // false, no matter what x equals
 ```
@@ -681,12 +682,14 @@ at 1, when the end is undefined, the range will end at the end of the matrix.
 
 There is a context variable `end` available as well to denote the end of the
 matrix. This variable cannot be used in multiple nested indices. In that case,
-`end` will be resolved as the end of the innermost matrix. To solve this, 
+`end` will be resolved as the end of the innermost matrix. To solve this,
 resolving of the nested index needs to be split in two separate operations.
 
 *IMPORTANT: matrix indexes and ranges work differently from the math.js indexes
 in JavaScript: They are one-based with an included upper-bound, similar to most
 math applications.*
+
+*IMPORTANT: The matrix indexing behavior has been changed in mathjs `v15`, see section [Migrate matrix indexing to mathjs v15](#migrate-matrix-indexing-to-mathjs-v15).*
 
 ```js
 parser = math.parser()
@@ -705,9 +708,38 @@ parser.evaluate('d = a * b')              // Matrix, [[19, 22], [43, 50]]
 
 // retrieve a subset of a matrix
 parser.evaluate('d[2, 1]')                // 43
-parser.evaluate('d[2, 1:end]')            // Matrix, [[43, 50]]
+parser.evaluate('d[2, 1:end]')            // Matrix, [43, 50]
 parser.evaluate('c[end - 1 : -1 : 2]')    // Matrix, [8, 7, 6]
 ```
+
+<h4 id="migrate-matrix-indexing-to-mathjs-v15">Migrate matrix indexing to mathjs v15 <a href="#migrate-matrix-indexing-to-mathjs-v15" title="Permalink">#</a></h4>
+
+With mathjs v15, matrix indexing has changed to be more consistent and predictable. In v14, using a scalar index would sometimes reduce the dimensionality of the result. In v15, if you want to preserve dimensions, use array, matrix, or range indices. If you want a scalar value, use scalar indices.
+
+To maintain the old indexing behavior without need for any code changes, use the configuration option `legacySubset`:
+
+```js
+math.config({ legacySubset: true })
+```
+
+To migrate your code, you'll have to change all matrix indexes from the old index notation to the new index notation. Basically: scalar indexes have to be wrapped in array brackets if you want an array as output. Here some examples:
+
+```js
+parser = math.parser()
+parser.evaluate('m = [1, 2, 3; 4, 5, 6]')
+```
+
+| v14 code                | v15 equivalent code           | Result             |
+|-------------------------|-------------------------------|--------------------|
+| `m[1:2, 2:3]`           | No change needed              | `[[2, 3], [5, 6]]` |
+| `m[2, 2:3]`             | `m[[2], 2:3]`                 | `[[5, 6]]`         |
+| `m[1:2, 3]`             | `m[1:2, [3]]`                 | `[[3], [6]]`       |
+| `m[2, 3]`               | No change needed              | `6`                |
+
+> **Tip:**  
+> If you want to always get a scalar value, use scalar indices.  
+> If you want to preserve dimensions, use array, matrix or range indices.
+
 
 <h2 id="objects">Objects <a href="#objects" title="Permalink">#</a></h2>
 
