@@ -10,6 +10,8 @@
   (#3543). Thanks @joshkel.
 - Fix: add missing type definitions for `ctranspose` (#3545). Thanks @joshkel.
 - Fix: typos in code comments (#3544). Thanks @joshkel.
+- Fix: #3541 throw an error when evaluating a range with a step of zero 
+  (#3548). Thanks @dvd101x.
 
 # 2025-09-26, 14.8.1
 
