@@ -1,6 +1,6 @@
 # History
 
-# 2025-10-03, 14.8.2
+# 2025-10-10, 14.9.0
 
 - Feat: improve the performance of `map` with multiple arguments (#3526).
   Thanks @dvd101x.
