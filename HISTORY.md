@@ -1,6 +1,6 @@
 # History
 
-# Unpublished changes scheduled for v15
+# 2205-10-10, 15.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
