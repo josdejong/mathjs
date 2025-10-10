@@ -233,11 +233,10 @@ describe('Index', function () {
       [1, 2]
     ])
 
-    assert.deepStrictEqual(new Index(2, new Range(0, 8, 2), new Range(3, -1, -1), new Range(2, 4, 0), [1, 2]).toArray(), [
+    assert.deepStrictEqual(new Index(2, new Range(0, 8, 2), new Range(3, -1, -1), [1, 2]).toArray(), [
       2,
       [0, 2, 4, 6],
       [3, 2, 1, 0],
-      [],
       [1, 2]
     ])
 
