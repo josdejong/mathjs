@@ -92,7 +92,7 @@ File: [webworkers.html](webworkers.html) (click for a live demo)
 File: [worker.js](worker.js)
 
 ```js
-importScripts('https://unpkg.com/mathjs@14.9.0/lib/browser/math.js')
+importScripts('https://unpkg.com/mathjs@14.9.1/lib/browser/math.js')
 
 // create a parser
 const parser = self.math.parser()

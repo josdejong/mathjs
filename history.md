@@ -4,18 +4,25 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20251010-1491">2025-10-10, 14.9.1 <a href="#20251010-1491" title="Permalink">#</a></h1>
+
+- Fix: issue in HISTORY.md listing all fixes of `v14.8.2` under `v14.9.0`. 
+
 <h1 id="20251010-1490">2025-10-10, 14.9.0 <a href="#20251010-1490" title="Permalink">#</a></h1>
 
 - Feat: improve the performance of `map` with multiple arguments (<a href="https://github.com/josdejong/mathjs/issues/3526">#3526</a>).
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
-- Fix: improve performance in functions like `map` when passing a unary 
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3541">#3541</a> throw an error when evaluating a range with a step of zero 
+  (<a href="https://github.com/josdejong/mathjs/issues/3548">#3548</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+
+<h1 id="20251003-1482">2025-10-03, 14.8.2 <a href="#20251003-1482" title="Permalink">#</a></h1>
+
+- Fix: improve performance in functions like `map` when passing a unary
   function (<a href="https://github.com/josdejong/mathjs/issues/3546">#3546</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 - Fix: improve the type definition of `abs(complex)` which returns a `number`
   (<a href="https://github.com/josdejong/mathjs/issues/3543">#3543</a>). Thanks <a href="https://github.com/joshkel">@joshkel</a>.
 - Fix: add missing type definitions for `ctranspose` (<a href="https://github.com/josdejong/mathjs/issues/3545">#3545</a>). Thanks <a href="https://github.com/joshkel">@joshkel</a>.
 - Fix: typos in code comments (<a href="https://github.com/josdejong/mathjs/issues/3544">#3544</a>). Thanks <a href="https://github.com/joshkel">@joshkel</a>.
-- Fix: <a href="https://github.com/josdejong/mathjs/issues/3541">#3541</a> throw an error when evaluating a range with a step of zero 
-  (<a href="https://github.com/josdejong/mathjs/issues/3548">#3548</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
 
 <h1 id="20250926-1481">2025-09-26, 14.8.1 <a href="#20250926-1481" title="Permalink">#</a></h1>
 
