@@ -1,17 +1,24 @@
 # History
 
+# 2025-10-10, 14.9.1
+
+- Fix: issue in HISTORY.md listing all fixes of `v14.8.2` under `v14.9.0`. 
+
 # 2025-10-10, 14.9.0
 
 - Feat: improve the performance of `map` with multiple arguments (#3526).
   Thanks @dvd101x.
-- Fix: improve performance in functions like `map` when passing a unary 
+- Fix: #3541 throw an error when evaluating a range with a step of zero 
+  (#3548). Thanks @dvd101x.
+
+# 2025-10-03, 14.8.2
+
+- Fix: improve performance in functions like `map` when passing a unary
   function (#3546). Thanks @dvd101x.
 - Fix: improve the type definition of `abs(complex)` which returns a `number`
   (#3543). Thanks @joshkel.
 - Fix: add missing type definitions for `ctranspose` (#3545). Thanks @joshkel.
 - Fix: typos in code comments (#3544). Thanks @joshkel.
-- Fix: #3541 throw an error when evaluating a range with a step of zero 
-  (#3548). Thanks @dvd101x.
 
 # 2025-09-26, 14.8.1
 
