@@ -2502,6 +2502,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns  nth Bernoulli number
    */
   bernoulli<T extends number | Fraction | BigNumber>(n: T): NoLiteralType<T>
+  bernoulli(n: bigint): Fraction
 
   /**
    * Compute the number of ways of picking k unordered outcomes from n

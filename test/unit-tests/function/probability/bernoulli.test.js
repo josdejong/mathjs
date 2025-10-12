@@ -33,5 +33,8 @@ describe('bernoulli', function () {
     assert.deepStrictEqual(bernoulli(frac(7)), frac(0))
     assert.deepStrictEqual(
       bernoulli(frac(50)), frac(495057205241079648212477525n, 66n))
+    assert.deepStrictEqual(
+      bernoulli(68n),
+      frac(-78773130858718728141909149208474606244347001n, 30n))
   })
 })

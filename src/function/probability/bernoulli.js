@@ -2,12 +2,12 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'bernoulli'
 const dependencies = [
-  'typed', 'config', 'typeOf', 'isInteger', 'smaller', 'number',
+  'typed', 'config', 'typeOf', 'isInteger', 'smaller', 'number', '?fraction',
   'add', 'subtract', 'multiply', 'divide'
 ]
 
 export const createBernoulli = /* #__PURE__ */ factory(name, dependencies, ({
-  typed, config, typeOf, isInteger, smaller, number,
+  typed, config, typeOf, isInteger, smaller, number, fraction,
   add, subtract, multiply, divide
 }) => {
   /**
@@ -19,23 +19,27 @@ export const createBernoulli = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Examples:
    *
-   *     math.bernoulli(1) // returns -0.5
-   *     // all other odd Bernoulli numbers are 0:
-   *     math.bernoulli(7) // returns 0
+   *     math.bernoulli(1)                  // returns -0.5
+   *     // All other odd Bernoulli numbers are 0:
+   *     math.bernoulli(7)                  // returns 0
    *     math.bernoulli(math.bignumber(6))  // value bignumber(1).div(42)
-   *     math.bernoulli(math.fraction(8))   // Fraction -1,30
+   *     // Produces exact rationals for bigint or fraction input:
+   *     math.bernoulli(8n)                 // Fraction -1,30
+   *     math.bernoulli(math.fraction(10))  // Fraction 5,66
    *
    * See also:
    *
    *     combinations, gamma, stirlingS2
    *
-   * @param {number | BigNumber | Fraction} n  Index of the Bernoulli number
+   * @param {number | BigNumber | bigint | Fraction} n
+   *    Index of the Bernoulli number
    * @return {number | BigNumber | Fraction}
-   *    nth Bernoulli number, of the same type as the argument n
+   *    nth Bernoulli number, of a type corresponding to the argument n
    */
 
   const cache = {}
   return typed(name, {
+    bigint: typed.referTo('Fraction', selfF => n => selfF(fraction(n))),
     'number | BigNumber | Fraction': n => {
       if (!isInteger(n) || smaller(n, 0)) {
         throw new RangeError(
