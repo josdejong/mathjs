@@ -37,4 +37,12 @@ describe('bernoulli', function () {
       bernoulli(68n),
       frac(-78773130858718728141909149208474606244347001n, 30n))
   })
+
+  it('should throw on illegal index values', function () {
+    assert.throws(() => bernoulli(-3), RangeError)
+    assert.throws(() => bernoulli(1.5), RangeError)
+    assert.throws(() => bernoulli(math.bignumber(6.28)), RangeError)
+    assert.throws(() => bernoulli(math.fraction(5, 3)), RangeError)
+    assert.throws(() => bernoulli(-2n), RangeError)
+  })
 })
