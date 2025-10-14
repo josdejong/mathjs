@@ -238,6 +238,7 @@ import { hasNumericValueDocs } from './function/utils/hasNumericValue.js'
 import { hexDocs } from './function/utils/hex.js'
 import { isIntegerDocs } from './function/utils/isInteger.js'
 import { isNaNDocs } from './function/utils/isNaN.js'
+import { finiteDocs } from './function/utils/finite.js'
 import { isNegativeDocs } from './function/utils/isNegative.js'
 import { isNumericDocs } from './function/utils/isNumeric.js'
 import { isPositiveDocs } from './function/utils/isPositive.js'
@@ -598,6 +599,7 @@ export const embeddedDocs = {
   oct: octDocs,
   hex: hexDocs,
   isNaN: isNaNDocs,
+  finite: finiteDocs,
   isInteger: isIntegerDocs,
   isNegative: isNegativeDocs,
   isNumeric: isNumericDocs,

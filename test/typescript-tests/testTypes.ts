@@ -2680,6 +2680,7 @@ Factory Test
   ])
   assert.strictEqual(math.hasNumericValue(math.fraction(4)), true)
   assert.strictEqual(math.hasNumericValue(math.complex('2-4i')), false)
+  assert.strictEqual(math.finite(NaN), false)
 }
 
 /**
