@@ -42,7 +42,7 @@ describe('log10', function () {
 
   it('should return the log base 10 of zero', function () {
     assert.deepStrictEqual(log10(0), -Infinity)
-    assert.deepStrictEqual(log10(0n), complex(Infinity, Infinity))
+    assert.deepStrictEqual(log10(0n), -Infinity)
     assert.deepStrictEqual(log10(bignumber('0')), bignumber('-Infinity'))
     assert.deepStrictEqual(log10(false), -Infinity)
   })

@@ -22,6 +22,11 @@ export function promoteLogarithm (log16, numberLog, config, cplx) {
       const s15 = s.substring(0, 15)
       return log16 * (s.length - s15.length) + numberLog(Number('0x' + s15))
     }
+
+    if (b === 0n) {
+      return -Infinity
+    }
+
     return cplx(Number(b))
   }
 }
