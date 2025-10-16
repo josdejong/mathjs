@@ -6355,6 +6355,14 @@ export interface MathJsChain<TValue> {
    ************************************************************************/
 
   /**
+   * Bernoulli number at this index
+   */
+  bernoulli<T extends number | BigNumber | Fraction>(
+    this: MathJsChain<T>
+  ): MathJsChain<NoLiteralType<T>>
+  bernoulli(this: MathJsChain<bigint>): MathJsChain<Fraction>
+
+  /**
    * Compute the number of ways of picking k unordered outcomes from n
    * possibilities. Combinations only takes integer arguments. The
    * following condition must be enforced: k <= n.
