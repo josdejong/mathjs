@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'zeta'
-const dependencies = ['typed', 'config', 'multiply', 'pow', 'divide', 'factorial', 'equal', 'smallerEq', 'isNegative', 'gamma', 'sin', 'subtract', 'add', '?Complex', '?BigNumber', 'pi']
+const dependencies = ['typed', 'config', 'multiply', 'pow', 'divide', 'factorial', 'equal', 'smallerEq', 'isBounded', 'isNegative', 'gamma', 'sin', 'subtract', 'add', '?Complex', '?BigNumber', 'pi']
 
-export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiply, pow, divide, factorial, equal, smallerEq, isNegative, gamma, sin, subtract, add, Complex, BigNumber, pi }) => {
+export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiply, pow, divide, factorial, equal, smallerEq, isBounded, isNegative, gamma, sin, subtract, add, Complex, BigNumber, pi }) => {
   /**
    * Compute the Riemann Zeta function of a value using an infinite series for
    * all of the complex plane using Riemann's Functional equation.
@@ -57,7 +57,7 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     if (equal(s, 1)) {
       return createValue(NaN)
     }
-    if (!isFinite(s)) {
+    if (!isBounded(s)) {
       return isNegative(s) ? createValue(NaN) : createValue(1)
     }
 

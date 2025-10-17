@@ -3633,11 +3633,19 @@ export interface MathJsInstance extends MathJsFactory {
   hasNumericValue(x: any): boolean | boolean[]
 
   /**
-   * Test whether a value is finite.
+   * Test whether a value is bounded
    * @param x Value to be tested
-   * @returns Boolean  true when x represents a finite mathematical entity
+   * @returns Boolean  true when x represents a bounded mathematical entity
    */
-  finite(x: MathType): boolean
+  isBounded(x: MathType): boolean
+
+  /**
+   * Test whether a value is finite, elementwise on collections
+   * @param x Value to be tested
+   * @returns Boolean | MathCollection
+   */
+  isFinite(x: MathScalarType): boolean
+  isFinite(A: MathCollection): MathCollection
 
   /**
    * Test whether a value is an integer number. The function supports

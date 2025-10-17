@@ -44,7 +44,7 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
    */
   return typed('fraction', {
     number: function (x) {
-      if (!isFinite(x) || isNaN(x)) {
+      if (!Number.isFinite(x) || isNaN(x)) {
         throw new Error(x + ' cannot be represented as a fraction')
       }
 
