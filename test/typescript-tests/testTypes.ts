@@ -979,6 +979,16 @@ Chaining examples
     MathJsChain<number>
   >()
   expectTypeOf(math.chain([1, 2]).sum()).toMatchTypeOf<MathJsChain<number>>()
+
+  expectTypeOf(math.chain(7).isBounded()).toMatchTypeOf<MathJsChain<boolean>>()
+  expectTypeOf(math.chain(8).isFinite()).toMatchTypeOf<MathJsChain<boolean>>()
+  expectTypeOf(math.chain([1, Infinity]).isBounded()).toMatchTypeOf<
+    MathJsChain<boolean>
+  >()
+  expectTypeOf(math.chain([1, Infinity]).isFinite()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
+
   // TODO complete the rest of these...
 }
 

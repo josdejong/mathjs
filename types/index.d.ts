@@ -7103,6 +7103,17 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<boolean>
 
   /**
+   * Test whether a value is bounded, works on entire collection at once
+   */
+  isBounded(this: MathJsChain<MathType>): MathJsChain<boolean>
+
+  /**
+   * Test whether a value is finite, works elementwise on collections
+   */
+  isFinite(this: MathJsChain<MathScalarType>): MathJsChain<boolean>
+  isFinite(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
+
+  /**
    * Test whether a value is negative: smaller than zero. The function
    * supports types number, BigNumber, Fraction, and Unit. The function is
    * evaluated element-wise in case of Array or Matrix input.
