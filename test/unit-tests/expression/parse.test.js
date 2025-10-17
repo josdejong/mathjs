@@ -31,6 +31,16 @@ function parseAndStringifyWithParens (expr) {
   return parse(expr).toString({ parenthesis: 'all' })
 }
 
+/**
+ * Helper to delete sources from a node and return it. We use this because
+ * "identical" nodes will not be equal if parsed from different strings,
+ * which breaks deepStrictEqual assertions
+ */
+function emptySources (node) {
+  node.sources = []
+  return node
+}
+
 describe('parse', function () {
   it('should parse a single expression', function () {
     approxEqual(parse('2 + 6 / 3').compile().evaluate(), 4)
@@ -1103,18 +1113,18 @@ describe('parse', function () {
     })
 
     it('should parse constants', function () {
-      assert.strictEqual(parse('true').type, 'ConstantNode')
-      assert.deepStrictEqual(parse('true'), new ConstantNode(true))
-      assert.deepStrictEqual(parse('false'), new ConstantNode(false))
-      assert.deepStrictEqual(parse('null'), new ConstantNode(null))
-      assert.deepStrictEqual(parse('undefined'), new ConstantNode(undefined))
+      assert.strictEqual(emptySources(parse('true')).type, 'ConstantNode')
+      assert.deepStrictEqual(emptySources(parse('true')), new ConstantNode(true))
+      assert.deepStrictEqual(emptySources(parse('false')), new ConstantNode(false))
+      assert.deepStrictEqual(emptySources(parse('null')), new ConstantNode(null))
+      assert.deepStrictEqual(emptySources(parse('undefined')), new ConstantNode(undefined))
     })
 
     it('should parse numeric constants', function () {
       const nanConstantNode = parse('NaN')
       assert.deepStrictEqual(nanConstantNode.type, 'ConstantNode')
       assert.ok(isNaN(nanConstantNode.value))
-      assert.deepStrictEqual(parse('Infinity'), new ConstantNode(Infinity))
+      assert.deepStrictEqual(emptySources(parse('Infinity')), new ConstantNode(Infinity))
     })
 
     it('should evaluate constants', function () {
@@ -2604,5 +2614,229 @@ describe('parse', function () {
     } catch (err) { }
 
     assert.strictEqual(mathClone.evaluate('2'), 2)
+  })
+
+  describe('sources', function () {
+    it('adds sources for constants', function () {
+      const parsed = math.parse('4')
+      assert.deepStrictEqual(parsed.sources, [{ index: 0, text: '4' }])
+    })
+
+    it('adds sources for symbols', function () {
+      const parsed = math.parse('foo')
+      assert.deepStrictEqual(parsed.sources, [{ index: 0, text: 'foo' }])
+    })
+
+    it('adds sources for operators', function () {
+      const parsed = math.parse('1 + 2')
+      assert.deepStrictEqual(parsed.sources, [{ index: 2, text: '+' }])
+      assert.deepStrictEqual(parsed.args[0].sources, [{ index: 0, text: '1' }])
+      assert.deepStrictEqual(parsed.args[1].sources, [{ index: 4, text: '2' }])
+    })
+
+    it('adds sources for blocks', function () {
+      const parsed = math.parse('1 + 1; 2 + 2\n3 + 3')
+
+      // should have a source for each block delimiter
+      const expected = [
+        { index: 5, text: ';' },
+        { index: 12, text: '\n' }
+      ]
+
+      assert.deepStrictEqual(parsed.sources, expected)
+    })
+
+    it('adds sources for 1D matrices', function () {
+      const parsed = math.parse('[1, 2, 3]')
+
+      // should have a source for brackets and item delimiters
+      const expected = [
+        { index: 0, text: '[' },
+        { index: 2, text: ',' },
+        { index: 5, text: ',' },
+        { index: 8, text: ']' }
+      ]
+
+      assert.deepStrictEqual(parsed.sources, expected)
+    })
+
+    it('adds sources for 2D matrices', function () {
+      const parsed = math.parse('[1, 2; 3, 4]')
+
+      // outer matrix has sources for brackets and row delimeters
+      const expected = [
+        { index: 0, text: '[' },
+        { index: 5, text: ';' },
+        { index: 11, text: ']' }
+      ]
+
+      assert.deepStrictEqual(parsed.sources, expected)
+
+      // inner matrices only have sources for item delimeters
+      assert.deepStrictEqual(parsed.items[0].sources, [{ index: 2, text: ',' }])
+      assert.deepStrictEqual(parsed.items[1].sources, [{ index: 8, text: ',' }])
+    })
+
+    it('adds sources for empty matrices', function () {
+      const parsed = math.parse('[]')
+
+      // should have a source for brackets and item delimiters
+      const expected = [
+        { index: 0, text: '[' },
+        { index: 1, text: ']' }
+      ]
+
+      assert.deepStrictEqual(parsed.sources, expected)
+    })
+
+    it('adds sources for ranges', function () {
+      const parsed = math.parse('1:2:3')
+
+      assert.deepStrictEqual(parsed.start.sources, [{ index: 0, text: '1' }])
+      assert.deepStrictEqual(parsed.step.sources, [{ index: 2, text: '2' }])
+      assert.deepStrictEqual(parsed.end.sources, [{ index: 4, text: '3' }])
+
+      const delimiters = [
+        { index: 1, text: ':' },
+        { index: 3, text: ':' }
+      ]
+
+      assert.deepStrictEqual(parsed.sources, delimiters)
+
+      // implicit start and end sources point to where the value would be
+
+      const implicitStart = math.parse(':1')
+      assert.deepStrictEqual(implicitStart.start.sources, [{ index: 0, text: '' }])
+
+      const implicitEnd = math.parse('1:')
+      assert.deepStrictEqual(implicitEnd.end.sources, [{ index: 2, text: '' }])
+    })
+
+    it('adds sources for parentheses', function () {
+      // should properly match outer and inner parentheses
+      const outerParen = math.parse('( 1 + (2 + 3))')
+      const outerSources = [
+        { index: 0, text: '(' },
+        { index: 13, text: ')' }
+      ]
+      assert.deepStrictEqual(outerParen.sources, outerSources)
+
+      const innerParen = outerParen.content.args[1]
+      const innerSources = [
+        { index: 6, text: '(' },
+        { index: 12, text: ')' }
+      ]
+      assert.deepStrictEqual(innerParen.sources, innerSources)
+    })
+
+    it('adds sources for the conditional operator', function () {
+      // should properly match outer and inner conditional delimeters
+      const outerCond = math.parse('true ? (false ? 1 : 2) : 3')
+      const outerSources = [
+        { index: 5, text: '?' },
+        { index: 23, text: ':' }
+      ]
+      assert.deepStrictEqual(outerCond.sources, outerSources)
+
+      const innerCond = outerCond.trueExpr.content
+      const innerSources = [
+        { index: 14, text: '?' },
+        { index: 18, text: ':' }
+      ]
+      assert.deepStrictEqual(innerCond.sources, innerSources)
+    })
+
+    it('adds sources for assignments', function () {
+      const parsed = math.parse('val = 42')
+      assert.deepStrictEqual(parsed.sources, [{ index: 4, text: '=' }])
+    })
+
+    it('adds sources for percents', function () {
+      const parsed = math.parse('13%')
+      assert.deepStrictEqual(parsed.sources, [{ index: 2, text: '%' }])
+    })
+
+    it('adds sources for implicit multiplication', function () {
+      const parsed = math.parse('2a')
+
+      // index is where the multiplication symbol would be
+      assert.deepStrictEqual(parsed.sources, [{ index: 1, text: '' }])
+    })
+
+    it('adds sources for conversions', function () {
+      const parsedTo = math.parse('1 foot to in')
+      assert.deepStrictEqual(parsedTo.sources, [{ index: 7, text: 'to' }])
+
+      const parsedIn = math.parse('in in 1 foot')
+      assert.deepStrictEqual(parsedIn.sources, [{ index: 3, text: 'in' }])
+    })
+
+    it('adds sources for unary operators', function () {
+      const unaryPlus = math.parse('+1')
+      const unaryMinus = math.parse('-1')
+      assert.deepStrictEqual(unaryPlus.sources, [{ index: 0, text: '+' }])
+      assert.deepStrictEqual(unaryMinus.sources, [{ index: 0, text: '-' }])
+    })
+
+    it('adds sources for power operators', function () {
+      const parsed = math.parse('2^4')
+      assert.deepStrictEqual(parsed.sources, [{ index: 1, text: '^' }])
+    })
+
+    it('adds sources for constants', function () {
+      const parsedTrue = math.parse('true')
+      assert.deepStrictEqual(parsedTrue.sources, [{ index: 0, text: 'true' }])
+
+      const parsedNull = math.parse('null')
+      assert.deepStrictEqual(parsedNull.sources, [{ index: 0, text: 'null' }])
+
+      const parsedInfinity = math.parse('Infinity')
+      assert.deepStrictEqual(parsedInfinity.sources, [{ index: 0, text: 'Infinity' }])
+
+      const parsedNaN = math.parse('NaN')
+      assert.deepStrictEqual(parsedNaN.sources, [{ index: 0, text: 'NaN' }])
+    })
+
+    it('adds sources for function calls', function () {
+      const parsed = math.parse('foo(1, 2)')
+
+      // should have sources for parens and each param delimeter
+      const sources = [
+        { index: 3, text: '(' },
+        { index: 5, text: ',' },
+        { index: 8, text: ')' }
+      ]
+      assert.deepStrictEqual(parsed.sources, sources)
+    })
+
+    it('adds sources for string literals', function () {
+      const singleQuote = math.parse("'hello'")
+      const singleSources = [
+        { index: 0, text: "'" },
+        { index: 6, text: "'" }
+      ]
+      assert.deepStrictEqual(singleQuote.sources, singleSources)
+
+      const doubleQuote = math.parse('"hello"')
+      const doubleSources = [
+        { index: 0, text: '"' },
+        { index: 6, text: '"' }
+      ]
+      assert.deepStrictEqual(doubleQuote.sources, doubleSources)
+    })
+
+    it('adds sources for objects', function () {
+      const parsed = math.parse('{ foo: 13, bar: 25 }')
+
+      // sources include brackets, key-value delimiters, and entry delimeters
+      const expected = [
+        { index: 0, text: '{' },
+        { index: 5, text: ':' },
+        { index: 9, text: ',' },
+        { index: 14, text: ':' },
+        { index: 19, text: '}' }
+      ]
+      assert.deepStrictEqual(parsed.sources, expected)
+    })
   })
 })

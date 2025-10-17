@@ -3,6 +3,7 @@ import { getSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 import { isArray, isConstantNode, isMatrix, isNode, isString, typeOf } from '../../utils/is.js'
 import { escape } from '../../utils/string.js'
+import { defaultMetaOptions } from './Node.js'
 
 const name = 'IndexNode'
 const dependencies = [
@@ -25,9 +26,10 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      *     Optional property describing whether this index was written using dot
      *     notation like `a.b`, or using bracket notation like `a["b"]`
      *     (which is the default). This property is used for string conversion.
+     * @param {MetaOptions} [meta]          The object with additional options for building this node.
      */
-    constructor (dimensions, dotNotation) {
-      super()
+    constructor (dimensions, dotNotation = false, meta = defaultMetaOptions) {
+      super(meta)
       this.dimensions = dimensions
       this.dotNotation = dotNotation || false
 
@@ -138,10 +140,11 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} [meta] An object with additional options for cloning this node
      * @return {IndexNode}
      */
-    clone () {
-      return new IndexNode(this.dimensions.slice(0), this.dotNotation)
+    clone (meta) {
+      return new IndexNode(this.dimensions.slice(0), this.dotNotation, meta ?? { sources: this.sources })
     }
 
     /**

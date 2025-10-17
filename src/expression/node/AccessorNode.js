@@ -12,6 +12,7 @@ import {
 import { getSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 import { accessFactory } from './utils/access.js'
+import { defaultMetaOptions } from './Node.js'
 
 const name = 'AccessorNode'
 const dependencies = [
@@ -47,9 +48,10 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Node} object                 The object from which to retrieve
      *                                      a property or subset.
      * @param {IndexNode} index             IndexNode containing ranges
+     * @param {MetaOptions} [meta]          The object with additional options for building this node.
      */
-    constructor (object, index) {
-      super()
+    constructor (object, index, meta = defaultMetaOptions) {
+      super(meta)
       if (!isNode(object)) {
         throw new TypeError('Node expected for parameter "object"')
       }
@@ -133,10 +135,11 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} [meta] An object with additional options for cloning this node
      * @return {AccessorNode}
      */
-    clone () {
-      return new AccessorNode(this.object, this.index)
+    clone (meta) {
+      return new AccessorNode(this.object, this.index, meta ?? { sources: this.sources })
     }
 
     /**

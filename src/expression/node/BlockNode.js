@@ -1,6 +1,7 @@
 import { isNode } from '../../utils/is.js'
 import { forEach, map } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
+import { defaultMetaOptions } from './Node.js'
 
 const name = 'BlockNode'
 const dependencies = [
@@ -19,9 +20,10 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
      *            Object with properties block, which is a Node, and visible,
      *            which is a boolean. The property visible is optional and
      *            is true by default
+     * @param {MetaOptions} [meta]          The object with additional options for building this node.
      */
-    constructor (blocks) {
-      super()
+    constructor (blocks, meta = defaultMetaOptions) {
+      super(meta)
       // validate input, copy blocks
       if (!Array.isArray(blocks)) throw new Error('Array expected')
       this.blocks = blocks.map(function (block) {
@@ -109,9 +111,10 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} [meta] An object with additional options for cloning this node
      * @return {BlockNode}
      */
-    clone () {
+    clone (meta) {
       const blocks = this.blocks.map(function (block) {
         return {
           node: block.node,
@@ -119,7 +122,7 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
         }
       })
 
-      return new BlockNode(blocks)
+      return new BlockNode(blocks, meta ?? { sources: this.sources })
     }
 
     /**

@@ -5,6 +5,7 @@ import { getSafeProperty, getSafeMethod } from '../../utils/customs.js'
 import { createSubScope } from '../../utils/scope.js'
 import { factory } from '../../utils/factory.js'
 import { defaultTemplate, latexFunctions } from '../../utils/latex.js'
+import { defaultMetaOptions } from './Node.js'
 
 const name = 'FunctionNode'
 const dependencies = [
@@ -94,9 +95,10 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      *     Item resolving to a function on which to invoke
      *     the arguments, typically a SymbolNode or AccessorNode
      * @param {./Node[]} args
+     * @param {MetaOptions} [meta]          The object with additional options for building this node.
      */
-    constructor (fn, args) {
-      super()
+    constructor (fn, args = [], meta = defaultMetaOptions) {
+      super(meta)
       if (typeof fn === 'string') {
         fn = new SymbolNode(fn)
       }
@@ -311,10 +313,11 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} [meta] An object with additional options for cloning this node
      * @return {FunctionNode}
      */
-    clone () {
-      return new FunctionNode(this.fn, this.args.slice(0))
+    clone (meta) {
+      return new FunctionNode(this.fn, this.args.slice(0), meta ?? { sources: this.sources })
     }
 
     /**

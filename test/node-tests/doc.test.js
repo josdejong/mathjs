@@ -153,6 +153,12 @@ function checkExpectation (want, got) {
     }
     return approxEqual(got, want, 1e-9)
   }
+  if (want instanceof math.Node && got instanceof math.Node) {
+    got.clone({ sources: [] })
+    want.clone({ sources: [] })
+
+    return assert.deepEqual(got, want)
+  }
   if (
     typeof want === 'string' &&
     typeof got === 'string' &&

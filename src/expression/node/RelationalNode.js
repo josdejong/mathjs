@@ -3,6 +3,7 @@ import { escape } from '../../utils/string.js'
 import { getSafeProperty } from '../../utils/customs.js'
 import { latexOperators } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
+import { defaultMetaOptions } from './Node.js'
 
 const name = 'RelationalNode'
 const dependencies = [
@@ -27,12 +28,13 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
      *     An array of conditional operators used to compare the parameters
      * @param {Node[]} params
      *     The parameters that will be compared
+     * @param {MetaOptions} [meta]          The object with additional options for building this node.
      *
      * @constructor RelationalNode
      * @extends {Node}
      */
-    constructor (conditionals, params) {
-      super()
+    constructor (conditionals, params, meta = defaultMetaOptions) {
+      super(meta)
       if (!Array.isArray(conditionals)) { throw new TypeError('Parameter conditionals must be an array') }
       if (!Array.isArray(params)) { throw new TypeError('Parameter params must be an array') }
       if (conditionals.length !== params.length - 1) {
@@ -106,10 +108,11 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} [meta] An object with additional options for cloning this node
      * @return {RelationalNode}
      */
-    clone () {
-      return new RelationalNode(this.conditionals, this.params)
+    clone (meta = {}) {
+      return new RelationalNode(this.conditionals, this.params, meta ?? { sources: this.sources })
     }
 
     /**

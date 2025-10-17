@@ -2,6 +2,7 @@ import { escape } from '../../utils/string.js'
 import { getSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 import { toSymbol } from '../../utils/latex.js'
+import { defaultMetaOptions } from './Node.js'
 
 const name = 'SymbolNode'
 const dependencies = [
@@ -26,10 +27,11 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @extends {Node}
      * A symbol node can hold and resolve a symbol
      * @param {string} name
+     * @param {MetaOptions} [meta]          The object with additional options for building this node.
      * @extends {Node}
      */
-    constructor (name) {
-      super()
+    constructor (name, meta = defaultMetaOptions) {
+      super(meta)
       // validate input
       if (typeof name !== 'string') {
         throw new TypeError('String expected for parameter "name"')
@@ -111,10 +113,11 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} [meta] An object with additional options for cloning this node
      * @return {SymbolNode}
      */
-    clone () {
-      return new SymbolNode(this.name)
+    clone (meta) {
+      return new SymbolNode(this.name, meta ?? { sources: this.sources })
     }
 
     /**

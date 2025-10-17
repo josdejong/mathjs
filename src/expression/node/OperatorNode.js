@@ -6,6 +6,7 @@ import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
 import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators.js'
 import { latexOperators } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
+import { defaultMetaOptions } from './Node.js'
 
 const name = 'OperatorNode'
 const dependencies = [
@@ -250,9 +251,10 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {Node[]} args         Operator arguments
      * @param {boolean} [implicit]  Is this an implicit multiplication?
      * @param {boolean} [isPercentage] Is this an percentage Operation?
+     * @param {MetaOptions} [meta]          The object with additional options for building this node.
      */
-    constructor (op, fn, args, implicit, isPercentage) {
-      super()
+    constructor (op, fn, args, implicit = false, isPercentage = false, meta = defaultMetaOptions) {
+      super(meta)
       // validate input
       if (typeof op !== 'string') {
         throw new TypeError('string expected for parameter "op"')
@@ -361,11 +363,11 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} [meta] An object with additional options for cloning this node
      * @return {OperatorNode}
      */
-    clone () {
-      return new OperatorNode(
-        this.op, this.fn, this.args.slice(0), this.implicit, this.isPercentage)
+    clone (meta) {
+      return new OperatorNode(this.op, this.fn, this.args.slice(0), this.implicit, this.isPercentage, meta ?? { sources: this.sources })
     }
 
     /**

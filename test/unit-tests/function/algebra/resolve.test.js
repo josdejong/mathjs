@@ -4,6 +4,30 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 
 import { simplifyAndCompare } from './simplify.test.js'
+import { defaultMetaOptions } from '../../../../src/expression/node/Node.js'
+
+function emptySources (...args) {
+  return args.map((item) => {
+    if (item.traverse != null) {
+      return emptySourcesFromTree(item)
+    } else if (item.forEach != null) {
+      return emptySourcesFromArray(item)
+    } else {
+      return item.clone(defaultMetaOptions)
+    }
+  })
+}
+
+function emptySourcesFromArray (array) {
+  return array.map((item) => emptySources(item))
+}
+
+function emptySourcesFromTree (tree) {
+  return tree.transform(function (node) {
+    if (node === tree) return node
+    return node.clone(defaultMetaOptions)
+  }).clone(defaultMetaOptions)
+}
 
 describe('resolve', function () {
   it('should substitute scoped constants', function () {
@@ -45,21 +69,24 @@ describe('resolve', function () {
 
   it('should operate directly on strings', function () {
     const collapsingScope = { x: math.parse('y'), y: math.parse('z') }
-    assert.deepStrictEqual(math.resolve('x+y', { x: 1 }), math.parse('1 + y'))
-    assert.deepStrictEqual(
+    assert.deepStrictEqual(...emptySources(math.resolve('x+y', { x: 1 }), math.parse('1 + y')))
+    assert.deepStrictEqual(...emptySources(
       math.resolve('x + y', collapsingScope),
-      math.parse('z + z'))
-    assert.deepStrictEqual(
+      math.parse('z + z')
+    ))
+    assert.deepStrictEqual(...emptySources(
       math.resolve('[x, y, 1, w]', collapsingScope),
-      math.parse('[z, z, 1, w]'))
+      math.parse('[z, z, 1, w]')
+    ))
   })
 
   it('should substitute scoped constants from Map like scopes', function () {
     assert.strictEqual(
       math.resolve(math.parse('x+y'), new Map([['x', 1]])).toString(), '1 + y'
     ) // direct
-    assert.deepStrictEqual(
+    assert.deepStrictEqual(...emptySources(
       math.resolve('x+y', new Map([['x', 1]])), math.parse('1 + y'))
+    )
     simplifyAndCompare('x+y', 'x+y', new Map()) // operator
     simplifyAndCompare('x+y', 'y+1', new Map([['x', 1]]))
     simplifyAndCompare('x+y', 'y+1', new Map([['x', math.parse('1')]]))
@@ -70,16 +97,16 @@ describe('resolve', function () {
     const scope = { x: 1, y: 2 }
     const expressions = [parse('x+z'), 'y+z', 'y-x']
     let results = [parse('x+z'), parse('y+z'), parse('y-x')]
-    assert.deepStrictEqual(math.resolve(expressions), results)
+    assert.deepStrictEqual(...emptySources(math.resolve(expressions), results))
     results = [parse('1+z'), parse('2+z'), parse('2-1')]
-    assert.deepStrictEqual(math.resolve(expressions, scope), results)
-    assert.deepStrictEqual(
+    assert.deepStrictEqual(...emptySources(math.resolve(expressions, scope), results))
+    assert.deepStrictEqual(...emptySources(
       math.resolve(math.matrix(expressions), scope),
       math.matrix(results)
-    )
+    ))
     const nested = ['z/y', ['x+x', 'gcd(x,y)'], '3+x']
     results = [parse('z/2'), [parse('1+1'), parse('gcd(1,2)')], parse('3+1')]
-    assert.deepStrictEqual(math.resolve(nested, scope), results)
+    assert.deepStrictEqual(...emptySources(math.resolve(nested, scope), results))
   })
 
   it('should throw a readable error if one item is wrong type', function () {
@@ -101,5 +128,16 @@ describe('resolve', function () {
         x: math.parse('cos(y)')
       }),
       /ReferenceError.*\{x, y, z\}/)
+  })
+
+  it('should set blank sources for resolved values', function () {
+    const resolved = math.resolve('1 + x', { x: 5 })
+
+    // standard nodes should still have sources
+    assert.deepStrictEqual(resolved.sources, [{ index: 2, text: '+' }])
+    assert.deepStrictEqual(resolved.args[0].sources, [{ index: 0, text: '1' }])
+
+    // resolved variable should have no sources
+    assert.deepStrictEqual(resolved.args[1].sources, [])
   })
 })
