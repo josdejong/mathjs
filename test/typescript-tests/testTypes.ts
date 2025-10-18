@@ -79,6 +79,8 @@ Basic usage examples
   math.round(100.123, 3)
   const _res = math.atan2(3, -3) / math.pi
   math.log(10000, 10)
+  math.nthRoot(16, 5)
+  math.nthRoots(1, 3)
   math.sqrt(-4)
 
   math.pow(m2by2, 2)
@@ -973,6 +975,14 @@ Chaining examples
       )
       .log10()
   ).toMatchTypeOf<MathJsChain<Matrix>>()
+
+  // nthRoot(s)
+  expectTypeOf(math.chain(81).nthRoot(4)).toMatchTypeOf<
+    MathJsChain<number | Complex>
+  >()
+  expectTypeOf(math.chain(1).nthRoots(5)).toMatchTypeOf<
+    MathJsChain<Array<Complex>>
+  >()
 
   expectTypeOf(math.chain([1, 2]).count()).toMatchTypeOf<MathJsChain<number>>()
   expectTypeOf(math.chain('mathjs').count()).toMatchTypeOf<
