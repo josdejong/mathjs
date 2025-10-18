@@ -1,6 +1,11 @@
 # History
 
-# 2205-10-10, 15.0.0
+# unpublished changes since 15.0.0
+
+- Feat: implement functions `isFinite` and `isBounded` (#3554, #3553). 
+  Thanks @gwhitney.
+
+# 2025-10-10, 15.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
