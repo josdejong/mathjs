@@ -997,6 +997,7 @@ Chaining examples
   >()
   expectTypeOf(math.chain([1, Infinity]).isFinite()).toMatchTypeOf<
     MathJsChain<MathCollection>
+  >()
 
   // bernoulli
   expectTypeOf(math.chain(math.bigint(4)).bernoulli()).toMatchTypeOf<

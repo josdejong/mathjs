@@ -4127,6 +4127,7 @@ export const {
   ifftDependencies,
 
   // probability dependencies
+  bernoulliDependencies,
   combinationsDependencies,
   factorialDependencies,
   gammaDependencies,
