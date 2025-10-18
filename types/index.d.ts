@@ -7655,6 +7655,7 @@ export const {
   ifft,
 
   // probability
+  bernoulli,
   combinations,
   factorial,
   gamma,
