@@ -79,6 +79,8 @@ Basic usage examples
   math.round(100.123, 3)
   const _res = math.atan2(3, -3) / math.pi
   math.log(10000, 10)
+  math.nthRoot(16, 5)
+  math.nthRoots(1, 3)
   math.sqrt(-4)
 
   math.pow(m2by2, 2)
@@ -974,11 +976,29 @@ Chaining examples
       .log10()
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
+  // nthRoot(s)
+  expectTypeOf(math.chain(81).nthRoot(4)).toMatchTypeOf<
+    MathJsChain<number | Complex>
+  >()
+  expectTypeOf(math.chain(1).nthRoots(5)).toMatchTypeOf<
+    MathJsChain<Array<Complex>>
+  >()
+
   expectTypeOf(math.chain([1, 2]).count()).toMatchTypeOf<MathJsChain<number>>()
   expectTypeOf(math.chain('mathjs').count()).toMatchTypeOf<
     MathJsChain<number>
   >()
   expectTypeOf(math.chain([1, 2]).sum()).toMatchTypeOf<MathJsChain<number>>()
+
+  expectTypeOf(math.chain(7).isBounded()).toMatchTypeOf<MathJsChain<boolean>>()
+  expectTypeOf(math.chain(8).isFinite()).toMatchTypeOf<MathJsChain<boolean>>()
+  expectTypeOf(math.chain([1, Infinity]).isBounded()).toMatchTypeOf<
+    MathJsChain<boolean>
+  >()
+  expectTypeOf(math.chain([1, Infinity]).isFinite()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
+
   // TODO complete the rest of these...
 }
 
@@ -2680,6 +2700,12 @@ Factory Test
   ])
   assert.strictEqual(math.hasNumericValue(math.fraction(4)), true)
   assert.strictEqual(math.hasNumericValue(math.complex('2-4i')), false)
+  assert.strictEqual(math.isBounded(NaN), false)
+  assert.deepStrictEqual(math.isFinite([2, math.fraction(-3, 4), Infinity]), [
+    true,
+    true,
+    false
+  ])
 }
 
 /**

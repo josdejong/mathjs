@@ -18,7 +18,7 @@ export const createReplacer = /* #__PURE__ */ factory(name, dependencies, () => 
    */
   return function replacer (key, value) {
     // the numeric values Infinitiy, -Infinity, and NaN cannot be serialized to JSON
-    if (typeof value === 'number' && (!isFinite(value) || isNaN(value))) {
+    if (typeof value === 'number' && (!Number.isFinite(value) || isNaN(value))) {
       return {
         mathjs: 'number',
         value: String(value)

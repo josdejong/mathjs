@@ -207,8 +207,8 @@ describe('lgamma', function () {
     assert.ok(isNaN(lgamma(NaN)))
     assert.ok(isNaN(lgamma(-NaN)))
 
-    assert.ok(!isFinite(lgamma(Infinity)))
-    assert.ok(!isFinite(lgamma(-Infinity)))
+    assert.ok(!Number.isFinite(lgamma(Infinity)))
+    assert.ok(!Number.isFinite(lgamma(-Infinity)))
   })
 
   it('should throw an error if called with a big number', function () {

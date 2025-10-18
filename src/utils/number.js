@@ -14,7 +14,7 @@ export function isInteger (value) {
     return true
   }
 
-  return isFinite(value)
+  return Number.isFinite(value)
     ? (value === Math.round(value))
     : false
 }
@@ -111,7 +111,7 @@ export const cbrt = Math.cbrt || function cbrt (x) {
     x = -x
   }
 
-  if (isFinite(x)) {
+  if (Number.isFinite(x)) {
     result = Math.exp(Math.log(x) / 3)
     // from https://en.wikipedia.org/wiki/Cube_root#Numerical_methods
     result = (x / (result * result) + (2 * result)) / 3
@@ -396,7 +396,7 @@ export function splitNumber (value) {
  * @param {number} [precision]        Optional number of significant figures to return.
  */
 export function toEngineering (value, precision) {
-  if (isNaN(value) || !isFinite(value)) {
+  if (isNaN(value) || !Number.isFinite(value)) {
     return String(value)
   }
 
@@ -451,7 +451,7 @@ export function toEngineering (value, precision) {
  *                                        decimal point. null by default.
  */
 export function toFixed (value, precision) {
-  if (isNaN(value) || !isFinite(value)) {
+  if (isNaN(value) || !Number.isFinite(value)) {
     return String(value)
   }
 
@@ -490,7 +490,7 @@ export function toFixed (value, precision) {
  *                              is used.
  */
 export function toExponential (value, precision) {
-  if (isNaN(value) || !isFinite(value)) {
+  if (isNaN(value) || !Number.isFinite(Number(value))) {
     return String(value)
   }
 
@@ -522,7 +522,7 @@ export function toExponential (value, precision) {
  * @return {string}
  */
 export function toPrecision (value, precision, options) {
-  if (isNaN(value) || !isFinite(value)) {
+  if (isNaN(value) || !Number.isFinite(value)) {
     return String(value)
   }
 
@@ -670,7 +670,7 @@ export function nearlyEqual (a, b, relTol = 1e-8, absTol = 0) {
     return false
   }
 
-  if (!isFinite(a) || !isFinite(b)) {
+  if (!Number.isFinite(a) || !Number.isFinite(b)) {
     return a === b
   }
 
