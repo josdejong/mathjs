@@ -1330,6 +1330,18 @@ export interface MathJsInstance extends MathJsFactory {
   dotDivide(x: MathNumericType, y: MathNumericType): MathNumericType
 
   /**
+   * Determine if one entity is a scalar multiple of another
+   * @param x Numerator
+   * @param y Denominator
+   * @returns
+   *   If there is a scalar (including Complex) r such that
+   *   x = r*y, returns r, otherwise undefined
+   */
+  scalarDivide(x: MathScalarType, y: MathScalarType): MathScalarType | undefined
+  scalarDivide(x: MathCollection, y: MathCollection): MathScalarType | undefined
+  scalarDivide(x: MathScalarType, y: MathCollection): undefined
+  scalarDivide(x: MathCollection, y: MathScalarType): undefined
+  /**
    * Multiply two matrices element wise. The function accepts both
    * matrices and scalar values.
    * @param x Left hand value
@@ -4033,6 +4045,7 @@ export const {
   divideDependencies,
   divideScalarDependencies,
   dotDivideDependencies,
+  scalarDivideDependencies,
   dotMultiplyDependencies,
   dotPowDependencies,
   expDependencies,
@@ -5499,6 +5512,27 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathNumericType>,
     y: MathNumericType
   ): MathJsChain<MathNumericType>
+
+  /**
+   * Check if one entity is a scalar multiple of another.
+   * @param y Denominator
+   */
+  scalarDivide(
+    this: MathJsChain<MathScalarType>,
+    y: MathScalarType
+  ): MathJsChain<MathScalarType | undefined>
+  scalarDivide(
+    this: MathJsChain<MathCollection>,
+    y: MathCollection
+  ): MathJsChain<MathScalarType | undefined>
+  scalarDivide(
+    this: MathJsChain<MathScalarType>,
+    y: MathCollection
+  ): MathJsChain<undefined>
+  scalarDivide(
+    this: MathJsChain<MathCollection>,
+    y: MathScalarType
+  ): MathJsChain<undefined>
 
   /**
    * Multiply two matrices element wise. The function accepts both
@@ -7574,6 +7608,7 @@ export const {
   cube,
   divide,
   dotDivide,
+  scalarDivide,
   dotMultiply,
   dotPow,
   exp,

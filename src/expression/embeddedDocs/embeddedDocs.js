@@ -55,6 +55,7 @@ import { ceilDocs } from './function/arithmetic/ceil.js'
 import { cubeDocs } from './function/arithmetic/cube.js'
 import { divideDocs } from './function/arithmetic/divide.js'
 import { dotDivideDocs } from './function/arithmetic/dotDivide.js'
+import { scalarDivideDocs } from './function/arithmetic/scalarDivide.js'
 import { dotMultiplyDocs } from './function/arithmetic/dotMultiply.js'
 import { dotPowDocs } from './function/arithmetic/dotPow.js'
 import { expDocs } from './function/arithmetic/exp.js'
@@ -378,6 +379,7 @@ export const embeddedDocs = {
   cube: cubeDocs,
   divide: divideDocs,
   dotDivide: dotDivideDocs,
+  scalarDivide: scalarDivideDocs,
   dotMultiply: dotMultiplyDocs,
   dotPow: dotPowDocs,
   exp: expDocs,

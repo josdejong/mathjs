@@ -782,6 +782,17 @@ Chaining examples
       .dotDivide(2)
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
+  // scalarDivide
+  expectTypeOf(math.chain(1).scalarDivide(2)).toMatchTypeOf<
+    MathJsChain<MathScalarType | undefined>
+  >()
+  expectTypeOf(math.chain([1, 2, 3]).scalarDivide(3)).toMatchTypeOf<
+    MathJsChain<undefined>
+  >()
+  expectTypeOf(math.chain([2, 5, 6]).scalarDivide([1, 2, 3])).toMatchTypeOf<
+    MathJsChain<MathScalarType | undefined>
+  >()
+
   // dotMultiply
   expectTypeOf(math.chain(1).dotMultiply(2)).toMatchTypeOf<
     MathJsChain<MathNumericType>
