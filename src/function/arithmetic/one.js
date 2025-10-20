@@ -48,7 +48,6 @@ export const createOne = /* #__PURE__ */ factory(
     /**
      * Return the multiplicative identity of the same type as the argument.
      *
-     *
      * Syntax:
      *
      *    math.one(x)
@@ -62,7 +61,7 @@ export const createOne = /* #__PURE__ */ factory(
      *    math.one([[2, 3], [4, 5]])        // [[1, 0], [0,1]]
      *
      * See also:
-     *    typeOf, numeric
+     *    typeOf, numeric, zero
      *
      * @param {MathType} x  Any entity mathjs understands
      * @return {MathType}  Multiplicative identity of same type as x
