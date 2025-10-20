@@ -175,6 +175,7 @@ function checkExpectation (want, got) {
 const OKundocumented = new Set([
   'apply', // deprecated backwards-compatibility synonym of mapSlices
   'addScalar', 'subtractScalar', 'divideScalar', 'multiplyScalar', 'equalScalar',
+  'oneUnitless',
   'docs', 'FibonacciHeap',
   'IndexError', 'DimensionError', 'ArgumentsError'
 ])

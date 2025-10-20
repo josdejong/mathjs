@@ -85,6 +85,10 @@ Basic usage examples
   math.sqrt(-4)
 
   math.pow(m2by2, 2)
+  // @ts-expect-error: since one(number) returns 1, this comparison must fail
+  if (math.one(3.5) === 2) {
+    console.error('This should not happen')
+  }
   const angle = 0.2
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
   math.add(2, 3, 4)
@@ -1905,6 +1909,7 @@ Units examples
   math.multiply(b, 2)
   math.divide(math.unit('1 m'), math.unit('1 s'))
   math.pow(math.unit('12 in'), 3)
+  math.one(math.unit('5m'))
 
   // units can be converted to a specific type, or to a number
   b.to('cm')

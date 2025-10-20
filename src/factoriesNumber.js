@@ -125,6 +125,7 @@ export const createSubtract = /* #__PURE__ */ createNumberFactory('subtract', su
 export const createXgcd = /* #__PURE__ */ createNumberFactory('xgcd', xgcdNumber)
 export const createDivideScalar = /* #__PURE__ */ createNumberFactory('divideScalar', divideNumber)
 export const createPow = /* #__PURE__ */ createNumberFactory('pow', powNumber)
+export { createOneNumber } from './function/arithmetic/one.js'
 export const createRound = /* #__PURE__ */
   createNumberOptionalSecondArgFactory('round', roundNumber)
 export const createLog = /* #__PURE__ */

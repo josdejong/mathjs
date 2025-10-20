@@ -155,6 +155,7 @@ export function createSnapshotFromFactories (factories) {
     'multiplyScalar',
     'print',
     'divideScalar',
+    'oneUnitless',
     'parse',
     'compile',
     'parser',

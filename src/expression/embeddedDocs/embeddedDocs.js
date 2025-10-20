@@ -76,6 +76,7 @@ import { multiplyDocs } from './function/arithmetic/multiply.js'
 import { normDocs } from './function/arithmetic/norm.js'
 import { nthRootDocs } from './function/arithmetic/nthRoot.js'
 import { nthRootsDocs } from './function/arithmetic/nthRoots.js'
+import { oneDocs } from './function/arithmetic/one.js'
 import { powDocs } from './function/arithmetic/pow.js'
 import { roundDocs } from './function/arithmetic/round.js'
 import { signDocs } from './function/arithmetic/sign.js'
@@ -399,6 +400,7 @@ export const embeddedDocs = {
   norm: normDocs,
   nthRoot: nthRootDocs,
   nthRoots: nthRootsDocs,
+  one: oneDocs,
   pow: powDocs,
   round: roundDocs,
   sign: signDocs,

@@ -13,6 +13,7 @@ const dependencies = [
   'subtractScalar',
   'multiplyScalar',
   'divideScalar',
+  'oneUnitless',
   'pow',
   'abs',
   'fix',
@@ -33,6 +34,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   subtractScalar,
   multiplyScalar,
   divideScalar,
+  oneUnitless,
   pow,
   abs,
   fix,
@@ -45,6 +47,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   BigNumber,
   Fraction
 }) => {
+  const one = oneUnitless
   const toNumber = number
   const fixPrefixDefault = false
   const skipAutomaticSimplificationDefault = true
@@ -774,22 +777,6 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     } else {
       return unit
     }
-  }
-
-  /**
-   * Create a value one with the numeric type of `typeOfValue`.
-   * For example, `one(new BigNumber(3))` returns `BigNumber(1)`
-   * @param {number | Fraction | BigNumber} typeOfValue
-   * @returns {number | Fraction | BigNumber}
-   */
-  function one (typeOfValue) {
-    // TODO: this is a workaround to prevent the following BigNumber conversion error from throwing:
-    //  "TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber"
-    //  see https://github.com/josdejong/mathjs/issues/3450
-    //      https://github.com/josdejong/mathjs/pull/3375
-    const convert = Unit._getNumberConverter(typeOf(typeOfValue))
-
-    return convert(1)
   }
 
   /**

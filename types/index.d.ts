@@ -1572,6 +1572,21 @@ export interface MathJsInstance extends MathJsFactory {
   nthRoots(a: number | BigNumber | Complex, n?: number): Array<Complex>
 
   /**
+   * Returns the multiplicative identity of the same type as x
+   *
+   * @param x  Any math entity
+   * @return   Multiplicative identity of the type of x
+   */
+  one(x: number): 1
+  one(x: BigNumber): BigNumber
+  one(x: Complex): Complex
+  one(x: bigint): 1n
+  one(x: Fraction): Fraction
+  one(x: boolean): true
+  one(x: Unit): Unit
+  one(x: MathCollection): MathCollection
+
+  /**
    * Calculates the power of x to y, x ^ y. Matrix exponentiation is
    * supported for square matrices x, and positive integer exponents y.
    * @param x The base
@@ -4068,6 +4083,7 @@ export const {
   normDependencies,
   nthRootDependencies,
   nthRootsDependencies,
+  oneDependencies,
   powDependencies,
   roundDependencies,
   signDependencies,
@@ -5728,6 +5744,16 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathType>,
     y: number | BigNumber | bigint | Complex
   ): MathJsChain<MathType>
+
+  /**
+   * Generate the multiplicative identity of the current type
+   */
+  one(this: MathJsChain<number>): MathJsChain<1>
+  one(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+  one(this: MathJsChain<bigint>): MathJsChain<1n>
+  one(this: MathJsChain<Complex>): MathJsChain<Complex>
+  one(this: MathJsChain<Fraction>): MathJsChain<Fraction>
+  one(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
 
   /**
    * Compute the sign of a value. The sign of a value x is: 1 when x > 1
@@ -7630,6 +7656,7 @@ export const {
   norm,
   nthRoot,
   nthRoots,
+  one,
   pow,
   round,
   sign,
