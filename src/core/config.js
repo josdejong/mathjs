@@ -33,5 +33,12 @@ export const DEFAULT_CONFIG = {
   // legacy behavior for matrix subset. When true, the subset function
   // returns a matrix or array with the same size as the index (except for scalars).
   // When false, it returns a matrix or array with a size depending on the type of index.
-  legacySubset: false
+  legacySubset: false,
+
+  // If set to `true` (the default value), `parse` records information about
+  // the original source location of each `Node` in the parsed string. See `SourceMapping` and `Node#sources`.
+  // If set to `false`, `Node#sources` is always be empty.
+  // The only time you want to set this to `false` is when you want to speed up parsing of
+  // a large amount of text.
+  traceSources: true
 }

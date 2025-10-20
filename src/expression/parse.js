@@ -221,7 +221,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function tokenSource (state) {
-    return { index: state.index - state.token.length, text: state.token }
+    if (config.traceSources) return { index: state.index - state.token.length, text: state.token }
+    else return {}
   }
 
   /**
@@ -630,7 +631,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseBlock (state) {
     let node
     const blocks = []
-    const sources = []
+    const sources = config.traceSources ? [] : null
     let visible
 
     if (state.token !== '' && state.token !== '\n' && state.token !== ';') {
@@ -642,7 +643,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     // TODO: simplify this loop
     while (state.token === '\n' || state.token === ';') { // eslint-disable-line no-unmodified-loop-condition
-      sources.push(tokenSource(state))
+      sources?.push(tokenSource(state))
 
       if (blocks.length === 0 && node) {
         visible = (state.token !== ';')
@@ -665,7 +666,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       return new BlockNode(blocks, { sources })
     } else {
       if (!node) {
-        node = new ConstantNode(undefined, { sources: [{ index: 0, text: '' }] })
+        node = new ConstantNode(undefined, { sources: config.traceSources ? [{ index: 0, text: '' }] : null })
         if (state.comment) {
           node.comment = state.comment
         }
@@ -893,9 +894,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       '>=': 'largerEq'
     }
 
-    const sources = []
+    const sources = config.traceSources ? [] : null
     while (hasOwnProperty(operators, state.token)) { // eslint-disable-line no-unmodified-loop-condition
-      sources.push(tokenSource(state))
+      sources?.push(tokenSource(state))
       const cond = { name: state.token, fn: operators[state.token] }
       conditionals.push(cond)
       getTokenSkipNewline(state)
@@ -1000,10 +1001,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       // we ignore the range operator when a conditional operator is being processed on the same level
       params.push(node)
 
-      const sources = []
+      const sources = config.traceSources ? [] : null
       // parse step and end
       while (state.token === ':' && params.length < 3) { // eslint-disable-line no-unmodified-loop-condition
-        sources.push(tokenSource(state))
+        sources?.push(tokenSource(state))
         getTokenSkipNewline(state)
 
         if (state.token === ')' || state.token === ']' || state.token === ',' || state.token === '') {
@@ -1359,7 +1360,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.tokenType === TOKENTYPE.SYMBOL && hasOwnProperty(state.extraNodes, state.token)) {
       const CustomNode = state.extraNodes[state.token]
 
-      const sources = [tokenSource(state)]
+      const sources = config.traceSources ? [tokenSource(state)] : null
 
       getToken(state)
 
@@ -1376,7 +1377,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
           // parse a list with parameters
           while (state.token === ',') { // eslint-disable-line no-unmodified-loop-condition
-            sources.push(tokenSource(state))
+            sources?.push(tokenSource(state))
             getToken(state)
             params.push(parseAssignment(state))
           }
@@ -1385,7 +1386,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         if (state.token !== ')') {
           throw createSyntaxError(state, 'Parenthesis ) expected')
         }
-        sources.push(tokenSource(state))
+        sources?.push(tokenSource(state))
         closeParams(state)
         getToken(state)
       }
@@ -1447,7 +1448,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseAccessors (state, node, types) {
     let params
 
-    const sources = [tokenSource(state)]
+    const sources = config.traceSources ? [tokenSource(state)] : null
     while ((state.token === '(' || state.token === '[' || state.token === '.') &&
         (!types || types.includes(state.token))) { // eslint-disable-line no-unmodified-loop-condition
       params = []
@@ -1463,7 +1464,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
             // parse a list with parameters
             while (state.token === ',') { // eslint-disable-line no-unmodified-loop-condition
-              sources.push(tokenSource(state))
+              sources?.push(tokenSource(state))
               getToken(state)
               params.push(parseAssignment(state))
             }
@@ -1472,7 +1473,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           if (state.token !== ')') {
             throw createSyntaxError(state, 'Parenthesis ) expected')
           }
-          sources.push(tokenSource(state))
+          sources?.push(tokenSource(state))
           closeParams(state)
           getToken(state)
 
@@ -1503,7 +1504,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         if (state.token !== ']') {
           throw createSyntaxError(state, 'Parenthesis ] expected')
         }
-        sources.push(tokenSource(state))
+        sources?.push(tokenSource(state))
         closeParams(state)
         getToken(state)
 
@@ -1561,7 +1562,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {{token: string, sources: SourceMapping[]}}
    */
   function parseStringToken (state, quote) {
-    const sources = [tokenSource(state)]
+    const sources = config.traceSources ? [tokenSource(state)] : null
     let str = ''
 
     while (currentCharacter(state) !== '' && currentCharacter(state) !== quote) {
@@ -1597,7 +1598,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.token !== quote) {
       throw createSyntaxError(state, `End of string ${quote} expected`)
     }
-    sources.push(tokenSource(state))
+    sources?.push(tokenSource(state))
     getToken(state)
 
     return { token: str, sources }
@@ -1612,7 +1613,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     let array, params, rows, cols
 
     if (state.token === '[') {
-      const sources = [tokenSource(state)]
+      const sources = config.traceSources ? [tokenSource(state)] : null
       // matrix [...]
       openParams(state)
       getToken(state)
@@ -1628,7 +1629,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
           // the rows of the matrix are separated by dot-comma's
           while (state.token === ';') { // eslint-disable-line no-unmodified-loop-condition
-            sources.push(tokenSource(state))
+            sources?.push(tokenSource(state))
             getToken(state)
 
             if (state.token !== ']') {
@@ -1641,7 +1642,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             throw createSyntaxError(state, 'End of matrix ] expected')
           }
 
-          sources.push(tokenSource(state))
+          sources?.push(tokenSource(state))
           closeParams(state)
           getToken(state)
 
@@ -1662,7 +1663,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           }
 
           // merge the [] sources with the ,,, sources from parseRow
-          row.sources = [...sources, ...row.sources, tokenSource(state)]
+          row.sources = [...(sources ?? []), ...row.sources, tokenSource(state)]
           closeParams(state)
           getToken(state)
 
@@ -1670,7 +1671,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
       } else {
         // this is an empty matrix "[ ]"
-        sources.push(tokenSource(state))
+        sources?.push(tokenSource(state))
         closeParams(state)
         getToken(state)
         array = new ArrayNode([], { sources })
@@ -1690,9 +1691,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     const params = [parseAssignment(state)]
     let len = 1
 
-    const sources = []
+    const sources = config.traceSources ? [] : null
     while (state.token === ',') { // eslint-disable-line no-unmodified-loop-condition
-      sources.push(tokenSource(state))
+      sources?.push(tokenSource(state))
       getToken(state)
 
       // parse expression
@@ -1712,14 +1713,14 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function parseObject (state) {
     if (state.token === '{') {
-      const sources = [tokenSource(state)]
+      const sources = config.traceSources ? [tokenSource(state)] : null
       openParams(state)
       let key
 
       const properties = {}
       do {
         if (state.token === ',') {
-          sources.push(tokenSource(state))
+          sources?.push(tokenSource(state))
         }
 
         getToken(state)
@@ -1739,7 +1740,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           if (state.token !== ':') {
             throw createSyntaxError(state, 'Colon : expected after object key')
           }
-          sources.push(tokenSource(state))
+          sources?.push(tokenSource(state))
           getToken(state)
 
           // parse key
@@ -1752,7 +1753,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         throw createSyntaxError(state, 'Comma , or bracket } expected after object value')
       }
 
-      sources.push(tokenSource(state))
+      sources?.push(tokenSource(state))
 
       closeParams(state)
       getToken(state)
@@ -1801,7 +1802,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     // check if it is a parenthesized expression
     if (state.token === '(') {
-      const sources = [tokenSource(state)]
+      const sources = config.traceSources ? [tokenSource(state)] : null
       // parentheses (...)
       openParams(state)
       getToken(state)
@@ -1812,7 +1813,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         throw createSyntaxError(state, 'Parenthesis ) expected')
       }
 
-      sources.push(tokenSource(state))
+      sources?.push(tokenSource(state))
 
       closeParams(state)
       getToken(state)
