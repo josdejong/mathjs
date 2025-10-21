@@ -9,7 +9,6 @@ import {
   isParenthesisNode,
   isSymbolNode
 } from '../../utils/is.js'
-import { getSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 import { accessFactory } from './utils/access.js'
 
@@ -61,17 +60,6 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
       this.index = index
     }
 
-    // readonly property name
-    get name () {
-      if (this.index) {
-        return (this.index.isObjectProperty())
-          ? this.index.getObjectProperty()
-          : ''
-      } else {
-        return this.object.name || ''
-      }
-    }
-
     static name = name
     get type () { return name }
     get isAccessorNode () { return true }
@@ -93,19 +81,11 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
       const evalObject = this.object._compile(math, argNames)
       const evalIndex = this.index._compile(math, argNames)
 
-      if (this.index.isObjectProperty()) {
-        const prop = this.index.getObjectProperty()
-        return function evalAccessorNode (scope, args, context) {
-          // get a property from an object evaluated using the scope.
-          return getSafeProperty(evalObject(scope, args, context), prop)
-        }
-      } else {
-        return function evalAccessorNode (scope, args, context) {
-          const object = evalObject(scope, args, context)
-          // we pass just object here instead of context:
-          const index = evalIndex(scope, args, object)
-          return access(object, index)
-        }
+      return function evalAccessorNode (scope, args, context) {
+        const object = evalObject(scope, args, context)
+        // we pass just object here instead of context:
+        const index = evalIndex(scope, args, object)
+        return access(object, index)
       }
     }
 

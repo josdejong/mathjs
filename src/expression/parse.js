@@ -1641,11 +1641,18 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           // parse key
           if (state.token === '"' || state.token === "'") {
             key = parseStringToken(state, state.token)
-          } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
-            key = state.token
+          } else if (state.tokenType === TOKENTYPE.SYMBOL || (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS) || state.tokenType === TOKENTYPE.NUMBER) {
+            key = state.tokenType === TOKENTYPE.NUMBER ? String(Number(state.token)) : state.token
             getToken(state)
+          } else if (state.token === '-') {
+            const minusNode = parseUnary(state)
+            if (isOperatorNode(minusNode) && minusNode.args.length === 1 && isConstantNode(minusNode.args[0]) && typeof minusNode.args[0].value === 'number') {
+              key = `-${minusNode.args[0].value}`
+            } else {
+              throw createSyntaxError(state, 'Numeric literal expected after "-" as object key')
+            }
           } else {
-            throw createSyntaxError(state, 'Symbol or string expected as object key')
+            throw createSyntaxError(state, 'Symbol, numeric literal or string expected as object key')
           }
 
           // parse key/value separator
