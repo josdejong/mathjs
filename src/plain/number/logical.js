@@ -11,6 +11,11 @@ export function orNumber (x, y) {
 }
 orNumber.signature = n2
 
+export function norNumber (x, y) {
+  return !(x || y)
+}
+norNumber.signature = n2
+
 export function xorNumber (x, y) {
   return !!x !== !!y
 }
@@ -20,3 +25,8 @@ export function andNumber (x, y) {
   return !!(x && y)
 }
 andNumber.signature = n2
+
+export function nandNumber (x, y) {
+  return !(x && y)
+}
+nandNumber.signature = n2
