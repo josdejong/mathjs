@@ -1,13 +1,15 @@
 import { arraySize } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
-import { noMatrix } from '../../utils/noop.js'
 
 const name = 'size'
-const dependencies = ['typed', 'config', '?matrix']
+const dependencies = ['typed']
 
-export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix }) => {
+export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
-   * Calculate the size of a matrix or scalar.
+   * Calculate the size of a matrix or scalar. Always returns an Array containing numbers.
+   *
+   * Note that in mathjs v14 and older, function size could return a Matrix depending on
+   * the input type and configuration.
    *
    * Syntax:
    *
@@ -27,24 +29,16 @@ export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *     count, resize, squeeze, subset
    *
    * @param {boolean | number | Complex | Unit | string | Array | Matrix} x  A matrix
-   * @return {Array | Matrix} A vector with size of `x`.
+   * @return {Array} A vector with size of `x`.
    */
   return typed(name, {
-    Matrix: function (x) {
-      return x.create(x.size(), 'number')
-    },
+    Matrix: x => x.size(),
 
     Array: arraySize,
 
-    string: function (x) {
-      return (config.matrix === 'Array') ? [x.length] : matrix([x.length], 'dense', 'number')
-    },
+    string: x => [x.length],
 
-    'number | Complex | BigNumber | Unit | boolean | null': function (x) {
-      // scalar
-      return (config.matrix === 'Array')
-        ? []
-        : matrix ? matrix([], 'dense', 'number') : noMatrix()
-    }
+    // scalar
+    'number | Complex | BigNumber | Unit | boolean | null': _x => []
   })
 })

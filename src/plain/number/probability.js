@@ -8,7 +8,7 @@ export function gammaNumber (n) {
 
   if (isInteger(n)) {
     if (n <= 0) {
-      return isFinite(n) ? Infinity : NaN
+      return Number.isFinite(n) ? Infinity : NaN
     }
 
     if (n > 171) {
@@ -91,7 +91,7 @@ export const lgammaSeries = [
 export function lgammaNumber (n) {
   if (n < 0) return NaN
   if (n === 0) return Infinity
-  if (!isFinite(n)) return n
+  if (!Number.isFinite(n)) return n
 
   if (n < 0.5) {
     // Use Euler's reflection formula:

@@ -19,7 +19,7 @@ export function acotNumber (x) {
 acotNumber.signature = n1
 
 export function acothNumber (x) {
-  return isFinite(x)
+  return Number.isFinite(x)
     ? (Math.log((x + 1) / x) + Math.log(x / (x - 1))) / 2
     : 0
 }

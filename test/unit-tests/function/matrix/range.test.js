@@ -36,9 +36,26 @@ describe('range', function () {
     assert.deepStrictEqual(range(2, -4, -2), matrix([2, 0, -2]))
   })
 
-  it('should create an empty range when step==0', function () {
-    assert.deepStrictEqual(range(0, 10, 0), matrix([]))
-    assert.deepStrictEqual(range(0, 10, 0, true), matrix([]))
+  it('should throw an error when step==0', function () {
+    assert.throws(function () { range(0, 0, 0) }, /Step must be non-zero/)
+    assert.throws(function () { range(0, 10, 0) }, /Step must be non-zero/)
+    assert.throws(function () { range(0, 10, 0, true) }, /Step must be non-zero/)
+  })
+
+  it('should create an empty range when start and stop are equal', function () {
+    assert.deepStrictEqual(range(0, 0), matrix([]))
+    assert.deepStrictEqual(range(1, 1, 2), matrix([]))
+    assert.deepStrictEqual(range('0:0'), matrix([]))
+    assert.deepStrictEqual(range('0:1:0'), matrix([]))
+    assert.deepStrictEqual(range('1:2:1'), matrix([]))
+    assert.deepStrictEqual(range('1:1:1'), matrix([]))
+  })
+
+  it('should create an array with the end value when start and stop are equal and includeEnd=true', function () {
+    assert.deepStrictEqual(range(0, 0, true), matrix([0]))
+    assert.deepStrictEqual(range(1, 1, 2, true), matrix([1]))
+    assert.deepStrictEqual(range('0:0', true), matrix([0]))
+    assert.deepStrictEqual(range('1:1:1', true), matrix([1]))
   })
 
   it('should output an array when setting matrix==="array"', function () {
@@ -73,9 +90,9 @@ describe('range', function () {
     assert.deepStrictEqual(range(bignumber(3), bignumber(1), bignumber(-1)), matrix([bignumber(3), bignumber(2)]))
   })
 
-  it('should create an empty range from bignumbers when step==0', function () {
-    assert.deepStrictEqual(range(bignumber(0), bignumber(10), bignumber(0)), matrix([]))
-    assert.deepStrictEqual(range(bignumber(0), bignumber(10), bignumber(0), true), matrix([]))
+  it('should throw an error from bignumbers when step==0', function () {
+    assert.throws(function () { range(bignumber(0), bignumber(10), bignumber(0)) }, /Step must be non-zero/)
+    assert.throws(function () { range(bignumber(0), bignumber(10), bignumber(0), true) }, /Step must be non-zero/)
   })
 
   it('should create a range with mixed numbers and bignumbers', function () {

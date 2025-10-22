@@ -1,6 +1,8 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { DimensionError } from '../../../../src/error/DimensionError.js'
+import sinon from 'sinon'
+
 const subset = math.subset
 const matrix = math.matrix
 const Range = math.Range
@@ -11,13 +13,13 @@ describe('subset', function () {
   const b = math.matrix(a)
 
   it('should get the right subset of an array', function () {
-    assert.deepStrictEqual(subset(a, index(new Range(0, 2), 1)), [[2], [4]])
+    assert.deepStrictEqual(subset(a, index(new Range(0, 2), 1)), [2, 4])
     assert.deepStrictEqual(subset(a, index(1, 0)), 3)
     assert.deepStrictEqual(subset([math.bignumber(2)], index(0)), math.bignumber(2))
   })
 
   it('should get the right subset of an array of booleans', function () {
-    assert.deepStrictEqual(subset(a, index([true, true], 1)), [[2], [4]])
+    assert.deepStrictEqual(subset(a, index([true, true], [1])), [[2], [4]])
     assert.deepStrictEqual(subset(a, index([false, true], [true, false])), [[3]])
     assert.deepStrictEqual(subset([math.bignumber(2)], index([true])), [math.bignumber(2)])
   })
@@ -32,7 +34,7 @@ describe('subset', function () {
   })
 
   it('should get the right subset of an array of booleans in the parser', function () {
-    assert.deepStrictEqual(math.evaluate('a[[true, true], 2]', { a }), [[2], [4]])
+    assert.deepStrictEqual(math.evaluate('a[[true, true], 2]', { a }), [2, 4])
     assert.deepStrictEqual(math.evaluate('a[[false, true], [true, false]]', { a }), [[3]])
     assert.deepStrictEqual(math.evaluate('[bignumber(2)][[true]]'), math.matrix([math.bignumber(2)]))
   })
@@ -75,7 +77,7 @@ describe('subset', function () {
   })
 
   it('should get the right subset of a matrix', function () {
-    assert.deepStrictEqual(subset(b, index(new Range(0, 2), 1)), matrix([[2], [4]]))
+    assert.deepStrictEqual(subset(b, index(new Range(0, 2), 1)), matrix([2, 4]))
     assert.deepStrictEqual(subset(b, index(1, 0)), 3)
   })
 
@@ -264,5 +266,37 @@ describe('subset', function () {
   it('should LaTeX subset', function () {
     const expression = math.parse('subset([1],index(0,0))')
     assert.strictEqual(expression.toTex(), '\\mathrm{subset}\\left(\\begin{bmatrix}1\\end{bmatrix},\\mathrm{index}\\left(0,0\\right)\\right)')
+  })
+
+  it('should work with config legacySubset during deprecation', function () {
+    const math2 = math.create()
+    // Add a spy to temporarily disable console.warn
+    const warnStub = sinon.stub(console, 'warn')
+
+    math2.config({ legacySubset: true })
+
+    // Test legacy syntax for getting a subset of a matrix
+    const A = math2.matrix([[1, 2, 3], [4, 5, 6]])
+    const index = math2.index
+    assert.deepStrictEqual(math2.subset(A, index(1, 2)), 6)
+    assert.deepStrictEqual(math2.subset(A, index([1], 2)), 6)
+    assert.deepStrictEqual(math2.subset(A, index(1, [2])), 6)
+    assert.deepStrictEqual(math2.subset(A, index([1], [2])), 6)
+    assert.deepStrictEqual(math2.subset(A, index(1, [1, 2])).toArray(), [[5, 6]])
+    assert.deepStrictEqual(math2.subset(A, index([0, 1], 1)).toArray(), [[2], [5]])
+
+    math2.config({ legacySubset: false })
+    // Test without legacy syntax
+    assert.deepStrictEqual(math2.subset(A, index(1, 2)), 6)
+    assert.deepStrictEqual(math2.subset(A, index([1], 2)).toArray(), [6])
+    assert.deepStrictEqual(math2.subset(A, index(1, [2])).toArray(), [6])
+    assert.deepStrictEqual(math2.subset(A, index([1], [2])).toArray(), [[6]])
+    assert.deepStrictEqual(math2.subset(A, index(1, [1, 2])).toArray(), [5, 6])
+    assert.deepStrictEqual(math2.subset(A, index([1], [1, 2])).toArray(), [[5, 6]])
+    assert.deepStrictEqual(math2.subset(A, index([0, 1], 1)).toArray(), [2, 5])
+    assert.deepStrictEqual(math2.subset(A, index([0, 1], [1])).toArray(), [[2], [5]])
+
+    // Restore console.warn
+    warnStub.restore()
   })
 })

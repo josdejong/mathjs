@@ -11,5 +11,5 @@ export const isNaNDocs = {
     'isNaN(NaN)',
     'isNaN(Infinity)'
   ],
-  seealso: ['isNegative', 'isNumeric', 'isPositive', 'isZero']
+  seealso: ['isNegative', 'isNumeric', 'isPositive', 'isZero', 'isFinite', 'isBounded']
 }

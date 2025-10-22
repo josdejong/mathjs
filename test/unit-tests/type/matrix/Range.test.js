@@ -37,11 +37,7 @@ describe('range', function () {
     })
 
     it('should create an empty range because of wrong step size', function () {
-      let r = new Range(0, 10, 0)
-      assert.deepStrictEqual(r.toArray(), [])
-      assert.deepStrictEqual(r.size(), [0])
-
-      r = new Range(0, 10, -1)
+      const r = new Range(0, 10, -1)
       assert.deepStrictEqual(r.toArray(), [])
       assert.deepStrictEqual(r.size(), [0])
     })
@@ -54,6 +50,13 @@ describe('range', function () {
       assert.throws(function () { console.log(new Range('str', 10, 1)) }, /Parameter start must be a number/)
       assert.throws(function () { console.log(new Range(0, 'str', 1)) }, /Parameter end must be a number/)
       assert.throws(function () { console.log(new Range(0, 10, 'str')) }, /Parameter step must be a number/)
+    })
+
+    it('should throw an error for step size zero', function () {
+      assert.throws(function () { console.log(new Range(0, 0, 0)) }, /Step must not be zero/)
+      assert.throws(function () { console.log(new Range(10, 10, 0)) }, /Step must not be zero/)
+      assert.throws(function () { console.log(new Range(0, 10, math.bignumber(0))) }, /Step must not be zero/)
+      assert.throws(function () { console.log(new Range(0, 10, math.bigint(0))) }, /Step must not be zero/)
     })
   })
 
@@ -80,8 +83,6 @@ describe('range', function () {
     it('should calculate the size of a range', function () {
       assert.deepStrictEqual(new Range(0, 0).size(), [0])
       assert.deepStrictEqual(new Range(0, 0, -1).size(), [0])
-      assert.deepStrictEqual(new Range(0, 0, 0).size(), [0])
-
       assert.deepStrictEqual(new Range(0, 4).size(), [4])
       assert.deepStrictEqual(new Range(2, 4).size(), [2])
       assert.deepStrictEqual(new Range(0, 8, 2).size(), [4])

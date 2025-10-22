@@ -1,8 +1,8 @@
 # Matrices
 
-Math.js supports multi dimensional matrices and arrays. Matrices can be
+Math.js supports multidimensional matrices and arrays. Matrices can be
 created, manipulated, and used in calculations. Both regular JavaScript
-arrays as well as the matrix type implemented by math.js can be used
+arrays and the matrix type implemented by math.js can be used
 interchangeably in all relevant math.js functions. math.js supports both
 dense and sparse matrices.
 
@@ -11,7 +11,7 @@ dense and sparse matrices.
 
 Math.js supports two types of matrices:
 
-- `Array`, a regular JavaScript array. A multi dimensional array can be created
+- `Array`, a regular JavaScript array. A multidimensional array can be created
   by nesting arrays.
 - `Matrix`, a matrix implementation by math.js. A `Matrix` is an object wrapped
   around a regular JavaScript `Array`, providing utility functions for easy
@@ -22,7 +22,12 @@ function input: An `Array` as input will return an `Array`, a `Matrix` as input
 will return a `Matrix`. In case of mixed input, a `Matrix` is returned.
 For functions where the type of output cannot be determined from the
 input, the output is determined by the configuration option `matrix`,
-which can be a string `'Matrix'` (default) or `'Array'`.
+which can be a string `'Matrix'` (default) or `'Array'`. The function `size` is
+an exception: `size` always returns an `Array` containing numbers. Having a 
+consistent output type in this case is most practical since the size is often
+used in JavaScript loops where the code can only use a flat Array with numbers.
+This also makes the function `size` consistent with the matrix method 
+`matrix.size()`.
 
 ```js
 // create an array and a matrix
@@ -46,7 +51,7 @@ math.ones(2, 3)                               // Matrix, [[1, 1, 1], [1, 1, 1]]
 ## Creation
 
 A matrix can be created from an array using the function `math.matrix`. The
-provided array can contain nested arrays in order to create a multi-dimensional matrix. When called without arguments, an empty matrix will be
+provided array can contain nested arrays in order to create a multidimensional matrix. When called without arguments, an empty matrix will be
 created.
 
 ```js
@@ -174,7 +179,7 @@ Math.js uses geometric dimensions:
 
 - A scalar is zero-dimensional.
 - A vector is one-dimensional.
-- A matrix is two or multi-dimensional.
+- A matrix is two or multidimensional.
 
 The size of a matrix can be calculated with the function `size`. Function `size`
 returns a `Matrix` or `Array`, depending on the configuration option `matrix`.
@@ -206,7 +211,7 @@ math.size(c)                                  // Array, [2, 2, 3]
 ```
 
 Note that the dimensions themselves do not have a meaning attached. 
-When creating and printing a two dimensional matrix, the first dimension is 
+When creating and printing a two-dimensional matrix, the first dimension is 
 normally rendered as the _column_, and the second dimension is rendered as 
 the _row_. For example:
 
@@ -270,13 +275,34 @@ in the matrix, and if not, a subset of the matrix will be returned.
 
 A subset can be defined using an `Index`. An `Index` contains a single value
 or a set of values for each dimension of a matrix. An `Index` can be
-created using the function `index`. When getting a single value from a matrix,
-`subset` will return the value itself instead of a matrix containing just this 
-value.
+created using the function `index`. The way `subset` returns results depends on how you specify indices for each dimension:
 
-The function `subset` normally returns a subset, but when getting or setting a
-single value in a matrix, the value itself is returned.
+- If you use a scalar (single number) as an index for a dimension, that dimension is removed from the result.
+- If you use an array, matrix or range (even with just one element) as an index, that dimension is preserved in the result.
 
+This means that scalar indices eliminate dimensions, while array, matrix or range indices retain them. See the section [Migrate to v15](#migrate-indexing-behavior-to-mathjs-v15) for more details and examples of this behavior.
+
+For example:
+
+```js
+const m = [
+  [10, 11, 12],
+  [20, 21, 22]
+]
+
+// Scalar index eliminates the dimension:
+math.subset(m, math.index(1, 2))           // 22 (both dimensions indexed by scalars, result is a value)
+math.subset(m, math.index(1, [2]))         // [22] (row dimension eliminated, column dimension preserved as array)
+math.subset(m, math.index([1], 2))         // [22] (column dimension eliminated, row dimension preserved as array)
+math.subset(m, math.index([1], [2]))       // [[22]] (both dimensions preserved as arrays)
+
+math.config({legacySubset: true}) // switch to legacy behavior
+math.subset(m, math.index(1, 2))           // 22
+math.subset(m, math.index(1, [2]))         // 22
+math.subset(m, math.index([1], 2))         // 22
+math.subset(m, math.index([1], [2]))       // 22
+
+```
 
 Matrix indexes in math.js are zero-based, like most programming languages
 including JavaScript itself. Note that mathematical applications like Matlab 
@@ -296,7 +322,7 @@ math.subset(a, math.index([2, 3]))            // Array, [2, 3]
 math.subset(a, math.index(math.range(0,4)))   // Array, [0, 1, 2, 3]
 math.subset(b, math.index(1, 0))              // 2
 math.subset(b, math.index(1, [0, 1]))         // Array, [2, 3]
-math.subset(b, math.index([0, 1], 0))         // Matrix, [[0], [2]]
+math.subset(b, math.index([0, 1], [0]))       // Matrix, [[0], [2]]
 
 // get a subset
 d.subset(math.index([1, 2], [0, 1]))          // Matrix, [[3, 4], [6, 7]]
@@ -313,6 +339,34 @@ e.resize([2, 3], 0)                           // Matrix, [[0, 0, 0], [0, 0, 0]]
 e.subset(math.index(1, 2), 5)                 // Matrix, [[0, 0, 0], [0, 0, 5]]
 ```
 
+## Migrate indexing behavior to mathjs v15
+
+With the release of math.js v15, the behavior of `subset` when indexing matrices and arrays has changed. If your code relies on the previous behavior (where indexing with an array or matrix of size 1 would always return the value itself), you may need to update your code or enable legacy mode.
+
+To maintain the old indexing behavior without need for any code changes, use the configuration option `legacySubset`:
+
+```js
+math.config({ legacySubset: true })
+```
+
+To migrate your code, you'll have to change all matrix indexes from the old index notation to the new index notation. Basically: scalar indexes have to be wrapped in array brackets if you want an array as output. Here some examples:
+
+```js
+const m = math.matrix([[1, 2, 3], [4, 5, 6]])
+```
+
+| v14 code                                     | v15 equivalent code                       | Result             |
+|----------------------------------------------|-------------------------------------------|--------------------|
+| `math.subset(m, math.index([0, 1], [1, 2]))` | No change needed                          | `[[2, 3], [5, 6]]` |
+| `math.subset(m, math.index(1, [1, 2]))`      | `math.subset(m, math.index([1], [1, 2]))` | `[[5, 6]]`         |
+| `math.subset(m, math.index([0, 1], 2))`      | `math.subset(m, math.index([0, 1], [2]))` | `[[3], [6]]`       |
+| `math.subset(m, math.index(1, 2))`           | No change needed                          | 6                  |
+
+
+> **Tip:**  
+> If you want to get a scalar value, use scalar indices.  
+> If you want to preserve dimensions, use array, matrix or range indices.
+
 ## Getting and setting a value in a matrix
 
 There are two methods available on matrices that allow to get or set a single 
@@ -326,7 +380,7 @@ p.set([0, 1], 5)
 p.get([1, 0]) // 3
 ```
 
-When setting a value at a location outside of the current matrix size using the
+When setting a value at a location outside the current matrix size using the
 method `.set()`, the matrix will be resized. By default, new items will be 
 initialized with zero, but it is possible to specify an alternative value using
 the optional third argument `defaultValue`.
@@ -414,7 +468,7 @@ const cum = a.map(function (value, index, matrix) {
 console.log(cum.toString())  // [[0, 1], [3, 6], [10, 15]]
 ```
 
-### Iterating over multiple Matrixes or Arrays
+### Iterating over multiple Matrices or Arrays
 
 You can iterate over multiple matrices or arrays by using the `map` function. Mapping allows to perform element-wise operations on matrices by automatically adjusting their sizes to match each other.
 
@@ -449,11 +503,11 @@ At this moment `forEach` doesn't include the same functionality.
 
 ## Storage types
 
-Math.js supports both dense matrices as well as sparse matrices. Sparse matrices are efficient for matrices largely containing zeros. In that case they save a lot of memory, and calculations can be much faster than for dense matrices.
+Math.js supports both dense matrices and sparse matrices. Sparse matrices are efficient for matrices largely containing zeros. In that case they save a lot of memory, and calculations can be much faster than for dense matrices.
 
 Math.js supports two type of matrices:
 
-- Dense matrix (`'dense'`, `default`) A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
+- Dense matrix (`'dense'`, `default`) A regular, dense matrix, supporting multidimensional matrices. This is the default matrix type.
 - Sparse matrix (`'sparse'`): A two dimensional sparse matrix implementation.
 
 The type of matrix can be selected when creating a matrix using the construction functions `matrix`, `diag`, `identity`, `ones`, and `zeros`.

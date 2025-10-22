@@ -79,12 +79,28 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     }
 
     const firstArrayIsMatrix = Arrays[0].isMatrix
-
-    const newSize = broadcastSizes(...Arrays.map(M => M.isMatrix ? M.size() : arraySize(M)))
+    const sizes = Arrays.map(M => M.isMatrix ? M.size() : arraySize(M))
+    const newSize = broadcastSizes(...sizes)
+    const numberOfArrays = Arrays.length
 
     const _get = firstArrayIsMatrix
       ? (matrix, idx) => matrix.get(idx)
       : get
+
+    const firstValues = Arrays.map((collection, i) => {
+      const firstIndex = sizes[i].map(() => 0)
+      return collection.isMatrix ? collection.get(firstIndex) : get(collection, firstIndex)
+    }
+    )
+
+    const callbackArgCount = typed.isTypedFunction(multiCallback)
+      ? _getTypedCallbackArgCount(multiCallback, firstValues, newSize.map(() => 0), Arrays)
+      : _getCallbackArgCount(multiCallback, numberOfArrays)
+
+    if (callbackArgCount < 2) {
+      const callback = _getLimitedCallback(callbackArgCount, multiCallback, null)
+      return mapMultiple(Arrays, callback)
+    }
 
     const broadcastedArrays = firstArrayIsMatrix
       ? Arrays.map(M => M.isMatrix
@@ -94,22 +110,11 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
         ? broadcastTo(M.toArray(), newSize)
         : broadcastTo(M, newSize))
 
-    let callback
-
-    if (typed.isTypedFunction(multiCallback)) {
-      const firstIndex = newSize.map(() => 0)
-      const firstValues = broadcastedArrays.map(array => _get(array, firstIndex))
-      const callbackCase = _getTypedCallbackCase(multiCallback, firstValues, firstIndex, broadcastedArrays)
-      callback = _getLimitedCallback(callbackCase)
-    } else {
-      const numberOfArrays = Arrays.length
-      const callbackCase = _getCallbackCase(multiCallback, numberOfArrays)
-      callback = _getLimitedCallback(callbackCase)
-    }
+    const callback = _getLimitedCallback(callbackArgCount, multiCallback, broadcastedArrays)
 
     const broadcastedArraysCallback = (x, idx) =>
       callback(
-        [x, ...broadcastedArrays.slice(1).map(Array => _get(Array, idx))],
+        [x, ...broadcastedArrays.slice(1).map(array => _get(array, idx))],
         idx)
 
     if (firstArrayIsMatrix) {
@@ -117,31 +122,121 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     } else {
       return _mapArray(broadcastedArrays[0], broadcastedArraysCallback)
     }
+  }
 
-    function _getLimitedCallback (callbackCase) {
-      switch (callbackCase) {
-        case 0:
-          return x => multiCallback(...x)
-        case 1:
-          return (x, idx) => multiCallback(...x, idx)
-        case 2:
-          return (x, idx) => multiCallback(...x, idx, ...broadcastedArrays)
+  function mapMultiple (collections, callback) {
+    // collections can be matrices or arrays
+    // callback must be a function of the form (collections, [index])
+    const firstCollection = collections[0]
+    const arrays = collections.map((collection) =>
+      collection.isMatrix ? collection.valueOf() : collection
+    )
+    const sizes = collections.map((collection) =>
+      collection.isMatrix ? collection.size() : arraySize(collection)
+    )
+    const finalSize = broadcastSizes(...sizes)
+    // the offset means for each initial array, how much smaller is it than the final size
+    const offsets = sizes.map((size) => finalSize.length - size.length)
+    const maxDepth = finalSize.length - 1
+    const callbackUsesIndex = callback.length > 1
+    const index = callbackUsesIndex ? [] : null
+    const resultsArray = iterate(arrays, 0)
+    if (firstCollection.isMatrix) {
+      const resultsMatrix = firstCollection.create()
+      resultsMatrix._data = resultsArray
+      resultsMatrix._size = finalSize
+      return resultsMatrix
+    } else {
+      return resultsArray
+    }
+
+    function iterate (arrays, depth = 0) {
+      // each array can have different sizes
+      const currentDimensionSize = finalSize[depth]
+      const result = Array(currentDimensionSize)
+      if (depth < maxDepth) {
+        for (let i = 0; i < currentDimensionSize; i++) {
+          if (index) index[depth] = i
+          // if there is an offset greater than the current dimension
+          // pass the array, if the size of the array is 1 pass the first
+          // element of the array
+          result[i] = iterate(
+            arrays.map((array, arrayIndex) =>
+              offsets[arrayIndex] > depth
+                ? array
+                : array.length === 1
+                  ? array[0]
+                  : array[i]
+            ),
+            depth + 1
+          )
+        }
+      } else {
+        for (let i = 0; i < currentDimensionSize; i++) {
+          if (index) index[depth] = i
+          result[i] = callback(
+            arrays.map((a) => (a.length === 1 ? a[0] : a[i])),
+            index ? index.slice() : undefined
+          )
+        }
       }
+      return result
     }
+  }
 
-    function _getCallbackCase (callback, numberOfArrays) {
-      if (callback.length > numberOfArrays + 1) { return 2 }
-      if (callback.length === numberOfArrays + 1) { return 1 }
-      return 0
+  /**
+    * Creates a limited callback based on the argument pattern.
+    * @param {number} callbackArgCount - The argument pattern (0, 1, or 2)
+    * @param {Function} multiCallback - The original callback function
+    * @param {Array} broadcastedArrays - The broadcasted arrays (for case 2)
+    * @returns {Function} The limited callback function
+    */
+  function _getLimitedCallback (callbackArgCount, multiCallback, broadcastedArrays) {
+    switch (callbackArgCount) {
+      case 0:
+        return x => multiCallback(...x)
+      case 1:
+        return (x, idx) => multiCallback(...x, idx)
+      case 2:
+        return (x, idx) => multiCallback(...x, idx, ...broadcastedArrays)
     }
+  }
 
-    function _getTypedCallbackCase (callback, values, idx, arrays) {
-      if (typed.resolve(callback, [...values, idx, ...arrays]) !== null) { return 2 }
-      if (typed.resolve(callback, [...values, idx]) !== null) { return 1 }
-      if (typed.resolve(callback, values) !== null) { return 0 }
-      // this should never happen
-      return 0
-    }
+  /**
+     * Determines the argument pattern of a regular callback function.
+     * @param {Function} callback - The callback function to analyze
+     * @param {number} numberOfArrays - Number of arrays being processed
+     * @returns {number} 0 = values only, 1 = values + index, 2 = values + index + arrays
+     */
+  function _getCallbackArgCount (callback, numberOfArrays) {
+    const callbackStr = callback.toString()
+    // Check if the callback function uses `arguments`
+    if (/arguments/.test(callbackStr)) return 2
+
+    // Extract the parameters of the callback function
+    const paramsStr = callbackStr.match(/\(.*?\)/)
+    // Check if the callback function uses rest parameters
+    if (/\.\.\./.test(paramsStr)) return 2
+    if (callback.length > numberOfArrays + 1) { return 2 }
+    if (callback.length === numberOfArrays + 1) { return 1 }
+    return 0
+  }
+
+  /**
+ * Determines the argument pattern of a typed callback function.
+ * @param {Function} callback - The typed callback function to analyze
+ * @param {Array} values - Sample values for signature resolution
+ * @param {Array} idx - Sample index for signature resolution
+ * @param {Array} arrays - Sample arrays for signature resolution
+ * @returns {number} 0 = values only, 1 = values + index, 2 = values + index + arrays
+ */
+
+  function _getTypedCallbackArgCount (callback, values, idx, arrays) {
+    if (typed.resolve(callback, [...values, idx, ...arrays]) !== null) { return 2 }
+    if (typed.resolve(callback, [...values, idx]) !== null) { return 1 }
+    if (typed.resolve(callback, values) !== null) { return 0 }
+    // this should never happen
+    return 0
   }
   /**
  * Map for a multi dimensional array

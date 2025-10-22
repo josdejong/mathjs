@@ -289,6 +289,21 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('0x1.'), 1)
     })
 
+    it('should require hex, bin, oct values to be followed by whitespace or a delimiter', function () {
+      assert.throws(() => parseAndEval('0b0a'), /SyntaxError: String "0b0a" is not a valid number/)
+      assert.throws(() => parseAndEval('0x1k'), /SyntaxError: String "0x1k" is not a valid number/)
+      assert.throws(() => parseAndEval('0o1k'), /SyntaxError: String "0o1k" is not a valid number/)
+      assert.throws(() => parseAndEval('0b1k'), /SyntaxError: String "0b1k" is not a valid number/)
+
+      assert.strictEqual(parseAndEval('0x1 k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0o1 k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0b1 k', { k: 2 }), 2)
+
+      assert.strictEqual(parseAndEval('0x1*k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0o1*k', { k: 2 }), 2)
+      assert.strictEqual(parseAndEval('0b1*k', { k: 2 }), 2)
+    })
+
     it('should parse a number followed by e', function () {
       approxEqual(parseAndEval('2e'), 2 * Math.E)
     })
@@ -337,7 +352,7 @@ describe('parse', function () {
 
       assert.throws(function () { parseAndEval('0b123.45') }, /SyntaxError: String "0b123\.45" is not a valid number/)
       assert.throws(function () { parseAndEval('0o89.89') }, /SyntaxError: String "0o89\.89" is not a valid number/)
-      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0x" is not a valid number/)
+      assert.throws(function () { parseAndEval('0xghji.xyz') }, /SyntaxError: String "0xghji.xyz" is not a valid number/)
     })
   })
 
@@ -700,18 +715,18 @@ describe('parse', function () {
           [7, 8, 9]
         ])
       }
-      assert.deepStrictEqual(parseAndEval('a[2, :]', scope), math.matrix([[4, 5, 6]]))
-      assert.deepStrictEqual(parseAndEval('a[2, :2]', scope), math.matrix([[4, 5]]))
-      assert.deepStrictEqual(parseAndEval('a[2, :end-1]', scope), math.matrix([[4, 5]]))
-      assert.deepStrictEqual(parseAndEval('a[2, 2:]', scope), math.matrix([[5, 6]]))
-      assert.deepStrictEqual(parseAndEval('a[2, 2:3]', scope), math.matrix([[5, 6]]))
-      assert.deepStrictEqual(parseAndEval('a[2, 1:2:3]', scope), math.matrix([[4, 6]]))
-      assert.deepStrictEqual(parseAndEval('a[:, 2]', scope), math.matrix([[2], [5], [8]]))
-      assert.deepStrictEqual(parseAndEval('a[:2, 2]', scope), math.matrix([[2], [5]]))
-      assert.deepStrictEqual(parseAndEval('a[:end-1, 2]', scope), math.matrix([[2], [5]]))
-      assert.deepStrictEqual(parseAndEval('a[2:, 2]', scope), math.matrix([[5], [8]]))
-      assert.deepStrictEqual(parseAndEval('a[2:3, 2]', scope), math.matrix([[5], [8]]))
-      assert.deepStrictEqual(parseAndEval('a[1:2:3, 2]', scope), math.matrix([[2], [8]]))
+      assert.deepStrictEqual(parseAndEval('a[2, :]', scope), math.matrix([4, 5, 6]))
+      assert.deepStrictEqual(parseAndEval('a[2, :2]', scope), math.matrix([4, 5]))
+      assert.deepStrictEqual(parseAndEval('a[2, :end-1]', scope), math.matrix([4, 5]))
+      assert.deepStrictEqual(parseAndEval('a[2, 2:]', scope), math.matrix([5, 6]))
+      assert.deepStrictEqual(parseAndEval('a[2, 2:3]', scope), math.matrix([5, 6]))
+      assert.deepStrictEqual(parseAndEval('a[2, 1:2:3]', scope), math.matrix([4, 6]))
+      assert.deepStrictEqual(parseAndEval('a[:, 2]', scope), math.matrix([2, 5, 8]))
+      assert.deepStrictEqual(parseAndEval('a[:2, [2]]', scope), math.matrix([[2], [5]]))
+      assert.deepStrictEqual(parseAndEval('a[:end-1, [2]]', scope), math.matrix([[2], [5]]))
+      assert.deepStrictEqual(parseAndEval('a[2:, [2]]', scope), math.matrix([[5], [8]]))
+      assert.deepStrictEqual(parseAndEval('a[2:3, [2]]', scope), math.matrix([[5], [8]]))
+      assert.deepStrictEqual(parseAndEval('a[1:2:3, [2]]', scope), math.matrix([[2], [8]]))
     })
 
     it('should get a matrix subset of a matrix subset', function () {
@@ -722,7 +737,7 @@ describe('parse', function () {
           [7, 8, 9]
         ])
       }
-      assert.deepStrictEqual(parseAndEval('a[2, :][1,1]', scope), 4)
+      assert.deepStrictEqual(parseAndEval('a[[2], :][1,1]', scope), 4)
     })
 
     it('should get BigNumber value from an array', function () {
@@ -771,13 +786,13 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('a[1:3,1:2]', scope), math.matrix([[100, 2], [3, 10], [0, 12]]))
 
       scope.b = [[1, 2], [3, 4]]
-      assert.deepStrictEqual(parseAndEval('b[1,:]', scope), [[1, 2]])
+      assert.deepStrictEqual(parseAndEval('b[1,:]', scope), [1, 2])
     })
 
     it('should get/set the matrix correctly for 3d matrices', function () {
       const scope = {}
       assert.deepStrictEqual(parseAndEval('f=[1,2;3,4]', scope), math.matrix([[1, 2], [3, 4]]))
-      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2], 'dense', 'number'))
+      assert.deepStrictEqual(parseAndEval('size(f)', scope), [2, 2])
 
       parseAndEval('f[:,:,2]=[5,6;7,8]', scope)
       assert.deepStrictEqual(scope.f, math.matrix([
@@ -791,11 +806,11 @@ describe('parse', function () {
         ]
       ]))
 
-      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2, 2], 'dense', 'number'))
-      assert.deepStrictEqual(parseAndEval('f[:,:,1]', scope), math.matrix([[[1], [2]], [[3], [4]]]))
-      assert.deepStrictEqual(parseAndEval('f[:,:,2]', scope), math.matrix([[[5], [6]], [[7], [8]]]))
-      assert.deepStrictEqual(parseAndEval('f[:,2,:]', scope), math.matrix([[[2, 6]], [[4, 8]]]))
-      assert.deepStrictEqual(parseAndEval('f[2,:,:]', scope), math.matrix([[[3, 7], [4, 8]]]))
+      assert.deepStrictEqual(parseAndEval('size(f)', scope), [2, 2, 2])
+      assert.deepStrictEqual(parseAndEval('f[:,:,1]', scope), math.matrix([[1, 2], [3, 4]]))
+      assert.deepStrictEqual(parseAndEval('f[:,:,2]', scope), math.matrix([[5, 6], [7, 8]]))
+      assert.deepStrictEqual(parseAndEval('f[:,2,:]', scope), math.matrix([[2, 6], [4, 8]]))
+      assert.deepStrictEqual(parseAndEval('f[2,:,:]', scope), math.matrix([[3, 7], [4, 8]]))
 
       parseAndEval('a=diag([1,2,3,4])', scope)
       assert.deepStrictEqual(parseAndEval('a[3:end, 3:end]', scope), math.matrix([[3, 0], [0, 4]]))
@@ -838,11 +853,11 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('d=1:3', scope), math.matrix([1, 2, 3]))
       assert.deepStrictEqual(parseAndEval('concat(d,d)', scope), math.matrix([1, 2, 3, 1, 2, 3]))
       assert.deepStrictEqual(parseAndEval('e=1+d', scope), math.matrix([2, 3, 4]))
-      assert.deepStrictEqual(parseAndEval('size(e)', scope), math.matrix([3], 'dense', 'number'))
+      assert.deepStrictEqual(parseAndEval('size(e)', scope), [3])
       assert.deepStrictEqual(parseAndEval('concat(e,e)', scope), math.matrix([2, 3, 4, 2, 3, 4]))
       assert.deepStrictEqual(parseAndEval('[[],[]]', scope), math.matrix([[], []]))
       assert.deepStrictEqual(parseAndEval('[[],[]]', scope).size(), [2, 0])
-      assert.deepStrictEqual(parseAndEval('size([[],[]])', scope), math.matrix([2, 0], 'dense', 'number'))
+      assert.deepStrictEqual(parseAndEval('size([[],[]])', scope), [2, 0])
     })
 
     it('should disable arrays as range in a matrix index', function () {
@@ -1591,36 +1606,62 @@ describe('parse', function () {
     it('should parse % with multiplication', function () {
       approxEqual(parseAndEval('100*50%'), 50)
       approxEqual(parseAndEval('50%*100'), 50)
-      assert.throws(function () { parseAndEval('50%(*100)') }, /Value expected/)
+      assert.throws(function () { parseAndEval('50%(*100)') }, SyntaxError)
     })
 
     it('should parse % with division', function () {
-      approxEqual(parseAndEval('100/50%'), 0.02) // should be treated as ((100/50)%)
-      approxEqual(parseAndEval('100/50%*2'), 0.04) // should be treated as ((100/50)%))×2
+      approxEqual(parseAndEval('100/50%'), 200) // should be treated as 100/(50%)
+      approxEqual(parseAndEval('100/50%*2'), 400) // should be treated as (100/(50%))×2
       approxEqual(parseAndEval('50%/100'), 0.005)
-      assert.throws(function () { parseAndEval('50%(/100)') }, /Value expected/)
+      approxEqual(parseAndEval('50%(13)'), 11) // should be treated as 50 % (13)
+      assert.throws(function () { parseAndEval('50%(/100)') }, SyntaxError)
     })
 
-    it('should parse % with addition', function () {
+    it('should parse unary % before division, binary % with division', function () {
+      approxEqual(parseAndEval('10/200%%3'), 2) // should be treated as (10/(200%))%3
+    })
+
+    it('should reject repeated unary percentage operators', function () {
+      assert.throws(function () { math.parse('17%%') }, SyntaxError)
+      assert.throws(function () { math.parse('17%%*5') }, SyntaxError)
+      assert.throws(function () { math.parse('10/200%%%3') }, SyntaxError)
+    })
+
+    it('should parse unary % before division, binary % with division', function () {
+      approxEqual(parseAndEval('10/200%%3'), 2) // should be treated as (10/(200%))%3
+    })
+
+    it('should reject repeated unary percentage operators', function () {
+      assert.throws(function () { math.parse('17%%') }, /Unexpected end of expression/)
+      assert.throws(function () { math.parse('17%%*5') }, /Value expected \(char 5\)/)
+      assert.throws(function () { math.parse('10/200%%%3') }, /Value expected \(char 9\)/)
+    })
+
+    it('should parse unary % with addition', function () {
       approxEqual(parseAndEval('100+3%'), 103)
-      approxEqual(parseAndEval('3%+100'), 100.03)
+      assert.strictEqual(parseAndEval('3%+100'), 3) // treat as 3 mod 100
     })
 
-    it('should parse % with subtraction', function () {
+    it('should parse unary % with subtraction', function () {
       approxEqual(parseAndEval('100-3%'), 97)
-      approxEqual(parseAndEval('3%-100'), -99.97)
+      assert.strictEqual(parseAndEval('3%-100'), -97) // treat as 3 mod -100
+    })
+
+    it('should parse binary % with bitwise negation', function () {
+      assert.strictEqual(parseAndEval('11%~1'), -1) // equivalent to 11 mod -2
+      assert.strictEqual(parseAndEval('11%~-3'), 1) // equivalent to 11 mod 2
     })
 
     it('should parse operator mod', function () {
       approxEqual(parseAndEval('8 mod 3'), 2)
     })
 
-    it('should give equal precedence to % and * operators', function () {
+    it('should give equal precedence to binary % and * operators', function () {
       approxEqual(parseAndStringifyWithParens('10 % 3 * 2'), '(10 % 3) * 2')
       approxEqual(parseAndStringifyWithParens('10 * 3 % 4'), '(10 * 3) % 4')
     })
 
-    it('should give equal precedence to % and / operators', function () {
+    it('should give equal precedence to binary % and / operators', function () {
       approxEqual(parseAndStringifyWithParens('10 % 4 / 2'), '(10 % 4) / 2')
       approxEqual(parseAndStringifyWithParens('10 / 2 % 3'), '(10 / 2) % 3')
     })
@@ -1635,12 +1676,12 @@ describe('parse', function () {
       approxEqual(parseAndStringifyWithParens('8 / 3 mod 2'), '(8 / 3) mod 2')
     })
 
-    it('should give equal precedence to % and .* operators', function () {
+    it('should give equal precedence to binary % and .* operators', function () {
       approxEqual(parseAndStringifyWithParens('10 % 3 .* 2'), '(10 % 3) .* 2')
       approxEqual(parseAndStringifyWithParens('10 .* 3 % 4'), '(10 .* 3) % 4')
     })
 
-    it('should give equal precedence to % and ./ operators', function () {
+    it('should give equal precedence to binary % and ./ operators', function () {
       approxEqual(parseAndStringifyWithParens('10 % 4 ./ 2'), '(10 % 4) ./ 2')
       approxEqual(parseAndStringifyWithParens('10 ./ 2 % 3'), '(10 ./ 2) % 3')
     })
@@ -2169,7 +2210,7 @@ describe('parse', function () {
       assert.ok(parseAndEval('[1,2,3;4,5,6]\'') instanceof Matrix)
       assert.deepStrictEqual(parseAndEval('[1:5]'), math.matrix([[1, 2, 3, 4, 5]]))
       assert.deepStrictEqual(parseAndEval('[1:5]\''), math.matrix([[1], [2], [3], [4], [5]]))
-      assert.deepStrictEqual(parseAndEval('size([1:5])'), math.matrix([1, 5], 'dense', 'number'))
+      assert.deepStrictEqual(parseAndEval('size([1:5])'), [1, 5])
       assert.deepStrictEqual(parseAndEval('[1,2;3,4]\''), math.matrix([[1, 3], [2, 4]]))
     })
 
