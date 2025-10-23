@@ -246,7 +246,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
             const object = evalObject(scope, args, context)
 
             // Optional chaining: if the base object is nullish, short-circuit to undefined
-            if (object === null || object === undefined) {
+            if (object == null) {
               return undefined
             }
 
