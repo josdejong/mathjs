@@ -217,8 +217,8 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
       if (needParenthesis(this.object)) {
         object = '(' + object + ')'
       }
-
-      return object + (this.optionalChaining ? '?.' : '') + this.index.toString(options)
+      const optionalChaining = this.optionalChaining ? (this.index.dotNotation ? '?' : '?.') : ''
+      return object + optionalChaining + this.index.toString(options)
     }
 
     /**
