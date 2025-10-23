@@ -9,20 +9,18 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 const name = 'atan2'
 const dependencies = [
   'typed',
-  'matrix',
   'equalScalar',
   'BigNumber',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix, concat }) => {
+export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, BigNumber, DenseMatrix }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, DenseMatrix })
 
   /**
    * Calculate the inverse tangent function with two arguments, y/x.

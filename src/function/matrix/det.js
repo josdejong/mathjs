@@ -4,9 +4,9 @@ import { format } from '../../utils/string.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'det'
-const dependencies = ['typed', 'matrix', 'subtractScalar', 'multiply', 'divideScalar', 'isZero', 'unaryMinus']
+const dependencies = ['typed', 'DenseMatrix', 'subtractScalar', 'multiply', 'divideScalar', 'isZero', 'unaryMinus']
 
-export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtractScalar, multiply, divideScalar, isZero, unaryMinus }) => {
+export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix, subtractScalar, multiply, divideScalar, isZero, unaryMinus }) => {
   /**
    * Calculate the determinant of a matrix.
    *
@@ -42,7 +42,7 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       if (isMatrix(x)) {
         size = x.size()
       } else if (Array.isArray(x)) {
-        x = matrix(x)
+        x = new DenseMatrix(x)
         size = x.size()
       } else {
         // a scalar

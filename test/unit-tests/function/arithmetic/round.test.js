@@ -173,7 +173,7 @@ describe('round', function () {
   })
 
   it('should round each element in a matrix, array, range', function () {
-    assert.deepStrictEqual(round(math.range(0, 2.1, 1 / 3), 2), math.matrix([0, 0.33, 0.67, 1, 1.33, 1.67, 2]))
+    assert.deepStrictEqual(round(math.range(0, 2.1, 1 / 3), 2), math.matrix([0, 0.33, 0.67, 1, 1.33, 1.67, 2], 'dense', 'number'))
     assert.deepStrictEqual(round(math.range(0, 2.1, 1 / 3)), math.matrix([0, 0, 1, 1, 1, 2, 2]))
     assert.deepStrictEqual(round([1.7, 2.3]), [2, 2])
     assert.deepStrictEqual(round(math.matrix([1.7, 2.3])).valueOf(), [2, 2])

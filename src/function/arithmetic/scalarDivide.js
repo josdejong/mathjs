@@ -1,15 +1,15 @@
 import { factory } from '../../utils/factory.js'
-import { isComplex, isUnit } from '../../utils/is.js'
+import { isComplex, isMatrix, isUnit } from '../../utils/is.js'
 
 const name = 'scalarDivide'
 const dependencies = [
-  'typed', 'matrix', 'Unit', 'forEach', 'multiply', 'equal', 'deepEqual',
+  'typed', '?Unit', 'map', 'multiply', 'equal', 'deepEqual',
   'isInteger', 'isNumeric', 'isZero',
   'abs', 'add', 'divide', '?fraction'
 ]
 
 export const createScalarDivide = /* #__PURE__ */ factory(name, dependencies, ({
-  typed, matrix, Unit, forEach, multiply, equal, deepEqual,
+  typed, Unit, map, multiply, equal, deepEqual,
   isInteger, isNumeric, isZero,
   abs, add, divide, fraction
 }) => {
@@ -51,18 +51,23 @@ export const createScalarDivide = /* #__PURE__ */ factory(name, dependencies, ({
    */
   return typed(name, {
     'Array | Matrix, Array | Matrix': typed.referToSelf(self => (x, y) => {
-      if (Array.isArray(x)) x = matrix(x)
-      if (Array.isArray(y)) y = matrix(y)
-      let foundNonzero = false
+      if (isMatrix(x)) x = x.valueOf()
+      if (isMatrix(y)) y = y.valueOf()
+      if (x.length === 0) {
+        if (y.length === 0) return 0
+        else return undefined
+      }
+      if (y.length === 0) return undefined
       let initialx = 0
       let initialy = 0
-      forEach(x, (eltx, index) => {
-        if (foundNonzero) return
-        const elty = y.get(index)
-        if (isZero(eltx) && isZero(elty)) return
+      let foundInit = false
+      map(x, y, (eltx, elty) => {
+        if (foundInit) return 0
+        if (isZero(eltx) && isZero(elty)) return 0
         initialx = eltx
         initialy = elty
-        foundNonzero = true // currently no way to short-circuit a forEach
+        foundInit = true
+        return 1
       })
       const initialr = self(initialx, initialy)
       if (initialr === undefined) return undefined

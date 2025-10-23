@@ -3,16 +3,11 @@ import { factory } from '../../utils/factory.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'compareText'
-const dependencies = [
-  'typed',
-  'matrix',
-  'concat'
-]
-
+const dependencies = ['typed', 'DenseMatrix']
 _compareText.signature = 'any, any'
 
-export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, concat }) => {
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix }) => {
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, DenseMatrix })
 
   /**
    * Compare two strings lexically. Comparison is case sensitive.

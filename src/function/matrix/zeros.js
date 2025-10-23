@@ -4,9 +4,9 @@ import { resize } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'zeros'
-const dependencies = ['typed', 'config', 'matrix', 'BigNumber']
+const dependencies = ['typed', 'config', 'DenseMatrix', 'SparseMatrix', 'BigNumber']
 
-export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber }) => {
+export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, DenseMatrix, SparseMatrix, BigNumber }) => {
   /**
    * Create a matrix filled with zeros. The created matrix can have one or
    * multiple dimensions.
@@ -86,7 +86,7 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     if (format) {
       // return a matrix
-      const m = matrix(format)
+      const m = format === 'sparse' ? new SparseMatrix() : new DenseMatrix()
       if (size.length > 0) {
         return m.resize(size, defaultValue)
       }

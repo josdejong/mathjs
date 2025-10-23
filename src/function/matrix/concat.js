@@ -6,9 +6,9 @@ import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'concat'
-const dependencies = ['typed', 'matrix', 'isInteger']
+const dependencies = ['typed', 'isInteger']
 
-export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, isInteger }) => {
+export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed, isInteger }) => {
   /**
    * Concatenate two or more matrices.
    *
@@ -44,6 +44,7 @@ export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed
       let i
       const len = args.length
       let dim = -1 // zero-based dimension
+      let matrixMaker
       let prevDim
       let asMatrix = false
       const matrices = [] // contains multi dimensional arrays
@@ -54,6 +55,7 @@ export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed
         // test whether we need to return a Matrix (if not we return an Array)
         if (isMatrix(arg)) {
           asMatrix = true
+          matrixMaker = arg
         }
 
         if (isNumber(arg) || isBigNumber(arg)) {
@@ -97,7 +99,7 @@ export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed
         res = _concat(res, matrices.shift(), dim)
       }
 
-      return asMatrix ? matrix(res) : res
+      return asMatrix ? matrixMaker.create(res) : res
     },
 
     '...string': function (args) {

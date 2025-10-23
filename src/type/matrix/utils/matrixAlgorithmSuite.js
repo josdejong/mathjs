@@ -5,12 +5,13 @@ import { createMatAlgo14xDs } from './matAlgo14xDs.js'
 import { broadcast } from './broadcast.js'
 
 const name = 'matrixAlgorithmSuite'
-const dependencies = ['typed', 'matrix']
+const dependencies = ['typed', 'DenseMatrix']
 
 export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
-  name, dependencies, ({ typed, matrix }) => {
+  name, dependencies, ({ typed, DenseMatrix }) => {
     const matAlgo13xDD = createMatAlgo13xDD({ typed })
     const matAlgo14xDs = createMatAlgo14xDs({ typed })
+    const mat = a => new DenseMatrix(a)
 
     /**
      * Return a signatures object with the usual boilerplate of
@@ -38,9 +39,9 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
         matrixSignatures = {
           'DenseMatrix, DenseMatrix': (x, y) => matAlgo13xDD(...broadcast(x, y), elop),
           'Array, Array': (x, y) =>
-            matAlgo13xDD(...broadcast(matrix(x), matrix(y)), elop).valueOf(),
-          'Array, DenseMatrix': (x, y) => matAlgo13xDD(...broadcast(matrix(x), y), elop),
-          'DenseMatrix, Array': (x, y) => matAlgo13xDD(...broadcast(x, matrix(y)), elop)
+            matAlgo13xDD(...broadcast(mat(x), mat(y)), elop).valueOf(),
+          'Array, DenseMatrix': (x, y) => matAlgo13xDD(...broadcast(mat(x), y), elop),
+          'DenseMatrix, Array': (x, y) => matAlgo13xDD(...broadcast(x, mat(y)), elop)
         }
         // Now incorporate sparse matrices
         if (options.SS) {
@@ -51,13 +52,13 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
           matrixSignatures['DenseMatrix, SparseMatrix'] =
             (x, y) => options.DS(...broadcast(x, y), elop, false)
           matrixSignatures['Array, SparseMatrix'] =
-            (x, y) => options.DS(...broadcast(matrix(x), y), elop, false)
+            (x, y) => options.DS(...broadcast(mat(x), y), elop, false)
         }
         if (SD) {
           matrixSignatures['SparseMatrix, DenseMatrix'] =
             (x, y) => SD(...broadcast(y, x), elop, true)
           matrixSignatures['SparseMatrix, Array'] =
-            (x, y) => SD(...broadcast(matrix(y), x), elop, true)
+            (x, y) => SD(...broadcast(mat(y), x), elop, true)
         }
       } else {
         // No elop, use this
@@ -67,13 +68,13 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
             return matAlgo13xDD(...broadcast(x, y), self)
           }),
           'Array, Array': typed.referToSelf(self => (x, y) => {
-            return matAlgo13xDD(...broadcast(matrix(x), matrix(y)), self).valueOf()
+            return matAlgo13xDD(...broadcast(mat(x), mat(y)), self).valueOf()
           }),
           'Array, DenseMatrix': typed.referToSelf(self => (x, y) => {
-            return matAlgo13xDD(...broadcast(matrix(x), y), self)
+            return matAlgo13xDD(...broadcast(mat(x), y), self)
           }),
           'DenseMatrix, Array': typed.referToSelf(self => (x, y) => {
-            return matAlgo13xDD(...broadcast(x, matrix(y)), self)
+            return matAlgo13xDD(...broadcast(x, mat(y)), self)
           })
         }
         // Now incorporate sparse matrices
@@ -90,7 +91,7 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
             })
           matrixSignatures['Array, SparseMatrix'] =
             typed.referToSelf(self => (x, y) => {
-              return options.DS(...broadcast(matrix(x), y), self, false)
+              return options.DS(...broadcast(mat(x), y), self, false)
             })
         }
         if (SD) {
@@ -100,7 +101,7 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
             })
           matrixSignatures['SparseMatrix, Array'] =
             typed.referToSelf(self => (x, y) => {
-              return SD(...broadcast(matrix(y), x), self, true)
+              return SD(...broadcast(mat(y), x), self, true)
             })
         }
       }
@@ -115,9 +116,9 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
           matrixSignatures[scalar + ', DenseMatrix'] =
             (x, y) => matAlgo14xDs(y, x, elop, true)
           matrixSignatures['Array,' + scalar] =
-            (x, y) => matAlgo14xDs(matrix(x), y, elop, false).valueOf()
+            (x, y) => matAlgo14xDs(mat(x), y, elop, false).valueOf()
           matrixSignatures[scalar + ', Array'] =
-            (x, y) => matAlgo14xDs(matrix(y), x, elop, true).valueOf()
+            (x, y) => matAlgo14xDs(mat(y), x, elop, true).valueOf()
         } else {
           matrixSignatures['DenseMatrix,' + scalar] =
             typed.referToSelf(self => (x, y) => {
@@ -129,11 +130,11 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
             })
           matrixSignatures['Array,' + scalar] =
             typed.referToSelf(self => (x, y) => {
-              return matAlgo14xDs(matrix(x), y, self, false).valueOf()
+              return matAlgo14xDs(mat(x), y, self, false).valueOf()
             })
           matrixSignatures[scalar + ', Array'] =
             typed.referToSelf(self => (x, y) => {
-              return matAlgo14xDs(matrix(y), x, self, true).valueOf()
+              return matAlgo14xDs(mat(y), x, self, true).valueOf()
             })
         }
       }

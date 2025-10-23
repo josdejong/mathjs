@@ -23,7 +23,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    *     A Matrix with the Set values
    *     A Matrix with Booleans
    *
-   * The parameters start, end, and step must be integer numbers.
+   * Note that any Ranges provided will be converted to the number type.
    *
    * @class Index
    * @Constructor Index
@@ -45,7 +45,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
       const argType = typeof arg
       let sourceSize = null
       if (isRange(arg)) {
-        this._dimensions.push(arg)
+        this._dimensions.push(arg.toNumber())
         this._isScalar = false
       } else if (argIsArray || argIsMatrix) {
         // create matrix

@@ -1,10 +1,10 @@
 import { factory } from '../../utils/factory.js'
-import { noBignumber, noMatrix } from '../../utils/noop.js'
+import { noBignumber } from '../../utils/noop.js'
 
 const name = 'range'
-const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'equal', 'smaller', 'smallerEq', 'larger', 'largerEq', 'add', 'isZero', 'isPositive']
+export const dependencies = ['typed', 'config', '?Range', '?matrix', '?bignumber', 'equal', 'smaller', 'smallerEq', 'larger', 'largerEq', 'add', 'isZero', 'isPositive']
 
-export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq, add, isZero, isPositive }) => {
+export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Range, matrix, bignumber, smaller, smallerEq, larger, largerEq, add, isZero, isPositive }) => {
   /**
    * Create a matrix or array containing a range of values.
    * By default, the range end is excluded. This can be customized by providing
@@ -150,15 +150,15 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
   })
 
-  function _out (arr) {
-    if (config.matrix === 'Matrix') {
-      return matrix ? matrix(arr) : noMatrix()
-    }
-
-    return arr
+  function _out (raw) {
+    if (!Range || config.matrix === 'Matrix') return raw
+    return raw.toArray()
   }
 
   function _strRange (str, includeEnd) {
+    if (includeEnd && Range && config.number === 'number') {
+      return Range.parse(str)
+    }
     const r = _parse(str)
     if (!r) {
       throw new SyntaxError('String "' + str + '" is no valid range')
@@ -189,6 +189,10 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @private
    */
   function _range (start, end, step, includeEnd) {
+    if (Range) {
+      if (includeEnd) return new Range({ from: start, to: end, by: step })
+      else return new Range({ from: start, til: end, by: step })
+    }
     const array = []
     if (isZero(step)) throw new Error('Step must be non-zero')
     const ongoing = isPositive(step)

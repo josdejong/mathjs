@@ -6,7 +6,6 @@ import { format } from '../../utils/string.js'
 const name = 'inv'
 const dependencies = [
   'typed',
-  'matrix',
   'divideScalar',
   'addScalar',
   'multiply',
@@ -45,7 +44,7 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
           // vector
           if (size[0] === 1) {
             if (isMatrix(x)) {
-              return matrix([
+              return x.create([
                 divideScalar(1, x.valueOf()[0])
               ])
             } else {
@@ -65,10 +64,7 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
           const cols = size[1]
           if (rows === cols) {
             if (isMatrix(x)) {
-              return matrix(
-                _inv(x.valueOf(), rows, cols),
-                x.storage()
-              )
+              return x.create(_inv(x.valueOf(), rows, cols))
             } else {
               // return an Array
               return _inv(x, rows, cols)

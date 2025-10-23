@@ -83,6 +83,7 @@ export { createTyped } from './core/function/typed.js'
 // classes
 export { createResultSet } from './type/resultset/ResultSet.js'
 export { createRangeClass } from './type/matrix/Range.js'
+export { createMatrixClass } from './type/matrix/Matrix.js'
 export { createHelpClass } from './expression/Help.js'
 export { createChainClass } from './type/chain/Chain.js'
 export { createHelp } from './expression/function/help.js'
@@ -128,6 +129,7 @@ export const createPow = /* #__PURE__ */ createNumberFactory('pow', powNumber)
 export { createOneNumber } from './function/arithmetic/one.js'
 export const createRound = /* #__PURE__ */
   createNumberOptionalSecondArgFactory('round', roundNumber)
+export { createScalarDivide } from './function/arithmetic/scalarDivide.js'
 export const createLog = /* #__PURE__ */
   createNumberOptionalSecondArgFactory('log', logNumber)
 export const createLog1p = /* #__PURE__ */ createNumberFactory('log1p', log1pNumber)
@@ -211,6 +213,7 @@ export const createOr = /* #__PURE__ */ createNumberFactory('or', orNumber)
 export const createXor = /* #__PURE__ */ createNumberFactory('xor', xorNumber)
 
 // matrix
+export { createGetMatrixDataType } from './function/matrix/getMatrixDataType.js'
 export { createMapSlices } from './function/matrix/mapSlices.js'
 export { createFilter } from './function/matrix/filter.js'
 export { createForEach } from './function/matrix/forEach.js'

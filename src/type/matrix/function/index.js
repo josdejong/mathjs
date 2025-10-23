@@ -1,10 +1,10 @@
-import { isBigNumber, isMatrix, isArray } from '../../../utils/is.js'
+import { isBigNumber, isMatrix, isArray, isRange } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
 
 const name = 'index'
-const dependencies = ['typed', 'Index']
+const dependencies = ['typed', 'Index', 'number', 'Range']
 
-export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index }) => {
+export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index, number, Range }) => {
   /**
    * Create an index. An Index can store ranges having start, step, and end
    * for multiple dimensions.
@@ -26,12 +26,12 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * Examples:
    *
    *    const b = [1, 2, 3, 4, 5]
-   *    math.subset(b, math.index([1, 2, 3]))                         // returns [2, 3, 4]
+   *    math.subset(b, math.index([1, 2, 3]))                         // returns [2, 3, 4] ...
    *    math.subset(b, math.index([false, true, true, true, false]))  // returns [2, 3, 4]
    *
    *    const a = math.matrix([[1, 2], [3, 4]])
-   *    a.subset(math.index(0, 1))             // returns 2
-   *    a.subset(math.index(0, [false, true])) // returns 2
+   *    a.subset(math.index(0, 1))             // returns 2 ...
+   *    a.subset(math.index(0, [false, true])) // Matrix [2]
    *
    * See also:
    *
@@ -45,6 +45,12 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       const ranges = args.map(function (arg) {
         if (isBigNumber(arg)) {
           return arg.toNumber() // convert BigNumber to Number
+        } else if (isRange(arg)) {
+          if (arg.datatype() !== 'number') {
+            return new Range({
+              from: number(arg.from), by: number(arg.by), for: arg.for
+            })
+          } else return arg
         } else if (isArray(arg) || isMatrix(arg)) {
           return arg.map(function (elem) {
             // convert BigNumber to Number

@@ -9,18 +9,17 @@ import { nthRootNumber } from '../../plain/number/index.js'
 const name = 'nthRoot'
 const dependencies = [
   'typed',
-  'matrix',
+  'DenseMatrix',
   'equalScalar',
-  'BigNumber',
-  'concat'
+  'BigNumber'
 ]
 
-export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, concat }) => {
+export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix, equalScalar, BigNumber }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, DenseMatrix })
 
   /**
    * Calculate the nth root of a value.
@@ -69,7 +68,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
       'Complex, number': complexErr,
 
       Array: typed.referTo('DenseMatrix,number', selfDn =>
-        x => selfDn(matrix(x), 2).valueOf()),
+        x => selfDn(new DenseMatrix(x), 2).valueOf()),
       DenseMatrix: typed.referTo('DenseMatrix,number', selfDn =>
         x => selfDn(x, 2)),
       SparseMatrix: typed.referTo('SparseMatrix,number', selfSn =>
@@ -98,7 +97,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
       }),
 
       'Array, SparseMatrix': typed.referTo('DenseMatrix,SparseMatrix', selfDS =>
-        (x, y) => selfDS(matrix(x), y)),
+        (x, y) => selfDS(new DenseMatrix(x), y)),
 
       'number | BigNumber, SparseMatrix': typed.referToSelf(self => (x, y) => {
         // density must be one (no zeros in matrix)

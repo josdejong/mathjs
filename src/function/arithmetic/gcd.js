@@ -12,12 +12,10 @@ const dependencies = [
   'typed',
   'config',
   'round',
-  'matrix',
   'equalScalar',
   'zeros',
   'BigNumber',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
 const gcdTypes = 'number | BigNumber | Fraction | Matrix | Array'
@@ -27,12 +25,12 @@ function is1d (array) {
   return !array.some(element => Array.isArray(element))
 }
 
-export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config, round, equalScalar, zeros, BigNumber, DenseMatrix, concat }) => {
-  const mod = createMod({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix, concat })
+export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, equalScalar, zeros, BigNumber, DenseMatrix }) => {
+  const mod = createMod({ typed, config, round, equalScalar, zeros, DenseMatrix })
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, DenseMatrix })
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.

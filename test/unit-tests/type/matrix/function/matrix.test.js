@@ -72,7 +72,7 @@ describe('matrix', function () {
   it('should create a matrix from a range correctly', function () {
     const d = matrix(math.range(1, 6))
     assert.ok(d instanceof math.Matrix)
-    assert.deepStrictEqual(d, matrix([1, 2, 3, 4, 5]))
+    assert.deepStrictEqual(d.valueOf(), [1, 2, 3, 4, 5])
     assert.deepStrictEqual(math.size(d), [5])
   })
 

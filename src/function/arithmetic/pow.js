@@ -9,14 +9,13 @@ const dependencies = [
   'config',
   'identity',
   'multiply',
-  'matrix',
   'inv',
   'fraction',
   'number',
   'Complex'
 ]
 
-export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, identity, multiply, matrix, inv, number, fraction, Complex }) => {
+export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, identity, multiply, inv, number, fraction, Complex }) => {
   /**
    * Calculates the power of x to y, `x ^ y`.
    *
@@ -206,6 +205,6 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    * @private
    */
   function _powMatrix (x, y) {
-    return matrix(_powArray(x.valueOf(), y))
+    return x.create(_powArray(x.valueOf(), y))
   }
 })

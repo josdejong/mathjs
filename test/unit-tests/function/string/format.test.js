@@ -65,7 +65,7 @@ describe('format', function () {
     })
 
     it('should format ranges with given precision', function () {
-      assert.strictEqual(math.format(new math.Range(1 / 3, 4 / 3, 2 / 3), 3), '0.333:0.667:1.33')
+      assert.strictEqual(math.format(new math.Range(1 / 3, 4 / 3, 2 / 3), 3), '0.333:0.667:1')
     })
   })
 

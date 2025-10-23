@@ -47,28 +47,30 @@ describe('range', function () {
     })
 
     it('should throw an error for wrong type of arguments', function () {
-      assert.throws(function () { console.log(new Range('str', 10, 1)) }, /Parameter start must be a number/)
-      assert.throws(function () { console.log(new Range(0, 'str', 1)) }, /Parameter end must be a number/)
-      assert.throws(function () { console.log(new Range(0, 10, 'str')) }, /Parameter step must be a number/)
+      assert.throws(function () { console.log(new Range('str', 10, 1)) }, /Cannot convert/)
+      assert.throws(function () { console.log(new Range(0, 'str', 1)) }, /Cannot convert/)
+      assert.throws(function () { console.log(new Range(0, 10, 'str')) }, /Cannot convert/)
     })
 
-    it('should throw an error for step size zero', function () {
-      assert.throws(function () { console.log(new Range(0, 0, 0)) }, /Step must not be zero/)
-      assert.throws(function () { console.log(new Range(10, 10, 0)) }, /Step must not be zero/)
-      assert.throws(function () { console.log(new Range(0, 10, math.bignumber(0))) }, /Step must not be zero/)
-      assert.throws(function () { console.log(new Range(0, 10, math.bigint(0))) }, /Step must not be zero/)
+    it('should deal carefully with step size zero', function () {
+      let empty = new Range(0, 0, 0)
+      assert.strictEqual(empty.for, 0)
+      empty = new Range(10, 10, 0)
+      assert.strictEqual(empty.for, 0)
+      assert.throws(function () { console.log(new Range(0, 10, math.bignumber(0))) }, /No scalar/)
+      assert.throws(function () { console.log(new Range(0, 10, math.bigint(0))) }, /No scalar/)
     })
   })
 
   describe('parse', function () {
     it('should create a range from a string', function () {
       let r = Range.parse('10:-1:4')
-      assert.deepStrictEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
-      assert.deepStrictEqual(r.size(), [6])
+      assert.deepStrictEqual(r.toArray(), [10, 9, 8, 7, 6, 5, 4])
+      assert.deepStrictEqual(r.size(), [7])
 
       r = Range.parse('2 : 6')
-      assert.deepStrictEqual(r.toArray(), [2, 3, 4, 5])
-      assert.deepStrictEqual(r.size(), [4])
+      assert.deepStrictEqual(r.toArray(), [2, 3, 4, 5, 6])
+      assert.deepStrictEqual(r.size(), [5])
     })
 
     it('should return null when parsing an invalid string', function () {
@@ -144,15 +146,15 @@ describe('range', function () {
   })
 
   describe('toString', function () {
-    it('should stringify a range to format start:step:end', function () {
-      assert.strictEqual(new math.Range(0, 10).toString(), '0:10')
-      assert.strictEqual(new math.Range(0, 10, 2).toString(), '0:2:10')
+    it('should stringify a range to format from:by:to', function () {
+      assert.strictEqual(new math.Range(0, 10).toString(), '0:9')
+      assert.strictEqual(new math.Range(0, 10, 2).toString(), '0:2:8')
     })
 
-    it('should stringify a range to format start:step:end with given precision', function () {
-      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(3), '0.333:0.667:1.33')
-      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(4), '0.3333:0.6667:1.333')
-      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(14), '0.33333333333333:0.66666666666667:1.3333333333333')
+    it('should stringify a range to format from:by:to with given precision', function () {
+      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(3), '0.333:0.667:1')
+      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(4), '0.3333:0.6667:1')
+      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(14), '0.33333333333333:0.66666666666667:1')
     })
   })
 
@@ -196,12 +198,12 @@ describe('range', function () {
       assert.deepStrictEqual(r.map(function (value, index, range) {
         assert.strictEqual(range, r)
         return 'range[' + index[0] + ']=' + value
-      }), [
+      }), math.matrix([
         'range[0]=2',
         'range[1]=3',
         'range[2]=4',
         'range[3]=5'
-      ])
+      ]))
     })
   })
 
@@ -225,14 +227,15 @@ describe('range', function () {
 
   describe('format', function () {
     it('should format a range as string', function () {
-      assert.strictEqual(new Range(0, 4).format(), '0:4')
-      assert.strictEqual(new Range(0, 4, 2).format(), '0:2:4')
+      assert.strictEqual(new Range(0, 4).format(), '0:3')
+      assert.strictEqual(new Range(0, 4, 2).format(), '0:2:2')
 
-      assert.strictEqual(new Range(0.01, 0.09, 0.02).format(), '0.01:0.02:0.09')
+      assert.strictEqual(new Range(0.01, 0.09, 0.02).format(2), '0.01:0.02:0.07')
 
       assert.strictEqual(new Range(0.01, 0.09, 0.02).format({
-        notation: 'exponential'
-      }), '1e-2:2e-2:9e-2')
+        notation: 'exponential',
+        precision: 1
+      }), '1e-2:2e-2:7e-2')
     })
   })
 
@@ -251,8 +254,12 @@ describe('range', function () {
   })
 
   it('toJSON', function () {
-    assert.deepStrictEqual(new Range(2, 4).toJSON(), { mathjs: 'Range', start: 2, end: 4, step: 1 })
-    assert.deepStrictEqual(new Range(0, 10, 2).toJSON(), { mathjs: 'Range', start: 0, end: 10, step: 2 })
+    assert.deepStrictEqual(
+      new Range(2, 4).toJSON(),
+      { mathjs: 'Range', from: 2, to: 3, by: 1, for: 2, til: 4 })
+    assert.deepStrictEqual(
+      new Range(0, 10, 2).toJSON(),
+      { mathjs: 'Range', from: 0, to: 8, by: 2, for: 5, til: 10 })
   })
 
   it('fromJSON', function () {

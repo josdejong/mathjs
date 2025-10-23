@@ -8,7 +8,7 @@ import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'floor'
-const dependencies = ['typed', 'config', 'round', 'matrix', 'equalScalar', 'zeros', 'DenseMatrix']
+const dependencies = ['typed', 'config', 'round', 'equalScalar', 'zeros', 'DenseMatrix']
 
 const bigTen = new Decimal(10)
 
@@ -53,7 +53,7 @@ export const createFloorNumber = /* #__PURE__ */ factory(
   }
 )
 
-export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix }) => {
+export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, equalScalar, zeros, DenseMatrix }) => {
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
@@ -191,7 +191,7 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     'number | Complex | Fraction | BigNumber, Array':
       typed.referToSelf(self => (x, y) => {
         // use matrix implementation
-        return matAlgo14xDs(matrix(y), x, self, true).valueOf()
+        return matAlgo14xDs(new DenseMatrix(y), x, self, true).valueOf()
       }),
 
     'number | Complex | Fraction | BigNumber, Matrix':

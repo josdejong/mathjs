@@ -514,7 +514,8 @@ describe('DenseMatrix', function () {
     it('should squeeze the output when index contains a scalar', function () {
       let m = new DenseMatrix(math.range(0, 10))
       assert.deepStrictEqual(m.subset(index(1)), 1)
-      assert.deepStrictEqual(m.subset(index(new Range(1, 2))), new DenseMatrix([1]))
+      assert.deepStrictEqual(
+        m.subset(index(new Range(1, 2))), new DenseMatrix([1], 'number'))
 
       m = new DenseMatrix([[1, 2], [3, 4]])
       assert.deepStrictEqual(m.subset(index(1, 1)), 4)
@@ -550,9 +551,11 @@ describe('DenseMatrix', function () {
       // set 1-dimensional
       let m = new DenseMatrix(math.range(0, 7))
       m.subset(index(new Range(2, 4)), [20, 30])
-      assert.deepStrictEqual(m, new DenseMatrix([0, 1, 20, 30, 4, 5, 6]))
+      assert.deepStrictEqual(
+        m, new DenseMatrix([0, 1, 20, 30, 4, 5, 6], 'number'))
       m.subset(index(4), 40)
-      assert.deepStrictEqual(m, new DenseMatrix([0, 1, 20, 30, 40, 5, 6]))
+      assert.deepStrictEqual(
+        m, new DenseMatrix([0, 1, 20, 30, 40, 5, 6], 'number'))
 
       // set 2-dimensional
       m = new DenseMatrix()

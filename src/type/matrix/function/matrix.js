@@ -1,9 +1,10 @@
 import { factory } from '../../../utils/factory.js'
+import { isRange } from '../../../utils/is.js'
 
 const name = 'matrix'
-const dependencies = ['typed', 'Matrix', 'DenseMatrix', 'SparseMatrix']
+const dependencies = ['typed', 'Matrix', 'DenseMatrix', 'SparseMatrix', 'Range']
 
-export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Matrix, DenseMatrix, SparseMatrix }) => {
+export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Matrix, DenseMatrix, SparseMatrix, Range }) => {
   /**
    * Create a Matrix. The function creates a new `math.Matrix` object from
    * an `Array`. A Matrix has utility functions to manipulate the data in the
@@ -22,10 +23,10 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * Examples:
    *
    *    let m = math.matrix([[1, 2], [3, 4]])
-   *    m.size()                        // Array [2, 2]
+   *    m.size()                        // Array [2, 2] ...
    *    m.resize([3, 2], 5)
-   *    m.valueOf()                     // Array [[1, 2], [3, 4], [5, 5]]
-   *    m.get([1, 0])                    // number 3
+   *    m.valueOf()                     // Array [[1, 2], [3, 4], [5, 5]] ...
+   *    m.get([1, 0])                   // number 3
    *
    * See also:
    *
@@ -79,6 +80,13 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     if (format === 'sparse') {
       return new SparseMatrix(data, datatype)
+    }
+
+    if (format === 'range') {
+      if (isRange(data)) {
+        return new Range({ from: data.from, by: data.by, for: data.for })
+      }
+      return new Range(data)
     }
 
     throw new TypeError('Unknown matrix type ' + JSON.stringify(format) + '.')

@@ -13,7 +13,6 @@ const name = 'round'
 const dependencies = [
   'typed',
   'config',
-  'matrix',
   'equalScalar',
   'zeros',
   'BigNumber',
@@ -175,13 +174,13 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return matAlgo11xS0s(x, n, self, false)
     }),
 
-    'DenseMatrix, number | BigNumber': typed.referToSelf(self => (x, n) => {
+    'Matrix, number | BigNumber': typed.referToSelf(self => (x, n) => {
       return matAlgo14xDs(x, n, self, false)
     }),
 
     'Array, number | BigNumber': typed.referToSelf(self => (x, n) => {
       // use matrix implementation
-      return matAlgo14xDs(matrix(x), n, self, false).valueOf()
+      return matAlgo14xDs(new DenseMatrix(x), n, self, false).valueOf()
     }),
 
     'number | Complex | BigNumber | Fraction, SparseMatrix': typed.referToSelf(self => (x, n) => {
@@ -204,7 +203,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'number | Complex | BigNumber | Fraction, Array': typed.referToSelf(self => (x, n) => {
       // use matrix implementation
-      return matAlgo14xDs(matrix(n), x, self, true).valueOf()
+      return matAlgo14xDs(new DenseMatrix(n), x, self, true).valueOf()
     })
   })
 })
