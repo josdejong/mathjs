@@ -2,9 +2,9 @@ import { factory } from '../../utils/factory.js'
 import { noBignumber, noMatrix } from '../../utils/noop.js'
 
 const name = 'range'
-const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq', 'add', 'isPositive']
+const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'equal', 'smaller', 'smallerEq', 'larger', 'largerEq', 'add', 'isZero', 'isPositive']
 
-export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq, add, isPositive }) => {
+export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq, add, isZero, isPositive }) => {
   /**
    * Create a matrix or array containing a range of values.
    * By default, the range end is excluded. This can be customized by providing
@@ -190,6 +190,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   function _range (start, end, step, includeEnd) {
     const array = []
+    if (isZero(step)) throw new Error('Step must be non-zero')
     const ongoing = isPositive(step)
       ? includeEnd ? smallerEq : smaller
       : includeEnd ? largerEq : larger

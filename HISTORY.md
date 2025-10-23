@@ -1,8 +1,41 @@
 # History
 
+# unpublished changes since 15.0.0
+
+- Feat: implement functions `isFinite` and `isBounded` (#3554, #3553). 
+  Thanks @gwhitney.
+
+# 2025-10-10, 15.0.0
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Feat: #3349 Decouple precedence of unary percentage operator and binary
+  modulus operator (that both use symbol `%`), and raise the former (#3432).
+  Thanks @kiprobinsonknack.
+- Feat: #1753 enhance Kronecker product to handle arbitrary dimension (#3461,
+  #3455). Thanks @gwhitney and @Delaney.
+- Feat: #2344 matrix subset according to the type of input (#3485).
+  Thanks @dvd101x.
+- Fix: #3501 parse `%` as unary only when not followed by a term (#3505).
+  Thanks @gwhitney.
+- Fix: #3421 require a space or delimiter after hex, bin, and oct values (#3463).
+- Fix: #3529 Change function `size` to always return an `Array` (#3535).
+- Fix: #3530 throw an error when trying to flatten a `SparseMatrix` (#3536).
+
+# 2025-10-10, 14.9.1
+
+- Fix: issue in HISTORY.md listing all fixes of `v14.8.2` under `v14.9.0`. 
+
+# 2025-10-10, 14.9.0
+
+- Feat: improve the performance of `map` with multiple arguments (#3526).
+  Thanks @dvd101x.
+- Fix: #3541 throw an error when evaluating a range with a step of zero 
+  (#3548). Thanks @dvd101x.
+
 # 2025-10-03, 14.8.2
 
-- Fix: improve performance in functions like `map` when passing a unary 
+- Fix: improve performance in functions like `map` when passing a unary
   function (#3546). Thanks @dvd101x.
 - Fix: improve the type definition of `abs(complex)` which returns a `number`
   (#3543). Thanks @joshkel.

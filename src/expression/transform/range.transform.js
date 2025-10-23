@@ -2,10 +2,10 @@ import { factory } from '../../utils/factory.js'
 import { createRange } from '../../function/matrix/range.js'
 
 const name = 'range'
-const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'smaller', 'smallerEq', 'larger', 'largerEq', 'add', 'isPositive']
+const dependencies = ['typed', 'config', '?matrix', '?bignumber', 'equal', 'smaller', 'smallerEq', 'larger', 'largerEq', 'add', 'isZero', 'isPositive']
 
-export const createRangeTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq, add, isPositive }) => {
-  const range = createRange({ typed, config, matrix, bignumber, smaller, smallerEq, larger, largerEq, add, isPositive })
+export const createRangeTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, bignumber, equal, smaller, smallerEq, larger, largerEq, add, isZero, isPositive }) => {
+  const range = createRange({ typed, config, matrix, bignumber, equal, smaller, smallerEq, larger, largerEq, add, isZero, isPositive })
 
   /**
    * Attach a transform function to math.range

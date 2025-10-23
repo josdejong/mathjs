@@ -73,7 +73,7 @@ describe('AccessorNode', function () {
     const scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
+    assert.deepStrictEqual(expr.evaluate(scope), [3, 4])
   })
 
   it('should compile a AccessorNode with "end" in an expression', function () {
@@ -211,7 +211,7 @@ describe('AccessorNode', function () {
     const scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.evaluate(scope), [[4, 3]])
+    assert.deepStrictEqual(expr.evaluate(scope), [4, 3])
   })
 
   it('should compile a AccessorNode with "end" both as value and in a range', function () {
@@ -229,7 +229,7 @@ describe('AccessorNode', function () {
     const scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
+    assert.deepStrictEqual(expr.evaluate(scope), [3, 4])
   })
 
   it('should use the inner context when using "end" in a nested index', function () {

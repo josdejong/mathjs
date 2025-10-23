@@ -8,7 +8,7 @@ const ImmutableDenseMatrix = math.ImmutableDenseMatrix
 
 describe('Index', function () {
   it('should create an Index', function () {
-    assert.deepStrictEqual(new Index(0, 2)._dimensions, [new ImmutableDenseMatrix([0]), new ImmutableDenseMatrix([2])])
+    assert.deepStrictEqual(new Index(0, 2)._dimensions, [0, 2])
 
     assert.deepStrictEqual(new Index(new Range(0, 10))._dimensions, [new Range(0, 10, 1)])
     assert.deepStrictEqual(new Index(new Range(0, 10, 2))._dimensions, [new Range(0, 10, 2)])
@@ -18,11 +18,11 @@ describe('Index', function () {
     ])
     assert.deepStrictEqual(new Index(new ImmutableDenseMatrix([0, 10]))._dimensions, [new ImmutableDenseMatrix([0, 10])])
     assert.deepStrictEqual(new Index([0, 10])._dimensions, [new ImmutableDenseMatrix([0, 10])])
-    assert.deepStrictEqual(new Index(10)._dimensions, [new ImmutableDenseMatrix([10])])
+    assert.deepStrictEqual(new Index(10)._dimensions, [10])
   })
 
   it('should create an Index from bigints', function () {
-    assert.deepStrictEqual(new Index(0n, 2n)._dimensions, [new ImmutableDenseMatrix([0]), new ImmutableDenseMatrix([2])])
+    assert.deepStrictEqual(new Index(0n, 2n)._dimensions, [0, 2])
 
     assert.deepStrictEqual(new Index(new Range(0n, 10n))._dimensions, [new Range(0, 10, 1)])
     assert.deepStrictEqual(new Index(new Range(0n, 10n, 2))._dimensions, [new Range(0, 10, 2)])
@@ -105,11 +105,11 @@ describe('Index', function () {
     assert.strictEqual(new Index(2, 5, 2).isScalar(), true)
     assert.strictEqual(new Index(2).isScalar(), true)
     assert.strictEqual(new Index([0, 1, 2], 2).isScalar(), false)
-    assert.strictEqual(new Index([3], [2]).isScalar(), true)
+    assert.strictEqual(new Index([3], [2]).isScalar(), false)
     assert.strictEqual(new Index([0, 1, 2], [2]).isScalar(), false)
     assert.strictEqual(new Index(new Range(2, 10)).isScalar(), false)
     assert.strictEqual(new Index(new ImmutableDenseMatrix([2, 10])).isScalar(), false)
-    assert.strictEqual(new Index(new ImmutableDenseMatrix([2])).isScalar(), true)
+    assert.strictEqual(new Index(new ImmutableDenseMatrix([2])).isScalar(), false)
     assert.strictEqual(new Index(2, new Range(0, 4), 2).isScalar(), false)
     assert.strictEqual(new Index(2, new ImmutableDenseMatrix([0, 4]), 2).isScalar(), false)
     assert.strictEqual(new Index(new Range(0, 2), new Range(0, 4)).isScalar(), false)
@@ -119,8 +119,8 @@ describe('Index', function () {
   })
 
   it('should clone an Index', function () {
-    const index1 = new Index(2, new Range(0, 4), new ImmutableDenseMatrix([0, 2]))
-    const index2 = index1.clone(0)
+    const index1 = new Index([2], new Range(0, 4), new ImmutableDenseMatrix([0, 2]))
+    const index2 = index1.clone()
 
     assert.deepStrictEqual(index1, index2)
     assert.notStrictEqual(index1, index2)
@@ -131,9 +131,9 @@ describe('Index', function () {
 
   it('should stringify an index', function () {
     assert.strictEqual(new Index().toString(), '[]')
-    assert.strictEqual(new Index(2, 3).toString(), '[[2], [3]]')
-    assert.strictEqual(new Index(2, 3, 1).toString(), '[[2], [3], [1]]')
-    assert.strictEqual(new Index(2, new Range(0, 3)).toString(), '[[2], 0:3]')
+    assert.strictEqual(new Index(2, 3).toString(), '[2, 3]')
+    assert.strictEqual(new Index(2, 3, 1).toString(), '[2, 3, 1]')
+    assert.strictEqual(new Index(2, new Range(0, 3)).toString(), '[2, 0:3]')
     assert.strictEqual(new Index(new Range(0, 6, 2)).toString(), '[0:2:6]')
     assert.strictEqual(new Index(new ImmutableDenseMatrix([0, 6, 2])).toString(), '[[0, 6, 2]]')
     assert.deepStrictEqual(new Index('property').toString(), '["property"]')
@@ -145,7 +145,7 @@ describe('Index', function () {
         mathjs: 'Index',
         dimensions: [
           new Range(0, 10, 1),
-          new ImmutableDenseMatrix([2]),
+          2,
           new ImmutableDenseMatrix([1, 2, 3])
         ]
       })
@@ -155,7 +155,7 @@ describe('Index', function () {
     const json = {
       dimensions: [
         new Range(0, 10, 1),
-        new ImmutableDenseMatrix([2]),
+        2,
         new ImmutableDenseMatrix([1, 2, 3])
       ]
     }
@@ -169,8 +169,8 @@ describe('Index', function () {
   it('should get the range for a given dimension', function () {
     const index = new Index(2, new Range(0, 8, 2), new Range(3, -1, -1), new ImmutableDenseMatrix([1, 2, 3]))
 
-    assert(index.dimension(0) instanceof ImmutableDenseMatrix)
-    assert.deepStrictEqual(index.dimension(0), new ImmutableDenseMatrix([2]))
+    assert(Number.isInteger(index.dimension(0)))
+    assert.deepStrictEqual(index.dimension(0), 2)
 
     assert(index.dimension(1) instanceof Range)
     assert.deepStrictEqual(index.dimension(1), new Range(0, 8, 2))
@@ -197,7 +197,7 @@ describe('Index', function () {
     })
 
     assert.deepStrictEqual(log, [
-      { dimension: new ImmutableDenseMatrix([2]), index: 0 },
+      { dimension: 2, index: 0 },
       { dimension: new Range(0, 8, 2), index: 1 },
       { dimension: new Range(3, -1, -1), index: 2 },
       { dimension: new ImmutableDenseMatrix([1, 2, 3]), index: 3 }
@@ -229,15 +229,14 @@ describe('Index', function () {
     assert.deepStrictEqual(new Index(new Range(2, 5), new Range(0, 8, 2), 2, new ImmutableDenseMatrix([1, 2])).toArray(), [
       [2, 3, 4],
       [0, 2, 4, 6],
-      [2],
+      2,
       [1, 2]
     ])
 
-    assert.deepStrictEqual(new Index(2, new Range(0, 8, 2), new Range(3, -1, -1), new Range(2, 4, 0), [1, 2]).toArray(), [
-      [2],
+    assert.deepStrictEqual(new Index(2, new Range(0, 8, 2), new Range(3, -1, -1), [1, 2]).toArray(), [
+      2,
       [0, 2, 4, 6],
       [3, 2, 1, 0],
-      [],
       [1, 2]
     ])
 
@@ -246,7 +245,7 @@ describe('Index', function () {
 
   it('valueOf should return the expanded array', function () {
     assert.deepStrictEqual(new Index(2, new Range(0, 8, 2), new Range(3, -1, -1), [1, 2], new ImmutableDenseMatrix([3, 4])).valueOf(), [
-      [2],
+      2,
       [0, 2, 4, 6],
       [3, 2, 1, 0],
       [1, 2],

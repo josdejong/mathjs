@@ -158,7 +158,7 @@ describe('simplify', function () {
     simplifyAndCompare('foo("0xffff")', 'foo("0xffff")')
     simplifyAndCompare('"1234"', '"1234"')
     simplifyAndCompare('concat("a","b")', '"ab"')
-    simplifyAndCompare('size(concat("A","4/2"))', '[4]')
+    simplifyAndCompare('matrix(size(concat("A","4/2")))', '[4]')
     simplifyAndCompare('string(4/2)', '"2"')
     simplifyAndCompare('2+number("2")', '4')
   })

@@ -4,6 +4,7 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 const ones = math.ones
 const matrix = math.matrix
+const size = math.size
 
 describe('ones', function () {
   it('should create an empty matrix', function () {
@@ -65,10 +66,12 @@ describe('ones', function () {
 
   it('should create a matrix with ones with the same size as original matrix', function () {
     const a = matrix([[1, 2, 3], [4, 5, 6]])
-    assert.deepStrictEqual(ones(math.size(a)).size(), a.size())
+    assert.deepStrictEqual(ones(size(a)), [[1, 1, 1], [1, 1, 1]])
+    assert.deepStrictEqual(ones(matrix(size(a))), matrix([[1, 1, 1], [1, 1, 1]]))
+    assert.deepStrictEqual(ones(size(a), 'dense'), matrix([[1, 1, 1], [1, 1, 1]]))
   })
 
-  // TODO: test with invalid input
+  // TODO: test with invalid inputs
 
   it('should LaTeX ones', function () {
     const expression = math.parse('ones(2)')

@@ -87,7 +87,7 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
                   typeOf(context))
             }
 
-            const s = size(context).valueOf()
+            const s = size(context)
             const childArgs = Object.create(args)
             childArgs.end = s[i]
 

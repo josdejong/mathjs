@@ -8,19 +8,19 @@ describe('matrix', function () {
   it('should create an empty matrix with one dimension if called without argument', function () {
     const a = matrix()
     assert.ok(a instanceof math.Matrix)
-    assert.deepStrictEqual(math.size(a), matrix([0], 'dense', 'number')) // TODO: wouldn't it be nicer if an empty matrix has zero dimensions?
+    assert.deepStrictEqual(math.size(a), [0]) // TODO: wouldn't it be nicer if an empty matrix has zero dimensions?
   })
 
   it('should create empty matrix, dense format', function () {
     const a = matrix('dense')
     assert.ok(a instanceof math.Matrix)
-    assert.deepStrictEqual(math.size(a), matrix([0], 'dense', 'number'))
+    assert.deepStrictEqual(math.size(a), [0])
   })
 
   it('should create empty matrix, dense format, number datatype', function () {
     const a = matrix('dense', 'number')
     assert.ok(a instanceof math.Matrix)
-    assert.deepStrictEqual(math.size(a), matrix([0], 'dense', 'number'))
+    assert.deepStrictEqual(math.size(a), [0])
     assert(a.datatype(), 'number')
   })
 
@@ -33,7 +33,7 @@ describe('matrix', function () {
     const b = matrix([[1, 2], [3, 4]])
     assert.ok(b instanceof math.Matrix)
     assert.deepStrictEqual(b, matrix([[1, 2], [3, 4]]))
-    assert.deepStrictEqual(math.size(b), matrix([2, 2], 'dense', 'number'))
+    assert.deepStrictEqual(math.size(b), [2, 2])
   })
 
   it('should be the identity if called with a matrix, dense format', function () {
@@ -41,7 +41,7 @@ describe('matrix', function () {
     const c = matrix(b, 'dense')
     assert.ok(c._data !== b._data) // data should be cloned
     assert.deepStrictEqual(c, matrix([[1, 2], [3, 4]], 'dense'))
-    assert.deepStrictEqual(math.size(c), matrix([2, 2], 'dense', 'number'))
+    assert.deepStrictEqual(math.size(c), [2, 2])
   })
 
   it('should be the identity if called with a matrix, dense format, number datatype', function () {
@@ -73,7 +73,7 @@ describe('matrix', function () {
     const d = matrix(math.range(1, 6))
     assert.ok(d instanceof math.Matrix)
     assert.deepStrictEqual(d, matrix([1, 2, 3, 4, 5]))
-    assert.deepStrictEqual(math.size(d), matrix([5], 'dense', 'number'))
+    assert.deepStrictEqual(math.size(d), [5])
   })
 
   it('should throw an error if called with an invalid argument', function () {

@@ -11,8 +11,8 @@ describe('factorial', function () {
     assert.strictEqual(factorial(3), 6)
     assert.strictEqual(factorial(4), 24)
     assert.strictEqual(factorial(5), 120)
-    assert.ok(!isFinite(factorial(Number.MAX_VALUE))) // shouldn't stall
-    assert.ok(!isFinite(factorial(Infinity)))
+    assert.ok(!Number.isFinite(factorial(Number.MAX_VALUE))) // shouldn't stall
+    assert.ok(!Number.isFinite(factorial(Infinity)))
   })
 
   it('should calculate the factorial of a bignumber', function () {
