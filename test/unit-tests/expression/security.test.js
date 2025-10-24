@@ -214,7 +214,7 @@ describe('security', function () {
           'i={isIndex:true,isScalar:f,size:g,min:h,max:h,dimension:k};' +
           'f=subset(subset([[[0]]],i),index(1,1,1))("console.log(\'hacked...\')");' +
           'f()')
-    }, /TypeError: Unexpected type of argument in function subset \(expected: Index, actual: Object, index: 1\)/)
+    }, /TypeError: Unexpected type of argument in function subset/)
   })
 
   it('should not allow accessing proto via dimension', function () {

@@ -92,6 +92,55 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
   }
 
   /**
+   * Get one of the full sections of the matrix of dimension one less,
+   * at a specific position among all such sections. Note that
+   * `M.layer(n)` is equivalent to `M.subset(new Index(n, ':', ':' ...))`
+   * with the proper number of wildcards to match the dimension of matrix M,
+   * but typically much faster.
+   *
+   * For example, if M is a vector, then `M.layer(0)` is its first element,
+   * whereas if M is an ordinary 2D matrix, then `M.layer(1)` is its second
+   * row.
+   */
+  Matrix.prototype.layer = function (which) {
+    // must be provided by each Matrix implementation
+    throw new Error('Cannot invoke layer on a Matrix interface')
+  }
+
+  /**
+   * Helper for all of the implementations' subset methods.
+   * Parses any string representations of Ranges in the index, filling in
+   * limits with the sizes of the corresponding dimensions, allowing for
+   * wildcards.
+   *
+   * @param {Index} index
+   * @param {number[]} size of the matrix
+   * @return {Index}  same index with string Ranges parsed and limits filled
+   */
+  Matrix.parseWithinIndex = function (index, size) {
+    let hadString = false
+    const ndim = index.size().length
+    const newRanges = []
+    for (let dim = 0; dim < ndim; ++dim) {
+      let spec = index.dimension(dim)
+      if (typeof spec === 'string') {
+        if (!Matrix.parseRange) {
+          throw new Error('Range has not injected its parser into Matrix')
+        }
+        hadString = true
+        spec = Matrix.parseRange(spec, size[dim] - 1)
+        if (spec === null) {
+          throw new Error(
+            `Cannot index matrix with '${spec}' in dimension ${dim}`)
+        }
+      }
+      newRanges.push(spec)
+    }
+    if (hadString) return index.create(newRanges)
+    return index
+  }
+
+  /**
    * Get a single element from the matrix.
    * @param {number[]} index   Zero-based index
    * @return {*} value

@@ -2,9 +2,9 @@ import { flatten, generalize, identify } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setIntersect'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix']
+const dependencies = ['typed', 'size', 'subset', 'compareNatural']
 
-export const createSetIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index, DenseMatrix }) => {
+export const createSetIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural }) => {
   /**
    * Create the intersection of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -28,13 +28,11 @@ export const createSetIntersect = /* #__PURE__ */ factory(name, dependencies, ({
    */
   return typed(name, {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
-      let result
-      if (subset(size(a1), new Index(0)) === 0 || subset(size(a2), new Index(0)) === 0) { // of any of them is empty, return empty
-        result = []
-      } else {
-        const b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))
-        const b2 = identify(flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural))
-        result = []
+      let result = []
+      // if both are nonempty, we must compute the intersection
+      if (size(a1)[0] !== 0 && size(a2)[0] !== 0) {
+        const b1 = identify(flatten(a1.valueOf()).sort(compareNatural))
+        const b2 = identify(flatten(a2.valueOf()).sort(compareNatural))
         for (let i = 0; i < b1.length; i++) {
           for (let j = 0; j < b2.length; j++) {
             if (compareNatural(b1[i].value, b2[j].value) === 0 && b1[i].identifier === b2[j].identifier) { // the identifier is always a decimal int
@@ -44,12 +42,13 @@ export const createSetIntersect = /* #__PURE__ */ factory(name, dependencies, ({
           }
         }
       }
+      result = generalize(result) // remove the identifiers
       // return an array, if both inputs were arrays
-      if (Array.isArray(a1) && Array.isArray(a2)) {
-        return generalize(result)
+      if (Array.isArray(a1)) {
+        if (Array.isArray(a2)) return result
+        return a2.create(result)
       }
-      // return a matrix otherwise
-      return new DenseMatrix(generalize(result))
+      return a1.create(result)
     }
   })
 })

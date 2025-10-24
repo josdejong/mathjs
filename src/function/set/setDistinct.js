@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory.js'
 const name = 'setDistinct'
 const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix']
 
-export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index, DenseMatrix }) => {
+export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural }) => {
   /**
    * Collect the distinct elements of a multiset.
    * A multi-dimension array will be converted to a single-dimension array before the operation.
@@ -27,12 +27,10 @@ export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   return typed(name, {
     'Array | Matrix': function (a) {
-      let result
-      if (subset(size(a), new Index(0)) === 0) { // if empty, return empty
-        result = []
-      } else {
-        const b = flatten(Array.isArray(a) ? a : a.toArray())
-        result = []
+      const result = []
+      // if empty, return empty
+      if (size(a)[0] !== 0) {
+        const b = flatten(a.valueOf())
         result.push(b[0])
         for (let i = 1; i < b.length; i++) {
           if (!result.some(item => compareNatural(b[i], item) === 0)) {
@@ -45,7 +43,7 @@ export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ 
         return result
       }
       // return a matrix otherwise
-      return new DenseMatrix(result)
+      return a.create(result)
     }
   })
 })

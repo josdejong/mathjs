@@ -2,9 +2,9 @@ import { flatten, generalize, identify } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setDifference'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix']
+const dependencies = ['typed', 'size', 'subset', 'compareNatural']
 
-export const createSetDifference = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index, DenseMatrix }) => {
+export const createSetDifference = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural }) => {
   /**
    * Create the difference of two (multi)sets: every element of set1, that is not the element of set2.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -28,15 +28,14 @@ export const createSetDifference = /* #__PURE__ */ factory(name, dependencies, (
    */
   return typed(name, {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
-      let result
-      if (subset(size(a1), new Index(0)) === 0) { // empty-anything=empty
-        result = []
-      } else if (subset(size(a2), new Index(0)) === 0) { // anything-empty=anything
-        return flatten(a1.toArray())
-      } else {
-        const b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))
-        const b2 = identify(flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural))
-        result = []
+      let result = []
+      // empty - anything = empty
+      if (size(a1)[0] !== 0) {
+        if (size(a2)[0] === 0) { // anything - empty = anything
+          return flatten(a1.valueOf())
+        }
+        const b1 = identify(flatten(a1.valueOf()).sort(compareNatural))
+        const b2 = identify(flatten(a2.valueOf()).sort(compareNatural))
         let inb2
         for (let i = 0; i < b1.length; i++) {
           inb2 = false
@@ -51,12 +50,13 @@ export const createSetDifference = /* #__PURE__ */ factory(name, dependencies, (
           }
         }
       }
+      result = generalize(result) // remove the identifiers
       // return an array, if both inputs were arrays
-      if (Array.isArray(a1) && Array.isArray(a2)) {
-        return generalize(result)
+      if (Array.isArray(a1)) {
+        if (Array.isArray(a2)) return result
+        return a2.create(result)
       }
-      // return a matrix otherwise
-      return new DenseMatrix(generalize(result))
+      return a1.create(result)
     }
   })
 })

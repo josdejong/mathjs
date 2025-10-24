@@ -52,18 +52,6 @@ describe('Index', function () {
     assert.deepStrictEqual(new Index(new ImmutableDenseMatrix([0, 10]))._dimensions, [new ImmutableDenseMatrix([0, 10])])
   })
 
-  it('should create an Index from an array with ranges', function () {
-    const index = Index.create([new Range(0, 10), new Range(4)])
-    assert(index instanceof Index)
-    assert.deepStrictEqual(index._dimensions, [new Range(0, 10), new Range(4)])
-  })
-
-  it('should create an Index from an array with sets', function () {
-    const index = Index.create([new ImmutableDenseMatrix([0, 10]), new ImmutableDenseMatrix([4])])
-    assert(index instanceof Index)
-    assert.deepStrictEqual(index._dimensions, [new ImmutableDenseMatrix([0, 10]), new ImmutableDenseMatrix([4])])
-  })
-
   it('should calculate the size of an Index', function () {
     assert.deepStrictEqual(new Index(new Range(0, 10)).size(), [10])
     assert.deepStrictEqual(new Index(new Range(0, 10, 2)).size(), [5])

@@ -145,6 +145,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    *                                  new matrix elements will be filled with zeros.
    */
   DenseMatrix.prototype.subset = function (index, replacement, defaultValue) {
+    if (isIndex(index)) index = Matrix.parseWithinIndex(index, this._size)
     switch (arguments.length) {
       case 1:
         return _get(this, index)
@@ -157,6 +158,19 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       default:
         throw new SyntaxError('Wrong number of arguments')
     }
+  }
+
+  /**
+   * Get one of the top-level sections of matrix one level down, e.g.
+   * the `which`th row of a 2D matrix, or the `which`th scalar of a
+   * vector.
+   *
+   * @memberof DenseMatrix
+   * @param {number} which
+   * @return {DenseMatrix | scalar} the `which`th element or full section
+   */
+  DenseMatrix.prototype.layer = function (which) {
+    return this.create(this._data[which], this._datatype)
   }
 
   /**

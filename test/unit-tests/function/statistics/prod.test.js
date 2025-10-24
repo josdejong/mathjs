@@ -90,8 +90,8 @@ describe('prod', function () {
     assert.throws(function () { prod([], 2) }, /not yet supported/)
   })
 
-  it('should throw an error if called with an empty array', function () {
-    assert.throws(function () { prod([]) })
+  it('should return 1 on an empty array', function () {
+    assert.strictEqual(prod([]), 1)
   })
 
   it('should throw an error if called with invalid type of arguments', function () {

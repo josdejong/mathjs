@@ -4,13 +4,18 @@ import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'prod'
-const dependencies = ['typed', 'config', 'multiplyScalar', 'numeric']
+const dependencies = [
+  'typed', 'config', 'multiplyScalar', 'numeric'
+]
 
-export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, numeric }) => {
+export const createProd = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, multiplyScalar, numeric
+}) => {
   /**
    * Compute the product of a matrix or a list with values.
-   * In case of a multidimensional array or matrix, the sum of all
-   * elements will be calculated.
+   * In case of a multidimensional array or matrix, product of all
+   * elements will be calculated, unless a second integer argument is given
+   * that specifies the dimension along which to multiply.
    *
    * Syntax:
    *
@@ -71,10 +76,7 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       prod = numeric(prod, safeNumberType(prod, config))
     }
 
-    if (prod === undefined) {
-      throw new Error('Cannot calculate prod of an empty array')
-    }
-
+    if (prod === undefined) return 1
     return prod
   }
 })

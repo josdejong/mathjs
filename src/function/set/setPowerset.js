@@ -2,12 +2,14 @@ import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setPowerset'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index']
+const dependencies = ['typed', 'size', 'subset', 'compareNatural']
 
-export const createSetPowerset = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index }) => {
+export const createSetPowerset = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural }) => {
   /**
    * Create the powerset of a (multi)set. (The powerset contains very possible subsets of a (multi)set.)
    * A multi-dimension array will be converted to a single-dimension array before the operation.
+   * Note this function always returns an Array, regardless of the type
+   * of the input collection representing the set.
    *
    * Syntax:
    *
@@ -26,10 +28,10 @@ export const createSetPowerset = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   return typed(name, {
     'Array | Matrix': function (a) {
-      if (subset(size(a), new Index(0)) === 0) { // if empty, return empty
+      if (size(a)[0] === 0) { // if empty, return empty
         return []
       }
-      const b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
+      const b = flatten(a.valueOf()).sort(compareNatural)
       const result = []
       let number = 0
       while (number.toString(2).length <= b.length) {

@@ -2,9 +2,9 @@ import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setMultiplicity'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index']
+const dependencies = ['typed', 'size', 'subset', 'compareNatural']
 
-export const createSetMultiplicity = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index }) => {
+export const createSetMultiplicity = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural }) => {
   /**
    * Count the multiplicity of an element in a multiset.
    * A multi-dimension array will be converted to a single-dimension array before the operation.
@@ -28,10 +28,10 @@ export const createSetMultiplicity = /* #__PURE__ */ factory(name, dependencies,
    */
   return typed(name, {
     'number | BigNumber | Fraction | Complex, Array | Matrix': function (e, a) {
-      if (subset(size(a), new Index(0)) === 0) { // if empty, return 0
+      if (size(a)[0] === 0) { // if empty, return 0
         return 0
       }
-      const b = flatten(Array.isArray(a) ? a : a.toArray())
+      const b = flatten(a.valueOf())
       let count = 0
       for (let i = 0; i < b.length; i++) {
         if (compareNatural(b[i], e) === 0) {

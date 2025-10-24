@@ -67,12 +67,13 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
         this._dimensions.push(Number(arg))
       } else if (argType === 'string') {
         // object property (arguments.count should be 1)
+        // or string notation for a Range, possibly with elided limits
+        // (see documention for `index` function) to allow wildcard
         this._dimensions.push(arg)
       } else {
         throw new TypeError('Dimension must be an Array, Matrix, number, bigint, string, or Range')
       }
       this._sourceSize.push(sourceSize)
-      // TODO: implement support for wildcard '*'
     }
   }
 
@@ -116,7 +117,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @return {Index} index
    * @private
    */
-  Index.create = function (ranges) {
+  Index.prototype.create = function (ranges) {
     const index = new Index()
     Index.apply(index, ranges)
     return index
@@ -290,7 +291,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @return {Index}
    */
   Index.fromJSON = function (json) {
-    return Index.create(json.dimensions)
+    return new Index(...json.dimensions)
   }
 
   return Index

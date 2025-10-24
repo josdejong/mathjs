@@ -307,25 +307,33 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Note that currently only ordinary Javascript floating-point number
    * items are permitted for start, step, and end in this string notation.
    * For example str='0:2:11'.
+   * If the string begins with a ':', 0 is filled in for the first value.
+   * An optional second argument gives the value to use for the last value
+   * if the string ends with a ':'.
+   *
    * @memberof Range
    * @param {string} str
+   * @param {?number} limit
    * @return {Range | null} range
    */
-  Range.parse = function (str) {
+  Range.parse = function (str, limit = NaN) {
     if (typeof str !== 'string') {
       return null
     }
-
-    const args = str.split(':')
-    const nums = args.map(function (arg) {
-      return parseFloat(arg)
-    })
-
-    if (nums.length < 2 || nums.length > 3) return null
-    if (nums.some(num => isNaN(num))) return null
-    if (nums.length === 2) return new Range({ from: nums[0], to: nums[1] })
-    return new Range({ from: nums[0], by: nums[1], to: nums[2] })
+    const args = str.split(':').map(term => term.trim())
+    const last = args.length - 1
+    if (last < 1 || last > 2) return null
+    const from = args[0].length === 0 ? 0 : parseFloat(args[0])
+    if (isNaN(from)) return null
+    const to = args[last].length === 0 ? limit : parseFloat(args[last])
+    if (isNaN(last)) return null
+    if (last === 1) return new Range({ from, to })
+    const by = parseFloat(args[1])
+    if (isNaN(by)) return null
+    return new Range({ from, by, to })
   }
+  // inject Range.parse into parent class for use by all Matrix implementations
+  Matrix.parseRange = Range.parse
 
   /**
    * Get the datatype of the entries of the range.
@@ -433,7 +441,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     const wanted = index.dimension(0)
     const sizes = index.size()
     if (isNumber(wanted)) {
-      const item = this.elt(wanted)
+      const item = this.layer(wanted)
       if (sizes.length === 1) return wanted
       if (!Index) {
         throw new Error('No Indexing into 2D Range without Matrix support')
@@ -456,23 +464,26 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
       throw new Error('Cannot subset a Range by a longer Range')
     }
     if (!Number.isFinite(wanted.for)) {
-      return new Range({ from: this.elt(wanted.from), by: this.by * wanted.by })
+      return new Range({
+        from: this.layer(wanted.from),
+        by: this.by * wanted.by
+      })
     }
     return new Range({
-      from: this.elt(wanted.from),
-      to: this.elt(wanted.to),
+      from: this.layer(wanted.from),
+      to: this.layer(wanted.to),
       by: this.by * wanted.by
     })
   }
 
   /**
-   * Get the element at an integer position in a Range.
+   * Get the entry at an integer position in a Range.
    * @memberof Range
    * @param {number} which   Zero-based position
    * @return {*} value
    */
-  Range.prototype.elt = function (index) {
-    if (index < 0 || index >= this.length) {
+  Range.prototype.layer = function (index) {
+    if (index < 0 || index >= this.for) {
       throw new RangeError('index out of Range')
     }
     return this.plus(this.from, this.times(index, this.by))
@@ -485,7 +496,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {*} value
    */
   Range.prototype.get = function (index) {
-    const item = this.elt(index[0])
+    const item = this.layer(index[0])
     if (index.length === 1) return item
     return item.get(index.slice(1))
   }

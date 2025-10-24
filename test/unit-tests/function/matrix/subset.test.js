@@ -244,10 +244,11 @@ describe('subset', function () {
       assert.throws(function () { subset('hello', index(10), '!', 'foo') }, /Single character expected as defaultValue/)
     })
 
-    it('should throw an error if in case of an invalid index type', function () {
-      assert.throws(function () { subset('hello', 2) }, /TypeError: Unexpected type of argument/)
-      assert.throws(function () { subset('hello', 2, 'A') }, /TypeError: Unexpected type of argument/)
-      assert.throws(function () { subset('hello', 2, 'A', 'B') }, /TypeError: Unexpected type of argument/)
+    it('should handle integer indices', function () {
+      // These now all work:
+      assert.strictEqual(subset('hello', 2), 'l')
+      assert.strictEqual(subset('hello', 2, 'A'), 'heAlo')
+      assert.strictEqual(subset('hello', 2, 'A', 'B'), 'heAlo')
     })
   })
 
@@ -258,9 +259,10 @@ describe('subset', function () {
   })
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () { subset([1, 2], [0]) }, /TypeError: Unexpected type of argument/)
-    // assert.throws(function () {subset(new Date(), index(0))}, /TypeError: Unexpected type of argument/) // FIXME: should fail too. Problem is, Date is also an Object
-    // assert.throws(function () {subset(/foo/, index(0))}, /TypeError: Unexpected type of argument/) // FIXME: should fail too. Problem is, Date is also an Object
+    // This first one now works:
+    assert.strictEqual(subset([1, 2], [0]), 1)
+    // assert.throws(function () {subset(new Date(), index(0))}, /TypeError: Unexpected type of argument/) // FIXME: should fail. Problem is, Date is also an Object
+    // assert.throws(function () {subset(/foo/, index(0))}, /TypeError: Unexpected type of argument/) // FIXME: should fail too. Problem is, RegExp is also an Object
   })
 
   it('should LaTeX subset', function () {

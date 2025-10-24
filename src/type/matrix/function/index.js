@@ -18,7 +18,16 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * - A number
    * - A string for getting/setting an object property
-   * - An instance of `Range`
+   * - An instance of `Range`, or a string that can be parsed into a Range
+   *   (e.g. `'2:4'`) Note that in this form (unlike `math.range(2, 4)`),
+   *   the end index is _included_, for consistency with other ranges in
+   *   the mathjs parser. Moreover, if the first endpoint in the range is
+   *   missing, it is filled in as 0, and if the last endpoint in the range
+   *   is missing, it is filled in with the largest valid value in that
+   *   dimension (when the Index is used to access a collection).
+   *   Thus `:3` denotes entries 0 through 3 inclusive, `2:` selects entries
+   *   from 2 through the end of the collection, and `:` selects the entire
+   *   extent of a dimension.
    * - A one-dimensional Array or a Matrix with numbers or booleans
    *
    * Indexes must be zero-based, integer numbers.

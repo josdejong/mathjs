@@ -242,6 +242,14 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
   }
 
   /**
+   * Obtaining a layer (i.e. row) of a SparseMatrix is currently not
+   * supported, as only 2D SparseMatrix is implemented.
+   */
+  SparseMatrix.prototype.layer = function () {
+    throw new Error('SparseMatrix of dimensions != 2 not yet implemented')
+  }
+
+  /**
    * Get a subset of the matrix, or replace a subset of the matrix.
    *
    * Usage:

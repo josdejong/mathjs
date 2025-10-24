@@ -95,7 +95,7 @@ const knownProblems = new Set([
   'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
   'random', 'pickRandom', 'kldivergence',
   'parser', 'compile', 're', 'im',
-  'subset', 'squeeze', 'rotationMatrix',
+  'squeeze', 'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
   'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff',
   'nthRoots', 'nthRoot',
