@@ -10,6 +10,7 @@ const SymbolNode = math.SymbolNode
 const AccessorNode = math.AccessorNode
 const IndexNode = math.IndexNode
 const RangeNode = math.RangeNode
+const ConditionalNode = math.ConditionalNode
 
 describe('AccessorNode', function () {
   it('should create a AccessorNode', function () {
@@ -486,11 +487,12 @@ describe('AccessorNode', function () {
   })
 
   it('should stringify an AccessorNode with parentheses and optional chaining', function () {
-    const a = new SymbolNode('a')
-    const b = new SymbolNode('b')
-    const add = new OperatorNode('+', 'add', [a, b])
+    const condition = new ConstantNode(1)
+    const obj1 = new SymbolNode('obj1')
+    const obj2 = new SymbolNode('obj2')
+    const add = new ConditionalNode(condition, obj1, obj2)
     const bar = new AccessorNode(add, new IndexNode([new ConstantNode('bar')]), true)
-    assert.strictEqual(bar.toString(), '(a + b)?.["bar"]')
+    assert.strictEqual(bar.toString(), '(1 ? obj1 : obj2)?.["bar"]')
   })
 
   it('should stringify nested AccessorNode', function () {
@@ -500,11 +502,25 @@ describe('AccessorNode', function () {
     assert.strictEqual(bar.toString(), 'a["foo"]["bar"]')
   })
 
-  it('should stringify nested AccessorNode with optional chaining', function () {
+  it('should stringify nested AccessorNode using optional chaining', function () {
     const a = new SymbolNode('a')
     const foo = new AccessorNode(a, new IndexNode([new ConstantNode('foo')]), true)
     const bar = new AccessorNode(foo, new IndexNode([new ConstantNode('bar')]), true)
     assert.strictEqual(bar.toString(), 'a?.["foo"]?.["bar"]')
+  })
+
+  it('should stringify nested AccessorNode with dot-notation', function () {
+    const a = new SymbolNode('a')
+    const foo = new AccessorNode(a, new IndexNode([new ConstantNode('foo')], true))
+    const bar = new AccessorNode(foo, new IndexNode([new ConstantNode('bar')], true))
+    assert.strictEqual(bar.toString(), 'a.foo.bar')
+  })
+
+  it('should stringify nested AccessorNode with dot-notation using optional chaining', function () {
+    const a = new SymbolNode('a')
+    const foo = new AccessorNode(a, new IndexNode([new ConstantNode('foo')], true), true)
+    const bar = new AccessorNode(foo, new IndexNode([new ConstantNode('bar')], true), true)
+    assert.strictEqual(bar.toString(), 'a?.foo?.bar')
   })
 
   it('should stringify an AccessorNode with custom toString', function () {

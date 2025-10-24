@@ -52,7 +52,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
      *     using `a?.b`, or `a?.["b"] with bracket notation.
      *     Forces evaluate to undefined if the given object is undefined or null.
      */
-    constructor (object, index, optionalChaining) {
+    constructor (object, index, optionalChaining = false) {
       super()
       if (!isNode(object)) {
         throw new TypeError('Node expected for parameter "object"')
@@ -63,7 +63,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
 
       this.object = object
       this.index = index
-      this.optionalChaining = optionalChaining || false
+      this.optionalChaining = optionalChaining
     }
 
     // readonly property name
@@ -105,7 +105,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
             const ctx = context || {}
             const object = evalObject(scope, args, ctx)
 
-            if (object === null || object === undefined) {
+            if (object == null) {
               ctx.optionalShortCircuit = true
               return undefined
             }
@@ -118,7 +118,7 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
             const ctx = context || {}
             const object = evalObject(scope, args, ctx)
 
-            if (object === null || object === undefined) {
+            if (object == null) {
               ctx.optionalShortCircuit = true
               return undefined
             }
@@ -217,8 +217,8 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
       if (needParenthesis(this.object)) {
         object = '(' + object + ')'
       }
-
-      return object + (this.optionalChaining ? '?.' : '') + this.index.toString(options)
+      const optionalChaining = this.optionalChaining ? (this.index.dotNotation ? '?' : '?.') : ''
+      return object + optionalChaining + this.index.toString(options)
     }
 
     /**
