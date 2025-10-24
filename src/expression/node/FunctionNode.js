@@ -241,30 +241,14 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         const prop = this.fn.index.getObjectProperty()
         const rawArgs = this.args
 
-        if (fromOptionalChaining) {
-          return function evalFunctionNode (scope, args, context) {
-            const object = evalObject(scope, args, context)
-
-            // Optional chaining: if the base object is nullish, short-circuit to undefined
-            if (object == null) {
-              return undefined
-            }
-
-            const fn = getSafeMethod(object, prop)
-
-            if (fn?.rawArgs) {
-              // "Raw" evaluation
-              return fn(rawArgs, math, createSubScope(scope, args))
-            } else {
-              // "regular" evaluation
-              const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
-              return fn.apply(object, values)
-            }
-          }
-        }
-
         return function evalFunctionNode (scope, args, context) {
           const object = evalObject(scope, args, context)
+
+          // Optional chaining: if the base object is nullish, short-circuit to undefined
+          if (fromOptionalChaining && object == null) {
+            return undefined
+          }
+
           const fn = getSafeMethod(object, prop)
 
           if (fn?.rawArgs) {
