@@ -63,7 +63,11 @@ export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * Calculate the nth roots of a value.
    * An nth root of a positive real number A,
    * is a positive real solution of the equation "x^root = A".
-   * This function returns an array of complex values.
+   * This function returns an array of Complex values.
+   * Note that currently the precision of Complex numbers are limited
+   * to the precision of a 64-bit IEEE floating point, so even if the input
+   * is a BigNumber with greater precision, rounding to 64 bits will occur
+   * in computing the nth roots.
    *
    * Syntax:
    *

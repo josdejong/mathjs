@@ -10,6 +10,7 @@ const dependencies = [
   'config',
   'mathWithTransform',
   'matrix',
+  'isBounded',
   '?fraction',
   '?bignumber',
   'AccessorNode',
@@ -27,6 +28,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   config,
   mathWithTransform,
   matrix,
+  isBounded,
   fraction,
   bignumber,
   AccessorNode,
@@ -141,7 +143,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   // and when both numerator and denominator are small enough
   function _exactFraction (n, options) {
     const exactFractions = (options && options.exactFractions !== false)
-    if (exactFractions && isFinite(n) && fraction) {
+    if (exactFractions && isBounded(n) && fraction) {
       const f = fraction(n)
       const fractionsLimit = (options && typeof options.fractionsLimit === 'number')
         ? options.fractionsLimit

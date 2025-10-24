@@ -534,6 +534,58 @@ export interface MathJsInstance extends MathJsFactory {
   SQRT2: number
   tau: number
 
+  // Physical constants
+  atomicMass: Unit
+  avogadro: Unit
+  bohrMagneton: Unit
+  bohrRadius: Unit
+  boltzmann: Unit
+  classicalElectronRadius: Unit
+  conductanceQuantum: Unit
+  coulomb: Unit
+  deuteronMass: Unit
+  efimovFactor: Unit
+  electricConstant: Unit
+  electronMass: Unit
+  elementaryCharge: Unit
+  faraday: Unit
+  fermiCoupling: Unit
+  fineStructure: Unit
+  firstRadiation: Unit
+  gasConstant: Unit
+  gravitationConstant: Unit
+  gravity: Unit
+  hartreeEnergy: Unit
+  inverseConductanceQuantum: Unit
+  klitzing: Unit
+  loschmidt: Unit
+  magneticConstant: Unit
+  magneticFluxQuantum: Unit
+  molarMass: Unit
+  molarMassC12: Unit
+  molarPlanckConstant: Unit
+  molarVolume: Unit
+  neutronMass: Unit
+  nuclearMagneton: Unit
+  planckCharge: Unit
+  planckConstant: Unit
+  planckLength: Unit
+  planckMass: Unit
+  planckTemperature: Unit
+  planckTime: Unit
+  protonMass: Unit
+  quantumOfCirculation: Unit
+  reducedPlanckConstant: Unit
+  rydberg: Unit
+  sackurTetrode: Unit
+  secondRadiation: Unit
+  speedOfLight: Unit
+  stefanBoltzmann: Unit
+  thomsonCrossSection: Unit
+  vacuumImpedance: Unit
+  weakMixingAngle: Unit
+  wienDisplacement: Unit
+
   // Class-like constructors
   Node: NodeCtor
   AccessorNode: AccessorNodeCtor
@@ -1503,9 +1555,18 @@ export interface MathJsInstance extends MathJsFactory {
    * @return The nth root of a
    */
   nthRoot(
-    a: number | BigNumber | MathCollection | Complex,
+    a: number | BigNumber | Complex,
     root?: number | BigNumber
-  ): number | Complex | MathCollection
+  ): number | Complex
+  nthRoot(M: MathCollection, root?: number | BigNumber): MathCollection
+
+  /**
+   * Calculate all nth roots of a value.
+   * @param a  Value for which to calculate the nth roots
+   * @param n  Which roots. Default value: 2.
+   * @return   An array of Complex numbers giving the n nth roots of a
+   */
+  nthRoots(a: number | BigNumber | Complex, n?: number): Array<Complex>
 
   /**
    * Calculates the power of x to y, x ^ y. Matrix exponentiation is
@@ -2098,6 +2159,13 @@ export interface MathJsInstance extends MathJsFactory {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     callback: (value: any, index: number[], matrix: T) => void
   ): void
+
+  /**
+   * Return the (name of the) data type of the elements of matrix, or 'mixed'.
+   * @param m  the matrix
+   * @returns   A string specifying the data type of the elements of m
+   */
+  getMatrixDataType(m: MathCollection): string
 
   /**
    * Calculate the inverse of a square matrix.
@@ -3644,6 +3712,21 @@ export interface MathJsInstance extends MathJsFactory {
   hasNumericValue(x: any): boolean | boolean[]
 
   /**
+   * Test whether a value is bounded
+   * @param x Value to be tested
+   * @returns Boolean  true when x represents a bounded mathematical entity
+   */
+  isBounded(x: MathType): boolean
+
+  /**
+   * Test whether a value is finite, elementwise on collections
+   * @param x Value to be tested
+   * @returns Boolean | MathCollection
+   */
+  isFinite(x: MathScalarType): boolean
+  isFinite(A: MathCollection): MathCollection
+
+  /**
    * Test whether a value is an integer number. The function supports
    * number, BigNumber, and Fraction. The function is evaluated
    * element-wise in case of Array or Matrix input.
@@ -3779,268 +3862,44 @@ export interface MathJsFactory {
 }
 
 export const {
+  // system dependencies
   all,
-  typedDependencies,
   ResultSetDependencies,
+  FibonacciHeapDependencies,
+  SpaDependencies,
   BigNumberDependencies,
   ComplexDependencies,
   FractionDependencies,
   RangeDependencies,
-  MatrixDependencies,
   DenseMatrixDependencies,
-  cloneDependencies,
-  isIntegerDependencies,
-  isNegativeDependencies,
-  isNumericDependencies,
-  hasNumericValueDependencies,
-  isPositiveDependencies,
-  isZeroDependencies,
-  isNaNDependencies,
-  typeOfDependencies,
-  typeofDependencies,
-  equalScalarDependencies,
-  SparseMatrixDependencies,
-  numberDependencies,
-  stringDependencies,
-  booleanDependencies,
-  bignumberDependencies,
-  complexDependencies,
-  fractionDependencies,
-  matrixDependencies,
-  splitUnitDependencies,
-  unaryMinusDependencies,
-  unaryPlusDependencies,
-  absDependencies,
-  mapSlicesDependencies,
-  addScalarDependencies,
-  cbrtDependencies,
-  ceilDependencies,
-  cubeDependencies,
-  expDependencies,
-  expm1Dependencies,
-  fixDependencies,
-  floorDependencies,
-  gcdDependencies,
-  lcmDependencies,
-  log10Dependencies,
-  log2Dependencies,
-  modDependencies,
-  multiplyScalarDependencies,
-  multiplyDependencies,
-  nthRootDependencies,
-  signDependencies,
-  sqrtDependencies,
-  squareDependencies,
-  subtractDependencies,
-  xgcdDependencies,
-  dotMultiplyDependencies,
-  bitAndDependencies,
-  bitNotDependencies,
-  bitOrDependencies,
-  bitXorDependencies,
-  argDependencies,
-  conjDependencies,
-  imDependencies,
-  reDependencies,
-  notDependencies,
-  orDependencies,
-  xorDependencies,
-  concatDependencies,
-  columnDependencies,
-  crossDependencies,
-  diagDependencies,
-  eyeDependencies,
-  filterDependencies,
-  flattenDependencies,
-  forEachDependencies,
-  getMatrixDataTypeDependencies,
-  identityDependencies,
-  kronDependencies,
-  mapDependencies,
-  onesDependencies,
-  rangeDependencies,
-  reshapeDependencies,
-  resizeDependencies,
-  rowDependencies,
-  sizeDependencies,
-  squeezeDependencies,
-  subsetDependencies,
-  transposeDependencies,
-  ctransposeDependencies,
-  zerosDependencies,
-  erfDependencies,
-  modeDependencies,
-  prodDependencies,
-  formatDependencies,
-  printDependencies,
-  toDependencies,
-  toBestDependencies,
-  isPrimeDependencies,
-  numericDependencies,
-  divideScalarDependencies,
-  powDependencies,
-  roundDependencies,
-  logDependencies,
-  log1pDependencies,
-  nthRootsDependencies,
-  dotPowDependencies,
-  dotDivideDependencies,
-  lsolveDependencies,
-  usolveDependencies,
-  leftShiftDependencies,
-  rightArithShiftDependencies,
-  rightLogShiftDependencies,
-  andDependencies,
-  compareDependencies,
-  compareNaturalDependencies,
-  compareTextDependencies,
-  equalDependencies,
-  equalTextDependencies,
-  smallerDependencies,
-  smallerEqDependencies,
-  largerDependencies,
-  largerEqDependencies,
-  deepEqualDependencies,
-  unequalDependencies,
-  partitionSelectDependencies,
-  sortDependencies,
-  maxDependencies,
-  minDependencies,
   ImmutableDenseMatrixDependencies,
+  SparseMatrixDependencies,
   IndexDependencies,
-  FibonacciHeapDependencies,
-  SpaDependencies,
-  UnitDependencies,
-  unitDependencies,
-  sparseDependencies,
-  createUnitDependencies,
-  acosDependencies,
-  acoshDependencies,
-  acotDependencies,
-  acothDependencies,
-  acscDependencies,
-  acschDependencies,
-  asecDependencies,
-  asechDependencies,
-  asinDependencies,
-  asinhDependencies,
-  atanDependencies,
-  atan2Dependencies,
-  atanhDependencies,
-  cosDependencies,
-  coshDependencies,
-  cotDependencies,
-  cothDependencies,
-  cscDependencies,
-  cschDependencies,
-  secDependencies,
-  sechDependencies,
-  sinDependencies,
-  sinhDependencies,
-  tanDependencies,
-  tanhDependencies,
-  setCartesianDependencies,
-  setDifferenceDependencies,
-  setDistinctDependencies,
-  setIntersectDependencies,
-  setIsSubsetDependencies,
-  setMultiplicityDependencies,
-  setPowersetDependencies,
-  setSizeDependencies,
-  setSymDifferenceDependencies,
-  setUnionDependencies,
-  zpk2tfDependencies,
-  freqzDependencies,
-  addDependencies,
-  hypotDependencies,
-  normDependencies,
-  dotDependencies,
-  traceDependencies,
-  indexDependencies,
-  NodeDependencies,
-  AccessorNodeDependencies,
-  ArrayNodeDependencies,
-  AssignmentNodeDependencies,
-  BlockNodeDependencies,
-  ConditionalNodeDependencies,
-  ConstantNodeDependencies,
-  FunctionAssignmentNodeDependencies,
-  IndexNodeDependencies,
-  ObjectNodeDependencies,
-  OperatorNodeDependencies,
-  ParenthesisNodeDependencies,
-  RangeNodeDependencies,
-  RelationalNodeDependencies,
-  SymbolNodeDependencies,
-  FunctionNodeDependencies,
-  parseDependencies,
-  compileDependencies,
-  evaluateDependencies,
-  evalDependencies,
   ParserDependencies,
-  parserDependencies,
-  lupDependencies,
-  qrDependencies,
-  sluDependencies,
-  lusolveDependencies,
   HelpDependencies,
   ChainDependencies,
-  helpDependencies,
-  chainDependencies,
-  detDependencies,
-  invDependencies,
-  expmDependencies,
-  sqrtmDependencies,
-  sylvesterDependencies,
-  schurDependencies,
-  lyapDependencies,
-  divideDependencies,
-  distanceDependencies,
-  intersectDependencies,
-  sumDependencies,
-  meanDependencies,
-  medianDependencies,
-  madDependencies,
-  varianceDependencies,
-  varDependencies,
-  quantileSeqDependencies,
-  stdDependencies,
-  combinationsDependencies,
-  gammaDependencies,
-  factorialDependencies,
-  kldivergenceDependencies,
-  multinomialDependencies,
-  permutationsDependencies,
-  pickRandomDependencies,
-  randomDependencies,
-  randomIntDependencies,
-  stirlingS2Dependencies,
-  bellNumbersDependencies,
-  catalanDependencies,
-  compositionDependencies,
-  simplifyDependencies,
-  derivativeDependencies,
-  rationalizeDependencies,
   reviverDependencies,
+  versionDependencies,
+
+  // core function dependencies
+  typedDependencies,
+  // create and factory do not have dependencies
+
+  // constant dependencies
   eDependencies,
-  EDependencies,
-  falseDependencies,
+  piDependencies,
   iDependencies,
   InfinityDependencies,
-  LN10Dependencies,
   LN2Dependencies,
-  LOG10EDependencies,
+  LN10Dependencies,
   LOG2EDependencies,
-  NaNDependencies,
-  nullDependencies,
+  LOG10EDependencies,
   phiDependencies,
-  piDependencies,
-  PIDependencies,
   SQRT1_2Dependencies,
   SQRT2Dependencies,
   tauDependencies,
-  trueDependencies,
-  versionDependencies,
+
+  // physical constant dependencies
   atomicMassDependencies,
   avogadroDependencies,
   bohrMagnetonDependencies,
@@ -4051,7 +3910,6 @@ export const {
   coulombDependencies,
   deuteronMassDependencies,
   efimovFactorDependencies,
-  eigsDependencies,
   electricConstantDependencies,
   electronMassDependencies,
   elementaryChargeDependencies,
@@ -4092,6 +3950,340 @@ export const {
   vacuumImpedanceDependencies,
   weakMixingAngleDependencies,
   wienDisplacementDependencies,
+
+  // constructor dependencies
+  NodeDependencies,
+  AccessorNodeDependencies,
+  ArrayNodeDependencies,
+  AssignmentNodeDependencies,
+  BlockNodeDependencies,
+  ConditionalNodeDependencies,
+  ConstantNodeDependencies,
+  FunctionAssignmentNodeDependencies,
+  FunctionNodeDependencies,
+  IndexNodeDependencies,
+  ObjectNodeDependencies,
+  OperatorNodeDependencies,
+  ParenthesisNodeDependencies,
+  RangeNodeDependencies,
+  RelationalNodeDependencies,
+  SymbolNodeDependencies,
+  MatrixDependencies,
+  UnitDependencies,
+
+  // construction function dependencies
+  bignumberDependencies,
+  bigintDependencies,
+  booleanDependencies,
+  chainDependencies,
+  complexDependencies,
+  createUnitDependencies,
+  fractionDependencies,
+  indexDependencies,
+  matrixDependencies,
+  numberDependencies,
+  numericDependencies,
+  sparseDependencies,
+  splitUnitDependencies,
+  stringDependencies,
+  unitDependencies,
+
+  // expression function dependencies
+  compileDependencies,
+  evaluateDependencies,
+  helpDependencies,
+  parseDependencies,
+  parserDependencies,
+
+  // algebra dependencies
+  derivativeDependencies,
+  lsolveDependencies,
+  lupDependencies,
+  lusolveDependencies,
+  polynomialRootDependencies,
+  qrDependencies,
+  rationalizeDependencies,
+  simplifyDependencies,
+  simplifyConstantDependencies,
+  simplifyCoreDependencies,
+  symbolicEqualDependencies,
+  leafCountDependencies,
+  resolveDependencies,
+  sluDependencies,
+  usolveDependencies,
+
+  // arithmetic function dependencies
+  absDependencies,
+  addDependencies,
+  addScalarDependencies,
+  cbrtDependencies,
+  ceilDependencies,
+  cubeDependencies,
+  divideDependencies,
+  divideScalarDependencies,
+  dotDivideDependencies,
+  dotMultiplyDependencies,
+  dotPowDependencies,
+  expDependencies,
+  expm1Dependencies,
+  fixDependencies,
+  floorDependencies,
+  gcdDependencies,
+  hypotDependencies,
+  lcmDependencies,
+  logDependencies,
+  log10Dependencies,
+  log1pDependencies,
+  log2Dependencies,
+  matrixFromRowsDependencies,
+  matrixFromColumnsDependencies,
+  matrixFromFunctionDependencies,
+  modDependencies,
+  multiplyDependencies,
+  multiplyScalarDependencies,
+  normDependencies,
+  nthRootDependencies,
+  nthRootsDependencies,
+  powDependencies,
+  roundDependencies,
+  signDependencies,
+  sqrtDependencies,
+  squareDependencies,
+  subtractDependencies,
+  unaryMinusDependencies,
+  unaryPlusDependencies,
+  xgcdDependencies,
+
+  // bitwise dependencies
+  bitAndDependencies,
+  bitNotDependencies,
+  bitOrDependencies,
+  bitXorDependencies,
+  leftShiftDependencies,
+  rightArithShiftDependencies,
+  rightLogShiftDependencies,
+
+  // combinatorics dependencies
+  bellNumbersDependencies,
+  catalanDependencies,
+  compositionDependencies,
+  stirlingS2Dependencies,
+
+  // complex dependencies
+  argDependencies,
+  conjDependencies,
+  imDependencies,
+  reDependencies,
+
+  // geometry dependencies
+  distanceDependencies,
+  intersectDependencies,
+
+  // logical dependencies
+  andDependencies,
+  notDependencies,
+  orDependencies,
+  xorDependencies,
+
+  // matrix function dependencies
+  mapSlicesDependencies,
+  // array is deprecated
+  concatDependencies,
+  crossDependencies,
+  ctransposeDependencies,
+  detDependencies,
+  diffDependencies,
+  diagDependencies,
+  dotDependencies,
+  eigsDependencies,
+  expmDependencies,
+  sylvesterDependencies,
+  schurDependencies,
+  lyapDependencies,
+  identityDependencies,
+  filterDependencies,
+  flattenDependencies,
+  forEachDependencies,
+  getMatrixDataTypeDependencies,
+  invDependencies,
+  kronDependencies,
+  mapDependencies,
+  onesDependencies,
+  partitionSelectDependencies,
+  pinvDependencies,
+  rangeDependencies,
+  reshapeDependencies,
+  resizeDependencies,
+  rotationMatrixDependencies,
+  rowDependencies,
+  columnDependencies,
+  rotateDependencies,
+  sizeDependencies,
+  sortDependencies,
+  sqrtmDependencies,
+  squeezeDependencies,
+  subsetDependencies,
+  traceDependencies,
+  transposeDependencies,
+  zerosDependencies,
+  fftDependencies,
+  ifftDependencies,
+
+  // probability dependencies
+  combinationsDependencies,
+  factorialDependencies,
+  gammaDependencies,
+  kldivergenceDependencies,
+  lgammaDependencies,
+  multinomialDependencies,
+  permutationsDependencies,
+  pickRandomDependencies,
+  randomDependencies,
+  randomIntDependencies,
+
+  // relational function dependencies
+  compareDependencies,
+  compareNaturalDependencies,
+  compareTextDependencies,
+  deepEqualDependencies,
+  equalDependencies,
+  equalScalarDependencies,
+  equalTextDependencies,
+  largerDependencies,
+  largerEqDependencies,
+  smallerDependencies,
+  smallerEqDependencies,
+  unequalDependencies,
+
+  // set function dependencies
+  setCartesianDependencies,
+  setDifferenceDependencies,
+  setDistinctDependencies,
+  setIntersectDependencies,
+  setIsSubsetDependencies,
+  setMultiplicityDependencies,
+  setPowersetDependencies,
+  setSizeDependencies,
+  setSymDifferenceDependencies,
+  setUnionDependencies,
+
+  // signal function dependencies
+  zpk2tfDependencies,
+  freqzDependencies,
+
+  // special function dependencies
+  erfDependencies,
+  zetaDependencies,
+
+  // statistics function dependencies
+  madDependencies,
+  maxDependencies,
+  meanDependencies,
+  medianDependencies,
+  minDependencies,
+  modeDependencies,
+  prodDependencies,
+  quantileSeqDependencies,
+  stdDependencies,
+  sumDependencies,
+  countDependencies,
+  cumsumDependencies,
+  varianceDependencies,
+  corrDependencies,
+
+  // string function dependencies
+  formatDependencies,
+  printDependencies,
+
+  // trigonometry function dependencies
+  acosDependencies,
+  acoshDependencies,
+  acotDependencies,
+  acothDependencies,
+  acscDependencies,
+  acschDependencies,
+  asecDependencies,
+  asechDependencies,
+  asinDependencies,
+  asinhDependencies,
+  atanDependencies,
+  atan2Dependencies,
+  atanhDependencies,
+  cosDependencies,
+  coshDependencies,
+  cotDependencies,
+  cothDependencies,
+  cscDependencies,
+  cschDependencies,
+  secDependencies,
+  sechDependencies,
+  sinDependencies,
+  sinhDependencies,
+  tanDependencies,
+  tanhDependencies,
+
+  // unit function dependencies
+  toDependencies,
+  toBestDependencies,
+
+  // util function dependencies
+  isNumberDependencies,
+  isBigNumberDependencies,
+  isBigIntDependencies,
+  isComplexDependencies,
+  isFractionDependencies,
+  isUnitDependencies,
+  isStringDependencies,
+  isArrayDependencies,
+  isMatrixDependencies,
+  isCollectionDependencies,
+  isDenseMatrixDependencies,
+  isSparseMatrixDependencies,
+  isRangeDependencies,
+  isIndexDependencies,
+  isBooleanDependencies,
+  isResultSetDependencies,
+  isHelpDependencies,
+  isFunctionDependencies,
+  isDateDependencies,
+  isRegExpDependencies,
+  isObjectDependencies,
+  isMapDependencies,
+  isPartitionedMapDependencies,
+  isObjectWrappingMapDependencies,
+  isNullDependencies,
+  isUndefinedDependencies,
+  isAccessorNodeDependencies,
+  isArrayNodeDependencies,
+  isAssignmentNodeDependencies,
+  isBlockNodeDependencies,
+  isConditionalNodeDependencies,
+  isConstantNodeDependencies,
+  isFunctionAssignmentNodeDependencies,
+  isFunctionNodeDependencies,
+  isIndexNodeDependencies,
+  isNodeDependencies,
+  isObjectNodeDependencies,
+  isOperatorNodeDependencies,
+  isParenthesisNodeDependencies,
+  isRangeNodeDependencies,
+  isRelationalNodeDependencies,
+  isSymbolNodeDependencies,
+  isChainDependencies,
+  cloneDependencies,
+  hasNumericValueDependencies,
+  isBoundedDependencies,
+  isFiniteDependencies,
+  isIntegerDependencies,
+  isNaNDependencies,
+  isNegativeDependencies,
+  isNumericDependencies,
+  isPositiveDependencies,
+  isPrimeDependencies,
+  isZeroDependencies,
+  typeOfDependencies,
+
+  // Transform dependencies
   mapSlicesTransformDependencies,
   columnTransformDependencies,
   filterTransformDependencies,
@@ -5463,9 +5655,22 @@ export interface MathJsChain<TValue> {
    * @param root The root. Default value: 2.
    */
   nthRoot(
-    this: MathJsChain<number | BigNumber | MathCollection | Complex>,
+    this: MathJsChain<number | BigNumber | Complex>,
     root?: number | BigNumber
-  ): MathJsChain<number | Complex | MathCollection>
+  ): MathJsChain<number | Complex>
+  nthRoot(
+    this: MathCollection,
+    root?: number | BigNumber
+  ): MathJsChain<MathCollection>
+
+  /**
+   * Calculate all nth roots of a value.
+   * @param n  Which root to take. Default value: 2.
+   */
+  nthRoots(
+    this: MathJsChain<number | BigNumber | Complex>,
+    n?: number
+  ): MathJsChain<Array<Complex>>
 
   /**
    * Calculates the power of x to y, x ^ y. Matrix exponentiation is
@@ -5963,6 +6168,11 @@ export interface MathJsChain<TValue> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     callback: (value: any, index: number[], matrix: T) => void
   ): void
+
+  /**
+   * Get the data type in a collection
+   */
+  getMatrixDataType(this: MathJsChain<MathCollection>): MathJsChain<string>
 
   /**
    * Calculate the inverse of a square matrix.
@@ -7099,6 +7309,17 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<boolean>
 
   /**
+   * Test whether a value is bounded, works on entire collection at once
+   */
+  isBounded(this: MathJsChain<MathType>): MathJsChain<boolean>
+
+  /**
+   * Test whether a value is finite, works elementwise on collections
+   */
+  isFinite(this: MathJsChain<MathScalarType>): MathJsChain<boolean>
+  isFinite(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
+
+  /**
    * Test whether a value is negative: smaller than zero. The function
    * supports types number, BigNumber, Fraction, and Unit. The function is
    * evaluated element-wise in case of Array or Matrix input.
@@ -7195,6 +7416,58 @@ export const {
   SQRT2,
   tau,
 
+  // Physical constants
+  atomicMass,
+  avogadro,
+  bohrMagneton,
+  bohrRadius,
+  boltzmann,
+  classicalElectronRadius,
+  conductanceQuantum,
+  coulomb,
+  deuteronMass,
+  efimovFactor,
+  electricConstant,
+  electronMass,
+  elementaryCharge,
+  faraday,
+  fermiCoupling,
+  fineStructure,
+  firstRadiation,
+  gasConstant,
+  gravitationConstant,
+  gravity,
+  hartreeEnergy,
+  inverseConductanceQuantum,
+  klitzing,
+  loschmidt,
+  magneticConstant,
+  magneticFluxQuantum,
+  molarMass,
+  molarMassC12,
+  molarPlanckConstant,
+  molarVolume,
+  neutronMass,
+  nuclearMagneton,
+  planckCharge,
+  planckConstant,
+  planckLength,
+  planckMass,
+  planckTemperature,
+  planckTime,
+  protonMass,
+  quantumOfCirculation,
+  reducedPlanckConstant,
+  rydberg,
+  sackurTetrode,
+  secondRadiation,
+  speedOfLight,
+  stefanBoltzmann,
+  thomsonCrossSection,
+  vacuumImpedance,
+  weakMixingAngle,
+  wienDisplacement,
+
   // Class-like constructors
   Node,
   AccessorNode,
@@ -7221,7 +7494,9 @@ export const {
   reviver,
   replacer,
 
+  // Construction functions
   bignumber,
+  bigint,
   boolean,
   chain,
   complex,
@@ -7230,10 +7505,13 @@ export const {
   index,
   matrix,
   number,
+  numeric,
   sparse,
   splitUnit,
   string,
   unit,
+
+  // Expression functions
   compile,
   evaluate,
   help,
@@ -7262,9 +7540,6 @@ export const {
   add,
   cbrt,
   ceil,
-  fix,
-  floor,
-  round,
   cube,
   divide,
   dotDivide,
@@ -7272,6 +7547,8 @@ export const {
   dotPow,
   exp,
   expm1,
+  fix,
+  floor,
   gcd,
   hypot,
   lcm,
@@ -7279,11 +7556,16 @@ export const {
   log10,
   log1p,
   log2,
+  matrixFromRows,
+  matrixFromColumns,
+  matrixFromFunction,
   mod,
   multiply,
   norm,
   nthRoot,
+  nthRoots,
   pow,
+  round,
   sign,
   sqrt,
   square,
@@ -7330,6 +7612,7 @@ export const {
   cross,
   ctranspose,
   det,
+  diff,
   diag,
   dot,
   eigs,
@@ -7341,6 +7624,7 @@ export const {
   filter,
   flatten,
   forEach,
+  getMatrixDataType,
   inv,
   kron,
   map,
@@ -7402,9 +7686,11 @@ export const {
   setSymDifference,
   setUnion,
 
-  // special functions
+  // signal functions
   zpk2tf,
   freqz,
+
+  // special functions
   erf,
   zeta,
 
@@ -7462,6 +7748,7 @@ export const {
   // util functions
   isNumber,
   isBigNumber,
+  isBigInt,
   isComplex,
   isFraction,
   isUnit,
@@ -7480,6 +7767,9 @@ export const {
   isDate,
   isRegExp,
   isObject,
+  isMap,
+  isPartitionedMap,
+  isObjectWrappingMap,
   isNull,
   isUndefined,
   isAccessorNode,
@@ -7501,6 +7791,8 @@ export const {
   isChain,
   clone,
   hasNumericValue,
+  isBounded,
+  isFinite,
   isInteger,
   isNaN,
   isNegative,

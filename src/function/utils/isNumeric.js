@@ -28,7 +28,7 @@ export const createIsNumeric = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * See also:
    *
-   *    isZero, isPositive, isNegative, isInteger, hasNumericValue
+   *    isZero, isPositive, isNegative, isInteger, hasNumericValue, isFinite, isBounded
    *
    * @param {*} x       Value to be tested
    * @return {boolean}  Returns true when `x` is a `number`, `BigNumber`,

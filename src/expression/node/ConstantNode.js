@@ -6,10 +6,10 @@ import { defaultMetaOptions } from './Node.js'
 
 const name = 'ConstantNode'
 const dependencies = [
-  'Node'
+  'Node', 'isBounded'
 ]
 
-export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
+export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, isBounded }) => {
   class ConstantNode extends Node {
     /**
      * A ConstantNode holds a constant value like a number or string.
@@ -152,8 +152,7 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
 
         case 'number':
         case 'BigNumber': {
-          const finite = type === 'BigNumber' ? this.value.isFinite() : isFinite(this.value)
-          if (!finite) {
+          if (!isBounded(this.value)) {
             return (this.value.valueOf() < 0)
               ? '-\\infty'
               : '\\infty'
