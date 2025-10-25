@@ -74,6 +74,18 @@ describe('forEach', function () {
     assert.deepStrictEqual(output, [3, 3, 3])
   })
 
+  it('should not throw an error on an empty array with a typed function', function () {
+    assert.doesNotThrow(function () {
+      math.forEach([], math.square)
+    })
+  })
+
+  it('should not throw an error on an empty matrix with a typed function', function () {
+    assert.doesNotThrow(function () {
+      math.forEach(math.matrix([]), math.square)
+    })
+  })
+
   it('should throw an error if called with unsupported type', function () {
     assert.throws(function () { math.forEach(1, function () {}) })
     assert.throws(function () { math.forEach('arr', function () {}) })

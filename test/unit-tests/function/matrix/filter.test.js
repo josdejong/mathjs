@@ -70,6 +70,17 @@ describe('filter', function () {
     assert.deepStrictEqual(math.filter(math.matrix(['23', 'foo', '100', '55', 'bar']), /[0-9]+/), math.matrix(['23', '100', '55']))
   })
 
+  it('should return an empty array when called with an empty array and a typed callback', function () {
+    assert.deepStrictEqual(math.filter([], math.square), [])
+  })
+
+  it('should return an empty matrix when called with an empty matrix and a typed callback', function () {
+    assert.deepStrictEqual(
+      math.filter(math.matrix([]), math.square),
+      math.matrix([])
+    )
+  })
+
   it('should throw an error if called with a multi dimensional matrix', function () {
     function isPositive (x) {
       return x > 0
