@@ -175,6 +175,49 @@ describe('transforms', function () {
     })
   })
 
+  describe('empty arrays and matrices', function () {
+    describe('with untyped callbacks', function () {
+      it('should return an empty array when filtering an empty array', function () {
+        assert.deepStrictEqual(
+          parseAndEval('filter([], x > 0)'),
+          math.matrix([])
+        )
+      })
+
+      it('should return an empty array when mapping an empty array', function () {
+        assert.deepStrictEqual(parseAndEval('map([], x > 0)'), math.matrix([]))
+      })
+
+      it('should not throw forEaching an empty array', function () {
+        assert.doesNotThrow(() => {
+          parseAndEval('forEach([], x > 0)')
+        })
+      })
+    })
+
+    describe('with typed callbacks', function () {
+      it('should return an empty array when filtering an empty array', function () {
+        assert.deepStrictEqual(
+          parseAndEval('filter([], f(x) = x > 0)'),
+          math.matrix([])
+        )
+      })
+
+      it('should return an empty array when mapping an empty array', function () {
+        assert.deepStrictEqual(
+          parseAndEval('map([], f(x) = x > 0)'),
+          math.matrix([])
+        )
+      })
+
+      it('should not throw forEaching an empty array', function () {
+        assert.doesNotThrow(() => {
+          parseAndEval('forEach([], f(x) = x > 0)')
+        })
+      })
+    })
+  })
+
   // TODO: test transforms more thoroughly
 })
 

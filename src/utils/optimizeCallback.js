@@ -17,7 +17,15 @@ export function optimizeCallback (callback, array, name, isUnary) {
     if (isUnary) {
       numberOfArguments = 1
     } else {
-      const firstIndex = (array.isMatrix ? array.size() : arraySize(array)).map(() => 0)
+      const arrayOrMatrixSize = array.isMatrix ? array.size() : arraySize(array)
+      const isEmpty = arrayOrMatrixSize[0] === 0
+      if (isEmpty) {
+        // don't optimize callbacks for empty arrays/matrix, as they will never be called
+        // and in fact will throw an exception when we try to access the first element below
+        return { isUnary, fn: callback }
+      }
+
+      const firstIndex = arrayOrMatrixSize.map(() => 0)
       const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
       numberOfArguments = _findNumberOfArgumentsTyped(callback, firstValue, firstIndex, array)
     }
