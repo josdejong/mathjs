@@ -92,10 +92,10 @@ const ignoreFunctions = new Set([
 ])
 
 const knownProblems = new Set([
-  'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
+  'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
   'random', 'pickRandom', 'kldivergence',
   'parser', 'compile', 're', 'im',
-  'squeeze', 'rotationMatrix',
+  'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
   'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff',
   'nthRoots', 'nthRoot',

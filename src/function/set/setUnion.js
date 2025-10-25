@@ -15,8 +15,8 @@ export const createSetUnion = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    * Examples:
    *
-   *    math.setUnion([1, 2, 3, 4], [3, 4, 5, 6])            // returns [1, 2, 3, 4, 5, 6]
-   *    math.setUnion([[1, 2], [3, 4]], [[3, 4], [5, 6]])    // returns [1, 2, 3, 4, 5, 6]
+   *    math.sort(math.setUnion([1, 2, 3, 4], [3, 4, 5, 6]))         // returns [1, 2, 3, 4, 5, 6]
+   *    math.sort(math.setUnion([[1, 2], [3, 4]], [[3, 4], [5, 6]])) // returns [1, 2, 3, 4, 5, 6]
    *
    * See also:
    *

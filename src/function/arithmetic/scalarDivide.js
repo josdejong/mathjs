@@ -9,7 +9,7 @@ const dependencies = [
 ]
 
 export const createScalarDivide = /* #__PURE__ */ factory(name, dependencies, ({
-  typed, Unit, map, multiply, equal, deepEqual,
+  typed, map, multiply, equal, deepEqual,
   isInteger, isNumeric, isZero,
   abs, add, divide, fraction
 }) => {
@@ -102,7 +102,7 @@ export const createScalarDivide = /* #__PURE__ */ factory(name, dependencies, ({
         return quotient
       }
       if (isUnit(quotient)) {
-        if (quotient.equalBase(Unit.BASE_UNITS.NONE)) return quotient.value
+        if (quotient.unitless()) return quotient.value
         return quotient
       }
       return undefined

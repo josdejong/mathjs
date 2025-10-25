@@ -7,14 +7,14 @@ import { createCompareUnits } from './compareUnits.js'
 const name = 'equalScalar'
 const dependencies = ['typed', 'config']
 
-export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed, config }) => {
+export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Unit }) => {
   const compareUnits = createCompareUnits({ typed })
 
   /**
    * Test whether two scalar values are nearly equal.
    *
    * @param  {number | BigNumber | bigint | Fraction | boolean | Complex | Unit} x   First value to compare
-   * @param  {number | BigNumber | bigint | Fraction | boolean | Complex} y          Second value to compare
+   * @param  {number | BigNumber | bigint | Fraction | boolean | Complex | Unit} y          Second value to compare
    * @return {boolean}                                                  Returns true when the compared values are equal, else returns false
    * @private
    */

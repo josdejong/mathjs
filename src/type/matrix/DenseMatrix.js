@@ -170,6 +170,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @return {DenseMatrix | scalar} the `which`th element or full section
    */
   DenseMatrix.prototype.layer = function (which) {
+    if (this._size.length === 1) return this._data[which]
     return this.create(this._data[which], this._datatype)
   }
 

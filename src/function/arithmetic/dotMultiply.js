@@ -1,4 +1,6 @@
 import { factory } from '../../utils/factory.js'
+import { isArray } from '../../utils/is.js'
+import { deepMultiply } from '../../plain/number/arithmetic.js'
 import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo09xS0Sf } from '../../type/matrix/utils/matAlgo09xS0Sf.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
@@ -51,3 +53,30 @@ export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ 
     Ss: matAlgo11xS0s
   }))
 })
+
+export const createDotMultiplyNumber = /* #__PURE__ */ factory(
+  name, ['typed'], ({ typed }) => {
+    return typed(name, {
+      'number, number': (m, n) => m * n,
+      'number, Array': deepMultiply,
+      'Array, number': (A, n) => deepMultiply(n, A),
+      'Array, Array': _dotMult
+    })
+  }
+)
+
+/* Multiply corresponding entries of A and B */
+function _dotMult (A, B) {
+  if (A.length !== B.length) {
+    throw new Error('Cannot dot-multiply arrays of differing length.')
+  }
+  return A.map((a, ix) => {
+    const b = B[ix]
+    if (isArray(a)) {
+      if (isArray(b)) return _dotMult(a, b)
+    } else {
+      if (!isArray(b)) return a * b
+    }
+    throw new Error('Cannot dot-multiply arrays of different shape.')
+  })
+}

@@ -86,8 +86,14 @@ describe('prod', function () {
     assert.throws(function () { prod() })
   })
 
-  it('should throw an error if called with not yet supported argument dim', function () {
-    assert.throws(function () { prod([], 2) }, /not yet supported/)
+  it('should throw an error if argument dim is too large', function () {
+    assert.throws(function () { prod([], 2) }, /no dimension 2/)
+  })
+
+  it('should multiply along either dimension of a 2D array', function () {
+    const nums = [[1, 2], [3, 4], [5, 6]]
+    assert.deepStrictEqual(prod(nums, 0), [15, 48])
+    assert.deepStrictEqual(prod(nums, 1), [2, 12, 30])
   })
 
   it('should return 1 on an empty array', function () {

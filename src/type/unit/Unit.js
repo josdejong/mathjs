@@ -628,6 +628,17 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Returns true if this unit instance is unitless, i.e., a number with
+   * no dimension.
+   *
+   * @memberof Unit
+   * @return {boolean} true if unitless
+   */
+  Unit.prototype.unitless = function () {
+    return this.equalBase(Unit.BASE_UNITS.NONE)
+  }
+
+  /**
    * Check if this unit equals another unit
    * @memberof Unit
    * @param {Unit} other

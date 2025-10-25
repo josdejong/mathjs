@@ -1,20 +1,28 @@
 import { getArrayDataType } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 import {
-  isBigInt, isCollection, isIndex, isMatrix, isNumber, isRange
+  isBigInt, isBigNumber, isCollection, isComplex, isFraction,
+  isIndex, isMatrix, isNumber, isRange, isUnit
 } from '../../utils/is.js'
 
 const name = 'Range'
 const dependencies = [
-  'typed', 'typeOf', '?Index',
+  'typed', 'typeOf', '?Index', '?BigNumber', '?Fraction', '?Complex',
   'Matrix', '?DenseMatrix', 'size', 'getMatrixDataType',
   'one', 'zero', 'add', 'subtract', 'multiply', 'divide', 'scalarDivide',
   'floor', 'equal', 'smallerEq', 'isZero', 'isBounded',
   'number', 'numeric', 'format'
 ]
 
+// Some optimized operator functions used for special cases below. We
+// make them constants up here rather than generate them on the fly so that
+// they will not disrupt `deepStrictEqual`
+const identity = n => n
+const toBigInt = n => BigInt(n)
+const byBigInt = (n, b) => BigInt(n) * b
+
 export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
-  typed, typeOf, Index,
+  typed, typeOf, Index, BigNumber, Fraction, Complex,
   Matrix, DenseMatrix, size, getMatrixDataType,
   one, zero, add, subtract, multiply, divide, scalarDivide,
   floor, equal, smallerEq, isZero, isBounded,
@@ -37,7 +45,12 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     } else bound = attributes.til
     return [bound, segments]
   }
-
+  // More optimizes operator functions, see above.
+  const toBigNumber = n => new BigNumber(n)
+  const toFraction = n => new Fraction(n)
+  const toComplex = n => new Complex(n)
+  const multBigIntArray = typed.find(multiply, ['bigint', 'Array'])
+  const arrayByBigint = (n, b) => multBigIntArray(BigInt(n), b)
   /**
    * Range Matrix implementation.
    *
@@ -206,14 +219,20 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     // should be 4.971, so we make it always number, not bigint).
     this.times = typed.find(multiply, ['number', typeOf(attributes.by)])
     const incr = attributes.by
-    if (isBigInt(incr)) {
-      this.times = (n, b) => BigInt(n) * b
+    // Special cases for times (for speedup when increment is 1)
+    if (!isUnit(incr) && equal(incr, 1)) {
+      if (isNumber(incr)) this.times = identity
+      else if (isBigInt(incr)) this.times = toBigInt
+      else if (isBigNumber(incr)) this.times = toBigNumber
+      else if (isFraction(incr)) this.times = toFraction
+      else if (isComplex(incr)) this.times = toComplex
+    } else if (isBigInt(incr)) { // and special cases b/c of bigint conversions
+      this.times = byBigInt
     } else if (isMatrix(incr) && incr.datatype() === 'bigint') {
       const mult = typed.find(multiply, ['bigint', typeOf(incr)])
       this.times = (n, b) => mult(BigInt(n), b)
     } else if (Array.isArray(incr) && getArrayDataType(incr) === 'bigint') {
-      const mult = typed.find(multiply, ['bigint', 'Array'])
-      this.times = (n, b) => mult(BigInt(n), b)
+      this.times = arrayByBigint
     }
     if (attributes.from === undefined || attributes.from === null) {
       if ('for' in attributes && ('to' in attributes || 'til' in attributes)) {

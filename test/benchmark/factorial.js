@@ -1,6 +1,6 @@
 import BigNumber from 'decimal.js'
 import { Bench } from 'tinybench'
-import { prod, range } from '../../lib/esm/index.js'
+import { prod, Range } from '../../lib/esm/index.js'
 import { formatTaskResult } from './utils/formatTaskResult.js'
 
 const results = []
@@ -45,7 +45,7 @@ function betterFactorial (n) {
 function splitFactorial (m, n) {
   if (n - m < 9) {
     let product = new BigNumber(m)
-    while (++m <= n) product = product.mul(m)
+    while (++m <= n) product = product.mul(new BigNumber(m))
     return product
   }
   const split = Math.floor((m + n) / 2)
@@ -53,7 +53,7 @@ function splitFactorial (m, n) {
 }
 
 function prodFactorial (n) {
-  return prod(range(new BigNumber(1), new BigNumber(n + 1)))
+  return prod(new Range({ from: new BigNumber(1), for: n }))
 }
 
 const bench = new Bench({ time: 100, iterations: 100 })

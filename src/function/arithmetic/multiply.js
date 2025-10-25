@@ -1,6 +1,7 @@
 import { factory } from '../../utils/factory.js'
 import { isMatrix } from '../../utils/is.js'
 import { arraySize } from '../../utils/array.js'
+import { deepMultiply } from '../../plain/number/arithmetic.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
@@ -880,3 +881,14 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     })
   })
 })
+
+export const createMultiplyNumber = /* #__PURE__ */ factory(
+  name, ['typed'], ({ typed }) => {
+    return typed(name, {
+      'number, number': (m, n) => m * n,
+      'bigint, bigint': (m, n) => m * n,
+      'number | bigint, Array': deepMultiply,
+      'Array, number | bigint': (A, n) => deepMultiply(n, A)
+    })
+  }
+)
