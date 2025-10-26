@@ -17,15 +17,17 @@ export function optimizeCallback (callback, array, name, isUnary) {
     if (isUnary) {
       numberOfArguments = 1
     } else {
-      const arrayOrMatrixSize = array.isMatrix ? array.size() : arraySize(array)
-      const isEmpty = arrayOrMatrixSize[0] === 0
+      const size = array.isMatrix ? array.size() : arraySize(array)
+
+      // Check the size of the last dimension to see if the array/matrix is empty
+      const isEmpty = size.length ? size[size.length - 1] === 0 : true
       if (isEmpty) {
         // don't optimize callbacks for empty arrays/matrix, as they will never be called
         // and in fact will throw an exception when we try to access the first element below
         return { isUnary, fn: callback }
       }
 
-      const firstIndex = arrayOrMatrixSize.map(() => 0)
+      const firstIndex = size.map(() => 0)
       const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
       numberOfArguments = _findNumberOfArgumentsTyped(callback, firstValue, firstIndex, array)
     }

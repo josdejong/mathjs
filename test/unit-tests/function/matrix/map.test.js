@@ -210,15 +210,66 @@ describe('map', function () {
     assert.deepStrictEqual(math.map(math.matrix([1, 8, 27], 'sparse'), math.format), math.matrix(['1', '8', '27'], 'sparse'))
   })
 
-  it('should return an empty array when called with an empty array and a typed callback', function () {
-    assert.deepStrictEqual(math.map([], math.square), [])
-  })
+  describe('empty arrays/matrices should return the input unchanged when called with a typed callback', function () {
+    const testCases = [
+      [],
+      [[]],
+      [[], []],
+      [[[]]],
+      [[[], []]],
+      [
+        [[], []],
+        [[], []]
+      ],
+      [[], [1]], // Treated as an empty 2nd dimension because the first nested array is empty
+      [[1], []], // Treated as a non-empty 2nd dimension because the first nested array is non-empty
 
-  it('should return an empty matrix when called with an empty matrix and a typed callback', function () {
-    assert.deepStrictEqual(
-      math.map(math.matrix([]), math.square),
-      math.matrix([])
-    )
+      math.matrix([]),
+      math.matrix([[]]),
+      math.matrix([[], []]),
+      math.matrix([[[]]]),
+      math.matrix([[[], []]]),
+      math.matrix([
+        [[], []],
+        [[], []]
+      ]),
+      // math.matrix([[], [1]]), // Not valid matrix because dimensions have different sizes
+      math.matrix() // empty matrix with size 0
+    ]
+    testCases.forEach(function (testCase) {
+      it(`should return ${JSON.stringify(testCase, math.replacer)} unchanged`, function () {
+        const result = math.map(
+          testCase,
+          math.typed({
+            'any, any, any': function (value) {
+              return value
+            }
+          })
+        )
+        assert.deepStrictEqual(result, testCase)
+      })
+    })
+
+    // Empty sparse matrices have some internals changed so difficult to direct test equality
+    const sparseTestCases = [
+      math.matrix([], 'sparse'),
+      math.matrix([[]], 'sparse'),
+      math.matrix([[], []], 'sparse')
+    ]
+    sparseTestCases.forEach(function (testCase) {
+      it(`should return ${JSON.stringify(testCase, math.replacer)} as the same dimension of sparse matrix`, function () {
+        const result = math.map(
+          testCase,
+          math.typed({
+            'any, any, any': function (value) {
+              return value
+            }
+          })
+        )
+        assert.deepStrictEqual(result.size(), testCase.size())
+        assert.strictEqual(result.storage(), 'sparse')
+      })
+    })
   })
 
   it('should throw an error if called with unsupported type', function () {

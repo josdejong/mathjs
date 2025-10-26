@@ -74,6 +74,52 @@ describe('forEach', function () {
     assert.deepStrictEqual(output, [3, 3, 3])
   })
 
+  describe('empty arrays/matrices should not throw an error when called with a typed callback', function () {
+    const testCases = [
+      [],
+      [[]],
+      [[], []],
+      [[[]]],
+      [[[], []]],
+      [
+        [[], []],
+        [[], []]
+      ],
+      [[], [1]], // Treated as an empty 2nd dimension because the first nested array is empty
+      [[1], []], // Treated as a non-empty 2nd dimension because the first nested array is non-empty
+
+      math.matrix([]),
+      math.matrix([[]]),
+      math.matrix([[], []]),
+      math.matrix([[[]]]),
+      math.matrix([[[], []]]),
+      math.matrix([
+        [[], []],
+        [[], []]
+      ]),
+      // math.matrix([[], [1]]), // Not valid matrix because dimensions have different sizes
+      math.matrix(), // empty matrix with size 0
+
+      math.matrix([], 'sparse'),
+      math.matrix([[]], 'sparse'),
+      math.matrix([[], []], 'sparse')
+    ]
+    testCases.forEach(function (testCase) {
+      it(`should not throw with input ${JSON.stringify(testCase, math.replacer)}`, function () {
+        assert.doesNotThrow(function () {
+          math.forEach(
+            testCase,
+            math.typed('callback', {
+              'any, any, any': function (value) {
+                return value
+              }
+            })
+          )
+        })
+      })
+    })
+  })
+
   it('should not throw an error on an empty array with a typed function', function () {
     assert.doesNotThrow(function () {
       math.forEach([], math.square)
