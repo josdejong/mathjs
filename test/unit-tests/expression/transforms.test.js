@@ -176,6 +176,32 @@ describe('transforms', function () {
   })
 
   describe('empty arrays and matrices', function () {
+    const testCases = [
+      '[]',
+      '[[]]',
+      '[[], []]',
+      '[[[]]]',
+      '[[[], []]]',
+      '[[[], []],[[], []]]',
+
+      'matrix([])',
+      'matrix([[]])',
+      'matrix([[], []])',
+      'matrix([[[]]])',
+      'matrix([[[], []]])',
+      'matrix([[[], []],[[], []]])',
+
+      // matrix([[], [1]]) // Not valid matrix because dimensions have different sizes
+
+      'matrix()' // empty matrix with size 0
+    ]
+
+    const testCasesSparse = [
+      'matrix([], "sparse")',
+      'matrix([[]], "sparse")',
+      'matrix([[], []], "sparse")'
+    ]
+
     describe('with untyped callbacks', function () {
       it('should return an empty array when filtering an empty array', function () {
         assert.deepStrictEqual(
@@ -184,13 +210,33 @@ describe('transforms', function () {
         )
       })
 
-      it('should return an empty array when mapping an empty array', function () {
-        assert.deepStrictEqual(parseAndEval('map([], x > 0)'), math.matrix([]))
+      testCases.forEach(function (testCase) {
+        it(`map should return the input unchanged when called with '${testCase}'`, function () {
+          assert.deepStrictEqual(
+            parseAndEval(`map(${testCase}, x > 0)`),
+            parseAndEval(testCase)
+          )
+        })
+
+        it(`should not throw forEaching '${testCase}'`, function () {
+          assert.doesNotThrow(() => {
+            parseAndEval(`forEach(${testCase}, x > 0)`)
+          })
+        })
       })
 
-      it('should not throw forEaching an empty array', function () {
-        assert.doesNotThrow(() => {
-          parseAndEval('forEach([], x > 0)')
+      testCasesSparse.forEach(function (testCase) {
+        it(`map should return with the same size of input when called with '${testCase}'`, function () {
+          assert.deepStrictEqual(
+            parseAndEval(`map(${testCase}, x > 0)`).size(),
+            parseAndEval(testCase).size()
+          )
+        })
+
+        it(`should not throw forEaching '${testCase}'`, function () {
+          assert.doesNotThrow(() => {
+            parseAndEval(`forEach(${testCase}, x > 0)`)
+          })
         })
       })
     })
@@ -203,16 +249,33 @@ describe('transforms', function () {
         )
       })
 
-      it('should return an empty array when mapping an empty array', function () {
-        assert.deepStrictEqual(
-          parseAndEval('map([], f(x) = x > 0)'),
-          math.matrix([])
-        )
+      testCases.forEach(function (testCase) {
+        it(`map should return the input unchanged when called with '${testCase}'`, function () {
+          assert.deepStrictEqual(
+            parseAndEval(`map(${testCase}, f(x) = x > 0)`),
+            parseAndEval(testCase)
+          )
+        })
+
+        it(`should not throw forEaching '${testCase}'`, function () {
+          assert.doesNotThrow(() => {
+            parseAndEval(`forEach(${testCase}, f(x) = x > 0)`)
+          })
+        })
       })
 
-      it('should not throw forEaching an empty array', function () {
-        assert.doesNotThrow(() => {
-          parseAndEval('forEach([], f(x) = x > 0)')
+      testCasesSparse.forEach(function (testCase) {
+        it(`map should return with the same size of input when called with '${testCase}'`, function () {
+          assert.deepStrictEqual(
+            parseAndEval(`map(${testCase}, f(x) = x > 0)`).size(),
+            parseAndEval(testCase).size()
+          )
+        })
+
+        it(`should not throw forEaching '${testCase}'`, function () {
+          assert.doesNotThrow(() => {
+            parseAndEval(`forEach(${testCase}, f(x) = x > 0)`)
+          })
         })
       })
     })
