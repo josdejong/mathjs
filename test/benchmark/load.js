@@ -6,7 +6,7 @@ import { formatTaskResult } from './utils/formatTaskResult.js'
 
 const timeLabel = 'import, parse, and load time'
 console.time(timeLabel)
-const math = create(all)
+const math = create(all, { traceSources: false })
 console.timeEnd(timeLabel)
 
 let calls

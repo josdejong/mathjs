@@ -2,6 +2,7 @@ import { format } from '../../utils/string.js'
 import { typeOf } from '../../utils/is.js'
 import { escapeLatex } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
+import { defaultMetaOptions } from './Node.js'
 
 const name = 'ConstantNode'
 const dependencies = [
@@ -19,11 +20,12 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
      *     new ConstantNode('hello')
      *
      * @param {*} value    Value can be any type (number, BigNumber, bigint, string, ...)
+     * @param {MetaOptions} meta Optional object with additional options for building this node
      * @constructor ConstantNode
      * @extends {Node}
      */
-    constructor (value) {
-      super()
+    constructor (value, meta = defaultMetaOptions) {
+      super(meta)
       this.value = value
     }
 
@@ -72,10 +74,11 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} [meta] An object with additional options for cloning this node
      * @return {ConstantNode}
      */
-    clone () {
-      return new ConstantNode(this.value)
+    clone (meta) {
+      return new ConstantNode(this.value, meta ?? { sources: this.sources })
     }
 
     /**

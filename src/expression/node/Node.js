@@ -7,6 +7,9 @@ import { createMap } from '../../utils/map.js'
 
 const name = 'Node'
 const dependencies = ['mathWithTransform']
+export const defaultMetaOptions = {
+  sources: []
+}
 
 export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWithTransform }) => {
   /**
@@ -23,8 +26,21 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
   }
 
   class Node {
+    sources = []
+
     get type () { return 'Node' }
     get isNode () { return true }
+
+    /**
+     * @constructor Node
+     * A generic node, the parent of other AST nodes
+     * @param {MetaOptions} [meta]          The object with additional options for building this node.
+     */
+    constructor (meta = defaultMetaOptions) {
+      if (meta.sources) {
+        this.sources = meta.sources
+      }
+    }
 
     /**
      * Evaluate the node

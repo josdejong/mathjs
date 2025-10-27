@@ -8,7 +8,7 @@ import { all, create } from '../../lib/esm/index.js'
 import { getSafeProperty } from '../../lib/esm/utils/customs.js'
 import { formatTaskResult } from './utils/formatTaskResult.js'
 
-const math = create(all)
+const math = create(all, { traceSources: false })
 
 const expr = '2 + 3 * sin(pi / 4) - 4x'
 const scope = new Map([

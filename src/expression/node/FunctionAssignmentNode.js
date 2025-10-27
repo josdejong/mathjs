@@ -6,6 +6,7 @@ import { forEach, join } from '../../utils/array.js'
 import { toSymbol } from '../../utils/latex.js'
 import { getPrecedence } from '../operators.js'
 import { factory } from '../../utils/factory.js'
+import { defaultMetaOptions } from './Node.js'
 
 const name = 'FunctionAssignmentNode'
 const dependencies = [
@@ -41,9 +42,10 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
      *                                array with objects containing the name
      *                                and type of the parameter
      * @param {Node} expr             The function expression
+     * @param {MetaOptions} [meta]          The object with additional options for building this node.
      */
-    constructor (name, params, expr) {
-      super()
+    constructor (name, params, expr, meta = defaultMetaOptions) {
+      super(meta)
       // validate input
       if (typeof name !== 'string') { throw new TypeError('String expected for parameter "name"') }
       if (!Array.isArray(params)) {
@@ -148,11 +150,11 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} [meta] An object with additional options for cloning this node
      * @return {FunctionAssignmentNode}
      */
-    clone () {
-      return new FunctionAssignmentNode(
-        this.name, this.params.slice(0), this.expr)
+    clone (meta) {
+      return new FunctionAssignmentNode(this.name, this.params.slice(0), this.expr, meta ?? { sources: this.sources })
     }
 
     /**

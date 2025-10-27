@@ -90,6 +90,8 @@ import { importFactory } from './function/import.js'
  *                            {string} randomSeed
  *                              Random seed for seeded pseudo random number generator.
  *                              Set to null to randomly seed.
+ *                           {boolean} traceSources
+ *                              Enables node's source tracing in the parsed string. Slows down parsing a bit.
  * @returns {Object} Returns a bare-bone math.js instance containing
  *                   functions:
  *                   - `import` to add new functions

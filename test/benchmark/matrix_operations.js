@@ -22,7 +22,7 @@ import { all, create } from '../../lib/esm/index.js'
 import { formatTaskResult } from './utils/formatTaskResult.js'
 
 const bench = new Bench({ time: 10, iterations: 100 })
-const math = create(all)
+const math = create(all, { traceSources: false })
 
 // fiedler matrix 25 x 25
 const fiedler = [

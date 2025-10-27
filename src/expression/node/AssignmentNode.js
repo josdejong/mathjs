@@ -4,6 +4,7 @@ import { factory } from '../../utils/factory.js'
 import { accessFactory } from './utils/access.js'
 import { assignFactory } from './utils/assign.js'
 import { getPrecedence } from '../operators.js'
+import { defaultMetaOptions } from './Node.js'
 
 const name = 'AssignmentNode'
 const dependencies = [
@@ -65,9 +66,10 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
      *     global scope.
      * @param {Node} value
      *     The value to be assigned
+     * @param {MetaOptions} [meta]          The object with additional options for building this node.
      */
-    constructor (object, index, value) {
-      super()
+    constructor (object, index, value, meta = defaultMetaOptions) {
+      super(meta)
       this.object = object
       this.index = value ? index : null
       this.value = value || index
@@ -228,10 +230,11 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
 
     /**
      * Create a clone of this node, a shallow copy
+     * @param {MetaOptions} [meta] An object with additional options for cloning this node
      * @return {AssignmentNode}
      */
-    clone () {
-      return new AssignmentNode(this.object, this.index, this.value)
+    clone (meta) {
+      return new AssignmentNode(this.object, this.index, this.value, meta ?? { sources: this.sources })
     }
 
     /**

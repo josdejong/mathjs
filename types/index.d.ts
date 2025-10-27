@@ -41,6 +41,17 @@ export interface FactoryFunctionMap {
   [key: string]: FactoryFunction<any> | FactoryFunctionMap
 }
 
+// Maps a parsed node back to its place in the original source string
+export interface SourceMapping {
+  index: number
+  text: string
+}
+
+// Additional options when building or cloning a node
+export interface MetaOptions {
+  sources: SourceMapping[]
+}
+
 /** Available options for parse */
 export interface ParseOptions {
   /** a set of custom nodes */

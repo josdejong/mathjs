@@ -47,6 +47,8 @@ export function configFactory (config, emit) {
    *                            {string} randomSeed
    *                              Random seed for seeded pseudo random number generator.
    *                              Set to null to randomly seed.
+   *                            {boolean} traceSources
+   *                              Enables node's source tracing in the parsed string. Slows down parsing a bit.
    * @return {Object} Returns the current configuration
    */
   function _config (options) {
@@ -71,6 +73,11 @@ export function configFactory (config, emit) {
       validateOption(options, 'matrix', MATRIX_OPTIONS)
       validateOption(options, 'number', NUMBER_OPTIONS)
 
+      if (options.traceSources !== undefined) {
+        if (typeof options.traceSources !== 'boolean') {
+          console.warn('Warning: The configuration option "traceSources" must be a boolean.')
+        }
+      }
       // merge options
       deepExtend(config, options)
 
