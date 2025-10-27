@@ -4,6 +4,8 @@
 
 - Feat: implement functions `isFinite` and `isBounded` (#3554, #3553). 
   Thanks @gwhitney.
+- Fix: #3564 Avoid error throws when mapping/filtering empty arrays/matrices.
+  (#3567). Thanks @richardt-cla.
 
 # 2025-10-10, 15.0.0
 
