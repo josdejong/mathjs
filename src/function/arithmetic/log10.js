@@ -4,10 +4,10 @@ import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'log10'
-const dependencies = ['typed', 'config', 'Complex']
+const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
 const log16 = log10Number(16)
 
-export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
+export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex, BigNumber }) => {
   /**
    * Calculate the 10-base logarithm of a value. This is the same as calculating `log(x, 10)`.
    *
@@ -51,7 +51,17 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
     },
 
-    bigint: promoteLogarithm(log16, log10Number, config, complexLogNumber),
+    bigint: function (b) {
+      if (config.number === 'bigint' && config.numberFallback === 'BigNumber') {
+        const x = new BigNumber(b.toString())
+        if (!x.isNegative() || config.predictable) {
+          return x.log()
+        } else {
+          return complexLogNumber(x.toNumber())
+        }
+      }
+      return promoteLogarithm(log16, log10Number, config, complexLogNumber)(b)
+    },
 
     Complex: complexLog,
 

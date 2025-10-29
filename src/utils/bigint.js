@@ -16,12 +16,15 @@
  */
 export function promoteLogarithm (log16, numberLog, config, cplx) {
   return function (b) {
+    if (b === 0n) {
+      return numberLog(0)
+    }
     if (b > 0 || config.predictable) {
-      if (b <= 0) return NaN
+      if (b < 0) return NaN
       const s = b.toString(16)
       const s15 = s.substring(0, 15)
       return log16 * (s.length - s15.length) + numberLog(Number('0x' + s15))
     }
-    return cplx(b.toNumber())
+    return cplx(Number(b))
   }
 }

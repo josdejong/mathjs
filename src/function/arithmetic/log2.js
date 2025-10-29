@@ -4,9 +4,9 @@ import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'log2'
-const dependencies = ['typed', 'config', 'Complex']
+const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
 
-export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
+export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex, BigNumber }) => {
   /**
    * Calculate the 2-base of a value. This is the same as calculating `log(x, 2)`.
    *
@@ -46,7 +46,17 @@ export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
 
-    bigint: promoteLogarithm(4, log2Number, config, complexLog2Number),
+    bigint: function (b) {
+      if (config.number === 'bigint' && config.numberFallback === 'BigNumber') {
+        const x = new BigNumber(b.toString())
+        if (!x.isNegative() || config.predictable) {
+          return x.log(2)
+        } else {
+          return complexLog2Number(x.toNumber())
+        }
+      }
+      return promoteLogarithm(4, log2Number, config, complexLog2Number)(b)
+    },
 
     Complex: _log2Complex,
 

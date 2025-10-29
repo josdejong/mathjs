@@ -3,10 +3,10 @@ import { promoteLogarithm } from '../../utils/bigint.js'
 import { logNumber } from '../../plain/number/index.js'
 
 const name = 'log'
-const dependencies = ['config', 'typed', 'typeOf', 'divideScalar', 'Complex']
+const dependencies = ['config', 'typed', 'typeOf', 'divideScalar', 'Complex', 'BigNumber']
 const nlg16 = Math.log(16)
 
-export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, typeOf, config, divideScalar, Complex }) => {
+export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, typeOf, config, divideScalar, Complex, BigNumber }) => {
   /**
    * Calculate the logarithm of a value.
    *
@@ -60,7 +60,17 @@ export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, t
       }
     },
 
-    bigint: promoteLogarithm(nlg16, logNumber, config, complexLogNumber),
+    bigint: function (b) {
+      if (config.number === 'bigint' && config.numberFallback === 'BigNumber') {
+        const x = new BigNumber(b.toString())
+        if (!x.isNegative() || config.predictable) {
+          return x.ln()
+        } else {
+          return complexLogNumber(x.toNumber())
+        }
+      }
+      return promoteLogarithm(nlg16, logNumber, config, complexLogNumber)(b)
+    },
 
     Complex: complexLog,
 
