@@ -74,6 +74,67 @@ describe('forEach', function () {
     assert.deepStrictEqual(output, [3, 3, 3])
   })
 
+  it(
+    'should not throw on empty arrays/matrices, with a typed callback',
+    function () {
+      const testCases = [
+        [],
+        [[]],
+        [[], []],
+        [[[]]],
+        [[[], []]],
+        [
+          [[], []],
+          [[], []]
+        ],
+        // We are going to wait until after discussion #3537 resolves to
+        // settle on the expected behavior of the following two cases:
+        // [[], [1]], // Empty 2nd dimension b/c 1st nested array is empty
+        // [[1], []], // Non-empty 2nd dimension b/c 1st nested array non-empty
+
+        math.matrix([]),
+        math.matrix([[]]),
+        math.matrix([[], []]),
+        math.matrix([[[]]]),
+        math.matrix([[[], []]]),
+        math.matrix([
+          [[], []],
+          [[], []]
+        ]),
+        // The next is not a valid matrix because rows have different sizes
+        // math.matrix([[], [1]]),
+        math.matrix(), // empty matrix with size 0
+
+        math.matrix([], 'sparse'),
+        math.matrix([[]], 'sparse'),
+        math.matrix([[], []], 'sparse')
+      ]
+      testCases.forEach(function (testCase) {
+        assert.doesNotThrow(function () {
+          math.forEach(
+            testCase,
+            math.typed('callback', {
+              'any, any, any': function (value) {
+                throw new Error(`Somehow callback was called on '${value}'`)
+              }
+            })
+          )
+        })
+      })
+    })
+
+  it('should not throw an error on an empty array with a typed function', function () {
+    assert.doesNotThrow(function () {
+      math.forEach([], math.square)
+    })
+  })
+
+  it('should not throw an error on an empty matrix with a typed function', function () {
+    assert.doesNotThrow(function () {
+      math.forEach(math.matrix([]), math.square)
+    })
+  })
+
   it('should throw an error if called with unsupported type', function () {
     assert.throws(function () { math.forEach(1, function () {}) })
     assert.throws(function () { math.forEach('arr', function () {}) })

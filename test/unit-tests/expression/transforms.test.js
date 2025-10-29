@@ -175,6 +175,75 @@ describe('transforms', function () {
     })
   })
 
+  describe('empty arrays and matrices', function () {
+    const testCases = [
+      '[]',
+      '[[]]',
+      '[[], []]',
+      '[[[]]]',
+      '[[[], []]]',
+      '[[[], []],[[], []]]',
+
+      'matrix()', // empty matrix with size 0
+      'matrix([[], []])', // Equivalent to one above, but just to be careful
+      'matrix([], "sparse")',
+      'matrix([[]], "sparse")',
+      'matrix([[], []], "sparse")'
+    ]
+
+    describe('with untyped callbacks', function () {
+      it('filter should return an empty array on empty input', function () {
+        assert.deepStrictEqual(
+          parseAndEval('filter([], x > 0)'),
+          math.matrix([])
+        )
+      })
+
+      it('map should return the input unchanged on empty input', function () {
+        testCases.forEach(function (testCase) {
+          assert.deepStrictEqual(
+            parseAndEval(`map(${testCase}, x > 0)`),
+            parseAndEval(testCase)
+          )
+        })
+      })
+
+      it('forEach should not throw on empty input', function () {
+        testCases.forEach(function (testCase) {
+          assert.doesNotThrow(() => {
+            parseAndEval(`forEach(${testCase}, x > 0)`)
+          })
+        })
+      })
+    })
+
+    describe('with typed callbacks', function () {
+      it('should return an empty array when filtering an empty array', function () {
+        assert.deepStrictEqual(
+          parseAndEval('filter([], f(x) = x > 0)'),
+          math.matrix([])
+        )
+      })
+
+      it('map should return the input unchanged on empty input', function () {
+        testCases.forEach(function (testCase) {
+          assert.deepStrictEqual(
+            parseAndEval(`map(${testCase}, f(x) = x > 0)`),
+            parseAndEval(testCase)
+          )
+        })
+      })
+
+      it('forEach should not throw on empty input', function () {
+        testCases.forEach(function (testCase) {
+          assert.doesNotThrow(() => {
+            parseAndEval(`forEach(${testCase}, f(x) = x > 0)`)
+          })
+        })
+      })
+    })
+  })
+
   // TODO: test transforms more thoroughly
 })
 
