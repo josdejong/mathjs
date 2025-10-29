@@ -651,7 +651,7 @@ describe('Unit', function () {
   describe('json', function () {
     it('toJSON', function () {
       assert.deepStrictEqual(new Unit(5, 'cm').toJSON(),
-        { mathjs: 'Unit', value: 5, unit: 'cm'})
+        { mathjs: 'Unit', value: 5, unit: 'cm' })
       assert.deepStrictEqual(new Unit(5, 'cm').to('mm').toJSON(),
         { mathjs: 'Unit', value: 50, unit: 'mm', fixPrefix: true })
       assert.deepStrictEqual(new Unit(5, 'kN').to('kg m s ^ -2').toJSON(),
