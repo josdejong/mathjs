@@ -137,6 +137,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     _compile (math, argNames) {
       // compile arguments
       const evalArgs = this.args.map((arg) => arg._compile(math, argNames))
+      const fromOptionalChaining = isAccessorNode(this.fn) && this.fn.optionalChaining
 
       if (isSymbolNode(this.fn)) {
         const name = this.fn.name
@@ -242,6 +243,12 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
         return function evalFunctionNode (scope, args, context) {
           const object = evalObject(scope, args, context)
+
+          // Optional chaining: if the base object is nullish, short-circuit to undefined
+          if (fromOptionalChaining && object == null) {
+            return undefined
+          }
+
           const fn = getSafeMethod(object, prop)
 
           if (fn?.rawArgs) {
