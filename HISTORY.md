@@ -4,6 +4,8 @@
 
 - Feat: implement functions `isFinite` and `isBounded` (#3554, #3553). 
   Thanks @gwhitney.
+- Feat: add function `bernoulli` to calculate Bernoulli numbers (#3551).
+  Thanks @gwhitney.
 - Fix: #3564 Avoid error throws when mapping/filtering empty arrays/matrices.
   (#3567). Thanks @richardt-cla.
 
