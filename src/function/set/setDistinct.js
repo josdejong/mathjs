@@ -2,9 +2,9 @@ import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setDistinct'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix']
+const dependencies = ['typed', 'size', 'compareNatural', 'Index', 'DenseMatrix']
 
-export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural }) => {
+export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, compareNatural }) => {
   /**
    * Collect the distinct elements of a multiset.
    * A multi-dimension array will be converted to a single-dimension array before the operation.

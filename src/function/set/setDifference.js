@@ -2,9 +2,9 @@ import { flatten, generalize, identify } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setDifference'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural']
+const dependencies = ['typed', 'size', 'compareNatural']
 
-export const createSetDifference = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural }) => {
+export const createSetDifference = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, compareNatural }) => {
   /**
    * Create the difference of two (multi)sets: every element of set1, that is not the element of set2.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.

@@ -2,9 +2,9 @@ import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setSymDifference'
-const dependencies = ['typed', 'size', 'concat', 'subset', 'setDifference']
+const dependencies = ['typed', 'size', 'concat', 'setDifference']
 
-export const createSetSymDifference = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, concat, subset, setDifference }) => {
+export const createSetSymDifference = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, concat, setDifference }) => {
   /**
    * Create the symmetric difference of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.

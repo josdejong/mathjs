@@ -2,9 +2,9 @@ import { flatten, generalize, identify } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setIntersect'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural']
+const dependencies = ['typed', 'size', 'compareNatural']
 
-export const createSetIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural }) => {
+export const createSetIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, compareNatural }) => {
   /**
    * Create the intersection of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.

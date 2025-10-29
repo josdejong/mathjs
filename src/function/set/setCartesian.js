@@ -2,9 +2,9 @@ import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setCartesian'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural']
+const dependencies = ['typed', 'size', 'compareNatural']
 
-export const createSetCartesian = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural }) => {
+export const createSetCartesian = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, compareNatural }) => {
   /**
    * Create the cartesian product of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays
