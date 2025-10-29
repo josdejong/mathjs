@@ -999,6 +999,11 @@ Chaining examples
     MathJsChain<MathCollection>
   >()
 
+  // bernoulli
+  expectTypeOf(math.chain(math.bigint(4)).bernoulli()).toMatchTypeOf<
+    MathJsChain<Fraction>
+  >()
+
   // TODO complete the rest of these...
 }
 
@@ -2887,6 +2892,7 @@ Probability function examples
 {
   const math = create(all, {})
 
+  expectTypeOf(math.bernoulli(math.fraction(12))).toMatchTypeOf<Fraction>()
   expectTypeOf(math.lgamma(1.5)).toMatchTypeOf<number>()
   expectTypeOf(math.lgamma(math.complex(1.5, -1.5))).toMatchTypeOf<Complex>()
 }

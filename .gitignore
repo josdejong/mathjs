@@ -5,6 +5,7 @@ _site
 *swp
 *.log
 *.bak
+*~
 
 node_modules
 .nyc_output
