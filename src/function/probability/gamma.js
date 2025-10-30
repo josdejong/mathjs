@@ -2,9 +2,15 @@ import { factory } from '../../utils/factory.js'
 import { gammaG, gammaNumber, gammaP } from '../../plain/number/index.js'
 
 const name = 'gamma'
-const dependencies = ['typed', 'config', 'multiplyScalar', 'pow', 'BigNumber', 'Complex']
+const dependencies = [
+  'typed', 'config', 'multiplyScalar', 'pow', 'bernoulli',
+  'BigNumber', 'Complex'
+]
 
-export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, pow, BigNumber, Complex }) => {
+export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, multiplyScalar, pow, bernoulli,
+  BigNumber, Complex
+}) => {
   /**
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.
@@ -86,9 +92,93 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         return new BigNumber(n.isNegative() ? NaN : Infinity)
       }
 
-      throw new Error('Integer BigNumber expected')
+      return gammaBig(n)
     }
   })
+
+  function gammaBig (n) {
+    // We follow https://ar5iv.labs.arxiv.org/html/2109.08392,
+    // but adapted to work only for real inputs.
+    // Note for future the same core algorithm can be used for 1/gamma
+    // or log-gamma, see details in the paper.
+    const Pi = BigNumber.acos(-1)
+    const halflog2p = Pi.times(2).ln().div(2)
+    // Our goal is to compute relTol digits of gamma
+    let digits = Math.abs(Math.log10(config.relTol))
+    const bits = Math.min(digits * 10 / 3, 3)
+    const beta = 0.2 // tuning parameter prescribed by reference
+    const reflect = n.lessThan(-5)
+    const z = reflect ? n.neg().plus(1) : n
+    let r = Math.max(0, Math.ceil(z.neg().plus(beta * bits).toNumber()))
+    // In the real case, the error is less than the first omitted term.
+    // Therefore, our strategy is just to start computing. When we reach
+    // a term smaller than 10^-digits, we return what we have so far. However,
+    // we need to watch out: if the terms _increase_ in size before we
+    // reach such a term, we need to restart with a larger r.
+    let inaccurate = true
+    let mainsum = new BigNumber(0)
+    let shifted = z.plus(r)
+    console.log('Trying for', digits, 'with shift', r)
+    while (inaccurate) {
+      const needPrec = digits + 3 + Math.floor(
+        shifted.ln().times(shifted).log().toNumber())
+      if (needPrec > config.precision) {
+        digits -= needPrec - config.precision
+        if (digits < 3) {
+          throw new Error(`Cannot compute gamma(${n}) with useful accuracy`)
+        }
+        let message = `Insufficient bignumber precision for gamma(${n}), `
+        message += `limiting to ${digits} digits.`
+        console.warning(message)
+      }
+      const threshold = new BigNumber(0.1).pow(digits)
+      let lastTerm = new BigNumber(Infinity)
+      let index = 1
+      let powShifted = shifted
+      const shiftedSq = shifted.times(shifted)
+      while (true) {
+        const double = 2 * index
+        const term = bernoulli(new BigNumber(double))
+          .div(powShifted.times(double * (double - 1)))
+        // See if we already converged
+        const absTerm = term.abs()
+        if (absTerm.lessThan(threshold)) {
+          inaccurate = false
+          break
+        }
+        if (lastTerm.lessThan(absTerm)) {
+          // oops, diverging
+          mainsum = new BigNumber(0)
+          r = 2 * r
+          shifted = z.plus(r)
+          break
+        }
+        lastTerm = absTerm
+        mainsum = mainsum.plus(term)
+        index += 1
+        powShifted = powShifted.times(shiftedSq)
+      }
+    }
+    // OK, we should have an accurate mainsum
+    const shiftGamma = mainsum
+      .plus(halflog2p)
+      .minus(shifted)
+      .plus(shifted.ln().times(shifted.minus(0.5)))
+    // TODO: when implementation of rising factorial settled,
+    // use that here, will be better
+    let rising = new BigNumber(1)
+    let factor = z
+    for (let i = 0; i < r; ++i) {
+      rising = rising.times(factor)
+      factor = factor.plus(1)
+    }
+    let gamma
+    if (reflect) {
+      const angleFactor = n.mod(2).times(Pi).sin()
+      gamma = shiftGamma.neg().exp().times(Pi).times(rising).div(angleFactor)
+    } else gamma = shiftGamma.exp().div(rising)
+    return gamma.toDecimalPlaces(digits)
+  }
 
   /**
    * Calculate factorial for a BigNumber
