@@ -617,6 +617,19 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     return node
   }
 
+  function isPurePercentageExpression (n) {
+    if (!n) return false
+    if (n.isPercentage) return true
+    if (n.type === 'ParenthesisNode') return isPurePercentageExpression(n.content)
+    if (isOperatorNode(n) && (n.fn === 'unaryPlus' || n.fn === 'unaryMinus') && n.args && n.args.length === 1) {
+      return isPurePercentageExpression(n.args[0])
+    }
+    if (isOperatorNode(n) && (n.fn === 'add' || n.fn === 'subtract') && n.args && n.args.length === 2) {
+      return isPurePercentageExpression(n.args[0]) && isPurePercentageExpression(n.args[1])
+    }
+    return false
+  }
+
   /**
    * Parse a block with expressions. Expressions can be separated by a newline
    * character '\n', or by a semicolon ';'. In case of a semicolon, no output
@@ -1019,6 +1032,13 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     node = parseMultiplyDivideModulus(state)
 
+    if (isOperatorNode(node) && node.fn === 'mod' && node.args && node.args.length === 2) {
+      const rhs = node.args[1]
+      if ((state.token === '+' || state.token === '-') && isPurePercentageExpression(rhs)) {
+        node = new OperatorNode('/', 'divide', [node.args[0], new ConstantNode(100)], false, true)
+      }
+    }
+
     const operators = {
       '+': 'add',
       '-': 'subtract'
@@ -1028,8 +1048,13 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       fn = operators[name]
 
       getTokenSkipNewline(state)
+      const savedPrefer = state.preferUnaryPercentAfterPlus
+      if (isPurePercentageExpression(node)) {
+        state.preferUnaryPercentAfterPlus = true
+      }
       const rightNode = parseMultiplyDivideModulus(state)
-      if (rightNode.isPercentage) {
+      state.preferUnaryPercentAfterPlus = savedPrefer
+      if (rightNode.isPercentage && !isPurePercentageExpression(node)) {
         params = [node, new OperatorNode('*', 'multiply', [node, rightNode])]
       } else {
         params = [node, rightNode]
@@ -1062,6 +1087,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (true) {
       if (hasOwnProperty(operators, state.token)) {
+        if (state.token === '%' && state.preferUnaryPercentAfterPlus) {
+          break
+        }
         // explicit operators
         name = state.token
         fn = operators[name]
@@ -1169,17 +1197,37 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Node} node
    * @private
    */
-  function parseUnaryPercentage (state) {
+  function parseUnaryPercentage (state, lookaheadMode) {
     let node = parseUnary(state)
 
     if (state.token === '%') {
       const previousState = Object.assign({}, state)
       getTokenSkipNewline(state)
+      if (state.preferUnaryPercentAfterPlus) {
+        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
+        return node
+      }
+      if (lookaheadMode) {
+        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
+        return node
+      }
       // We need to decide if this is a unary percentage % or binary modulo %
-      // So we attempt to parse a unary expression at this point.
-      // If it fails, then the only possibility is that this is a unary percentage.
-      // If it succeeds, then we presume that this must be binary modulo, since the
-      // only things that parseUnary can handle are _higher_ precedence than unary %.
+      // So we attempt a controlled lookahead only for + or - to support cases like
+      // 10% + 20% and 10% + (20% + 30%).
+      if (state.token === '+' || state.token === '-') {
+        const lookAheadState = Object.assign({}, state)
+        getTokenSkipNewline(lookAheadState)
+        try {
+          const laNode = parseUnaryPercentage(lookAheadState, true)
+          if (isPurePercentageExpression(laNode)) {
+            node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
+            return node
+          }
+        } catch (err) {
+          node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
+          return node
+        }
+      }
       try {
         parseUnary(state)
         // Not sure if we could somehow use the result of that parseUnary? Without
