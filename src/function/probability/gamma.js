@@ -3,13 +3,13 @@ import { gammaG, gammaNumber, gammaP } from '../../plain/number/index.js'
 
 const name = 'gamma'
 const dependencies = [
-  'typed', 'config', 'multiplyScalar', 'pow', 'bernoulli',
-  'BigNumber', 'Complex'
+  'typed', 'config', 'BigNumber', 'Complex',
+  'isInteger', 'bernoulli', 'equal'
 ]
 
 export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
-  typed, config, multiplyScalar, pow, bernoulli,
-  BigNumber, Complex
+  typed, config, BigNumber, Complex,
+  isInteger, bernoulli, equal
 }) => {
   /**
    * Compute the gamma function of a value using Lanczos approximation for
@@ -78,18 +78,41 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
     return x.mul(twoPiSqrt).mul(tpow).mul(expt)
   }
 
+  const piB = BigNumber.acos(-1)
+  const halflog2piB = piB.times(2).ln().div(2)
+  const sqrtpiB = piB.sqrt()
+  const zeroB = new BigNumber(0)
+  const twoB = new BigNumber(2)
+  const neg2B = new BigNumber(-2)
+
   return typed(name, {
     number: gammaNumber,
     Complex: gammaComplex,
     BigNumber: function (n) {
-      if (n.isInteger()) {
-        return (n.isNegative() || n.isZero())
-          ? new BigNumber(Infinity)
-          : bigFactorial(n.minus(1))
-      }
-
+      // Handle special values here
       if (!n.isFinite()) {
         return new BigNumber(n.isNegative() ? NaN : Infinity)
+      }
+      if (isInteger(n)) {
+        return (n.isNegative() || n.isZero())
+          ? new BigNumber(Infinity)
+          : bigFactorial(n.round().minus(1))
+      }
+      let nhalf = n.minus(0.5)
+      if (equal(nhalf, zeroB)) return sqrtpiB
+      if (isInteger(nhalf)) {
+        nhalf = nhalf.round() // in case there was roundoff error coming in
+        let doubleFactorial = nhalf.abs().times(2).minus(1)
+        // todo: replace following when factorial implementation finalized
+        let factor = doubleFactorial.minus(2)
+        while (factor.greaterThan(1)) {
+          doubleFactorial = doubleFactorial.times(factor)
+          factor = factor.minus(2)
+        }
+        if (nhalf.lessThan(0)) {
+          return neg2B.pow(nhalf.abs()).times(sqrtpiB).div(doubleFactorial)
+        }
+        return doubleFactorial.times(sqrtpiB).div(twoB.pow(nhalf))
       }
 
       return gammaBig(n)
@@ -101,8 +124,6 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
     // but adapted to work only for real inputs.
     // Note for future the same core algorithm can be used for 1/gamma
     // or log-gamma, see details in the paper.
-    const Pi = BigNumber.acos(-1)
-    const halflog2p = Pi.times(2).ln().div(2)
     // Our goal is to compute relTol digits of gamma
     let digits = Math.abs(Math.log10(config.relTol))
     const bits = Math.min(digits * 10 / 3, 3)
@@ -118,7 +139,7 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
     let inaccurate = true
     let mainsum = new BigNumber(0)
     let shifted = z.plus(r)
-    console.log('Trying for', digits, 'with shift', r)
+    // console.trace('Trying for', digits, 'with shift', r)
     while (inaccurate) {
       const needPrec = digits + 3 + Math.floor(
         shifted.ln().times(shifted).log().toNumber())
@@ -161,7 +182,7 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
     }
     // OK, we should have an accurate mainsum
     const shiftGamma = mainsum
-      .plus(halflog2p)
+      .plus(halflog2piB)
       .minus(shifted)
       .plus(shifted.ln().times(shifted.minus(0.5)))
     // TODO: when implementation of rising factorial settled,
@@ -174,8 +195,8 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
     }
     let gamma
     if (reflect) {
-      const angleFactor = n.mod(2).times(Pi).sin()
-      gamma = shiftGamma.neg().exp().times(Pi).times(rising).div(angleFactor)
+      const angleFactor = n.mod(2).times(piB).sin()
+      gamma = shiftGamma.neg().exp().times(piB).times(rising).div(angleFactor)
     } else gamma = shiftGamma.exp().div(rising)
     return gamma.toDecimalPlaces(digits)
   }
