@@ -114,6 +114,7 @@ import { andDocs } from './function/logical/and.js'
 import { notDocs } from './function/logical/not.js'
 import { nullishDocs } from './function/logical/nullish.js'
 import { orDocs } from './function/logical/or.js'
+import { norDocs } from './function/logical/nor.js'
 import { xorDocs } from './function/logical/xor.js'
 import { mapSlicesDocs } from './function/matrix/mapSlices.js'
 import { columnDocs } from './function/matrix/column.js'
@@ -450,6 +451,7 @@ export const embeddedDocs = {
   not: notDocs,
   nullish: nullishDocs,
   or: orDocs,
+  nor: norDocs,
   xor: xorDocs,
 
   // functions - matrix

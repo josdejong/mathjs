@@ -1,6 +1,6 @@
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
+import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
 import { factory } from '../../utils/factory.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { norNumber } from '../../plain/number/logical.js'
@@ -16,12 +16,12 @@ const dependencies = [
 
 export const createNor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, equalScalar })
+  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
   /**
-   * Logical `nor`. Test if both os values are defined with zero.
+   * Logical `nor`. Test if both of values are defined with zero.
    * For matrices, the function is evaluated element wise.
    *
    * Syntax:
@@ -36,12 +36,12 @@ export const createNor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *    b = [0, 22, 0]
    *    c = 0
    *
-   *    math.or(a, b)   // returns [false, false, true]
-   *    math.or(b, c)   // returns [true, false, true]
+   *    math.nor(a, b)   // returns [false, false, true]
+   *    math.nor(b, c)   // returns [true, false, true]
    *
    * See also:
    *
-   *    and,nand, or, not, xor
+   *    and, nand, or, not, xor
    *
    * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
    * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
@@ -67,7 +67,7 @@ export const createNor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         (x, y) => self(x.value || 0, y.value || 0))
     },
     matrixAlgorithmSuite({
-      SS: matAlgo07xSSf,
+      SS: matAlgo05xSfSf,
       DS: matAlgo03xDSf,
       Ss: matAlgo12xSfs
     })

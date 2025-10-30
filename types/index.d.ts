@@ -359,6 +359,7 @@ export type OperatorNodeMap = {
   xor: 'xor'
   and: 'and'
   or: 'or'
+  nor: 'nor'
   bitOr: '|'
   bitXor: '^|'
   bitAnd: '&'
@@ -1897,6 +1898,18 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   or(
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
+  ): boolean | MathCollection
+
+  /**
+   * Logical nor. Test if both of values are zero
+   * For matrices, the function is evaluated element wise.
+   * @param x First value to nor
+   * @param y Second value to nor
+   * @returns Returns true when both of the inputs are defined with zero.
+   */
+  nor(
     x: number | BigNumber | bigint | Complex | Unit | MathCollection,
     y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
@@ -4072,6 +4085,7 @@ export const {
   andDependencies,
   notDependencies,
   orDependencies,
+  norDependencies,
   xorDependencies,
 
   // matrix function dependencies
@@ -5991,6 +6005,18 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<boolean | MathCollection>
 
   /**
+   * Logical nor. Test if both of value are defined with zero.
+   * For matrices, the function is evaluated element wise.
+   * @param y Second value to nor
+   */
+  nor(
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
+  ): MathJsChain<boolean | MathCollection>
+
+  /**
    * Logical xor. Test whether one and only one value is defined with a
    * nonzero/nonempty value. For matrices, the function is evaluated
    * element wise.
@@ -7592,6 +7618,7 @@ export const {
   and,
   not,
   or,
+  nor,
   xor,
 
   // matrix functions
