@@ -74,21 +74,21 @@ describe('replacer', function () {
 
   it('should stringify a Unit', function () {
     const u = new math.Unit(5, 'cm')
-    const json = '{"mathjs":"Unit","value":5,"unit":"cm"}'
+    const json = '{"mathjs":"Unit","value":5,"unit":"cm","fixPrefix":false,"skipSimp":true}'
     assert.deepStrictEqual(JSON.stringify(u), json)
     assert.deepStrictEqual(JSON.stringify(u, replacer), json)
   })
 
   it('should stringify a Unit with a value only', function () {
     const u = new math.Unit(5)
-    const json = '{"mathjs":"Unit","value":5,"unit":null}'
+    const json = '{"mathjs":"Unit","value":5,"unit":null,"fixPrefix":false,"skipSimp":true}'
     assert.deepStrictEqual(JSON.stringify(u), json)
     assert.deepStrictEqual(JSON.stringify(u, replacer), json)
   })
 
   it('should stringify a Unit without a value', function () {
     const u = new math.Unit(null, 'cm')
-    const json = '{"mathjs":"Unit","value":null,"unit":"cm"}'
+    const json = '{"mathjs":"Unit","value":null,"unit":"cm","fixPrefix":false,"skipSimp":true}'
     assert.deepStrictEqual(JSON.stringify(u), json)
     assert.deepStrictEqual(JSON.stringify(u, replacer), json)
   })
