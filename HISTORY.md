@@ -10,6 +10,8 @@
   Thanks @NilsDietrich.
 - Fix: #3564 Avoid error throws when mapping/filtering empty arrays/matrices.
   (#3567). Thanks @richardt-cla.
+- Fix: #3574 respect tolerances in function `isInteger` (#3575). 
+  Thanks @gwhitney.
 
 # 2025-10-10, 15.0.0
 
