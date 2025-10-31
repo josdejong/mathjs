@@ -917,9 +917,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Get a JSON representation of the unit
    * @memberof Unit
    * @returns {Object} Returns a JSON object structured as:
-   *                   `{"mathjs": "Unit", "value": 2, "unit": "cm", "fixPrefix": false, "skipAutomaticSimplification": true}`
-   *                   In this object, the fields `fixPrefix` and `skipAutomaticSimplification` are only outputted when
-   *                   they are different from the default value.
+   *                   `{"mathjs": "Unit", "value": 2, "unit": "cm", "fixPrefix": false, "skipSimp": true}`
    */
   Unit.prototype.toJSON = function () {
     return {
