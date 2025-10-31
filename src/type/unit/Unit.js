@@ -922,21 +922,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    *                   they are different from the default value.
    */
   Unit.prototype.toJSON = function () {
-    const json = {
+    return {
       mathjs: 'Unit',
       value: this._denormalize(this.value),
-      unit: this.units.length > 0 ? this.formatUnits() : null
+      unit: this.units.length > 0 ? this.formatUnits() : null,
+      fixPrefix: this.fixPrefix,
+      skipSimp: this.skipAutomaticSimplification
     }
-
-    if (this.fixPrefix !== fixPrefixDefault) {
-      json.fixPrefix = this.fixPrefix
-    }
-
-    if (this.skipAutomaticSimplification !== skipAutomaticSimplificationDefault) {
-      json.skipAutomaticSimplification = this.skipAutomaticSimplification
-    }
-
-    return json
   }
 
   /**
@@ -949,7 +941,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   Unit.fromJSON = function (json) {
     const unit = new Unit(json.value, json.unit ?? undefined)
     unit.fixPrefix = json.fixPrefix ?? fixPrefixDefault
-    unit.skipAutomaticSimplification = json.skipAutomaticSimplification ?? skipAutomaticSimplificationDefault
+    unit.skipAutomaticSimplification = json.skipSimp ?? skipAutomaticSimplificationDefault
     return unit
   }
 

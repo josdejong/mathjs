@@ -651,22 +651,26 @@ describe('Unit', function () {
   describe('json', function () {
     it('toJSON', function () {
       assert.deepStrictEqual(new Unit(5, 'cm').toJSON(),
-        { mathjs: 'Unit', value: 5, unit: 'cm' })
+        { mathjs: 'Unit', value: 5, unit: 'cm', fixPrefix: false, skipSimp: true })
       assert.deepStrictEqual(new Unit(5, 'cm').to('mm').toJSON(),
-        { mathjs: 'Unit', value: 50, unit: 'mm', fixPrefix: true })
+        { mathjs: 'Unit', value: 50, unit: 'mm', fixPrefix: true, skipSimp: true })
       assert.deepStrictEqual(new Unit(5, 'kN').to('kg m s ^ -2').toJSON(),
-        { mathjs: 'Unit', value: 5000, unit: '(kg m) / s^2', fixPrefix: true })
+        { mathjs: 'Unit', value: 5000, unit: '(kg m) / s^2', fixPrefix: true, skipSimp: true })
       assert.deepStrictEqual(new Unit(math.fraction(0.375), 'cm').toJSON(),
         {
           mathjs: 'Unit',
           value: math.fraction(0.375), // Note that value is not serialized at this point, that will be done by JSON.stringify
-          unit: 'cm'
+          unit: 'cm',
+          fixPrefix: false,
+          skipSimp: true
         })
       approxDeepEqual(new Unit(math.complex(2, 4), 'g').toJSON(),
         {
           mathjs: 'Unit',
           value: math.complex(2, 4),
-          unit: 'g'
+          unit: 'g',
+          fixPrefix: false,
+          skipSimp: true
         })
 
       assert.deepStrictEqual(math.evaluate('2 kg * 3 in^2').toJSON(),
@@ -674,29 +678,30 @@ describe('Unit', function () {
           mathjs: 'Unit',
           value: 6,
           unit: 'kg in^2',
-          skipAutomaticSimplification: false
+          fixPrefix: false,
+          skipSimp: false
         })
 
       const str = JSON.stringify(new Unit(math.fraction(0.375), 'cm'))
-      assert.deepStrictEqual(str, '{"mathjs":"Unit","value":{"mathjs":"Fraction","n":"3","d":"8"},"unit":"cm"}')
+      assert.deepStrictEqual(str, '{"mathjs":"Unit","value":{"mathjs":"Fraction","n":"3","d":"8"},"unit":"cm","fixPrefix":false,"skipSimp":true}')
 
       const cmpx = JSON.stringify(new Unit(math.complex(2, 4), 'g'))
-      assert.strictEqual(cmpx, '{"mathjs":"Unit","value":{"mathjs":"Complex","re":2,"im":4},"unit":"g"}')
+      assert.strictEqual(cmpx, '{"mathjs":"Unit","value":{"mathjs":"Complex","re":2,"im":4},"unit":"g","fixPrefix":false,"skipSimp":true}')
     })
 
     it('fromJSON', function () {
       const u1 = new Unit(5, 'cm')
-      const u2 = Unit.fromJSON({ mathjs: 'Unit', value: 5, unit: 'cm', fixPrefix: false })
+      const u2 = Unit.fromJSON({ mathjs: 'Unit', value: 5, unit: 'cm', fixPrefix: false, skipSimp: true })
       assert.ok(u2 instanceof Unit)
       assert.deepStrictEqual(u2, u1)
 
       const u3 = new Unit(5, 'cm').to('mm')
-      const u4 = Unit.fromJSON({ mathjs: 'Unit', value: 50, unit: 'mm', fixPrefix: true })
+      const u4 = Unit.fromJSON({ mathjs: 'Unit', value: 50, unit: 'mm', fixPrefix: true, skipSimp: true })
       assert.ok(u4 instanceof Unit)
       assert.deepStrictEqual(u4, u3)
 
       const u5 = new Unit(5, 'kN').to('kg m/s^2')
-      const u6 = Unit.fromJSON({ mathjs: 'Unit', value: 5000, unit: 'kg m s^-2', fixPrefix: true })
+      const u6 = Unit.fromJSON({ mathjs: 'Unit', value: 5000, unit: 'kg m s^-2', fixPrefix: true, skipSimp: true })
       assert.ok(u6 instanceof Unit)
       assert.deepStrictEqual(u5, u6)
 
@@ -704,7 +709,8 @@ describe('Unit', function () {
         mathjs: 'Unit',
         value: math.fraction(0.375), // Note that value is already a Fraction at this point, that will be done by JSON.parse(str, reviver)
         unit: 'cm',
-        fixPrefix: false
+        fixPrefix: false,
+        skipSimp: true
       })
       assert.deepStrictEqual(u7, new Unit(math.fraction(0.375), 'cm'))
 
@@ -712,7 +718,8 @@ describe('Unit', function () {
         mathjs: 'Unit',
         value: math.complex(2, 4),
         unit: 'g',
-        fixPrefix: false
+        fixPrefix: false,
+        skipSimp: true
       })
       assert.deepStrictEqual(u8, new Unit(math.complex(2, 4), 'g'))
 
@@ -720,7 +727,8 @@ describe('Unit', function () {
         mathjs: 'Unit',
         value: 6,
         unit: 'kg in^2',
-        skipAutomaticSimplification: false
+        fixPrefix: false,
+        skipSimp: false
       })
       const u10 = math.evaluate('2 kg * 3 in^2')
       assert.deepStrictEqual(u9, u10)
