@@ -2131,6 +2131,10 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('0 > 0 ? 1 : 0 < 0 ? -1 : 0'), 0)
     })
 
+    it('should parse a conditional operator and not optional chaining when followed by a number', function () {
+      assert.strictEqual(parseAndEval('true?.3:.7'), 0.3)
+    })
+
     it('should lazily evaluate conditional expression a ? b : c', function () {
       const scope = {}
       math.parse('true ? (a = 2) : (b = 2)').compile().evaluate(scope)
