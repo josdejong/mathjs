@@ -955,8 +955,15 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     const params = []
 
     if (state.token === ':') {
-      // implicit start=1 (one-based)
-      node = new ConstantNode(1)
+      if (state.conditionalLevel === state.nestingLevel) {
+        // we are in the midst of parsing a conditional operator, so not
+        // a range, but rather an empty true-expr, which we interpret like
+        // any empty expression: a constant `undefined` value
+        node = new ConstantNode(undefined)
+      } else {
+        // implicit start of range = 1 (one-based)
+        node = new ConstantNode(1)
+      }
     } else {
       // explicit start
       node = parseAddSubtract(state)

@@ -2141,6 +2141,22 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('2 ? true') }, /False part of conditional expression expected/)
     })
 
+    it(
+      'should interpret missing true part of conditional as undefined (#3578)',
+      function () {
+        assert.strictEqual(parseAndEval('true ? : 3'), undefined)
+        assert.strictEqual(parseAndEval('2?:false'), undefined)
+        assert.strictEqual(parseAndEval('false ? : 3'), 3)
+        assert.strictEqual(parseAndEval('0?:false'), false)
+      })
+
+    it(
+      'should allow a range with implicit start as the false expr',
+      function () {
+        assert.strictEqual(parseAndEval('true?0::3'), 0)
+        assert.deepStrictEqual(parseAndEval('false?0::3'), parseAndEval(':3'))
+      })
+
     it('should parse : (range)', function () {
       assert.ok(parseAndEval('2:5') instanceof Matrix)
       assert.deepStrictEqual(parseAndEval('2:5'), math.matrix([2, 3, 4, 5]))

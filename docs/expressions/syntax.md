@@ -802,6 +802,12 @@ The results can be read from a `ResultSet` via the property `ResultSet.entries`
 which is an `Array`, or by calling `ResultSet.valueOf()`, which returns the
 array with results.
 
+## Empty expressions
+
+The empty string and any expression consisting solely of whitespace denotes the
+value `undefined`. Such an expression can also occur as the second part of
+a conditional ternary operator; for example `math.evaluate('true ? : 3')`
+returns `undefined`.
 
 ## Implicit multiplication
 
