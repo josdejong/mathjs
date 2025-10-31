@@ -12,6 +12,7 @@
   (#3567). Thanks @richardt-cla.
 - Fix: #3574 respect tolerances in function `isInteger` (#3575). 
   Thanks @gwhitney.
+- Fix: #3562 serializing units missing an internal property (#3572).
 
 # 2025-10-10, 15.0.0
 
