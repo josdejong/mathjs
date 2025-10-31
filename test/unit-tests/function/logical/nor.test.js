@@ -231,6 +231,6 @@ describe('nor', function () {
 
   it('should LaTeX nor', function () {
     const expression = math.parse('nor(1,2)')
-    assert.strictEqual(expression.toTex(), '\\left(1\\2\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(1\\downarrow2\\right)')
   })
 })

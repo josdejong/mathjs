@@ -106,7 +106,8 @@ export const latexOperators = {
   bitOr: '|',
   and: '\\wedge',
   xor: '\\veebar',
-  or: '\\vee'
+  or: '\\vee',
+  nor: '\\downarrow'
 }
 
 export const latexFunctions = {
@@ -181,6 +182,7 @@ export const latexFunctions = {
   and: { 2: `\\left(\${args[0]}${latexOperators.and}\${args[1]}\\right)` },
   not: { 1: latexOperators.not + '\\left(${args[0]}\\right)' },
   or: { 2: `\\left(\${args[0]}${latexOperators.or}\${args[1]}\\right)` },
+  nor: { 2: `\\left(\${args[0]}${latexOperators.nor}\${args[1]}\\right)` },
   xor: { 2: `\\left(\${args[0]}${latexOperators.xor}\${args[1]}\\right)` },
 
   // matrix

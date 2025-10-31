@@ -1,6 +1,6 @@
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
+import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
 import { factory } from '../../utils/factory.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { norNumber } from '../../plain/number/logical.js'
@@ -10,13 +10,14 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
+  'SparseMatrix',
   'DenseMatrix',
   'concat'
 ]
 
-export const createNor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
+export const createNor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, SparseMatrix, DenseMatrix, concat }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
+  const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
 
@@ -67,7 +68,7 @@ export const createNor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         (x, y) => self(x.value || 0, y.value || 0))
     },
     matrixAlgorithmSuite({
-      SS: matAlgo05xSfSf,
+      SS: matAlgo07xSSf,
       DS: matAlgo03xDSf,
       Ss: matAlgo12xSfs
     })
