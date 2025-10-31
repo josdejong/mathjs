@@ -1397,6 +1397,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // consume the '?.' token
         getToken(state)
 
+        // Reject another dot immediately after ?. (e.g., obj?..foo is invalid)
+        if (state.token === '.') {
+          throw createSyntaxError(state, 'Unexpected token . after ?.')
+        }
+
         // Special case: property access via dot-notation following optional chaining (obj?.foo)
         // After consuming '?.', the dot is already consumed as part of the token,
         // so the next token is the property name itself. Handle that here.

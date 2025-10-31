@@ -1196,6 +1196,13 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('obj.foo["bar"].baz', { obj: { foo: { bar: null } } }) }, TypeError)
     })
 
+    it('should throw an error when using double-dot after optional chaining operator', function () {
+      // ?.. is not valid in JavaScript and should be rejected
+      assert.throws(function () { parseAndEval('{a: 3}?..a') }, /SyntaxError: Unexpected token \. after \?\. \(char 9\)/)
+      assert.throws(function () { parseAndEval('obj?..foo', { obj: { foo: 2 } }) }, /SyntaxError: Unexpected token \. after \?\. \(char 6\)/)
+      assert.throws(function () { parseAndEval('obj?.["a"]?..b', { obj: { a: { b: 2 } } }) }, /SyntaxError: Unexpected token \. after \?\. \(char 13\)/)
+    })
+
     it('should set an object property with dot notation', function () {
       const scope = { obj: {} }
       parseAndEval('obj.foo = 2', scope)
