@@ -1,6 +1,6 @@
 import { factory } from '../../utils/factory.js'
 import { gammaG, gammaNumber, gammaP } from '../../plain/number/index.js'
-
+import { nearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
 const name = 'gamma'
 const dependencies = [
   'typed', 'config', 'BigNumber', 'Complex',
@@ -78,17 +78,24 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
     return x.mul(twoPiSqrt).mul(tpow).mul(expt)
   }
 
-  const piB = BigNumber.acos(-1)
-  const halflog2piB = piB.times(2).ln().div(2)
-  const sqrtpiB = piB.sqrt()
-  const zeroB = new BigNumber(0)
-  const twoB = new BigNumber(2)
-  const neg2B = new BigNumber(-2)
+  let piB = BigNumber.acos(-1)
+  let halflog2piB = piB.times(2).ln().div(2)
+  let sqrtpiB = piB.sqrt()
+  let zeroB = new BigNumber(0)
+  let twoB = new BigNumber(2)
+  let neg2B = new BigNumber(-2)
 
   return typed(name, {
     number: gammaNumber,
     Complex: gammaComplex,
     BigNumber: function (n) {
+      // recalculate constants in case precision changed etc.
+      piB = BigNumber.acos(-1)
+      halflog2piB = piB.times(2).ln().div(2)
+      sqrtpiB = piB.sqrt()
+      zeroB = new BigNumber(0)
+      twoB = new BigNumber(2)
+      neg2B = new BigNumber(-2)
       // Handle special values here
       if (!n.isFinite()) {
         return new BigNumber(n.isNegative() ? NaN : Infinity)
@@ -125,7 +132,9 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
     // Note for future the same core algorithm can be used for 1/gamma
     // or log-gamma, see details in the paper.
     // Our goal is to compute relTol digits of gamma
-    let digits = Math.abs(Math.log10(config.relTol))
+    let relTol = config.relTol
+    let absTol = config.absTol
+    let digits = Math.ceil(Math.abs(Math.log10(relTol)))
     const bits = Math.min(digits * 10 / 3, 3)
     const beta = 0.2 // tuning parameter prescribed by reference
     const reflect = n.lessThan(-5)
@@ -139,20 +148,21 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
     let inaccurate = true
     let mainsum = new BigNumber(0)
     let shifted = z.plus(r)
-    // console.trace('Trying for', digits, 'with shift', r)
     while (inaccurate) {
       const needPrec = digits + 3 + Math.floor(
         shifted.ln().times(shifted).log().toNumber())
       if (needPrec > config.precision) {
-        digits -= needPrec - config.precision
+        const lessDigits = needPrec - config.precision
+        digits -= lessDigits
         if (digits < 3) {
           throw new Error(`Cannot compute gamma(${n}) with useful accuracy`)
         }
+        relTol *= 10 ** lessDigits
+        absTol *= 10 ** lessDigits
         let message = `Insufficient bignumber precision for gamma(${n}), `
         message += `limiting to ${digits} digits.`
-        console.warning(message)
+        console.warn(message)
       }
-      const threshold = new BigNumber(0.1).pow(digits)
       let lastTerm = new BigNumber(Infinity)
       let index = 1
       let powShifted = shifted
@@ -162,20 +172,21 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
         const term = bernoulli(new BigNumber(double))
           .div(powShifted.times(double * (double - 1)))
         // See if we already converged
-        const absTerm = term.abs()
-        if (absTerm.lessThan(threshold)) {
+        const newsum = mainsum.plus(term)
+        if (nearlyEqual(mainsum, newsum, relTol, absTol)) {
           inaccurate = false
           break
         }
+        const absTerm = term.abs()
         if (lastTerm.lessThan(absTerm)) {
           // oops, diverging
           mainsum = new BigNumber(0)
-          r = 2 * r
+          r = 2 * r + 1
           shifted = z.plus(r)
           break
         }
         lastTerm = absTerm
-        mainsum = mainsum.plus(term)
+        mainsum = newsum
         index += 1
         powShifted = powShifted.times(shiftedSq)
       }

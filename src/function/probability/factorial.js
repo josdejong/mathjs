@@ -2,7 +2,7 @@ import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'factorial'
-const dependencies = ['typed', 'isInteger', 'bignumber', 'gamma']
+const dependencies = ['typed', 'isInteger', 'gamma']
 
 export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({
   typed, isInteger, bignumber, gamma
@@ -42,7 +42,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({
       if (n.isNegative()) {
         throw new Error('Value must be non-negative')
       }
-      if (!n.isFinite()) return bignumber(Infinity)
+      if (!n.isFinite()) return n
       if (!isInteger(n)) throw new Error('Value must be integer')
 
       return gamma(n.plus(1))
