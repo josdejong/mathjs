@@ -91,7 +91,9 @@
     "sylvester": "0.0.21",
     "tinybench": "5.0.1",
     "ts-node": "10.9.2",
+    "tsdown": "^0.16.0",
     "typescript": "5.9.3",
+    "vite": "^7.1.12",
     "webpack": "5.102.1",
     "zeros": "1.0.0"
   },
@@ -104,18 +106,18 @@
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js"
+      "import": "./lib/esm/index.mjs",
+      "require": "./lib/cjs/index.cjs"
     },
     "./number": {
       "types": "./types/index.d.ts",
-      "import": "./lib/esm/number.js",
-      "require": "./lib/cjs/number.js"
+      "import": "./lib/esm/number.mjs",
+      "require": "./lib/cjs/number.cjs"
     },
     "./lib/esm/number": {
       "types": "./types/index.d.ts",
-      "import": "./lib/esm/number.js",
-      "require": "./lib/cjs/number.js"
+      "import": "./lib/esm/number.mjs",
+      "require": "./lib/cjs/number.cjs"
     },
     "./package.json": "./package.json",
     "./lib/browser/math.js": "./lib/browser/math.js",
@@ -136,7 +138,8 @@
     "lib": "./lib"
   },
   "scripts": {
-    "build": "gulp && npm run update-authors",
+    "build:gulp": "gulp && npm run update-authors",
+    "build": "npm run build:lib && npm run build:browser && npm run update-authors",
     "build-and-test": "npm run build && npm run test:all && npm run lint",
     "build:clean": "gulp clean",
     "build:docs": "gulp docs",
@@ -154,8 +157,12 @@
     "test:lambdatest": "karma start test/browser-test-config/lambdatest-karma.js",
     "test:types": " tsc -p ./tsconfig.json && node --loader ts-node/esm ./test/typescript-tests/testTypes.ts",
     "coverage": "c8 --reporter=lcov --reporter=text-summary mocha test/unit-tests && echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
+    "prebuild:lib": "node ./tools/run-generate-entries.mjs",
     "prepublishOnly": "npm run test:all && npm run lint",
-    "update-authors": "node ./tools/update-authors.js"
+    "update-authors": "node ./tools/update-authors.js",
+    "build:lib": "tsdown",
+    "build:browser": "vite --config vite.browser.config.ts build",
+    "watch:lib": "tsdown --watch"
   },
   "bin": {
     "mathjs": "./bin/cli.js"
@@ -166,5 +173,6 @@
   "bugs": {
     "url": "https://github.com/josdejong/mathjs/issues"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"
 }
