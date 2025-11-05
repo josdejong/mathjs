@@ -322,7 +322,13 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     // check for delimiters consisting of 2 characters
-    if (c2.length === 2 && DELIMITERS[c2]) {
+    // Special case: the check for '?.' is to prevent a case like 'a?.3:.7' from being interpreted as optional chaining
+    // TODO: refactor the tokenization into some better way to deal with cases like 'a?.3:.7', see https://github.com/josdejong/mathjs/pull/3584
+    if (
+      c2.length === 2 &&
+      DELIMITERS[c2] &&
+      (c2 !== '?.' || !parse.isDigit(state.expression.charAt(state.index + 2)))
+    ) {
       state.tokenType = TOKENTYPE.DELIMITER
       state.token = c2
       next(state)
