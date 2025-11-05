@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 15.0.0
+# 2025-11-05, 15.1.0
 
 - Feat: implement functions `isFinite` and `isBounded` (#3554, #3553). 
   Thanks @gwhitney.
@@ -8,6 +8,10 @@
   Thanks @gwhitney.
 - Feat: support for optional chaining `object?.key` (#3547). 
   Thanks @NilsDietrich.
+- Fix: #3580, #3586, #3587 issues with the optional chaining operator: disallow
+  double dot `?..`, allow optional function calls, throw errors on invalid uses
+  of `?.` (#3585). Thanks @AnslemHack.
+- Fix: #3579 conditional parsed as optional chaining (#3584).
 - Fix: #3564 Avoid error throws when mapping/filtering empty arrays/matrices.
   (#3567). Thanks @richardt-cla.
 - Fix: #3574 respect tolerances in function `isInteger` (#3575). 
