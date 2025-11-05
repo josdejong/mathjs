@@ -11,6 +11,7 @@
 - Fix: issues with the optional chaining operator: disallow double dot `?..`, 
   allow optional function calls, throw errors on invalid uses of `?.` (#3585).
   Thanks @AnslemHack.
+- Fix: #3579 conditional parsed as optional chaining (#3584).
 - Fix: #3564 Avoid error throws when mapping/filtering empty arrays/matrices.
   (#3567). Thanks @richardt-cla.
 - Fix: #3574 respect tolerances in function `isInteger` (#3575). 
