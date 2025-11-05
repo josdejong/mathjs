@@ -95,7 +95,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      *     the arguments, typically a SymbolNode or AccessorNode
      * @param {./Node[]} args
      */
-    constructor (fn, args) {
+    constructor (fn, args, optional) {
       super()
       if (typeof fn === 'string') {
         fn = new SymbolNode(fn)
@@ -107,9 +107,14 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
         throw new TypeError(
           'Array containing Nodes expected for parameter "args"')
       }
+      const optionalType = typeof optional
+      if (!(optionalType === 'undefined' || optionalType === 'boolean')) {
+        throw new TypeError('optional flag, if specified, must be boolean')
+      }
 
       this.fn = fn
       this.args = args || []
+      this.optional = !!optional
     }
 
     // readonly property name
@@ -137,7 +142,8 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     _compile (math, argNames) {
       // compile arguments
       const evalArgs = this.args.map((arg) => arg._compile(math, argNames))
-      const fromOptionalChaining = isAccessorNode(this.fn) && this.fn.optionalChaining
+      const fromOptionalChaining = this.optional ||
+        (isAccessorNode(this.fn) && this.fn.optionalChaining)
 
       if (isSymbolNode(this.fn)) {
         const name = this.fn.name
@@ -153,12 +159,14 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
               value = scope.get(name)
             } else if (name in math) {
               value = getSafeProperty(math, name)
-            } else {
-              return FunctionNode.onUndefinedFunction(name)
-            }
-            if (typeof value === 'function') {
+            } else if (fromOptionalChaining) value = undefined
+            else return FunctionNode.onUndefinedFunction(name)
+
+            if (typeof value === 'function' ||
+                (fromOptionalChaining && value === undefined)) {
               return value
             }
+
             throw new TypeError(
               `'${name}' is not a function; its value is:\n  ${strin(value)}`
             )
@@ -185,10 +193,12 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
             switch (evalArgs.length) {
               case 0: return function evalFunctionNode (scope, args, context) {
                 const fn = resolveFn(scope)
+                if (fromOptionalChaining && fn === undefined) return undefined
                 return fn()
               }
               case 1: return function evalFunctionNode (scope, args, context) {
                 const fn = resolveFn(scope)
+                if (fromOptionalChaining && fn === undefined) return undefined
                 const evalArg0 = evalArgs[0]
                 return fn(
                   evalArg0(scope, args, context)
@@ -196,6 +206,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
               }
               case 2: return function evalFunctionNode (scope, args, context) {
                 const fn = resolveFn(scope)
+                if (fromOptionalChaining && fn === undefined) return undefined
                 const evalArg0 = evalArgs[0]
                 const evalArg1 = evalArgs[1]
                 return fn(
@@ -205,6 +216,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
               }
               default: return function evalFunctionNode (scope, args, context) {
                 const fn = resolveFn(scope)
+                if (fromOptionalChaining && fn === undefined) return undefined
                 const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
                 return fn(...values)
               }
@@ -214,6 +226,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
           const rawArgs = this.args
           return function evalFunctionNode (scope, args, context) {
             const fn = getSafeProperty(args, name)
+            if (fromOptionalChaining && fn === undefined) return undefined
             if (typeof fn !== 'function') {
               throw new TypeError(
                 `Argument '${name}' was not a function; received: ${strin(fn)}`
@@ -245,7 +258,8 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
           const object = evalObject(scope, args, context)
 
           // Optional chaining: if the base object is nullish, short-circuit to undefined
-          if (fromOptionalChaining && object == null) {
+          if (fromOptionalChaining &&
+              (object == null || object[prop] === undefined)) {
             return undefined
           }
 
@@ -270,6 +284,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
         return function evalFunctionNode (scope, args, context) {
           const fn = evalFn(scope, args, context)
+          if (fromOptionalChaining && fn === undefined) return undefined
           if (typeof fn !== 'function') {
             throw new TypeError(
               `Expression '${fnExpr}' did not evaluate to a function; value is:` +
