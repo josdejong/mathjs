@@ -226,6 +226,7 @@ export const createSubset = /* #__PURE__ */ factory('subset', [], () => noSubset
 export { createPartitionSelect } from './function/matrix/partitionSelect.js'
 
 // probability
+export { createBernoulli } from './function/probability/bernoulli.js'
 export const createCombinations = createNumberFactory('combinations', combinationsNumber)
 export const createGamma = createNumberFactory('gamma', gammaNumber)
 export const createLgamma = createNumberFactory('lgamma', lgammaNumber)

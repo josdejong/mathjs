@@ -35,9 +35,24 @@ export function approxEqual (a, b, epsilon) {
       assert.ok(Math.abs(a) < epsilon, (a + ' ~= ' + b))
     } else {
       const diff = Math.abs(a - b)
-      const max = Math.max(a, b)
+      const max = Math.max(Math.abs(a), Math.abs(b))
       const maxDiff = Math.abs(max * epsilon)
       assert.ok(diff <= maxDiff, (a + ' ~= ' + b + ' (epsilon: ' + epsilon + ')'))
+    }
+  } else if (a && b && a.isBigNumber && b.isBigNumber) {
+    if (!a.equals(b)) {
+      if (a.isNaN()) assert.ok(b.isNaN())
+      else if (a.equals(0)) {
+        assert.ok(b.abs().lt(epsilon))
+      } else if (b.equals(0)) {
+        assert.ok(a.abs().lt(epsilon))
+      } else {
+        const diff = a.minus(b).abs()
+        let mx = a.abs()
+        if (mx.lt(b.abs())) mx = b.abs()
+        const maxDiff = mx.mul(epsilon)
+        assert.ok(diff.lt(maxDiff), `Diff ${diff} exceeds ${maxDiff}`)
+      }
     }
   } else if (a && a.isBigNumber) {
     return approxEqual(a.toNumber(), b, epsilon)

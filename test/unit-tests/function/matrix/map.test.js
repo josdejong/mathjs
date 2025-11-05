@@ -210,6 +210,48 @@ describe('map', function () {
     assert.deepStrictEqual(math.map(math.matrix([1, 8, 27], 'sparse'), math.format), math.matrix(['1', '8', '27'], 'sparse'))
   })
 
+  it(
+    'should return an empty array/matrix unchanged, with a typed callback',
+    function () {
+      const testCases = [
+        [],
+        [[]],
+        [[], []],
+        [[[]]],
+        [[[], []]],
+        [
+          [[], []],
+          [[], []]
+        ],
+
+        math.matrix([]),
+        math.matrix([[]]),
+        math.matrix([[], []]),
+        math.matrix([[[]]]),
+        math.matrix([[[], []]]),
+        math.matrix([
+          [[], []],
+          [[], []]
+        ]),
+        math.matrix(), // empty matrix with size 0
+
+        math.matrix([], 'sparse'),
+        math.matrix([[]], 'sparse'),
+        math.matrix([[], []], 'sparse')
+      ]
+      testCases.forEach(function (testCase) {
+        const result = math.map(
+          testCase,
+          math.typed({
+            'any, any, any': function (value) {
+              throw new Error(`Callback somehow called with ${value}`)
+            }
+          })
+        )
+        assert.deepStrictEqual(result, testCase)
+      })
+    })
+
   it('should throw an error if called with unsupported type', function () {
     assert.throws(function () { math.map(1, function () {}) })
     assert.throws(function () { math.map('arr', function () {}) })

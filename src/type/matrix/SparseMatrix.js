@@ -16,9 +16,27 @@ const dependencies = [
 
 export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, Matrix }) => {
   /**
-   * Sparse Matrix implementation. This type implements
-   * a [Compressed Column Storage](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_column_(CSC_or_CCS))
-   * format for two-dimensional sparse matrices.
+   * Sparse Matrix implementation. This type (currently) implements 2D
+   * matrices only via the format known as
+   * [Compressed Column Storage](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_column_(CSC_or_CCS)).
+   *
+   * The structure/invariants of the internal data should be:
+   * 1. _values is an array of the nonzero values in order from top to bottom
+   *    (of each column), left to right.
+   * 2. _index is an array of row numbers, of the same length as and
+   *    corresponding positionally to _values.
+   * 3. _ptr is an array of length one more than the number of columns. For j
+   *    less than the number of columns, the "half-open" span of indices
+   *    _ptr[j] to _ptr[j+1] (i.e. including _ptr[j] if it is less than
+   *    _ptr[j+1], but never including _ptr[j+1]) are the indices in _values
+   *    of the nonzero elements in column j. Note there are no nonzero elements
+   *    in column j exactly when _ptr[j] === _ptr[j+1], and that the final
+   *    entry in _ptr is always exactly the number of nonzero entries in the
+   *    matrix.
+   * 4. _size is a length-2 array consisting of the number of rows followed by
+   *    the number of columns.
+   * 5. _datatype, if set, is the mathjs typeOf value of all entries of the
+   *    SparseMatrix.
    * @class SparseMatrix
    */
   function SparseMatrix (data, datatype) {
@@ -133,7 +151,9 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       while (j < columns)
     }
     // store number of values in ptr
-    matrix._ptr.push(matrix._index.length)
+    while (matrix._ptr.length <= columns) {
+      matrix._ptr.push(matrix._index.length)
+    }
     // size
     matrix._size = [rows, columns]
   }

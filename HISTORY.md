@@ -1,6 +1,20 @@
 # History
 
-# 2205-10-10, 15.0.0
+# unpublished changes since 15.0.0
+
+- Feat: implement functions `isFinite` and `isBounded` (#3554, #3553). 
+  Thanks @gwhitney.
+- Feat: add function `bernoulli` to calculate Bernoulli numbers (#3551).
+  Thanks @gwhitney.
+- Feat: support for optional chaining `object?.key` (#3547). 
+  Thanks @NilsDietrich.
+- Fix: #3564 Avoid error throws when mapping/filtering empty arrays/matrices.
+  (#3567). Thanks @richardt-cla.
+- Fix: #3574 respect tolerances in function `isInteger` (#3575). 
+  Thanks @gwhitney.
+- Fix: #3562 serializing units missing an internal property (#3572).
+
+# 2025-10-10, 15.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 

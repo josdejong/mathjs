@@ -29,7 +29,7 @@ export const createIsNaN = /* #__PURE__ */ factory(name, dependencies, ({ typed 
    *
    * See also:
    *
-   *    isNumeric, isNegative, isPositive, isZero, isInteger
+   *    isNumeric, isNegative, isPositive, isZero, isInteger, isFinite, isBounded
    *
    * @param {number | BigNumber | bigint | Fraction | Unit | Array | Matrix} x  Value to be tested
    * @return {boolean}  Returns true when `x` is NaN.
