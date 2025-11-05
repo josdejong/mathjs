@@ -57,4 +57,6 @@ math.isNumeric([2.3, 'foo', false])   // returns [true, false, true]
 [isPositive](isPositive.html),
 [isNegative](isNegative.html),
 [isInteger](isInteger.html),
-[hasNumericValue](hasNumericValue.html)
+[hasNumericValue](hasNumericValue.html),
+[isFinite](isFinite.html),
+[isBounded](isBounded.html)

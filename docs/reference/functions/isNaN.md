@@ -57,4 +57,6 @@ math.isNaN([2, 0, -3, NaN])       // returns [false, false, false, true]
 [isNegative](isNegative.html),
 [isPositive](isPositive.html),
 [isZero](isZero.html),
-[isInteger](isInteger.html)
+[isInteger](isInteger.html),
+[isFinite](isFinite.html),
+[isBounded](isBounded.html)

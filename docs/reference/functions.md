@@ -210,6 +210,7 @@ Function | Description
 
 Function | Description
 ---- | -----------
+[math.bernoulli(n)](functions/bernoulli.html) | Return the `n`th Bernoulli number, for positive integers `n`.
 [math.combinations(n,&nbsp;k)](functions/combinations.html) | Compute the number of ways of picking `k` unordered outcomes from `n` possibilities.
 [math.combinationsWithRep(n,&nbsp;k)](functions/combinationsWithRep.html) | Compute the number of ways of picking `k` unordered outcomes from `n` possibilities, allowing individual outcomes to be repeated more than once.
 [math.factorial(n)](functions/factorial.html) | Compute the factorial of a value  Factorial only supports an integer value as argument.
@@ -338,6 +339,8 @@ Function | Description
 ---- | -----------
 [math.clone(x)](functions/clone.html) | Clone an object.
 [math.hasNumericValue(x)](functions/hasNumericValue.html) | Test whether a value is an numeric value.
+[math.isBounded(x)](functions/isBounded.html) | Test whether a value is bounded.
+[math.isFinite(x)](functions/isFinite.html) | Test whether a value is finite.
 [math.isInteger(x)](functions/isInteger.html) | Test whether a value is an integer number.
 [math.isNaN(x)](functions/isNaN.html) | Test whether a value is NaN (not a number).
 [math.isNegative(x)](functions/isNegative.html) | Test whether a value is negative: smaller than zero.

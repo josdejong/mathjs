@@ -13,7 +13,7 @@ File: [printing_html.html](printing_html.html) (click for a live demo)
 	<meta charset="utf-8">
 	<title>math.js | printing HTML</title>
 
-	<script src="https://unpkg.com/mathjs@15.0.0/lib/browser/math.js"></script>
+	<script src="https://unpkg.com/mathjs@15.1.0/lib/browser/math.js"></script>
 
 	<style>
 		body {

@@ -4,23 +4,39 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
-<h1 id="22051010-1500">2205-10-10, 15.0.0 <a href="#22051010-1500" title="Permalink">#</a></h1>
+<h1 id="20251105-1510">2025-11-05, 15.1.0 <a href="#20251105-1510" title="Permalink">#</a></h1>
+
+- Feat: implement functions `isFinite` and `isBounded` (<a href="https://github.com/josdejong/mathjs/issues/3554">#3554</a>, <a href="https://github.com/josdejong/mathjs/issues/3553">#3553</a>). 
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Feat: add function `bernoulli` to calculate Bernoulli numbers (<a href="https://github.com/josdejong/mathjs/issues/3551">#3551</a>).
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Feat: support for optional chaining `object?.key` (<a href="https://github.com/josdejong/mathjs/issues/3547">#3547</a>). 
+  Thanks <a href="https://github.com/NilsDietrich">@NilsDietrich</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3580">#3580</a>, <a href="https://github.com/josdejong/mathjs/issues/3586">#3586</a>, <a href="https://github.com/josdejong/mathjs/issues/3587">#3587</a> issues with the optional chaining operator: disallow
+  double dot `?..`, allow optional function calls, throw errors on invalid uses
+  of `?.` (<a href="https://github.com/josdejong/mathjs/issues/3585">#3585</a>). Thanks <a href="https://github.com/AnslemHack">@AnslemHack</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3579">#3579</a> conditional parsed as optional chaining (<a href="https://github.com/josdejong/mathjs/issues/3584">#3584</a>).
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3564">#3564</a> Avoid error throws when mapping/filtering empty arrays/matrices.
+  (<a href="https://github.com/josdejong/mathjs/issues/3567">#3567</a>). Thanks <a href="https://github.com/richardt-cla">@richardt-cla</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3574">#3574</a> respect tolerances in function `isInteger` (<a href="https://github.com/josdejong/mathjs/issues/3575">#3575</a>). 
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3562">#3562</a> serializing units missing an internal property (<a href="https://github.com/josdejong/mathjs/issues/3572">#3572</a>).
+
+<h1 id="20251010-1500">2025-10-10, 15.0.0 <a href="#20251010-1500" title="Permalink">#</a></h1>
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
 - Feat: <a href="https://github.com/josdejong/mathjs/issues/3349">#3349</a> Decouple precedence of unary percentage operator and binary
   modulus operator (that both use symbol `%`), and raise the former (<a href="https://github.com/josdejong/mathjs/issues/3432">#3432</a>).
   Thanks <a href="https://github.com/kiprobinsonknack">@kiprobinsonknack</a>.
-- Feat: <a href="https://github.com/josdejong/mathjs/issues/1753">#1753</a> enhance Kronecker product to handle arbitrary dimension (<a href="https://github.com/josdejong/mathjs/issues/3461">#3461</a>).
-  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Feat: <a href="https://github.com/josdejong/mathjs/issues/1753">#1753</a> enhance Kronecker product to handle arbitrary dimension (<a href="https://github.com/josdejong/mathjs/issues/3461">#3461</a>,
+  <a href="https://github.com/josdejong/mathjs/issues/3455">#3455</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a> and <a href="https://github.com/Delaney">@Delaney</a>.
 - Feat: <a href="https://github.com/josdejong/mathjs/issues/2344">#2344</a> matrix subset according to the type of input (<a href="https://github.com/josdejong/mathjs/issues/3485">#3485</a>).
   Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
-- Fix: <a href="https://github.com/josdejong/mathjs/issues/1753">#1753</a> Correct dimensionality of Kronecker product on vectors (and
-  extend to arbitrary dimension) (<a href="https://github.com/josdejong/mathjs/issues/3455">#3455</a>). Thanks <a href="https://github.com/Delaney">@Delaney</a>.
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3501">#3501</a> parse `%` as unary only when not followed by a term (<a href="https://github.com/josdejong/mathjs/issues/3505">#3505</a>).
   Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3421">#3421</a> require a space or delimiter after hex, bin, and oct values (<a href="https://github.com/josdejong/mathjs/issues/3463">#3463</a>).
-- Fix: <a href="https://github.com/josdejong/mathjs/issues/3529">#3529</a> Change function `size` to always return an `Array` (3535).
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3529">#3529</a> Change function `size` to always return an `Array` (<a href="https://github.com/josdejong/mathjs/issues/3535">#3535</a>).
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3530">#3530</a> throw an error when trying to flatten a `SparseMatrix` (<a href="https://github.com/josdejong/mathjs/issues/3536">#3536</a>).
 
 <h1 id="20251010-1491">2025-10-10, 14.9.1 <a href="#20251010-1491" title="Permalink">#</a></h1>
