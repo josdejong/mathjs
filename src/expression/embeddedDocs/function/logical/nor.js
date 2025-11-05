@@ -7,11 +7,11 @@ export const norDocs = {
   ],
   description: 'Logical nor. Test if both values are zero',
   examples: [
-    'true nor false',
-    'false nor false',
-    '0 nor 4'
+    'nor(true, false)',
+    'nor(false, false)',
+    'nor(0, 4)'
   ],
   seealso: [
-    'not', 'and', 'xor', 'or', 'nand'
+    'not', 'or', 'xor'
   ]
 }

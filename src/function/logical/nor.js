@@ -9,7 +9,6 @@ const name = 'nor'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
   'SparseMatrix',
   'DenseMatrix',
   'concat'
@@ -42,7 +41,7 @@ export const createNor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    * See also:
    *
-   *    and, nand, or, not, xor
+   *    and, or, not, xor
    *
    * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
    * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
