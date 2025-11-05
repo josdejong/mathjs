@@ -956,6 +956,8 @@ describe('parse', function () {
       const res = parseAndEval('obj["b"] = 2', scope)
       assert.strictEqual(res, 2)
       assert.deepStrictEqual(scope, { obj: { a: 3, b: 2 } })
+      assert.deepStrictEqual(
+        parseAndEval('b = {}; b.a = 2; b').valueOf(), [{ a: 2 }])
     })
 
     it('should set a nested object property', function () {
@@ -964,6 +966,17 @@ describe('parse', function () {
       assert.strictEqual(res, 2)
       assert.deepStrictEqual(scope, { obj: { foo: { bar: 2 } } })
     })
+
+    it(
+      'should not set an object property through optional chaining',
+      function () {
+        assert.throws(
+          () => parseAndEval('obj = {a: 2}; obj?.b = 7'), SyntaxError)
+        assert.throws(
+          () => parseAndEval('obj = {a: 2}; obj?.["b"] = 7'), SyntaxError)
+        assert.throws(
+          () => parseAndEval('obj = {a: {}}; obj.a?.b = 7'), SyntaxError)
+      })
 
     it('should throw an error when trying to apply a matrix index as object property', function () {
       const scope = { a: {} }
@@ -1194,6 +1207,13 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('obj.foo?.["bar"]?.baz', { obj: null }) }, TypeError)
       assert.throws(function () { parseAndEval('obj.foo["bar"]?.baz', { obj: { foo: null } }) }, TypeError)
       assert.throws(function () { parseAndEval('obj.foo["bar"].baz', { obj: { foo: { bar: null } } }) }, TypeError)
+    })
+
+    it('should throw an error when using double-dot after optional chaining operator', function () {
+      // ?.. is not valid in JavaScript and should be rejected
+      assert.throws(function () { parseAndEval('{a: 3}?..a') }, /SyntaxError: Property name expected after optional chain \(char 9\)/)
+      assert.throws(function () { parseAndEval('obj?..foo', { obj: { foo: 2 } }) }, /SyntaxError: Property name expected after optional chain \(char 6\)/)
+      assert.throws(function () { parseAndEval('obj?.["a"]?..b', { obj: { a: { b: 2 } } }) }, /SyntaxError: Property name expected after optional chain \(char 13\)/)
     })
 
     it('should set an object property with dot notation', function () {
@@ -1470,6 +1490,40 @@ describe('parse', function () {
         const scope = {}
         parseAndEval('2(x, 2) = x^2', scope)
       }, SyntaxError)
+    })
+
+    it('should call functions via optional chaining', function () {
+      assert.strictEqual(parseAndEval('square?.(2)'), 4)
+      assert.deepStrictEqual(parseAndEval('f(x) = x+x; f?.(2)').valueOf(), [4])
+      assert.strictEqual(parseAndEval('(_(x) = x^x)?.(2)'), 4)
+      assert.strictEqual(parseAndEval('foo?.(2)', { foo: x => x * x }), 4)
+      assert.deepStrictEqual(
+        parseAndEval('f(x) = 4x/x; bar = {a: f}; bar.a?.(2)').valueOf(), [4])
+    })
+
+    it(
+      'should shortcircuit undefined functions via optional chaining',
+      function () {
+        assert.strictEqual(
+          parseAndEval('foo?.(2)', { foo: undefined }), undefined)
+        assert.strictEqual(parseAndEval('{a: 3}.foo?.(2)'), undefined)
+        assert.strictEqual(
+          parseAndEval('foo.bar?.(2)', { foo: {} }), undefined)
+        assert.deepStrictEqual(
+          parseAndEval('f(x) = undefined; f(0)?.(2)').valueOf(), [undefined])
+        assert.strictEqual(parseAndEval('(undefined)?.(2)'), undefined)
+        assert.strictEqual(parseAndEval('foo?.(2)'), undefined)
+      })
+
+    it('should throw with optional chain call on non-function', function () {
+      // I guess it is OK to consider this a syntax error since we know just
+      // by reading the expression that the function call can't succeed.
+      assert.throws(() => parseAndEval('7?.(2)'), SyntaxError)
+      assert.throws(() => parseAndEval('a = 7; a?.(2)'), TypeError)
+      assert.throws(() => parseAndEval('(3+4)?.(2)'), TypeError)
+      assert.throws(() => parseAndEval('add(3,4)?.(2)'), TypeError)
+      assert.throws(() => parseAndEval('{a: true}.a?.(2)'), Error)
+      assert.throws(() => parseAndEval('[3, 4]?.(2)'), TypeError)
     })
   })
 
