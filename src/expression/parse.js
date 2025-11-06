@@ -1073,11 +1073,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     while (true) {
       // The idiosyncrasies of `%` in the mathjs language are handled
-      // here (and only here) because of our method of treating percent
-      // as a dimensionless unit. Hence, we first encounter the possibility
-      // of `%` as a unit involved in an implicit multiplication, and so when
-      // we attempt an implicit multiplication looking at a '%', we decide
-      // once and for all if that token is a unit or the 'mod' operator.
+      // here (and only here) because percent is treated as a dimensionless
+      // unit. Hence, we first encounter the possibility of the character `%`
+      // when we attempt an implicit multiplication. At this point, if we
+      // happen to be looking at `%`, we decide once and for all if it is a
+      // unit symbol or the 'mod' operator.
       // Note this approach handles disambiguation of `in` as a unit or
       // conversion operator in this same place, although unfortunately
       // with somewhat different special cases.
@@ -1087,24 +1087,29 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       // in latter case not).
       let delimiterAsUnit = state.token in UNIT_DELIMITERS
       if (delimiterAsUnit) {
-        // First try looking ahead one token to disambiguate
+        // Here we check if we are in a pattern in which this token should
+        // _not_ in fact be interpreted as a unit.
+
+        // First try looking ahead one token for general cases to disambiguate
         const saveState = Object.assign({}, state)
         getTokenSkipNewline(state)
         if (state.token === '(' ||
             state.tokenType === TOKENTYPE.NUMBER ||
             state.tokenType === TOKENTYPE.SYMBOL ||
-            // Special cases for `in`:
+            // Now check special cases for `in`:
             // Parsing `5 in in`, the first `in` is a unit, second is operator
             (saveState.token === 'in' &&
              !(isConstantNode(node) ||
                (isOperatorNode(node) && node.fn === 'unaryMinus')) &&
-             state.token in UNIT_DELIMITERS)) {
+             state.token in UNIT_DELIMITERS)
+        ) {
           delimiterAsUnit = false
-        } else if (saveState.token === '%') { // Special cases for %
+        } else if (saveState.token === '%') { // Now check special cases for %
           // Prevent doubled percent
           if (isOperatorNode(node) &&
               (node.fn === 'mod' ||
-               (isSymbolNode(node.args[1]) && node.args[1].name === '%'))) {
+               (isSymbolNode(node.args[1]) && node.args[1].name === '%'))
+          ) {
             delimiterAsUnit = false
             // So now % is an operator. If the next token is a
             // UNIT_DELIMITER, that is a syntax error:
@@ -1120,7 +1125,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             try {
               const rhs = parseImplicitMultiplication(state)
               if (!(isOperatorNode(rhs) && rhs.implicit &&
-                    rhs.args[1].name in { percent: true, '%': true })) {
+                    rhs.args[1].name in { percent: true, '%': true })
+              ) {
                 delimiterAsUnit = false
               }
             } catch {}
