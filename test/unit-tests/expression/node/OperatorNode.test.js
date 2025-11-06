@@ -590,8 +590,7 @@ describe('OperatorNode', function () {
       op: '+',
       fn: 'add',
       args: [one, two],
-      implicit: true,
-      isPercentage: false
+      implicit: true
     })
 
     const parsed = OperatorNode.fromJSON(json)

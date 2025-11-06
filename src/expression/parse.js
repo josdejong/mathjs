@@ -1006,25 +1006,18 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseAddSubtract (state) {
-    let node, name, fn, params
-
-    node = parseMultiplyDivideModulus(state)
+    let node = parseMultiplyDivideModulus(state)
 
     const operators = {
       '+': 'add',
       '-': 'subtract'
     }
     while (hasOwnProperty(operators, state.token)) {
-      name = state.token
-      fn = operators[name]
+      const name = state.token
+      const fn = operators[name]
 
       getTokenSkipNewline(state)
-      const rightNode = parseMultiplyDivideModulus(state)
-      if (rightNode.isPercentage) {
-        params = [node, new OperatorNode('*', 'multiply', [node, rightNode])]
-      } else {
-        params = [node, rightNode]
-      }
+      const params = [node, parseMultiplyDivideModulus(state)]
       node = new OperatorNode(name, fn, params)
     }
 

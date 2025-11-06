@@ -249,9 +249,8 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      * @param {string} fn           Function name, for example 'add'
      * @param {Node[]} args         Operator arguments
      * @param {boolean} [implicit]  Is this an implicit multiplication?
-     * @param {boolean} [isPercentage] Is this an percentage Operation?
      */
-    constructor (op, fn, args, implicit, isPercentage) {
+    constructor (op, fn, args, implicit) {
       super()
       // validate input
       if (typeof op !== 'string') {
@@ -266,7 +265,6 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
       }
 
       this.implicit = (implicit === true)
-      this.isPercentage = (isPercentage === true)
       this.op = op
       this.fn = fn
       this.args = args || []
@@ -355,8 +353,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
       for (let i = 0; i < this.args.length; i++) {
         args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this))
       }
-      return new OperatorNode(
-        this.op, this.fn, args, this.implicit, this.isPercentage)
+      return new OperatorNode(this.op, this.fn, args, this.implicit)
     }
 
     /**
@@ -365,7 +362,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      */
     clone () {
       return new OperatorNode(
-        this.op, this.fn, this.args.slice(0), this.implicit, this.isPercentage)
+        this.op, this.fn, this.args.slice(0), this.implicit)
     }
 
     /**
@@ -472,8 +469,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         op: this.op,
         fn: this.fn,
         args: this.args,
-        implicit: this.implicit,
-        isPercentage: this.isPercentage
+        implicit: this.implicit
       }
     }
 
@@ -483,16 +479,15 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
      *     An object structured like
      *     ```
      *     {"mathjs": "OperatorNode",
-     *      "op": "+", "fn": "add", "args": [...],
-     *      "implicit": false,
-     *      "isPercentage":false}
+     *      "op": "+", "fn": "add",
+     *      "args": [...],
+     *      "implicit": false}
      *     ```
      *     where mathjs is optional
      * @returns {OperatorNode}
      */
     static fromJSON (json) {
-      return new OperatorNode(
-        json.op, json.fn, json.args, json.implicit, json.isPercentage)
+      return new OperatorNode(json.op, json.fn, json.args, json.implicit)
     }
 
     /**
