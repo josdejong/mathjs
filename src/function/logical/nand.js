@@ -1,32 +1,32 @@
 import { factory } from '../../utils/factory.js'
-import { norNumber } from '../../plain/number/logical.js'
+import { nandNumber } from '../../plain/number/logical.js'
 
-const name = 'nor'
+const name = 'nand'
 const dependencies = [
   'typed',
-  'or',
+  'and',
   'not'
 ]
 
-export const createNor = /* #__PURE__ */ factory(name, dependencies, ({ typed, or, not }) => {
+export const createNand = /* #__PURE__ */ factory(name, dependencies, ({ typed, and, not }) => {
   /**
-   * Logical `nor`. Test if both of values are defined with zero.
+   * Logical `nand`. Test if at least one of the inputs is zero.
    * For matrices, the function is evaluated element wise.
    *
    * Syntax:
    *
-   *    math.nor(x, y)
+   *    math.nand(x, y)
    *
    * Examples:
    *
-   *    math.nor(2, 4)   // returns false
+   *    math.nand(2, 4)   // returns false
    *
    *    a = [2, 5, 0]
    *    b = [0, 22, 0]
    *    c = 0
    *
-   *    math.nor(a, b)   // returns [false, false, true]
-   *    math.nor(b, c)   // returns [true, false, true]
+   *    math.nand(a, b)   // returns [true, false, true]
+   *    math.nand(b, c)   // returns [true, true, true]
    *
    * See also:
    *
@@ -35,16 +35,16 @@ export const createNor = /* #__PURE__ */ factory(name, dependencies, ({ typed, o
    * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
    * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
    * @return {boolean | Array | Matrix}
-   *            Returns true when both inputs are zero
+   *            Returns true when at least one of the inputs is zero
    */
   return typed(
     name,
     {
-      'number, number': norNumber,
-      'bigint, bigint': norNumber,
+      'number, number': nandNumber,
+      'bigint, bigint': nandNumber,
 
       'any, any': function (x, y) {
-        return not(or(x, y))
+        return not(and(x, y))
       }
     }
   )
