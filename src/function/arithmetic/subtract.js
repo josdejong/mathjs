@@ -13,19 +13,21 @@ const dependencies = [
   'equalScalar',
   'subtractScalar',
   'unaryMinus',
+  'Unit',
   'DenseMatrix',
-  'concat'
+  'multiply'
 ]
 
-export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, subtractScalar, unaryMinus, DenseMatrix, concat }) => {
-  // TODO: split function subtract in two: subtract and subtractScalar
-
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, matrix, equalScalar, subtractScalar, unaryMinus, Unit, DenseMatrix,
+  multiply
+}) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Subtract two values, `x - y`.
@@ -60,6 +62,21 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
   return typed(
     name,
     {
+      'any, Unit': typed.referToSelf(self => (s, u) => {
+        if (!u.equalBase(Unit.BASE_UNITS.NONE) ||
+            !(u.units[0].unit.name in { percent: true, '%': true })) {
+          throw new TypeError('Cannot subtract non-unit and dimensioned value')
+        }
+        return self(s, multiply(s, u.value))
+      }),
+
+      'Unit, any': typed.referToSelf(self => (u, s) => {
+        if (!u.equalBase(Unit.BASE_UNITS.NONE)) {
+          throw new TypeError('Cannot subtract dimensioned and non-unit value')
+        }
+        return self(u.value, s)
+      }),
+
       'any, any': subtractScalar
     },
     matrixAlgorithmSuite({

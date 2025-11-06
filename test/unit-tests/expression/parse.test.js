@@ -616,6 +616,9 @@ describe('parse', function () {
 
     it('should evaluate unit "in" (should not conflict with operator "in")', function () {
       approxDeepEqual(parseAndEval('2 in'), new Unit(2, 'in'))
+      const funnyUnit = new Unit(6, 'kg in^2')
+      funnyUnit.skipAutomaticSimplification = false
+      assert.deepStrictEqual(parseAndEval('6 kg in^2'), funnyUnit)
       approxEqual(parseAndEval('(2 lbf in).toNumeric("lbf in")'), 2)
       approxEqual(parseAndEval('[2 lbf in][1].toNumeric("lbf in")'), 2)
       approxEqual(parseAndEval('[2 lbf in, 5][1].toNumeric("lbf in")'), 2)
@@ -1615,6 +1618,86 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('2 < 4 > 3 <= 5 >= 5'), true)
     })
 
+    it('should allow % or percent', function () {
+      assert.strictEqual(
+        parseAndEval('60 + 17%'), parseAndEval('60 + 17 percent'))
+    })
+
+    it('should add and subtract percentages intuitively', function () {
+      approxDeepEqual(parseAndEval('10% + 20%'), new Unit(30, '%'))
+      approxDeepEqual(parseAndEval('10% - 20%'), new Unit(-10, '%'))
+      approxDeepEqual(parseAndEval('10% + 20% + 30%'), new Unit(60, '%'))
+      approxDeepEqual(parseAndEval('10% + 50% - 20%'), new Unit(40, '%'))
+    })
+
+    it('should preserve relative percentage on numbers', function () {
+      approxEqual(parseAndEval('50 + 20% + 10%'), 66)
+    })
+
+    it('should compound percentages on variables', function () {
+      const scope = { x: 10 }
+      approxEqual(parseAndEval('x + 20% + 10%', scope), 13.2)
+      approxEqual(parseAndEval('x - 10% - 20%', scope), 7.2)
+    })
+
+    it('should keep percent sums before adding a variable', function () {
+      const scope = { x: 1 }
+      // NOTE: The following parses as '10 % (+20) % (+x)', as intended
+      approxEqual(parseAndEval('10% + 20% + x', scope), 0)
+      approxEqual(parseAndEval('(10%) + (20%) + x', scope), 1.3)
+      approxEqual(parseAndEval('10 percent + 20percent + x', scope), 1.3)
+      approxEqual(parseAndEval('10% - 20% - x', scope), 0)
+      approxEqual(parseAndEval('(10%) - (20%) - x', scope), -1.1)
+    })
+
+    it('should support parentheses with percentages', function () {
+      const thirtypc = new Unit(30, '%')
+      const sixtypc = new Unit(60, '%')
+      approxDeepEqual(parseAndEval('(10%) + (20%)'), thirtypc)
+      // The following parses as 10 mod +20%, and mod does not handle units
+      assert.throws(() => parseAndEval('10% + (20%)'), TypeError)
+      approxDeepEqual(parseAndEval('(10%) + 20%'), thirtypc)
+      approxDeepEqual(parseAndEval('(10% + 20%) + 30%'), sixtypc)
+      approxDeepEqual(parseAndEval('(10%) + (20% + 30%)'), sixtypc)
+      approxDeepEqual(parseAndEval('10% + (20 + 30)%'), sixtypc)
+    })
+
+    it('should add more pure percentages arithmetically', function () {
+      approxDeepEqual(parseAndEval('50% + 20%'), new Unit(70, '%'))
+      approxDeepEqual(parseAndEval('10% + 20% - 30%'), new Unit(0, '%'))
+      approxDeepEqual(parseAndEval('10% + 20% + 30% + 40%'), new Unit(100, '%'))
+    })
+
+    it('should combine percentages inside multiplication and with parentheses', function () {
+      const scope = { x: 10 }
+      approxEqual(parseAndEval('x * (10% + 20%)', scope), 3)
+      approxEqual(parseAndEval('(10% + 20%) * x', scope), 3)
+    })
+
+    it('should preserve semantics when grouping percentage additions explicitly', function () {
+      approxEqual(parseAndEval('50 + (20% + 10%)'), 65)
+      const scope = { x: 100 }
+      approxEqual(parseAndEval('x + (20% + 10%)', scope), 130)
+    })
+
+    it('should support units with percentages on the right-hand side', function () {
+      approxDeepEqual(parseAndEval('10 cm + 20%'), new Unit(12, 'cm'))
+      approxDeepEqual(parseAndEval('20 liter - 15%'), new Unit(17, 'liter'))
+    })
+
+    it('should consistently choose between mod and percent', function () {
+      assert.strictEqual(parseAndEval('10% + 20 % 3'), 1) // 10 mod +20 mod 3
+      assert.strictEqual(
+        parseAndEval('(10%) + 20% 3'), 2.1) //               10% plus 20 mod 3
+      approxEqual(parseAndEval('(10% + 20%)3'), 0.9)
+      assert.strictEqual(parseAndEval('20 % 3 + 10 %'), 2.2)
+    })
+
+    it('should add percents in expression or JavaScript', function () {
+      assert.strictEqual(
+        parseAndEval('30  + 22%'), math.add(30, math.unit(22, 'percent')))
+    })
+
     it('should parse mod %', function () {
       approxEqual(parseAndEval('8 % 3'), 2)
       approxEqual(parseAndEval('80% pi'), 1.4601836602551685)
@@ -1625,8 +1708,9 @@ describe('parse', function () {
     })
 
     it('should parse % value', function () {
-      approxEqual(parseAndEval('8 % '), 0.08)
-      approxEqual(parseAndEval('100%'), 1)
+      approxDeepEqual(parseAndEval('8 % '), math.unit(8, '%'))
+      assert.strictEqual(parseAndEval('number(25%)'), 0.25)
+      approxDeepEqual(parseAndEval('100%'), math.unit(100, '%'))
     })
 
     it('should parse % with multiplication', function () {
@@ -1660,7 +1744,7 @@ describe('parse', function () {
     it('should reject repeated unary percentage operators', function () {
       assert.throws(function () { math.parse('17%%') }, /Unexpected end of expression/)
       assert.throws(function () { math.parse('17%%*5') }, /Value expected \(char 5\)/)
-      assert.throws(function () { math.parse('10/200%%%3') }, /Value expected \(char 9\)/)
+      assert.throws(function () { math.parse('10/200%%%3') }, SyntaxError)
     })
 
     it('should parse unary % with addition', function () {
