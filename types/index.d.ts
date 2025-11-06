@@ -185,11 +185,13 @@ export interface AccessorNode<TObject extends MathNode = MathNode>
   object: TObject
   index: IndexNode
   name: string
+  optionalChaining: boolean
 }
 export interface AccessorNodeCtor {
   new <TObject extends MathNode = MathNode>(
     object: TObject,
-    index: IndexNode
+    index: IndexNode,
+    optionalChaining?: boolean
   ): AccessorNode<TObject>
 }
 
@@ -2510,6 +2512,14 @@ export interface MathJsInstance extends MathJsFactory {
    ************************************************************************/
 
   /**
+   * Compute the nth Bernoulli number
+   * @param n  index
+   * @returns  nth Bernoulli number
+   */
+  bernoulli<T extends number | Fraction | BigNumber>(n: T): NoLiteralType<T>
+  bernoulli(n: bigint): Fraction
+
+  /**
    * Compute the number of ways of picking k unordered outcomes from n
    * possibilities. Combinations only takes integer arguments. The
    * following condition must be enforced: k <= n.
@@ -4133,6 +4143,7 @@ export const {
   ifftDependencies,
 
   // probability dependencies
+  bernoulliDependencies,
   combinationsDependencies,
   factorialDependencies,
   gammaDependencies,
@@ -6373,6 +6384,14 @@ export interface MathJsChain<TValue> {
    ************************************************************************/
 
   /**
+   * Bernoulli number at this index
+   */
+  bernoulli<T extends number | BigNumber | Fraction>(
+    this: MathJsChain<T>
+  ): MathJsChain<NoLiteralType<T>>
+  bernoulli(this: MathJsChain<bigint>): MathJsChain<Fraction>
+
+  /**
    * Compute the number of ways of picking k unordered outcomes from n
    * possibilities. Combinations only takes integer arguments. The
    * following condition must be enforced: k <= n.
@@ -7666,6 +7685,7 @@ export const {
   ifft,
 
   // probability
+  bernoulli,
   combinations,
   factorial,
   gamma,

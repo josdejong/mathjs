@@ -157,6 +157,7 @@ import { transposeDocs } from './function/matrix/transpose.js'
 import { zerosDocs } from './function/matrix/zeros.js'
 import { fftDocs } from './function/matrix/fft.js'
 import { ifftDocs } from './function/matrix/ifft.js'
+import { bernoulliDocs } from './function/probability/bernoulli.js'
 import { combinationsDocs } from './function/probability/combinations.js'
 import { combinationsWithRepDocs } from './function/probability/combinationsWithRep.js'
 import { factorialDocs } from './function/probability/factorial.js'
@@ -505,6 +506,7 @@ export const embeddedDocs = {
   solveODE: solveODEDocs,
 
   // functions - probability
+  bernoulli: bernoulliDocs,
   combinations: combinationsDocs,
   combinationsWithRep: combinationsWithRepDocs,
   // distribution: distributionDocs,

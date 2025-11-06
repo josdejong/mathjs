@@ -49,6 +49,7 @@ function extractValue (spec) {
     DenseMatrix: "math.matrix(_, 'dense')",
     string: '_',
     Node: 'math.parse(_)',
+    value: 'math._',
     throws: "'_'"
   }
   if (words[0] in keywords) {
@@ -160,6 +161,9 @@ function checkExpectation (want, got) {
     got.startsWith(want)
   ) {
     return true // we obtained the expected error type
+  }
+  if (want && got && want.isBigNumber && got.isBigNumber) {
+    return approxEqual(got, want, 1e-50)
   }
   if (typeof want !== 'undefined') {
     return approxDeepEqual(got, want)

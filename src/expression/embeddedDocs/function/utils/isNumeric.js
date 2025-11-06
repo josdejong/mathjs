@@ -16,5 +16,5 @@ export const isNumericDocs = {
     'isNumeric(2 + 3i)',
     'isNumeric([2.3, "foo", false])'
   ],
-  seealso: ['isInteger', 'isZero', 'isNegative', 'isPositive', 'isNaN', 'hasNumericValue']
+  seealso: ['isInteger', 'isZero', 'isNegative', 'isPositive', 'isNaN', 'hasNumericValue', 'isFinite', 'isBounded']
 }

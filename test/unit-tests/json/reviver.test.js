@@ -79,7 +79,7 @@ describe('reviver', function () {
   })
 
   it('should parse a stringified Unit', function () {
-    const json = '{"mathjs":"Unit","value":5,"unit":"cm","fixPrefix":false}'
+    const json = '{"mathjs":"Unit","value":5,"unit":"cm","fixPrefix":false,"skipSimp":true}'
     const u = new math.Unit(5, 'cm')
 
     const obj = JSON.parse(json, reviver)
@@ -89,7 +89,7 @@ describe('reviver', function () {
   })
 
   it('should parse a stringified Unit with a value only', function () {
-    const json = '{"mathjs":"Unit","value":5,"unit":null,"fixPrefix":false}'
+    const json = '{"mathjs":"Unit","value":5,"unit":null,"fixPrefix":false,"skipSimp":true}'
     const u = new math.Unit(5)
 
     const obj = JSON.parse(json, reviver)
@@ -99,7 +99,7 @@ describe('reviver', function () {
   })
 
   it('should parse a stringified Unit without a value', function () {
-    const json = '{"mathjs":"Unit","value":null,"unit":"cm","fixPrefix":false}'
+    const json = '{"mathjs":"Unit","value":null,"unit":"cm","fixPrefix":false,"skipSimp":true}'
     const u = new math.Unit(null, 'cm')
 
     const obj = JSON.parse(json, reviver)

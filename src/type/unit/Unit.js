@@ -20,7 +20,6 @@ const dependencies = [
   'equal',
   'isNumeric',
   'format',
-  'toBest',
   'number',
   'Complex',
   'BigNumber',
@@ -41,13 +40,15 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   equal,
   isNumeric,
   format,
-  toBest,
   number,
   Complex,
   BigNumber,
   Fraction
 }) => {
   const toNumber = number
+  const fixPrefixDefault = false
+  const skipAutomaticSimplificationDefault = true
+
   /**
    * A unit can be constructed in the following ways:
    *
@@ -76,13 +77,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       throw new TypeError('First parameter in Unit constructor must be number, BigNumber, Fraction, Complex, or undefined')
     }
 
-    this.fixPrefix = false // if true, function format will not search for the
+    this.fixPrefix = fixPrefixDefault // if true, function format will not search for the
     // best prefix but leave it as initially provided.
     // fixPrefix is set true by the method Unit.to
 
     // The justification behind this is that if the constructor is explicitly called,
     // the caller wishes the units to be returned exactly as supplied.
-    this.skipAutomaticSimplification = true
+    this.skipAutomaticSimplification = skipAutomaticSimplificationDefault
 
     if (valuelessUnit === undefined) {
       this.units = []
@@ -916,14 +917,15 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Get a JSON representation of the unit
    * @memberof Unit
    * @returns {Object} Returns a JSON object structured as:
-   *                   `{"mathjs": "Unit", "value": 2, "unit": "cm", "fixPrefix": false}`
+   *                   `{"mathjs": "Unit", "value": 2, "unit": "cm", "fixPrefix": false, "skipSimp": true}`
    */
   Unit.prototype.toJSON = function () {
     return {
       mathjs: 'Unit',
       value: this._denormalize(this.value),
       unit: this.units.length > 0 ? this.formatUnits() : null,
-      fixPrefix: this.fixPrefix
+      fixPrefix: this.fixPrefix,
+      skipSimp: this.skipAutomaticSimplification
     }
   }
 
@@ -936,7 +938,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   Unit.fromJSON = function (json) {
     const unit = new Unit(json.value, json.unit ?? undefined)
-    unit.fixPrefix = json.fixPrefix || false
+    unit.fixPrefix = json.fixPrefix ?? fixPrefixDefault
+    unit.skipAutomaticSimplification = json.skipSimp ?? skipAutomaticSimplificationDefault
     return unit
   }
 
