@@ -360,6 +360,7 @@ export interface ObjectNodeCtor {
 export type OperatorNodeMap = {
   xor: 'xor'
   and: 'and'
+  nand: 'nand'
   or: 'or'
   nor: 'nor'
   bitOr: '|'
@@ -1876,6 +1877,18 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   and(
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
+  ): boolean | MathCollection
+
+  /**
+   * Logical nand. Test whether at least one of values is zero.
+   * For matrices, the function is evaluated element wise.
+   * @param x First value to nand
+   * @param y Second value to nand
+   * @returns Returns true when at least of values is zero or empty balue.
+   */
+  nand(
     x: number | BigNumber | bigint | Complex | Unit | MathCollection,
     y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
@@ -4093,6 +4106,7 @@ export const {
 
   // logical dependencies
   andDependencies,
+  nandDependencies,
   notDependencies,
   orDependencies,
   norDependencies,
@@ -5980,6 +5994,18 @@ export interface MathJsChain<TValue> {
    ************************************************************************/
 
   /**
+   * Logical nand. Test whether at least one of values is zero.
+   * For matrices, the function is evaluated element wise.
+   * @param y Second value to nand
+   */
+  nand(
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
+  ): MathJsChain<boolean | MathCollection>
+
+  /**
    * Logical and. Test whether two values are both defined with a
    * nonzero/nonempty value. For matrices, the function is evaluated
    * element wise.
@@ -7635,6 +7661,7 @@ export const {
 
   // logical
   and,
+  nand,
   not,
   or,
   nor,
