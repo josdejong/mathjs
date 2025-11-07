@@ -957,9 +957,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.token === ':') {
       if (state.conditionalLevel === state.nestingLevel) {
         // we are in the midst of parsing a conditional operator, so not
-        // a range, but rather an empty true-expr, which we interpret like
-        // any empty expression: a constant `undefined` value
-        node = new ConstantNode(undefined)
+        // a range, but rather an empty true-expr, which is considered a
+        // syntax error
+        throw createSyntaxError(
+          state,
+          'The true-expression of a conditional operator may not be empty')
       } else {
         // implicit start of range = 1 (one-based)
         node = new ConstantNode(1)

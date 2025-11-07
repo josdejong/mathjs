@@ -2141,14 +2141,10 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('2 ? true') }, /False part of conditional expression expected/)
     })
 
-    it(
-      'should interpret missing true part of conditional as undefined (#3578)',
-      function () {
-        assert.strictEqual(parseAndEval('true ? : 3'), undefined)
-        assert.strictEqual(parseAndEval('2?:false'), undefined)
-        assert.strictEqual(parseAndEval('false ? : 3'), 3)
-        assert.strictEqual(parseAndEval('0?:false'), false)
-      })
+    it('should forbid empty true part of conditional (#3578)', function () {
+      assert.throws(() => parseAndEval('true ? : 3'), SyntaxError)
+      assert.throws(() => parseAndEval('0?:false'), SyntaxError)
+    })
 
     it(
       'should allow a range with implicit start as the false expr',
