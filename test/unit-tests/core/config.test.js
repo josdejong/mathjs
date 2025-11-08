@@ -12,30 +12,17 @@ describe('config', function () {
       import: () => { throw new Error('Function import is disabled') }
     }, { override: true })
 
-    math2.config({ number: 'BigNumber' })
+    math2.config({ compute: { numberApproximate: 'BigNumber' } })
 
     assert.strictEqual(math2.typeOf(math2.pi), 'BigNumber')
   })
 
   // TODO: test function config
 
-  it('should work with config epsilon during deprecation', function () {
+  it('should throw on discontinued option epsilon', function () {
     const math2 = math.create()
-    // Add a spy to temporarily disable console.warn
-    const warnStub = sinon.stub(console, 'warn')
-
-    // Set epsilon to throw a warning and set relTol and absTol
-    assert.doesNotThrow(function () { math2.config({ epsilon: 1e-5 }) })
-
-    // Check if epsilon is set as relTol and absTol
-    assert.strictEqual(math2.config().relTol, 1e-5)
-    assert.strictEqual(math2.config().absTol, 1e-8)
-
-    // Check if console.warn was called
-    assert.strictEqual(warnStub.callCount, 1)
-
-    // Restore console.warn
-    warnStub.restore()
+    assert.throws(
+      () => math2.config({ epsilon: 1e-5 }), /discontinued.*epsilon/)
   })
 
   it('should work with config legacySubset during deprecation', function () {
@@ -47,16 +34,13 @@ describe('config', function () {
     assert.doesNotThrow(function () { math2.config({ legacySubset: true }) })
 
     // Check if legacySubset is set
-    assert.strictEqual(math2.config().legacySubset, true)
+    assert.strictEqual(math2.config().compatibility.subset, true)
 
     // Check if console.warn was called
     assert.strictEqual(warnStub.callCount, 1)
 
-    // Set legacySubset to false, should not throw a warning
-    assert.doesNotThrow(function () { math2.config({ legacySubset: false }) })
-
-    // Validate that  if console.warn was not called again
-    assert.strictEqual(warnStub.callCount, 1)
+    // Ensure that legacy behavior of subset occurs
+    assert.deepStrictEqual(math2.subset([1, 2], math.index(1)), [2]
 
     // Restore console.warn
     warnStub.restore()
