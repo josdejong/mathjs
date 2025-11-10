@@ -38,6 +38,12 @@ export const properties = [
       op: 'or',
       associativity: 'left',
       associativeWith: []
+    },
+    // logical nor
+    'OperatorNode:nor': {
+      op: 'nor',
+      associativity: 'left',
+      associativeWith: []
     }
   },
   { // logical xor
@@ -50,6 +56,12 @@ export const properties = [
   { // logical and
     'OperatorNode:and': {
       op: 'and',
+      associativity: 'left',
+      associativeWith: []
+    },
+    // logical nand
+    'OperatorNode:nand': {
+      op: 'nand',
       associativity: 'left',
       associativeWith: []
     }

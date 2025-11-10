@@ -174,7 +174,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     and: true,
     xor: true,
     or: true,
-    not: true
+    nand: true,
+    not: true,
+    nor: true
   }
 
   const CONSTANTS = {
@@ -756,15 +758,17 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * logical or, 'x or y'
+   * logical nor, 'x nor y'
    * @return {Node} node
    * @private
    */
   function parseLogicalOr (state) {
     let node = parseLogicalXor(state)
 
-    while (state.token === 'or') { // eslint-disable-line no-unmodified-loop-condition
+    while (state.token === 'or' || state.token === 'nor') { // eslint-disable-line no-unmodified-loop-condition
+      const op = state.token
       getTokenSkipNewline(state)
-      node = new OperatorNode('or', 'or', [node, parseLogicalXor(state)])
+      node = new OperatorNode(op, op, [node, parseLogicalXor(state)])
     }
 
     return node
@@ -788,15 +792,17 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * logical and, 'x and y'
+   * logical nand, 'x nand y'
    * @return {Node} node
    * @private
    */
   function parseLogicalAnd (state) {
     let node = parseBitwiseOr(state)
 
-    while (state.token === 'and') { // eslint-disable-line no-unmodified-loop-condition
+    while (state.token === 'and' || state.token === 'nand') { // eslint-disable-line no-unmodified-loop-condition
+      const op = state.token
       getTokenSkipNewline(state)
-      node = new OperatorNode('and', 'and', [node, parseBitwiseOr(state)])
+      node = new OperatorNode(op, op, [node, parseBitwiseOr(state)])
     }
 
     return node

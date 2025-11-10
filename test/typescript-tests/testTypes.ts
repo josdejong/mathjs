@@ -3176,3 +3176,99 @@ Match types of exact positional arguments.
   expectTypeOf(mixArray3).toMatchTypeOf<MathArray<MathScalarType>>()
   expectTypeOf(unitArray3).toMatchTypeOf<MathArray<Unit>>()
 }
+
+/**
+ * NAND examples
+ */
+{
+  const math = create(all, {})
+
+  // number input
+  assert.strictEqual(math.nand(3, 2), false)
+  assert.strictEqual(math.nand(3, 0), true)
+  assert.strictEqual(math.nand(0, 2), true)
+  assert.strictEqual(math.nand(0, 0), true)
+
+  // bignumber input
+  assert.deepStrictEqual(math.nand(math.bignumber(4), math.bignumber(2)), false)
+  assert.deepStrictEqual(math.nand(math.bignumber(3), 0), true)
+  assert.deepStrictEqual(math.nand(math.bignumber(0), math.bignumber(0)), true)
+
+  // Complex input
+  const a = math.complex(3.24, -2.71)
+  const b = math.complex(0, 0)
+  assert.deepStrictEqual(math.nand(a, a), false)
+  assert.deepStrictEqual(math.nand(a, b), true)
+  assert.deepStrictEqual(math.nand(b, b), true)
+
+  // unit input
+  const u1 = math.unit(3.2, 'cm')
+  const u2 = math.unit('cm')
+  const u3 = math.unit(5.51, 'cm')
+  assert.deepStrictEqual(math.nand(u1, u2), true)
+  assert.deepStrictEqual(math.nand(u1, u3), false)
+
+  // array input
+  assert.deepStrictEqual(math.nand([3.2, 3.8, -4.7], 2), [false, false, false])
+  assert.deepStrictEqual(math.nand([3.2, 3.8, -4.7], 0), [true, true, true])
+  assert.deepStrictEqual(math.nand([3.2, 3.8, 0], 7), [false, false, true])
+  assert.deepStrictEqual(math.nand([3.21, 3.82, -4.71], math.bignumber(1)), [
+    false,
+    false,
+    false
+  ])
+
+  // matrix of decimals
+  assert.deepStrictEqual(
+    math.nand(math.matrix([1, 4, 0, 0]), math.matrix([1, 0, 6, 0])).valueOf(),
+    [false, true, true, true]
+  )
+}
+
+/**
+ * NOR examples
+ */
+{
+  const math = create(all, {})
+
+  // number input
+  assert.strictEqual(math.nor(3, 2), false)
+  assert.strictEqual(math.nor(3, 0), false)
+  assert.strictEqual(math.nor(0, 2), false)
+  assert.strictEqual(math.nor(0, 0), true)
+
+  // bignumber input
+  assert.deepStrictEqual(math.nor(math.bignumber(4), math.bignumber(2)), false)
+  assert.deepStrictEqual(math.nor(math.bignumber(3), 0), false)
+  assert.deepStrictEqual(math.nor(math.bignumber(0), math.bignumber(0)), true)
+
+  // Complex input
+  const a = math.complex(3.24, -2.71)
+  const b = math.complex(0, 0)
+  assert.deepStrictEqual(math.nor(a, a), false)
+  assert.deepStrictEqual(math.nor(a, b), false)
+  assert.deepStrictEqual(math.nor(b, b), true)
+
+  // unit input
+  const u1 = math.unit(3.2, 'cm')
+  const u2 = math.unit('cm')
+  const u3 = math.unit(5.51, 'cm')
+  assert.deepStrictEqual(math.nor(u1, u2), false)
+  assert.deepStrictEqual(math.nor(u1, u3), false)
+
+  // array input
+  assert.deepStrictEqual(math.nor([3.2, 3.8, -4.7], 2), [false, false, false])
+  assert.deepStrictEqual(math.nor([3.2, 3.8, 0], 0), [false, false, true])
+  assert.deepStrictEqual(math.nor([3.2, 3.8, 0], 7), [false, false, false])
+  assert.deepStrictEqual(math.nor([3.21, 3.82, -4.71], math.bignumber(1)), [
+    false,
+    false,
+    false
+  ])
+
+  // matrix of decimals
+  assert.deepStrictEqual(
+    math.nor(math.matrix([1, 4, 0, 0]), math.matrix([1, 0, 6, 0])).valueOf(),
+    [false, false, false, true]
+  )
+}
