@@ -181,7 +181,9 @@ Math.js uses geometric dimensions:
 - A vector is one-dimensional.
 - A matrix is two or multidimensional.
 
-The size of a matrix can be calculated with the function `size`. This function returns an `Array`, giving the length of its input (`Matrix` or `Array`) in each dimension. You can also call `size()` as a method on a Matrix.
+The size of a matrix can be calculated with the function `size`. This function
+returns an `Array`, giving the length of its input (`Matrix` or `Array`) in
+each dimension. You can also call `size()` as a method on a Matrix.
 
 ```js
 // get the size of a scalar
