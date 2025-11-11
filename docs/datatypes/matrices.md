@@ -204,7 +204,7 @@ math.size(b)                                  // Array, [2, 3]
 // matrices have a method size (always returns an Array)
 b.size()                                      // Array, [2, 3]
 
-// get the size of a multi-dimensional matrix
+// get the size of a multi-dimensional array
 const c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]
 math.size(c)                                  // Array, [2, 2, 3]
 ```
