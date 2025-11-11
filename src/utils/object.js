@@ -277,7 +277,7 @@ export function hasOwnProperty (object, property) {
 }
 
 /**
- * Test whether an object is a factory. a factory has fields:
+ * Test whether an object is a legacy factory. a factory has fields:
  *
  * - factory: function (type: Object, config: Object, load: function, typed: function [, math: Object])   (required)
  * - name: string (optional)

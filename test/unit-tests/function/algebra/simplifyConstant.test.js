@@ -12,7 +12,10 @@ describe('simplifyConstant', function () {
   }
 
   it('should evaluate constant subexpressions', function () {
+    testSimplifyConstant('100.8', '504 / 5')
+    testSimplifyConstant('504 * (5 ^ (-1))', '504 / 5')
     testSimplifyConstant('2+2', '4')
+    testSimplifyConstant('fraction(2) + fraction(2)', '4/1')
     testSimplifyConstant('x+3*5', 'x + 15')
     testSimplifyConstant('f(sin(0))', 'f(0)')
     testSimplifyConstant('[10/2, y, 8-4]', '[5, y, 4]')

@@ -10,13 +10,13 @@
  * implementation, it just downgrades to number and uses the complex result.
  * @param {number} log16  the log of 16
  * @param {(number) -> number} numberLog  the logarithm function for numbers
- * @param {ConfigurationObject} config  the mathjs configuration
+ * @param {boolean} uniformType  whether the result should always be type mumber
  * @param {(number) -> Complex} cplx  the associated Complex log
  * @returns {(bigint) -> number}   the corresponding logarithm for bigints
  */
-export function promoteLogarithm (log16, numberLog, config, cplx) {
+export function promoteLogarithm (log16, numberLog, uniformType, cplx) {
   return function (b) {
-    if (b > 0 || config.predictable) {
+    if (b > 0 || uniformType) {
       if (b <= 0) return NaN
       const s = b.toString(16)
       const s15 = s.substring(0, 15)

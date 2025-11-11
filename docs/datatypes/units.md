@@ -215,13 +215,13 @@ math.bignumber(math.unit(10, 'inch')).toNumeric('cm') // BigNumber 25.4
 math.unit(math.bignumber(10), 'inch').toNumeric('cm') // BigNumber 25.4
 ```
 
-When using the expression parser, it is possible to configure numeric values to be parsed as `Fraction` or `BigNumber`:
+When using the expression parser, it is possible to configure numeric values
+to be parsed as other types:
 
 ```js
 math.config({ number: 'Fraction' })
 math.evaluate('10 inch').toNumeric('cm') // Fraction 127/5
 ```
-
 
 ## API
 A `Unit` object contains the following functions:

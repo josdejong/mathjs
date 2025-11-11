@@ -13,20 +13,31 @@ math.bigint('42')
 ```
 
 Most functions can determine the type of output from the type of input:
-a `number` as input will return a `number` as output, a `bigint` as input returns
-a `bigint` as output. Functions which cannot determine the type of output
-from the input (for example `math.evaluate`) use the default number type `number`,
-which can be configured when instantiating math.js. To configure the use of
-`bigint` instead of [numbers](numbers.md) by default, configure math.js like:
+a `number` as input will return a `number` as output, a `bigint` as input
+returns a `bigint` as output, etc. However, when parsing a numeric literal
+like `'23'` or when computing the sum of an empty list of numbers, there is
+not any already-typed input to go by. The numeric type mathjs will try in such
+situations can be configured when instantiating math.js. To use `bigint`
+instead of [numbers](numbers.md),
 
 ```js
-math.config({
-  number: 'bigint'
-})
+import { create, all } from 'mathjs'
+const math = create(all)
+
+math.config({ number: 'bigint' })
 
 // use math
 math.evaluate('70000000000000000123')  // bigint 70000000000000000123n
 ```
+
+You may notice, however, in this setup the parser might encounter a non-integer
+literal like `2.5`, that can't be represented by a bigint. In such cases where
+the type specified by the top-level `number` configuration option is not
+appropriate, backup types can also be configured: the parser will use the
+`parse.numberFallback` option, that can be `number`, `BigNumber`, or
+`Fraction`; and computations (and similar items, like the values of physical
+constants) will use the `compute.numberApproximate` option, that can be
+`number` or `BigNumber`.
 
 ## Support
 

@@ -3,15 +3,17 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const acoth = math.acoth
 const coth = math.coth
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
-const biggermath = math.create({ precision: 21 })
-const predmath = math.create({ predictable: true })
+const bigmath = math.create(bigConfig(20))
+const biggermath = math.create({ compute: { BigNumber: { precision: 21 } } })
+const predmath = math.create({ compute: { uniformType: true } })
 const acothBig = bigmath.acoth
 const Big = bigmath.bignumber
 
@@ -55,8 +57,10 @@ describe('acoth', function () {
     assert.deepStrictEqual(arg3, Big(-1))
 
     // out of range
-    assert.ok(acothBig(Big(-0.5)).isNaN())
-    assert.ok(acothBig(Big(0.5)).isNaN())
+    assert.ok(
+      acothBig(Big(-0.5)), bigmath.complex(-0.5493061443340548, Math.PI / 2))
+    assert.ok(
+      acothBig(Big(0.5)), bigmath.complex(0.5493061443340548, -Math.PI / 2))
   })
 
   it('should be the inverse function of hyperbolic cot', function () {

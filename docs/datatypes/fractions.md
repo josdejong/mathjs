@@ -1,10 +1,12 @@
 # Fractions
 
 For calculations with fractions, math.js supports a `Fraction` data type. 
-Fraction support is powered by [fraction.js](https://github.com/rawify/Fraction.js).
+Fraction support is powered by
+[fraction.js](https://github.com/rawify/Fraction.js).
 Unlike [numbers](numbers.md) and [BigNumbers](./bignumbers.md), fractions can 
-store numbers with infinitely repeating decimals, for example `1/3 = 0.3333333...`, 
-which can be represented as `0.(3)`, or `2/7` which can be represented as `0.(285714)`.
+store numbers with infinitely repeating decimals, for example
+`1/3 = 0.3333333...`, which can be represented as `0.(3)`, or `2/7`, which can
+be represented as `0.(285714)`.
 
 
 ## Usage
@@ -25,24 +27,29 @@ math.multiply(math.fraction('1/4'), math.fraction('1/2')) // Fraction, 1/8
 ```
 
 Note that not all functions support fractions. For example trigonometric 
-functions doesn't support fractions. When not supported, the functions
+functions don't support fractions. When not supported, the functions
 will convert the input to numbers and return a number as result.
 
 Most functions will determine the type of output from the type of input:
 a number as input will return a number as output, a Fraction as input returns
-a Fraction as output. Functions which cannot determine the type of output
-from the input (for example `math.evaluate`) use the default number type `number`,
-which can be configured when instantiating math.js. To configure the use of
-fractions instead of [numbers](numbers.md) by default, configure math.js like:
+a Fraction as output, etc. However, when parsing a numeric literal
+like `'23'` or when computing the sum of an empty list of numbers, there is
+not any already-typed input to go by. The numeric type mathjs will try in such
+situations can be configured when instantiating math.js. To use fractions
+instead of [numbers](numbers.md) by default, configure math.js like:
 
 ```js
-// Configure the default type of number: 'number' (default), 'BigNumber', or 'Fraction'
-math.config({
-  number: 'Fraction'
-})
+import { create, all } from 'mathjs'
+const math = create(all)
+
+// Configure the default type of number:
+// 'number' (default), 'bigint', 'BigNumber', or 'Fraction'
+math.config({ number: 'Fraction' })
 
 // use the expression parser
-math.evaluate('0.32 + 0.08') // Fraction, 2/5
+math.evaluate('0.32 + 0.08') // Fraction 2/5
+// Add up an empty list
+math.sum([])                 // Fraction 0
 ```
 
 ## Support

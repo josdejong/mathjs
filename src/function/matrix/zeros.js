@@ -41,7 +41,7 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   return typed(name, {
     '': function () {
-      return (config.matrix === 'Array')
+      return (config.compute.Matrix.defaultType === 'Array')
         ? _zeros([])
         : _zeros([], 'default')
     },
@@ -53,7 +53,7 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       if (typeof last === 'string') {
         const format = size.pop()
         return _zeros(size, format)
-      } else if (config.matrix === 'Array') {
+      } else if (config.compute.Matrix.defaultType === 'Array') {
         return _zeros(size)
       } else {
         return _zeros(size, 'default')

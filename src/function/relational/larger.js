@@ -57,7 +57,8 @@ export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @return {boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
    */
   function bignumLarger (x, y) {
-    return x.gt(y) && !bigNearlyEqual(x, y, config.relTol, config.absTol)
+    return x.gt(y) && !bigNearlyEqual(
+      x, y, config.compute.defaultRelTol, config.compute.defaultAbsTol)
   }
 
   return typed(
@@ -96,7 +97,8 @@ export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed
 export const createLargerNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return x > y && !nearlyEqual(x, y, config.relTol, config.absTol)
+      return x > y && !nearlyEqual(
+        x, y, config.compute.defaultRelTol, config.compute.defaultAbsTol)
     }
   })
 })

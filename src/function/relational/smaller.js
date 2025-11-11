@@ -57,7 +57,8 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
    */
   function bignumSmaller (x, y) {
-    return x.lt(y) && !bigNearlyEqual(x, y, config.relTol, config.absTol)
+    return x.lt(y) && !bigNearlyEqual(
+      x, y, config.compute.defaultRelTol, config.compute.defaultAbsTol)
   }
 
   return typed(
@@ -96,7 +97,8 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
 export const createSmallerNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return x < y && !nearlyEqual(x, y, config.relTol, config.absTol)
+      return x < y && !nearlyEqual(
+        x, y, config.compute.defaultRelTol, config.compute.defaultAbsTol)
     }
   })
 })

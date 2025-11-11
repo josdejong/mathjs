@@ -23,9 +23,11 @@ export const createFloorNumber = /* #__PURE__ */ factory(
       // OK, they are different. If x is truly distinct from f but
       // appears indistinguishable from r, presume it really is just
       // the integer r with rounding/computation error, and return that
+      const relTol = config.compute.defaultRelTol
+      const absTol = config.compute.defaultAbsTol
       if (
-        nearlyEqual(x, r, config.relTol, config.absTol) &&
-        !nearlyEqual(x, f, config.relTol, config.absTol)
+        nearlyEqual(x, r, relTol, absTol) &&
+        !nearlyEqual(x, f, relTol, absTol)
       ) {
         return r
       }
@@ -61,7 +63,8 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   const floorNumber = createFloorNumber({ typed, config, round })
   function _bigFloor (x) {
     // see _floorNumber above for rationale
-    const bne = (a, b) => bigNearlyEqual(a, b, config.relTol, config.absTol)
+    const bne = (a, b) => bigNearlyEqual(
+      a, b, config.compute.defaultRelTol, config.compute.defaultAbsTol)
     const f = x.floor()
     const r = round(x)
     if (f.eq(r)) return f

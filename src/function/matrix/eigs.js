@@ -100,7 +100,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
 
   function doEigs (mat, opts = {}) {
     const computeVectors = 'eigenvectors' in opts ? opts.eigenvectors : true
-    const prec = opts.precision ?? config.relTol
+    const prec = opts.precision ?? config.compute.defaultRelTol
     const result = computeValuesAndVectors(mat, prec, computeVectors)
     if (opts.matricize) {
       result.values = matrix(result.values)

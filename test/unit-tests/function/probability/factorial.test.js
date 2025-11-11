@@ -1,6 +1,8 @@
 import assert from 'assert'
 import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
+
 const factorial = math.factorial
 
 describe('factorial', function () {
@@ -16,7 +18,7 @@ describe('factorial', function () {
   })
 
   it('should calculate the factorial of a bignumber', function () {
-    const bigmath = math.create({ number: 'BigNumber', precision: 5 })
+    const bigmath = math.create(bigConfig(5))
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(0)), bigmath.bignumber(1))
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(Infinity)).toString(), 'Infinity')
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(11)), bigmath.bignumber(39917000))
@@ -24,7 +26,7 @@ describe('factorial', function () {
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(24)), bigmath.bignumber(6.2045e+23))
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(26)), bigmath.bignumber(4.0329e+26))
 
-    const bigmath20 = bigmath.create({ precision: 20 })
+    const bigmath20 = bigmath.create(bigConfig(20))
     assert.deepStrictEqual(bigmath20.factorial(bigmath20.bignumber(5)), bigmath20.bignumber(120))
     assert.deepStrictEqual(bigmath20.factorial(bigmath20.bignumber(19)), bigmath20.bignumber(121645100408832000))
     assert.deepStrictEqual(bigmath20.factorial(bigmath20.bignumber(20)), bigmath20.bignumber(2432902008176640000))

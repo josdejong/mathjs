@@ -124,7 +124,7 @@ describe('smallerEq', function () {
     assert.strictEqual(mymath.smallerEq(1.01, 1), false)
     assert.strictEqual(mymath.smallerEq(mymath.bignumber(1.01), mymath.bignumber(1)), false)
 
-    mymath.config({ relTol: 1e-2 })
+    mymath.config({ compute: { defaultRelTol: 1e-2 } })
     assert.strictEqual(mymath.smallerEq(1.01, 1), true)
     assert.strictEqual(mymath.smallerEq(mymath.bignumber(1.01), mymath.bignumber(1)), true)
   })

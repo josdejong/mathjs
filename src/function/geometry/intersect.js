@@ -2,17 +2,24 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'intersect'
 const dependencies = [
-  'typed', 'config', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar', 'flatten', 'isZero', 'isNumeric'
+  'typed', 'abs', 'add', 'addScalar', 'matrix',
+  'multiply', 'multiplyScalar', 'divideScalar', 'subtract',
+  'smaller', 'equalScalar', 'flatten', 'isZero', 'isNumeric'
 ]
 
-export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar, flatten, isZero, isNumeric }) => {
+export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, abs, add, addScalar, matrix,
+  multiply, multiplyScalar, divideScalar, subtract,
+  smaller, equalScalar, flatten, isZero, isNumeric
+}) => {
   /**
-   * Calculates the point of intersection of two lines in two or three dimensions
-   * and of a line and a plane in three dimensions. The inputs are in the form of
-   * arrays or 1 dimensional matrices. The line intersection functions return null
-   * if the lines do not meet.
+   * Calculates the point of intersection of two lines in two or three
+   * dimensions and of a line and a plane in three dimensions. The inputs are
+   * in the form of arrays or 1 dimensional matrices. The line intersection
+   * functions return null if the lines do not meet.
    *
-   * Note: Fill the plane coefficients as `x + y + z = c` and not as `x + y + z + c = 0`.
+   * Note: Fill the plane coefficients as `x + y + z = c` and not as
+   * `x + y + z + c = 0`.
    *
    * Syntax:
    *
@@ -119,9 +126,7 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     const d2 = subtract(o2, p2b)
     const det = subtract(multiplyScalar(d1[0], d2[1]), multiplyScalar(d2[0], d1[1]))
     if (isZero(det)) return null
-    if (smaller(abs(det), config.relTol)) {
-      return null
-    }
+
     const d20o11 = multiplyScalar(d2[0], o1[1])
     const d21o10 = multiplyScalar(d2[1], o1[0])
     const d20o21 = multiplyScalar(d2[0], o2[1])

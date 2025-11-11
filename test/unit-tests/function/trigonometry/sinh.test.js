@@ -3,11 +3,13 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const sinh = math.sinh
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const bigmath = math.create(bigConfig(20))
 
 const EPSILON = 1e-14
 
@@ -66,7 +68,7 @@ describe('sinh', function () {
     assert.deepStrictEqual(arg2, Big(-1))
     assert.deepStrictEqual(arg7.toString(), 'Infinity')
 
-    bigmath.config({ precision: 50 })
+    bigmath.config({ compute: { BigNumber: { precision: 50 } } })
     assert.deepStrictEqual(sinhBig(Big(1e-50)), Big(1e-50))
   })
 

@@ -20,12 +20,15 @@ export function isInteger (value) {
 }
 
 /**
- * Ensure the number type is compatible with the provided value.
- * If not, return 'number' instead.
+ * Ensure the type specified by the `number` property is compatible with
+ * the provided string numeric representation.
+ * If not, return the type specified by the `parse.numberFallback` property
+ * instead.
  *
  * For example:
  *
- *     safeNumberType('2.3', { number: 'bigint', numberFallback: 'number' })
+ *     safeNumberType(
+ *       '2.3', { number: 'bigint', parse: { numberFallback: 'number' } })
  *
  * will return 'number' and not 'bigint' because trying to create a bigint with
  * value 2.3 would throw an exception.
@@ -33,8 +36,10 @@ export function isInteger (value) {
  * @param {string} numberStr
  * @param {{
  *   number: 'number' | 'BigNumber' | 'bigint' | 'Fraction'
- *   numberFallback: 'number' | 'BigNumber'
- * }} config
+ *   parse: {
+ *     numberFallback: 'number' | 'BigNumber'
+ *   }
+ * }} parseConfig
  * @returns {'number' | 'BigNumber' | 'bigint' | 'Fraction'}
  */
 export function safeNumberType (numberStr, config) {
@@ -42,7 +47,7 @@ export function safeNumberType (numberStr, config) {
     try {
       BigInt(numberStr)
     } catch {
-      return config.numberFallback
+      return config.parse.numberFallback
     }
   }
 

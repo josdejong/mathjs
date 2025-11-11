@@ -58,7 +58,8 @@ export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ ty
       'boolean, boolean': (x, y) => (x <= y),
 
       'BigNumber, BigNumber': function (x, y) {
-        return x.lte(y) || bigNearlyEqual(x, y, config.relTol, config.absTol)
+        return x.lte(y) || bigNearlyEqual(
+          x, y, config.compute.defaultRelTol, config.compute.defaultAbsTol)
       },
 
       'bigint, bigint': (x, y) => (x <= y),
@@ -81,7 +82,8 @@ export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ ty
 export const createSmallerEqNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return x <= y || nearlyEqual(x, y, config.relTol, config.absTol)
+      return x <= y || nearlyEqual(
+        x, y, config.compute.defaultRelTol, config.compute.defaultAbsTol)
     }
   })
 })

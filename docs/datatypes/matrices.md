@@ -21,13 +21,15 @@ In most cases, the type of matrix output from functions is determined by the
 function input: An `Array` as input will return an `Array`, a `Matrix` as input
 will return a `Matrix`. In case of mixed input, a `Matrix` is returned.
 For functions where the type of output cannot be determined from the
-input, the output is determined by the configuration option `matrix`,
-which can be a string `'Matrix'` (default) or `'Array'`. The function `size` is
-an exception: `size` always returns an `Array` containing numbers. Having a 
-consistent output type in this case is most practical since the size is often
-used in JavaScript loops where the code can only use a flat Array with numbers.
-This also makes the function `size` consistent with the matrix method 
-`matrix.size()`.
+input (such as `math.identity(n)` that only takes an integer parameter),
+the output type is determined by the configuration option
+`compute.Matrix.defaultType`, which can be a string `'Matrix'` (default) or
+`'Array'`. The function `size()`, however, does not depend on this
+`defaultType` option: `size` always returns an `Array` containing numbers.
+Having a consistent output type in this case is most practical since the
+size is often used in JavaScript loops where the code can only use a flat
+Array with numbers. This uniform return type also makes the function `size`
+consistent with the matrix method `matrix.size()`.
 
 ```js
 // create an array and a matrix
@@ -43,7 +45,7 @@ math.add(array, matrix)                       // Matrix, [[9, 1], [-3, 6]]
 math.multiply(array, matrix)                  // Matrix, [[14, 2], [-13, 8]]
 
 // create a matrix. Type of output of function ones is determined by the
-// configuration option `matrix`
+// configuration option `compute.Matrix.defaultType`
 math.ones(2, 3)                               // Matrix, [[1, 1, 1], [1, 1, 1]]
 ```
 
@@ -105,7 +107,7 @@ The functions `ones`, `zeros`, and `identity` also accept a single array
 or matrix containing the dimensions for the matrix. When the input is an Array,
 the functions will output an Array. When the input is a Matrix, the output will
 be a Matrix. Note that in case of numbers as arguments, the output is
-determined by the option `matrix` as discussed in section
+determined by the option `compute.Matrix.defaultType` as discussed in section
 [Arrays and matrices](#arrays-and-matrices).
 
 ```js
@@ -182,8 +184,8 @@ Math.js uses geometric dimensions:
 - A matrix is two or multidimensional.
 
 The size of a matrix can be calculated with the function `size`. This function
-returns an `Array`, giving the length of its input (`Matrix` or `Array`) in
-each dimension. You can also call `size()` as a method on a Matrix.
+returns an `Array` of numbers, giving the length of its input (`Matrix` or
+`Array`) in each dimension. You can also call `size()` as a method on a Matrix.
 
 ```js
 // get the size of a scalar
@@ -206,7 +208,7 @@ b.size()                                      // Array, [2, 3]
 
 // get the size of a multi-dimensional array
 const c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]
-math.size(c)                                  // Array, [2, 2, 3]
+math.size(c)                                  // Array [2, 2, 3]
 ```
 
 Note that the dimensions themselves do not have a meaning attached. 
@@ -295,7 +297,7 @@ math.subset(m, math.index(1, [2]))         // [22] (row dimension eliminated, co
 math.subset(m, math.index([1], 2))         // [22] (column dimension eliminated, row dimension preserved as array)
 math.subset(m, math.index([1], [2]))       // [[22]] (both dimensions preserved as arrays)
 
-math.config({legacySubset: true}) // switch to legacy behavior
+math.config({ compatibility: { subset: true } }) // switch to legacy behavior
 math.subset(m, math.index(1, 2))           // 22
 math.subset(m, math.index(1, [2]))         // 22
 math.subset(m, math.index([1], 2))         // 22
@@ -342,10 +344,11 @@ e.subset(math.index(1, 2), 5)                 // Matrix, [[0, 0, 0], [0, 0, 5]]
 
 With the release of math.js v15, the behavior of `subset` when indexing matrices and arrays has changed. If your code relies on the previous behavior (where indexing with an array or matrix of size 1 would always return the value itself), you may need to update your code or enable legacy mode.
 
-To maintain the old indexing behavior without need for any code changes, use the configuration option `legacySubset`:
+To maintain the old indexing behavior without need for any code changes, use
+the deprecated configuration compatibility option `subset`:
 
 ```js
-math.config({ legacySubset: true })
+math.config({ compatibility: { subset: true } })
 ```
 
 To migrate your code, you'll have to change all matrix indexes from the old index notation to the new index notation. Basically: scalar indexes have to be wrapped in array brackets if you want an array as output. Here some examples:

@@ -1,13 +1,15 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const acot = math.acot
 const cot = math.cot
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const bigmath = math.create(bigConfig(20))
 const acotBig = bigmath.acot
 const cotBig = bigmath.cot
 const Big = bigmath.bignumber
@@ -52,7 +54,7 @@ describe('acot', function () {
     assert.deepStrictEqual(arg8.toString(), 'Infinity')
 
     // Hit Newton's method case
-    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+    const bigmath61 = bigmath.create(bigConfig(61))
     assert.deepStrictEqual(bigmath61.acot(bigmath61.bignumber(1.1)),
       bigmath61.bignumber('0.7378150601204649138136281298033902035827333552504444896340492'))
   })
@@ -66,7 +68,7 @@ describe('acot', function () {
   })
 
   it('should be the inverse function of bignumber cot', function () {
-    bigmath.config({ precision: 20 })
+    bigmath.config({ compute: { BigNumber: { precision: 20 } } })
     assert.deepStrictEqual(acotBig(cotBig(Big(-1))), Big(-1))
     assert.deepStrictEqual(acotBig(cotBig(Big(0))), Big(0))
     assert.deepStrictEqual(acotBig(cotBig(Big(0.1))), Big(0.1))

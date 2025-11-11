@@ -9,9 +9,14 @@ const cosh = math.cosh
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
-const biggermath = math.create({ precision: 22 })
-const predmath = math.create({ predictable: true })
+const bigmath = math.create({
+  compute: {
+    numberApproximate: 'BigNumber',
+    BigNumber: { precision: 20 }
+  }
+})
+const biggermath = math.create({ compute: { BigNumber: { precision: 22 } } })
+const predmath = math.create({ compute: { uniformType: true } })
 const acoshBig = bigmath.acosh
 const Big = bigmath.bignumber
 
@@ -44,8 +49,8 @@ describe('acosh', function () {
     assert.deepStrictEqual(acosh(arg), Big(0))
     assert.deepStrictEqual(acoshBig(Big(2)), Big('1.3169578969248167086'))
     assert.deepStrictEqual(acoshBig(Big(3)), Big('1.7627471740390860505'))
-    assert.deepStrictEqual(acoshBig(bigmath.pi).toString(), '1.811526272460853107')
-
+    assert.strictEqual(acoshBig(bigmath.pi).toString(), '1.811526272460853107')
+    assert.deepStrictEqual(acoshBig(Big(-1)), bigmath.complex(0, Math.PI))
     // Make sure arg was not changed
     assert.deepStrictEqual(arg, Big(1))
   })

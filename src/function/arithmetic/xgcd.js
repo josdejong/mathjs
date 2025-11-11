@@ -32,7 +32,7 @@ export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     'number, number': function (a, b) {
       const res = xgcdNumber(a, b)
 
-      return (config.matrix === 'Array')
+      return (config.compute.Matrix.defaultType === 'Array')
         ? res
         : matrix(res)
     },
@@ -91,6 +91,6 @@ export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     } else {
       res = [a, !a.isZero() ? lastx : 0, lasty]
     }
-    return (config.matrix === 'Array') ? res : matrix(res)
+    return (config.compute.Matrix.defaultType === 'Array') ? res : matrix(res)
   }
 })

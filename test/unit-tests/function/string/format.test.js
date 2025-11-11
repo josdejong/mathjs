@@ -3,6 +3,7 @@ import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
 import { format } from '../../../../src/utils/number.js'
+import { bigConfig } from '../../configs.js'
 
 describe('format', function () {
   it('should format numbers', function () {
@@ -225,7 +226,7 @@ describe('format', function () {
   })
 
   describe('bignumber', function () {
-    const bigmath = math.create({ precision: 20 }) // ensure the precision is 20 digits
+    const bigmath = math.create({ compute: { BigNumber: { precision: 20 } } })
 
     it('should format big numbers', function () {
       assert.strictEqual(math.format(bigmath.bignumber(2).dividedBy(7)), '0.28571428571428571429')
@@ -454,7 +455,7 @@ describe('format', function () {
     assert.strictEqual(math.format(math.parse('0.3333'), { precision: 1 }), '0.3')
     assert.strictEqual(math.format(math.parse('0.3333 + [0.4444]'), { precision: 1 }), '0.3 + [0.4]')
 
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     assert.strictEqual(bigmath.format(bigmath.parse('0.3333 + [0.4444]'), { precision: 1 }), '0.3 + [0.4]')
   })
 

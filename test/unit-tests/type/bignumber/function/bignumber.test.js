@@ -90,18 +90,14 @@ describe('bignumber', function () {
   })
 
   it('should apply precision setting to bignumbers', function () {
-    const mymath = math.create({
-      precision: 32
-    })
+    const mymath = math.create({ compute: { BigNumber: { precision: 32 } } })
 
     const a = mymath.bignumber(1).dividedBy(3)
     assert.strictEqual(a.toString(), '0.33333333333333333333333333333333')
   })
 
   it('should support very high precisions', function () {
-    const mymath = math.create({
-      precision: 2000
-    })
+    const mymath = math.create({ compute: { BigNumber: { precision: 2000 } } })
 
     const a = mymath.bignumber(1).dividedBy(3)
 

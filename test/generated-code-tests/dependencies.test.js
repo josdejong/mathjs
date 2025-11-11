@@ -16,7 +16,10 @@ describe('dependencies', function () {
   })
 
   it('should create functions with config', function () {
-    const config = { number: 'BigNumber' }
+    const config = {
+      number: 'BigNumber',
+      compute: { numberApproximate: 'BigNumber' }
+    }
     const { pi } = create({
       piDependencies
     }, config)

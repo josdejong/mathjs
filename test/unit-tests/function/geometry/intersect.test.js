@@ -1,5 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
 
 const fraction = math.fraction
 
@@ -52,7 +53,7 @@ describe('intersect', function () {
   })
 
   it('should calculate the intersection point if coordinates are bignumbers', function () {
-    const bigmath = math.create({ number: 'BigNumber', precision: 32 })
+    const bigmath = math.create(bigConfig(32))
     const bigintersect = bigmath.intersect
     const bignumber = bigmath.bignumber
 

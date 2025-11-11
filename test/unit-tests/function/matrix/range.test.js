@@ -1,5 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
+
 const range = math.range
 const matrix = math.matrix
 const bignumber = math.bignumber
@@ -59,9 +61,7 @@ describe('range', function () {
   })
 
   it('should output an array when setting matrix==="array"', function () {
-    const math2 = math.create({
-      matrix: 'Array'
-    })
+    const math2 = math.create({ compute: { Matrix: { defaultType: 'Array' } } })
 
     assert.deepStrictEqual(math2.range(0, 10, 2), [0, 2, 4, 6, 8])
     assert.deepStrictEqual(math2.range(5, 0, -1), [5, 4, 3, 2, 1])
@@ -109,7 +109,7 @@ describe('range', function () {
   })
 
   it('should parse a range with bignumbers', function () {
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     const bignumber = bigmath.bignumber
     const matrix = bigmath.matrix
     assert.deepStrictEqual(bigmath.range('1:3'), matrix([bignumber(1), bignumber(2)]))
@@ -117,7 +117,7 @@ describe('range', function () {
   })
 
   it('should throw an error when parsing a an invalid string to a bignumber range', function () {
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     assert.throws(function () { bigmath.range('1:a') }, /is no valid range/)
   })
 

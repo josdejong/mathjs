@@ -13,15 +13,20 @@ Math.js supports three types of numbers:
 
 Most functions can determine the type of output from the type of input:
 a number as input will return a number as output, a BigNumber as input returns
-a BigNumber as output. Functions which cannot determine the type of output
-from the input (for example `math.evaluate`) use the default number type, which
-can be configured when instantiating math.js:
+a BigNumber as output, and so on. However, when parsing a numeric literal
+like `'23'` or when computing the sum of an empty list of numbers, there is
+not any already-typed input to go by. The numeric type mathjs will try in such
+situations can be configured when instantiating math.js, by the top-level
+configuration option `number`. Although its default value is the string
+`'number'` meaning to use the built-in JavaScript number type, here's how
+you would explicitly configure it that way if it were necessary:
 
 ```js
-math.config({
-  number: 'number' // Default type of number: 
-                   // 'number' (default), 'BigNumber', or 'Fraction'
-})
+import { create, all } from 'mathjs'
+const math = create(all)
+
+math.config({ number: 'number' }) // Default type of number:
+  // 'number' (default), 'bigint', 'BigNumber', or 'Fraction'
 ```
 
 ## Round-off errors
@@ -73,20 +78,26 @@ false, as the addition `0.1 + 0.2` introduces a round-off error and does not
 return exactly `0.3`.
 
 To solve this problem, the relational functions of math.js check whether the
-relative and absolute differences between the compared values is smaller than the configured
-option `relTol` and `absTol`. In pseudo code (without exceptions for 0, Infinity and NaN):
+relative and absolute differences between the compared values is smaller than
+the configuration options `compute.defaultRelTol` and `compute.defaultAbsTol`.
+In pseudo code (without exceptions for 0, Infinity and NaN):
 
     abs(a-b) <= max(relTol * max(abs(a), abs(b)), absTol)
 
 where:
 
- - `relTol` is the relative tolerance between x and y and `absTol` the absolute tolerance. Relative tolerance and absolute tolerance are configurable and are `1e-12` and `1e-15` respectively by default. See [Configuration](../core/configuration.md).
- - `DBL_EPSILON` is the minimum positive floating point number such that
-   `1.0 + DBL_EPSILON !== 1.0`. This is a constant with a value of approximately
-   `2.2204460492503130808472633361816e-16`.
+ - `relTol` is the relative tolerance between x and y and `absTol` the absolute
+   tolerance. Relative tolerance and absolute tolerance are configurable and
+   are `1e-12` and `1e-15`, respectively, by default. See
+   [Configuration](../core/configuration.md).
 
-Note that the relational functions cannot be used to compare small values
-(`< 2.22e-16`). These values are all considered equal to zero.
+Note that values of the built-in JavaScript number type, based on the IEEE
+64-bit floating-point standard, have their own approximation properties which
+occur when they cannot keep sufficiently many significant digits to represent
+a result exactly. For example, `DBL_EPSILON` is the minimum positive number
+value such that `1.0 + DBL_EPSILON` is distinct from the number `1.0` itself.
+`DBL_EPSILON` is a constant with a value of approximately
+`2.220446049250313e-16`.
 
 Examples:
 
@@ -95,9 +106,18 @@ Examples:
 console.log(0.1 + 0.2 === 0.3)           // false
 console.log(math.equal(0.1 + 0.2, 0.3))  // true
 
-// small values (< 2.22e-16) cannot be compared
+// small values create difficulties with comparison, under the default
+// configuration:
 console.log(3e-20 === 3.1e-20)           // false
-console.log(math.equal(3e-20, 3.1e-20))  // true
+console.log(math.equal(3e-20, 3.1e-20))  // true, because the difference
+// 1e-21 is smaller than the default absolute tolerance.
+
+// If you will be working with many very small values and want to
+// rely primarily on relative difference for testing equality, configure
+// the absolute tolerance much smaller:
+import { create, all } from 'mathjs'
+const smallmath = create(all, { compute: { defaultAbsTol: 1e-64 } })
+console.log(smallmath.equal(3e-20, 3.1e-20))  // false
 ```
 
 The available relational functions are: `compare`, `equal`, `larger`,

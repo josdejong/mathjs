@@ -154,7 +154,7 @@ describe('unequal', function () {
     assert.strictEqual(mymath.unequal(mymath.bignumber(1), mymath.bignumber(0.991)), true)
     assert.strictEqual(mymath.unequal(mymath.complex(1, 0), mymath.complex(0.991, 0)), true)
 
-    mymath.config({ relTol: 1e-2 })
+    mymath.config({ compute: { defaultRelTol: 1e-2 } })
     assert.strictEqual(mymath.unequal(1, 0.991), false)
     assert.strictEqual(mymath.unequal(mymath.bignumber(1), mymath.bignumber(0.991)), false)
     assert.strictEqual(mymath.unequal(mymath.complex(1, 0), mymath.complex(0.991, 0)), false)

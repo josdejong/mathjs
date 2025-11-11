@@ -1,12 +1,14 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const tanh = math.tanh
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const bigmath = math.create(bigConfig(20))
 
 describe('tanh', function () {
   it('should return the tanh of a boolean', function () {

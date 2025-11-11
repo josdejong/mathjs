@@ -2,7 +2,9 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
-const bigmath = math.create({ number: 'BigNumber' })
+import { bigConfig } from '../../configs.js'
+
+const bigmath = math.create(bigConfig())
 const Node = math.Node
 const ConstantNode = math.ConstantNode
 const OperatorNode = math.OperatorNode

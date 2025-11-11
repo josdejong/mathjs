@@ -186,7 +186,7 @@ describe('round', function () {
     })
 
     it('uses updated config.relTol value', function () {
-      math2.config({ relTol: 1e-13 })
+      math2.config({ compute: { defaultRelTol: 1e-13 } })
       assert.strictEqual(math2.round((0.000000000001459), 12), 1e-12)
       assert.deepStrictEqual(math2.round(bignumber(1.49e-12), bignumber(12)), bignumber(1e-12))
     })

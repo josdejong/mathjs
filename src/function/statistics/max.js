@@ -1,12 +1,15 @@
 import { deepForEach, reduce, containsCollections } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
-import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
+import { createNumericPassthru } from './utils/numericPassthru.js'
 
 const name = 'max'
 const dependencies = ['typed', 'config', 'numeric', 'larger', 'isNaN']
 
-export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, larger, isNaN: mathIsNaN }) => {
+export const createMax = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, numeric, larger, isNaN: mathIsNaN
+}) => {
+  const passthru = createNumericPassthru({ typed })
   /**
    * Compute the maximum value of a matrix or a  list with values.
    * In case of a multidimensional array, the maximum of the flattened array
@@ -38,7 +41,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The maximum value
    */
-  return typed(name, {
+  return typed(name, passthru, {
     // max([a, b, c, d, ...])
     'Array | Matrix': _max,
 
@@ -94,14 +97,9 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     })
 
     if (res === undefined) {
-      throw new Error('Cannot calculate max of an empty array')
+      // Not all types have Infinity, so have to use numberApproximate:
+      return numeric(-Infinity, config.compute.numberApproximate)
     }
-
-    // make sure returning numeric value: parse a string into a numeric value
-    if (typeof res === 'string') {
-      res = numeric(res, safeNumberType(res, config))
-    }
-
-    return res
+    return passthru(res)
   }
 })

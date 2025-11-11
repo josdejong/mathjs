@@ -120,7 +120,7 @@ describe('largerEq', function () {
     assert.strictEqual(mymath.largerEq(1, 1.01), false)
     assert.strictEqual(mymath.largerEq(mymath.bignumber(1), mymath.bignumber(1.01)), false)
 
-    mymath.config({ relTol: 1e-2 })
+    mymath.config({ compute: { defaultRelTol: 1e-2 } })
     assert.strictEqual(mymath.largerEq(1, 1.01), true)
     assert.strictEqual(mymath.largerEq(mymath.bignumber(1), mymath.bignumber(1.01)), true)
   })

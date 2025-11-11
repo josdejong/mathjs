@@ -35,8 +35,7 @@ export const createSylvester = /* #__PURE__ */ factory(name, dependencies, (
     subtract,
     identity,
     lusolve,
-    abs,
-    config
+    abs
   }
 ) => {
   /**

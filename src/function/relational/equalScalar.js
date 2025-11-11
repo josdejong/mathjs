@@ -25,11 +25,13 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
     },
 
     'number, number': function (x, y) {
-      return nearlyEqual(x, y, config.relTol, config.absTol)
+      return nearlyEqual(
+        x, y, config.compute.defaultRelTol, config.compute.defaultAbsTol)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.eq(y) || bigNearlyEqual(x, y, config.relTol, config.absTol)
+      return x.eq(y) || bigNearlyEqual(
+        x, y, config.compute.defaultRelTol, config.compute.defaultAbsTol)
     },
 
     'bigint, bigint': function (x, y) {
@@ -41,7 +43,8 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
     },
 
     'Complex, Complex': function (x, y) {
-      return complexEquals(x, y, config.relTol, config.absTol)
+      return complexEquals(
+        x, y, config.compute.defaultRelTol, config.compute.defaultAbsTol)
     }
   }, compareUnits)
 })
@@ -49,7 +52,8 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
 export const createEqualScalarNumber = factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return nearlyEqual(x, y, config.relTol, config.absTol)
+      return nearlyEqual(
+        x, y, config.compute.defaultRelTol, config.compute.defaultAbsTol)
     }
   })
 })

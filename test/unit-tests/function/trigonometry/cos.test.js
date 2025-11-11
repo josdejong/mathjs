@@ -1,13 +1,15 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const cos = math.cos
-const bigmath = math.create({ number: 'BigNumber', precision: 15 })
-const biggermath = math.create({ number: 'BigNumber', precision: 238 })
+const bigmath = math.create(bigConfig(15))
+const biggermath = math.create(bigConfig(238))
 
 describe('cos', function () {
   it('should return the cosine of a boolean', function () {
@@ -47,7 +49,7 @@ describe('cos', function () {
     assert.strictEqual(cosVal.constructor.precision, 238)
     assert.deepStrictEqual(cosVal.toString(), resultVal)
 
-    const biggermath2 = math.create({ number: 'BigNumber', precision: 16 })
+    const biggermath2 = math.create(bigConfig(16))
     const bigPi = biggermath2.pi
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau

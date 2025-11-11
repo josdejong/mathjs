@@ -3,13 +3,15 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const acsch = math.acsch
 const csch = math.csch
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const bigmath = math.create(bigConfig(20))
 const acschBig = bigmath.acsch
 const Big = bigmath.bignumber
 

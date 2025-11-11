@@ -29,9 +29,10 @@ export const createAsech = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   return typed(name, {
     number: function (x) {
-      if ((x <= 1 && x >= -1) || config.predictable) {
+      const predictable = config.compute.uniformType
+      if ((x <= 1 && x >= -1) || predictable) {
         const xInv = 1 / x
-        if (xInv > 0 || config.predictable) {
+        if (xInv > 0 || predictable) {
           return asechNumber(x)
         }
 
@@ -47,6 +48,9 @@ export const createAsech = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     BigNumber: function (x) {
+      if ((x.lessThan(0) || x.greaterThan(1)) && !config.compute.uniformType) {
+        return new Complex(x, 0).asech()
+      }
       return new BigNumber(1).div(x).acosh()
     }
   })

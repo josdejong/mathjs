@@ -97,7 +97,7 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
         new Complex(cbrtNumber(abs), 0).mul(new Complex(0, arg3 - Math.PI * 2 / 3).exp())
       ]
 
-      return (config.matrix === 'Array') ? all : matrix(all)
+      return (config.compute.Matrix.defaultType === 'Array') ? all : matrix(all)
     } else {
       return principal
     }

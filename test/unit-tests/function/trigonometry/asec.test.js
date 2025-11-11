@@ -3,14 +3,16 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const asec = math.asec
 const sec = math.sec
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
-const predmath = math.create({ predictable: true })
+const bigmath = math.create(bigConfig(20))
+const predmath = math.create({ compute: { uniformType: true } })
 const asecBig = bigmath.asec
 const Big = bigmath.bignumber
 
@@ -49,7 +51,7 @@ describe('asec', function () {
     assert.deepStrictEqual(arg2, Big(-1))
 
     // Hit Newton's method case
-    const bigmath64 = bigmath.create({ number: 'BigNumber', precision: 64 })
+    const bigmath64 = bigmath.create(bigConfig(64))
     const arg = bigmath64.bignumber('3.00000001')
     assert.deepStrictEqual(bigmath64.asec(bigmath64.bignumber(3)),
       bigmath64.bignumber('1.230959417340774682134929178247987375710340009355094839055548334'))
@@ -60,9 +62,10 @@ describe('asec', function () {
     assert.deepStrictEqual(arg, bigmath64.bignumber(3.00000001))
 
     // out of range
-    assert.ok(asec(Big(0.5)).isNaN())
-    assert.ok(asec(Big(0)).isNaN())
-    assert.ok(asec(Big(-0.5)).isNaN())
+    assert.deepStrictEqual(asec(Big(0.5)), math.complex(0, 1.3169578969248166))
+    assert.ok(!math.isFinite(asec(Big(0))))
+    assert.deepStrictEqual(
+      asec(Big(-0.5)), math.complex(Math.PI, -1.3169578969248164))
   })
 
   it('should be the inverse function of sec', function () {
@@ -74,7 +77,7 @@ describe('asec', function () {
   })
 
   it('should be the inverse function of bignumber sec', function () {
-    bigmath.config({ precision: 20 })
+    bigmath.config({ compute: { BigNumber: { precision: 20 } } })
     assert.deepStrictEqual(asecBig(bigmath.sec(Big(-1))), Big(1))
     assert.deepStrictEqual(asecBig(bigmath.sec(Big(0))), Big(0))
     assert.deepStrictEqual(asecBig(bigmath.sec(Big(0.5))), Big('0.49999999999999999997'))

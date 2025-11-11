@@ -1,13 +1,15 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const sec = math.sec
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
-const biggermath = math.create({ number: 'BigNumber', precision: 21 })
+const bigmath = math.create(bigConfig(20))
+const biggermath = math.create(bigConfig(21))
 
 describe('sec', function () {
   it('should return the secant of a boolean', function () {

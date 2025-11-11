@@ -14,6 +14,9 @@ const dependencies = [
 ]
 
 export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber, DenseMatrix, SparseMatrix }) => {
+  function useMatrix (config) {
+    return config.compute.Matrix.defaultType === 'Matrix'
+  }
   /**
    * Create a 2-dimensional identity matrix with size m x n or n x n.
    * The matrix has ones on the diagonal and zeros elsewhere.
@@ -46,7 +49,7 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
    */
   return typed(name, {
     '': function () {
-      return (config.matrix === 'Matrix') ? matrix([]) : []
+      return useMatrix(config) ? matrix([]) : []
     },
 
     string: function (format) {
@@ -54,7 +57,7 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'number | BigNumber': function (rows) {
-      return _identity(rows, rows, config.matrix === 'Matrix' ? 'dense' : undefined)
+      return _identity(rows, rows, useMatrix(config) ? 'dense' : undefined)
     },
 
     'number | BigNumber, string': function (rows, format) {
@@ -62,7 +65,7 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'number | BigNumber, number | BigNumber': function (rows, cols) {
-      return _identity(rows, cols, config.matrix === 'Matrix' ? 'dense' : undefined)
+      return _identity(rows, cols, useMatrix(config) ? 'dense' : undefined)
     },
 
     'number | BigNumber, number | BigNumber, string': function (rows, cols, format) {

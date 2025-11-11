@@ -1,15 +1,17 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const asin = math.asin
 const sin = math.sin
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
-const biggermath = math.create({ precision: 21 })
-const predmath = math.create({ predictable: true })
+const bigmath = math.create(bigConfig(20))
+const biggermath = math.create({ compute: { BigNumber: { precision: 21 } } })
+const predmath = math.create({ compute: { uniformType: true } })
 const asinBig = bigmath.asin
 const Big = bigmath.bignumber
 
@@ -54,7 +56,7 @@ describe('asin', function () {
     assert.deepStrictEqual(arg3, Big(-0.5))
 
     // Hit Newton's method case
-    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+    const bigmath61 = bigmath.create(bigConfig(61))
 
     const arg4 = bigmath61.bignumber(0.00000001)
     assert.deepStrictEqual(bigmath61.asin(arg4),
@@ -72,7 +74,7 @@ describe('asin', function () {
 
   it('should be the inverse function of bignumber sin', function () {
     // More Newton's method test cases
-    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+    const bigmath61 = bigmath.create(bigConfig(61))
     assert.deepStrictEqual(asinBig(bigmath61.sin(bigmath61.bignumber(-2))),
       bigmath61.bignumber('-1.141592653589793238462643383279502884197169399375105820974945'))
     // Wolfram:            -1.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132
@@ -92,7 +94,8 @@ describe('asin', function () {
     assert.deepStrictEqual(asinBig(biggermath.sin(Big(-1))), Big('-1'))
 
     // outside of real range
-    assert.ok(asin(Big(1.1)).isNaN())
+    assert.deepStrictEqual(
+      asin(Big(1.1)), math.complex(1.5707963267948966, -0.4435682543851154))
   })
 
   it('should return the arcsin of a complex number', function () {

@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import defaultMath from '../../../../src/defaultInstance.js'
-const math = defaultMath.create({ matrix: 'Array' })
+const math = defaultMath.create({ compute: { Matrix: { defaultType: 'Array' } } })
 const gcd = math.gcd
 const xgcd = math.xgcd
 
@@ -80,10 +80,10 @@ describe('xgcd', function () {
   })
 
   it('should return a matrix when configured to use matrices', function () {
-    const math1 = math.create({ matrix: 'Matrix' })
+    const math1 = math.create({ compute: { Matrix: { defaultType: 'Matrix' } } })
     assert.deepStrictEqual(math1.xgcd(65, 40), math1.matrix([5, -3, 5]))
 
-    const math2 = math.create({ matrix: 'Array' })
+    const math2 = math.create({ compute: { Matrix: { defaultType: 'Array' } } })
     assert.deepStrictEqual(math2.xgcd(65, 40), [5, -3, 5])
   })
 

@@ -3,7 +3,8 @@ import assert from 'assert'
 
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
-const mathPredictable = math.create({ predictable: true })
+
+const mathPredictable = math.create({ compute: { uniformType: true } })
 const bignumber = math.bignumber
 const fraction = math.fraction
 const complex = math.complex

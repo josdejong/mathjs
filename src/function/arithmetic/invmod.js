@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'invmod'
-const dependencies = ['typed', 'config', 'BigNumber', 'xgcd', 'equal', 'smaller', 'mod', 'add', 'isInteger']
+const dependencies = ['typed', 'BigNumber', 'xgcd', 'equal', 'smaller', 'mod', 'add', 'isInteger']
 
-export const createInvmod = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, BigNumber, xgcd, equal, smaller, mod, add, isInteger }) => {
+export const createInvmod = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, xgcd, equal, smaller, mod, add, isInteger }) => {
   /**
    * Calculate the (modular) multiplicative inverse of a modulo b. Solution to the equation `ax ≣ 1 (mod b)`
    * See https://en.wikipedia.org/wiki/Modular_multiplicative_inverse.

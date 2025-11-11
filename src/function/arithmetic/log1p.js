@@ -39,19 +39,18 @@ export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   return typed(name, {
     number: function (x) {
-      if (x >= -1 || config.predictable) {
+      if (x >= -1 || config.compute.uniformType) {
         return _log1p(x)
-      } else {
-        // negative value -> complex value computation
-        return _log1pComplex(new Complex(x, 0))
       }
+      // negative value -> complex value computation
+      return _log1pComplex(new Complex(x, 0))
     },
 
     Complex: _log1pComplex,
 
     BigNumber: function (x) {
       const y = x.plus(1)
-      if (!y.isNegative() || config.predictable) {
+      if (!y.isNegative() || config.compute.uniformType) {
         return y.ln()
       } else {
         // downgrade to number, return Complex valued result
@@ -75,6 +74,11 @@ export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   function _log1pComplex (x) {
     const xRe1p = x.re + 1
+    // TODO: for |x| small compared to 1, we should actually use the
+    // Taylor series of sqrt(1+x) to express the result of the sqrt
+    // call below in the form 1 + epsilon for some small epsilon, and then
+    // use _log1p on that epsilon. Right now we are giving up lots of
+    // accuracy near the origin in the real part of the result.
     return new Complex(
       Math.log(Math.sqrt(xRe1p * xRe1p + x.im * x.im)),
       Math.atan2(x.im, xRe1p)

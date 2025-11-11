@@ -1,5 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
+
 const BigNumber = math.BigNumber
 const Complex = math.Complex
 const DenseMatrix = math.DenseMatrix
@@ -23,12 +25,13 @@ describe('prod', function () {
     assert.strictEqual(prod('2', '3'), 6)
     assert.strictEqual(prod('2'), 2)
     assert.strictEqual(prod([['1', '3'], ['5', '2']]), 30)
+    assert.strictEqual(prod(['3']), 3)
   })
 
   // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should return the product of strings (with BigNumber config)', function () {
     // TODO: requires math.add to recon with config.number when parsing strings
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     assert.deepStrictEqual(bigmath.prod('10', '3', '4', '2'), bigmath.bignumber('240'))
     assert.deepStrictEqual(bigmath.prod('10'), bigmath.bignumber(10))
   })
@@ -90,16 +93,16 @@ describe('prod', function () {
     assert.throws(function () { prod([], 2) }, /not yet supported/)
   })
 
-  it('should throw an error if called with an empty array', function () {
-    assert.throws(function () { prod([]) })
+  it('should return 1 if called with an empty array', function () {
+    assert.strictEqual(prod([]), 1)
   })
 
   it('should throw an error if called with invalid type of arguments', function () {
     assert.throws(function () { prod([[2, undefined, 4]]) }, /TypeError: Cannot calculate prod, unexpected type of argument/)
     assert.throws(function () { prod([[2, new Date(), 4]]) }, /TypeError: Cannot calculate prod, unexpected type of argument/)
     assert.throws(function () { prod([2, null, 4]) }, /TypeError: Cannot calculate prod, unexpected type of argument/)
-    assert.throws(function () { prod('a', 'b') }, /Error: Cannot convert "a" to a number/)
-    assert.throws(function () { prod('a') }, /SyntaxError: String "a" is not a valid number/)
+    assert.throws(function () { prod('a', 'b') }, /Error: Cannot convert "a"/)
+    assert.throws(function () { prod('a') }, /Error: Cannot convert "a"/)
   })
 
   it('should LaTeX prod', function () {

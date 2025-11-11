@@ -15,25 +15,27 @@ const dependencies = [
   'equalScalar',
   'BigNumber',
   'Fraction',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, equalScalar, matrix, BigNumber, Fraction, DenseMatrix, concat }) => {
+export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, equalScalar, matrix, BigNumber, Fraction, DenseMatrix, concat
+}) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
   const compareUnits = createCompareUnits({ typed })
 
   /**
    * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
    *
    * x and y are considered equal when the relative difference between x and y
-   * is smaller than the configured absTol and relTol. The function cannot be used to
-   * compare values smaller than approximately 2.22e-16.
+   * is smaller than the configured absTol and relTol. With the default
+   * settings, this function cannot be used to compare values smaller than
+   * approximately 2.22e-16.
    *
-   * For matrices, the function is evaluated element wise.
+   * For matrices, the function is evaluated element-wise.
    * Strings are compared by their numerical value.
    *
    * Syntax:
@@ -72,7 +74,8 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
       },
 
       'BigNumber, BigNumber': function (x, y) {
-        return bigNearlyEqual(x, y, config.relTol, config.absTol)
+        const opts = config.compute
+        return bigNearlyEqual(x, y, opts.defaultRelTol, config.defaultAbsTol)
           ? new BigNumber(0)
           : new BigNumber(x.cmp(y))
       },
@@ -101,7 +104,8 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
 export const createCompareNumber = /* #__PURE__ */ factory(name, ['typed', 'config'], ({ typed, config }) => {
   return typed(name, {
     'number, number': function (x, y) {
-      return nearlyEqual(x, y, config.relTol, config.absTol)
+      const opts = config.compute
+      return nearlyEqual(x, y, opts.defaultRelTol, opts.defaultAbsTol)
         ? 0
         : (x > y ? 1 : -1)
     }

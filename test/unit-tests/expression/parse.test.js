@@ -5,6 +5,7 @@ import { isMap, isObjectWrappingMap, isPartitionedMap } from '../../../src/utils
 import { PartitionedMap } from '../../../src/utils/map.js'
 
 import { approxDeepEqual, approxEqual } from '../../../tools/approx.js'
+import { bigConfig } from '../configs.js'
 
 const parse = math.parse
 const ConditionalNode = math.ConditionalNode
@@ -363,9 +364,7 @@ describe('parse', function () {
     })
 
     it('should output bignumbers if default number type is bignumber', function () {
-      const bigmath = math.create({
-        number: 'BigNumber'
-      })
+      const bigmath = math.create(bigConfig())
 
       assert.deepStrictEqual(bigmath.parse('0.1').compile().evaluate(), bigmath.bignumber(0.1))
       assert.deepStrictEqual(bigmath.parse('1.2e5000').compile().evaluate(), bigmath.bignumber('1.2e5000'))
@@ -390,9 +389,7 @@ describe('parse', function () {
 
   describe('fraction', function () {
     it('should output fractions if default number type is fraction', function () {
-      const fmath = math.create({
-        number: 'Fraction'
-      })
+      const fmath = math.create({ number: 'Fraction' })
 
       assert(fmath.parse('0.1').compile().evaluate() instanceof math.Fraction)
       assert.strictEqual(fmath.parse('1/3').compile().evaluate().toString(), '0.(3)')
@@ -2490,9 +2487,7 @@ describe('parse', function () {
   })
 
   describe('bignumber', function () {
-    const bigmath = math.create({
-      number: 'BigNumber'
-    })
+    const bigmath = math.create(bigConfig())
     const BigNumber = bigmath.BigNumber
 
     it('should parse numbers as bignumber', function () {
@@ -2566,9 +2561,7 @@ describe('parse', function () {
   })
 
   describe('bigint', function () {
-    const bigmath = math.create({
-      number: 'bigint'
-    })
+    const bigmath = math.create({ number: 'bigint' })
 
     it('should parse integer numbers as bigint', function () {
       assert.strictEqual(bigmath.evaluate('123123123123123123123'), 123123123123123123123n)
@@ -2586,12 +2579,14 @@ describe('parse', function () {
     it('should fallback on the configured numberFallback when parsing as bigint', function () {
       const bigmathFallback = math.create({
         number: 'bigint',
-        numberFallback: 'BigNumber'
+        parse: { numberFallback: 'BigNumber' }
       })
 
       assert.strictEqual(bigmathFallback.evaluate('42'), 42n)
-      assert.deepStrictEqual(bigmathFallback.evaluate('2.3'), bigmathFallback.bignumber('2.3'))
-      assert.deepStrictEqual(bigmathFallback.evaluate('-2.3'), bigmathFallback.bignumber('-2.3'))
+      assert.deepStrictEqual(
+        bigmathFallback.evaluate('2.3'), bigmathFallback.bignumber('2.3'))
+      assert.deepStrictEqual(
+        bigmathFallback.evaluate('-2.3'), bigmathFallback.bignumber('-2.3'))
     })
 
     it('should evaluate units with bigint values (falling back to number)', function () {

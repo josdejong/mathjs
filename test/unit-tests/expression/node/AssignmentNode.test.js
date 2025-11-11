@@ -2,6 +2,8 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
+
 const Node = math.Node
 const AccessorNode = math.AccessorNode
 const ConstantNode = math.ConstantNode
@@ -145,7 +147,7 @@ describe('AssignmentNode', function () {
   })
 
   it('should compile an AssignmentNode with bignumber setting', function () {
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
 
     const object = new bigmath.SymbolNode('a')
     const index = new bigmath.IndexNode([

@@ -48,9 +48,9 @@ export const createBernoulli = /* #__PURE__ */ factory(name, dependencies, ({
       number(index), n => new Fraction(n), fractionCache,
       (a, b) => a.add(b), (a, b) => a.mul(b), (a, b) => a.div(b)),
     BigNumber: index => {
-      if (config.precision !== cachedPrecision) {
+      if (config.compute.BigNumber.precision !== cachedPrecision) {
         bigCache = [undefined]
-        cachedPrecision = config.precision
+        cachedPrecision = config.compute.BigNumber.precision
       }
       return _bernoulli(
         number(index), n => new BigNumber(n), bigCache,

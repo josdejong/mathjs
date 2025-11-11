@@ -25,7 +25,7 @@ describe('config', function () {
       () => math2.config({ epsilon: 1e-5 }), /discontinued.*epsilon/)
   })
 
-  it('should work with config legacySubset during deprecation', function () {
+  it('should work with compatibility subset during deprecation', function () {
     const math2 = math.create()
     // Add a spy to temporarily disable console.warn
     const warnStub = sinon.stub(console, 'warn')
@@ -40,7 +40,7 @@ describe('config', function () {
     assert.strictEqual(warnStub.callCount, 1)
 
     // Ensure that legacy behavior of subset occurs
-    assert.deepStrictEqual(math2.subset([1, 2], math.index(1)), [2]
+    assert.deepStrictEqual(math2.subset([1, 2], math.index([1])), 2)
 
     // Restore console.warn
     warnStub.restore()

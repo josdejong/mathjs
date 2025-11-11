@@ -22,7 +22,7 @@ export const DEFAULT_CONFIG = {
     // when the type is not uniquely determined by the input types (e.g.,
     // square root of a bigint or the value of a mathematical constant)
     numberApproximate: 'number',
-    
+
     // random seed for seeded pseudo random number generation
     // null = randomly seed
     randomSeed: null,
@@ -45,20 +45,22 @@ export const DEFAULT_CONFIG = {
     }
   },
 
-  parse: {
-    // When textual representations of numbers are converted to numeric
-    // values in the expression parser, what should their default type be?
-    number: 'number',
+  // The overall default number type, to be used in parsing and computation,
+  // when the type for numbers is not otherwise determined and this type
+  // is suitable for the representation needed. There are alternate type
+  // specification for compute and parse when this type is not suitable.
+  number: 'number',
 
+  parse: {
     // In case a given textual representation cannot be converted to the
-    // selected type specified by the `number` option, what type should
-    // be tried as an alternative?
+    // selected type specified by the general top-level `number` option,
+    // what type should be tried as an alternative?
     numberFallback: 'number'
-  } 
+  }
 }
 
-function isStringOrNull (s) {
-  return s === null | typeof s === 'string'
+function isStringNumberObjectOrNull (s) {
+  return s === null | ['string', 'number', 'object'].includes(typeof s)
 }
 
 // For each configuration option, either an array of allowed values or
@@ -75,7 +77,7 @@ export const ALLOWED_CONFIG = {
     // algorithms that we do not currently have implemented (see, for example,
     // https://www.ams.org/journals/mcom/1995-64-211/S0025-5718-1995-1297479-9/S0025-5718-1995-1297479-9.pdf
     numberApproximate: ['number', 'BigNumber'],
-    randomSeed: isStringOrNull,
+    randomSeed: isStringNumberObjectOrNull,
     uniformType: [true, false],
     BigNumber: {
       precision: Number.isInteger
@@ -84,8 +86,8 @@ export const ALLOWED_CONFIG = {
       defaultType: ['Array', 'Matrix']
     }
   },
+  number: ['bigint', 'BigNumber', 'Fraction', 'number'],
   parse: {
-    number: ['bigint', 'BigNumber', 'Fraction', 'number'],
     numberFallback: ['BigNumber', 'Fraction', 'number']
   }
 }

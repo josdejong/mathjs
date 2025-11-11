@@ -3,7 +3,8 @@ import assert from 'assert'
 
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
-const mathPredictable = math.create({ predictable: true })
+const mathPredictable = math.create({ compute: { uniformType: true } })
+const bigmath = math.create({ compute: { BigNumber: { precision: 100 } } })
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
@@ -49,8 +50,6 @@ describe('log1p', function () {
   })
 
   it('should return the log1p of positive bignumbers', function () {
-    const bigmath = math.create({ precision: 100 })
-
     assert.deepStrictEqual(bigmath.log1p(bigmath.bignumber(-1)).toString(), '-Infinity')
     assert.deepStrictEqual(bigmath.log1p(bigmath.bignumber(0)), bigmath.bignumber('0'))
     assert.deepStrictEqual(bigmath.log1p(bigmath.bignumber(1)), bigmath.bignumber('0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875'))
@@ -61,8 +60,6 @@ describe('log1p', function () {
   })
 
   it('should return the log1p of negative bignumbers', function () {
-    const bigmath = math.create({ precision: 100 })
-
     approxDeepEqual(bigmath.log1p(bigmath.bignumber(-2)), complex('0.000000000000000 + 3.141592653589793i'))
     approxDeepEqual(bigmath.log1p(bigmath.bignumber(-3)), complex('0.693147180559945 + 3.141592653589793i'))
     approxDeepEqual(bigmath.log1p(bigmath.bignumber(-4)), complex('1.098612288668110 + 3.141592653589793i'))

@@ -27,7 +27,8 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    * For cubic roots of negative numbers, the function returns the principal
    * root by default. In order to let the function return the real root,
-   * math.js can be configured with `math.config({predictable: true})`.
+   * math.js can be configured with
+   * `math.config({compute: {uniformType: true})`.
    * To retrieve all cubic roots of a value, use `math.cbrt(x, true)`.
    *
    * Syntax:
@@ -63,7 +64,7 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      if (y.isInteger() || x >= 0 || config.predictable) {
+      if (y.isInteger() || x >= 0 || config.compute.uniformType) {
         return x.pow(y)
       } else {
         return new Complex(x.toNumber(), 0).pow(y.toNumber(), 0)
@@ -79,8 +80,9 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
         return result
       }
 
-      if (config.predictable) {
-        throw new Error('Result of pow is non-rational and cannot be expressed as a fraction')
+      if (config.compute.uniformType) {
+        throw new Error(
+          'Result of pow is non-rational and cannot be expressed as a fraction')
       } else {
         return _pow(x.valueOf(), y.valueOf())
       }
@@ -113,8 +115,8 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    */
   function _pow (x, y) {
     // Alternatively could define a 'realmode' config option or something, but
-    // 'predictable' will work for now
-    if (config.predictable && !isInteger(y) && x < 0) {
+    // 'uniformType' will work for now
+    if (config.compute.uniformType && !isInteger(y) && x < 0) {
       // Check to see if y can be represented as a fraction
       try {
         const yFrac = fraction(y)
@@ -131,16 +133,16 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
       // Unable to express y as a fraction, so continue on
     }
 
-    // **for predictable mode** x^Infinity === NaN if x < -1
+    // **for uniformType mode** x^Infinity === NaN if x < -1
     // N.B. this behavour is different from `Math.pow` which gives
     // (-2)^Infinity === Infinity
-    if (config.predictable &&
+    if (config.compute.uniformType &&
         ((x < -1 && y === Infinity) ||
          (x > -1 && x < 0 && y === -Infinity))) {
       return NaN
     }
 
-    if (isInteger(y) || x >= 0 || config.predictable) {
+    if (isInteger(y) || x >= 0 || config.compute.uniformType) {
       return powNumber(x, y)
     } else {
       // TODO: the following infinity checks are duplicated from powNumber. Deduplicate this somehow

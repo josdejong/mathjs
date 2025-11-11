@@ -1,13 +1,15 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const atan = math.atan
 const tan = math.tan
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const bigmath = math.create(bigConfig(20))
 const atanBig = bigmath.atan
 const Big = bigmath.bignumber
 
@@ -47,7 +49,7 @@ describe('atan', function () {
     assert.deepStrictEqual(arg7.toString(), 'Infinity')
 
     // Hit Newton's method case
-    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+    const bigmath61 = bigmath.create(bigConfig(61))
     assert.deepStrictEqual(bigmath61.atan(bigmath61.bignumber(0.9)),
       bigmath61.bignumber('0.7328151017865065916407920727342802519857556793582560863105069'))
   })
@@ -61,7 +63,7 @@ describe('atan', function () {
   })
 
   it('should be the inverse function of bignumber tan', function () {
-    bigmath.config({ precision: 20 })
+    bigmath.config({ compute: { BigNumber: { precision: 20 } } })
     assert.deepStrictEqual(atanBig(bigmath.tan(Big(-1))), Big(-1))
     assert.deepStrictEqual(atanBig(bigmath.tan(Big(0))), Big(0))
     assert.deepStrictEqual(atanBig(bigmath.tan(Big(0.1))), Big(0.1))

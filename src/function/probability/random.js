@@ -8,12 +8,12 @@ const dependencies = ['typed', 'config', '?on']
 
 export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, on }) => {
   // seeded pseudo random number generator
-  let rng = createRng(config.randomSeed)
+  let rng = createRng(config.compute.randomSeed)
 
   if (on) {
     on('config', function (curr, prev) {
-      if (curr.randomSeed !== prev.randomSeed) {
-        rng = createRng(curr.randomSeed)
+      if (curr.compute.randomSeed !== prev.compute.randomSeed) {
+        rng = createRng(curr.compute.randomSeed)
       }
     })
   }
@@ -71,12 +71,12 @@ export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed
 // TODO: there is quite some duplicate code in both createRandom and createRandomNumber, can we improve that?
 export const createRandomNumber = /* #__PURE__ */ factory(name, ['typed', 'config', '?on'], ({ typed, config, on, matrix }) => {
   // seeded pseudo random number generator1
-  let rng = createRng(config.randomSeed)
+  let rng = createRng(config.compute.randomSeed)
 
   if (on) {
     on('config', function (curr, prev) {
-      if (curr.randomSeed !== prev.randomSeed) {
-        rng = createRng(curr.randomSeed)
+      if (curr.compute.randomSeed !== prev.compute.randomSeed) {
+        rng = createRng(curr.compute.randomSeed)
       }
     })
   }

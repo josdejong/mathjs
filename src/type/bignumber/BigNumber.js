@@ -5,7 +5,10 @@ const name = 'BigNumber'
 const dependencies = ['?on', 'config']
 
 export const createBigNumberClass = /* #__PURE__ */ factory(name, dependencies, ({ on, config }) => {
-  const BigNumber = Decimal.clone({ precision: config.precision, modulo: Decimal.EUCLID })
+  const BigNumber = Decimal.clone({
+    precision: config.compute.BigNumber.precision,
+    modulo: Decimal.EUCLID
+  })
   BigNumber.prototype = Object.create(BigNumber.prototype)
 
   /**
@@ -40,8 +43,10 @@ export const createBigNumberClass = /* #__PURE__ */ factory(name, dependencies, 
   if (on) {
     // listen for changed in the configuration, automatically apply changed precision
     on('config', function (curr, prev) {
-      if (curr.precision !== prev.precision) {
-        BigNumber.config({ precision: curr.precision })
+      if (curr.compute.BigNumber.precision !==
+          prev.compute.BigNumber.precision
+      ) {
+        BigNumber.config({ precision: curr.compute.BigNumber.precision })
       }
     })
   }

@@ -8,42 +8,55 @@ describe('defaultInstance', function () {
   it('should get a default instance of mathjs', function () {
     assert.strictEqual(typeof math, 'object')
     assert.deepStrictEqual(math.config(), {
-      matrix: 'Matrix',
+      compute: {
+        Matrix: { defaultType: 'Matrix' },
+        BigNumber: { precision: 64 },
+        uniformType: false,
+        defaultRelTol: 1e-12,
+        defaultAbsTol: 1e-15,
+        randomSeed: null,
+        numberApproximate: 'number'
+      },
+      parse: {
+        numberFallback: 'number'
+      },
       number: 'number',
-      numberFallback: 'number',
-      precision: 64,
-      predictable: false,
-      relTol: 1e-12,
-      absTol: 1e-15,
-      legacySubset: false,
-      randomSeed: null
+      compatibility: { subset: false }
     })
   })
 
   it('should create an instance of math.js with custom configuration', function () {
     const math1 = math.create({
-      matrix: 'Array',
-      number: 'BigNumber'
+      number: 'BigNumber',
+      compute: {
+        Matrix: { defaultType: 'Array' },
+        numberApproximate: 'BigNumber'
+      }
     })
 
     assert.strictEqual(typeof math1, 'object')
     assert.deepStrictEqual(math1.config(), {
-      matrix: 'Array',
-      number: 'BigNumber',
-      numberFallback: 'number',
-      precision: 64,
-      predictable: false,
-      relTol: 1e-12,
-      absTol: 1e-15,
-      legacySubset: false,
-      randomSeed: null
+      compute: {
+        Matrix: { defaultType: 'Array' },
+        BigNumber: { precision: 64 },
+        uniformType: false,
+        defaultRelTol: 1e-12,
+        defaultAbsTol: 1e-15,
+        randomSeed: null,
+        numberApproximate: 'BigNumber'
+      },
+      parse: {
+        numberFallback: 'number'
+      },
+      compatibility: { subset: false },
+      number: 'BigNumber'
     })
   })
 
   it('two instances of math.js should be isolated from each other', function () {
     const math1 = math.create()
     const math2 = math.create({
-      matrix: 'Array'
+      compute: { Matrix: { defaultType: 'Array' } }
     })
 
     assert.notStrictEqual(math, math1)
@@ -53,7 +66,7 @@ describe('defaultInstance', function () {
     assert.notDeepStrictEqual(math.config(), math2.config())
 
     // changing config should not affect the other
-    math1.config({ number: 'BigNumber' })
+    math1.config({ number: 'BigNumber', compute: { numberApproximate: 'BigNumber' } })
     assert.strictEqual(math.config().number, 'number')
     assert.strictEqual(math1.config().number, 'BigNumber')
     assert.strictEqual(math2.config().number, 'number')
@@ -69,20 +82,28 @@ describe('defaultInstance', function () {
 
     const config = math1.config({
       number: 'BigNumber',
-      precision: 4,
-      predictable: true
+      compute: {
+        BigNumber: { precision: 4 },
+        uniformType: true,
+        numberApproximate: 'BigNumber'
+      }
     })
 
     assert.deepStrictEqual(config, {
-      matrix: 'Matrix',
-      number: 'BigNumber',
-      numberFallback: 'number',
-      precision: 4,
-      predictable: true,
-      relTol: 1e-12,
-      absTol: 1e-15,
-      legacySubset: false,
-      randomSeed: null
+      compute: {
+        Matrix: { defaultType: 'Matrix' },
+        BigNumber: { precision: 4 },
+        uniformType: true,
+        defaultRelTol: 1e-12,
+        defaultAbsTol: 1e-15,
+        randomSeed: null,
+        numberApproximate: 'BigNumber'
+      },
+      parse: {
+        numberFallback: 'number'
+      },
+      compatibility: { subset: false },
+      number: 'BigNumber'
     })
 
     assert.ok(math1.isNaN(math1.sqrt(-4)))
@@ -92,20 +113,28 @@ describe('defaultInstance', function () {
 
     const config2 = math1.config({
       number: 'number',
-      precision: 64,
-      predictable: false
+      compute: {
+        BigNumber: { precision: 64 },
+        uniformType: false,
+        numberApproximate: 'number'
+      }
     })
 
     assert.deepStrictEqual(config2, {
-      matrix: 'Matrix',
-      number: 'number',
-      numberFallback: 'number',
-      precision: 64,
-      predictable: false,
-      relTol: 1e-12,
-      absTol: 1e-15,
-      legacySubset: false,
-      randomSeed: null
+      compute: {
+        Matrix: { defaultType: 'Matrix' },
+        BigNumber: { precision: 64 },
+        uniformType: false,
+        defaultRelTol: 1e-12,
+        defaultAbsTol: 1e-15,
+        randomSeed: null,
+        numberApproximate: 'number'
+      },
+      parse: {
+        numberFallback: 'number'
+      },
+      compatibility: { subset: false },
+      number: 'number'
     })
 
     assert.deepStrictEqual(math1.sqrt(-4), math1.complex(0, 2))
@@ -126,7 +155,7 @@ describe('defaultInstance', function () {
     assert.strictEqual(math1.sqrt(4), 'foo(4)')
 
     // changing config should not change the custom function sqrt
-    math1.config({ number: 'BigNumber' })
+    math1.config({ number: 'BigNumber', compute: { numberApproximate: 'BigNumber' } })
 
     assert.strictEqual(math1.sqrt(4), 'foo(4)')
   })

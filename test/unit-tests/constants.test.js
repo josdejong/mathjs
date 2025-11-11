@@ -23,7 +23,14 @@ import {
 
 describe('constants', function () {
   describe('number', function () {
-    const config = { number: 'number', precision: 64, relTol: 1e-12 }
+    const config = {
+      number: 'number',
+      compute: {
+        BigNumber: { precision: 64 },
+        numberApproximate: 'number',
+        defaultRelTol: 1e-12
+      }
+    }
     const BigNumber = createBigNumberClass({ config })
     const Complex = createComplexClass({ config })
     const dependencies = {
@@ -86,7 +93,14 @@ describe('constants', function () {
   })
 
   describe('bignumbers', function () {
-    const config = { number: 'BigNumber', precision: 64, relTol: 1e-12 }
+    const config = {
+      number: 'BigNumber',
+      compute: {
+        BigNumber: { precision: 64 },
+        numberApproximate: 'BigNumber',
+        defaultRelTol: 1e-12
+      }
+    }
     const BigNumber = createBigNumberClass({ config })
     const Complex = createComplexClass({ config })
     const dependencies = {

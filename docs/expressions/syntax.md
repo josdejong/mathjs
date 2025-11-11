@@ -521,20 +521,42 @@ math.evaluate('bignumber(0.1) + bignumber(0.2)') // BigNumber, 0.3
 ```
 
 The default number type of the expression parser can be changed at instantiation
-of math.js. The expression parser parses numbers as BigNumber by default:
+of math.js. To make the expression parser interpret numeric literals as
+BigNumber values:
 
 ```js
-// Configure the type of number: 'number' (default), 'BigNumber', or 'Fraction'
-math.config({number: 'BigNumber'})
+import { create, all } from 'mathjs'
+const math = create(all)
 
-// all numbers are parsed as BigNumber
-math.evaluate('0.1 + 0.2')  // BigNumber, 0.3
+// Configure the type of number.
+// Supported values are 'number' (default), 'bigint', 'BigNumber', or 'Fraction'
+math.config({ number: 'BigNumber' })
+
+// all numbers are now parsed as BigNumber
+math.evaluate('0.1 + 0.2')  // BigNumber 0.3
+```
+
+Note however that some of the allowed `number` types cannot represent all
+numeric literals that might be encountered in an expression. For example, there
+is no `bigint` representation of `'2.3'`. To handle such cases, mathjs has an
+additional configuration parameter, `parse.numberFallback`. Continuing the
+above example:
+
+```
+math.config({
+  number: 'bigint',
+  parse: { numberFallback: 'Fraction' }
+})
+
+// Now intebers are parsed as bigint, and decimals as exact Fractions:
+math.evaluate('1 + 2')      // bigint 3
+math.evaluate('0.1 + 0.2')  // Fraction 3/10
 ```
 
 BigNumbers can be converted to numbers and vice versa using the functions
 `number` and `bignumber`. When converting a BigNumber to a Number, the high
-precision of the BigNumber will be lost. When a BigNumber is too large to be represented
-as Number, it will be initialized as `Infinity`.
+precision of the BigNumber will be lost. When a BigNumber is too large to be
+represented as Number, it will convert to `Infinity`.
 
 
 ### Complex numbers
@@ -713,13 +735,16 @@ parser.evaluate('c[end - 1 : -1 : 2]')    // Matrix, [8, 7, 6]
 
 With mathjs v15, matrix indexing has changed to be more consistent and predictable. In v14, using a scalar index would sometimes reduce the dimensionality of the result. In v15, if you want to preserve dimensions, use array, matrix, or range indices. If you want a scalar value, use scalar indices.
 
-To maintain the old indexing behavior without need for any code changes, use the configuration option `legacySubset`:
+To maintain the old indexing behavior without need for any code changes, use
+the configuration compatibility option `subset`:
 
 ```js
-math.config({ legacySubset: true })
+math.config({ compatibility: { subset: true } })
 ```
 
-To migrate your code, you'll have to change all matrix indexes from the old index notation to the new index notation. Basically: scalar indexes have to be wrapped in array brackets if you want an array as output. Here some examples:
+To migrate your code, you'll have to change all matrix indexes from the old
+index notation to the new index notation. Basically: scalar indexes have to
+be wrapped in array brackets if you want an array as output. Here some examples:
 
 ```js
 parser = math.parser()
