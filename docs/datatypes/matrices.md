@@ -187,26 +187,26 @@ each dimension. You can also call `size()` as a method on a Matrix.
 
 ```js
 // get the size of a scalar
-math.size(2.4)                                // Array []
-math.size(math.complex(3, 2))                 // Array []
-math.size(math.unit('5.3 mm'))                // Array []
+math.size(2.4)                                // Array, []
+math.size(math.complex(3, 2))                 // Array, []
+math.size(math.unit('5.3 mm'))                // Array, []
 
 // get the size of a one-dimensional matrix (a vector) and a string
-math.size([0, 1, 2, 3])                       // Array [4]
-math.size('hello world')                      // Array [11]
+math.size([0, 1, 2, 3])                       // Array, [4]
+math.size('hello world')                      // Array, [11]
 
 // get the size of a two-dimensional matrix
 const a = [[0, 1, 2, 3]]                      // Array
 const b = math.matrix([[0, 1, 2], [3, 4, 5]]) // Matrix
-math.size(a)                                  // Array [1, 4]
-math.size(b)                                  // Array [2, 3]
+math.size(a)                                  // Array, [1, 4]
+math.size(b)                                  // Array, [2, 3]
 
 // matrices have a method size (always returns an Array)
-b.size()                                      // Array [2, 3]
+b.size()                                      // Array, [2, 3]
 
 // get the size of a multi-dimensional matrix
 const c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]
-math.size(c)                                  // Array [2, 2, 3]
+math.size(c)                                  // Array, [2, 2, 3]
 ```
 
 Note that the dimensions themselves do not have a meaning attached. 
