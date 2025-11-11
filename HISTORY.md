@@ -1,5 +1,9 @@
 # History
 
+# unreleased changes since 15.1.0
+
+- Docs: fix #3565, update Matrix documentation (#3591). Thanks @orelbn.
+
 # 2025-11-05, 15.1.0
 
 - Feat: implement functions `isFinite` and `isBounded` (#3554, #3553). 
