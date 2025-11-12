@@ -2,6 +2,8 @@
 
 # unreleased changes since 15.1.0
 
+- Fix: #3578 interpret empty true-expr of conditional as error (#3581).
+  Thanks @gwhitney.
 - Docs: fix #3565, update Matrix documentation (#3591). Thanks @orelbn.
 
 # 2025-11-05, 15.1.0
