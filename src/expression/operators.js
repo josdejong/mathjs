@@ -39,9 +39,9 @@ export const properties = [
       associativity: 'left',
       associativeWith: []
     },
-    // logical nor
-    'OperatorNode:nor': {
-      op: 'nor',
+    // logical nand
+    'OperatorNode:nand': {
+      op: 'nand',
       associativity: 'left',
       associativeWith: []
     }
@@ -59,9 +59,9 @@ export const properties = [
       associativity: 'left',
       associativeWith: []
     },
-    // logical nand
-    'OperatorNode:nand': {
-      op: 'nand',
+    // logical nor
+    'OperatorNode:nor': {
+      op: 'nor',
       associativity: 'left',
       associativeWith: []
     }

@@ -2370,10 +2370,13 @@ describe('parse', function () {
       })
 
       it('should respect precedence between logical nand and or', function () {
-        assert.strictEqual(parseAndEval('false nand true or true'), true)
-        assert.strictEqual(parseAndEval('false nand (true or true)'), true)
-        assert.strictEqual(parseAndEval('true or true nand false'), true)
-        assert.strictEqual(parseAndEval('(true or true) nand false'), true)
+        assert.strictEqual(parseAndEval('true nand false or true'), true)
+        assert.strictEqual(parseAndEval('true nand (false or true)'), false)
+      })
+
+      it('should respect precedence between logical nand and and', function () {
+        assert.strictEqual(parseAndEval('false and false nand true'), true)
+        assert.strictEqual(parseAndEval('false and (false nand true)'), false)
       })
 
       it('should respect precedence of conditional operator and logical or', function () {
@@ -2385,11 +2388,14 @@ describe('parse', function () {
         assert.strictEqual(node.compile().evaluate(), true)
       })
 
-      it('should respect precedence between logical and and nor', function () {
-        assert.strictEqual(parseAndEval('false and true nor true'), false)
-        assert.strictEqual(parseAndEval('false and (true nor true)'), false)
-        assert.strictEqual(parseAndEval('true nor true and false'), false)
-        assert.strictEqual(parseAndEval('(true nor true) and false'), false)
+      it('should respect precedence between logical nor and or', function () {
+        assert.strictEqual(parseAndEval('true nor false or true'), true)
+        assert.strictEqual(parseAndEval('true nor (false or true)'), false)
+      })
+
+      it('should respect precedence between logical nor and and', function () {
+        assert.strictEqual(parseAndEval('false nor true and false'), false)
+        assert.strictEqual(parseAndEval('false nor (true and false)'), true)
       })
 
       it('should respect precedence of conditional operator and logical nor', function () {
