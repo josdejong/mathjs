@@ -2,9 +2,15 @@ import { factory } from '../../utils/factory.js'
 import { gammaG, gammaNumber, gammaP } from '../../plain/number/index.js'
 
 const name = 'gamma'
-const dependencies = ['typed', 'config', 'multiplyScalar', 'pow', 'BigNumber', 'Complex']
+const dependencies = [
+  'typed', 'config', 'BigNumber', 'Complex',
+  'equalScalar', 'multiplyScalar', 'pow', 'factorial'
+]
 
-export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, pow, BigNumber, Complex }) => {
+export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, BigNumber, Complex,
+  equalScalar, multiplyScalar, pow, factorial
+}) => {
   /**
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.
@@ -31,9 +37,8 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
 
   function gammaComplex (n) {
-    if (n.im === 0) {
-      return gammaNumber(n.re)
-    }
+    // Handle the "essentially real" case
+    if (equalScalar(n.re, n.re + n.im)) return gammaNumber(n.re)
 
     // Lanczos approximation doesn't work well with real part lower than 0.5
     // So reflection formula is required
@@ -77,9 +82,8 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     Complex: gammaComplex,
     BigNumber: function (n) {
       if (n.isInteger()) {
-        return (n.isNegative() || n.isZero())
-          ? new BigNumber(Infinity)
-          : bigFactorial(n.minus(1))
+        if (n.isNegative() || n.isZero()) return new BigNumber(Infinity)
+        return factorial(n.minus(1))
       }
 
       if (!n.isFinite()) {
@@ -89,34 +93,4 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       throw new Error('Integer BigNumber expected')
     }
   })
-
-  /**
-   * Calculate factorial for a BigNumber
-   * @param {BigNumber} n
-   * @returns {BigNumber} Returns the factorial of n
-   */
-  function bigFactorial (n) {
-    if (n < 8) {
-      return new BigNumber([1, 1, 2, 6, 24, 120, 720, 5040][n])
-    }
-
-    const precision = config.precision + (Math.log(n.toNumber()) | 0)
-    const Big = BigNumber.clone({ precision })
-
-    if (n % 2 === 1) {
-      return n.times(bigFactorial(new BigNumber(n - 1)))
-    }
-
-    let p = n
-    let prod = new Big(n)
-    let sum = n.toNumber()
-
-    while (p > 2) {
-      p -= 2
-      sum += p
-      prod = prod.times(sum)
-    }
-
-    return new BigNumber(prod.toPrecision(BigNumber.precision))
-  }
 })

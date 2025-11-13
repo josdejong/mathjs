@@ -1,6 +1,7 @@
 import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 import { product } from '../../utils/product.js'
+import { factorialNumber } from '../../plain/number/index.js'
 
 const name = 'factorial'
 const dependencies = ['typed', 'isInteger', '?BigNumber', 'equalScalar']
@@ -41,7 +42,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
    */
   return typed(name, {
-    number: numFactorial,
+    number: factorialNumber,
     bigint: function (b) {
       if (b < 0n) {
         throw new RangeError('factorial requires a nonnegative argument.')
@@ -58,7 +59,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({
       if (!equalScalar(z.re, z.re + z.im)) {
         throw new RangeError('factorial requires nonnegative integer argument.')
       }
-      return numFactorial(z.re)
+      return factorialNumber(z.re)
     },
     BigNumber: function (n) {
       // When n overflows `number`, n! will overflow BigNumber
@@ -71,15 +72,6 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({
 
     'Array | Matrix': typed.referToSelf(self => n => deepMap(n, self))
   })
-
-  function numFactorial (n) {
-    if (n === Infinity) return Infinity
-    if (n < 0 || !isInteger(n)) {
-      throw new RangeError('factorial requires nonnegative integer argument.')
-    }
-    if (n > 171) return Infinity // will overflow
-    return product(1, n)
-  }
 
   /* NB: only call this with a nonnegative integer */
   function bigFactorial (n) {

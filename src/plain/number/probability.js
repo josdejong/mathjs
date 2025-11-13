@@ -3,19 +3,19 @@
 import { isInteger } from '../../utils/number.js'
 import { product } from '../../utils/product.js'
 
+export function factorialNumber (n) {
+  if (n === Infinity) return Infinity
+  if (n < 0 || !isInteger(n)) {
+    throw new RangeError('factorial requires nonnegative integer argument.')
+  }
+  if (n > 171) return Infinity // will overflow
+  return product(1, n)
+}
+
 export function gammaNumber (n) {
-  let x
-
   if (isInteger(n)) {
-    if (n <= 0) {
-      return Number.isFinite(n) ? Infinity : NaN
-    }
-
-    if (n > 171) {
-      return Infinity // Will overflow
-    }
-
-    return product(1, n - 1)
+    if (n <= 0) return Number.isFinite(n) ? Infinity : NaN
+    return factorialNumber(n - 1)
   }
 
   if (n < 0.5) {
@@ -38,7 +38,7 @@ export function gammaNumber (n) {
   }
 
   --n
-  x = gammaP[0]
+  let x = gammaP[0]
   for (let i = 1; i < gammaP.length; ++i) {
     x += gammaP[i] / (n + i)
   }
