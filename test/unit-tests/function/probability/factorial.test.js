@@ -1,5 +1,4 @@
 import assert from 'assert'
-import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const factorial = math.factorial
 
@@ -34,6 +33,19 @@ describe('factorial', function () {
     assert.deepStrictEqual(bigmath20.factorial(bigmath20.bignumber(22)), bigmath20.bignumber('1124000727777607680000'))
   })
 
+  it('should calculate the factorial of a bigint', function () {
+    assert.strictEqual(factorial(23n), 25852016738884976640000n)
+  })
+
+  it('should return factorial of integer Fraction as bigint', function () {
+    assert.strictEqual(factorial(math.fraction(24)), 620448401733239439360000n)
+  })
+
+  it('should handle complex numbers (trivially)', function () {
+    assert.throws(() => factorial(math.complex(1, 1)), RangeError)
+    assert.strictEqual(factorial(math.complex(6, 0)), 720)
+  })
+
   it('should calculate the factorial of a boolean', function () {
     assert.strictEqual(factorial(true), 1)
     assert.strictEqual(factorial(false), 1)
@@ -47,18 +59,18 @@ describe('factorial', function () {
     assert.deepStrictEqual(factorial([0, 1, 2, 3, 4, 5]), [1, 1, 2, 6, 24, 120])
   })
 
-  it('should calculate the factorial of a non-integer', function () {
-    approxEqual(factorial(1.5), 1.32934038817914)
-    approxEqual(factorial(7.5), 14034.40729348)
+  it('should throw on non-integers (use gamma)', function () {
+    assert.throws(() => factorial(1.5), RangeError)
   })
 
   it('should throw error if called with negative number', function () {
-    assert.throws(function () { factorial(-1) }, /Value must be non-negative/)
-    assert.throws(function () { factorial(-1.5) }, /Value must be non-negative/)
+    assert.throws(function () { factorial(-1) }, RangeError)
+    assert.throws(function () { factorial(-1.5) }, RangeError)
 
-    assert.throws(function () { factorial(math.bignumber(-1)) }, /Value must be non-negative/)
-    assert.throws(function () { factorial(math.bignumber(-1.5)) }, /Value must be non-negative/)
-    assert.throws(function () { factorial(math.bignumber(-Infinity)) }, /Value must be non-negative/)
+    assert.throws(function () { factorial(math.bignumber(-1)) }, RangeError)
+    assert.throws(function () { factorial(math.bignumber(-1.5)) }, RangeError)
+    assert.throws(
+      function () { factorial(math.bignumber(-Infinity)) }, RangeError)
   })
 
   it('should throw an error if called with non-integer bignumber', function () {
