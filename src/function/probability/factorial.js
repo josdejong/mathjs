@@ -22,8 +22,37 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * Compute the factorial of a value
    *
-   * Factorial only supports an integer value as argument.
+   * The factorial of _n_ (which you can write as `n!` in the expression
+   * parser) is the product of all of the positive integers less than
+   * or equal to _n_, with a special case that `0!` is 1. As such, factorial
+   * only supports a nonnegative integer value (of any datatype) as its
+   * argument, and returns a result of the same datatype, except that the
+   * factorial of an (integer) Fraction is returned as a bigint and of a
+   * (real, integer) Complex number is returned as a plain number.
+   *
    * For matrices, the function is evaluated element wise.
+   *
+   * **Variant factorials**
+   *
+   * For computing variations on the factorial, such as the "_n_ th rising
+   * factorial of _x_" equal to _x·(x+1)·...·(x+n-1)_, or the "_n_ th falling
+   * factorial of _x_" equal to _x·(x-1)·...·(x-(n-1))_, or the "double
+   * factorial of _n_" equal to _n·(n-2)·..._ (ending at 2 if _n_ is even or
+   * 1 if _n_ is odd), mathjs recommends you use the `prod` function on the
+   * arithmetic sequence of factors, generated with the `range` function.
+   * Explicitly, we have that
+   *
+   *   - nth rising factorial of x is `math.prod(math.range(x, x + n))`, or in
+   *     the expression parser (which has different conventions for specifying
+   *     ranges) `prod(x:x+n-1)`
+   *   - nth falling factorial of x is `math.prod(math.range(x, x - n, -1))` or
+   *     in the expression parser either `prod(x:-1:x-n+1)` or `prod(x-n+1:x)`.
+   *   - double factorial of n is `math.prod(math.range(n, 1, -2))` or in the
+   *     expression parser `prod(n:-2:1)`.
+   *
+   * Of course, you can for example use `prod(1:n)` in the expression parser
+   * for `n!` but the `factorial` function has a specialized implementation
+   * that is approximately twice as fast for large, high-precision values.
    *
    * Syntax:
    *
@@ -31,15 +60,17 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Examples:
    *
-   *    math.factorial(5)    // returns 120
-   *    math.factorial(3)    // returns 6
+   *    math.factorial(5)      // returns 120
+   *    const big21 = math.bignumber(21)
+   *    math.factorial(big21)  // returns BigNumber 51090942171709440000
    *
    * See also:
    *
-   *    combinations, combinationsWithRep, gamma, permutations
+   *    combinations, combinationsWithRep, gamma, permutations, prod, range
    *
-   * @param {number | BigNumber | Array | Matrix} n   An integer number
-   * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
+   * @param {number | bigint | Fraction | Complex | BigNumber | Array | Matrix} n   An integer number or matrix thereof
+   * @return {number | bigint | BigNumber | Array | Matrix}
+   *     The (possibly elementwise)factorial of `n`
    */
   return typed(name, {
     number: factorialNumber,
