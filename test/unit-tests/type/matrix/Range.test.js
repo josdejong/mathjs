@@ -63,17 +63,19 @@ describe('range', function () {
   })
 
   describe('parse', function () {
-    it('should create a range from a string', function () {
+    it('should create a range from a string [deprecated]', function () {
+      Range.parseMethodMustWarn = false // suppress deprecation warning
+
       let r = Range.parse('10:-1:4')
-      assert.deepStrictEqual(r.toArray(), [10, 9, 8, 7, 6, 5, 4])
-      assert.deepStrictEqual(r.size(), [7])
+      assert.deepStrictEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
+      assert.deepStrictEqual(r.size(), [6])
 
       r = Range.parse('2 : 6')
-      assert.deepStrictEqual(r.toArray(), [2, 3, 4, 5, 6])
-      assert.deepStrictEqual(r.size(), [5])
+      assert.deepStrictEqual(r.toArray(), [2, 3, 4, 5])
+      assert.deepStrictEqual(r.size(), [4])
     })
 
-    it('should return null when parsing an invalid string', function () {
+    it('should return null when parsing an invalid string [deprecated]', function () {
       assert.strictEqual(Range.parse('a:4'), null)
       assert.strictEqual(Range.parse('3'), null)
       assert.strictEqual(Range.parse(''), null)

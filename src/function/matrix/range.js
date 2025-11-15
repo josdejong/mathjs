@@ -156,9 +156,6 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   }
 
   function _strRange (str, includeEnd) {
-    if (includeEnd && Range && config.number === 'number') {
-      return Range.parse(str)
-    }
     const r = _parse(str)
     if (!r) {
       throw new SyntaxError('String "' + str + '" is no valid range')

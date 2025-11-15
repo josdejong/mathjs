@@ -319,8 +319,8 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
   Range.prototype.isRange = true
 
   /**
-   * Parse a string into a range,
-   * The string contains the start, optional step, and inclusive limit,
+   * [DEPRECATED; use `math.parse` directly] Parse a string into a range.
+   * The string contains the start, optional step, and exclusive limit,
    * separated by colons.
    * If the string does not contain a valid range, null is returned.
    * Note that currently only ordinary Javascript floating-point number
@@ -336,6 +336,13 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Range | null} range
    */
   Range.parse = function (str, limit = NaN) {
+    if (Range.parseMethodMustWarn) {
+      console.warn(
+        'Using deprecated class method Range.parse(); ' +
+        'use library function math.parse() instead.')
+      Range.parseMethodMustWarn = false
+    }
+
     if (typeof str !== 'string') {
       return null
     }
@@ -344,12 +351,12 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (last < 1 || last > 2) return null
     const from = args[0].length === 0 ? 0 : parseFloat(args[0])
     if (isNaN(from)) return null
-    const to = args[last].length === 0 ? limit : parseFloat(args[last])
+    const til = args[last].length === 0 ? limit : parseFloat(args[last])
     if (isNaN(last)) return null
-    if (last === 1) return new Range({ from, to })
+    if (last === 1) return new Range({ from, til })
     const by = parseFloat(args[1])
     if (isNaN(by)) return null
-    return new Range({ from, by, to })
+    return new Range({ from, by, til })
   }
   // inject Range.parse into parent class for use by all Matrix implementations
   Matrix.parseRange = Range.parse
@@ -835,6 +842,8 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
     return new Range(spec)
   }
+
+  Range.parseMethodMustWarn = true
 
   return Range
 }, { isClass: true })
