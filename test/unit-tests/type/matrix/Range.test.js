@@ -160,6 +160,14 @@ describe('range', function () {
     })
   })
 
+  describe('immutable', function () {
+    it('should not allow property changes', function () {
+      const r1 = new Range(0, 10, 2)
+      assert.throws(() => { r1.start = 2 }, TypeError)
+      assert.throws(() => { r1.for = 3 }, TypeError)
+    })
+  })
+
   describe('clone', function () {
     it('should clone a Range', function () {
       const r1 = new Range(0, 10, 2)
@@ -167,18 +175,6 @@ describe('range', function () {
 
       assert.deepStrictEqual(r1, r2)
       assert.notStrictEqual(r1, r2)
-
-      // changes in r1 should not affect r2
-      r1.start = 2
-      r1.end = 8
-      r1.step = 1
-
-      assert.strictEqual(r1.start, 2)
-      assert.strictEqual(r1.end, 8)
-      assert.strictEqual(r1.step, 1)
-      assert.strictEqual(r2.start, 0)
-      assert.strictEqual(r2.end, 10)
-      assert.strictEqual(r2.step, 2)
     })
   })
 
@@ -258,10 +254,10 @@ describe('range', function () {
   it('toJSON', function () {
     assert.deepStrictEqual(
       new Range(2, 4).toJSON(),
-      { mathjs: 'Range', from: 2, to: 3, by: 1, for: 2, til: 4 })
+      { mathjs: 'Range', start: 2, step: 1, length: 2 })
     assert.deepStrictEqual(
       new Range(0, 10, 2).toJSON(),
-      { mathjs: 'Range', from: 0, to: 8, by: 2, for: 5, til: 10 })
+      { mathjs: 'Range', start: 0, step: 2, length: 5 })
   })
 
   it('fromJSON', function () {

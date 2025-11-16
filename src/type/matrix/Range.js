@@ -28,24 +28,42 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
   floor, equal, smallerEq, isZero, isBounded,
   number, numeric, format
 }) => {
-  // Helpers for constructor
-  const attrs = 'from,til,by,for,to'.split(',')
+  // Helpers for constructor; note the canonical attributes correspond positionally
+  // two-to-one with the first list of attributes that are available for external use
+  const attrs = 'start,from,end,til,step,by,length,for,last,to'.split(',')
+  const canonicalAttrs = '_first,_excLim,_by,_length,_last'.split(',')
+  const enoughAttrs = ['start', 'step', 'length'] // determine range uniquely
   function isAttrs (thing) {
     if (!thing) return false
     if (typeof thing !== 'object') return false
     for (const key in thing) if (!attrs.includes(key)) return false
     return true
   }
+  function canonicalizeInto (dest, src) {
+    for (let cann = 0; cann < canonicalAttrs.length; ++cann) {
+      const inattr1 = attrs[2 * cann]
+      const inattr2 = attrs[2 * cann + 1]
+      const hasattr1 = inattr1 in src
+      const hasattr2 = inattr2 in src
+      if (hasattr1 && hasattr2) {
+        throw new SyntaxError(
+          `Must not specify both synonyms ${inattr1} and ${inattr2} of Range`)
+      }
+      if (!hasattr1 && !hasattr2) continue
+      const inattr = hasattr1 ? inattr1 : inattr2
+      dest[canonicalAttrs[cann]] = src[inattr]
+    }
+  }
   function getBdSegments (attributes) {
     let bound = null
-    let segments = attributes.for
-    if ('to' in attributes) {
-      bound = attributes.to
+    let segments = attributes._length
+    if ('_last' in attributes) {
+      bound = attributes._last
       segments -= 1
-    } else bound = attributes.til
+    } else bound = attributes._excLim
     return [bound, segments]
   }
-  // More optimizes operator functions, see above.
+  // More optimized operator functions, see above.
   const toBigNumber = n => new BigNumber(n)
   const toFraction = n => new Fraction(n)
   const toComplex = n => new Complex(n)
@@ -67,59 +85,67 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * but generated as needed. As a consequence, attempts to alter individual
    * entries of a Range will throw an error.
    *
-   * Every range has the following attributes:
-   *   * from: the first element of the Range (the value `a` above).
-   *   * by: the step or common difference of the Range (the value `d` above).
-   *   * for: the number of elements in the Range, or one more than the
-   *     largest value of `s` above. Equal to the length of the Range. Note
-   *     that `for` may be Infinity, so that a Range can represent an unending
-   *     arithmetic progression.
+   * Every Range has several attributes that determine its entries. Once
+   * constructed, these attributes cannot be changed; they are read-only.
+   * Moreover, to allow different terminology that may be clearer in
+   * different uses of this class, each attribute can be specified (at
+   * construction time) or read (at any later time) via either of two
+   * synonymous property names, separated by a vertical bar in the lists below.
+   * Note that it is perfectly OK to specify an attribute using one of its
+   * two names and read it later using the other.
    *
-   * In addition, a Range may have one or both of the following attributes
-   * and will have at least one of them if it has finitely many elements.
-   *   * to: the inclusive final limit of the Range. This value must be
+   * Every Range has these attributes:
+   *   * start|from: the first element of the Range (the value `a` above).
+   *   * step|by: the step or common difference of the Range (the value
+   *     `d` above).
+   *   * length|for: the number of elements in the Range, or one more than the
+   *     largest value of `s` above. Note that this attribute may be Infinity,
+   *     so that a Range can represent an unending arithmetic progression.
+   *
+   * In addition, a Range may have one or both of the following attributes:
+   *   * last|to: the inclusive final limit of the Range. This value must be
    *     of the form `a + td` for some number `t`, in which case the Range
    *     consists of `a + sd` for all nonnegative integers `s ≤ t`.
-   *   * til: an exclusive limit of the Range. This value must be of the
+   *   * end|til: an exclusive limit of the Range. This value must be of the
    *     form `a + ud` for some number `u`, in which case the Range consists
    *     of `a + sd` for all nonnegative integers `s < u`.
    *
-   * There is a consistency relation, in that if the `to` value is the `from`
-   * value plus t times the `by` value, then the `for` value must be the floor
-   * of t plus one. Similarly, if `til` is `from` plus u times `by`, then
-   * `for` must be the ceiling of u. Note the `by` value can only be zero if
-   * `for` is 0, 1, or infinite. Every element in such a range is equal to
-   * the `from` value.
+   * There is a consistency relation, in that if the last value is the start
+   * value plus _t_ times the step value, then the length must be the floor
+   * of _t_ plus one. Similarly, if the end value is the start value plus _u_
+   * times the step, then the length must be the ceiling of u. If the step
+   * of a Range is zero, then it generally does not have an end or last value
+   * to avoid breaking this consistency relation.
    *
    * A Range can be constructed from a plain object with any of the above
    * attributes, presuming they are consistent. In addition, for convenience
    * and backward compatibility, the first constructor argument (if any) that
-   * is not of this form gives the `from` value, the second gives the `til`
-   * value, and the third gives the `by` value.
+   * is not of this form gives the start value, the second gives the end
+   * value, and the third gives the step value.
    *
-   * Because of the consistency relation and some convenience defaults, some
-   * or even all of the attributes may be missing in the constructor. If any
-   * are missing, they are filled for you in the following order:
-   *   * by: filled in via consistency if `start`, `for`, and at least one
-   *     of `to` and `til` are specified; otherwise set to the "one" value of
-   *     the type of `to`, `til`, or `from` if specified, or the number
-   *     1 if not.
-   *   * from: filled in via consistency with `by` if `for` and at least one
-   *     of `to` and `til` are specified; otherwise set to the zero value
-   *     of the type of `to` or `til` if specified, or the number 0 if not.
-   *   * for: filled in via consistency with `from` and `by` if at least one
-   *     of `to` and `til` are specified; otherwise, set to 0.
+   * Because of the consistency relation and defaults provided for convenience,
+   * some or even all of the attributes may be missing in the constructor.
+   * If any are missing, they are deduced for you in the following order:
+   *   * step|by: filled in via consistency if start, length, and at least
+   *     one of last and end are specified; otherwise set to the "one" value of
+   *     the type of last, end, or start if specified, or the number 1 if not.
+   *   * start|from: filled in via consistency with the step if length and at
+   *     least one of last and end are specified; otherwise set to the "zero"
+   *     value of the type of last or end if specified, or the number 0 if not.
+   *   * length|for: filled in via consistency with start and step if at least
+   *     one of last and end are specified; otherwise, set to 0.
    *
-   * In addition, if the `for` value is finite, the following are set
-   * whether or not they were specified, to canonicalize the attributes
-   * of the Range (which makes it easier to use and interpret):
-   *   * to: Set to `from` plus `by` times the `for` value minus one.
-   *   * til: Set to `from` plus `by` times the `for` value.
+   * In addition, if the length value is finite and the step is nonzero, the
+   * following are set whether or not they were specified, to canonicalize
+   * the attributes of the Range (which makes it easier to use and interpret):
+   *   * last|to: Set to the start value plus the step times the length
+   *     minus one.
+   *   * end|til: Set to the start value plus the step times the length.
    *
    * Note that the endpoints and increment may be specified with any type
    * handled by mathjs, but they must support the operations needed by Range
    * (addition, multiplication by an integer ordinary number, comparison).
-   * The data type of the range is the data type of `from + n*by`, where `n`
+   * The data type of the range is the data type of `start + n*step`, where `n`
    * is an integer number; the package assumes that this data type does not
    * depend on the value of `n`.
    *
@@ -131,37 +157,40 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    *     c.toArray()                           // [2, 3, 4]
    *     const b = new Range({from: 2, to: 5})
    *     b.toArray()                           // [2, 3, 4, 5]
+   *     new Range({start: 2, end: 5})         // [2, 3, 4]
    *
    *     const d = new Range(2, -2, -1)
    *     d.toArray()                           // [2, 1, 0, -1]
-   *     const d2 = new Range(2, {by: -1}, -2) // same Range
+   *     const d2 = new Range(2, {step: -1}, -2) // same Range
    *
    *     const e = new Range(3n)               // 3n, 4n, 5n, ... forever
    *     e.toArray()                           // throws
    *     const f = new Range()                 // []
    *
-   *     const g = new Range({for: 3, by: fraction(2, 3), til: 11})
+   *     const g = new Range({start: 3, step: fraction(2, 3), end: 11})
    *     g.toArray()  // [fraction(9), fraction(29, 3), fraction(31, 3)]
    *
    * @class Range
    * @constructor Range
    * @param {number} start  included lower bound
    * @param {number} [step] step size, default value is 1
-   * @param {number} end    included upper bound
+   * @param {number} end    excluded upper bound
    */
   function Range (...specs) {
     if (!(this instanceof Range)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
     const attributes = {}
+    // Read the first object supplying attributes, if any
     for (const spec of specs) {
       if (isAttrs(spec)) {
-        Object.assign(attributes, spec)
+        canonicalizeInto(attributes, spec)
         break
       }
     }
     let role = 0
     let attrCount = 0
+    // Now interpret the positional arguments, ignoring one attributes object
     for (const spec of specs) {
       if (isAttrs(spec)) {
         attrCount += 1
@@ -171,12 +200,16 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
       } else {
         if (role === 3) {
           throw new Error(
-            'Only from, til, and by allowed as arguments of Range constructor')
+            'Only start, end, and step allowed as positional arguments ' +
+            'of Range constructor')
         }
-        const key = attrs[role]
+        const key = canonicalAttrs[role]
         if (key in attributes) {
+          const inattr1 = attrs[2 * role]
+          const inattr2 = attrs[2 * role + 1]
           throw new Error(
-            `May not specify Range attribute "${key}" via key and argument.`)
+            `May not specify Range attribute "${inattr1}|${inattr2}" ` +
+            'via key and argument.')
         }
         attributes[key] = spec
         role += 1
@@ -185,40 +218,42 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // OK, we have extracted all of the specified attributes. Now fill in
     // the rest/canonicalize them as specified.
-    if ('for' in attributes) {
-      attributes.for = number(attributes.for)
+    if ('_length' in attributes) {
+      attributes._length = number(attributes._length)
     }
-    if (attributes.by === undefined || attributes.by === null) {
-      const prereqs = 'from' in attributes && 'for' in attributes
-      if (prereqs && ('to' in attributes || 'til' in attributes)) {
+    if (attributes._by === undefined || attributes._by === null) {
+      const prereqs = '_first' in attributes && '_length' in attributes
+      if (prereqs && ('_last' in attributes || '_excLim' in attributes)) {
         const [bound, segments] = getBdSegments(attributes)
-        if (segments === 0) attributes.by = subtract(attributes.from, bound)
+        if (segments === 0) attributes._by = subtract(attributes._first, bound)
         else {
-          const span = subtract(bound, attributes.from)
+          const span = subtract(bound, attributes._first)
           // if the span is computed in bigints, we want a bigint increment
           let bigi = isBigInt(span)
           bigi ||= isMatrix(span) && span.datatype() === 'bigint'
           bigi ||= Array.isArray(span) && getArrayDataType(span) === 'bigint'
           const denominator = bigi ? BigInt(segments) : segments
-          attributes.by = divide(span, denominator)
+          attributes._by = divide(span, denominator)
         }
-      } else if ('to' in attributes) {
-        attributes.by = one(attributes.to)
-      } else if ('til' in attributes) {
-        attributes.by = one(attributes.til)
-      } else if ('from' in attributes) {
-        attributes.by = one(attributes.from)
-      } else attributes.by = 1
-    } else if (!isBounded(attributes.by)) {
+      } else if ('_last' in attributes) {
+        attributes._by = one(attributes._last)
+      } else if ('_excLim' in attributes) {
+        attributes._by = one(attributes._excLim)
+      } else if ('_first' in attributes) {
+        attributes._by = one(attributes._first)
+      } else attributes._by = 1
+    } else if (!isBounded(attributes._by)) {
       throw new RangeError('A Range must have a finite increment')
     }
-    // now that we have the increment b, we can choose the multiplication
-    // operation. For n an integer JavaScript number, we want n*b to be
-    // the sum of n copies of b. This relation is true for most types b can
-    // have with mathjs multiply, but not with bigint (because e.g. 1.657 * 3n
-    // should be 4.971, so we make it always number, not bigint).
-    this.times = typed.find(multiply, ['number', typeOf(attributes.by)])
-    const incr = attributes.by
+    // Now that we have the increment b, we can choose the multiplication
+    // operation. For n an integer JavaScript number, we want n*b to be the sum
+    // of n copies of b. If we simply use mathjs multiply, this property will
+    // hold for most types b might have, but not for bigint (because e.g.
+    // 1.657 * 3n should be 4.971, mathjs makes that combination always return
+    // number, not bigint). So we need to take care in choosing what function
+    // we will use to multiply:
+    this.times = typed.find(multiply, ['number', typeOf(attributes._by)])
+    const incr = attributes._by
     // Special cases for times (for speedup when increment is 1)
     if (!isUnit(incr) && equal(incr, 1)) {
       if (isNumber(incr)) this.times = identity
@@ -234,78 +269,97 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     } else if (Array.isArray(incr) && getArrayDataType(incr) === 'bigint') {
       this.times = arrayByBigint
     }
-    if (attributes.from === undefined || attributes.from === null) {
-      if ('for' in attributes && ('to' in attributes || 'til' in attributes)) {
+    if (attributes._first === undefined || attributes._first === null) {
+      if ('_length' in attributes &&
+        ('_last' in attributes || '_excLim' in attributes)
+      ) {
         const [bound, segments] = getBdSegments(attributes)
-        attributes.from = subtract(bound, this.times(segments, attributes.by))
-      } else if ('to' in attributes) {
-        attributes.from = zero(attributes.to)
-      } else if ('til' in attributes) {
-        attributes.from = zero(attributes.til)
-      } else attributes.from = 0
+        attributes._first = subtract(
+          bound, this.times(segments, attributes._by))
+      } else if ('_last' in attributes) {
+        attributes._first = zero(attributes._last)
+      } else if ('_excLim' in attributes) {
+        attributes._first = zero(attributes._excLim)
+      } else attributes._first = zero(attributes._by) // definitely have _by now
     }
-    if (!isBounded(attributes.from)) {
+    if (!isBounded(attributes._first)) {
       throw new RangeError('A Range must start on a finite value')
     }
 
-    if (attributes.for === undefined || attributes.for === null) {
-      if ('to' in attributes) {
-        if (!isBounded(attributes.to)) attributes.for = Infinity
+    if (attributes._length === undefined || attributes._length === null) {
+      if ('_last' in attributes) {
+        if (!isBounded(attributes._last)) attributes._length = Infinity
         else {
           const rawFor = scalarDivide(
-            subtract(attributes.to, attributes.from), attributes.by)
+            subtract(attributes._last, attributes._first), attributes._by)
           if (rawFor === undefined) {
-            let message = `No scalar multiple of ${attributes.by} takes `
-            message += `${attributes.from} to ${attributes.to}`
+            let message = `No scalar multiple of ${attributes._by} takes `
+            message += `${attributes._first} to ${attributes._last}`
             throw new Error(message)
           }
-          attributes.for = Math.floor(number(rawFor)) + 1
+          attributes._length = Math.floor(number(rawFor)) + 1
         }
-      } else if ('til' in attributes) {
-        if (!isBounded(attributes.til)) attributes.for = Infinity
+      } else if ('_excLim' in attributes) {
+        if (!isBounded(attributes._excLim)) attributes._excLim = Infinity
         else {
           const rawFor = scalarDivide(
-            subtract(attributes.til, attributes.from), attributes.by)
+            subtract(attributes._excLim, attributes._first), attributes._by)
           if (rawFor === undefined) {
-            let message = `No scalar multiple of ${attributes.by} takes `
-            message += `${attributes.from} to ${attributes.til}`
+            let message = `No scalar multiple of ${attributes._by} takes `
+            message += `${attributes._first} to ${attributes._excLim}`
             throw new Error(message)
           }
-          attributes.for = Math.ceil(number(rawFor))
+          attributes._length = Math.ceil(number(rawFor))
         }
-      } else attributes.for = 0
-      if (attributes.for < 0) attributes.for = 0
+      } else attributes._length = 0
+      if (attributes._length < 0) attributes._length = 0
     }
-    if (Number.isFinite(attributes.for)) {
-      attributes.for = Math.floor(attributes.for)
+    if (Number.isFinite(attributes._length)) {
+      attributes._length = Math.floor(attributes._length)
       // canonicalize limits
-      attributes.to =
-        add(attributes.from, this.times(attributes.for - 1, attributes.by))
-      attributes.til =
-        add(attributes.from, this.times(attributes.for, attributes.by))
+      if (isZero(attributes._by)) {
+        // We certainly know the last entry:
+        attributes._last = attributes._first
+        // But there is no way to have an exclusive limit unless the
+        // length is zero
+        attributes._excLim =
+          attributes._length === 0 ? attributes.first : undefined
+      } else {
+        attributes._last = add(
+          attributes._first, this.times(attributes._length - 1, attributes._by))
+        attributes._excLim = add(
+          attributes._first, this.times(attributes._length, attributes._by))
+      }
+    } else {
+      attributes._last = undefined
+      attributes._excLim = undefined
     }
 
-    Object.assign(this, attributes)
-    // Canonicalize the type of from and by:
-    this.from = add(this.from, this.times(0, this.by))
-    this.by = this.times(1, this.by)
+    // Canonicalize the type of _first to match all the other values:
+    attributes._first = add(attributes._first, this.times(0, attributes._by))
 
-    // for backwards compatibility, some clients may use the
-    // following properties:
-    this.start = this.from
-    this.step = this.by
-    this.end = this.til
-
-    // set up data type and operations
-
-    this.plus = typed.find(add, [typeOf(this.from), typeOf(this.by)])
-    const subsize = size(this.from)
+    // set up data type and remaining operations
+    this.plus = typed.find(
+      add, [typeOf(attributes._first), typeOf(this.times(1, attributes._by))])
+    const subsize = size(attributes._first)
     this.subcollection = !!subsize.length
     if (this.subcollection) {
-      this._datatype = getMatrixDataType(this.from)
-    } else this._datatype = typeOf(this.from)
+      this._datatype = getMatrixDataType(attributes._first)
+    } else this._datatype = typeOf(attributes._first)
 
-    this._size = [this.for, ...subsize]
+    this._size = [attributes._length, ...subsize]
+
+    // finally, set up the read-only properties:
+    Object.assign(this, attributes)
+    for (let cann = 0; cann < canonicalAttrs.length; ++cann) {
+      const canAttr = canonicalAttrs[cann]
+      const value = attributes[canAttr]
+      Object.defineProperty(this, canAttr, { value })
+      for (let option = 0; option < 2; ++option) {
+        const exAttr = attrs[2 * cann + option]
+        Object.defineProperty(this, exAttr, { value })
+      }
+    }
   }
 
   Range.prototype = new Matrix()
@@ -446,7 +500,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   Range.prototype.clone = function () {
     const spec = {}
-    for (const key of attrs) spec[key] = this[key]
+    for (const key of enoughAttrs) spec[key] = this[key]
     return new Range(spec)
   }
 
@@ -808,7 +862,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   Range.prototype.toJSON = function () {
     const json = { mathjs: 'Range' }
-    for (const key of attrs) {
+    for (const key of enoughAttrs) {
       const attr = this[key]
       if (attr === undefined || attr === null) continue
       if (typeof attr === 'object' && 'toJSON' in attr) {
@@ -827,12 +881,6 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   Range.fromJSON = function (json) {
     const spec = {}
-    // backwards compatibility
-    if (typeof json === 'object') {
-      if ('start' in json) spec.from = json.start
-      if ('end' in json) spec.til = json.end
-      if ('step' in json) spec.by = json.step
-    }
     for (const key of attrs) {
       const item = json[key]
       if (item === undefined || item === null) continue
