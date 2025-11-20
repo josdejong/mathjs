@@ -2,7 +2,7 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'zero'
 const dependencies = [
-  'typed', '?BigNumber', '?Complex', '?Fraction', '?unit', 'size', 'zeros'
+  'typed', '?BigNumber', '?Complex', '?Fraction', '?unit'
 ]
 
 export const createZeroNumber = /* #__PURE__ */ factory(
@@ -11,7 +11,7 @@ export const createZeroNumber = /* #__PURE__ */ factory(
   })
 
 export const createZero = /* #__PURE__ */ factory(name, dependencies, ({
-  typed, BigNumber, Complex, Fraction, unit, size, zeros
+  typed, BigNumber, Complex, Fraction, unit
 }) => {
   /**
    * Return the additive identity of the same type as the argument.
@@ -45,7 +45,11 @@ export const createZero = /* #__PURE__ */ factory(name, dependencies, ({
       if (u.value === undefined || u.value === null) return unit(0)
       return unit(self(u.value))
     }),
-    Array: A => zeros(size(A)).valueOf(),
-    Matrix: M => zeros(size(M))
+    Array: typed.referToSelf(self => A => _zeroArray(A, self)),
+    Matrix: typed.referToSelf(self => M => M.create(_zeroArray(M.valueOf(), self)))
   })
+
+  function _zeroArray (A, zeroer) {
+    return A.map(elt => zeroer(elt))
+  }
 })

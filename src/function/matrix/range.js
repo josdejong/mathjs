@@ -1,5 +1,5 @@
 import { factory } from '../../utils/factory.js'
-import { noBignumber } from '../../utils/noop.js'
+import { parseRange } from '../../utils/collection.js'
 
 const name = 'range'
 export const dependencies = ['typed', 'config', '?Range', '?matrix', '?bignumber', 'equal', 'smaller', 'smallerEq', 'larger', 'largerEq', 'add', 'isZero', 'isPositive']
@@ -58,138 +58,62 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @param {*} args   Parameters describing the range's `start`, `end`, and optional `step`.
    * @return {Array | Matrix} range
    */
+  const MathType = 'number|bigint|BigNumber|Fraction|Unit|Array|Matrix'
+  // Is anything else needed on that list?
   return typed(name, {
     // TODO: simplify signatures when typed-function supports default values and optional arguments
 
-    string: _strRange,
-    'string, boolean': _strRange,
+    // string arguments just get broken up and passed back to range:
+    string: typed.referToSelf(
+      self => str => _redispatchStrings(self, str, false)),
+    'string, boolean': typed.referToSelf(
+      self => (str, includeEnd) => _redispatchStrings(self, str, includeEnd)),
 
     number: function (oops) {
       throw new TypeError(`Too few arguments to function range(): ${oops}`)
     },
 
     boolean: function (oops) {
-      throw new TypeError(`Unexpected type of argument 1 to function range(): ${oops}, number|bigint|BigNumber|Fraction`)
+      throw new TypeError(
+        'Unexpected type of argument 1 to function range(): ' +
+        `${oops}, number|bigint|BigNumber|Fraction`)
     },
 
-    'number, number': function (start, end) {
-      return _out(_range(start, end, 1, false))
-    },
-    'number, number, number': function (start, end, step) {
-      return _out(_range(start, end, step, false))
-    },
-    'number, number, boolean': function (start, end, includeEnd) {
-      return _out(_range(start, end, 1, includeEnd))
-    },
-    'number, number, number, boolean': function (start, end, step, includeEnd) {
-      return _out(_range(start, end, step, includeEnd))
-    },
-
-    // Handle bigints; if either limit is bigint, range should be too
-    'bigint, bigint|number': function (start, end) {
-      return _out(_range(start, end, 1n, false))
-    },
-    'number, bigint': function (start, end) {
-      return _out(_range(BigInt(start), end, 1n, false))
-    },
-    'bigint, bigint|number, bigint|number': function (start, end, step) {
-      return _out(_range(start, end, BigInt(step), false))
-    },
-    'number, bigint, bigint|number': function (start, end, step) {
-      return _out(_range(BigInt(start), end, BigInt(step), false))
-    },
-    'bigint, bigint|number, boolean': function (start, end, includeEnd) {
-      return _out(_range(start, end, 1n, includeEnd))
-    },
-    'number, bigint, boolean': function (start, end, includeEnd) {
-      return _out(_range(BigInt(start), end, 1n, includeEnd))
-    },
-    'bigint, bigint|number, bigint|number, boolean': function (start, end, step, includeEnd) {
-      return _out(_range(start, end, BigInt(step), includeEnd))
-    },
-    'number, bigint, bigint|number, boolean': function (start, end, step, includeEnd) {
-      return _out(_range(BigInt(start), end, BigInt(step), includeEnd))
-    },
-
-    'BigNumber, BigNumber': function (start, end) {
-      const BigNumber = start.constructor
-
-      return _out(_range(start, end, new BigNumber(1), false))
-    },
-    'BigNumber, BigNumber, BigNumber': function (start, end, step) {
-      return _out(_range(start, end, step, false))
-    },
-    'BigNumber, BigNumber, boolean': function (start, end, includeEnd) {
-      const BigNumber = start.constructor
-
-      return _out(_range(start, end, new BigNumber(1), includeEnd))
-    },
-    'BigNumber, BigNumber, BigNumber, boolean': function (start, end, step, includeEnd) {
-      return _out(_range(start, end, step, includeEnd))
-    },
-
-    'Fraction, Fraction': function (start, end) {
-      return _out(_range(start, end, 1, false))
-    },
-    'Fraction, Fraction, Fraction': function (start, end, step) {
-      return _out(_range(start, end, step, false))
-    },
-    'Fraction, Fraction, boolean': function (start, end, includeEnd) {
-      return _out(_range(start, end, 1, includeEnd))
-    },
-    'Fraction, Fraction, Fraction, boolean': function (start, end, step, includeEnd) {
-      return _out(_range(start, end, step, includeEnd))
-    },
-
-    'Unit, Unit, Unit': function (start, end, step) {
-      return _out(_range(start, end, step, false))
-    },
-    'Unit, Unit, Unit, boolean': function (start, end, step, includeEnd) {
-      return _out(_range(start, end, step, includeEnd))
-    }
-
+    [`${MathType}, ${MathType}`]: _range,
+    [`${MathType}, ${MathType}, ${MathType}`]: _range,
+    [`${MathType}, ${MathType}, boolean`]:
+      (start, end, includeEnd) => _range(start, end, undefined, includeEnd),
+    [`${MathType}, ${MathType}, ${MathType}, boolean`]: _range
   })
 
-  function _out (raw) {
-    if (!Range || config.matrix === 'Matrix') return raw
-    return raw.toArray()
-  }
-
-  function _strRange (str, includeEnd) {
-    const r = _parse(str)
-    if (!r) {
-      throw new SyntaxError('String "' + str + '" is no valid range')
+  function _redispatchStrings (fullRange, str, includeEnd) {
+    const fields = parseRange(str)
+    if (fields === null) {
+      throw new SyntaxError(`String '${str}' does not represent a range`)
     }
-
-    if (config.number === 'BigNumber') {
-      if (bignumber === undefined) {
-        noBignumber()
-      }
-
-      return _out(_range(
-        bignumber(r.start),
-        bignumber(r.end),
-        bignumber(r.step)),
-      includeEnd)
-    } else {
-      return _out(_range(r.start, r.end, r.step, includeEnd))
-    }
+    const step = fields.step || '1'
+    const start = fields.start || '0'
+    const end = fields.end || 'Infinity'
+    // let typed-function handle the strings
+    return fullRange(start, end, step, includeEnd)
   }
 
   /**
-   * Create a range with numbers or BigNumbers
-   * @param {number | BigNumber | Unit} start
-   * @param {number | BigNumber | Unit} end
-   * @param {number | BigNumber | Unit} step
+   * Create a range from start, step, end
+   * @param {MathType} start
+   * @param {MathType} end
+   * @param {MathType} step
    * @param {boolean} includeEnd
-   * @returns {Array} range
+   * @returns {Range | Array} range
    * @private
    */
-  function _range (start, end, step, includeEnd) {
+  function _range (start, end, step, includeEnd = false) {
     if (Range) {
-      if (includeEnd) return new Range({ from: start, to: end, by: step })
-      else return new Range({ from: start, til: end, by: step })
+      const range = new Range(
+        includeEnd ? { start, step, last: end } : { start, step, end })
+      return config.matrix === 'Array' ? range.toArray() : range
     }
+    // Otherwise we have to make up an Array ourselves:
     const array = []
     if (isZero(step)) throw new Error('Step must be non-zero')
     const ongoing = isPositive(step)
@@ -201,50 +125,5 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       x = add(x, step)
     }
     return array
-  }
-
-  /**
-   * Parse a string into a range,
-   * The string contains the start, optional step, and end, separated by a colon.
-   * If the string does not contain a valid range, null is returned.
-   * For example str='0:2:11'.
-   * @param {string} str
-   * @return {{start: number, end: number, step: number} | null} range Object containing properties start, end, step
-   * @private
-   */
-  function _parse (str) {
-    const args = str.split(':')
-
-    // number
-    const nums = args.map(function (arg) {
-      // use Number and not parseFloat as Number returns NaN on invalid garbage in the string
-      return Number(arg)
-    })
-
-    const invalid = nums.some(function (num) {
-      return isNaN(num)
-    })
-    if (invalid) {
-      return null
-    }
-
-    switch (nums.length) {
-      case 2:
-        return {
-          start: nums[0],
-          end: nums[1],
-          step: 1
-        }
-
-      case 3:
-        return {
-          start: nums[0],
-          end: nums[2],
-          step: nums[1]
-        }
-
-      default:
-        return null
-    }
   }
 })

@@ -4,9 +4,13 @@ import { resize } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'zeros'
-const dependencies = ['typed', 'config', 'DenseMatrix', 'SparseMatrix', 'BigNumber']
+const dependencies = [
+  'typed', 'config', 'DenseMatrix', 'SparseMatrix', 'Range', 'BigNumber'
+]
 
-export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, DenseMatrix, SparseMatrix, BigNumber }) => {
+export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, DenseMatrix, SparseMatrix, Range, BigNumber
+}) => {
   /**
    * Create a matrix filled with zeros. The created matrix can have one or
    * multiple dimensions.
@@ -26,6 +30,7 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *    math.zeros(3)                  // returns [0, 0, 0]
    *    math.zeros(3, 2)               // returns [[0, 0], [0, 0], [0, 0]]
    *    math.zeros(3, 'dense')         // returns [0, 0, 0]
+   *    math.zeros(3, 'range') // returns new math.Range({start: 0, step: 0, length: 3})
    *
    *    const A = [[1, 2, 3], [4, 5, 6]]
    *    math.zeros(math.size(A))       // returns [[0, 0, 0], [0, 0, 0]]
@@ -86,6 +91,23 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     if (format) {
       // return a matrix
+      if (format === 'range') {
+        if (size.length === 0) {
+          return new Range({ start: defaultValue, length: 0 })
+        }
+        if (size.length === 1) {
+          return new Range({
+            start: defaultValue,
+            length: size[0],
+            step: defaultValue
+          })
+        }
+        return new Range({
+          start: _zeros(size.slice(1), format),
+          length: size[0],
+          step: defaultValue
+        })
+      }
       const m = format === 'sparse' ? new SparseMatrix() : new DenseMatrix()
       if (size.length > 0) {
         return m.resize(size, defaultValue)

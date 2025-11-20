@@ -13,12 +13,17 @@ const dependencies = [
   'config',
   'round',
   'equalScalar',
-  'zeros',
-  'DenseMatrix'
+  'isZero',
+  'DenseMatrix',
+  'sparse'
 ]
 
-export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, equalScalar, zeros, DenseMatrix }) => {
-  const floor = createFloor({ typed, config, round, equalScalar, zeros, DenseMatrix })
+export const createMod = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, round, equalScalar, isZero, DenseMatrix, sparse
+}) => {
+  const floor = createFloor({
+    typed, config, round, equalScalar, isZero, DenseMatrix, sparse
+  })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })

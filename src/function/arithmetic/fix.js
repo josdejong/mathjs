@@ -4,7 +4,9 @@ import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'fix'
-const dependencies = ['typed', 'Complex', 'ceil', 'floor', 'equalScalar', 'zeros', 'DenseMatrix']
+const dependencies = [
+  'typed', 'Complex', 'ceil', 'floor', 'isZero', 'DenseMatrix', 'sparse'
+]
 
 export const createFixNumber = /* #__PURE__ */ factory(
   name, ['typed', 'ceil', 'floor'], ({ typed, ceil, floor }) => {
@@ -20,7 +22,9 @@ export const createFixNumber = /* #__PURE__ */ factory(
   }
 )
 
-export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex, matrix, ceil, floor, equalScalar, zeros, DenseMatrix }) => {
+export const createFix = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, Complex, matrix, ceil, floor, isZero, DenseMatrix, sparse
+}) => {
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
@@ -146,13 +150,15 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
         return matAlgo14xDs(new DenseMatrix(y), x, self, true).valueOf()
       }),
 
-    'number | Complex | Fraction | BigNumber, Matrix':
-      typed.referToSelf(self => (x, y) => {
-        if (equalScalar(x, 0)) return zeros(y.size(), y.storage())
-        if (y.storage() === 'dense') {
-          return matAlgo14xDs(y, x, self, true)
-        }
-        return matAlgo12xSfs(y, x, self, true)
-      })
+    'number | Complex | BigNumber | Fraction, SparseMatrix': typed.referToSelf(
+      self => (x, n) => {
+        const dense = matAlgo12xSfs(n, x, self, true)
+        if (isZero(x)) return sparse(dense)
+        return dense
+      }
+    ),
+
+    'number | Complex | BigNumber | Fraction, DenseMatrix': typed.referToSelf(
+      self => (x, n) => matAlgo14xDs(n, x, self, true))
   })
 })

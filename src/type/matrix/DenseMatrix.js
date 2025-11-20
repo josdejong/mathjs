@@ -90,6 +90,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @memberOf DenseMatrix
    * @return {string}   type information; if multiple types are found from the Matrix, it will return "mixed"
    */
+  // TODO: Shouldn't calling this update the internal _datatype?
   DenseMatrix.prototype.getDataType = function () {
     return getArrayDataType(this._data, typeOf)
   }

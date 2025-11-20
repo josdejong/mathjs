@@ -29,7 +29,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * for you. Beware, though: in the case of a 1d vector v,
    * `math.subset(v, [2, 3])` will not therefore return the elements at
    * positions 2 and 3, because passing those arguments to `index` would
-   * attempt to index the first dimension of v by and its nonexistent second
+   * attempt to index the first dimension of v by 2 and its nonexistent second
    * dimension by 3. You can call `math.subset(v, [[2, 3]])` to obtain the
    * elements at positions 2 and 3, because now the inner `[2, 3]` will be
    * interpreted as the list of positions with which to index into the first

@@ -4,7 +4,7 @@ import {
 import { factory } from '../../utils/factory.js'
 
 const name = 'index'
-const dependencies = ['Index', 'Range', 'number', 'getMatrixDataType']
+export const dependencies = ['Index', 'Range', 'number', 'getMatrixDataType']
 
 export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, ({ Index, Range, number, getMatrixDataType }) => {
   /**
@@ -36,7 +36,7 @@ export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, 
       } else if (isBigNumber(arg)) {
         arg = arg.toNumber() - 1
       } else if (typeof arg === 'string') {
-      // leave as is
+        // leave as is, will be interpreted later
       } else {
         throw new TypeError('Dimension must be an Array, Matrix, number, bigint, string, or Range')
       }
@@ -46,6 +46,8 @@ export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, 
 
     const res = new Index()
     Index.apply(res, args)
+    res.includeEnd = true
+    res.shiftPosition = 1
     return res
   }
 }, { isTransformFunction: true })

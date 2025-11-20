@@ -15,11 +15,11 @@ describe('range', function () {
   })
 
   it('should throw an error in case of invalid string', function () {
-    assert.throws(function () { range('1:2:6:4') }, /is no valid range/)
-    assert.throws(function () { range('1') }, /is no valid range/)
-    assert.throws(function () { range('1,3:4') }, /is no valid range/)
-    assert.throws(function () { range('1:2,4') }, /is no valid range/)
-    assert.throws(function () { range('1:a') }, /is no valid range/)
+    assert.throws(function () { range('1:2:6:4') }, SyntaxError)
+    assert.throws(function () { range('1') }, SyntaxError)
+    assert.throws(function () { range('1,3:4') }, /Error: Cannot convert/)
+    assert.throws(function () { range('1:2,4') }, /Error: Cannot convert/)
+    assert.throws(function () { range('1:a') }, /Error: Cannot convert/)
   })
 
   it('should create a range start:1:end if called with 2 numbers', function () {
@@ -76,11 +76,11 @@ describe('range', function () {
 
   it('should handle mixed numbers and bigints appropriately', function () {
     assert.deepStrictEqual(range(1n, 3).valueOf(), [1n, 2n])
-    assert.deepStrictEqual(range(3, 1n, -1n).valueOf(), [3n, 2n])
-    assert.deepStrictEqual(range(3n, 1, -1).valueOf(), [3n, 2n])
-    assert.deepStrictEqual(range(1, 3n, true).valueOf(), [1n, 2n, 3n])
+    assert.deepStrictEqual(range(3, 1n, -1n).valueOf(), [3, 2])
+    assert.deepStrictEqual(range(3n, 1, -1).valueOf(), [3, 2])
+    assert.deepStrictEqual(range(1, 3n, true).valueOf(), [1, 2, 3])
     assert.deepStrictEqual(range(3n, 1, -1n, true).valueOf(), [3n, 2n, 1n])
-    assert.deepStrictEqual(range(3, 1n, -1, true).valueOf(), [3n, 2n, 1n])
+    assert.deepStrictEqual(range(3, 1n, -1, true).valueOf(), [3, 2, 1])
     assert.deepStrictEqual(range(1, 5, 2n).valueOf(), [1, 3])
     assert.deepStrictEqual(range(5, 1, -2n, true).valueOf(), [5, 3, 1])
   })
@@ -101,8 +101,7 @@ describe('range', function () {
   it('should create a range with mixed numbers and bignumbers', function () {
     assert.deepStrictEqual(
       range(bignumber(1), 3).valueOf(), [bignumber(1), bignumber(2)])
-    assert.deepStrictEqual(
-      range(1, bignumber(3)).valueOf(), [bignumber(1), bignumber(2)])
+    assert.deepStrictEqual(range(1, bignumber(3)).valueOf(), [1, 2])
 
     assert.deepStrictEqual(
       range(1, bignumber(3), bignumber(1)).valueOf(),
@@ -116,25 +115,20 @@ describe('range', function () {
 
     assert.deepStrictEqual(
       range(bignumber(1), 3, 1).valueOf(), [bignumber(1), bignumber(2)])
-    assert.deepStrictEqual(
-      range(1, bignumber(3), 1).valueOf(), [bignumber(1), bignumber(2)])
+    assert.deepStrictEqual(range(1, bignumber(3), 1).valueOf(), [1, 2])
     assert.deepStrictEqual(
       range(1, 3, bignumber(1)).valueOf(), [bignumber(1), bignumber(2)])
   })
 
-  it('should parse a range with bignumbers', function () {
+  it('should interpret strings as numbers regardless', function () {
     const bigmath = math.create({ number: 'BigNumber' })
-    const bignumber = bigmath.bignumber
-    assert.deepStrictEqual(
-      bigmath.range('1:3').valueOf(), [bignumber(1), bignumber(2)])
-    assert.deepStrictEqual(
-      bigmath.range('3:-1:0').valueOf(),
-      [bignumber(3), bignumber(2), bignumber(1)])
+    assert.deepStrictEqual(bigmath.range('1:3').valueOf(), [1, 2])
+    assert.deepStrictEqual(bigmath.range('3:-1:0').valueOf(), [3, 2, 1])
   })
 
   it('should throw an error when parsing a an invalid string to a bignumber range', function () {
     const bigmath = math.create({ number: 'BigNumber' })
-    assert.throws(function () { bigmath.range('1:a') }, /is no valid range/)
+    assert.throws(function () { bigmath.range('1:a') }, /Error: Cannot convert/)
   })
 
   it('should create a range with units', function () {
@@ -232,9 +226,7 @@ describe('range', function () {
 
     it('should allow mixed number and Fraction', function () {
       const frac = math.fraction
-      assert.deepStrictEqual(
-        range(1, frac(10, 3)).valueOf(),
-        [frac(1), frac(2), frac(3)])
+      assert.deepStrictEqual(range(1, frac(10, 3)).valueOf(), [1, 2, 3])
       assert.deepStrictEqual(
         range(frac(1, 3), 3, true).valueOf(),
         [frac(1, 3), frac(4, 3), frac(7, 3)])

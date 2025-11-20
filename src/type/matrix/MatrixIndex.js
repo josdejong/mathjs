@@ -9,21 +9,28 @@ const dependencies = ['ImmutableDenseMatrix', 'getMatrixDataType']
 export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ ImmutableDenseMatrix, getMatrixDataType }) => {
   /**
    * Create an index. An Index can store ranges and sets for multiple dimensions.
-   * Matrix.get, Matrix.set, and math.subset accept an Index as input.
+   * The math.subset() function accepts an Index as input.
    *
    * Usage:
    *     const index = new Index(range1, range2, matrix1, array1, ...)
    *
    * Where each parameter can be any of:
    *     A number
-   *     A string (containing a name of an object property)
-   *     An instance of Range
    *     An Array with the Set values
    *     An Array with Booleans
-   *     A Matrix with the Set values
+   *     A Matrix with the Set values (this might often be a Range instance)
    *     A Matrix with Booleans
+   *     A string (will be interpreted as the name of an object property when
+   *         used to index an object, or converted into a Range when used
+   *         to index a Matrix/Array)
    *
-   * Note that any Ranges provided will be converted to the number type.
+   * Note that all numeric values provided will be converted to the ordinary
+   * JavaScript number type when used for indexing.
+   * Further, once an Index has been constructed, you can set the `includeEnd`
+   * property on the Index to indicate that when strings are converted to
+   * Ranges, the end should be included (rather than excluded as by default).
+   * Similarly, you can set a `shiftPosition` property that will be subtracted
+   * from the entries of Ranges constructed from strings.
    *
    * @class Index
    * @Constructor Index
@@ -37,6 +44,8 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
     this._dimensions = []
     this._sourceSize = []
     this._isScalar = true
+    this.includeEnd = false
+    this.shiftPosition = 0
 
     for (let i = 0, ii = ranges.length; i < ii; i++) {
       const arg = ranges[i]

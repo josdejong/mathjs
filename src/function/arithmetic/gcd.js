@@ -13,9 +13,10 @@ const dependencies = [
   'config',
   'round',
   'equalScalar',
-  'zeros',
+  'isZero',
   'BigNumber',
-  'DenseMatrix'
+  'DenseMatrix',
+  'sparse'
 ]
 
 const gcdTypes = 'number | BigNumber | Fraction | Matrix | Array'
@@ -25,8 +26,12 @@ function is1d (array) {
   return !array.some(element => Array.isArray(element))
 }
 
-export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, equalScalar, zeros, BigNumber, DenseMatrix }) => {
-  const mod = createMod({ typed, config, round, equalScalar, zeros, DenseMatrix })
+export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, round, equalScalar, isZero, BigNumber, DenseMatrix, sparse
+}) => {
+  const mod = createMod({
+    typed, config, round, equalScalar, isZero, DenseMatrix, sparse
+  })
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })

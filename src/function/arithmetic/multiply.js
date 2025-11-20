@@ -868,6 +868,18 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       return matAlgo14xDs(new DenseMatrix(y), x, multiplyScalar, true).valueOf()
     },
 
+    'Range, any': typed.referToSelf(self => (r, s) => r.createRange({
+      from: self(r.from, s),
+      for: r.for,
+      by: self(r.by, s)
+    })),
+
+    'any, Range': typed.referToSelf(self => (s, r) => r.createRange({
+      from: self(s, r.from),
+      for: r.for,
+      by: self(s, r.by)
+    })),
+
     'any, any': multiplyScalar,
 
     'any, any, ...any': typed.referToSelf(self => (x, y, rest) => {

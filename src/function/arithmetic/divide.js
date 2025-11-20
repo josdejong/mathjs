@@ -72,6 +72,12 @@ export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return matAlgo14xDs(new DenseMatrix(x), y, divideScalar, false).valueOf()
     },
 
+    'Range, any': typed.referToSelf(self => (r, s) => r.createRange({
+      from: self(r.from, s),
+      for: r.for,
+      by: self(r.by, s)
+    })),
+
     'any, Array | Matrix': function (x, y) {
       return multiply(x, inv(y))
     }

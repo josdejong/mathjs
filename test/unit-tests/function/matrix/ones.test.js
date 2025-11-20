@@ -44,6 +44,15 @@ describe('ones', function () {
     assert.deepStrictEqual(ones([three]), [one, one, one])
   })
 
+  it('should create a Range of all-one vectors', function () {
+    const oneRange = ones(2, 3, 'range')
+    assert.strictEqual(oneRange.length, 2)
+    assert.strictEqual(oneRange.step, 0)
+    assert.deepStrictEqual(
+      oneRange.start, new math.Range({ start: 1, step: 0, length: 3 }))
+    assert.strictEqual(oneRange.get([1, 1]), 1)
+  })
+
   it('should create a 3D matrix with ones', function () {
     const res = [
       [

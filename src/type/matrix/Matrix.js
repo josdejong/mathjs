@@ -1,4 +1,5 @@
 import { factory } from '../../utils/factory.js'
+import { parseRange } from '../../utils/collection.js'
 
 const name = 'Matrix'
 const dependencies = []
@@ -7,15 +8,19 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
   /**
    * @constructor Matrix
    *
-   * A Matrix is a wrapper around an Array. A matrix can hold a multi dimensional
-   * array. A matrix can be constructed as:
+   * A Matrix is an object representing a matrix with any number of
+   * dimensions. A matrix can be generated in math js from an Array (with
+   * nested-Array depth equal to the dimension), via:
    *
    *     let matrix = math.matrix(data)
    *
-   * Matrix contains the functions to resize, get and set values, get the size,
-   * clone the matrix and to convert the matrix to a vector, array, or scalar.
-   * Furthermore, one can iterate over the matrix using map and forEach.
-   * The internal Array of the Matrix can be accessed using the function valueOf.
+   * This Matrix interface contains the functions to resize,
+   * get and set values, get the size, clone the matrix and to convert
+   * the matrix to a vector, array, or scalar.
+   * Furthermore, one can iterate over the matrix using map and forEach and
+   * JavaScript for loops.
+   * A (nested) Array corresponding to the Matrix can be accessed using the
+   * function valueOf.
    *
    * Example usage:
    *
@@ -118,25 +123,42 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    * @return {Index}  same index with string Ranges parsed and limits filled
    */
   Matrix.parseWithinIndex = function (index, size) {
-    let hadString = false
+    let altered = false
     const ndim = index.size().length
     const newRanges = []
     for (let dim = 0; dim < ndim; ++dim) {
       let spec = index.dimension(dim)
       if (typeof spec === 'string') {
-        if (!Matrix.parseRange) {
-          throw new Error('Range has not injected its parser into Matrix')
+        const fields = parseRange(spec)
+        if (fields === null) {
+          throw new Error(`String '${spec}' does not specify a Range`)
         }
-        hadString = true
-        spec = Matrix.parseRange(spec, size[dim] - 1)
-        if (spec === null) {
-          throw new Error(
-            `Cannot index matrix with '${spec}' in dimension ${dim}`)
+        fields.step ||= '1'
+        for (const key in fields) {
+          if (fields[key] === '') continue
+          const val = Number(fields[key])
+          if (isNaN(val)) {
+            throw new SyntaxError(
+              `${key} in '${spec}' does not represent a number`)
+          }
+          fields[key] = val
         }
+        if (fields.start === '') fields.start = index.shiftPosition
+        if (fields.end === '') fields.end = size[dim] + index.shiftPosition - 1
+        fields.start -= index.shiftPosition
+        fields.end -= index
+        const attributes = index.includeEnd
+          ? { start: fields.start, last: fields.end, step: fields.step }
+          : fields
+        if (!Matrix.createRange) {
+          throw new Error('Range has not injected its constructor into Matrix')
+        }
+        altered = true
+        spec = Matrix.createRange(attributes)
       }
       newRanges.push(spec)
     }
-    if (hadString) return index.create(newRanges)
+    if (altered) return index.create(newRanges)
     return index
   }
 
@@ -190,7 +212,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    *
    * @return {Matrix}                 The reshaped matrix
    */
-  Matrix.prototype.reshape = function (size, defaultValue) {
+  Matrix.prototype.reshape = function (size) {
     // must be implemented by each of the Matrix implementations
     throw new Error('Cannot invoke reshape on a Matrix interface')
   }

@@ -176,3 +176,31 @@ export function scatter (a, j, w, x, u, mark, cindex, f, inverse, update, value)
     }
   }
 }
+
+/**
+ * Simple parser for the `start[:step]:end` notation
+ * used for ranges and the like, when the full parser is not being
+ * used. Produces a plain object with properties 'start', 'step',
+ * 'end'. The property values are returned as strings, since they may be
+ * converted into numeric values differently in different locations.
+ * Missing parts are represented by the empty string.
+ *
+ * @param {string} notation to be parsed
+ * @return {object} fields found, or null if the notation was unparseable
+ */
+export function parseRange (str) {
+  const args = str.split(':')
+  const retval = { start: args[0], step: '' }
+  switch (args.length) {
+    case 2:
+      retval.end = args[1]
+      return retval
+    case 3:
+      // Empty _middle_ part is a syntax error; only start/end can be elided
+      if (args[1] === '') return null
+      retval.step = args[1]
+      retval.end = args[2]
+      return retval
+  }
+  return null
+}

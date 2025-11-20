@@ -1,5 +1,6 @@
 import { getArrayDataType } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
+import { parseRange } from '../../utils/collection.js'
 import {
   isBigInt, isBigNumber, isCollection, isComplex, isFraction,
   isIndex, isMatrix, isNumber, isRange, isUnit
@@ -10,7 +11,7 @@ const dependencies = [
   'typed', 'typeOf', '?Index', '?BigNumber', '?Fraction', '?Complex',
   'Matrix', '?DenseMatrix', 'size', 'getMatrixDataType',
   'one', 'zero', 'add', 'subtract', 'multiply', 'divide', 'scalarDivide',
-  'floor', 'equal', 'smallerEq', 'isZero', 'isBounded',
+  'floor', 'equal', 'smallerEq', 'largerEq', 'isZero', 'isBounded',
   'number', 'numeric', 'format'
 ]
 
@@ -25,7 +26,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
   typed, typeOf, Index, BigNumber, Fraction, Complex,
   Matrix, DenseMatrix, size, getMatrixDataType,
   one, zero, add, subtract, multiply, divide, scalarDivide,
-  floor, equal, smallerEq, isZero, isBounded,
+  floor, equal, smallerEq, largerEq, isZero, isBounded,
   number, numeric, format
 }) => {
   // Helpers for constructor; note the canonical attributes correspond positionally
@@ -128,7 +129,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * If any are missing, they are deduced for you in the following order:
    *   * step|by: filled in via consistency if start, length, and at least
    *     one of last and end are specified; otherwise set to the "one" value of
-   *     the type of last, end, or start if specified, or the number 1 if not.
+   *     the type of start, last, or end if specified, or the number 1 if not.
    *   * start|from: filled in via consistency with the step if length and at
    *     least one of last and end are specified; otherwise set to the "zero"
    *     value of the type of last or end if specified, or the number 0 if not.
@@ -180,6 +181,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (!(this instanceof Range)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
+
     const attributes = {}
     // Read the first object supplying attributes, if any
     for (const spec of specs) {
@@ -235,12 +237,12 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
           const denominator = bigi ? BigInt(segments) : segments
           attributes._by = divide(span, denominator)
         }
+      } else if ('_first' in attributes) {
+        attributes._by = one(attributes._first)
       } else if ('_last' in attributes) {
         attributes._by = one(attributes._last)
       } else if ('_excLim' in attributes) {
         attributes._by = one(attributes._excLim)
-      } else if ('_first' in attributes) {
-        attributes._by = one(attributes._first)
       } else attributes._by = 1
     } else if (!isBounded(attributes._by)) {
       throw new RangeError('A Range must have a finite increment')
@@ -374,22 +376,22 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * [DEPRECATED; use `math.parse` directly] Parse a string into a range.
-   * The string contains the start, optional step, and exclusive limit,
-   * separated by colons.
+   * The string contains the start, optional step, and end, separated by colons.
    * If the string does not contain a valid range, null is returned.
    * Note that currently only ordinary Javascript floating-point number
    * items are permitted for start, step, and end in this string notation.
    * For example str='0:2:11'.
+   * The default step, if it is not specified, is 1.
    * If the string begins with a ':', 0 is filled in for the first value.
-   * An optional second argument gives the value to use for the last value
-   * if the string ends with a ':'.
+   * If it ends with a ':', Infinity is filled in for the last value.
+   * By default, the end value is excluded from the range.
    *
    * @memberof Range
    * @param {string} str
    * @param {?number} limit
    * @return {Range | null} range
    */
-  Range.parse = function (str, limit = NaN) {
+  Range.parse = function (str) {
     if (Range.parseMethodMustWarn) {
       console.warn(
         'Using deprecated class method Range.parse(); ' +
@@ -397,23 +399,24 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
       Range.parseMethodMustWarn = false
     }
 
-    if (typeof str !== 'string') {
-      return null
+    if (typeof str !== 'string') return null
+    const fields = parseRange(str)
+    if (fields === null) return null
+    if (fields.start === '') fields.start = '0'
+    if (fields.end === '') fields.end = 'Infinity'
+    if (fields.step === '') fields.step = '1'
+    for (const key in fields) {
+      const value = Number(fields[key])
+      if (isNaN(value)) return null
+      fields[key] = value
     }
-    const args = str.split(':').map(term => term.trim())
-    const last = args.length - 1
-    if (last < 1 || last > 2) return null
-    const from = args[0].length === 0 ? 0 : parseFloat(args[0])
-    if (isNaN(from)) return null
-    const til = args[last].length === 0 ? limit : parseFloat(args[last])
-    if (isNaN(last)) return null
-    if (last === 1) return new Range({ from, til })
-    const by = parseFloat(args[1])
-    if (isNaN(by)) return null
-    return new Range({ from, by, til })
+    return new Range(fields)
   }
-  // inject Range.parse into parent class for use by all Matrix implementations
-  Matrix.parseRange = Range.parse
+  // inject Range constructor into parent class,
+  // for use by all Matrix implementations
+  Matrix.createRange = function (...args) {
+    return new Range(...args)
+  }
 
   /**
    * Get the datatype of the entries of the range.
@@ -425,6 +428,19 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {string}           The datatype.
    */
   Range.prototype.datatype = function () {
+    return this._datatype
+  }
+
+  /**
+   * Get the matrix type
+   *
+   * Usage:
+   *    const matrixType = matrix.getDataType()  // retrieves the matrix type
+   *
+   * @memberOf Range
+   * @return {string}   type information
+   */
+  Range.prototype.getDataType = function () {
     return this._datatype
   }
 
@@ -515,9 +531,10 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   Range.prototype.subset = function (index, replacement, defaultValue) {
     if (replacement || defaultValue) {
-      throw new Error('Replacement of a portion of a Range is not supported')
+      throw new Error('Ranges are immutable, cannot replace entries')
     }
     if (!isIndex(index)) throw new TypeError('Invalid index')
+    index = Matrix.parseWithinIndex(index, this._size)
     const wanted = index.dimension(0)
     const sizes = index.size()
     if (isNumber(wanted)) {
@@ -649,9 +666,16 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {number | undefined} min
    */
   Range.prototype.min = function () {
-    if (!this.for) return undefined
-    if (smallerEq(this.from, this.to)) return this.from
-    return this.to
+    if (this._length === 0) return undefined
+    if (this._length === 1) return this._first
+    if (this.subcollection) {
+      throw new TypeError('Elements of sequence are collections, so unordered')
+    }
+    if (Number.isFinite(this._length)) {
+      return smallerEq(this._first, this._last) ? this._first : this._last
+    }
+    // Infinite sequence
+    return smallerEq(this._first, this.layer(1)) ? this._first : undefined
   }
 
   /**
@@ -660,9 +684,16 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {number | undefined} max
    */
   Range.prototype.max = function () {
-    if (!this.for) return undefined
-    if (smallerEq(this.from, this.to)) return this.to
-    return this.from
+    if (this._length === 0) return undefined
+    if (this._length === 1) return this._first
+    if (this.subcollection) {
+      throw new TypeError('Elements of sequence are collections, so unordered')
+    }
+    if (Number.isFinite(this._length)) {
+      return largerEq(this._first, this._last) ? this._first : this._last
+    }
+    // Infinite sequence
+    return largerEq(this._first, this.layer(1)) ? this._first : undefined
   }
 
   /**
@@ -876,7 +907,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Instantiate a Range from a JSON object
    * @memberof Range
    * @param {Object} json A JSON object structured as:
-   *                      `{"mathjs": "Range", "start": 2, "end": 4, "step": 1}`
+   *    `{"mathjs": "Range", "start": 2, "step": 1, "length": 3}`
    * @return {Range}
    */
   Range.fromJSON = function (json) {

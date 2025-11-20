@@ -14,16 +14,22 @@ export type NoLiteralType<T> = T extends number
       : T
 
 export type MathNumericType = number | BigNumber | bigint | Fraction | Complex
-export type MathScalarType = MathNumericType | Unit
-export type MathGeneric<T extends MathScalarType = MathNumericType> = T
-export type MathArray<T = MathGeneric> = T[] | Array<MathArray<T>>
-export type MathCollection<T = MathGeneric> = MathArray<T> | Matrix<T>
-export type MathType = MathScalarType | MathCollection
+type MathScalarTypeOut = MathNumericType | Unit
+type MathScalarTypeIn = MathScalarTypeOut | string | boolean
+export type MathScalarType = MathScalarTypeOut
+
+export type MathArray<T extends MathScalarTypeIn = MathScalarTypeOut> =
+  | T[]
+  | Array<MathArray<T>>
+export type MathCollection<T extends MathScalarTypeIn = MathScalarTypeOut> =
+  | MathArray<T>
+  | Matrix<T>
+export type MathType = MathScalarTypeOut | MathCollection
 export type MathExpression = string | string[] | MathCollection
 
 // add type for Matrix Callback Function and Matrix Storage Format
-export type MatrixStorageFormat = 'dense' | 'sparse'
-export type MatrixFromFunctionCallback<T extends MathScalarType> = (
+export type MatrixStorageFormat = 'dense' | 'sparse' | 'range'
+export type MatrixFromFunctionCallback<T extends MathScalarTypeOut> = (
   index: number[]
 ) => T
 
@@ -677,7 +683,8 @@ export interface MathJsInstance extends MathJsFactory {
   bignumber(
     x?: number | string | Fraction | BigNumber | bigint | Unit | boolean | null
   ): BigNumber
-  bignumber<T extends MathCollection>(x: T): T
+  bignumber(A: MathArray): MathArray<BigNumber>
+  bignumber(M: Matrix): Matrix<BigNumber>
 
   /**
    * Create a bigint, which can store integers with arbitrary precision.
@@ -815,12 +822,19 @@ export interface MathJsInstance extends MathJsFactory {
    * @param dataType The Matrix data type
    * @returns The created Matrix
    */
+  // We give the two most important types, because the type inference
+  // in the generic seems not to narrow well
   matrix(
-    data: MathCollection | string[],
+    data: MathCollection<number>,
     format?: MatrixStorageFormat,
     dataType?: string
-  ): Matrix
-  matrix<T extends MathScalarType>(
+  ): Matrix<number>
+  matrix(
+    data: MathCollection<BigNumber>,
+    format?: MatrixStorageFormat,
+    dataType?: string
+  ): Matrix<BigNumber>
+  matrix<T extends MathScalarTypeIn>(
     data: MathCollection<T>,
     format?: MatrixStorageFormat,
     dataType?: string
@@ -922,7 +936,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created unit
    */
   unit(value: MathNumericType, unit?: string): Unit
-  unit(value: MathCollection): Unit[]
+  unit(value: MathCollection<MathScalarTypeIn>): Unit[]
 
   /*************************************************************************
    * Expression functions
@@ -1129,15 +1143,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param node Tree to replace variable nodes in
    * @param scope Scope to read/write variables
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resolve(node: MathNode | string, scope?: MathScope): MathNode
-  resolve(
-    node: (MathNode | string)[],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    scope?: MathScope
-  ): MathNode[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resolve(node: Matrix, scope?: MathScope): Matrix
+  resolve(node: (MathNode | string)[], scope?: MathScope): MathNode[]
+  resolve(node: Matrix<string>, scope?: MathScope): Matrix
 
   /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -1193,7 +1201,11 @@ export interface MathJsInstance extends MathJsFactory {
   add<T extends MathType>(x: T, y: T): T
   add<T extends MathType>(x: T, y: T, ...values: T[]): T
   add(x: MathType, y: MathType): MathType
-  add(x: MathType, y: MathType, ...values: MathType[]): MathType
+  add(
+    x: MathType | string,
+    y: MathType | string,
+    ...values: (MathType | string)[]
+  ): MathType
 
   /**
    * Calculate the cubic root of a value.
@@ -1337,10 +1349,23 @@ export interface MathJsInstance extends MathJsFactory {
    *   If there is a scalar (including Complex) r such that
    *   x = r*y, returns r, otherwise undefined
    */
-  scalarDivide(x: MathScalarType, y: MathScalarType): MathScalarType | undefined
-  scalarDivide(x: MathCollection, y: MathCollection): MathScalarType | undefined
-  scalarDivide(x: MathScalarType, y: MathCollection): undefined
-  scalarDivide(x: MathCollection, y: MathScalarType): undefined
+  scalarDivide(
+    x: MathScalarTypeIn,
+    y: MathScalarTypeIn
+  ): MathScalarTypeOut | undefined
+  scalarDivide(
+    x: MathCollection<MathScalarTypeIn>,
+    y: MathCollection<MathScalarTypeIn>
+  ): MathScalarTypeOut | undefined
+  scalarDivide(
+    x: MathScalarTypeIn,
+    y: MathCollection<MathScalarTypeIn>
+  ): undefined
+  scalarDivide(
+    x: MathCollection<MathScalarTypeIn>,
+    y: MathScalarTypeOut
+  ): undefined
+
   /**
    * Multiply two matrices element wise. The function accepts both
    * matrices and scalar values.
@@ -1405,7 +1430,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param rows - a multi-dimensional number array or matrix
    */
   matrixFromRows(...rows: Matrix[]): Matrix
-  matrixFromRows<T extends MathScalarType>(
+  matrixFromRows<T extends MathScalarTypeIn>(
     ...rows: (T[] | [T][] | Matrix)[]
   ): T[][]
 
@@ -1414,7 +1439,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param cols - a multi-dimensional number array or matrix
    */
   matrixFromColumns(...cols: Matrix[]): Matrix
-  matrixFromColumns<T extends MathScalarType>(
+  matrixFromColumns<T extends MathScalarTypeIn>(
     ...cols: (T[] | [T][] | Matrix)[]
   ): T[][]
   /**
@@ -1424,32 +1449,32 @@ export interface MathJsInstance extends MathJsFactory {
    * @param format - The Matrix storage format, either 'dense' or 'sparse'
    * @param datatype - Type of the values
    */
-  matrixFromFunction<T extends MathScalarType>(
+  matrixFromFunction<T extends MathScalarTypeOut>(
     size: [number],
     fn: MatrixFromFunctionCallback<T>
   ): T[]
-  matrixFromFunction<T extends MathScalarType>(
+  matrixFromFunction<T extends MathScalarTypeOut>(
     size: [number, number],
     fn: MatrixFromFunctionCallback<T>
   ): T[][]
-  matrixFromFunction<T extends MathScalarType>(
+  matrixFromFunction<T extends MathScalarTypeOut>(
     size: number[],
     fn: MatrixFromFunctionCallback<T>
   ): MathArray<T>
   matrixFromFunction(
     size: Matrix<number>,
-    fn: MatrixFromFunctionCallback<MathScalarType>
+    fn: MatrixFromFunctionCallback<MathScalarTypeOut>
   ): Matrix
   matrixFromFunction(
     size: number[] | Matrix<number>,
-    fn: MatrixFromFunctionCallback<MathScalarType>,
+    fn: MatrixFromFunctionCallback<MathScalarTypeOut>,
     format: MatrixStorageFormat,
     datatype?: string
   ): Matrix
   matrixFromFunction(
     size: number[] | Matrix<number>,
     format: MatrixStorageFormat,
-    fn: MatrixFromFunctionCallback<MathScalarType>,
+    fn: MatrixFromFunctionCallback<MathScalarTypeOut>,
     datatype?: string
   ): Matrix
   /**
@@ -1526,14 +1551,16 @@ export interface MathJsInstance extends MathJsFactory {
   multiply<T extends Matrix>(x: T, y: MathType): Matrix
   multiply<T extends Matrix>(x: MathType, y: T): Matrix
 
-  multiply<T extends MathArray>(x: T, y: T[]): T
-  multiply<T extends MathArray>(x: T[], y: T): T
-  multiply<T extends MathArray>(x: T[], y: T[]): T[]
-  multiply<T extends MathArray>(x: T, y: T): MathScalarType
-  multiply(x: Unit, y: Unit): Unit
-  multiply(x: number, y: number): number
-  multiply(x: MathType, y: MathType, ...values: MathType[]): MathType
+  multiply<T extends MathScalarTypeOut>(x: T[], y: T[][]): T[]
+  multiply<T extends MathScalarTypeOut>(x: T[][], y: T[]): T[]
+  multiply<T extends MathScalarTypeOut>(x: T[][], y: T[][]): T[][]
+  multiply<T extends MathScalarTypeOut>(x: T, y: T): T
   multiply<T extends MathType>(x: T, y: T, ...values: T[]): T
+  multiply(
+    x: MathType | string,
+    y: MathType | string,
+    ...values: (MathType | string)[]
+  ): MathType
 
   /**
    * Calculate the norm of a number, vector or matrix. The second
@@ -2271,21 +2298,25 @@ export interface MathJsInstance extends MathJsFactory {
    * @param format The matrix storage format
    * @returns A matrix filled with ones
    */
-  ones(
-    size?: number | number[] | BigNumber | BigNumber[],
-    format?: string
-  ): MathCollection
+  ones(): MathCollection
+  ones(size: number, format?: string): MathCollection<number>
+  ones(size: BigNumber, format?: string): MathCollection<BigNumber>
+  ones(size: number[], format?: string): MathArray<number>
+  ones(size: (number | BigNumber)[], format?: string): MathArray<BigNumber>
+  ones(size: Matrix<number>, format?: string): Matrix<number>
+  ones(size: Matrix<number | BigNumber>, format?: string): Matrix<BigNumber>
   /**
    * @param m The x dimension of the matrix
    * @param n The y dimension of the matrix
    * @param format The matrix storage format
    * @returns A matrix filled with ones
    */
+  ones(m: number, n: number, format?: string): MathCollection<number>
   ones(
     m: number | BigNumber,
     n: number | BigNumber,
     format?: string
-  ): MathCollection
+  ): MathCollection<BigNumber>
   /**
    * @param m The x dimension of the matrix
    * @param n The y dimension of the matrix
@@ -2293,12 +2324,13 @@ export interface MathJsInstance extends MathJsFactory {
    * @param format The matrix storage format
    * @returns A matrix filled with ones
    */
+  ones(m: number, n: number, p: number, format?: string): MathCollection<number>
   ones(
     m: number | BigNumber,
     n: number | BigNumber,
     p: number | BigNumber,
     format?: string
-  ): MathCollection
+  ): MathCollection<BigNumber>
   /** Actually ones can take an arbitrary number of dimensions before the
    ** optional format, not sure how to write that in TypeScript
    **/
@@ -2387,7 +2419,7 @@ export interface MathJsInstance extends MathJsFactory {
   rotationMatrix<T extends MathCollection>(
     theta?: number | BigNumber | Complex | Unit,
     axis?: T,
-    format?: 'sparse' | 'dense'
+    format?: MatrixStorageFormat
   ): T
 
   /**
@@ -3002,27 +3034,37 @@ export interface MathJsInstance extends MathJsFactory {
    * @param args Multiple scalar values
    * @returns The maximum value
    */
-  max<T extends MathScalarType>(...args: T[]): T
+  // special case for common usage with two values
+  max<T extends MathScalarTypeOut, U extends MathScalarTypeOut>(
+    x: T,
+    y: U
+  ): T | U
+  max(x: string, y: MathScalarTypeIn): MathScalarTypeOut
+  max(x: MathScalarTypeIn, y: string): MathScalarTypeOut
+  max<T extends MathScalarTypeOut>(...args: T[]): T
   /**
    * @param args Multiple scalar values
    * @returns The maximum value
    */
-  max(...args: MathScalarType[]): MathScalarType
+  max(...args: MathScalarTypeIn[]): MathScalarTypeOut
+  /**
+   * @param A A single matrix
+   * @returns The maximum value
+   */
+  max<T extends MathScalarTypeOut>(A: MathCollection<T>): T
   /**
    * @param A A single matrix
    * @param dimension The maximum over the selected dimension
    * @returns The maximum value
    */
-  max<T extends MathScalarType>(
-    A: T[] | T[][],
+  max<T extends MathScalarTypeOut>(
+    A: MathCollection<T>,
     dimension?: number | BigNumber
-  ): T
-  /**
-   * @param A A single matrix
-   * @param dimension The maximum over the selected dimension
-   * @returns The maximum value
-   */
-  max(A: MathCollection, dimension?: number | BigNumber): MathScalarType
+  ): T | MathCollection<T>
+  max(
+    A: MathCollection<MathScalarTypeIn>,
+    dimension?: number | BigNumber
+  ): MathType
 
   /**
    * Compute the mean value of matrix or a list with values. In case of a
@@ -3032,27 +3074,26 @@ export interface MathJsInstance extends MathJsFactory {
    * @param args Multiple scalar values
    * @returns The mean of all values
    */
-  mean<T extends MathScalarType>(...args: T[]): T
+  mean<T extends MathScalarTypeOut>(...args: T[]): T
   /**
    * @param args Multiple scalar values
    * @returns The mean value
    */
-  mean(...args: MathScalarType[]): MathScalarType
+  mean(...args: MathScalarTypeIn[]): MathScalarTypeOut
+  /**
+   * @param A A single matrix
+   * @returns The mean value
+   */
+  mean<T extends MathScalarTypeOut>(A: MathCollection<T>): T
   /**
    * @param A A single matrix
    * @param dimension The mean over the selected dimension
    * @returns The mean value
    */
-  mean<T extends MathScalarType>(
-    A: T[] | T[][],
+  mean(
+    A: MathCollection<MathScalarTypeIn>,
     dimension?: number | BigNumber
-  ): T
-  /**
-   * @param A A single matrix
-   * @param dimension The mean over the selected dimension
-   * @returns The mean value
-   */
-  mean(A: MathCollection, dimension?: number | BigNumber): MathScalarType
+  ): MathType
 
   /**
    * Compute the median of a matrix or a list with values. The values are
@@ -3064,22 +3105,22 @@ export interface MathJsInstance extends MathJsFactory {
    * @param args Multiple scalar values
    * @returns The median value
    */
-  median<T extends MathScalarType>(...args: T[]): T
+  median<T extends MathScalarTypeOut>(...args: T[]): T
   /**
    * @param args Multiple scalar values
    * @returns The median value
    */
-  median(...args: MathScalarType[]): MathScalarType
+  median(...args: MathScalarTypeIn[]): MathScalarTypeOut
   /**
    * @param A A single matrix
    * @returns The median value
    */
-  median<T extends MathScalarType>(A: T[] | T[][]): T
+  median<T extends MathScalarTypeOut>(A: MathCollection<T>): T
   /**
    * @param A A single matrix
    * @returns The median value
    */
-  median(A: MathCollection): MathScalarType
+  median(A: MathCollection<MathScalarTypeIn>): MathScalarTypeOut
 
   /**
    * Compute the minimum value of a matrix or a list of values. In case of
@@ -3089,27 +3130,37 @@ export interface MathJsInstance extends MathJsFactory {
    * @param args multiple scalar values
    * @returns The minimum value
    */
-  min<T extends MathScalarType>(...args: T[]): T
+  // special case for common usage of two types
+  min<T extends MathScalarTypeOut, U extends MathScalarTypeOut>(
+    x: T,
+    y: U
+  ): T | U
+  min(x: string, y: MathScalarTypeIn): MathScalarTypeOut
+  min(x: MathScalarTypeIn, y: string): MathScalarTypeOut
+  min<T extends MathScalarTypeOut>(...args: T[]): T
   /**
    * @param args Multiple scalar values
    * @returns The minimum value
    */
-  min(...args: MathScalarType[]): MathScalarType
+  min(...args: MathScalarTypeIn[]): MathScalarTypeOut
+  /**
+   * @param A A single matrix
+   * @returns The minimum value
+   */
+  min<T extends MathScalarTypeOut>(A: MathCollection<T>): T
   /**
    * @param A A single matrix
    * @param dimension The minimum over the selected dimension
    * @returns The minimum value
    */
-  min<T extends MathScalarType>(
-    A: T[] | T[][],
+  min<T extends MathScalarTypeOut>(
+    A: MathCollection<T>,
     dimension?: number | BigNumber
-  ): T
-  /**
-   * @param A A single matrix
-   * @param dimension The minimum over the selected dimension
-   * @returns The minimum value
-   */
-  min(A: MathCollection, dimension?: number | BigNumber): MathScalarType
+  ): T | MathCollection<T>
+  min(
+    A: MathCollection<MathScalarTypeIn>,
+    dimension?: number | BigNumber
+  ): MathType
 
   /**
    * Computes the mode of a set of numbers or a list with values(numbers
@@ -3118,22 +3169,17 @@ export interface MathJsInstance extends MathJsFactory {
    * @param args Multiple scalar values
    * @returns The mode of all values
    */
-  mode<T extends MathScalarType>(...args: T[]): T[]
+  mode<T extends MathScalarTypeIn>(...args: T[]): T[]
   /**
    * @param args Multiple scalar values
    * @returns The mode of all values
    */
-  mode(...args: MathScalarType[]): MathScalarType[]
+  mode(...args: MathScalarTypeIn[]): MathScalarTypeIn[]
   /**
    * @param A A single matrix
    * @returns The mode value
    */
-  mode<T extends MathScalarType>(A: T[] | T[][]): T[]
-  /**
-   * @param A A single matrix
-   * @returns The mode of all values
-   */
-  mode(A: MathCollection): MathScalarType[]
+  mode<T extends MathScalarTypeIn>(A: MathCollection<T>): T[]
 
   /**
    * Compute the product of a matrix or a list with values. In case of a
@@ -3142,43 +3188,30 @@ export interface MathJsInstance extends MathJsFactory {
    * @param args Multiple scalar values
    * @returns The product of all values
    */
-  prod<T extends MathScalarType>(...args: T[]): T
+  prod<T extends MathScalarTypeOut>(...args: T[]): T
   /**
    * @param args Multiple scalar values
    * @returns The product of all values
    */
-  prod(...args: MathScalarType[]): MathScalarType
+  prod(...args: MathScalarTypeIn[]): MathScalarTypeOut
   /**
    * @param A A single matrix
    * @returns The product of all values
    */
-  prod<T extends MathScalarType>(A: T[] | T[][]): T
+  prod<T extends MathScalarTypeOut>(A: MathCollection<T>): T
   /**
    * @param A A single matrix
    * @returns The product of all values
    */
-  prod(A: MathCollection): MathScalarType
+  prod(A: MathCollection<MathScalarTypeIn>): MathScalarTypeOut
 
   /**
-   * @param A A single matrix
-   * @param probOrN prob is the order of the quantile, while N is the
-   * amount of evenly distributed steps of probabilities; only one of
-   * these options can be provided
-   * @param sorted =false is data sorted in ascending order
-   * @returns Quantile(s)
-   */
-  quantileSeq<T extends MathScalarType>(
-    A: T[] | T[][],
-    prob: number | BigNumber,
-    sorted?: boolean
-  ): T
-  /**
    * Compute the prob order quantile of a matrix or a list with values.
-   * The sequence is sorted and the middle value is returned. Supported
+   * The sequence is sorted and the qunatile value(s) are returned. Supported
    * types of sequence values are: Number, BigNumber, Unit Supported types
    * of probability are: Number, BigNumber In case of a (multi
    * dimensional) array or matrix, the prob order quantile of all elements
-   * will be calculated.
+   * will be calculated, unless the "dimension" argument is specified.
    * @param A A single matrix or array
    * @param probOrN prob is the order of the quantile, while N is the
    * amount of evenly distributed steps of probabilities; only one of
@@ -3186,11 +3219,28 @@ export interface MathJsInstance extends MathJsFactory {
    * @param sorted =false is data sorted in ascending order
    * @returns Quantile(s)
    */
-  quantileSeq(
-    A: MathCollection,
-    prob: number | BigNumber | MathArray,
-    sorted?: boolean
-  ): MathScalarType | MathArray
+  quantileSeq<T extends MathScalarTypeIn>(
+    A: MathCollection<T>,
+    probOrN: number | BigNumber,
+    dimension: number
+  ): T | MathCollection<T> // could be a cutoff or a number of quantiles
+  quantileSeq<T extends MathScalarTypeIn>(
+    A: MathCollection<T>,
+    probOrN: number | BigNumber,
+    sorted?: boolean,
+    dimension?: number
+  ): T | MathCollection<T> // could be a cutoff or a number of quantiles
+  quantileSeq<T extends MathScalarTypeIn>(
+    A: MathCollection<T>,
+    prob: MathCollection<number | BigNumber>,
+    dimension: number
+  ): MathCollection<T>
+  quantileSeq<T extends MathScalarTypeIn>(
+    A: MathCollection<T>,
+    prob: MathCollection<number | BigNumber>,
+    sorted?: boolean,
+    dimension?: number
+  ): MathCollection<T>
 
   /**
    * Compute the standard deviation of a matrix or a list with values. The
@@ -3205,12 +3255,12 @@ export interface MathJsInstance extends MathJsFactory {
    * @param args variadic argument of number to calculate standard deviation
    * @returns The standard deviation
    */
-  std<T extends MathScalarType>(...args: T[]): T
+  std<T extends MathScalarTypeOut>(...args: T[]): T
   /**
    * @param args Multiple scalar values
    * @returns The standard deviation
    */
-  std(...args: MathScalarType[]): MathScalarType
+  std(...args: MathScalarTypeIn[]): MathScalarTypeOut
   /**
    * Compute the standard deviation of a matrix or a list with values. The
    * standard deviations is defined as the square root of the variance:
@@ -3229,10 +3279,10 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The standard deviation array
    */
   std(
-    array: MathCollection,
+    array: MathCollection<MathScalarTypeIn>,
     dimension?: number,
     normalization?: 'unbiased' | 'uncorrected' | 'biased'
-  ): MathNumericType[]
+  ): MathType
   /**
    * Compute the standard deviation of a matrix or a list with values. The
    * standard deviations is defined as the square root of the variance:
@@ -3250,9 +3300,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The standard deviation
    */
   std(
-    array: MathCollection,
+    array: MathCollection<MathScalarTypeIn>,
     normalization: 'unbiased' | 'uncorrected' | 'biased'
-  ): MathNumericType
+  ): MathScalarTypeOut
 
   /**
    * Compute the sum of a matrix or a list with values. In case of a
@@ -3261,27 +3311,26 @@ export interface MathJsInstance extends MathJsFactory {
    * @param args A single matrix or multiple scalar values
    * @returns The sum of all values
    */
-  sum<T extends MathScalarType>(...args: T[]): T
+  sum<T extends MathScalarTypeOut>(...args: T[]): T
   /**
    * @param args Multiple scalar values
    * @returns The sum of all values
    */
-  sum(...args: MathScalarType[]): MathScalarType
+  sum(...args: MathScalarTypeIn[]): MathScalarTypeOut
+  /**
+   * @param A A single matrix
+   * @returns The sum of all values
+   */
+  sum<T extends MathScalarTypeOut>(A: MathCollection<T>): T
   /**
    * @param A A single matrix
    * @param dimension The sum over the selected dimension
    * @returns The sum of all values
    */
-  sum<T extends MathScalarType>(
-    A: T[] | T[][],
+  sum(
+    A: MathCollection<MathScalarTypeIn>,
     dimension?: number | BigNumber
-  ): T
-  /**
-   * @param A A single matrix
-   * @param dimension The sum over the selected dimension
-   * @returns The sum of all values
-   */
-  sum(A: MathCollection, dimension?: number | BigNumber): MathScalarType
+  ): MathType
 
   /**
    * Count the number of elements of a matrix, array or string.
@@ -3776,8 +3825,8 @@ export interface MathJsInstance extends MathJsFactory {
    * @param x Value to be tested
    * @returns Boolean | MathCollection
    */
-  isFinite(x: MathScalarType): boolean
-  isFinite(A: MathCollection): MathCollection
+  isFinite(x: MathScalarTypeIn): boolean
+  isFinite(A: MathCollection<MathScalarTypeIn>): MathCollection<boolean>
 
   /**
    * Test whether a value is an integer number. The function supports
@@ -4361,16 +4410,16 @@ export const {
   printTransformDependencies
 }: Record<string, FactoryFunctionMap>
 
-export interface Matrix<T = MathGeneric> {
+export interface Matrix<T extends MathScalarTypeIn = MathScalarTypeOut> {
   type: string
   storage(): string
   datatype(): string
-  create(data: MathArray, datatype?: string): void
+  create(data: MathArray, datatype?: string): Matrix
   density(): number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subset(index: Index, replacement?: any, defaultValue?: any): Matrix
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get(index: number[]): any
+  get(index: number[]): T
+  layer(index: number): T | Matrix<T>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   set(index: number[], value: any, defaultValue?: number | string): Matrix
   resize(size: MathCollection, defaultValue?: number | string): Matrix
@@ -4378,12 +4427,11 @@ export interface Matrix<T = MathGeneric> {
   size(): number[]
   map(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (a: any, b: number[], c: Matrix) => any,
+    callback: (a: T, b: number[], c: Matrix) => any,
     skipZeros?: boolean
   ): Matrix
   forEach(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (a: any, b: number[], c: Matrix) => void,
+    callback: (a: T, b: number[], c: Matrix) => void,
     skipZeros?: boolean
   ): void
   toArray(): MathArray<T>
@@ -4395,9 +4443,6 @@ export interface Matrix<T = MathGeneric> {
   toString(): string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   toJSON(): any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  diagonal(k?: number | BigNumber): any[]
-  swapRows(i: number, j: number): Matrix<T>
 }
 
 export interface MatrixCtor {
@@ -5042,7 +5087,7 @@ export interface MathJsChain<TValue> {
    */
   matrix(
     this: MathJsChain<MathCollection>,
-    format?: 'sparse' | 'dense',
+    format?: MatrixStorageFormat,
     dataType?: string
   ): MathJsChain<Matrix>
 
@@ -5550,20 +5595,20 @@ export interface MathJsChain<TValue> {
    * @param y Denominator
    */
   scalarDivide(
-    this: MathJsChain<MathScalarType>,
-    y: MathScalarType
-  ): MathJsChain<MathScalarType | undefined>
+    this: MathJsChain<MathScalarTypeIn>,
+    y: MathScalarTypeIn
+  ): MathJsChain<MathScalarTypeOut | undefined>
   scalarDivide(
     this: MathJsChain<MathCollection>,
     y: MathCollection
-  ): MathJsChain<MathScalarType | undefined>
+  ): MathJsChain<MathScalarTypeOut | undefined>
   scalarDivide(
-    this: MathJsChain<MathScalarType>,
+    this: MathJsChain<MathScalarTypeIn>,
     y: MathCollection
   ): MathJsChain<undefined>
   scalarDivide(
     this: MathJsChain<MathCollection>,
-    y: MathScalarType
+    y: MathScalarTypeIn
   ): MathJsChain<undefined>
 
   /**
@@ -6960,7 +7005,12 @@ export interface MathJsChain<TValue> {
    * calculated.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prod(this: MathJsChain<MathType[]>): MathJsChain<any>
+  prod<T extends MathScalarTypeOut>(
+    this: MathJsChain<MathCollection<T>>
+  ): MathJsChain<T>
+  prod(
+    this: MathJsChain<MathCollection<MathScalarTypeIn>>
+  ): MathJsChain<MathScalarTypeOut>
 
   /**
    * Compute the prob order quantile of a matrix or a list with values.
@@ -7433,8 +7483,10 @@ export interface MathJsChain<TValue> {
   /**
    * Test whether a value is finite, works elementwise on collections
    */
-  isFinite(this: MathJsChain<MathScalarType>): MathJsChain<boolean>
-  isFinite(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
+  isFinite(this: MathJsChain<MathScalarTypeIn>): MathJsChain<boolean>
+  isFinite(
+    this: MathJsChain<MathCollection<MathScalarTypeIn>>
+  ): MathJsChain<MathCollection<boolean>>
 
   /**
    * Test whether a value is negative: smaller than zero. The function

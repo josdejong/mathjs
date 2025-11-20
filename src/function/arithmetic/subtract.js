@@ -59,7 +59,30 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
   return typed(
     name,
     {
-      'any, any': subtractScalar
+      'any, any': subtractScalar,
+
+      'Range, Range': typed.referToSelf(self => (r, p) => {
+        if (r.for !== p.for) throw new Error('Range length mismatch')
+        return r.createRange({
+          from: self(r.from, p.from),
+          for: r.for,
+          by: self(r.by, p.by)
+        })
+      }),
+      'Range, Matrix': typed.referToSelf(
+        self => (r, m) => self(r.valueOf(), m)),
+      'Range, any': typed.referToSelf(self => (r, s) => r.createRange({
+        from: self(r.from, s),
+        for: r.for,
+        by: r.by
+      })),
+      'Matrix, Range': typed.referToSelf(
+        self => (m, r) => self(m, r.valueOf())),
+      'any, Range': typed.referToSelf(self => (s, r) => r.createRange({
+        from: self(s, r.from),
+        for: r.for,
+        by: unaryMinus(r.by)
+      }))
     },
     matrixAlgorithmSuite({
       elop: subtractScalar,
