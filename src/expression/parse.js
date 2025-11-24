@@ -1193,7 +1193,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     if (state.token === '%') {
       const previousState = Object.assign({}, state)
       getTokenSkipNewline(state)
-      if (state.preferUnaryPercentAfterPlus) {
+      if (state.preferUnaryPercentAfterPlus && (state.token === '+' || state.token === '-')) {
         node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
         return node
       }
