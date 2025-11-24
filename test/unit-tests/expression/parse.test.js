@@ -1708,12 +1708,13 @@ describe('parse', function () {
       const scope = { x: 10 }
       approxEqual(parseAndEval('x * (10% + 20%)', scope), 3)
       approxEqual(parseAndEval('(10% + 20%) * x', scope), 3)
+      approxEqual(parseAndEval('x * 10% * 20%', scope), 0.2)
     })
 
     it('should preserve semantics when grouping percentage additions explicitly', function () {
-      approxEqual(parseAndEval('50 + (20% + 10%)'), 50.3)
+      approxEqual(parseAndEval('50 + (20% + 10%)'), 65)
       const scope = { x: 100 }
-      approxEqual(parseAndEval('x + (20% + 10%)', scope), 100.3)
+      approxEqual(parseAndEval('x + (20% + 10%)', scope), 130)
     })
 
     it('should support units with percentages on the right-hand side', function () {
@@ -1728,6 +1729,11 @@ describe('parse', function () {
     it('should parse binary % with bitwise negation', function () {
       assert.strictEqual(parseAndEval('11%~1'), -1) // equivalent to 11 mod -2
       assert.strictEqual(parseAndEval('11%~-3'), 1) // equivalent to 11 mod 2
+    })
+
+    it('should interpret modulo vs percent in mixed sums symmetrically', function () {
+      approxEqual(parseAndEval('10% + 20 % 3'), 2.1)
+      approxEqual(parseAndEval('20 % 3 + 10%'), 2.2)
     })
 
     it('should parse operator mod', function () {
