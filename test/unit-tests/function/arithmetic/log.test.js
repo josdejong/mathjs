@@ -1,7 +1,7 @@
 // test log
 import assert from 'assert'
 
-import { approxDeepEqual } from '../../../../tools/approx.js'
+import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
@@ -96,9 +96,7 @@ describe('log', function () {
 
   it('should return the log of a Fraction', function () {
     approxDeepEqual(log(fraction(27, 8), fraction(9, 4)), fraction(3, 2))
-    assert.throws(() => log(fraction(27, 8), fraction(-2, 5)),
-      /Cannot implicitly convert a Fraction to BigNumber or vice versa/
-    )
+    approxEqual(log(fraction(27, 8), fraction(2, 5)), -1.32752114804928)
   })
 
   it('should handle complex number with large imaginary part', function () {

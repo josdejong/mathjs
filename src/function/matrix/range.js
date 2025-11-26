@@ -60,9 +60,9 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   const MathType = 'number|bigint|BigNumber|Fraction|Unit|Array|Matrix'
   // Is anything else needed on that list?
-  let tempDebug = false
   return typed(name, {
-    // TODO: simplify signatures when typed-function supports default values and optional arguments
+    // TODO: simplify signatures a bit futher when typed-function supports
+    // default values and optional arguments
 
     // string arguments just get broken up and passed back to range:
     string: typed.referToSelf(
@@ -96,10 +96,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     const start = fields.start || '0'
     const end = fields.end || 'Infinity'
     // let typed-function handle the strings
-    console.log('Redispatching with', start, end, step, includeEnd)
-    tempDebug = true
     const result = fullRange(start, end, step, includeEnd)
-    tempDebug = false
     return result
   }
 
@@ -113,9 +110,6 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @private
    */
   function _range (start, end, step, includeEnd = false) {
-    if (tempDebug) {
-      console.log('Arrived with', typeof start, start, typeof end, end, typeof step, step, includeEnd)
-    }
     if (Range) {
       const range = new Range(
         includeEnd ? { start, step, last: end } : { start, step, end })

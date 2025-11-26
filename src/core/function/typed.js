@@ -167,6 +167,11 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'Object', test: isObject } // order 'Object' last, it matches on other classes too
   ])
 
+  // Note the order of conversions in this list plays an important
+  // role in selecting conversions. If there is no explicit signature for
+  // type T, but there are signatures for type A and type B  and T is
+  // convertible to each of type A and type B, then the signature corresponding
+  // to the conversion that comes earlier on the below list will be preferred.
   typed.addConversions([
     {
       from: 'number',
@@ -236,23 +241,6 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         return new Fraction(x)
       }
     }, {
-      from: 'Fraction',
-      to: 'BigNumber',
-      convert: function (x) {
-        throw new TypeError('Cannot implicitly convert a Fraction to BigNumber or vice versa. ' +
-          'Use function bignumber(x) to convert to BigNumber or fraction(x) to convert to Fraction.')
-      }
-    }, {
-      from: 'Fraction',
-      to: 'Complex',
-      convert: function (x) {
-        if (!Complex) {
-          throwNoComplex(x)
-        }
-
-        return new Complex(x.valueOf(), 0)
-      }
-    }, {
       from: 'number',
       to: 'Fraction',
       convert: function (x) {
@@ -269,13 +257,29 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         return f
       }
     }, {
-      // FIXME: add conversion from Fraction to number, for example for `sqrt(fraction(1,3))`
-      //  from: 'Fraction',
-      //  to: 'number',
-      //  convert: function (x) {
-      //    return x.valueOf()
-      //  }
-      // }, {
+      from: 'Fraction',
+      to: 'number',
+      convert: function (x) {
+        return x.valueOf()
+      }
+    }, {
+      from: 'Fraction',
+      to: 'Complex',
+      convert: function (x) {
+        if (!Complex) {
+          throwNoComplex(x)
+        }
+
+        return new Complex(x.valueOf(), 0)
+      }
+    }, {
+      from: 'Fraction',
+      to: 'BigNumber',
+      convert: function (x) {
+        throw new TypeError('Cannot implicitly convert a Fraction to BigNumber or vice versa. ' +
+          'Use function bignumber(x) to convert to BigNumber or fraction(x) to convert to Fraction.')
+      }
+    }, {
       from: 'string',
       to: 'number',
       convert: function (x) {
