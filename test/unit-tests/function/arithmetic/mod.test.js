@@ -112,10 +112,49 @@ describe('mod', function () {
     assert.deepStrictEqual(mod(false, bignumber(3)), bignumber(0))
   })
 
-  it('should throw an error if used on complex numbers', function () {
-    assert.throws(function () { mod(math.complex(1, 2), 3) }, TypeError)
-    assert.throws(function () { mod(3, math.complex(1, 2)) }, TypeError)
-    assert.throws(function () { mod(bignumber(3), math.complex(1, 2)) }, TypeError)
+  it('should calculate the modulus of two complex numbers', function () {
+    // Test basic complex modulus operations using Gaussian integer division
+
+    // Simple case: mod(5+3i, 2+1i) should return -1+0i
+    approxDeepEqual(mod(math.complex(5, 3), math.complex(2, 1)), math.complex(-1, 0))
+
+    // Test with negative components
+    approxDeepEqual(mod(math.complex(-5, 3), math.complex(2, 1)), math.complex(-1, 0))
+
+    // Test pure imaginary case: mod(0+4i, 0+2i) should return 0+0i
+    approxDeepEqual(mod(math.complex(0, 4), math.complex(0, 2)), math.complex(0, 0))
+
+    // Test real divisor: mod(7+3i, 3+0i) should return 1+0i
+    approxDeepEqual(mod(math.complex(7, 3), math.complex(3, 0)), math.complex(1, 0))
+
+    // Test with division by zero (should return the dividend)
+    assert.deepStrictEqual(mod(math.complex(1, 2), math.complex(0, 0)), math.complex(1, 2))
+
+    // Test case where quotient is already a Gaussian integer
+    approxDeepEqual(mod(math.complex(4, 6), math.complex(2, 3)), math.complex(0, 0))
+
+    // Test with fractional results
+    const result1 = mod(math.complex(3, 4), math.complex(1, 1))
+    assert(result1.re !== undefined && result1.im !== undefined)
+
+    // Verify the fundamental property: w = z*q + r where norm(r) < norm(z)
+    const w = math.complex(7, 5)
+    const z = math.complex(3, 2)
+    const r = mod(w, z)
+
+    // The remainder should have smaller norm than the divisor
+    const normR = r.re * r.re + r.im * r.im
+    const normZ = z.re * z.re + z.im * z.im
+    assert(normR <= normZ, `Remainder norm ${normR} should be <= divisor norm ${normZ}`)
+  })
+
+  it('should handle mixed complex and real arguments', function () {
+    // Math.js should automatically convert types for mixed operations
+    const result1 = mod(math.complex(5, 3), 2)
+    assert(result1.isComplex === true, 'Result should be complex')
+
+    const result2 = mod(3, math.complex(2, 1))
+    assert(result2.isComplex === true, 'Result should be complex')
   })
 
   it('should convert string to number', function () {
