@@ -35,14 +35,7 @@ export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ 
         result = []
         result.push(b[0])
         for (let i = 1; i < b.length; i++) {
-          let found = false
-          for (let j = 0; j < result.length; j++) {
-            if (compareNatural(b[i], result[j]) === 0) {
-              found = true
-              break
-            }
-          }
-          if (!found) {
+          if (!result.some(item => compareNatural(b[i], item) === 0)) {
             result.push(b[i])
           }
         }
