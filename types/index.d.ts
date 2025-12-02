@@ -1816,6 +1816,24 @@ export interface MathJsInstance extends MathJsFactory {
   re(x: MathJsChain<number | Complex>): MathJsChain<number>
   re<T extends BigNumber | MathCollection>(x: MathJsChain<T>): MathJsChain<T>
 
+  /**
+   * Get the numerator of a fraction. For a fraction a/b, the function
+   * returns a. For matrices, the function is evaluated element wise.
+   * @param x A fraction or array with fractions
+   * @returns The numerator of x
+   */
+  num(x: Fraction): number
+  num<T extends MathCollection>(x: T): T
+
+  /**
+   * Get the denominator of a fraction. For a fraction a/b, the function
+   * returns b. For matrices, the function is evaluated element wise.
+   * @param x A fraction or array with fractions
+   * @returns The denominator of x
+   */
+  den(x: Fraction): number
+  den<T extends MathCollection>(x: T): T
+
   /*************************************************************************
    * Geometry functions
    ************************************************************************/
@@ -5922,6 +5940,20 @@ export interface MathJsChain<TValue> {
   re(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
   re(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
+  /**
+   * Get the numerator of a fraction. For a fraction a/b, the function
+   * returns a. For matrices, the function is evaluated element wise.
+   */
+  num(this: MathJsChain<Fraction>): MathJsChain<number>
+  num(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
+
+  /**
+   * Get the denominator of a fraction. For a fraction a/b, the function
+   * returns b. For matrices, the function is evaluated element wise.
+   */
+  den(this: MathJsChain<Fraction>): MathJsChain<number>
+  den(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
+
   /*************************************************************************
    * Geometry functions
    ************************************************************************/
@@ -7602,6 +7634,10 @@ export const {
   conj,
   im,
   re,
+
+  // fraction
+  num,
+  den,
 
   // geometry
   distance,
