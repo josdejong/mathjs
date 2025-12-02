@@ -88,6 +88,8 @@ import { subtractDocs } from './function/arithmetic/subtract.js'
 import { unaryMinusDocs } from './function/arithmetic/unaryMinus.js'
 import { unaryPlusDocs } from './function/arithmetic/unaryPlus.js'
 import { xgcdDocs } from './function/arithmetic/xgcd.js'
+import { numDocs } from './function/arithmetic/num.js'
+import { denDocs } from './function/arithmetic/den.js'
 import { bitAndDocs } from './function/bitwise/bitAnd.js'
 import { bitNotDocs } from './function/bitwise/bitNot.js'
 import { bitOrDocs } from './function/bitwise/bitOr.js'
@@ -408,6 +410,8 @@ export const embeddedDocs = {
   unaryPlus: unaryPlusDocs,
   xgcd: xgcdDocs,
   invmod: invmodDocs,
+  num: numDocs,
+  den: denDocs,
 
   // functions - bitwise
   bitAnd: bitAndDocs,
