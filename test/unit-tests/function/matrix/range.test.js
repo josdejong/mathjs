@@ -58,6 +58,16 @@ describe('range', function () {
     assert.deepStrictEqual(range('1:1:1', true).valueOf(), [1])
   })
 
+  it('should accept an object of attributes', function () {
+    const frac = math.fraction
+    assert.deepStrictEqual(range({ start: 0, last: 3 }).valueOf(), [0, 1, 2, 3])
+    assert.deepStrictEqual(
+      range({ start: 0n, end: 8n, step: 2n }).valueOf(), [0n, 2n, 4n, 6n])
+    assert.deepStrictEqual(
+      range({ start: frac(1, 2), length: 3 }).valueOf(),
+      [frac(1, 2), frac(3, 2), frac(5, 2)])
+  })
+
   it('should output an array when setting matrix==="array"', function () {
     const math2 = math.create({
       matrix: 'Array'

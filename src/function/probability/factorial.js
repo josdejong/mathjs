@@ -20,7 +20,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({
   const MAX_BIGNUMBER_FACTORIAL = 626622622402120
 
   /**
-   * Compute the factorial of a value
+   * Compute the factorial of a value.
    *
    * The factorial of _n_ (which you can write as `n!` in the expression
    * parser) is the product of all of the positive integers less than
@@ -52,7 +52,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Of course, you can for example use `prod(1:n)` in the expression parser
    * for `n!` but the `factorial` function has a specialized implementation
-   * that is approximately twice as fast for large, high-precision values.
+   * that is approximately 33% faster for large, high-precision values.
    *
    * Syntax:
    *
@@ -70,7 +70,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * @param {number | bigint | Fraction | Complex | BigNumber | Array | Matrix} n   An integer number or matrix thereof
    * @return {number | bigint | BigNumber | Array | Matrix}
-   *     The (possibly elementwise)factorial of `n`
+   *     The (possibly elementwise) factorial of `n`
    */
   return typed(name, {
     number: factorialNumber,

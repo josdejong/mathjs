@@ -2,13 +2,20 @@ import { factory } from '../../utils/factory.js'
 import { parseRange } from '../../utils/collection.js'
 
 const name = 'range'
-export const dependencies = ['typed', 'config', '?Range', '?matrix', '?bignumber', 'equal', 'smaller', 'smallerEq', 'larger', 'largerEq', 'add', 'isZero', 'isPositive']
+export const dependencies = [
+  'typed', 'config', '?Range', '?matrix', '?bignumber',
+  'smaller', 'smallerEq', 'larger', 'largerEq', 'add', 'isZero', 'isPositive'
+]
 
-export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Range, matrix, bignumber, smaller, smallerEq, larger, largerEq, add, isZero, isPositive }) => {
+export const createRange = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, Range, matrix, bignumber,
+  smaller, smallerEq, larger, largerEq, add, isZero, isPositive
+}) => {
   /**
    * Create a matrix or array containing a range of values.
    * By default, the range end is excluded. This can be customized by providing
-   * an extra parameter `includeEnd`.
+   * an extra boolean parameter `includeEnd`, or by using the attribute-object
+   * argument form instead.
    *
    * Syntax:
    *
@@ -20,6 +27,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *                                                  // end and a step size of 1.
    *     math.range(start, end, step [, includeEnd])  // Create a range with start, step,
    *                                                  // and end.
+   *     math.range({start?, end?, last?, step?, length?}) // Create a range with given attributes
    *
    * Where:
    *
@@ -33,12 +41,28 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *   Step size. Default value is 1.
    * - `includeEnd: boolean`
    *   Option to specify whether to include the end or not. False by default.
+   *   Note this parameter is not allowed when the arguments are supplied as
+   *   a plain object of attributes.
+   * - `{start?, end?, last?, step?, length?}`
+   *   A plain object of attributes with any of the indicated keys, each of
+   *   which is optional. Any unspecified keys will be filled in per the
+   *   [Range documentation](../../../docs/reference/classes/range.md). Note
+   *   in particular in this form, the `end` property always specifies an
+   *   exclusive upper bound and the `last` property specifies an inclusive
+   *   upper bound.
    *
-   * The function returns a `DenseMatrix` when the library is configured with
-   * `config = { matrix: 'Matrix' }, and returns an Array otherwise.
-   * Note that the type of the returned values is taken from the type of the
-   * provided start/end value. If only one of these is a built-in `number` type,
-   * it will be promoted to the type of the other endpoint. However, in the case
+   * The function returns a `Range` matrix object when the library is
+   * configured with `config = { matrix: 'Matrix' }, and returns an Array
+   * otherwise.
+   *
+   * Note that the type of the returned values is determined primarily by the
+   * type(s) of the provided start and step values. Generally speaking, it will
+   * be the type of the start value if the step is not specified, and the
+   * type that mathjs returns for `start + step` if both are specified. For
+   * example, `range(3, bignumber(10), bignumber(1))` will produce a range of
+   * BigNumbers since `add(3, bignumber(1))` produces a BigNumber, whereas
+   * `range(3, 10n, 1n)` will produce a range of `number` values because
+   * `add(3, 1n)` produces a number, by mathjs conversion rules. In the case
    * of Unit values, both endpoints must have compatible units, and the return
    * value will have compatible units as well.
    *
@@ -55,7 +79,8 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *     ones, zeros, size, subset
    *
-   * @param {*} args   Parameters describing the range's `start`, `end`, and optional `step`.
+   * @param {*} args   Parameters describing the range's `start`, `end`, and
+   *     optional `step`.
    * @return {Array | Matrix} range
    */
   const MathType = 'number|bigint|BigNumber|Fraction|Unit|Array|Matrix'
@@ -78,6 +103,15 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       throw new TypeError(
         'Unexpected type of argument 1 to function range(): ' +
         `${oops}, number|bigint|BigNumber|Fraction`)
+    },
+
+    Object: obj => {
+      if (!Range) {
+        if ('last' in obj) return _range(obj.start, obj.last, obj.step, true)
+        return _range(obj.start, obj.end, obj.step, false)
+      }
+      const rng = new Range(obj)
+      return config.matrix === 'Array' ? rng.toArray() : rng
     },
 
     [`${MathType}, ${MathType}`]: _range,
