@@ -3,10 +3,6 @@ export const numDocs = {
   category: 'Arithmetic',
   syntax: ['num(x)'],
   description: 'Get the numerator of a fraction.',
-  examples: [
-    'num(fraction(2, 3))',
-    'den(fraction(2, 3))',
-    'num(fraction(5, 8))'
-  ],
+  examples: ['num(fraction(2, 3))', 'num(fraction(5, 8))'],
   seealso: ['den', 'fraction']
 }

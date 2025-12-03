@@ -20,10 +20,7 @@ export const createNum = /* #__PURE__ */ factory(
      *
      * Examples:
      *
-     *    const a = math.fraction(2, 3)
-     *    math.num(a)                    // returns number 2
-     *    math.den(a)                    // returns number 3
-     *
+     *    math.num(math.fraction(2, 3))  // returns number 2
      *    math.num(math.fraction('5/8')) // returns number 5
      *
      * See also:
