@@ -53,7 +53,7 @@ function splitFactorial (m, n) {
 }
 
 function prodFactorial (n) {
-  return prod(new Range({ from: new BigNumber(1), for: n }))
+  return prod(new Range({ start: new BigNumber(1), length: n }))
 }
 
 const bench = new Bench({ time: 100, iterations: 100 })

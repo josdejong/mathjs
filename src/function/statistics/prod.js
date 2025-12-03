@@ -1,18 +1,22 @@
 import { factory } from '../../utils/factory.js'
-import { isArray, isNumber } from '../../utils/is.js'
+import { isArray, isNumber, isRange } from '../../utils/is.js'
 import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'prod'
 const dependencies = [
-  'typed', 'config', 'multiplyScalar', 'number', 'numeric', '?Index', 'Range',
+  'typed', 'config', 'multiplyScalar', 'number', 'numeric',
   'squeeze', 'size', 'subset', 'dotMultiply'
 ]
 
-const THRESHOLD = 16 // where to stop splitting and switch to direct multiply
+// Two tuning constants. For products of at least THRESHOLD terms, we split
+// rather than directly multiply. And for products of Ranges of at least
+// RANGE_THRESHOLD + 1 terms, we multiply in pairs rather than singly.
+const THRESHOLD = 16
+const RANGE_THRESHOLD = 5
 
 export const createProd = /* #__PURE__ */ factory(name, dependencies, ({
-  typed, config, multiplyScalar, number, numeric, Index, Range,
+  typed, config, multiplyScalar, number, numeric,
   squeeze, size, subset, dotMultiply
 }) => {
   /**
@@ -75,7 +79,6 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({
           collection = newColl
           sz = [sz[0]]
         }
-        if (!Index) collection = collection.valueOf()
         if (Array.isArray(collection)) {
           prod = _prodArray(collection, 0, sz[0] - 1)
         } else {
@@ -112,7 +115,11 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({
 
   /* Product of a 1d vector v from position first to last, using op */
   function _prodVector (v, first, last, op) {
-    if (last - first < THRESHOLD) {
+    const lenm1 = last - first
+    if (lenm1 < THRESHOLD) {
+      if (isRange(v) && lenm1 >= RANGE_THRESHOLD) {
+        return _prodRange(v, first, last, op)
+      }
       let prod = v.layer(first)
       for (let idx = first + 1; idx <= last; ++idx) {
         prod = op(prod, v.layer(idx))
@@ -122,6 +129,34 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({
     const cutoff = Math.floor((first + last) / 2)
     return op(
       _prodVector(v, first, cutoff, op), _prodVector(v, cutoff + 1, last, op))
+  }
+
+  /* Product of a 1d Range r from position first to last, using op and the
+     "multiply in pairs" trick.
+   */
+  function _prodRange (r, first, last, op) {
+    const a = r.layer(first)
+    const d = r.step
+    const m = last - first // m+1 terms
+    const even = m % 2
+    const pairs = even ? (m + 1) / 2 : m / 2
+    const b = even ? a : r.plus(a, d)
+    const k = even ? m : m - 1 // k is always an odd number
+    // So now the pairs are b*(b+kd), (b+1d)*(b+(k-1)d), (b+2d)*(b+(k-2)d), ...
+    // up to (b+(pairs-1)d)*(b+(k-pairs+1)d). Their products are all
+    // (b^2 + kbd + something), where the somethings go (k-1)d^2, 2(k-2)d^2,
+    // 3(k-3)d, ... with differences  (k-3)d^2, (k-5)d^2, (k-7)d^2, ...
+    let pair = op(b, r.layer(last)) // b^2 + kbd
+    let prod = pair
+    const dsq = op(d, d)
+    let pairIncrement = r.times(k - 1, dsq)
+    const pairIncDec = r.times(-2, dsq)
+    for (let j = 1; j < pairs; ++j) {
+      pair = r.plus(pair, pairIncrement)
+      pairIncrement = r.plus(pairIncrement, pairIncDec)
+      prod = op(prod, pair)
+    }
+    return even ? prod : op(a, prod)
   }
 
   function _prodAlongDim (collection, dim) {
