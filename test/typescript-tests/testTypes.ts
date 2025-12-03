@@ -1457,17 +1457,17 @@ Matrices examples
       (i: number[]) => math.fraction(i[0], i[1] + 1),
       'dense'
     )
-    const j: number[][] = math.matrixFromRows(
+    const j: Matrix<number> = math.matrixFromRows(
       [1, 2, 3],
       math.matrix([[4], [5], [6]])
     )
-    assert.strictEqual(j[1][2], 6)
+    assert.strictEqual(j.get([1, 2]), 6)
     const _k: Matrix = math.matrixFromRows(f, math.row(h, 1))
-    const l: number[][] = math.matrixFromColumns(
+    const l: Matrix<number> = math.matrixFromColumns(
       [1, 2, 3],
       math.matrix([[4], [5], [6]])
     )
-    assert.strictEqual(l[2][1], 6)
+    assert.strictEqual(l.get([2, 1]), 6)
     const _m: Matrix = math.matrixFromColumns(f, math.row(h, 1))
   }
 

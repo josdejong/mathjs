@@ -52,7 +52,7 @@ describe('RangeNode', function () {
 
     const expr = n.compile()
     assert.deepStrictEqual(
-      expr.evaluate(), new Range({ from: 0, by: 2, to: 10 }))
+      expr.evaluate(), new Range({ start: 0, step: 2, last: 10 }))
   })
 
   it('should filter a RangeNode', function () {

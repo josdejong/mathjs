@@ -73,9 +73,9 @@ export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'Range, any': typed.referToSelf(self => (r, s) => r.createRange({
-      from: self(r.from, s),
-      for: r.for,
-      by: self(r.by, s)
+      start: self(r.start, s),
+      length: r.length,
+      step: self(r.step, s)
     })),
 
     'any, Array | Matrix': function (x, y) {

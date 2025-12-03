@@ -21,9 +21,9 @@ export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, 
       // change from one-based to zero based, convert BigNumber to number and leave Array of Booleans as is
       if (isRange(arg)) {
         arg = new Range({
-          from: number(arg.from) - 1,
-          for: arg.for,
-          by: number(arg.by)
+          start: number(arg.start) - 1,
+          length: arg.length,
+          step: number(arg.step)
         })
       } else if (arg && arg.isSet === true) {
         arg = arg.map(function (v) { return v - 1 })

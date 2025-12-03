@@ -31,8 +31,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
 }) => {
   // Helpers for constructor; note the canonical attributes correspond positionally
   // two-to-one with the first list of attributes that are available for external use
-  const attrs = 'start,from,end,til,step,by,length,for,last,to'.split(',')
-  const canonicalAttrs = '_first,_excLim,_by,_length,_last'.split(',')
+  const attrs = 'start,end,step,length,last'.split(',')
   const enoughAttrs = ['start', 'step', 'length'] // determine range uniquely
   function isAttrs (thing) {
     if (!thing) return false
@@ -40,28 +39,13 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     for (const key in thing) if (!attrs.includes(key)) return false
     return true
   }
-  function canonicalizeInto (dest, src) {
-    for (let cann = 0; cann < canonicalAttrs.length; ++cann) {
-      const inattr1 = attrs[2 * cann]
-      const inattr2 = attrs[2 * cann + 1]
-      const hasattr1 = inattr1 in src
-      const hasattr2 = inattr2 in src
-      if (hasattr1 && hasattr2) {
-        throw new SyntaxError(
-          `Must not specify both synonyms ${inattr1} and ${inattr2} of Range`)
-      }
-      if (!hasattr1 && !hasattr2) continue
-      const inattr = hasattr1 ? inattr1 : inattr2
-      dest[canonicalAttrs[cann]] = src[inattr]
-    }
-  }
   function getBdSegments (attributes) {
     let bound = null
-    let segments = attributes._length
-    if ('_last' in attributes) {
-      bound = attributes._last
+    let segments = attributes.length
+    if ('last' in attributes) {
+      bound = attributes.last
       segments -= 1
-    } else bound = attributes._excLim
+    } else bound = attributes.end
     return [bound, segments]
   }
   // More optimized operator functions, see above.
@@ -88,26 +72,19 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * Every Range has several attributes that determine its entries. Once
    * constructed, these attributes cannot be changed; they are read-only.
-   * Moreover, to allow different terminology that may be clearer in
-   * different uses of this class, each attribute can be specified (at
-   * construction time) or read (at any later time) via either of two
-   * synonymous property names, separated by a vertical bar in the lists below.
-   * Note that it is perfectly OK to specify an attribute using one of its
-   * two names and read it later using the other.
    *
    * Every Range has these attributes:
-   *   * start|from: the first element of the Range (the value `a` above).
-   *   * step|by: the step or common difference of the Range (the value
-   *     `d` above).
-   *   * length|for: the number of elements in the Range, or one more than the
+   *   * start: the first element of the Range (the value `a` above).
+   *   * step: the step or common difference of the Range (the value `d` above).
+   *   * length: the number of elements in the Range, or one more than the
    *     largest value of `s` above. Note that this attribute may be Infinity,
    *     so that a Range can represent an unending arithmetic progression.
    *
    * In addition, a Range may have one or both of the following attributes:
-   *   * last|to: the inclusive final limit of the Range. This value must be
+   *   * last: the inclusive final limit of the Range. This value must be
    *     of the form `a + td` for some number `t`, in which case the Range
    *     consists of `a + sd` for all nonnegative integers `s ≤ t`.
-   *   * end|til: an exclusive limit of the Range. This value must be of the
+   *   * end: an exclusive limit of the Range. This value must be of the
    *     form `a + ud` for some number `u`, in which case the Range consists
    *     of `a + sd` for all nonnegative integers `s < u`.
    *
@@ -127,21 +104,21 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * Because of the consistency relation and defaults provided for convenience,
    * some or even all of the attributes may be missing in the constructor.
    * If any are missing, they are deduced for you in the following order:
-   *   * step|by: filled in via consistency if start, length, and at least
-   *     one of last and end are specified; otherwise set to the "one" value of
+   *   * step: filled in via consistency if start, length, and at least one
+   *     of last and end are specified; otherwise set to the "one" value of
    *     the type of start, last, or end if specified, or the number 1 if not.
-   *   * start|from: filled in via consistency with the step if length and at
+   *   * start: filled in via consistency with the step if length and at
    *     least one of last and end are specified; otherwise set to the "zero"
    *     value of the type of last or end if specified, or the number 0 if not.
-   *   * length|for: filled in via consistency with start and step if at least
+   *   * length: filled in via consistency with start and step if at least
    *     one of last and end are specified; otherwise, set to 0.
    *
    * In addition, if the length value is finite and the step is nonzero, the
    * following are set whether or not they were specified, to canonicalize
    * the attributes of the Range (which makes it easier to use and interpret):
-   *   * last|to: Set to the start value plus the step times the length
+   *   * last: Set to the start value plus the step times the length
    *     minus one.
-   *   * end|til: Set to the start value plus the step times the length.
+   *   * end: Set to the start value plus the step times the length.
    *
    * Note that the endpoints and increment may be specified with any type
    * handled by mathjs, but they must support the operations needed by Range
@@ -156,7 +133,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    *
    *     const c = new Range(2, 5)
    *     c.toArray()                           // [2, 3, 4]
-   *     const b = new Range({from: 2, to: 5})
+   *     const b = new Range({start: 2, last: 5})
    *     b.toArray()                           // [2, 3, 4, 5]
    *     new Range({start: 2, end: 5})         // [2, 3, 4]
    *
@@ -168,14 +145,14 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    *     e.toArray()                           // throws
    *     const f = new Range()                 // []
    *
-   *     const g = new Range({start: 3, step: fraction(2, 3), end: 11})
+   *     const g = new Range({start: 9, step: fraction(2, 3), end: 11})
    *     g.toArray()  // [fraction(9), fraction(29, 3), fraction(31, 3)]
    *
    * @class Range
    * @constructor Range
-   * @param {number} start  included lower bound
-   * @param {number} [step] step size, default value is 1
-   * @param {number} end    excluded upper bound
+   * @param {number} [start]  included lower bound
+   * @param {number} [end]    excluded upper bound
+   * @param {number} [step]   step size, default value is 1
    */
   function Range (...specs) {
     if (!(this instanceof Range)) {
@@ -186,7 +163,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Read the first object supplying attributes, if any
     for (const spec of specs) {
       if (isAttrs(spec)) {
-        canonicalizeInto(attributes, spec)
+        Object.assign(attributes, spec)
         break
       }
     }
@@ -205,13 +182,10 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
             'Only start, end, and step allowed as positional arguments ' +
             'of Range constructor')
         }
-        const key = canonicalAttrs[role]
+        const key = attrs[role]
         if (key in attributes) {
-          const inattr1 = attrs[2 * role]
-          const inattr2 = attrs[2 * role + 1]
           throw new Error(
-            `May not specify Range attribute "${inattr1}|${inattr2}" ` +
-            'via key and argument.')
+            `May not specify Range attribute "${key}" via key and argument.`)
         }
         attributes[key] = spec
         role += 1
@@ -220,42 +194,44 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // OK, we have extracted all of the specified attributes. Now fill in
     // the rest/canonicalize them as specified.
-    if ('_length' in attributes) {
-      attributes._length = number(attributes._length)
+    // First make sure the length is a number
+    if ('length' in attributes) {
+      attributes.length = number(attributes.length)
     }
-    if (attributes._by === undefined || attributes._by === null) {
-      const prereqs = '_first' in attributes && '_length' in attributes
-      if (prereqs && ('_last' in attributes || '_excLim' in attributes)) {
+    // Now deduce "step" if necessary
+    if (attributes.step === undefined || attributes.step === null) {
+      const prereqs = 'start' in attributes && 'length' in attributes
+      if (prereqs && ('last' in attributes || 'end' in attributes)) {
         const [bound, segments] = getBdSegments(attributes)
-        if (segments === 0) attributes._by = subtract(attributes._first, bound)
+        if (segments === 0) attributes.step = zero(attributes.start)
         else {
-          const span = subtract(bound, attributes._first)
+          const span = subtract(bound, attributes.start)
           // if the span is computed in bigints, we want a bigint increment
           let bigi = isBigInt(span)
           bigi ||= isMatrix(span) && span.datatype() === 'bigint'
           bigi ||= Array.isArray(span) && getArrayDataType(span) === 'bigint'
           const denominator = bigi ? BigInt(segments) : segments
-          attributes._by = divide(span, denominator)
+          attributes.step = divide(span, denominator)
         }
-      } else if ('_first' in attributes) {
-        attributes._by = one(attributes._first)
-      } else if ('_last' in attributes) {
-        attributes._by = one(attributes._last)
-      } else if ('_excLim' in attributes) {
-        attributes._by = one(attributes._excLim)
-      } else attributes._by = 1
-    } else if (!isBounded(attributes._by)) {
+      } else if ('start' in attributes) {
+        attributes.step = one(attributes.start)
+      } else if ('last' in attributes) {
+        attributes.step = one(attributes.last)
+      } else if ('end' in attributes) {
+        attributes.step = one(attributes.end)
+      } else attributes.step = 1
+    } else if (!isBounded(attributes.step)) {
       throw new RangeError('A Range must have a finite increment')
     }
     // Now that we have the increment b, we can choose the multiplication
     // operation. For n an integer JavaScript number, we want n*b to be the sum
     // of n copies of b. If we simply use mathjs multiply, this property will
     // hold for most types b might have, but not for bigint (because e.g.
-    // 1.657 * 3n should be 4.971, mathjs makes that combination always return
-    // number, not bigint). So we need to take care in choosing what function
-    // we will use to multiply:
-    this.times = typed.find(multiply, ['number', typeOf(attributes._by)])
-    const incr = attributes._by
+    // 1.657 * 3n should be 4.971, so mathjs makes that combination always
+    // return number, not bigint). So we need to take care in choosing what
+    // function we will use to multiply:
+    this.times = typed.find(multiply, ['number', typeOf(attributes.step)])
+    const incr = attributes.step
     // Special cases for times (for speedup when increment is 1)
     if (!isUnit(incr) && equal(incr, 1)) {
       if (isNumber(incr)) this.times = identity
@@ -271,96 +247,96 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     } else if (Array.isArray(incr) && getArrayDataType(incr) === 'bigint') {
       this.times = arrayByBigint
     }
-    if (attributes._first === undefined || attributes._first === null) {
-      if ('_length' in attributes &&
-        ('_last' in attributes || '_excLim' in attributes)
+
+    // Next deduce "start" if necessary
+    if (attributes.start === undefined || attributes.start === null) {
+      if ('length' in attributes &&
+        ('last' in attributes || 'end' in attributes)
       ) {
         const [bound, segments] = getBdSegments(attributes)
-        attributes._first = subtract(
-          bound, this.times(segments, attributes._by))
-      } else if ('_last' in attributes) {
-        attributes._first = zero(attributes._last)
-      } else if ('_excLim' in attributes) {
-        attributes._first = zero(attributes._excLim)
-      } else attributes._first = zero(attributes._by) // definitely have _by now
+        attributes.start = subtract(
+          bound, this.times(segments, attributes.step))
+      } else if ('last' in attributes) {
+        attributes.start = zero(attributes.last)
+      } else if ('end' in attributes) {
+        attributes.start = zero(attributes.end)
+      } else attributes.start = zero(attributes.step)
     }
-    if (!isBounded(attributes._first)) {
+    if (!isBounded(attributes.start)) {
       throw new RangeError('A Range must start on a finite value')
     }
 
-    if (attributes._length === undefined || attributes._length === null) {
-      if ('_last' in attributes) {
-        if (!isBounded(attributes._last)) attributes._length = Infinity
+    // Now deduce length if need be
+    if (attributes.length === undefined || attributes.length === null) {
+      if ('last' in attributes) {
+        if (!isBounded(attributes.last)) attributes.length = Infinity
         else {
-          const rawFor = scalarDivide(
-            subtract(attributes._last, attributes._first), attributes._by)
-          if (rawFor === undefined) {
-            let message = `No scalar multiple of ${attributes._by} takes `
-            message += `${attributes._first} to ${attributes._last}`
+          const rawLength = scalarDivide(
+            subtract(attributes.last, attributes.start), attributes.step)
+          if (rawLength === undefined) {
+            let message = `No scalar multiple of ${attributes.step} takes `
+            message += `${attributes.start} to ${attributes.last}`
             throw new Error(message)
           }
-          attributes._length = Math.floor(number(rawFor)) + 1
+          attributes.length = Math.floor(number(rawLength)) + 1
         }
-      } else if ('_excLim' in attributes) {
-        if (!isBounded(attributes._excLim)) attributes._excLim = Infinity
+      } else if ('end' in attributes) {
+        if (!isBounded(attributes.end)) attributes.length = Infinity
         else {
-          const rawFor = scalarDivide(
-            subtract(attributes._excLim, attributes._first), attributes._by)
-          if (rawFor === undefined) {
-            let message = `No scalar multiple of ${attributes._by} takes `
-            message += `${attributes._first} to ${attributes._excLim}`
+          const rawLength = scalarDivide(
+            subtract(attributes.end, attributes.start), attributes.step)
+          if (rawLength === undefined) {
+            let message = `No scalar multiple of ${attributes.step} takes `
+            message += `${attributes.start} to ${attributes.end}`
             throw new Error(message)
           }
-          attributes._length = Math.ceil(number(rawFor))
+          attributes.length = Math.ceil(number(rawLength))
         }
-      } else attributes._length = 0
-      if (attributes._length < 0) attributes._length = 0
+      } else attributes.length = 0
     }
-    if (Number.isFinite(attributes._length)) {
-      attributes._length = Math.floor(attributes._length)
+    if (attributes.length < 0) attributes.length = 0
+
+    // Finally fill in last and end as appropriate
+    if (Number.isFinite(attributes.length)) {
+      attributes.length = Math.floor(attributes.length)
       // canonicalize limits
-      if (isZero(attributes._by)) {
+      if (isZero(attributes.step)) {
         // We certainly know the last entry:
-        attributes._last = attributes._first
+        attributes.last = attributes.start
         // But there is no way to have an exclusive limit unless the
         // length is zero
-        attributes._excLim =
-          attributes._length === 0 ? attributes.first : undefined
+        attributes.end =
+          attributes.length === 0 ? attributes.start : undefined
       } else {
-        attributes._last = add(
-          attributes._first, this.times(attributes._length - 1, attributes._by))
-        attributes._excLim = add(
-          attributes._first, this.times(attributes._length, attributes._by))
+        attributes.last = add(
+          attributes.start, this.times(attributes.length - 1, attributes.step))
+        attributes.end = add(attributes.last, attributes.step)
       }
     } else {
-      attributes._last = undefined
-      attributes._excLim = undefined
+      attributes.last = undefined
+      attributes.end = undefined
     }
 
-    // Canonicalize the type of _first to match all the other values:
-    attributes._first = add(attributes._first, this.times(0, attributes._by))
+    // Canonicalize the type of start to match all the other values:
+    attributes.start = add(attributes.start, this.times(0, attributes.step))
 
     // set up data type and remaining operations
     this.plus = typed.find(
-      add, [typeOf(attributes._first), typeOf(this.times(1, attributes._by))])
-    const subsize = size(attributes._first)
+      add, [typeOf(attributes.start), typeOf(this.times(1, attributes.step))])
+    const subsize = size(attributes.step)
     this.subcollection = !!subsize.length
     if (this.subcollection) {
-      this._datatype = getMatrixDataType(attributes._first)
-    } else this._datatype = typeOf(attributes._first)
+      this._datatype = getMatrixDataType(attributes.start)
+    } else this._datatype = typeOf(attributes.start)
 
-    this._size = [attributes._length, ...subsize]
+    this._size = [attributes.length, ...subsize]
 
-    // finally, set up the read-only properties:
-    Object.assign(this, attributes)
-    for (let cann = 0; cann < canonicalAttrs.length; ++cann) {
-      const canAttr = canonicalAttrs[cann]
-      const value = attributes[canAttr]
-      Object.defineProperty(this, canAttr, { value })
-      for (let option = 0; option < 2; ++option) {
-        const exAttr = attrs[2 * cann + option]
-        Object.defineProperty(this, exAttr, { value })
-      }
+    // Finally, set up the read-only properties:
+    for (const key of attrs) {
+      Object.defineProperty(this, key, {
+        value: attributes[key],
+        enumerable: true
+      })
     }
   }
 
@@ -471,29 +447,29 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
   Range.prototype.create = function (data, datatype) {
     if (data.length === 0) {
       return new Range({
-        from: numeric(0, datatype),
-        til: numeric(0, datatype)
+        start: numeric(0, datatype),
+        end: numeric(0, datatype)
       })
     }
-    let from = data[0]
-    if (datatype) from = numeric(from, datatype)
-    if (data.length === 1) return new Range({ from, to: from })
-    let to = data[data.length - 1]
-    if (datatype) to = numeric(to, datatype)
+    let start = data[0]
+    if (datatype) start = numeric(start, datatype)
+    if (data.length === 1) return new Range({ start, last: start })
+    let last = data[data.length - 1]
+    if (datatype) last = numeric(last, datatype)
     if (data.length === 2) {
-      return new Range({ from, to, by: subtract(to, from) })
+      return new Range({ start, last, stap: subtract(last, start) })
     }
     let entry = data[1]
     if (datatype) entry = numeric(entry, datatype)
-    const by = subtract(entry, from)
+    const step = subtract(entry, start)
     for (let i = 2; i < data.length; ++i) {
-      entry = add(entry, by)
+      entry = add(entry, step)
       if (!equal(entry, data[i])) {
         if (DenseMatrix) return new DenseMatrix(data, datatype)
         throw new Error('Data supplied is not in the form of a Range')
       }
     }
-    return new Range({ from, to, by })
+    return new Range({ start, last, step })
   }
 
   /**
@@ -557,19 +533,19 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     // Indexing a range by a single range produces a range
-    if (this.for < wanted.for) {
+    if (this.length < wanted.length) {
       throw new Error('Cannot subset a Range by a longer Range')
     }
-    if (!Number.isFinite(wanted.for)) {
+    if (!Number.isFinite(wanted.length)) {
       return new Range({
-        from: this.layer(wanted.from),
-        by: this.by * wanted.by
+        start: this.layer(wanted.start),
+        step: this.step * wanted.step
       })
     }
     return new Range({
-      from: this.layer(wanted.from),
-      to: this.layer(wanted.to),
-      by: this.by * wanted.by
+      start: this.layer(wanted.start),
+      end: this.layer(wanted.end),
+      step: this.step * wanted.step
     })
   }
 
@@ -580,10 +556,10 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {*} value
    */
   Range.prototype.layer = function (index) {
-    if (index < 0 || index >= this.for) {
+    if (index < 0 || index >= this.length) {
       throw new RangeError('index out of Range')
     }
-    return this.plus(this.from, this.times(index, this.by))
+    return this.plus(this.start, this.times(index, this.step))
   }
 
   /**
@@ -666,16 +642,16 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {number | undefined} min
    */
   Range.prototype.min = function () {
-    if (this._length === 0) return undefined
-    if (this._length === 1) return this._first
+    if (this.length === 0) return undefined
+    if (this.length === 1) return this.start
     if (this.subcollection) {
       throw new TypeError('Elements of sequence are collections, so unordered')
     }
-    if (Number.isFinite(this._length)) {
-      return smallerEq(this._first, this._last) ? this._first : this._last
+    if (Number.isFinite(this.length)) {
+      return smallerEq(this.start, this.last) ? this.start : this.last
     }
     // Infinite sequence
-    return smallerEq(this._first, this.layer(1)) ? this._first : undefined
+    return smallerEq(this.start, this.layer(1)) ? this.start : undefined
   }
 
   /**
@@ -684,16 +660,16 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {number | undefined} max
    */
   Range.prototype.max = function () {
-    if (this._length === 0) return undefined
-    if (this._length === 1) return this._first
+    if (this.length === 0) return undefined
+    if (this.length === 1) return this.start
     if (this.subcollection) {
       throw new TypeError('Elements of sequence are collections, so unordered')
     }
-    if (Number.isFinite(this._length)) {
-      return largerEq(this._first, this._last) ? this._first : this._last
+    if (Number.isFinite(this.length)) {
+      return largerEq(this.start, this.last) ? this.start : this.last
     }
     // Infinite sequence
-    return largerEq(this._first, this.layer(1)) ? this._first : undefined
+    return largerEq(this.start, this.layer(1)) ? this.start : undefined
   }
 
   /**
@@ -708,9 +684,9 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
   Range.prototype.forEach = function (
     callback, skipZeros = false, isUnary = false
   ) {
-    if (!Number.isFinite(this.for)) throw new Error('Attempt to infinite loop')
-    let x = this.from
-    for (let i = 0; i < this.for; ++i) {
+    if (!Number.isFinite(this.length)) throw new Error('Attempt to infinite loop')
+    let x = this.start
+    for (let i = 0; i < this.length; ++i) {
       if (this.subcollection) {
         if (isUnary) x.forEach(callback, skipZeros, isUnary)
         else {
@@ -722,7 +698,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
         if (isUnary) callback(x)
         else callback(x, [i], this)
       }
-      x = this.plus(x, this.by)
+      x = this.plus(x, this.step)
     }
   }
 
@@ -731,12 +707,12 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Iterable<{ value, index: number[] }>}
    */
   Range.prototype[Symbol.iterator] = function * () {
-    let x = this.from
-    for (let i = 0; i < this.for; ++i) {
+    let x = this.start
+    for (let i = 0; i < this.length; ++i) {
       if (this.subcollection) {
         for (const { value, ix } of x) yield ({ value, index: [i, ...ix] })
       } else yield ({ value: x, index: [i] })
-      x = this.plus(x, this.by)
+      x = this.plus(x, this.step)
     }
   }
 
@@ -752,10 +728,12 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
   Range.prototype.map = function (
     callback, skipZeros = false, isUnary = false
   ) {
-    if (!Number.isFinite(this.for)) throw new Error('Attempt to infinite loop')
+    if (!Number.isFinite(this.length)) {
+      throw new Error('Attempt to infinite loop')
+    }
     const array = []
-    let x = this.from
-    for (let i = 0; i < this.for; ++i) {
+    let x = this.start
+    for (let i = 0; i < this.length; ++i) {
       if (this.subcollection) {
         if (isUnary) array.push(x.map(callback, skipZeros, isUnary))
         else {
@@ -768,7 +746,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
         if (isUnary) array.push(callback(x))
         else array.push(callback(x, [i], this))
       }
-      x = this.plus(x, this.by)
+      x = this.plus(x, this.step)
     }
     if (DenseMatrix) return new DenseMatrix(array)
     return array
@@ -779,16 +757,18 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @returns {Array<Matrix>}
    */
   Range.prototype.rows = function () {
-    if (!Number.isFinite(this.for)) throw new Error('Attempt to infinite loop')
+    if (!Number.isFinite(this.length)) {
+      throw new Error('Attempt to infinite loop')
+    }
     if (this._size.length !== 2) {
       throw new TypeError('Rows can only be returned for a 2D matrix.')
     }
     const result = []
-    let x = this.from
-    for (let i = 0; i < this.for; ++i) {
+    let x = this.start
+    for (let i = 0; i < this.length; ++i) {
       if (DenseMatrix) result.push(new DenseMatrix(x, this._datatype))
       else result.push(x)
-      x = this.plus(x, this.by)
+      x = this.plus(x, this.step)
     }
     return result
   }
@@ -798,15 +778,17 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @returns {Array<Matrix>}
    */
   Range.prototype.columns = function () {
-    if (!Number.isFinite(this.for)) throw new Error('Attempt to infinite loop')
+    if (!Number.isFinite(this.length)) {
+      throw new Error('Attempt to infinite loop')
+    }
     if (this._size.length !== 2) {
       throw new TypeError('Rows can only be returned for a 2D matrix.')
     }
     const colArrays = []
-    let x = this.from
-    if (this.for) for (const { value } of x) colArrays.push([value])
-    for (let i = 1; i < this.for; ++i) {
-      x = this.plus(x, this.by)
+    let x = this.start
+    if (this.length) for (const { value } of x) colArrays.push([value])
+    for (let i = 1; i < this.length; ++i) {
+      x = this.plus(x, this.step)
       for (const { value, ix } of x) colArrays[ix[0]].push(value)
     }
     if (DenseMatrix) {
@@ -821,13 +803,15 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @returns {Array} array
    */
   Range.prototype.toArray = function () {
-    if (!Number.isFinite(this.for)) throw new Error('Attempt to infinite loop')
+    if (!Number.isFinite(this.length)) {
+      throw new Error('Attempt to infinite loop')
+    }
     const array = []
-    let x = this.from
-    for (let i = 0; i < this.for; ++i) {
+    let x = this.start
+    for (let i = 0; i < this.length; ++i) {
       if (this.subcollection) array.push(x.valueOf())
       else array.push(x)
-      x = this.plus(x, this.by)
+      x = this.plus(x, this.step)
     }
     return array
   }
@@ -855,11 +839,11 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @returns {string} str
    */
   Range.prototype.format = function (options = {}) {
-    let str = format(this.from, options)
-    if (this.subcollection || this.by !== one(this.from)) {
-      str += ':' + format(this.by, options)
+    let str = format(this.start, options)
+    if (this.subcollection || this.step !== one(this.start)) {
+      str += ':' + format(this.step, options)
     }
-    str += ':' + format(this.to, options)
+    str += ':' + format(this.end, options)
     return str
   }
 
@@ -881,7 +865,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
   Range.prototype.toNumber = function () {
     if (this._datatype === 'number') return this
     return new Range({
-      from: number(this.from), by: number(this.by), for: this.for
+      start: number(this.start), step: number(this.step), length: this.length
     })
   }
 

@@ -84,7 +84,9 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     if (format === 'range') {
       if (isRange(data)) {
-        return new Range({ from: data.from, by: data.by, for: data.for })
+        return new Range({
+          start: data.start, step: data.step, length: data.length
+        })
       }
       return new Range(data)
     }

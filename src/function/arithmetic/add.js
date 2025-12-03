@@ -72,24 +72,24 @@ export const createAdd = /* #__PURE__ */ factory(
         'Range, Range': typed.referToSelf(self => (r, p) => {
           if (r.for !== p.for) throw new Error('Range length mismatch')
           return r.createRange({
-            from: self(r.from, p.from),
-            for: r.for,
-            by: self(r.by, p.by)
+            start: self(r.start, p.start),
+            length: r.length,
+            step: self(r.step, p.step)
           })
         }),
         'Range, Matrix': typed.referToSelf(
           self => (r, m) => self(r.valueOf(), m)),
         'Range, any': typed.referToSelf(self => (r, s) => r.createRange({
-          from: self(r.from, s),
-          for: r.for,
-          by: r.by
+          start: self(r.start, s),
+          length: r.length,
+          step: r.step
         })),
         'Matrix, Range': typed.referToSelf(
           self => (m, r) => self(m, r.valueOf())),
         'any, Range': typed.referToSelf(self => (s, r) => r.createRange({
-          from: self(s, r.from),
-          for: r.for,
-          by: r.by
+          start: self(s, r.start),
+          length: r.length,
+          step: r.step
         }))
       },
       matrixAlgorithmSuite({

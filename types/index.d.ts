@@ -1429,19 +1429,19 @@ export interface MathJsInstance extends MathJsFactory {
    * Create a dense matrix from vectors as individual rows. If you pass column vectors, they will be transposed (but not conjugated!)
    * @param rows - a multi-dimensional number array or matrix
    */
-  matrixFromRows(...rows: Matrix[]): Matrix
+  matrixFromRows<T extends MathScalarTypeIn>(...rows: T[][]): T[][]
   matrixFromRows<T extends MathScalarTypeIn>(
-    ...rows: (T[] | [T][] | Matrix)[]
-  ): T[][]
+    ...rows: (T[] | T[][] | Matrix<T>)[]
+  ): Matrix<T>
 
   /**
    * Create a dense matrix from vectors as individual columns. If you pass row vectors, they will be transposed (but not conjugated!)
    * @param cols - a multi-dimensional number array or matrix
    */
-  matrixFromColumns(...cols: Matrix[]): Matrix
+  matrixFromColumns<T extends MathScalarTypeIn>(...cols: T[][]): T[][]
   matrixFromColumns<T extends MathScalarTypeIn>(
-    ...cols: (T[] | [T][] | Matrix)[]
-  ): T[][]
+    ...cols: (T[] | T[][] | Matrix<T>)[]
+  ): Matrix<T>
   /**
    * Create a matrix by evaluating a generating function at each index. The simplest overload returns a multi-dimensional array as long as size is an array. Passing size as a Matrix or specifying a format will result in returning a Matrix.
    * @param size - the size of the matrix to be created

@@ -63,12 +63,17 @@ describe('tree shaking', function () {
       }
 
       // Test whether the size is small enough
-      // At this moment, the full library size is 559137 bytes (unzipped),
-      // and the size of this tree-shaken bundle is 98494 bytes (unzipped)
-      // this may grow or shrink in the future
+      // When this was first written, the full library size wass 559137 bytes
+      // (unzipped), and the size of this tree-shaken bundle was 98494 bytes
+      // (unzipped). These values generally grow slowly as features are added
+      // to the library; they can sometimes shrink if the code is made more
+      // efficient. But in general, a slight increase in the tree-shaken
+      // bundle is not a problem, and the maxSize can be bumped up to
+      // accommodate. But a sudden jump in size indicates a tree-shaking/
+      // bundling problem.
       assert.strictEqual(info.assets[0].name, bundleName)
       const size = info.assets[0].size
-      const maxSize = 135000
+      const maxSize = 137000
       assert(size < maxSize,
         'bundled size must be small enough ' +
         '(actual size: ' + size + ' bytes, max size: ' + maxSize + ' bytes)')

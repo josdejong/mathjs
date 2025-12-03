@@ -54,11 +54,15 @@ describe('range', function () {
 
     it('should deal carefully with step size zero', function () {
       let empty = new Range(0, 0, 0)
-      assert.strictEqual(empty.for, 0)
+      assert.strictEqual(empty.length, 0)
       empty = new Range(10, 10, 0)
-      assert.strictEqual(empty.for, 0)
-      assert.throws(function () { console.log(new Range(0, 10, math.bignumber(0))) }, /No scalar/)
-      assert.throws(function () { console.log(new Range(0, 10, math.bigint(0))) }, /No scalar/)
+      assert.strictEqual(empty.length, 0)
+      assert.throws(function () {
+        console.log(new Range(0, 10, math.bignumber(0)))
+      }, /No scalar/)
+      assert.throws(function () {
+        console.log(new Range(0, 10, math.bigint(0)))
+      }, /No scalar/)
     })
   })
 
@@ -149,22 +153,29 @@ describe('range', function () {
 
   describe('toString', function () {
     it('should stringify a range to format from:by:to', function () {
-      assert.strictEqual(new math.Range(0, 10).toString(), '0:9')
-      assert.strictEqual(new math.Range(0, 10, 2).toString(), '0:2:8')
+      assert.strictEqual(new math.Range(0, 10).toString(), '0:10')
+      assert.strictEqual(new math.Range(0, 10, 2).toString(), '0:2:10')
     })
 
-    it('should stringify a range to format from:by:to with given precision', function () {
-      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(3), '0.333:0.667:1')
-      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(4), '0.3333:0.6667:1')
-      assert.strictEqual(new math.Range(1 / 3, 4 / 3, 2 / 3).format(14), '0.33333333333333:0.66666666666667:1')
-    })
+    it(
+      'should stringify a range to format start:step:end with given precision',
+      function () {
+        assert.strictEqual(
+          new math.Range(1 / 3, 4 / 3, 2 / 3).format(3), '0.333:0.667:1.67')
+        assert.strictEqual(
+          new math.Range(1 / 3, 4 / 3, 2 / 3).format(4), '0.3333:0.6667:1.667')
+        assert.strictEqual(
+          new math.Range(1 / 3, 4 / 3, 2 / 3).format(14),
+          '0.33333333333333:0.66666666666667:1.6666666666667'
+        )
+      })
   })
 
   describe('immutable', function () {
     it('should not allow property changes', function () {
       const r1 = new Range(0, 10, 2)
       assert.throws(() => { r1.start = 2 }, TypeError)
-      assert.throws(() => { r1.for = 3 }, TypeError)
+      assert.throws(() => { r1.length = 3 }, TypeError)
     })
   })
 
@@ -225,15 +236,16 @@ describe('range', function () {
 
   describe('format', function () {
     it('should format a range as string', function () {
-      assert.strictEqual(new Range(0, 4).format(), '0:3')
-      assert.strictEqual(new Range(0, 4, 2).format(), '0:2:2')
+      assert.strictEqual(new Range(0, 4).format(), '0:4')
+      assert.strictEqual(new Range(0, 4, 2).format(), '0:2:4')
 
-      assert.strictEqual(new Range(0.01, 0.09, 0.02).format(2), '0.01:0.02:0.07')
+      assert.strictEqual(
+        new Range(0.01, 0.09, 0.02).format(2), '0.01:0.02:0.09')
 
       assert.strictEqual(new Range(0.01, 0.09, 0.02).format({
         notation: 'exponential',
         precision: 1
-      }), '1e-2:2e-2:7e-2')
+      }), '1e-2:2e-2:9e-2')
     })
   })
 

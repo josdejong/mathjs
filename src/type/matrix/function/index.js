@@ -75,7 +75,9 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         } else if (isRange(arg)) {
           if (arg.datatype() !== 'number') {
             return new Range({
-              from: number(arg.from), by: number(arg.by), for: arg.for
+              start: number(arg.start),
+              step: number(arg.step),
+              length: arg.length
             })
           } else return arg
         } else if (isArray(arg) || isMatrix(arg)) {
