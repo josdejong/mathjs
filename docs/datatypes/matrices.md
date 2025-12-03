@@ -156,7 +156,7 @@ Functions that require two or more matrix like arguments that operate elementwis
 
 ```js
 A = math.matrix([1, 2])       // Matrix, [1, 2]
-math.add(A, 3)                // Matrix, [3, 4]
+math.add(A, 3)                // Matrix, [4, 5]
 
 B = math.matrix([[3], [4]])   // Matrix, [[3], [4]]
 math.add(A, B)                // Matrix, [[4, 5], [5, 6]]
@@ -181,31 +181,30 @@ Math.js uses geometric dimensions:
 - A vector is one-dimensional.
 - A matrix is two or multidimensional.
 
-The size of a matrix can be calculated with the function `size`. Function `size`
-returns a `Matrix` or `Array`, depending on the configuration option `matrix`.
-Furthermore, matrices have a function `size` as well, which always returns
-an Array.
+The size of a matrix can be calculated with the function `size`. This function
+returns an `Array`, giving the length of its input (`Matrix` or `Array`) in
+each dimension. You can also call `size()` as a method on a Matrix.
 
 ```js
 // get the size of a scalar
-math.size(2.4)                                // Matrix, []
-math.size(math.complex(3, 2))                 // Matrix, []
-math.size(math.unit('5.3 mm'))                // Matrix, []
+math.size(2.4)                                // Array, []
+math.size(math.complex(3, 2))                 // Array, []
+math.size(math.unit('5.3 mm'))                // Array, []
 
 // get the size of a one-dimensional matrix (a vector) and a string
 math.size([0, 1, 2, 3])                       // Array, [4]
-math.size('hello world')                      // Matrix, [11]
+math.size('hello world')                      // Array, [11]
 
 // get the size of a two-dimensional matrix
 const a = [[0, 1, 2, 3]]                      // Array
 const b = math.matrix([[0, 1, 2], [3, 4, 5]]) // Matrix
 math.size(a)                                  // Array, [1, 4]
-math.size(b)                                  // Matrix, [2, 3]
+math.size(b)                                  // Array, [2, 3]
 
-// matrices have a function size (always returns an Array)
+// matrices have a method size
 b.size()                                      // Array, [2, 3]
 
-// get the size of a multi-dimensional matrix
+// get the size of a multi-dimensional array
 const c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]
 math.size(c)                                  // Array, [2, 2, 3]
 ```
@@ -360,7 +359,7 @@ const m = math.matrix([[1, 2, 3], [4, 5, 6]])
 | `math.subset(m, math.index([0, 1], [1, 2]))` | No change needed                          | `[[2, 3], [5, 6]]` |
 | `math.subset(m, math.index(1, [1, 2]))`      | `math.subset(m, math.index([1], [1, 2]))` | `[[5, 6]]`         |
 | `math.subset(m, math.index([0, 1], 2))`      | `math.subset(m, math.index([0, 1], [2]))` | `[[3], [6]]`       |
-| `math.subset(m, math.index(1, 2))`           | No change needed                          | 6                  |
+| `math.subset(m, math.index(1, 2))`           | No change needed                          | `6`               |
 
 
 > **Tip:**  
