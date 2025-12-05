@@ -13,11 +13,15 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
      * @constructor ArrayNode
      * @extends {Node}
      * Holds an 1-dimensional array with items
-     * @param {Node[]} [items]   1 dimensional array with items
+     * @param {Node[]} [items]        1 dimensional array with items
+     * @param {boolean} [forceArray]
+     *     Should the result always be Array regardless of config? (default
+     *     is false)
      */
-    constructor (items) {
+    constructor (items, forceArray = false) {
       super()
       this.items = items || []
+      this.forceArray = forceArray
 
       // validate input
       if (!Array.isArray(this.items) || !this.items.every(isNode)) {
@@ -47,7 +51,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
         return item._compile(math, argNames)
       })
 
-      const asMatrix = (math.config.matrix !== 'Array')
+      const asMatrix = !this.forceArray && (math.config.matrix !== 'Array')
       if (asMatrix) {
         const matrix = math.matrix
         return function evalArrayNode (scope, args, context) {

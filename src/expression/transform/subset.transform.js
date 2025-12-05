@@ -33,7 +33,7 @@ export const createSubsetTransform = /* #__PURE__ */ factory(
             // supplied an array instead of an index for the 2nd argument, so
             // have to turn that into an Index with indexTransform rather than
             // just plain index, as subset will if we just let it have at it.
-            args[1] = indexTransform.apply(null, args)
+            args[1] = indexTransform.apply(null, args[1])
           }
           return subset.apply(null, args)
         } catch (err) {

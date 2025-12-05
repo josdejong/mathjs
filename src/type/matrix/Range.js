@@ -729,7 +729,9 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     callback, skipZeros = false, isUnary = false
   ) {
     if (!Number.isFinite(this.length)) {
-      throw new Error('Attempt to infinite loop')
+      throw new Error(
+        'Attempt to infinite loop Range with ' +
+        `start=${this.start} step=${this.step}`)
     }
     const array = []
     let x = this.start

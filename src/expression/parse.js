@@ -1745,28 +1745,37 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseParentheses (state) {
-    let node
-
     // check if it is a parenthesized expression
-    if (state.token === '(') {
-      // parentheses (...)
-      openParams(state)
-      getToken(state)
+    if (state.token !== '(') return parseEnd(state)
+    // Yes, we have parentheses (...)
+    openParams(state)
+    getToken(state)
 
-      node = parseAssignment(state) // start again
-
-      if (state.token !== ')') {
-        throw createSyntaxError(state, 'Parenthesis ) expected')
-      }
+    if (state.token === ')') { // `()` is empty array
       closeParams(state)
       getToken(state)
-
-      node = new ParenthesisNode(node)
-      node = parseAccessors(state, node)
-      return node
+      return parseAccessors(state, new ArrayNode([], true))
     }
 
-    return parseEnd(state)
+    let node = parseAssignment(state) // start again
+
+    if (state.token === ',') { // Array notation
+      const items = [node]
+      do {
+        getToken(state)
+        if (state.token === ')') break
+        items.push(parseAssignment(state))
+      } while (state.token === ',')
+      node = new ArrayNode(items, true)
+    } else node = new ParenthesisNode(node)
+
+    if (state.token !== ')') {
+      throw createSyntaxError(state, 'Parenthesis ) expected')
+    }
+    closeParams(state)
+    getToken(state)
+
+    return parseAccessors(state, node)
   }
 
   /**

@@ -890,6 +890,19 @@ describe('parse', function () {
       const scope = {}
       assert.throws(function () { parseAndEval('c=concat(a, [1,2,3])', scope) })
     })
+
+    it(
+      'should interpret comma-separated expressions in parentheses as arrays',
+      function () {
+        assert.deepStrictEqual(parseAndEval('(3,4,5)'), [3, 4, 5])
+        assert.deepStrictEqual(parseAndEval('(5,12,13,)'), [5, 12, 13])
+        assert.deepStrictEqual(parseAndEval('(5,)'), [5])
+        assert.deepStrictEqual(parseAndEval('()'), [])
+        assert.strictEqual(parseAndEval('(7,24,25)[2]'), 24)
+        assert.deepStrictEqual(parseAndEval('size((8, 15, 17))'), [3])
+        assert.deepStrictEqual(
+          parseAndEval('((),(0,),(0,1))'), [[], [0], [0, 1]])
+      })
   })
 
   describe('objects', function () {
