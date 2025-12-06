@@ -8,6 +8,7 @@ export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ 
   /**
    * Collect the distinct elements of a multiset.
    * A multi-dimension array will be converted to a single-dimension array before the operation.
+   * The items of the returned array will be sorted in natural order.
    *
    * Syntax:
    *
@@ -22,7 +23,7 @@ export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ 
    *    setMultiplicity
    *
    * @param {Array | Matrix}    a  A multiset
-   * @return {Array | Matrix}    A set containing the distinc elements of the multiset
+   * @return {Array | Matrix}    A set containing the distinct elements of the multiset
    */
   return typed(name, {
     'Array | Matrix': function (a) {

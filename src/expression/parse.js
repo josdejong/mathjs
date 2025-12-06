@@ -322,7 +322,13 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     // check for delimiters consisting of 2 characters
-    if (c2.length === 2 && DELIMITERS[c2]) {
+    // Special case: the check for '?.' is to prevent a case like 'a?.3:.7' from being interpreted as optional chaining
+    // TODO: refactor the tokenization into some better way to deal with cases like 'a?.3:.7', see https://github.com/josdejong/mathjs/pull/3584
+    if (
+      c2.length === 2 &&
+      DELIMITERS[c2] &&
+      (c2 !== '?.' || !parse.isDigit(state.expression.charAt(state.index + 2)))
+    ) {
       state.tokenType = TOKENTYPE.DELIMITER
       state.token = c2
       next(state)
@@ -685,6 +691,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         return new AssignmentNode(new SymbolNode(name), value)
       } else if (isAccessorNode(node)) {
         // parse a matrix subset assignment like 'A[1,2] = 4'
+        if (node.optionalChaining) {
+          throw createSyntaxError(state, 'Cannot assign to optional chain')
+        }
         getTokenSkipNewline(state)
         value = parseAssignment(state)
         return new AssignmentNode(node.object, node.index, value)
@@ -955,8 +964,17 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     const params = []
 
     if (state.token === ':') {
-      // implicit start=1 (one-based)
-      node = new ConstantNode(1)
+      if (state.conditionalLevel === state.nestingLevel) {
+        // we are in the midst of parsing a conditional operator, so not
+        // a range, but rather an empty true-expr, which is considered a
+        // syntax error
+        throw createSyntaxError(
+          state,
+          'The true-expression of a conditional operator may not be empty')
+      } else {
+        // implicit start of range = 1 (one-based)
+        node = new ConstantNode(1)
+      }
     } else {
       // explicit start
       node = parseAddSubtract(state)
@@ -1396,44 +1414,21 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         optional = true
         // consume the '?.' token
         getToken(state)
-
-        // Special case: property access via dot-notation following optional chaining (obj?.foo)
-        // After consuming '?.', the dot is already consumed as part of the token,
-        // so the next token is the property name itself. Handle that here.
-        const isPropertyNameAfterOptional = (!types || types.includes('.')) && (
-          state.tokenType === TOKENTYPE.SYMBOL ||
-          (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)
-        )
-        if (isPropertyNameAfterOptional) {
-          params = []
-          params.push(new ConstantNode(state.token))
-          getToken(state)
-          const dotNotation = true
-          node = new AccessorNode(node, new IndexNode(params, dotNotation), true)
-          // Continue parsing, allowing more chaining after this accessor
-          continue
-        }
-        // Otherwise, fall through to allow patterns like obj?.[...]
       }
 
-      // If the next token does not start an accessor, we're done
       const hasNextAccessor =
         (state.token === '(' || state.token === '[' || state.token === '.') &&
         (!types || types.includes(state.token))
 
-      if (!hasNextAccessor) {
-        // A dangling '?.' without a following accessor is a syntax error
-        if (optional) {
-          throw createSyntaxError(state, 'Unexpected operator ?.')
-        }
+      if (!(optional || hasNextAccessor)) {
         break
       }
 
       params = []
 
       if (state.token === '(') {
-        if (isSymbolNode(node) || isAccessorNode(node)) {
-          // function invocation like fn(2, 3) or obj.fn(2, 3)
+        if (optional || isSymbolNode(node) || isAccessorNode(node)) {
+          // function invocation: fn(2, 3) or obj.fn(2, 3) or (anything)?.(2, 3)
           openParams(state)
           getToken(state)
 
@@ -1453,7 +1448,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           closeParams(state)
           getToken(state)
 
-          node = new FunctionNode(node, params)
+          node = new FunctionNode(node, params, optional)
         } else {
           // implicit multiplication like (2+3)(4+5) or sqrt(2)(1+2)
           // don't parse it here but let it be handled by parseImplicitMultiplication
@@ -1484,12 +1479,15 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         node = new AccessorNode(node, new IndexNode(params), optional)
       } else {
         // dot notation like variable.prop
-        getToken(state)
+        // consume the `.` (if it was ?., already consumed):
+        if (!optional) getToken(state)
 
         const isPropertyName = state.tokenType === TOKENTYPE.SYMBOL ||
           (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)
         if (!isPropertyName) {
-          throw createSyntaxError(state, 'Property name expected after dot')
+          let message = 'Property name expected after '
+          message += optional ? 'optional chain' : 'dot'
+          throw createSyntaxError(state, message)
         }
 
         params.push(new ConstantNode(state.token))
