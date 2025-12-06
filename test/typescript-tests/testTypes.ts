@@ -3176,3 +3176,63 @@ Match types of exact positional arguments.
   expectTypeOf(mixArray3).toMatchTypeOf<MathArray<MathScalarType>>()
   expectTypeOf(unitArray3).toMatchTypeOf<MathArray<Unit>>()
 }
+
+/*
+Numerator and Denominator examples
+*/
+{
+  const math = create(all, {})
+
+  // Basic fraction tests
+  assert.strictEqual(math.num(math.fraction(2, 3)), BigInt(2))
+  assert.strictEqual(math.num(math.fraction(5, 8)), BigInt(5))
+  assert.strictEqual(math.den(math.fraction(2, 3)), BigInt(3))
+  assert.strictEqual(math.den(math.fraction(5, 8)), BigInt(8))
+  // BigNumber tests
+  assert.strictEqual(math.num(math.bignumber('0.5')), BigInt(1))
+  assert.strictEqual(math.den(math.bignumber('0.5')), BigInt(2))
+  assert.strictEqual(math.num(math.bignumber('1.5')), BigInt(3))
+  assert.strictEqual(math.den(math.bignumber('1.5')), BigInt(2))
+  expectTypeOf(math.num(math.bignumber('0.5'))).toMatchTypeOf<bigint>()
+  expectTypeOf(math.den(math.bignumber('0.5'))).toMatchTypeOf<bigint>()
+
+  // Negative fractions - sign is always in numerator
+  assert.strictEqual(math.num(math.fraction(-2, 3)), BigInt(-2))
+  assert.strictEqual(math.num(math.fraction(2, -3)), BigInt(-2))
+  assert.strictEqual(math.den(math.fraction(-2, 3)), BigInt(3))
+  assert.strictEqual(math.den(math.fraction(2, -3)), BigInt(3))
+
+  // Type checks
+  expectTypeOf(math.num(math.fraction(2, 3))).toMatchTypeOf<bigint>()
+  expectTypeOf(math.den(math.fraction(2, 3))).toMatchTypeOf<bigint>()
+
+  // Array of fractions
+  const fractionArray = [math.fraction(1, 2), math.fraction(3, 4)]
+  expectTypeOf(math.num(fractionArray)).toMatchTypeOf<MathArray>()
+  expectTypeOf(math.den(fractionArray)).toMatchTypeOf<MathArray>()
+  assert.deepStrictEqual(math.num(fractionArray), [BigInt(1), BigInt(3)])
+  assert.deepStrictEqual(math.den(fractionArray), [BigInt(2), BigInt(4)])
+
+  // Matrix of fractions
+  const fractionMatrix = math.matrix([math.fraction(1, 2), math.fraction(3, 4)])
+  expectTypeOf(math.num(fractionMatrix)).toMatchTypeOf<Matrix>()
+  expectTypeOf(math.den(fractionMatrix)).toMatchTypeOf<Matrix>()
+  assert.deepStrictEqual(
+    math.num(fractionMatrix),
+    math.matrix([BigInt(1), BigInt(3)])
+  )
+  assert.deepStrictEqual(
+    math.den(fractionMatrix),
+    math.matrix([BigInt(2), BigInt(4)])
+  )
+
+  // Chaining
+  expectTypeOf(
+    math.chain(math.fraction(2, 3)).num().done()
+  ).toMatchTypeOf<bigint>()
+  expectTypeOf(
+    math.chain(math.fraction(2, 3)).den().done()
+  ).toMatchTypeOf<bigint>()
+  assert.strictEqual(math.chain(math.fraction(2, 3)).num().done(), BigInt(2))
+  assert.strictEqual(math.chain(math.fraction(2, 3)).den().done(), BigInt(3))
+}

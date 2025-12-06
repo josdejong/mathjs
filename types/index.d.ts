@@ -1819,19 +1819,21 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Get the numerator of a fraction. For a fraction a/b, the function
    * returns a. For matrices, the function is evaluated element wise.
-   * @param x A fraction or array with fractions
+   * @param x A fraction, BigNumber, or array with fractions
    * @returns The numerator of x
    */
-  num(x: Fraction): number
+  num(x: Fraction): bigint
+  num(x: BigNumber): bigint
   num<T extends MathCollection>(x: T): T
 
   /**
    * Get the denominator of a fraction. For a fraction a/b, the function
    * returns b. For matrices, the function is evaluated element wise.
-   * @param x A fraction or array with fractions
+   * @param x A fraction, BigNumber, or array with fractions
    * @returns The denominator of x
    */
-  den(x: Fraction): number
+  den(x: Fraction): bigint
+  den(x: BigNumber): bigint
   den<T extends MathCollection>(x: T): T
 
   /*************************************************************************
@@ -5944,14 +5946,16 @@ export interface MathJsChain<TValue> {
    * Get the numerator of a fraction. For a fraction a/b, the function
    * returns a. For matrices, the function is evaluated element wise.
    */
-  num(this: MathJsChain<Fraction>): MathJsChain<number>
+  num(this: MathJsChain<Fraction>): MathJsChain<bigint>
+  num(this: MathJsChain<BigNumber>): MathJsChain<bigint>
   num(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
   /**
    * Get the denominator of a fraction. For a fraction a/b, the function
    * returns b. For matrices, the function is evaluated element wise.
    */
-  den(this: MathJsChain<Fraction>): MathJsChain<number>
+  den(this: MathJsChain<Fraction>): MathJsChain<bigint>
+  den(this: MathJsChain<BigNumber>): MathJsChain<bigint>
   den(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
   /*************************************************************************
