@@ -899,6 +899,18 @@ describe('multiply', function () {
     })
   })
 
+  describe('Range', function () {
+    it('should keep the result a Range when possible', function () {
+      assert.deepStrictEqual(
+        multiply(math.range(2, 5), 7),
+        new math.Range({ start: 14, step: 7, length: 3 }))
+      const frac = math.fraction
+      assert.deepStrictEqual(
+        multiply(frac(1, 3), math.range(2n, 5n)),
+        new math.Range(frac(2, 3), frac(5, 3), frac(1, 3)))
+    })
+  })
+
   describe('multiple arguments', function () {
     it('should multiply more than two arguments', function () {
       assert.deepStrictEqual(multiply(2, 3, 4), 24)

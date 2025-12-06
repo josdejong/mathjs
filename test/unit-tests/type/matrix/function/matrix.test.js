@@ -76,6 +76,14 @@ describe('matrix', function () {
     assert.deepStrictEqual(math.size(d), [5])
   })
 
+  it('should create Ranges', function () {
+    const r1 = math.range(1, 6)
+    const r2 = matrix(r1, 'range')
+    assert.ok(r1 !== r2)
+    assert.deepStrictEqual(r1, r2)
+    assert.deepStrictEqual(matrix([1, 2, 3, 4, 5], 'range'), r1)
+  })
+
   it('should throw an error if called with an invalid argument', function () {
     assert.throws(function () { matrix(new Date()) }, TypeError)
   })

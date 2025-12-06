@@ -42,6 +42,92 @@ describe('range', function () {
       assert.deepStrictEqual(r.size(), [0])
     })
 
+    it('should create ranges from attributes', function () {
+      const frac = math.fraction
+      assert.deepStrictEqual(new Range({}).toArray(), [])
+
+      assert.deepStrictEqual(new Range({ start: 3 }).toArray(), [])
+      assert.deepStrictEqual(new Range({ end: 3 }).toArray(), [0, 1, 2])
+      assert.deepStrictEqual(new Range({ step: 3 }).toArray(), [])
+      assert.deepStrictEqual(new Range({ last: 3 }).toArray(), [0, 1, 2, 3])
+      assert.deepStrictEqual(new Range({ length: 3 }).toArray(), [0, 1, 2])
+
+      assert.deepStrictEqual(
+        new Range({ start: 3, end: 7 }).toArray(), [3, 4, 5, 6])
+      assert.deepStrictEqual(
+        new Range({ start: 3, step: 3 }).toArray(), [])
+      assert.deepStrictEqual(
+        new Range({ start: 3, last: 7 }).toArray(), [3, 4, 5, 6, 7])
+      assert.deepStrictEqual(
+        new Range({ start: 3, length: 3 }).toArray(), [3, 4, 5])
+      assert.deepStrictEqual(
+        new Range({ end: 7, step: 3 }).toArray(), [0, 3, 6])
+      assert.deepStrictEqual(
+        new Range({ end: 7, last: 6 }).toArray(), [0, 1, 2, 3, 4, 5, 6])
+      assert.deepStrictEqual( // last takes precedence:
+        new Range({ end: 7, last: 3 }).toArray(), [0, 1, 2, 3])
+      assert.deepStrictEqual(
+        new Range({ end: 7, length: 3 }).toArray(), [4, 5, 6])
+      assert.deepStrictEqual(
+        new Range({ step: 3, last: 7 }).toArray(), [0, 3, 6])
+      assert.deepStrictEqual(
+        new Range({ step: 3, length: 3 }).toArray(), [0, 3, 6])
+      assert.deepStrictEqual(
+        new Range({ length: 3, last: 7 }).toArray(), [5, 6, 7])
+
+      assert.deepStrictEqual(
+        new Range({ step: 3, last: 7, length: 3 }).toArray(), [1, 4, 7])
+      assert.deepStrictEqual(
+        new Range({ end: 3, last: 7, length: 3 }).toArray(), [5, 6, 7])
+      assert.deepStrictEqual(
+        new Range({ step: 3, end: 12, length: 3 }).toArray(), [3, 6, 9])
+      assert.deepStrictEqual(
+        new Range({ step: 3, end: 3, last: 10 }).toArray(), [0, 3, 6, 9])
+      assert.deepStrictEqual(
+        new Range({ start: 7, last: 3, length: 3 }).toArray(), [7, 5, 3])
+      assert.deepStrictEqual(
+        new Range({ step: 7, start: 6, length: 3 }).toArray(), [6, 13, 20])
+      assert.deepStrictEqual(
+        new Range({ step: 7, start: 3, last: 12 }).toArray(), [3, 10])
+      assert.deepStrictEqual(
+        new Range({ start: frac(3), end: frac(7), length: 3 }).toArray(),
+        [frac(3), frac(13, 3), frac(17, 3)])
+      assert.deepStrictEqual(
+        new Range({ start: 3, end: 3, last: 4 }).toArray(), [3, 4])
+      assert.deepStrictEqual(
+        new Range({ start: 3, step: 2, end: 7 }).toArray(), [3, 5])
+
+      assert.deepStrictEqual(
+        new Range({ end: -3, step: -1, last: 3, length: 4 }).toArray(),
+        [6, 5, 4, 3])
+      assert.deepStrictEqual( // last overridden when start, step, length given
+        new Range({ start: 5, step: -1, last: 3, length: 4 }).toArray(),
+        [5, 4, 3, 2])
+      assert.deepStrictEqual(
+        new Range({ start: 5, end: 3, last: 3.5, length: 4 }).toArray(),
+        [5, 4.5, 4, 3.5])
+      assert.deepStrictEqual( // end overridden similarly
+        new Range({ start: 5, end: 3, step: 2, length: 3 }).toArray(),
+        [5, 7, 9])
+      assert.deepStrictEqual(
+        new Range({ start: 5, end: 3, step: 3, last: 10 }).toArray(),
+        [5, 8])
+
+      assert.deepStrictEqual(
+        new Range({ start: 2, end: 20, step: -0.25, last: 10, length: 3 })
+          .toArray(),
+        [2, 1.75, 1.5])
+    })
+
+    it('can make 2D ranges', function () {
+      assert.deepStrictEqual(
+        new Range({ start: [1, 3], step: [1, -1], length: 3 }).toArray(),
+        [[1, 3], [2, 2], [3, 1]])
+      assert.deepStrictEqual(
+        new Range({ start: [1, 3, 5], last: [0, 0, 0], length: 3 }).toArray(),
+        [[1, 3, 5], [0.5, 1.5, 2.5], [0, 0, 0]])
+    })
+
     it('should throw an error when created without new keyword', function () {
       assert.throws(function () { Range(0, 10) }, /Constructor must be called with the new operator/)
     })

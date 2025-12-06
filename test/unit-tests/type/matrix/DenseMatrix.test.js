@@ -488,6 +488,8 @@ describe('DenseMatrix', function () {
       m = new DenseMatrix(math.range(0, 10))
       assert.deepStrictEqual(m.size(), [10])
       assert.deepStrictEqual(m.subset(index(new Range(2, 5))).valueOf(), [2, 3, 4])
+      assert.deepStrictEqual(
+        m.subset(index('6:')), new DenseMatrix([6, 7, 8, 9], 'number'))
 
       // get 2-dimensional
       m = new DenseMatrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
@@ -499,6 +501,7 @@ describe('DenseMatrix', function () {
       assert.deepStrictEqual(m.subset(index(new Range(1, 3), 1)).valueOf(), [5, 8])
       assert.deepStrictEqual(m.subset(index(new Range(1, 3), 2)).valueOf(), [6, 9])
       assert.deepStrictEqual(m.subset(index([0, 1, 2], [1])).valueOf(), [[2], [5], [8]])
+      assert.deepStrictEqual(m.layer(1), new DenseMatrix([4, 5, 6]))
 
       // get n-dimensional
       m = new DenseMatrix([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])

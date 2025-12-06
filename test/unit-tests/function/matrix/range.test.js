@@ -23,6 +23,7 @@ describe('range', function () {
   })
 
   it('should create a range start:1:end if called with 2 numbers', function () {
+    assert.deepStrictEqual(range(3, 6), new Range(3, 6))
     assert.deepStrictEqual(range(3, 6).valueOf(), [3, 4, 5])
     assert.deepStrictEqual(range(1, 6).valueOf(), [1, 2, 3, 4, 5])
     assert.deepStrictEqual(range(1, 6.1).valueOf(), [1, 2, 3, 4, 5, 6])
@@ -31,6 +32,7 @@ describe('range', function () {
   })
 
   it('should create a range start:step:end if called with 3 numbers', function () {
+    assert.deepStrictEqual(range(0, 10, 2), new Range(0, 10, 2))
     assert.deepStrictEqual(range(0, 10, 2).valueOf(), [0, 2, 4, 6, 8])
     assert.deepStrictEqual(range(5, 0, -1).valueOf(), [5, 4, 3, 2, 1])
     assert.deepStrictEqual(range(2, -4, -2).valueOf(), [2, 0, -2])
@@ -78,6 +80,7 @@ describe('range', function () {
   })
 
   it('should create a range with bigints', function () {
+    assert.deepStrictEqual(range(1n, 3n), new Range(1n, 3n))
     assert.deepStrictEqual(range(1n, 3n).valueOf(), [1n, 2n])
     assert.deepStrictEqual(range(3n, 1n, -1n).valueOf(), [3n, 2n])
     assert.deepStrictEqual(range(1n, 3n, true).valueOf(), [1n, 2n, 3n])
@@ -85,6 +88,7 @@ describe('range', function () {
   })
 
   it('should handle mixed numbers and bigints appropriately', function () {
+    assert.deepStrictEqual(range(1n, 3), new Range(1n, 3n))
     assert.deepStrictEqual(range(1n, 3).valueOf(), [1n, 2n])
     assert.deepStrictEqual(range(3, 1n, -1n).valueOf(), [3, 2])
     assert.deepStrictEqual(range(3n, 1, -1).valueOf(), [3, 2])
@@ -96,8 +100,9 @@ describe('range', function () {
   })
 
   it('should create a range with bignumbers', function () {
-    assert.deepStrictEqual(
-      range(bignumber(1), bignumber(3)).valueOf(), [bignumber(1), bignumber(2)])
+    const bigRange = range(bignumber(1), bignumber(3))
+    assert.deepStrictEqual(bigRange, new Range(bignumber(1), bignumber(3)))
+    assert.deepStrictEqual(bigRange.valueOf(), [bignumber(1), bignumber(2)])
     assert.deepStrictEqual(
       range(bignumber(3), bignumber(1), bignumber(-1)).valueOf(),
       [bignumber(3), bignumber(2)])
@@ -220,9 +225,10 @@ describe('range', function () {
 
     it('should handle Fractions', function () {
       const frac = math.fraction
+      const fRange = range(frac(1, 3), frac(10, 3))
+      assert.deepStrictEqual(fRange, new Range(frac(1, 3), frac(10, 3)))
       assert.deepStrictEqual(
-        range(frac(1, 3), frac(10, 3)).valueOf(),
-        [frac(1, 3), frac(4, 3), frac(7, 3)])
+        fRange.valueOf(), [frac(1, 3), frac(4, 3), frac(7, 3)])
       assert.deepStrictEqual(
         range(frac(1, 3), frac(7, 3), true).valueOf(),
         [frac(1, 3), frac(4, 3), frac(7, 3)])

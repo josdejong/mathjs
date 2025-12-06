@@ -59,6 +59,13 @@ describe('prod', function () {
     assert.strictEqual(prod(new DenseMatrix([1, 3, 5, 2])), 30)
   })
 
+  it('should return the prod of a Range', function () {
+    assert.strictEqual(prod(math.range(8, 1, -2)), 8 * 6 * 4 * 2) // 8!!
+    // and 2.5 rising 4:
+    assert.strictEqual(
+      prod(math.range({ start: 2.5, length: 4 })), 2.5 * 3.5 * 4.5 * 5.5)
+  })
+
   it('should return the prod element from a 2d array', function () {
     assert.deepStrictEqual(prod([
       [1, 7, 2],

@@ -79,6 +79,11 @@ describe('concat', function () {
     ])
   })
 
+  it('should keep Ranges if possible', function () {
+    assert.deepStrictEqual(
+      math.concat(math.range(2, 10), math.range(10, 20)), new math.Range(2, 20))
+  })
+
   it('should concatenate strings', function () {
     assert.strictEqual(math.concat('a', 'b'), 'ab')
     assert.strictEqual(math.concat('a', 'b', 'c'), 'abc')

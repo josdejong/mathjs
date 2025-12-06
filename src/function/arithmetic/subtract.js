@@ -66,7 +66,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
         return r.createRange({
           start: self(r.start, p.start),
           length: r.length,
-          step: self(r.ste, p.step)
+          step: self(r.step, p.step)
         })
       }),
       'Range, Matrix': typed.referToSelf(

@@ -144,7 +144,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
           fields[key] = val
         }
         if (fields.start === '') fields.start = index.shiftPosition
-        if (fields.end === '') fields.end = size[dim] + index.shiftPosition - 1
+        if (fields.end === '') fields.end = size[dim] + index.shiftPosition
         fields.start -= index.shiftPosition
         fields.end -= index.shiftPosition
         const attributes = index.includeEnd

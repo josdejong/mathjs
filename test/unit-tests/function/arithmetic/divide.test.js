@@ -210,6 +210,14 @@ describe('divide', function () {
     assert.throws(function () { divide(a, [[1]]) })
   })
 
+  describe('Range', function () {
+    it('should keep the result a Range when possible', function () {
+      assert.deepStrictEqual(
+        divide(math.range(2, 5), 7),
+        new math.Range({ start: 2 / 7, step: 1 / 7, length: 3 }))
+    })
+  })
+
   /*
   // These are supported now --ericman314
   it('should throw an error if dividing a number by a unit', function() {

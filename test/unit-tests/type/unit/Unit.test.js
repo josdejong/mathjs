@@ -80,6 +80,7 @@ describe('Unit', function () {
     it('should create a unitless Unit if second parameter is undefined', function () {
       const a = new Unit(6)
       assert(a.dimensions.every(d => d === 0))
+      assert.strictEqual(a.unitless(), true)
     })
 
     it('should ignore properties on Object.prototype', function () {

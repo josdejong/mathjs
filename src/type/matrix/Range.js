@@ -209,7 +209,8 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
           // if the span is computed in bigints, we want a bigint increment
           let bigi = isBigInt(span)
           bigi ||= isMatrix(span) && span.datatype() === 'bigint'
-          bigi ||= Array.isArray(span) && getArrayDataType(span) === 'bigint'
+          bigi ||= Array.isArray(span) &&
+            getArrayDataType(span, typeOf) === 'bigint'
           const denominator = bigi ? BigInt(segments) : segments
           attributes.step = divide(span, denominator)
         }
@@ -428,7 +429,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * @return {string}           The storage format.
    */
-  Matrix.prototype.storage = function () {
+  Range.prototype.storage = function () {
     return 'range' // neither 'sparse' or 'dense' seemed fair
   }
 

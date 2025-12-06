@@ -5,6 +5,7 @@ const name = 'matrix'
 const dependencies = ['typed', 'Matrix', 'DenseMatrix', 'SparseMatrix', 'Range']
 
 export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Matrix, DenseMatrix, SparseMatrix, Range }) => {
+  const rangeCreator = new Range() // dummy to use to get access to .create()
   /**
    * Create a Matrix. The function creates a new `math.Matrix` object from
    * an `Array`. A Matrix has utility functions to manipulate the data in the
@@ -88,7 +89,7 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
           start: data.start, step: data.step, length: data.length
         })
       }
-      return new Range(data)
+      return rangeCreator.create(data)
     }
 
     throw new TypeError('Unknown matrix type ' + JSON.stringify(format) + '.')
