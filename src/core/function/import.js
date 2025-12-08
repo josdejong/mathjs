@@ -58,9 +58,10 @@ export function importFactory (typed, load, math, importedFactories) {
    *
    * History:
    *
-   *    v0.2  Created
-   *    v0.7  Changed second parameter to an options object
-   *    v2    Dropped support for direct import of a module by name
+   *    v0.2   Created
+   *    v0.7   Changed second parameter to an options object
+   *    v2     Dropped support for direct import of a module by name
+   *    v14.2  Add facility for specifying the former name of an import
    *
    * @param {Object | Array} functions  Object with functions to be imported.
    * @param {Object} [options]          Import options.

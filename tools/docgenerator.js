@@ -361,7 +361,7 @@ export function generateDoc (name, code) {
     description: '',
     syntax: [],
     where: [],
-    history: {}.
+    history: {},
     examples: [],
     seeAlso: [],
     parameters: [],

@@ -121,11 +121,12 @@ export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * History:
    *
-   *    v0.4   Created
-   *    v0.7   Round to a consistent number of digits (rather than decimals)
-   *    v0.15  Added multiple number notations and configurable precision
-   *    v3     Added support for JSON objects
-   *    v9     Added binary, hexadecimal, and octal notations
+   *    v0.4     Created
+   *    v0.7     Round to a consistent number of digits (rather than decimals)
+   *    v0.15    Added multiple number notations and configurable precision
+   *    v3       Added support for JSON objects
+   *    v9       Added binary, hexadecimal, and octal notations
+   *    v10.4.2  Add `truncate` option
    *
    * @param {*} value                               Value to be stringified
    * @param {Object | Function | number} [options]  Formatting options

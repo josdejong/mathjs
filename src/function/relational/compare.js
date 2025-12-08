@@ -62,6 +62,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *    v0.19  Created
    *    v4     Changed to compare strings by numerical value
+   *    v13    Change to use separate relative and absolute tolerances
    *
    * @param  {number | BigNumber | bigint | Fraction | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | Fraction | Unit | string | Array | Matrix} y Second value to compare
