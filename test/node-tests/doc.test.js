@@ -354,10 +354,50 @@ const knownUndocumented = new Set([
   'wienDisplacement'
 ])
 
+// Functions yet to obtain individual History listings:
+const knownNoHistory = new Set([
+  'config', 'typed', 'derivative', 'leafCount', 'lsolve', 'lsolveAll', 'lup',
+  'lusolve', 'lyap', 'qr', 'rationalize', 'resolve', 'schur', 'simplify',
+  'simplifyConstant', 'simplifyCore', 'slu', 'sylvester', 'symbolicEqual',
+  'usolve', 'usolveAll', 'abs', 'add', 'cbrt', 'ceil', 'cube', 'divide',
+  'dotDivide', 'dotMultiply', 'dotPow', 'exp', 'expm', 'expm1', 'fix', 'floor',
+  'gcd', 'hypot', 'invmod', 'lcm', 'log10', 'log1p', 'log2', 'mod', 'multiply',
+  'norm', 'nthRoot', 'nthRoots', 'pow', 'round', 'sign', 'sqrt', 'sqrtm',
+  'square', 'subtract', 'unaryMinus', 'unaryPlus', 'xgcd', 'bitAnd', 'bitNot',
+  'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift',
+  'bellNumbers', 'catalan', 'composition', 'stirlingS2', 'arg', 'conj', 'im',
+  're', 'compile', 'evaluate', 'help', 'parser', 'distance', 'intersect',
+  'and', 'not', 'nullish', 'or', 'xor', 'column', 'concat', 'count', 'cross',
+  'ctranspose', 'det', 'diag', 'diff', 'dot', 'eigs', 'fft', 'filter',
+  'flatten', 'forEach', 'getMatrixDataType', 'identity', 'ifft', 'inv', 'kron',
+  'mapSlices', 'matrixFromColumns', 'matrixFromFunction', 'matrixFromRows',
+  'ones', 'partitionSelect', 'pinv', 'range', 'reshape', 'resize', 'rotate',
+  'rotationMatrix', 'row', 'size', 'sort', 'squeeze', 'subset', 'trace',
+  'transpose', 'zeros', 'solveODE', 'bernoulli', 'combinations',
+  'combinationsWithRep', 'factorial', 'gamma', 'kldivergence', 'lgamma',
+  'multinomial', 'permutations', 'pickRandom', 'random', 'randomInt',
+  'compareNatural', 'compareText', 'deepEqual', 'equal', 'equalText', 'larger',
+  'largerEq', 'smaller', 'smallerEq', 'unequal', 'setCartesian',
+  'setDifference', 'setDistinct', 'setIntersect', 'setIsSubset',
+  'setMultiplicity', 'setPowerset', 'setSize', 'setSymDifference', 'setUnion',
+  'freqz', 'zpk2tf', 'erf', 'zeta', 'corr', 'cumsum', 'mad', 'max', 'mean',
+  'median', 'min', 'mode', 'prod', 'quantileSeq', 'std', 'sum', 'variance',
+  'acos', 'acosh', 'acot', 'acoth', 'acsc', 'acsch', 'asec', 'asech', 'asin',
+  'asinh', 'atan', 'atan2', 'atanh', 'cos', 'cosh', 'cot', 'coth', 'csc',
+  'csch', 'sec', 'sech', 'sin', 'sinh', 'tan', 'tanh', 'to', 'toBest', 'bin',
+  'clone', 'hasNumericValue', 'hex', 'isBounded', 'isFinite', 'isInteger',
+  'isNaN', 'isNegative', 'isNumeric', 'isPositive', 'isPrime', 'isZero',
+  'oct', 'print', 'typeOf', 'bignumber', 'chain', 'number', 'splitUnit'
+])
+
 describe('Testing examples from (jsdoc) comments', function () {
   const allNames = Object.keys(math)
   const srcPath = path.resolve(__dirname, '../../src') + '/'
   const allDocs = collectDocs(allNames, srcPath)
+
+  const ignoreInternals = name => name.substr(0, 1) === '_' ||
+        name.substr(-12) === 'Dependencies' ||
+        name.substr(0, 6) === 'create'
 
   it("should cover all names (but doesn't yet)", function () {
     const documented = new Set(Object.keys(allDocs))
@@ -365,13 +405,24 @@ describe('Testing examples from (jsdoc) comments', function () {
       return !(documented.has(name) ||
                OKundocumented.has(name) ||
                knownUndocumented.has(name) ||
-               name.substr(0, 1) === '_' ||
-               name.substr(-12) === 'Dependencies' ||
-               name.substr(0, 6) === 'create'
+               ignoreInternals(name)
       )
     })
     assert.deepEqual(badUndocumented, [])
   })
+
+  it("should have history for all functions (but doesn't yet)", function () {
+    const badNoHistory = Object.keys(allDocs).filter(name => {
+      if (ignoreInternals(name)) return false
+      const doc = allDocs[name]
+      const history = doc.doc?.history
+      if (knownNoHistory.has(name)) return false
+      if (history && Object.keys(history).length) return false
+      return true
+    })
+    assert.deepEqual(badNoHistory, [])
+  })
+
   const byCategory = {}
   for (const fun of Object.values(allDocs)) {
     if (!(fun.category in byCategory)) {
