@@ -20,7 +20,7 @@ export const createMatAlgo15xAs = /* #__PURE__ */ factory(name, dependencies, ()
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
    */
-  return function matAlgo14xDs (a, b, cf, inverse) {
+  return function matAlgo15xAs (a, b, cf, inverse) {
     return inverse ? map(a, v => cf(b, v)) : map(a, v => cf(v, b))
   }
 })
