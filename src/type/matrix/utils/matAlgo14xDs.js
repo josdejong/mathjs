@@ -1,5 +1,4 @@
 import { factory } from '../../../utils/factory.js'
-import { clone } from '../../../utils/object.js'
 
 const name = 'matAlgo14xDs'
 const dependencies = ['typed']
@@ -21,11 +20,6 @@ export const createMatAlgo14xDs = /* #__PURE__ */ factory(name, dependencies, ({
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
    */
   return function matAlgo14xDs (a, b, callback, inverse) {
-    // a arrays
-    const adata = a._data
-    const asize = a._size
-    const adt = a._datatype
-
     // datatype
     let dt
     // callback signature to use
@@ -34,42 +28,13 @@ export const createMatAlgo14xDs = /* #__PURE__ */ factory(name, dependencies, ({
     // process data types
     if (typeof adt === 'string') {
       // datatype
-      dt = adt
+      dt = a._datatype
       // convert b to the same datatype
       b = typed.convert(b, dt)
       // callback
       cf = typed.find(callback, [dt, dt])
     }
 
-    // populate cdata, iterate through dimensions
-    const cdata = asize.length > 0 ? _iterate(cf, 0, asize, asize[0], adata, b, inverse) : []
-
-    // c matrix
-    return a.createDenseMatrix({
-      data: cdata,
-      size: clone(asize),
-      datatype: dt
-    })
-  }
-
-  // recursive function
-  function _iterate (f, level, s, n, av, bv, inverse) {
-    // initialize array for this level
-    const cv = []
-    // check we reach the last level
-    if (level === s.length - 1) {
-      // loop arrays in last level
-      for (let i = 0; i < n; i++) {
-        // invoke callback and store value
-        cv[i] = inverse ? f(bv, av[i]) : f(av[i], bv)
-      }
-    } else {
-      // iterate current level
-      for (let j = 0; j < n; j++) {
-        // iterate next level
-        cv[j] = _iterate(f, level + 1, s, s[level + 1], av[j], bv, inverse)
-      }
-    }
-    return cv
+    return inverse ? a.map(v => cf(b, v)) : a.map(v => cf(v, b))
   }
 })
