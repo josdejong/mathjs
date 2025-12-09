@@ -2321,6 +2321,7 @@ describe('parse', function () {
         assert.strictEqual(parseAndEval('2 > 3 ? true : false'), false)
         assert.strictEqual(parseAndEval('2 == 3 ? true : false'), false)
         assert.strictEqual(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6)
+        assert.strictEqual(parseAndEval('true ? false : false nand true'), false)
         assert.deepStrictEqual(parseAndEval('3 ? true : false; 22'), new ResultSet([22]))
         assert.deepStrictEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'))
         assert.deepStrictEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), math.matrix([1, 2]))
@@ -2346,8 +2347,7 @@ describe('parse', function () {
       })
 
       it('should respect precedence between bitwise or | and logical nand', function () {
-        assert.strictEqual(parseAndEval('2 | 2 nand 4'), false)
-        assert.strictEqual(parseAndEval('4 nand 2 | 2'), false)
+        assert.strictEqual(parseAndEval('true nand true | true'), false)
       })
 
       it('should respect precedence between bitwise xor ^| and bitwise or |', function () {
@@ -2371,12 +2371,17 @@ describe('parse', function () {
 
       it('should respect precedence between logical nand and or', function () {
         assert.strictEqual(parseAndEval('true nand false or true'), true)
-        assert.strictEqual(parseAndEval('true nand (false or true)'), false)
+        assert.strictEqual(parseAndEval('false or true nand true'), false)
       })
 
       it('should respect precedence between logical nand and and', function () {
-        assert.strictEqual(parseAndEval('false and false nand true'), true)
-        assert.strictEqual(parseAndEval('false and (false nand true)'), false)
+        assert.strictEqual(parseAndEval('true nand true and false'), true)
+        assert.strictEqual(parseAndEval('true nand false and false'), true)
+      })
+
+      it('should respect precedence between logical nand and xor', function () {
+        assert.strictEqual(parseAndEval('false nand false xor true'), true)
+        assert.strictEqual(parseAndEval('false nand true xor true'), true)
       })
 
       it('should respect precedence of conditional operator and logical or', function () {
@@ -2389,13 +2394,22 @@ describe('parse', function () {
       })
 
       it('should respect precedence between logical nor and or', function () {
-        assert.strictEqual(parseAndEval('true nor false or true'), true)
-        assert.strictEqual(parseAndEval('true nor (false or true)'), false)
+        assert.strictEqual(parseAndEval('true or false nor true'), true)
+        assert.strictEqual(parseAndEval('true or true nor false'), true)
+      })
+
+      it('should respect precedence between logical nor and bitwise or |', function () {
+        assert.strictEqual(parseAndEval('true nor false | true'), false)
+        assert.strictEqual(parseAndEval('false nor false | true'), false)
       })
 
       it('should respect precedence between logical nor and and', function () {
         assert.strictEqual(parseAndEval('false nor true and false'), false)
-        assert.strictEqual(parseAndEval('false nor (true and false)'), true)
+        assert.strictEqual(parseAndEval('true and false nor false'), true)
+      })
+
+      it('should respect precedence between logical nor and xor', function () {
+        assert.strictEqual(parseAndEval('false xor false nor true'), false)
       })
 
       it('should respect precedence of conditional operator and logical nor', function () {
