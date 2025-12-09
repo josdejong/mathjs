@@ -802,6 +802,15 @@ The results can be read from a `ResultSet` via the property `ResultSet.entries`
 which is an `Array`, or by calling `ResultSet.valueOf()`, which returns the
 array with results.
 
+### Empty expressions
+
+The empty string and any expression consisting solely of whitespace denotes the
+value `undefined`. Such an expression can also occur in a multi-expression
+block separated by `;`, in which case it is simply ignored. (In a
+multi-expression block separated by newlines, empty or whitespace-only
+substrings between newlines are absorbed into the separators, and so are not
+expressions at all.) In all other cases, such as one of the clauses of a
+conditional ternary operator, an empty expression is a syntax error.
 
 ## Implicit multiplication
 

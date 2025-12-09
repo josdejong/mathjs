@@ -1904,6 +1904,18 @@ export interface MathJsInstance extends MathJsFactory {
   ): boolean | MathCollection
 
   /**
+   * Nullish coalescing operator (??). Returns the right-hand side operand
+   * when the left-hand side operand is null or undefined, and otherwise
+   * returns the left-hand side operand. For matrices, the function is
+   * evaluated element wise.
+   * @param x First value to check
+   * @param y Fallback value
+   * @returns Returns y when x is null or undefined, otherwise returns x
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  nullish(x: any, y: any): any
+
+  /**
    * Logical or. Test if at least one value is defined with a
    * nonzero/nonempty value. For matrices, the function is evaluated
    * element wise.
@@ -4108,6 +4120,7 @@ export const {
   andDependencies,
   nandDependencies,
   notDependencies,
+  nullishDependencies,
   orDependencies,
   norDependencies,
   xorDependencies,
@@ -6029,6 +6042,16 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<boolean | MathCollection>
 
   /**
+   * Nullish coalescing operator (??). Returns the right-hand side operand
+   * when the left-hand side operand is null or undefined, and otherwise
+   * returns the left-hand side operand. For matrices, the function is
+   * evaluated element wise.
+   * @param y Fallback value
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  nullish(this: MathJsChain<any>, y: any): MathJsChain<any>
+
+  /**
    * Logical or. Test if at least one value is defined with a
    * nonzero/nonempty value. For matrices, the function is evaluated
    * element wise.
@@ -7663,6 +7686,7 @@ export const {
   and,
   nand,
   not,
+  nullish,
   or,
   nor,
   xor,
