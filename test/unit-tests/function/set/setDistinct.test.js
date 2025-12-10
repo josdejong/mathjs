@@ -9,10 +9,15 @@ describe('setDistinct', function () {
     assert.deepStrictEqual(math.setDistinct([]), [])
   })
 
+  it('should return the elements of a set in insertion order', function () {
+    assert.deepStrictEqual(math.setDistinct([3, 1, 2, 1, 2]), [3, 1, 2])
+    assert.deepStrictEqual(math.setDistinct(['h', 'e', 'l', 'l', 'o']), ['h', 'e', 'l', 'o'])
+  })
+
   it('should return the distinct elements of a multiset', function () {
     assert.deepStrictEqual(math.setDistinct([1, 1, 2, 2]), [1, 2])
     assert.deepStrictEqual(math.setDistinct([1, 2, 1, 2]), [1, 2])
-    assert.deepStrictEqual(math.setDistinct([1, 2, math.complex(3, 3), 2, math.complex(3, 3)]), [math.complex(3, 3), 1, 2])
+    assert.deepStrictEqual(math.setDistinct([1, 2, math.complex(3, 3), 2, math.complex(3, 3)]), [1, 2, math.complex(3, 3)])
   })
 
   it('should return the same type of output as the inputs', function () {

@@ -8,7 +8,7 @@ export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ 
   /**
    * Collect the distinct elements of a multiset.
    * A multi-dimension array will be converted to a single-dimension array before the operation.
-   * The items of the returned array will be sorted in natural order.
+   * The items of the returned array will be in order of first occurrence.
    *
    * Syntax:
    *
@@ -31,11 +31,11 @@ export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ 
       if (subset(size(a), new Index(0)) === 0) { // if empty, return empty
         result = []
       } else {
-        const b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
+        const b = flatten(Array.isArray(a) ? a : a.toArray())
         result = []
         result.push(b[0])
         for (let i = 1; i < b.length; i++) {
-          if (compareNatural(b[i], b[i - 1]) !== 0) {
+          if (!result.some(item => compareNatural(b[i], item) === 0)) {
             result.push(b[i])
           }
         }
