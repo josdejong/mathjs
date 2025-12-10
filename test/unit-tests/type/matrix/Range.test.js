@@ -120,12 +120,16 @@ describe('range', function () {
     })
 
     it('can make 2D ranges', function () {
-      assert.deepStrictEqual(
-        new Range({ start: [1, 3], step: [1, -1], length: 3 }).toArray(),
-        [[1, 3], [2, 2], [3, 1]])
+      const rng2d = new Range({ start: [1, 3], step: [1, -1], length: 3 })
+      assert.deepStrictEqual(rng2d.toArray(), [[1, 3], [2, 2], [3, 1]])
+      assert.strictEqual(rng2d.toString(), '[1, 3]:[1, -1]:[4, 0]')
       assert.deepStrictEqual(
         new Range({ start: [1, 3, 5], last: [0, 0, 0], length: 3 }).toArray(),
         [[1, 3, 5], [0.5, 1.5, 2.5], [0, 0, 0]])
+      const numberGrid = new Range(new Range(1, 11), new Range(101, 111), 10)
+      assert.strictEqual(numberGrid.get([4, 5]), 46)
+      assert.deepStrictEqual(numberGrid.last, new Range(91, 101))
+      assert.strictEqual(numberGrid.toString(), '(1:11):10:(101:111)')
     })
 
     it('should throw an error when created without new keyword', function () {

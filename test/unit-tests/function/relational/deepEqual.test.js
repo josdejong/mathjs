@@ -49,6 +49,11 @@ describe('deepEqual', function () {
     assert.deepStrictEqual(deepEqual([complex(2, 3), 3], [complex(2, 4), 3]), false)
   })
 
+  it('should compare two units', function () {
+    assert.strictEqual(deepEqual(math.unit(1, 'm'), math.unit(100, 'cm')), true)
+    assert.strictEqual(deepEqual(math.unit(1, 'm'), math.unit(99, 'cm')), false)
+  })
+
   it('should throw an error in case of invalid number of arguments', function () {
     assert.throws(function () { deepEqual(1) }, /TypeError: Too few arguments/)
     assert.throws(function () { deepEqual(1, 2, 3) }, /TypeError: Too many arguments/)

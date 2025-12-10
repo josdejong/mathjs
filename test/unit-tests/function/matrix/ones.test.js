@@ -51,6 +51,10 @@ describe('ones', function () {
     assert.deepStrictEqual(
       oneRange.start, new math.Range({ start: 1, step: 0, length: 3 }))
     assert.strictEqual(oneRange.get([1, 1]), 1)
+    assert.deepStrictEqual(oneRange.toArray(), [[1, 1, 1], [1, 1, 1]])
+    assert.strictEqual(
+      oneRange.toString(),
+      'Range{start: Range{start: 1, step: 0, length: 3}, step: 0, length: 2}')
   })
 
   it('should create a 3D matrix with ones', function () {

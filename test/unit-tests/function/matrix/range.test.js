@@ -269,8 +269,11 @@ describe('range', function () {
     assert.throws(function () { range(math.unit('5cm')) }, TypeError)
   })
 
-  it('should throw an error if called with only two units value', function () {
-    assert.throws(function () { range(math.unit('0cm'), math.unit('5cm')) }, TypeError)
+  it('should use a step of 1 unit when called with two units', function () {
+    const unitRange = range(math.unit(0, 'cm'), math.unit(5, 'cm'))
+    assert.deepStrictEqual(unitRange.step, math.unit(1, 'cm'))
+    assert.strictEqual(unitRange.length, 5)
+    assert.strictEqual(unitRange.toString(), '0 cm:5 cm')
   })
 
   it('should throw an error when called with mismatching units', function () {

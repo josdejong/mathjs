@@ -11,7 +11,7 @@ const dependencies = [
   'typed', 'typeOf', '?Index', '?BigNumber', '?Fraction', '?Complex',
   'Matrix', '?DenseMatrix', 'size', 'getMatrixDataType',
   'one', 'zero', 'add', 'subtract', 'multiply', 'divide', 'scalarDivide',
-  'floor', 'equal', 'smallerEq', 'largerEq', 'isZero', 'isBounded',
+  'floor', 'equal', 'deepEqual', 'smallerEq', 'largerEq', 'isZero', 'isBounded',
   'number', 'numeric', 'format'
 ]
 
@@ -26,7 +26,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
   typed, typeOf, Index, BigNumber, Fraction, Complex,
   Matrix, DenseMatrix, size, getMatrixDataType,
   one, zero, add, subtract, multiply, divide, scalarDivide,
-  floor, equal, smallerEq, largerEq, isZero, isBounded,
+  floor, equal, deepEqual, smallerEq, largerEq, isZero, isBounded,
   number, numeric, format
 }) => {
   // Helpers for constructor; note the canonical attributes correspond positionally
@@ -48,6 +48,24 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     } else bound = attributes.end
     return [bound, segments]
   }
+  const deepZero = entity => deepEqual(entity, zero(entity))
+  function oneUnit (u) {
+    const result = u.clone()
+    let val = one(u.value)
+    // Adjust by the prefixes of the unit
+    for (const spec of u.units) val = multiply(val, spec.prefix.value)
+    result.value = val
+    return result
+  }
+  function firstEntry (collection) {
+    if (Array.isArray(collection)) {
+      while (size(collection).length) collection = collection(0)
+      return collection
+    }
+    const pos = size(collection).map(() => 0)
+    return collection.get(pos)
+  }
+
   // More optimized operator functions, see above.
   const toBigNumber = n => new BigNumber(n)
   const toFraction = n => new Fraction(n)
@@ -214,13 +232,18 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
           const denominator = bigi ? BigInt(segments) : segments
           attributes.step = divide(span, denominator)
         }
-      } else if ('start' in attributes) {
-        attributes.step = one(attributes.start)
-      } else if ('last' in attributes) {
-        attributes.step = one(attributes.last)
-      } else if ('end' in attributes) {
-        attributes.step = one(attributes.end)
-      } else attributes.step = 1
+      } else {
+        let template = attributes.start
+        if (template === undefined) {
+          if ('last' in attributes) template = attributes.last
+          else if ('end' in attributes) template = attributes.end
+          else template = 1
+        }
+        if (size(template).length) template = firstEntry(template)
+        // now we have a scalar!
+        if (isUnit(template)) attributes.step = oneUnit(template)
+        else attributes.step = one(template)
+      }
     } else if (!isBounded(attributes.step)) {
       throw new RangeError('A Range must have a finite increment')
     }
@@ -272,8 +295,16 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
       if ('last' in attributes) {
         if (!isBounded(attributes.last)) attributes.length = Infinity
         else {
-          const rawLength = scalarDivide(
-            subtract(attributes.last, attributes.start), attributes.step)
+          const diff = subtract(attributes.last, attributes.start)
+          let rawLength = scalarDivide(diff, attributes.step)
+          if (rawLength === undefined) {
+            if (size(diff).length > 0 && size(attributes.step) === 0) {
+              const first = firstEntry(diff)
+              if (deepZero(subtract(diff, first))) {
+                rawLength = scalarDivide(first, attributes.step)
+              }
+            }
+          }
           if (rawLength === undefined) {
             let message = `No scalar multiple of ${attributes.step} takes `
             message += `${attributes.start} to ${attributes.last}`
@@ -284,8 +315,16 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
       } else if ('end' in attributes) {
         if (!isBounded(attributes.end)) attributes.length = Infinity
         else {
-          const rawLength = scalarDivide(
-            subtract(attributes.end, attributes.start), attributes.step)
+          const diff = subtract(attributes.end, attributes.start)
+          let rawLength = scalarDivide(diff, attributes.step)
+          if (rawLength === undefined) {
+            if (size(diff).length > 0 && size(attributes.step).length === 0) {
+              const first = firstEntry(diff)
+              if (deepZero(subtract(diff, first))) {
+                rawLength = scalarDivide(first, attributes.step)
+              }
+            }
+          }
           if (rawLength === undefined) {
             let message = `No scalar multiple of ${attributes.step} takes `
             message += `${attributes.start} to ${attributes.end}`
@@ -301,7 +340,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (Number.isFinite(attributes.length)) {
       attributes.length = Math.floor(attributes.length)
       // canonicalize limits
-      if (isZero(attributes.step)) {
+      if (deepZero(attributes.step)) {
         // We certainly know the last entry:
         attributes.last = attributes.start
         // But there is no way to have an exclusive limit unless the
@@ -324,13 +363,13 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     // set up data type and remaining operations
     this.plus = typed.find(
       add, [typeOf(attributes.start), typeOf(this.times(1, attributes.step))])
-    const subsize = size(attributes.step)
-    this.subcollection = !!subsize.length
+    const startsize = size(attributes.start)
+    this.subcollection = !!(startsize.length)
     if (this.subcollection) {
       this._datatype = getMatrixDataType(attributes.start)
     } else this._datatype = typeOf(attributes.start)
 
-    this._size = [attributes.length, ...subsize]
+    this._size = [attributes.length, ...startsize]
 
     // Finally, set up the read-only properties:
     for (const key of attrs) {
@@ -458,7 +497,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
     let last = data[data.length - 1]
     if (datatype) last = numeric(last, datatype)
     if (data.length === 2) {
-      return new Range({ start, last, stap: subtract(last, start) })
+      return new Range({ start, length: 2, step: subtract(last, start) })
     }
     let entry = data[1]
     if (datatype) entry = numeric(entry, datatype)
@@ -470,7 +509,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
         throw new Error('Data supplied is not in the form of a Range')
       }
     }
-    return new Range({ start, last, step })
+    return new Range({ start, length: data.length, step })
   }
 
   /**
@@ -842,12 +881,28 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @returns {string} str
    */
   Range.prototype.format = function (options = {}) {
-    let str = format(this.start, options)
-    if (this.subcollection || this.step !== one(this.start)) {
-      str += ':' + format(this.step, options)
+    let start = format(this.start, options)
+    let writeStep = false
+    if (size(this.step).length > 0) writeStep = true
+    else {
+      const canonicalStep =
+        isUnit(this.step) ? oneUnit(this.step) : one(this.step)
+      if (!equal(this.step, canonicalStep)) writeStep = true
     }
-    str += ':' + format(this.end, options)
-    return str
+    let step = writeStep ? format(this.step, options) : ''
+    if (typeof this.end === 'undefined') {
+      // Can't display as usual `start:step:end` so use a new
+      // pseudo-constructor notation
+      let str = `Range{start: ${start}, `
+      if (step) str += `step: ${step}, `
+      return str + `length: ${this.length}}`
+    }
+    // Display as `start:step:end` but may need parens for nesting
+    if (isRange(this.start)) start = `(${start})`
+    if (step && isRange(this.step)) step = `(${step})`
+    let end = format(this.end, options)
+    if (isRange(this.end)) end = `(${end})`
+    return step ? `${start}:${step}:${end}` : `${start}:${end}`
   }
 
   /**

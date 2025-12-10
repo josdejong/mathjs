@@ -1,5 +1,4 @@
 import { factory } from '../../utils/factory.js'
-
 const name = 'deepEqual'
 const dependencies = [
   'typed',
@@ -37,9 +36,11 @@ export const createDeepEqual = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *            Returns true when the input matrices have the same size and each of their elements is equal.
    */
   return typed(name, {
-    'any, any': function (x, y) {
-      return _deepEqual(x.valueOf(), y.valueOf())
-    }
+    // Don't want to execute .valueOf() on a unit, as it returns a string,
+    // messing up the equality test
+    'Unit, any': (u, x) => equal(u, x),
+    'any, Unit': (x, u) => equal(x, u),
+    'any, any': (x, y) => _deepEqual(x.valueOf(), y.valueOf())
   })
 
   /**

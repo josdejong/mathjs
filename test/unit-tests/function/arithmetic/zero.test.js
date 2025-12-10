@@ -12,6 +12,7 @@ describe('zero', function () {
     assert.deepStrictEqual(zero(math.complex(0, 1)), math.complex(0))
     assert.strictEqual(zero(false), false)
     assert.deepStrictEqual(zero(math.fraction(3, 10)), math.fraction(0))
+    assert.deepStrictEqual(zero(math.unit(3, 'm')), math.unit(0, 'm'))
     assert.deepStrictEqual(
       zero(math.identity(3, 3)), math.zeros(math.matrix([3, 3])))
     assert.deepStrictEqual(zero([1, 2, 3]), math.zeros([3]))

@@ -42,11 +42,20 @@ export const createZero = /* #__PURE__ */ factory(name, dependencies, ({
     Fraction: () => new Fraction(0),
     boolean: () => false,
     Unit: typed.referToSelf(self => u => {
-      if (u.value === undefined || u.value === null) return unit(0)
-      return unit(self(u.value))
+      // want 0 of the same units and value type as u
+      const result = u.clone()
+      result.value = self(u.value)
+      return result
     }),
     Array: typed.referToSelf(self => A => _zeroArray(A, self)),
-    Matrix: typed.referToSelf(self => M => M.create(_zeroArray(M.valueOf(), self)))
+    Range: typed.referToSelf(self => R => {
+      const z = self(R.start)
+      return R.createRange({ start: z, step: z, length: R.length })
+    }),
+    // TODO: there should be a way to create the all-zero sparse matrix that
+    // does not involve constructing an array of all zeros
+    Matrix: typed.referToSelf(self => M =>
+      M.create(_zeroArray(M.valueOf(), self)))
   })
 
   function _zeroArray (A, zeroer) {
