@@ -2,6 +2,8 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { DimensionError } from '../../../../src/error/DimensionError.js'
 
+const math2 = math.create({ compute: { Matrix: { defaultType: 'Array' } } })
+
 describe('reshape', function () {
   it('should reshape an array', function () {
     const array = [[0, 1, 2], [3, 4, 5]]
@@ -38,12 +40,10 @@ describe('reshape', function () {
   })
 
   it('should reshape a vector into a 2d matrix', function () {
-    const math2 = math.create({ matrix: 'Array' })
     assert.deepStrictEqual(math2.reshape([1, 2, 3, 4, 5, 6], [3, 2]), [[1, 2], [3, 4], [5, 6]])
   })
 
   it('should reshape 2d matrix into a vector', function () {
-    const math2 = math.create({ matrix: 'Array' })
     assert.deepStrictEqual(math2.reshape([[1, 2], [3, 4], [5, 6]], [6]), [1, 2, 3, 4, 5, 6])
   })
 

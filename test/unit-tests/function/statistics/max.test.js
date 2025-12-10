@@ -1,5 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
+
 const BigNumber = math.BigNumber
 const Complex = math.Complex
 const DenseMatrix = math.DenseMatrix
@@ -21,23 +23,23 @@ describe('max', function () {
       new BigNumber(5))
   })
 
-  it('should return the max of strings by their numerical value', function () {
+  it('should return the max of strings by conversion to numeric argument I', function () {
     assert.strictEqual(max('10', '3', '4', '2'), 10)
     assert.strictEqual(max('10'), 10)
   })
 
-  it('should return the max of strings by their numerical value (with BigNumber config)', function () {
-    const bigmath = math.create({ number: 'BigNumber' })
-    assert.deepStrictEqual(bigmath.max('10', '3', '4', '2'), bigmath.bignumber(10))
-    assert.deepStrictEqual(bigmath.max('10'), bigmath.bignumber(10))
+  it('should return the max of strings by conversion to numeric argument II', function () {
+    const bigmath = math.create(bigConfig())
+    assert.deepStrictEqual(bigmath.max('10', '3', '4', '2'), 10)
+    assert.deepStrictEqual(bigmath.max('10'), 10)
   })
 
-  it('should return the max of strings by their numerical value (with bigint config)', function () {
+  it('should return the max of strings by conversion to numeric argument III', function () {
     const bigmath = math.create({ number: 'bigint' })
-    assert.strictEqual(bigmath.max('10', '3', '4', '2'), 10n)
-    assert.strictEqual(bigmath.max('10'), 10n)
-    assert.strictEqual(bigmath.max('2.5'), 2.5) // fallback to number
-    assert.strictEqual(bigmath.max('2.5', '4'), 4n) // fallback to number
+    assert.strictEqual(bigmath.max('10', '3', '4', '2'), 10)
+    assert.strictEqual(bigmath.max('10'), 10)
+    assert.strictEqual(bigmath.max('2.5'), 2.5)
+    assert.strictEqual(bigmath.max('2.5', '4'), 4)
   })
 
   it('should return the max element from a vector', function () {
@@ -130,12 +132,12 @@ describe('max', function () {
     assert.throws(function () { max([[2, new Date(), 4]]) }, /TypeError: Cannot calculate max, unexpected type of argument/)
     assert.throws(function () { max([2, null, 4]) }, /TypeError: Cannot calculate max, unexpected type of argument/)
     assert.throws(function () { max([[2, 5], [4, null], [1, 7]], 0) }, /TypeError: Cannot calculate max, unexpected type of argument/)
-    assert.throws(function () { max('a', 'b') }, /Error: Cannot convert "a" to a number/)
-    assert.throws(function () { max('a') }, /Error: Cannot convert "a" to a number/)
+    assert.throws(function () { max('a', 'b') }, /Error: Cannot convert "a"/)
+    assert.throws(function () { max('a') }, /Error: Cannot convert "a"/)
   })
 
-  it('should return undefined if called with an empty array', function () {
-    assert.throws(function () { max([]) })
+  it('should return -Infinity if called with an empty array', function () {
+    assert.strictEqual(max([]), -Infinity)
   })
 
   it('should LaTeX max', function () {

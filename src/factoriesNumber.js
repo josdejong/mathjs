@@ -134,6 +134,7 @@ export const createAdd = /* #__PURE__ */ createNumberFactory('add', addNumber)
 export { createHypot } from './function/arithmetic/hypot.js'
 export const createNorm = /* #__PURE__ */ createNumberFactory('norm', normNumber)
 export const createDivide = /* #__PURE__ */ createNumberFactory('divide', divideNumber)
+export { createZeroNumber } from './function/arithmetic/zero.js'
 
 // bitwise
 export const createBitAnd = /* #__PURE__ */ createNumberFactory('bitAnd', bitAndNumber)

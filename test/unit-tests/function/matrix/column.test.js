@@ -124,7 +124,8 @@ describe('column', function () {
       [0, 0, 0, 6, 0]
     ]
     // Test column with legacySubset syntax
-    // This is not strictly necessary and shoudl be removed after the deprecation period
+    // This is not strictly necessary and should be removed,
+    // after the deprecation period
 
     assert.deepStrictEqual(
       math2.column(a, 4).valueOf(), [[0], [4], [0], [0], [0]]

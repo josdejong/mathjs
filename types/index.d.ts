@@ -1634,6 +1634,21 @@ export interface MathJsInstance extends MathJsFactory {
    */
   xgcd(a: number | BigNumber, b: number | BigNumber): MathArray
 
+  /**
+   * Returns the multiplicative identity of the same type as x
+   *
+   * @param x  Any math entity
+   * @return   Multiplicative identity of the type of x
+   */
+  zero(x: number): 0
+  zero(x: BigNumber): BigNumber
+  zero(x: Complex): Complex
+  zero(x: bigint): 0n
+  zero(x: Fraction): Fraction
+  zero(x: boolean): true
+  zero(x: Unit): Unit
+  zero(x: MathCollection): MathCollection
+
   /*************************************************************************
    * Bitwise functions
    ************************************************************************/
@@ -4064,6 +4079,7 @@ export const {
   unaryMinusDependencies,
   unaryPlusDependencies,
   xgcdDependencies,
+  zeroDependencies,
 
   // bitwise dependencies
   bitAndDependencies,
@@ -4863,18 +4879,34 @@ export interface Help {
 }
 
 export interface ConfigOptions {
-  relTol?: number
-  absTol?: number
-  /**
-   * @deprecated Use `relTol` and `absTol` instead
-   */
-  epsilon?: number
-  matrix?: 'Matrix' | 'Array'
+  relTol?: number // Deprecated: use compute.defaultRelTol
+  absTol?: number // Deprecated: use compute.defaultAbsTol
+  // epsilon?: number // discontinued
+  matrix?: 'Matrix' | 'Array' // Deprecated: use compute.Matrix.defaultType
   number?: 'number' | 'BigNumber' | 'bigint' | 'Fraction'
-  numberFallback?: 'number' | 'BigNumber'
-  precision?: number
-  predictable?: boolean
-  randomSeed?: string | null
+  numberFallback?: 'number' | 'BigNumber' // Deprecated: use parse.numberFallback
+  precision?: number // Deprecated: use compute.BigNumber.precision
+  predictable?: boolean // Deprecated: use compute.uniformType
+  randomSeed?: string | null // Deprecated: use compute.randomSeed
+  legacySubset?: boolean // Deprecated: use compatibility.subset
+  compatibility?: {
+    subset: boolean // Deprecated
+  }
+  compute?: {
+    defaultAbsTol?: number
+    defaultRelTol?: number
+    numberApproximate?: 'number' | 'BigNumber'
+    uniformType?: boolean
+    BigNumber?: {
+      precision?: number
+    }
+    Matrix?: {
+      defaultType?: 'Array' | 'Matrix'
+    }
+    parse?: {
+      numberFallback?: 'BigNumber' | 'Fraction' | 'number'
+    }
+  }
 }
 
 export interface MathJsChain<TValue> {
@@ -5753,6 +5785,16 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<number | BigNumber>,
     b: number | BigNumber
   ): MathJsChain<MathArray>
+
+  /**
+   * Generate the additive identity of the current type
+   */
+  zero(this: MathJsChain<number>): MathJsChain<0>
+  zero(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
+  zero(this: MathJsChain<bigint>): MathJsChain<0n>
+  zero(this: MathJsChain<Complex>): MathJsChain<Complex>
+  zero(this: MathJsChain<Fraction>): MathJsChain<Fraction>
+  zero(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
 
   /**
    * Count the number of elements of a matrix, array or string.
@@ -7604,6 +7646,7 @@ export const {
   unaryMinus,
   unaryPlus,
   xgcd,
+  zero,
 
   // bitwise
   bitAnd,

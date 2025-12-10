@@ -2,6 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
 
 const expLibrary = []
 // eslint-disable-next-line mocha/no-exports
@@ -271,7 +272,7 @@ describe('simplify', function () {
   })
 
   it('should preserve the value of BigNumbers', function () {
-    const bigmath = math.create({ number: 'BigNumber', precision: 64 })
+    const bigmath = math.create(bigConfig(64))
     assert.deepStrictEqual(bigmath.simplify('111111111111111111 + 111111111111111111').evaluate(), bigmath.evaluate('222222222222222222'))
     assert.deepStrictEqual(bigmath.simplify('1 + 111111111111111111').evaluate(), bigmath.evaluate('111111111111111112'))
     assert.deepStrictEqual(bigmath.simplify('1/2 + 11111111111111111111').evaluate(), bigmath.evaluate('11111111111111111111.5'))

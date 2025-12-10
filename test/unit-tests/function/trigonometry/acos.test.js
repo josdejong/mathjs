@@ -1,14 +1,21 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const acos = math.acos
 const cos = math.cos
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
-const mathPredictable = math.create({ predictable: true })
+const bigmath = math.create({
+  compute: {
+    numberApproximate: 'BigNumber',
+    BigNumber: { precision: 20 }
+  }
+})
+const mathPredictable = math.create({ compute: { uniformType: true } })
 const acosBig = bigmath.acos
 const cosBig = bigmath.cos
 const Big = bigmath.bignumber
@@ -44,7 +51,7 @@ describe('acos', function () {
     assert.deepStrictEqual(acosBig(Big(1)), Big(0))
 
     // Hit Newton's method case
-    const bigmath61 = math.create({ number: 'BigNumber', precision: 61 })
+    const bigmath61 = math.create(bigConfig(61))
     assert.deepStrictEqual(bigmath61.acos(bigmath61.bignumber(0.00000001)),
       bigmath61.bignumber('1.570796316794896619231321524973084775431910533020886243820359'))
     // Wolfram:            1.5707963167948966192313215249730847754319105330208862438203592009158129650174844596314777278941600852176250962802
@@ -61,7 +68,7 @@ describe('acos', function () {
   })
 
   it('should be the inverse function of bignumber cos', function () {
-    bigmath.config({ precision: 20 })
+    bigmath.config({ compute: { BigNumber: { precision: 20 } } })
     assert.deepStrictEqual(acosBig(cosBig(Big(-1))), Big(1))
     assert.deepStrictEqual(acosBig(cosBig(Big(0))), Big('0'))
     assert.deepStrictEqual(acosBig(cosBig(Big(0.1))), Big('0.099999999999999999956'))
@@ -70,8 +77,9 @@ describe('acos', function () {
   })
 
   it('should return for bignumber cos for x > 1', function () {
-    assert.ok(acos(Big(1.1)).isNaN())
-    assert.ok(acos(Big(-1.1)).isNaN())
+    assert.deepStrictEqual(acos(Big(1.1)), math.complex(0, 0.4435682543851154))
+    assert.deepStrictEqual(
+      acos(Big(-1.1)), math.complex(Math.PI, -0.44356825438511527))
   })
 
   it('should return the arccos of a complex number', function () {

@@ -83,7 +83,7 @@ describe('cbrt', function () {
       complex('-2i')
     ]))
 
-    const math2 = math.create({ matrix: 'Array' })
+    const math2 = math.create({ compute: { Matrix: { defaultType: 'Array' } } })
 
     approxDeepEqual(math2.cbrt(complex('8i'), true), [
       complex(' 1.7321 + i'),

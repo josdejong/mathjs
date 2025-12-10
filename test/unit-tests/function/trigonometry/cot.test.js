@@ -1,12 +1,14 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const cot = math.cot
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const bigmath = math.create(bigConfig(20))
 
 describe('cot', function () {
   it('should return the cotan of a boolean', function () {

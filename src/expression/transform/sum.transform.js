@@ -13,18 +13,19 @@ import { lastDimToZeroBase } from './utils/lastDimToZeroBase.js'
 const name = 'sum'
 const dependencies = ['typed', 'config', 'add', 'numeric']
 
-export const createSumTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, numeric }) => {
-  const sum = createSum({ typed, config, add, numeric })
+export const createSumTransform = /* #__PURE__ */ factory(
+  name, dependencies, provided => {
+    const sum = createSum(provided)
 
-  return typed(name, {
-    '...any': function (args) {
-      args = lastDimToZeroBase(args)
+    return provided.typed(name, {
+      '...any': function (args) {
+        args = lastDimToZeroBase(args)
 
-      try {
-        return sum.apply(null, args)
-      } catch (err) {
-        throw errorTransform(err)
+        try {
+          return sum.apply(null, args)
+        } catch (err) {
+          throw errorTransform(err)
+        }
       }
-    }
-  })
-}, { isTransformFunction: true })
+    })
+  }, { isTransformFunction: true })

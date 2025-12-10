@@ -56,9 +56,13 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
    * @return {Array | Matrix}                              Rotation matrix
    */
 
+  function useMatrix (config) {
+    return config.compute.Matrix.defaultType === 'Matrix'
+  }
+
   return typed(name, {
     '': function () {
-      return (config.matrix === 'Matrix') ? matrix([]) : []
+      return useMatrix(config) ? matrix([]) : []
     },
 
     string: function (format) {
@@ -66,7 +70,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
     },
 
     'number | BigNumber | Complex | Unit': function (theta) {
-      return _rotationMatrix2x2(theta, config.matrix === 'Matrix' ? 'dense' : undefined)
+      return _rotationMatrix2x2(theta, useMatrix(config) ? 'dense' : undefined)
     },
 
     'number | BigNumber | Complex | Unit, string': function (theta, format) {
@@ -81,7 +85,8 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
 
     'number | BigNumber | Complex | Unit, Matrix': function (theta, v) {
       _validateVector(v)
-      const storageType = v.storage() || (config.matrix === 'Matrix' ? 'dense' : undefined)
+      const storageType = v.storage() ||
+        (useMatrix(config) ? 'dense' : undefined)
       return _rotationMatrix3x3(theta, v, storageType)
     },
 
@@ -136,7 +141,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
       if (format === 'dense') {
         return new DenseMatrix(data)
       }
-      throw new TypeError(`Unknown matrix type "${format}"`)
+      throw new TypeError(`Unsupported matrix type "${format}"`)
     }
     return data
   }

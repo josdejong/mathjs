@@ -8,12 +8,12 @@ const dependencies = ['typed', 'config', '?on']
 
 export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, on }) => {
   // seeded pseudo random number generator
-  let rng = createRng(config.randomSeed)
+  let rng = createRng(config.compute.randomSeed)
 
   if (on) {
     on('config', function (curr, prev) {
-      if (curr.randomSeed !== prev.randomSeed) {
-        rng = createRng(curr.randomSeed)
+      if (curr.compute.randomSeed !== prev.compute.randomSeed) {
+        rng = createRng(curr.compute.randomSeed)
       }
     })
   }

@@ -15,13 +15,15 @@ const bigTen = new Decimal(10)
 export const createCeilNumber = /* #__PURE__ */ factory(
   name, ['typed', 'config', 'round'], ({ typed, config, round }) => {
     function _ceilNumber (x) {
+      const relTol = config.compute.defaultRelTol
+      const absTol = config.compute.defaultAbsTol
       // See ./floor.js _floorNumber for rationale here
       const c = Math.ceil(x)
       const r = round(x)
       if (c === r) return c
       if (
-        nearlyEqual(x, r, config.relTol, config.absTol) &&
-        !nearlyEqual(x, c, config.relTol, config.absTol)
+        nearlyEqual(x, r, relTol, absTol) &&
+        !nearlyEqual(x, c, relTol, absTol)
       ) {
         return r
       }
@@ -54,7 +56,8 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   const ceilNumber = createCeilNumber({ typed, config, round })
   function _bigCeil (x) {
     // see ./floor.js _floorNumber for rationale
-    const bne = (a, b) => bigNearlyEqual(a, b, config.relTol, config.absTol)
+    const bne = (a, b) => bigNearlyEqual(
+      a, b, config.compute.defaultRelTol, config.compute.defaultAbsTol)
     const c = x.ceil()
     const r = round(x)
     if (c.eq(r)) return c

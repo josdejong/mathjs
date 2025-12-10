@@ -48,7 +48,7 @@ import {
   isUndefined,
   isUnit
 } from '../utils/is.js'
-import { deepFlatten, isLegacyFactory } from '../utils/object.js'
+import { clone, deepFlatten, isLegacyFactory } from '../utils/object.js'
 import * as emitter from './../utils/emitter.js'
 import { DEFAULT_CONFIG } from './config.js'
 import { configFactory } from './function/config.js'
@@ -63,41 +63,19 @@ import { importFactory } from './function/import.js'
  *     const config = { number: 'BigNumber' }
  *     const mathjs2 = create(all, config)
  *
- * @param {Object} [factories] An object with factory functions
- *                             The object can contain nested objects,
- *                             all nested objects will be flattened.
- * @param {Object} [config]    Available options:
- *                            {number} relTol
- *                              Minimum relative difference between two
- *                              compared values, used by all comparison functions.
- *                            {number} absTol
- *                              Minimum absolute difference between two
- *                              compared values, used by all comparison functions.
- *                            {string} matrix
- *                              A string 'Matrix' (default) or 'Array'.
- *                            {string} number
- *                              A string 'number' (default), 'BigNumber', or 'Fraction'
- *                            {number} precision
- *                              The number of significant digits for BigNumbers.
- *                              Not applicable for Numbers.
- *                            {boolean} predictable
- *                              Predictable output type of functions. When true,
- *                              output type depends only on the input types. When
- *                              false (default), output type can vary depending
- *                              on input values. For example `math.sqrt(-4)`
- *                              returns `complex('2i')` when predictable is false, and
- *                              returns `NaN` when true.
- *                            {string} randomSeed
- *                              Random seed for seeded pseudo random number generator.
- *                              Set to null to randomly seed.
- * @returns {Object} Returns a bare-bone math.js instance containing
- *                   functions:
- *                   - `import` to add new functions
- *                   - `config` to change configuration
- *                   - `on`, `off`, `once`, `emit` for events
+ * @param {Object} [factories]
+ *     An object with factory functions. The object can contain nested objects,
+ *     and all nested objects will be flattened.
+ * @param {Object} [config]
+ *     See the `config()` documentation for the list of available options.
+ * @returns {Object}
+ *     Returns a bare-bone math.js instance containing functions:
+ *       - `import` to add new functions
+ *       - `config` to change configuration
+ *       - `on`, `off`, `once`, `emit` for events
  */
 export function create (factories, config) {
-  const configInternal = Object.assign({}, DEFAULT_CONFIG, config)
+  const configInternal = clone(DEFAULT_CONFIG)
 
   // simple test for ES5 support
   if (typeof Object.create !== 'function') {
@@ -157,6 +135,7 @@ export function create (factories, config) {
 
   // load config function and apply provided config
   math.config = configFactory(configInternal, math.emit)
+  math.config(config)
 
   math.expression = {
     transform: {},

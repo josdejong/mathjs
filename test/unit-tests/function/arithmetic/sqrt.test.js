@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
-const mathPredictable = math.create({ predictable: true })
+const mathPredictable = math.create({ compute: { uniformType: true } })
 const sqrt = math.sqrt
 const bignumber = math.bignumber
 
@@ -41,7 +41,7 @@ describe('sqrt', function () {
     assert.deepStrictEqual(sqrt(bignumber(25)), bignumber(5))
 
     // validate whether we are really working at high precision
-    const bigmath = math.create({ precision: 100 })
+    const bigmath = math.create({ compute: { BigNumber: { precision: 100 } } })
     assert.deepStrictEqual(bigmath.sqrt(bigmath.bignumber(2)), bigmath.bignumber('1.414213562373095048801688724209698078569671875376948073176679737990732478462107038850387534327641573'))
   })
 

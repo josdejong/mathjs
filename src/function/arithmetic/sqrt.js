@@ -38,7 +38,7 @@ export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
     },
 
     BigNumber: function (x) {
-      if (!x.isNegative() || config.predictable) {
+      if (!x.isNegative() || config.compute.uniformType) {
         return x.sqrt()
       } else {
         // negative value -> downgrade to number to do complex value computation
@@ -62,7 +62,7 @@ export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
   function _sqrtNumber (x) {
     if (isNaN(x)) {
       return NaN
-    } else if (x >= 0 || config.predictable) {
+    } else if (x >= 0 || config.compute.uniformType) {
       return Math.sqrt(x)
     } else {
       return new Complex(x, 0).sqrt()

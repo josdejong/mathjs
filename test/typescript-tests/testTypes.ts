@@ -85,6 +85,10 @@ Basic usage examples
   math.sqrt(-4)
 
   math.pow(m2by2, 2)
+  // @ts-expect-error: since zero(bigint) returns 0n, this comparison fails
+  if (math.zero(-23n) === 1n) {
+    console.error('Nor should this happen')
+  }
   const angle = 0.2
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
   math.add(2, 3, 4)
@@ -185,7 +189,10 @@ Bignumbers examples
   // configure the default type of numbers as BigNumbers
   const math = create(all, {
     number: 'BigNumber',
-    precision: 20
+    compute: {
+      BigNumber: { precision: 20 },
+      numberApproximate: 'BigNumber'
+    }
   })
 
   {
@@ -1894,6 +1901,7 @@ Units examples
   math.multiply(b, 2)
   math.divide(math.unit('1 m'), math.unit('1 s'))
   math.pow(math.unit('12 in'), 3)
+  math.zero(math.unit('22 m/secs^2'))
 
   // units can be converted to a specific type, or to a number
   b.to('cm')

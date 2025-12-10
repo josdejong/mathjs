@@ -100,7 +100,8 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return new BigNumber([1, 1, 2, 6, 24, 120, 720, 5040][n])
     }
 
-    const precision = config.precision + (Math.log(n.toNumber()) | 0)
+    const precision = config.compute.BigNumber.precision +
+          (Math.log(n.toNumber()) | 0)
     const Big = BigNumber.clone({ precision })
 
     if (n % 2 === 1) {

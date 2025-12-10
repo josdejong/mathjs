@@ -1,13 +1,15 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const EPSILON = 1e-13
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const sin = math.sin
-const bigmath = math.create({ precision: 242 })
+const bigmath = math.create({ compute: { BigNumber: { precision: 242 } } })
 
 describe('sin', function () {
   it('should return the sine of a boolean', function () {
@@ -46,7 +48,7 @@ describe('sin', function () {
                                         '3071480438329880550139583951234188873226108092477936610585549' +
                                         '3575835362891900420559398509489530577719840860106717522689249' +
                                         '60612126026291341865833521451170868744460464214033460336158'))
-    const bigmath2 = bigmath.create({ number: 'BigNumber', precision: 15 })
+    const bigmath2 = bigmath.create(bigConfig(15))
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau (like 6, 7)
     for (let x = -20; x < 20; x += 1) {
@@ -66,7 +68,7 @@ describe('sin', function () {
     assert.ok(bigmath2.sin(bigmath2.tau).lt(1e-14))
     assert.ok(bigmath2.sin(bigmath2.tau.times(2)).lt(1e-13))
 
-    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+    const bigmath61 = bigmath.create(bigConfig(61))
 
     assert.deepStrictEqual(bigmath61.sin(bigmath61.bignumber(-2)).toString(), '-0.909297426825681695396019865911744842702254971447890268378973')
   })

@@ -1,7 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 
-const math2 = math.create({ randomSeed: 'test' })
+const math2 = math.create({ compute: { randomSeed: 'test' } })
 const randomInt = math2.randomInt
 
 describe('randomInt', function () {

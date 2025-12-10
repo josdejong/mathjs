@@ -1,12 +1,15 @@
 import { deepForEach } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
-import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
+import { createNumericPassthru } from './utils/numericPassthru.js'
 
 const name = 'prod'
 const dependencies = ['typed', 'config', 'multiplyScalar', 'numeric']
 
-export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, numeric }) => {
+export const createProd = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, multiplyScalar, numeric
+}) => {
+  const passthru = createNumericPassthru({ typed })
   /**
    * Compute the product of a matrix or a list with values.
    * In case of a multidimensional array or matrix, the sum of all
@@ -32,7 +35,7 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The product of all values
    */
-  return typed(name, {
+  return typed(name, passthru, {
     // prod([a, b, c, d, ...])
     'Array | Matrix': _prod,
 
@@ -66,15 +69,11 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     })
 
-    // make sure returning numeric value: parse a string into a numeric value
-    if (typeof prod === 'string') {
-      prod = numeric(prod, safeNumberType(prod, config))
-    }
-
     if (prod === undefined) {
-      throw new Error('Cannot calculate prod of an empty array')
+      // Note 1 can be expressed in any number type
+      return numeric(1, config.number)
     }
 
-    return prod
+    return passthru(prod)
   }
 })

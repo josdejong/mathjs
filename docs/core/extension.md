@@ -219,7 +219,8 @@ where:
     -   `recreateOnConfigChange: boolean`. If true, the imported factory will be
         created again when there is a change in the configuration. This is for
         example used for the constants like `pi`, which is different depending
-        on the configsetting `number` which can be numbers or BigNumbers.
+        on the config option `compute.numberApproximate` which can be `number`
+        or `BigNumber`.
     -   `formerly: string`. If present, the created function will also be
         accessible on the instance under the name given by the value of
         `formerly` as a (deprecated) synonym for the specified `name`. This

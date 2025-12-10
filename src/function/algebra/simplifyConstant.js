@@ -12,6 +12,7 @@ const dependencies = [
   'matrix',
   'isBounded',
   '?fraction',
+  '?Fraction',
   '?bignumber',
   'AccessorNode',
   'ArrayNode',
@@ -30,6 +31,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   matrix,
   isBounded,
   fraction,
+  Fraction,
   bignumber,
   AccessorNode,
   ArrayNode,
@@ -93,7 +95,15 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
 
   function _eval (fnname, args, options) {
     try {
-      return mathWithTransform[fnname].apply(null, args)
+      const result = mathWithTransform[fnname].apply(null, args)
+      if (isFraction(result) && fnname !== 'fraction' &&
+          args.every(arg => !isFraction(arg) || arg.fromNumber)
+      ) {
+        result.fromNumber = true
+      } else if (result && typeof result === 'object' && 'fromNumber' in result) {
+        delete result.fromNumber
+      }
+      return result
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
       args = args.map(_removeFractions)
@@ -102,7 +112,11 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   }
 
   const _toNode = typed({
-    Fraction: _fractionToNode,
+    Fraction: function (f) {
+      if (f.fromNumber) return _fractionToNode(f)
+      if (f.s < 0) return unaryMinusNode(new ConstantNode(f.neg()))
+      return new ConstantNode(f)
+    },
     number: function (n) {
       if (n < 0) {
         return unaryMinusNode(new ConstantNode(-n))
@@ -132,6 +146,25 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
     }
   })
 
+  function _fractionToNode (f) {
+    // This is a fraction that came from a JavaScript number, directly or indirectly.
+    // We restore it to either a whole number or a quotient of whole numbers, but
+    // we don't use  bigints because they do not divide as expected.
+    const fromBigInt = config.number === 'BigNumber' && bignumber
+      ? x => bignumber(x)
+      : x => Number(x)
+
+    const numeratorValue = fromBigInt(f.n)
+    const numeratorNode = (f.s < 0n)
+      ? new OperatorNode('-', 'unaryMinus', [new ConstantNode(numeratorValue)])
+      : new ConstantNode(fromBigInt(numeratorValue))
+
+    return (f.d === 1n)
+      ? numeratorNode
+      : new OperatorNode(
+        '/', 'divide', [numeratorNode, new ConstantNode(fromBigInt(f.d))])
+  }
+
   function _ensureNode (thing) {
     if (isNode(thing)) {
       return thing
@@ -150,6 +183,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         : Infinity // no limit by default
 
       if (f.valueOf() === n && f.n < fractionsLimit && f.d < fractionsLimit) {
+        f.fromNumber = true
         return f
       }
     }
@@ -210,20 +244,6 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
 
   function unaryMinusNode (n) {
     return new OperatorNode('-', 'unaryMinus', [n])
-  }
-
-  function _fractionToNode (f) {
-    // note: we convert await from bigint values, because bigint values gives issues with divisions: 1n/2n=0n and not 0.5
-    const fromBigInt = (value) => config.number === 'BigNumber' && bignumber ? bignumber(value) : Number(value)
-
-    const numeratorValue = f.s * f.n
-    const numeratorNode = (numeratorValue < 0n)
-      ? new OperatorNode('-', 'unaryMinus', [new ConstantNode(-fromBigInt(numeratorValue))])
-      : new ConstantNode(fromBigInt(numeratorValue))
-
-    return (f.d === 1n)
-      ? numeratorNode
-      : new OperatorNode('/', 'divide', [numeratorNode, new ConstantNode(fromBigInt(f.d))])
   }
 
   /* Handles constant indexing of ArrayNodes, matrices, and ObjectNodes */
@@ -353,6 +373,41 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
 
   // destroys the original node and returns a folded one
   function foldFraction (node, options) {
+    const binaryAdvise = ['add', 'sub', 'mul', 'div', 'pow']
+    const unaryAdvise = ['floor', 'ceil', 'round', 'clone']
+    const old = {}
+    if (Fraction) {
+      for (const op of binaryAdvise) {
+        old[op] = Fraction.prototype[op]
+        Fraction.prototype[op] = function (a, b) {
+          const result = old[op].call(this, a, b)
+          if (this.fromNumber && a && typeof a === 'object' && a.fromNumber) {
+            result.fromNumber = true
+          }
+          return result
+        }
+      }
+      for (const op of unaryAdvise) {
+        old[op] = Fraction.prototype[op]
+        Fraction.prototype[op] = function (...args) {
+          const result = old[op].call(this, ...args)
+          if (this.fromNumber) result.fromNumber = true
+          return result
+        }
+      }
+    }
+    try {
+      return _foldFraction(node, options)
+    } finally {
+      if (Fraction) {
+        for (const op of unaryAdvise.concat(binaryAdvise)) {
+          Fraction.prototype[op] = old[op]
+        }
+      }
+    }
+  }
+
+  function _foldFraction (node, options) {
     switch (node.type) {
       case 'SymbolNode':
         return node
@@ -373,7 +428,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           // Process operators as OperatorNode
           const operatorFunctions = ['add', 'multiply']
           if (!operatorFunctions.includes(node.name)) {
-            const args = node.args.map(arg => foldFraction(arg, options))
+            const args = node.args.map(arg => _foldFraction(arg, options))
 
             // If all args are numbers
             if (!args.some(isNode)) {
@@ -409,7 +464,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         let res
         const makeNode = createMakeNodeFunction(node)
         if (isOperatorNode(node) && node.isUnary()) {
-          args = [foldFraction(node.args[0], options)]
+          args = [_foldFraction(node.args[0], options)]
           if (!isNode(args[0])) {
             res = _eval(fn, args, options)
           } else {
@@ -417,8 +472,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           }
         } else if (isAssociative(node, options.context)) {
           args = allChildren(node, options.context)
-          args = args.map(arg => foldFraction(arg, options))
-
+          args = args.map(arg => _foldFraction(arg, options))
           if (isCommutative(fn, options.context)) {
             // commutative binary operator
             const consts = []
@@ -446,21 +500,21 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           }
         } else {
           // non-associative binary operator
-          args = node.args.map(arg => foldFraction(arg, options))
+          args = node.args.map(arg => _foldFraction(arg, options))
           res = foldOp(fn, args, makeNode, options)
         }
         return res
       }
       case 'ParenthesisNode':
         // remove the uneccessary parenthesis
-        return foldFraction(node.content, options)
+        return _foldFraction(node.content, options)
       case 'AccessorNode':
         return _foldAccessor(
-          foldFraction(node.object, options),
-          foldFraction(node.index, options),
+          _foldFraction(node.object, options),
+          _foldFraction(node.index, options),
           options)
       case 'ArrayNode': {
-        const foldItems = node.items.map(item => foldFraction(item, options))
+        const foldItems = node.items.map(item => _foldFraction(item, options))
         if (foldItems.some(isNode)) {
           return new ArrayNode(foldItems.map(_ensureNode))
         }

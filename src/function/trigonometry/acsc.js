@@ -30,7 +30,7 @@ export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   return typed(name, {
     number: function (x) {
-      if (x <= -1 || x >= 1 || config.predictable) {
+      if (x <= -1 || x >= 1 || config.compute.uniformType) {
         return acscNumber(x)
       }
       return new Complex(x, 0).acsc()
@@ -41,6 +41,9 @@ export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     BigNumber: function (x) {
+      if (x.greaterThan(-1) && x.lessThan(1) && !config.compute.uniformType) {
+        return new Complex(x.toNumber(), 0).acsc()
+      }
       return new BigNumber(1).div(x).asin()
     }
   })

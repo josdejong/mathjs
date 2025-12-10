@@ -66,7 +66,9 @@ export const createResize = /* #__PURE__ */ factory(name, dependencies, ({ confi
     }
 
     // check result should be a matrix
-    const asMatrix = Array.isArray(x) ? false : (config.matrix !== 'Array')
+    const asMatrix = Array.isArray(x)
+      ? false
+      : (config.compute.Matrix.defaultType !== 'Array')
 
     if (size.length === 0) {
       // output a scalar

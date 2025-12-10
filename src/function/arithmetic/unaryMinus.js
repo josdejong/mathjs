@@ -3,9 +3,11 @@ import { deepMap } from '../../utils/collection.js'
 import { unaryMinusNumber } from '../../plain/number/index.js'
 
 const name = 'unaryMinus'
-const dependencies = ['typed']
+const dependencies = ['typed', 'config', 'numeric']
 
-export const createUnaryMinus = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createUnaryMinus = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, numeric
+}) => {
   /**
    * Inverse the sign of a value, apply a unary minus operation.
    *
@@ -41,6 +43,8 @@ export const createUnaryMinus = /* #__PURE__ */ factory(name, dependencies, ({ t
       res.value = typed.find(self, res.valueType())(x.value)
       return res
     }),
+
+    boolean: x => numeric(x ? -1 : -0, config.number),
 
     // deep map collection, skip zeros since unaryMinus(0) = 0
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true))

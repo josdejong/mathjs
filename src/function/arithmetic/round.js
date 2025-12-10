@@ -75,19 +75,25 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   return typed(name, {
     number: function (x) {
+      const opts = config.compute
       // Handle round off errors by first rounding to relTol precision
-      const xEpsilon = roundNumber(x, toExponent(config.relTol))
-      const xSelected = nearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
+      const xEpsilon = roundNumber(x, toExponent(opts.defaultRelTol))
+      const xSelected = nearlyEqual(x, xEpsilon, opts.defaultRelTol, opts.defaultAbsTol)
+        ? xEpsilon
+        : x
       return roundNumber(xSelected)
     },
 
     'number, number': function (x, n) {
+      const opts = config.compute
       // Same as number: unless user specifies more decimals than relTol
-      const epsilonExponent = toExponent(config.relTol)
+      const epsilonExponent = toExponent(opts.defaultRelTol)
       if (n >= epsilonExponent) { return roundNumber(x, n) }
 
       const xEpsilon = roundNumber(x, epsilonExponent)
-      const xSelected = nearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
+      const xSelected = nearlyEqual(x, xEpsilon, opts.defaultRelTol, config.defaultAbsTol)
+        ? xEpsilon
+        : x
       return roundNumber(xSelected, n)
     },
 
@@ -115,21 +121,26 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     BigNumber: function (x) {
+      const opts = config.compute
       // Handle round off errors by first rounding to relTol precision
-      const xEpsilon = new BigNumber(x).toDecimalPlaces(toExponent(config.relTol))
-      const xSelected = bigNearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
+      const xEpsilon = new BigNumber(x).toDecimalPlaces(
+        toExponent(opts.defaultRelTol))
+      const xSelected =
+        bigNearlyEqual(x, xEpsilon, opts.defaultRelTol, opts.defaultAbsTol) ? xEpsilon : x
       return xSelected.toDecimalPlaces(0)
     },
 
     'BigNumber, BigNumber': function (x, n) {
+      const opts = config.compute
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
       // Same as BigNumber: unless user specifies more decimals than relTol
-      const epsilonExponent = toExponent(config.relTol)
+      const epsilonExponent = toExponent(opts.defaultRelTol)
       if (n >= epsilonExponent) { return x.toDecimalPlaces(n.toNumber()) }
 
       const xEpsilon = x.toDecimalPlaces(epsilonExponent)
-      const xSelected = bigNearlyEqual(x, xEpsilon, config.relTol, config.absTol) ? xEpsilon : x
+      const xSelected =
+        bigNearlyEqual(x, xEpsilon, opts.defaultRelTol, opts.defaultAbsTol) ? xEpsilon : x
       return xSelected.toDecimalPlaces(n.toNumber())
     },
 

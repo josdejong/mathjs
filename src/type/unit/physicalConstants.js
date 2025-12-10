@@ -75,9 +75,10 @@ function unitFactory (name, valueStr, unitStr) {
 
   return factory(name, dependencies, ({ config, Unit, BigNumber }) => {
     // Note that we can parse into number or BigNumber.
-    // We do not parse into Fractions as that doesn't make sense: we would lose precision of the values
-    // Therefore we dont use Unit.parse()
-    const value = config.number === 'BigNumber'
+    // We do not parse into Fractions as that doesn't make sense:
+    // we would lose precision of the values
+    // Therefore we don't use Unit.parse()
+    const value = config.compute.numberApproximate === 'BigNumber'
       ? new BigNumber(valueStr)
       : parseFloat(valueStr)
 
@@ -93,7 +94,7 @@ function numberFactory (name, value) {
   const dependencies = ['config', 'BigNumber']
 
   return factory(name, dependencies, ({ config, BigNumber }) => {
-    return config.number === 'BigNumber'
+    return config.compute.numberApproximate === 'BigNumber'
       ? new BigNumber(value)
       : value
   })

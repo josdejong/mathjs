@@ -62,9 +62,10 @@ const IGNORE_WARNINGS = {
  * @param {String} name    Function name
  * @param {String} code    javascript code containing a block comment
  *                         describing a math.js function
+ * @param {Path} location  Where the source files are, to handle references
  * @return {Object} doc    json document
  */
-export function generateDoc (name, code) {
+export function generateDoc (name, code, location) {
   // get block comment from code
   const commentRegex = /\/\*\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g
   // const match = commentRegex.exec(code)
@@ -180,7 +181,20 @@ export function generateDoc (name, code) {
       skipEmptyLines()
 
       while (exists() && !empty()) {
-        doc.where.push(line)
+        const interpolate = line.match(
+          /^\s*[<]Insert\s+(.*)\s+(.*)\s+from\s+(.*)\s+here[>]/)
+        if (interpolate) {
+          const fromFileSpec = interpolate[3]
+          const packageRoot = location.split('/src/')[0]
+          const fromFile = packageRoot + "/" + fromFileSpec
+          const fileStr = String(fs.readFileSync(fromFile))
+          const extractor = new RegExp(
+            `${interpolate[1]}.*${interpolate[2]}.*[\\n]{2}` +
+            '([\\s\\S]*)[\\n][#][#]\\s+Examples',
+            'm')
+          const content = fileStr.match(extractor)
+          if (content) doc.where.push(content[1])
+        } else doc.where.push(line)
         next()
       }
 
@@ -606,7 +620,7 @@ export function collectDocs (functionNames, inputPath) {
     const code = String(fs.readFileSync(fn.fullPath))
 
     const isFunction = (functionNames.includes(name)) && !IGNORE_FUNCTIONS[name]
-    const doc = isFunction ? generateDoc(name, code) : null
+    const doc = isFunction ? generateDoc(name, code, fn.fullPath) : null
 
     if (isFunction && doc) {
       fn.doc = doc

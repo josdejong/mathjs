@@ -1,5 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
 
 const BigNumber = math.BigNumber
 const Complex = math.Complex
@@ -30,7 +31,7 @@ describe('sum', function () {
   // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should return the max of strings by their numerical value (with BigNumber config)', function () {
     // TODO: requires math.add to recon with config.number when parsing strings
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     assert.deepStrictEqual(bigmath.sum('10', '3', '4', '2'), bigmath.bignumber('19'))
     assert.deepStrictEqual(bigmath.sum('10'), bigmath.bignumber(10))
   })
@@ -117,7 +118,7 @@ describe('sum', function () {
   })
 
   it('should return zero if called with an empty array', function () {
-    const bigMath = math.create({ number: 'BigNumber' })
+    const bigMath = math.create(bigConfig())
     const fracMath = math.create({ number: 'Fraction' })
 
     const big = bigMath.sum([])
@@ -134,8 +135,8 @@ describe('sum', function () {
     assert.throws(function () { sum(new Date(), 2) }, /Cannot calculate sum, unexpected type of argument/)
     assert.throws(function () { sum(2, 3, null) }, /Cannot calculate sum, unexpected type of argument/)
     assert.throws(function () { sum([2, 3, null]) }, /Cannot calculate sum, unexpected type of argument/)
-    assert.throws(function () { sum('a', 'b') }, /Error: Cannot convert "a" to a number/)
-    assert.throws(function () { sum('a') }, /SyntaxError: String "a" is not a valid number/)
+    assert.throws(function () { sum('a', 'b') }, /Error: Cannot convert "a"/)
+    assert.throws(function () { sum('a') }, /Error: Cannot convert "a"/)
   })
 
   it('should LaTeX sum', function () {

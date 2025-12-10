@@ -43,7 +43,7 @@ export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   return typed('ones', {
     '': function () {
-      return (config.matrix === 'Array')
+      return (config.compute.Matrix.defaultType === 'Array')
         ? _ones([])
         : _ones([], 'default')
     },
@@ -55,7 +55,7 @@ export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       if (typeof last === 'string') {
         const format = size.pop()
         return _ones(size, format)
-      } else if (config.matrix === 'Array') {
+      } else if (config.compute.Matrix.defaultType === 'Array') {
         return _ones(size)
       } else {
         return _ones(size, 'default')

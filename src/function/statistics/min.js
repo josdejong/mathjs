@@ -1,12 +1,15 @@
 import { containsCollections, deepForEach, reduce } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
-import { safeNumberType } from '../../utils/number.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
+import { createNumericPassthru } from './utils/numericPassthru.js'
 
 const name = 'min'
 const dependencies = ['typed', 'config', 'numeric', 'smaller', 'isNaN']
 
-export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, numeric, smaller, isNaN: mathIsNaN }) => {
+export const createMin = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, numeric, smaller, isNaN: mathIsNaN
+}) => {
+  const passthru = createNumericPassthru({ typed })
   /**
    * Compute the minimum value of a matrix or a  list of values.
    * In case of a multidimensional array, the minimum of the flattened array
@@ -38,7 +41,7 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The minimum value
    */
-  return typed(name, {
+  return typed(name, passthru, {
     // min([a, b, c, d, ...])
     'Array | Matrix': _min,
 
@@ -94,14 +97,10 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     })
 
     if (min === undefined) {
-      throw new Error('Cannot calculate min of an empty array')
+      // Not all types have Infinity, so have to use numberApproximate:
+      return numeric(Infinity, config.compute.numberApproximate)
     }
 
-    // make sure returning numeric value: parse a string into a numeric value
-    if (typeof min === 'string') {
-      min = numeric(min, safeNumberType(min, config))
-    }
-
-    return min
+    return passthru(min)
   }
 })

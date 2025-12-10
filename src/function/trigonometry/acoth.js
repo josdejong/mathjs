@@ -29,7 +29,7 @@ export const createAcoth = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   return typed(name, {
     number: function (x) {
-      if (x >= 1 || x <= -1 || config.predictable) {
+      if (x >= 1 || x <= -1 || config.compute.uniformType) {
         return acothNumber(x)
       }
       return new Complex(x, 0).acoth()
@@ -40,6 +40,9 @@ export const createAcoth = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     BigNumber: function (x) {
+      if (x.greaterThan(-1) && x.lessThan(1) && !config.compute.uniformType) {
+        return new Complex(x.toNumber(), 0).acoth()
+      }
       return new BigNumber(1).div(x).atanh()
     }
   })

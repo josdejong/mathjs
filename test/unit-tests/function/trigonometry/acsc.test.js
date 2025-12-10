@@ -3,15 +3,17 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const acsc = math.acsc
 const csc = math.csc
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
-const biggermath = math.create({ precision: 21 })
-const predmath = math.create({ predictable: true })
+const bigmath = math.create(bigConfig(20))
+const biggermath = math.create({ compute: { BigNumber: { precision: 21 } } })
+const predmath = math.create({ compute: { uniformType: true } })
 const acscBig = bigmath.acsc
 const Big = bigmath.bignumber
 
@@ -55,7 +57,7 @@ describe('acsc', function () {
     assert.deepStrictEqual(arg3, Big(-1))
 
     // Hit Newton's method case
-    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+    const bigmath61 = bigmath.create(bigConfig(61))
 
     const arg4 = bigmath61.bignumber(1.00000001)
     assert.deepStrictEqual(bigmath61.acsc(arg4),
@@ -63,8 +65,10 @@ describe('acsc', function () {
     // wolfram             1.5706549054392485653736296134500571807391258840905540266235145245693842219005187990359787187421573662444504948773
     assert.deepStrictEqual(arg4, bigmath61.bignumber(1.00000001))
 
-    assert.ok(acscBig(Big(0.5)).isNaN())
-    assert.ok(acscBig(Big(-0.5)).isNaN())
+    assert.deepStrictEqual(
+      acscBig(Big(0.5)), math.complex(Math.PI / 2, -1.3169578969248166))
+    assert.deepStrictEqual(
+      acscBig(Big(-0.5)), math.complex(-Math.PI / 2, 1.3169578969248164))
   })
 
   it('should be the inverse function of csc', function () {
@@ -76,7 +80,7 @@ describe('acsc', function () {
   })
 
   it('should be the inverse function of bignumber csc', function () {
-    const bigmath61 = bigmath.create({ number: 'BigNumber', precision: 61 })
+    const bigmath61 = bigmath.create(bigConfig(61))
     assert.deepStrictEqual(bigmath61.acsc(bigmath61.csc(bigmath61.bignumber(-2))),
       bigmath61.bignumber('-1.141592653589793238462643383279502884197169399375105820974946'))
     // wolfram:            -1.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132

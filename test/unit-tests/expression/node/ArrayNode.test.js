@@ -54,7 +54,7 @@ describe('ArrayNode', function () {
   })
 
   it('should compile an ArrayNode and evaluate as Array', function () {
-    const mathArray = math.create({ matrix: 'Array' })
+    const mathArray = math.create({ compute: { Matrix: { defaultType: 'Array' } } })
     const a = new mathArray.ConstantNode(1)
     const b = new mathArray.ConstantNode(2)
     const c = new mathArray.ConstantNode(3)

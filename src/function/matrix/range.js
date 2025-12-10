@@ -35,7 +35,8 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *   Option to specify whether to include the end or not. False by default.
    *
    * The function returns a `DenseMatrix` when the library is configured with
-   * `config = { matrix: 'Matrix' }, and returns an Array otherwise.
+   * `config = {compute: {Matrix: {defaultType: 'Matrix'}}}, and returns
+   * an Array otherwise.
    * Note that the type of the returned values is taken from the type of the
    * provided start/end value. If only one of these is a built-in `number` type,
    * it will be promoted to the type of the other endpoint. However, in the case
@@ -151,7 +152,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   })
 
   function _out (arr) {
-    if (config.matrix === 'Matrix') {
+    if (config.compute.Matrix.defaultType === 'Matrix') {
       return matrix ? matrix(arr) : noMatrix()
     }
 
@@ -164,7 +165,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       throw new SyntaxError('String "' + str + '" is no valid range')
     }
 
-    if (config.number === 'BigNumber') {
+    if (config.number === 'BigNumber') { // TODO: other number types ??
       if (bignumber === undefined) {
         noBignumber()
       }

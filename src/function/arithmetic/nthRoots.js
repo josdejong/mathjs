@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'nthRoots'
-const dependencies = ['config', 'typed', 'divideScalar', 'Complex']
+const dependencies = ['typed', 'divideScalar', 'Complex']
 
-export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, Complex }) => {
+export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typed, divideScalar, Complex }) => {
   /**
    * Each function here returns a real multiple of i as a Complex value.
    * @param  {number} val

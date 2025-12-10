@@ -76,10 +76,10 @@ describe('gamma', function () {
     assert.deepStrictEqual(gamma(bignumber(1.5)), bignumber('0.886226925452758'))
     assert.deepStrictEqual(gamma(bignumber(2.5)), bignumber('1.32934038817914'))
 
-    const bigmath = math.create({ precision: 15 })
+    const bigmath = math.create({ compute: { BigNumber: { precision: 15 } } })
     assert.deepStrictEqual(bigmath.gamma(bignumber(30.5)), '4.82269693349091e+31')
 
-    bigmath.config({ precision: 13 })
+    bigmath.config({ compute: { BigNumber: { precision: 13 } } })
     assert.deepStrictEqual(bigmath.gamma(bignumber(-1.5)), bigmath.bignumber('2.363271801207'))
     assert.deepStrictEqual(gamma(bignumber(-2.5)), bignumber('-0.9453087205'))
   })

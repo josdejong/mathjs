@@ -1,5 +1,6 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
 
 describe('distance', function () {
   it('should calculate the distance of two 1D points', function () {
@@ -126,7 +127,7 @@ describe('distance', function () {
   })
 
   it('should calculate the distance if coordinates are bignumbers', function () {
-    const bigmath = math.create({ number: 'BigNumber', precision: 32 })
+    const bigmath = math.create(bigConfig(32))
     const bigdistance = bigmath.distance
     const bignumber = bigmath.bignumber
 

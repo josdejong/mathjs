@@ -218,8 +218,8 @@ Converts a unit to the most appropriate display unit with optional unitList and 
 
 <a name="Unit.parse"></a>
 ### Unit.parse(str) ⇒ <code>Unit</code>
-Parse a string into a unit. The value of the unit is parsed as number,
-BigNumber, or Fraction depending on the math.js config setting `number`.
+Parse a string into a unit. The value of the unit is parsed as the
+type given by the math.js config setting `number`.
 
 Throws an exception if the provided string does not contain a valid unit or
 cannot be parsed.

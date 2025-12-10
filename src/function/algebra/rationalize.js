@@ -3,7 +3,6 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'rationalize'
 const dependencies = [
-  'config',
   'typed',
   'equal',
   'isZero',
@@ -32,7 +31,6 @@ const dependencies = [
 ]
 
 export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
-  config,
   typed,
   equal,
   isZero,

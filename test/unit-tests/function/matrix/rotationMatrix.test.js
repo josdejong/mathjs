@@ -1,6 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
 
 const bignumber = math.bignumber
 const complex = math.complex
@@ -20,7 +21,7 @@ describe('rotationMatrix', function () {
     assert.deepStrictEqual(rotationMatrix('sparse'), matrix('sparse'))
     assert.deepStrictEqual(rotationMatrix('dense'), matrix('dense'))
 
-    const mathArray = math.create({ matrix: 'Array' })
+    const mathArray = math.create({ compute: { Matrix: { defaultType: 'Array' } } })
     assert.deepStrictEqual(mathArray.rotationMatrix(), [])
   })
 
@@ -32,7 +33,7 @@ describe('rotationMatrix', function () {
   })
 
   it('should return a 2D rotation array if requesting results as array', function () {
-    const mathArray = math.create({ matrix: 'Array' })
+    const mathArray = math.create({ compute: { Matrix: { defaultType: 'Array' } } })
     approxDeepEqual(mathArray.rotationMatrix(0.0), [[1, 0.0], [0.0, 1]])
     approxDeepEqual(mathArray.rotationMatrix(mathArray.pi / 2), [[0.0, -1], [1, 0.0]])
     approxDeepEqual(mathArray.rotationMatrix(1), [[cos(1), -sin(1)], [sin(1), cos(1)]])
@@ -42,7 +43,7 @@ describe('rotationMatrix', function () {
   it('should create a 2D rotation matrix of given bignumber angle', function () {
     approxDeepEqual(rotationMatrix(bignumber(0.0)), matrix([[1, 0.0], [0.0, 1]]))
 
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     const minusOne = bigmath.bignumber(-1)
     const cos1 = bigmath.cos(bigmath.bignumber(1))
     const sin1 = bigmath.sin(bigmath.bignumber(1))
@@ -233,7 +234,7 @@ describe('rotationMatrix', function () {
   })
 
   it('should return an array when mathjs is configured for this', function () {
-    const mathArray = math.create({ matrix: 'Array' })
+    const mathArray = math.create({ compute: { Matrix: { defaultType: 'Array' } } })
     approxDeepEqual(mathArray.rotationMatrix(mathArray.pi / 4),
       [[sqrtTwoInv, minusSqrtTwoInv], [sqrtTwoInv, sqrtTwoInv]])
     approxDeepEqual(mathArray.rotationMatrix(mathArray.pi / 2, [0, 0, 1]),
@@ -248,7 +249,7 @@ describe('rotationMatrix', function () {
     assert.throws(function () { rotationMatrix(0, []) }, /RangeError: Vector must be of dimensions 1x3/)
     assert.throws(function () { rotationMatrix(0, [1]) }, /RangeError: Vector must be of dimensions 1x3/)
     assert.throws(function () { rotationMatrix(0, [0, 1]) }, /RangeError: Vector must be of dimensions 1x3/)
-    assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'something') }, /TypeError: Unknown matrix type/)
+    assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'something') }, /TypeError:.*matrix type/)
     assert.throws(function () { rotationMatrix(0, [0, 1, 0], 'sparse', 4) }, /TypeError: Too many arguments/)
     assert.throws(function () { rotationMatrix(1, [0.0, 0.0, 0.0]) }, /Rotation around zero vector/)
   })

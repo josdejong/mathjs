@@ -43,7 +43,7 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   }
   return typed(name, {
     number: function (x) {
-      if (x >= 0 || config.predictable) {
+      if (x >= 0 || config.compute.uniformType) {
         return log10Number(x)
       } else {
         // negative value -> complex value computation
@@ -51,12 +51,13 @@ export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
     },
 
-    bigint: promoteLogarithm(log16, log10Number, config, complexLogNumber),
+    bigint: promoteLogarithm(
+      log16, log10Number, config.compute.uniformType, complexLogNumber),
 
     Complex: complexLog,
 
     BigNumber: function (x) {
-      if (!x.isNegative() || config.predictable) {
+      if (!x.isNegative() || config.compute.uniformType) {
         return x.log()
       } else {
         // downgrade to number, return Complex valued result

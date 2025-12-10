@@ -58,6 +58,8 @@ export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ ty
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self, true)),
 
     boolean: function (x) {
+      // we know this value can be expressed as any numeric type,
+      // so no need to worry about compute.numberApproximate
       return numeric(x ? 1 : 0, config.number)
     },
 

@@ -9,9 +9,14 @@ const sech = math.sech
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({ number: 'BigNumber', precision: 20 })
-const biggermath = math.create({ precision: 22 })
-const predmath = math.create({ predictable: true })
+const bigmath = math.create({
+  compute: {
+    numberApproximate: 'BigNumber',
+    BigNumber: { precision: 20 }
+  }
+})
+const biggermath = math.create({ compute: { BigNumber: { precision: 22 } } })
+const predmath = math.create({ compute: { uniformType: true } })
 const asechBig = bigmath.asech
 const Big = bigmath.bignumber
 
@@ -53,8 +58,8 @@ describe('asech', function () {
     assert.deepStrictEqual(arg2, Big(0.25))
 
     /* out of range */
-    assert.ok(asech(Big(-1)).isNaN())
-    assert.ok(asech(Big(2)).isNaN())
+    assert.deepStrictEqual(asech(Big(-1)), math.complex(-0, Math.PI))
+    assert.ok(asech(Big(2)), math.complex(0, Math.PI / 3))
   })
 
   it('should be the inverse function of hyperbolic sec', function () {

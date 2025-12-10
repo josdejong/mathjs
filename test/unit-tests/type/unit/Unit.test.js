@@ -3,6 +3,7 @@ import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 import { isBigNumber, isFraction } from '../../../../src/utils/is.js'
 import { hasOwnProperty } from '../../../../src/utils/object.js'
+import { bigConfig } from '../../configs.js'
 
 const Unit = math.Unit
 
@@ -557,7 +558,7 @@ describe('Unit', function () {
     })
 
     it('should simplify units when they cancel out with {predictable: true}', function () {
-      const math2 = math.create({ predictable: true })
+      const math2 = math.create({ compute: { uniformType: true } })
       const unit1 = new math2.Unit(2, 'Hz')
       const unit2 = new math2.Unit(2, 's')
       const unit3 = math2.multiply(unit1, unit2)
@@ -582,7 +583,7 @@ describe('Unit', function () {
 
     it('should convert units to appropriate _numeric_ values when they cancel out with {predictable: false}', function () {
       const origConfig = math.config()
-      math.config({ predictable: false })
+      math.config({ compute: { uniformType: false } })
 
       assert.strictEqual(typeof (math.evaluate('40 m * 40 N / (40 J)')), 'number')
 
@@ -979,7 +980,7 @@ describe('Unit', function () {
       const unit2 = math2.Unit.parse('5kg')
       assert(isFraction(unit2.value))
 
-      const math3 = math.create({ number: 'BigNumber' })
+      const math3 = math.create(bigConfig())
       const unit3 = math3.Unit.parse('5kg')
       assert(isBigNumber(unit3.value))
     })

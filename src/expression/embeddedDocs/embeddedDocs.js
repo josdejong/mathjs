@@ -80,6 +80,7 @@ import { roundDocs } from './function/arithmetic/round.js'
 import { signDocs } from './function/arithmetic/sign.js'
 import { sqrtDocs } from './function/arithmetic/sqrt.js'
 import { sqrtmDocs } from './function/arithmetic/sqrtm.js'
+import { zeroDocs } from './function/arithmetic/zero.js'
 import { sylvesterDocs } from './function/algebra/sylvester.js'
 import { schurDocs } from './function/algebra/schur.js'
 import { lyapDocs } from './function/algebra/lyap.js'
@@ -408,6 +409,7 @@ export const embeddedDocs = {
   unaryPlus: unaryPlusDocs,
   xgcd: xgcdDocs,
   invmod: invmodDocs,
+  zero: zeroDocs,
 
   // functions - bitwise
   bitAnd: bitAndDocs,

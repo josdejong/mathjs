@@ -61,7 +61,12 @@ const { BigNumber, Unit } = math
 describe('physical constants', function () {
   it('should return the correct value and unit for physical constants', function () {
     // Note: to keep these unit tests readable and compact, the toString() of the units is compared
-    const config = { number: 'number', precision: 64, relTol: 1e-12 }
+    const config = {
+      compute: {
+        numberApproximate: 'number',
+        defaultRelTol: 1e-12
+      }
+    }
     const dependencies = { config, BigNumber, Unit }
 
     // Universal constants
@@ -140,7 +145,13 @@ describe('physical constants', function () {
   })
 
   it('should create BigNumber unit values if configured', function () {
-    const config = { number: 'BigNumber', precision: 64, relTol: 1e-12 }
+    const config = {
+      compute: {
+        defaultRelTol: 1e-12,
+        numberApproximate: 'BigNumber',
+        BigNumber: { precision: 64 }
+      }
+    }
     const dependencies = { config, BigNumber, Unit }
     const molarMass = createMolarMass(dependencies)
 

@@ -3,6 +3,8 @@ import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { bigConfig } from '../../configs.js'
+
 const divide = math.divide
 const bignumber = math.bignumber
 const complex = math.complex
@@ -175,7 +177,10 @@ describe('divide', function () {
     assert.strictEqual(divide(math.unit('day'), bignumber(81)).format({ precision: 50 }), '0.012345679012345679012345679012345679012345679012346 day')
     assert.strictEqual(divide(math.unit('1 day'), bignumber(81)).format({ precision: 50 }), '0.012345679012345679012345679012345679012345679012346 day')
 
-    assert.strictEqual(math.create({ number: 'BigNumber' }).evaluate('round(80 / day * 5 days, 30)').toString(), '400')
+    assert.strictEqual(
+      math.create(bigConfig()).evaluate('round(80 / day * 5 days, 30)').toString(),
+      '400'
+    )
   })
 
   it('should divide each elements in a matrix by a number', function () {

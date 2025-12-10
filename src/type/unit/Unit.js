@@ -242,8 +242,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * Parse a string into a unit. The value of the unit is parsed as number,
-   * BigNumber, or Fraction depending on the math.js config setting `number`.
+   * Parse a string into a unit. The data type of the value of the unit
+   * is determined by the math.js config settings, as for parsing numeric
+   * literals.
    *
    * Throws an exception if the provided string does not contain a valid unit or
    * cannot be parsed.
@@ -287,10 +288,18 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Optional number at the start of the string
     const valueStr = parseNumber()
     let value = null
+    let parseType = config.number
     if (valueStr) {
-      if (config.number === 'BigNumber') {
+      if (parseType === 'bigint') {
+        try {
+          value = BigInt(valueStr)
+        } catch {
+          parseType = config.parse.numberFallback
+        }
+      }
+      if (parseType === 'BigNumber') {
         value = new BigNumber(valueStr)
-      } else if (config.number === 'Fraction') {
+      } else if (parseType === 'Fraction') {
         try {
           // not all numbers can be turned in Fractions, for example very small numbers not
           value = new Fraction(valueStr)
@@ -764,12 +773,16 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * Return the numeric value of this unit if it is dimensionless, has a value, and config.predictable == false; or the original unit otherwise
+   * Return the numeric value of this unit if it is dimensionless, has a value,
+   * and config.compute.uniformType == false; or the original unit otherwise
    * @param {Unit} unit
    * @returns {number | Fraction | BigNumber | Unit}  The numeric value of the unit if conditions are met, or the original unit otherwise
    */
   function getNumericIfUnitless (unit) {
-    if (unit.equalBase(BASE_UNITS.NONE) && unit.value !== null && !config.predictable) {
+    if (unit.equalBase(BASE_UNITS.NONE) &&
+        unit.value !== null &&
+        !config.compute.uniformType
+    ) {
       return unit.value
     } else {
       return unit
@@ -2919,7 +2932,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @param {{number: 'number' | 'BigNumber'}} config
    */
   function calculateAngleValues (config) {
-    if (config.number === 'BigNumber') {
+    if (config.compute.numberApproximate === 'BigNumber') {
       const pi = createPi(BigNumber)
       UNITS.rad.value = new BigNumber(1)
       UNITS.deg.value = pi.div(180) // 2 * pi / 360
@@ -2948,7 +2961,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   if (on) {
     // recalculate the values on change of configuration
     on('config', function (curr, prev) {
-      if (curr.number !== prev.number) {
+      if (curr.compute.numberApproximate !== prev.compute.numberApproximate) {
         calculateAngleValues(curr)
       }
     })

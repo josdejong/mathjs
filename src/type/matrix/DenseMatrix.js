@@ -219,7 +219,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       throw new TypeError('Invalid index')
     }
 
-    const isScalar = config.legacySubset
+    const isScalar = config.compatibility.subset
       ? index.size().every(idx => idx === 1)
       : index.isScalar()
     if (isScalar) {
@@ -246,7 +246,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       returnMatrix._size = submatrix.size
       returnMatrix._datatype = matrix._datatype
       returnMatrix._data = submatrix.data
-      return config.legacySubset ? returnMatrix.reshape(index.size()) : returnMatrix
+      return config.compatibility.subset ? returnMatrix.reshape(index.size()) : returnMatrix
     }
   }
 

@@ -1,5 +1,4 @@
-import { DEFAULT_CONFIG } from '../core/config.js'
-import { MATRIX_OPTIONS, NUMBER_OPTIONS } from '../core/function/config.js'
+import { DEFAULT_CONFIG, ALLOWED_CONFIG } from '../core/config.js'
 
 // create a read-only version of config
 export const config = function (options) {
@@ -15,4 +14,4 @@ export const config = function (options) {
 
   return Object.freeze(DEFAULT_CONFIG)
 }
-Object.assign(config, DEFAULT_CONFIG, { MATRIX_OPTIONS, NUMBER_OPTIONS })
+Object.assign(config, DEFAULT_CONFIG, { ALLOWED_CONFIG })

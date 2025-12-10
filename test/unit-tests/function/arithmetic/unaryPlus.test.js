@@ -2,6 +2,8 @@
 import assert from 'assert'
 
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
+
 const bignumber = math.bignumber
 const fraction = math.fraction
 
@@ -12,7 +14,7 @@ describe('unaryPlus', function () {
   })
 
   it('should return bignumber unary plus of a boolean', function () {
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     assert.deepStrictEqual(bigmath.unaryPlus(true), bigmath.bignumber(1))
     assert.deepStrictEqual(bigmath.unaryPlus(false), bigmath.bignumber(0))
   })
@@ -23,7 +25,7 @@ describe('unaryPlus', function () {
   })
 
   it('should return bignumber unary plus on a string', function () {
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     assert.deepStrictEqual(bigmath.unaryPlus('20000000000000000000001'), bigmath.bignumber('20000000000000000000001'))
     assert.deepStrictEqual(bigmath.unaryPlus('-20000000000000000000001'), bigmath.bignumber('-20000000000000000000001'))
   })
@@ -39,7 +41,7 @@ describe('unaryPlus', function () {
 
   // TODO: this is temporary until the test above works again
   it('should return bignumber unary plus on a string', function () {
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     const a = bigmath.unaryPlus('2')
     assert(a instanceof bigmath.BigNumber)
     assert.deepStrictEqual(a.toString(), '2')

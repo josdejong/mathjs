@@ -30,11 +30,10 @@ export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   return typed(name, {
     number: function (x) {
-      if ((x >= -1 && x <= 1) || config.predictable) {
+      if ((x >= -1 && x <= 1) || config.compute.uniformType) {
         return Math.asin(x)
-      } else {
-        return new Complex(x, 0).asin()
       }
+      return new Complex(x, 0).asin()
     },
 
     Complex: function (x) {
@@ -42,6 +41,9 @@ export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     },
 
     BigNumber: function (x) {
+      if ((x.lessThan(-1) || x.greaterThan(1)) && !config.compute.uniformType) {
+        return new Complex(x.toNumber(), 0).asin()
+      }
       return x.asin()
     }
   })

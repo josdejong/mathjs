@@ -28,7 +28,7 @@ export const createAcosh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    */
   return typed(name, {
     number: function (x) {
-      if (x >= 1 || config.predictable) {
+      if (x >= 1 || config.compute.uniformType) {
         return acoshNumber(x)
       }
       if (x <= -1) {
@@ -42,7 +42,14 @@ export const createAcosh = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
 
     BigNumber: function (x) {
-      return x.acosh()
+      if (x.gte(1) || config.compute.uniformType) {
+        return x.acosh()
+      }
+      x = x.toNumber()
+      if (x <= -1) {
+        return new Complex(Math.log(Math.sqrt(x * x - 1) - x), Math.PI)
+      }
+      return new Complex(x, 0).acosh()
     }
   })
 })

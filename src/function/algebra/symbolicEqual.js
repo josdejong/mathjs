@@ -6,14 +6,16 @@ const dependencies = [
   'parse',
   'simplify',
   'typed',
-  'OperatorNode'
+  'OperatorNode',
+  'isZero'
 ]
 
 export const createSymbolicEqual = /* #__PURE__ */ factory(name, dependencies, ({
   parse,
   simplify,
   typed,
-  OperatorNode
+  OperatorNode,
+  isZero
 }) => {
   /**
    * Attempts to determine if two expressions are symbolically equal, i.e.
@@ -56,7 +58,7 @@ export const createSymbolicEqual = /* #__PURE__ */ factory(name, dependencies, (
   function _symbolicEqual (e1, e2, options = {}) {
     const diff = new OperatorNode('-', 'subtract', [e1, e2])
     const simplified = simplify(diff, {}, options)
-    return (isConstantNode(simplified) && !(simplified.value))
+    return (isConstantNode(simplified) && isZero(simplified.value))
   }
 
   return typed(name, {

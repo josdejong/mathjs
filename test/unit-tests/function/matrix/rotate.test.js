@@ -1,6 +1,7 @@
 import assert from 'assert'
 import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
+import { bigConfig } from '../../configs.js'
 
 const unit = math.unit
 const complex = math.complex
@@ -55,7 +56,7 @@ describe('rotate', function () {
   })
 
   it('should return a rotated 1x2 bignumber vector', function () {
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     const minusOne = bigmath.bignumber(-1)
     const cos1 = bigmath.cos(bigmath.bignumber(1))
     const sin1 = bigmath.sin(bigmath.bignumber(1))
@@ -121,7 +122,7 @@ describe('rotate', function () {
   })
 
   it('should return a rotated 1x3 bignumber vector', function () {
-    const bigmath = math.create({ number: 'BigNumber' })
+    const bigmath = math.create(bigConfig())
     const minusOne = bigmath.bignumber(-1)
     const cos1 = bigmath.cos(bigmath.bignumber(1))
     const sin1 = bigmath.sin(bigmath.bignumber(1))
