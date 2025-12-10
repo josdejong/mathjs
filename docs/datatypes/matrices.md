@@ -18,8 +18,8 @@ Math.js supports two types of matrices:
 - `Matrix`, a matrix implementation by math.js. A `Matrix` is an object that
   provides utility functions for easy matrix manipulation such as `subset`,
   `size`, `resize`, `clone`, and more. There are multiple concrete
-  implementations for this `Matrix` api; for example, the `DenseMatrix` is
-  a wrapper around a possibly multidimensional `Array`.
+  implementations for this `Matrix` api (see below); for example, the
+  `DenseMatrix` is a wrapper around a possibly multidimensional `Array`.
 
 In most cases, the type of matrix output from functions is determined by the
 function input: An `Array` as input will return an `Array` and a `Matrix` as
@@ -128,6 +128,16 @@ math.range(0, 8, 2)     // [0, 2, 4, 6]
 math.range(3, -1, -1)   // [3, 2, 1, 0]
 ```
 
+A range can also be created by passing a plain object of attributes, with any
+or all of the properties `start`, `step`, `length` (number of entries),
+`end` (exclusive limit), or `last` (inclusive limit). For example,
+```js
+math.range({start: 2, length: 3})  // [2, 3, 4]
+math.range({start: math.fraction(0), last: math.fraction(1), length: 4})
+                                   // Fractions [0, 1/3, 2/3, 1]
+math.range({start: zeros(3), step: [1, 2, 3], length: 3})
+                                   // [[0, 0, 0], [1, 2, 3], [2, 4, 6]]
+```
 
 ## Calculations
 
@@ -540,7 +550,6 @@ You can also coerce an array or matrix into sparse storage format with the
 const md = math.matrix([[0, 1], [0,0]])  // dense
 const ms = math.sparse(md)               // sparse
 ```
-
 Caution: `sparse` called on a JavaScript array of _n_ plain numbers produces
 a matrix with one column and _n_ rows -- in contrast to `matrix`, which
 produces a 1-dimensional matrix object with _n_ entries, i.e., a vector
@@ -549,6 +558,13 @@ vector of length _n_).
 ```js
 const mv = math.matrix([0, 0, 1])  // Has size [3]
 const mc = math.sparse([0, 0, 1])  // A "column vector," has size [3, 1]
+```
+
+And you can create Ranges directly with the `range` function.
+```js
+const mr = math.range(2.5, 8.5, 1.5)     // Range [2.5, 4, 5.5, 7]
+const mr = math.range({start: 3n, step: 2n, length: 3})
+                                         // Range [3n, 5n, 7n]
 ```
 
 ## API
