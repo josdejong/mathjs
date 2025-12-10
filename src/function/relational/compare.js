@@ -11,19 +11,17 @@ const name = 'compare'
 const dependencies = [
   'typed',
   'config',
-  'matrix',
   'equalScalar',
   'BigNumber',
   'Fraction',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, equalScalar, matrix, BigNumber, Fraction, DenseMatrix, concat }) => {
+export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, equalScalar, BigNumber, Fraction, DenseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, DenseMatrix })
   const compareUnits = createCompareUnits({ typed })
 
   /**

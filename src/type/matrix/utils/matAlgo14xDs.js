@@ -1,5 +1,5 @@
 import { factory } from '../../../utils/factory.js'
-import { clone } from '../../../utils/object.js'
+import { isDenseMatrix } from '../../../utils/is.js'
 
 const name = 'matAlgo14xDs'
 const dependencies = ['typed']
@@ -21,10 +21,11 @@ export const createMatAlgo14xDs = /* #__PURE__ */ factory(name, dependencies, ({
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
    */
   return function matAlgo14xDs (a, b, callback, inverse) {
+    const dense = isDenseMatrix(a)
     // a arrays
-    const adata = a._data
-    const asize = a._size
-    const adt = a._datatype
+    const adata = dense ? a._data : a.valueOf()
+    const asize = dense ? a._size : a.size()
+    const adt = dense ? a._datatype : a.datatype()
 
     // datatype
     let dt
@@ -45,11 +46,7 @@ export const createMatAlgo14xDs = /* #__PURE__ */ factory(name, dependencies, ({
     const cdata = asize.length > 0 ? _iterate(cf, 0, asize, asize[0], adata, b, inverse) : []
 
     // c matrix
-    return a.createDenseMatrix({
-      data: cdata,
-      size: clone(asize),
-      datatype: dt
-    })
+    return a.create(cdata, dt)
   }
 
   // recursive function

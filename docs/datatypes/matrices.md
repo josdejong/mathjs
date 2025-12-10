@@ -3,9 +3,11 @@
 Math.js supports multidimensional matrices and arrays. Matrices can be
 created, manipulated, and used in calculations. Both regular JavaScript
 arrays and the matrix type implemented by math.js can be used
-interchangeably in all relevant math.js functions. math.js supports both
-dense and sparse matrices.
-
+interchangeably in all relevant math.js functions. math.js supports dense
+matrices (in which each entry is stored in memory), sparse matrices (in
+which only the non-zero entries are stored, with information about the
+indices at which they occur), and "Range" matrices whose entries are generated
+on the fly by arithmetic sequences.
 
 ## Arrays and matrices
 
@@ -13,13 +15,15 @@ Math.js supports two types of matrices:
 
 - `Array`, a regular JavaScript array. A multidimensional array can be created
   by nesting arrays.
-- `Matrix`, a matrix implementation by math.js. A `Matrix` is an object wrapped
-  around a regular JavaScript `Array`, providing utility functions for easy
-  matrix manipulation such as `subset`, `size`, `resize`, `clone`, and more.
+- `Matrix`, a matrix implementation by math.js. A `Matrix` is an object that
+  provides utility functions for easy matrix manipulation such as `subset`,
+  `size`, `resize`, `clone`, and more. There are multiple concrete
+  implementations for this `Matrix` api (see below); for example, the
+  `DenseMatrix` is a wrapper around a possibly multidimensional `Array`.
 
 In most cases, the type of matrix output from functions is determined by the
-function input: An `Array` as input will return an `Array`, a `Matrix` as input
-will return a `Matrix`. In case of mixed input, a `Matrix` is returned.
+function input: An `Array` as input will return an `Array` and a `Matrix` as
+input will return a `Matrix`. In case of mixed input, a `Matrix` is returned.
 For functions where the type of output cannot be determined from the
 input, the output is determined by the configuration option `matrix`,
 which can be a string `'Matrix'` (default) or `'Array'`. The function `size` is
@@ -124,6 +128,16 @@ math.range(0, 8, 2)     // [0, 2, 4, 6]
 math.range(3, -1, -1)   // [3, 2, 1, 0]
 ```
 
+A range can also be created by passing a plain object of attributes, with any
+or all of the properties `start`, `step`, `length` (number of entries),
+`end` (exclusive limit), or `last` (inclusive limit). For example,
+```js
+math.range({start: 2, length: 3})  // [2, 3, 4]
+math.range({start: math.fraction(0), last: math.fraction(1), length: 4})
+                                   // Fractions [0, 1/3, 2/3, 1]
+math.range({start: zeros(3), step: [1, 2, 3], length: 3})
+                                   // [[0, 0, 0], [1, 2, 3], [2, 4, 6]]
+```
 
 ## Calculations
 
@@ -270,7 +284,10 @@ Matrices have a `subset` function, which is applied to the matrix itself:
 `Matrix.subset(index [, replacement])`. For both matrices and arrays,
 the static function `subset(matrix, index [, replacement])` can be used.
 When parameter `replacement` is provided, the function will replace a subset
-in the matrix, and if not, a subset of the matrix will be returned.
+in the matrix, and if not, a subset of the matrix will be returned. Note that
+Ranges are immutable (since their entries are defined by a specific
+mathematical relation) and hence only allow their subsets to be read, not
+replaced.
 
 A subset can be defined using an `Index`. An `Index` contains a single value
 or a set of values for each dimension of a matrix. An `Index` can be
@@ -370,7 +387,7 @@ const m = math.matrix([[1, 2, 3], [4, 5, 6]])
 
 There are two methods available on matrices that allow to get or set a single 
 value inside a matrix. It is important to note that the `set` method will 
-mutate the matrix.
+mutate the matrix (and so is disallowed on Ranges).
 
 ```js
 const p = math.matrix([[1, 2], [3, 4]])
@@ -504,10 +521,18 @@ At this moment `forEach` doesn't include the same functionality.
 
 Math.js supports both dense matrices and sparse matrices. Sparse matrices are efficient for matrices largely containing zeros. In that case they save a lot of memory, and calculations can be much faster than for dense matrices.
 
-Math.js supports two type of matrices:
+Math.js supports three types of matrices:
 
-- Dense matrix (`'dense'`, `default`) A regular, dense matrix, supporting multidimensional matrices. This is the default matrix type.
+- Dense matrix (`'dense'`, `default`) A regular, dense matrix, supporting
+  multidimensional matrices. This is the default matrix type.
 - Sparse matrix (`'sparse'`): A two dimensional sparse matrix implementation.
+- Range ('range'): A matrix that has entries specified by an arithmetic
+  sequence. Note that it is possible for a Range to be multidimensional, e.g.
+  via
+```js
+const r2d = math.range([1, 11, 21], [4, 14, 24], [1, 1, 1])
+// returns a Range representing [[1, 11, 21], [2, 12, 22], [3, 13, 23]]
+```
 
 The type of matrix can be selected when creating a matrix using the construction functions `matrix`, `diag`, `identity`, `ones`, and `zeros`.
 
@@ -515,6 +540,8 @@ The type of matrix can be selected when creating a matrix using the construction
 // create sparse matrices
 const m1 = math.matrix([[0, 1], [0, 0]], 'sparse')
 const m2 = math.identity(1000, 1000, 'sparse')
+// create a range matrix
+const m3 = math.ones(3, 4, 'range')
 ```
 
 You can also coerce an array or matrix into sparse storage format with the
@@ -523,7 +550,6 @@ You can also coerce an array or matrix into sparse storage format with the
 const md = math.matrix([[0, 1], [0,0]])  // dense
 const ms = math.sparse(md)               // sparse
 ```
-
 Caution: `sparse` called on a JavaScript array of _n_ plain numbers produces
 a matrix with one column and _n_ rows -- in contrast to `matrix`, which
 produces a 1-dimensional matrix object with _n_ entries, i.e., a vector
@@ -534,6 +560,13 @@ const mv = math.matrix([0, 0, 1])  // Has size [3]
 const mc = math.sparse([0, 0, 1])  // A "column vector," has size [3, 1]
 ```
 
+And you can create Ranges directly with the `range` function.
+```js
+const mr = math.range(2.5, 8.5, 1.5)     // Range [2.5, 4, 5.5, 7]
+const mr = math.range({start: 3n, step: 2n, length: 3})
+                                         // Range [3n, 5n, 7n]
+```
+
 ## API
 
 All relevant functions in math.js support Matrices and Arrays. Functions like `math.add` and `math.subtract`, `math.sqrt` handle matrices element wise. There is a set of functions specifically for creating or manipulating matrices, such as:
@@ -542,9 +575,17 @@ All relevant functions in math.js support Matrices and Arrays. Functions like `m
 - Functions like `math.subset` and `math.index` to get or replace a part of a matrix
 - Functions like `math.transpose` and `math.diag` to manipulate matrices.
 
-A full list of matrix functions is available on the [functions reference page](../reference/functions.md#matrix-functions).
+A full list of matrix functions is available on the
+[functions reference page](../reference/functions.md#matrix-functions).
 
-Two types of matrix classes are available in math.js, for storage of dense and sparse matrices. Although they contain public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
+The common `Matrix` interface implemented by all Matrix classes has its own
+[documentation page](../reference/classes/matrix.md).
+
+Three types of Matrix classes are available in math.js, for storage of dense,
+sparse, and range matrices. Although they contain public functions documented
+as follows, using the following APIs directly is *not* recommended. Prefer
+using the functions in the "math" namespace wherever possible.
 
 - [DenseMatrix](../reference/classes/densematrix.md)
 - [SparseMatrix](../reference/classes/sparsematrix.md)
+- [Range](../reference/classes/range.md)

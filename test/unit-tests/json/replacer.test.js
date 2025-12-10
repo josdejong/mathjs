@@ -50,7 +50,7 @@ describe('replacer', function () {
 
   it('should stringify a Range', function () {
     const r = new math.Range(2, 10)
-    const json = '{"mathjs":"Range","start":2,"end":10,"step":1}'
+    const json = '{"mathjs":"Range","start":2,"step":1,"length":8}'
     assert.deepStrictEqual(JSON.stringify(r), json)
     assert.deepStrictEqual(JSON.stringify(r, replacer), json)
   })
@@ -58,16 +58,14 @@ describe('replacer', function () {
   it('should stringify an Index', function () {
     const i = new math.Index(new math.Range(0, 10), 2)
     const json = '{"mathjs":"Index","dimensions":[' +
-        '{"mathjs":"Range","start":0,"end":10,"step":1},' +
-        '2' +
-        ']}'
+      '{"mathjs":"Range","start":0,"step":1,"length":10},2]}'
     assert.deepStrictEqual(JSON.stringify(i), json)
     assert.deepStrictEqual(JSON.stringify(i, replacer), json)
   })
 
   it('should stringify a Range (2)', function () {
     const r = new math.Range(2, 10, 2)
-    const json = '{"mathjs":"Range","start":2,"end":10,"step":2}'
+    const json = '{"mathjs":"Range","start":2,"step":2,"length":4}'
     assert.deepStrictEqual(JSON.stringify(r), json)
     assert.deepStrictEqual(JSON.stringify(r, replacer), json)
   })

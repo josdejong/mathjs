@@ -9,21 +9,28 @@ const dependencies = ['ImmutableDenseMatrix', 'getMatrixDataType']
 export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ ImmutableDenseMatrix, getMatrixDataType }) => {
   /**
    * Create an index. An Index can store ranges and sets for multiple dimensions.
-   * Matrix.get, Matrix.set, and math.subset accept an Index as input.
+   * The math.subset() function accepts an Index as input.
    *
    * Usage:
    *     const index = new Index(range1, range2, matrix1, array1, ...)
    *
    * Where each parameter can be any of:
    *     A number
-   *     A string (containing a name of an object property)
-   *     An instance of Range
    *     An Array with the Set values
    *     An Array with Booleans
-   *     A Matrix with the Set values
+   *     A Matrix with the Set values (this might often be a Range instance)
    *     A Matrix with Booleans
+   *     A string (will be interpreted as the name of an object property when
+   *         used to index an object, or converted into a Range when used
+   *         to index a Matrix/Array)
    *
-   * The parameters start, end, and step must be integer numbers.
+   * Note that all numeric values provided will be converted to the ordinary
+   * JavaScript number type when used for indexing.
+   * Further, once an Index has been constructed, you can set the `includeEnd`
+   * property on the Index to indicate that when strings are converted to
+   * Ranges, the end should be included (rather than excluded as by default).
+   * Similarly, you can set a `shiftPosition` property that will be subtracted
+   * from the entries of Ranges constructed from strings.
    *
    * @class Index
    * @Constructor Index
@@ -37,6 +44,8 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
     this._dimensions = []
     this._sourceSize = []
     this._isScalar = true
+    this.includeEnd = false
+    this.shiftPosition = 0
 
     for (let i = 0, ii = ranges.length; i < ii; i++) {
       const arg = ranges[i]
@@ -45,7 +54,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
       const argType = typeof arg
       let sourceSize = null
       if (isRange(arg)) {
-        this._dimensions.push(arg)
+        this._dimensions.push(arg.toNumber())
         this._isScalar = false
       } else if (argIsArray || argIsMatrix) {
         // create matrix
@@ -67,12 +76,13 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
         this._dimensions.push(Number(arg))
       } else if (argType === 'string') {
         // object property (arguments.count should be 1)
+        // or string notation for a Range, possibly with elided limits
+        // (see documention for `index` function) to allow wildcard
         this._dimensions.push(arg)
       } else {
         throw new TypeError('Dimension must be an Array, Matrix, number, bigint, string, or Range')
       }
       this._sourceSize.push(sourceSize)
-      // TODO: implement support for wildcard '*'
     }
   }
 
@@ -116,7 +126,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @return {Index} index
    * @private
    */
-  Index.create = function (ranges) {
+  Index.prototype.create = function (ranges) {
     const index = new Index()
     Index.apply(index, ranges)
     return index
@@ -290,7 +300,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    * @return {Index}
    */
   Index.fromJSON = function (json) {
-    return Index.create(json.dimensions)
+    return new Index(...json.dimensions)
   }
 
   return Index

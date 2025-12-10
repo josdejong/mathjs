@@ -24,7 +24,7 @@ describe('dotDivide', function () {
     assert.ok(isNaN(dotDivide(false, false)))
   })
 
-  it('should add mixed numbers and booleans', function () {
+  it('should divide mixed numbers and booleans', function () {
     assert.strictEqual(dotDivide(2, true), 2)
     assert.strictEqual(dotDivide(2, false), Infinity)
     approxEqual(dotDivide(true, 2), 0.5)

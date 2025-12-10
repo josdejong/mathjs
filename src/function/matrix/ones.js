@@ -4,9 +4,13 @@ import { resize } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'ones'
-const dependencies = ['typed', 'config', 'matrix', 'BigNumber']
+const dependencies = [
+  'typed', 'config', 'matrix', 'BigNumber', 'Range', 'zero'
+]
 
-export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber }) => {
+export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, matrix, BigNumber, Range, zero
+}) => {
   /**
    * Create a matrix filled with ones. The created matrix can have one or
    * multiple dimensions.
@@ -88,6 +92,23 @@ export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     if (format) {
       // return a matrix
+      if (format === 'range') {
+        if (size.length === 0) {
+          return new Range({ start: defaultValue, length: 0 })
+        }
+        if (size.length === 1) {
+          return new Range({
+            start: defaultValue,
+            length: size[0],
+            step: zero(defaultValue)
+          })
+        }
+        return new Range({
+          start: _ones(size.slice(1), format),
+          length: size[0],
+          step: zero(defaultValue)
+        })
+      }
       const m = matrix(format)
       if (size.length > 0) {
         return m.resize(size, defaultValue)

@@ -1,4 +1,5 @@
 import { factory } from '../../utils/factory.js'
+import { parseRange } from '../../utils/collection.js'
 
 const name = 'Matrix'
 const dependencies = []
@@ -7,15 +8,19 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
   /**
    * @constructor Matrix
    *
-   * A Matrix is a wrapper around an Array. A matrix can hold a multi dimensional
-   * array. A matrix can be constructed as:
+   * A Matrix is an object representing a matrix with any number of
+   * dimensions. A matrix can be generated in math js from an Array (with
+   * nested-Array depth equal to the dimension), via:
    *
    *     let matrix = math.matrix(data)
    *
-   * Matrix contains the functions to resize, get and set values, get the size,
-   * clone the matrix and to convert the matrix to a vector, array, or scalar.
-   * Furthermore, one can iterate over the matrix using map and forEach.
-   * The internal Array of the Matrix can be accessed using the function valueOf.
+   * This Matrix interface contains the functions to resize,
+   * get and set values, get the size, clone the matrix and to convert
+   * the matrix to a vector, array, or scalar.
+   * Furthermore, one can iterate over the matrix using map and forEach and
+   * JavaScript for loops.
+   * A (nested) Array corresponding to the Matrix can be accessed using the
+   * function valueOf.
    *
    * Example usage:
    *
@@ -92,6 +97,72 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
   }
 
   /**
+   * Get one of the full sections of the matrix of dimension one less,
+   * at a specific position among all such sections. Note that
+   * `M.layer(n)` is equivalent to `M.subset(new Index(n, ':', ':' ...))`
+   * with the proper number of wildcards to match the dimension of matrix M,
+   * but typically much faster.
+   *
+   * For example, if M is a vector, then `M.layer(0)` is its first element,
+   * whereas if M is an ordinary 2D matrix, then `M.layer(1)` is its second
+   * row.
+   */
+  Matrix.prototype.layer = function (which) {
+    // must be provided by each Matrix implementation
+    throw new Error('Cannot invoke layer on a Matrix interface')
+  }
+
+  /**
+   * Helper for all of the implementations' subset methods.
+   * Parses any string representations of Ranges in the index, filling in
+   * limits with the sizes of the corresponding dimensions, allowing for
+   * wildcards.
+   *
+   * @param {Index} index
+   * @param {number[]} size of the matrix
+   * @return {Index}  same index with string Ranges parsed and limits filled
+   */
+  Matrix.parseWithinIndex = function (index, size) {
+    let altered = false
+    const ndim = index.size().length
+    const newRanges = []
+    for (let dim = 0; dim < ndim; ++dim) {
+      let spec = index.dimension(dim)
+      if (typeof spec === 'string') {
+        const fields = parseRange(spec)
+        if (fields === null) {
+          throw new Error(`String '${spec}' does not specify a Range`)
+        }
+        fields.step ||= '1'
+        for (const key in fields) {
+          if (fields[key] === '') continue
+          const val = Number(fields[key])
+          if (isNaN(val)) {
+            throw new SyntaxError(
+              `${key} in '${spec}' does not represent a number`)
+          }
+          fields[key] = val
+        }
+        if (fields.start === '') fields.start = index.shiftPosition
+        if (fields.end === '') fields.end = size[dim] + index.shiftPosition
+        fields.start -= index.shiftPosition
+        fields.end -= index.shiftPosition
+        const attributes = index.includeEnd
+          ? { start: fields.start, last: fields.end, step: fields.step }
+          : fields
+        if (!Matrix.createRange) {
+          throw new Error('Range has not injected its constructor into Matrix')
+        }
+        altered = true
+        spec = Matrix.createRange(attributes)
+      }
+      newRanges.push(spec)
+    }
+    if (altered) return index.create(newRanges)
+    return index
+  }
+
+  /**
    * Get a single element from the matrix.
    * @param {number[]} index   Zero-based index
    * @return {*} value
@@ -141,7 +212,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    *
    * @return {Matrix}                 The reshaped matrix
    */
-  Matrix.prototype.reshape = function (size, defaultValue) {
+  Matrix.prototype.reshape = function (size) {
     // must be implemented by each of the Matrix implementations
     throw new Error('Cannot invoke reshape on a Matrix interface')
   }

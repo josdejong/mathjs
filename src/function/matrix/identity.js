@@ -7,13 +7,12 @@ const name = 'identity'
 const dependencies = [
   'typed',
   'config',
-  'matrix',
   'BigNumber',
   'DenseMatrix',
   'SparseMatrix'
 ]
 
-export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber, DenseMatrix, SparseMatrix }) => {
+export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, BigNumber, DenseMatrix, SparseMatrix }) => {
   /**
    * Create a 2-dimensional identity matrix with size m x n or n x n.
    * The matrix has ones on the diagonal and zeros elsewhere.
@@ -46,11 +45,11 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
    */
   return typed(name, {
     '': function () {
-      return (config.matrix === 'Matrix') ? matrix([]) : []
+      return (config.matrix === 'Matrix') ? new DenseMatrix([]) : []
     },
 
     string: function (format) {
-      return matrix(format)
+      return _identity(0, 0, format)
     },
 
     'number | BigNumber': function (rows) {
@@ -88,7 +87,7 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
   function _identityVector (size, format) {
     switch (size.length) {
-      case 0: return format ? matrix(format) : []
+      case 0: return _identity(0, 0, format)
       case 1: return _identity(size[0], size[0], format)
       case 2: return _identity(size[0], size[1], format)
       default: throw new Error('Vector containing two values expected')
@@ -112,11 +111,16 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
     if (isBigNumber(rows)) rows = rows.toNumber()
     if (isBigNumber(cols)) cols = cols.toNumber()
 
-    if (!isInteger(rows) || rows < 1) {
-      throw new Error('Parameters in function identity must be positive integers')
+    if (!isInteger(rows) || rows < 0) {
+      throw new Error('Parameters in function identity must be nonnegative integers')
     }
-    if (!isInteger(cols) || cols < 1) {
-      throw new Error('Parameters in function identity must be positive integers')
+    if (!isInteger(cols) || cols < 0) {
+      throw new Error('Parameters in function identity must be nonnegative integers')
+    }
+
+    if (rows === 0 || cols === 0) {
+      if (!format) return []
+      return format === 'sparse' ? new SparseMatrix() : new DenseMatrix()
     }
 
     const one = Big ? new BigNumber(1) : 1

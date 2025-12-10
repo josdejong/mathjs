@@ -1,20 +1,21 @@
 import { factory } from '../../utils/factory.js'
 import { isMatrix } from '../../utils/is.js'
 import { arraySize } from '../../utils/array.js'
+import { deepMultiply } from '../../plain/number/arithmetic.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'multiply'
 const dependencies = [
   'typed',
-  'matrix',
+  'DenseMatrix',
   'addScalar',
   'multiplyScalar',
   'equalScalar',
   'dot'
 ]
 
-export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar, dot }) => {
+export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix, addScalar, multiplyScalar, equalScalar, dot }) => {
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
@@ -801,7 +802,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       _validateMatrixDimensions(arraySize(x), arraySize(y))
 
       // use dense matrix implementation
-      const m = selfMM(matrix(x), matrix(y))
+      const m = selfMM(new DenseMatrix(x), new DenseMatrix(y))
       // return array or scalar
       return isMatrix(m) ? m.valueOf() : m
     }),
@@ -834,11 +835,11 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     'Matrix, Array': typed.referTo('Matrix,Matrix', selfMM =>
-      (x, y) => selfMM(x, matrix(y))),
+      (x, y) => selfMM(x, x.create(y))),
 
     'Array, Matrix': typed.referToSelf(self => (x, y) => {
       // use Matrix * Matrix implementation
-      return self(matrix(x, y.storage()), y)
+      return self(y.create(x), y)
     }),
 
     'SparseMatrix, any': function (x, y) {
@@ -859,13 +860,25 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return matAlgo14xDs(matrix(x), y, multiplyScalar, false).valueOf()
+      return matAlgo14xDs(new DenseMatrix(x), y, multiplyScalar, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return matAlgo14xDs(matrix(y), x, multiplyScalar, true).valueOf()
+      return matAlgo14xDs(new DenseMatrix(y), x, multiplyScalar, true).valueOf()
     },
+
+    'Range, any': typed.referToSelf(self => (r, s) => r.createRange({
+      start: self(r.start, s),
+      length: r.length,
+      step: self(r.step, s)
+    })),
+
+    'any, Range': typed.referToSelf(self => (s, r) => r.createRange({
+      start: self(s, r.start),
+      length: r.length,
+      step: self(s, r.step)
+    })),
 
     'any, any': multiplyScalar,
 
@@ -880,3 +893,14 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     })
   })
 })
+
+export const createMultiplyNumber = /* #__PURE__ */ factory(
+  name, ['typed'], ({ typed }) => {
+    return typed(name, {
+      'number, number': (m, n) => m * n,
+      'bigint, bigint': (m, n) => m * n,
+      'number | bigint, Array': deepMultiply,
+      'Array, number | bigint': (A, n) => deepMultiply(n, A)
+    })
+  }
+)

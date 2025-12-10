@@ -6,14 +6,14 @@ import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 const name = 'divide'
 const dependencies = [
   'typed',
-  'matrix',
+  'DenseMatrix',
   'multiply',
   'equalScalar',
   'divideScalar',
   'inv'
 ]
 
-export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv }) => {
+export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix, multiply, equalScalar, divideScalar, inv }) => {
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
@@ -69,8 +69,14 @@ export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return matAlgo14xDs(matrix(x), y, divideScalar, false).valueOf()
+      return matAlgo14xDs(new DenseMatrix(x), y, divideScalar, false).valueOf()
     },
+
+    'Range, any': typed.referToSelf(self => (r, s) => r.createRange({
+      start: self(r.start, s),
+      length: r.length,
+      step: self(r.step, s)
+    })),
 
     'any, Array | Matrix': function (x, y) {
       return multiply(x, inv(y))

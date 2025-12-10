@@ -14,13 +14,15 @@ the lower level syntax of math.js. Differences are:
 
 - No need to prefix functions and constants with the `math.*` namespace,
   you can just enter `sin(pi / 4)`.
-- Matrix indexes are one-based instead of zero-based.
+- By default, bracket notation `[1, 2, 3]` produces a Matrix object rather
+  than an Array; and an Array can be written with list notation, as `(1, 2, 3)`.
+- Matrix and Array indexes are one-based instead of zero-based.
 - There are index and range operators which allow more conveniently getting
   and setting matrix indexes, like `A[2:4, 1]`.
 - Both indexes and ranges and have the upper-bound included.
 - There is a differing syntax for defining functions. Example: `f(x) = x^2`.
 - There are custom operators like `x + y` instead of `add(x, y)`.
-- Some operators are different. For example  `^` is used for exponentiation,
+- Some operators are different. For example, `^` is used for exponentiation,
   not bitwise xor.
 - Implicit multiplication, like `2 pi`, is supported and has special rules.
 - Relational operators (`<`, `>`, `<=`, `>=`, `==`, and `!=`) are chained, so the expression `5 < x < 10` is equivalent to `5 < x and x < 10`.
@@ -58,7 +60,8 @@ Functions below.
 Operator    | Name                        | Syntax      | Associativity | Example               | Result
 ----------- |-----------------------------|-------------| ------------- |-----------------------| ---------------
 `(`, `)`    | Grouping                    | `(x)`       | None          | `2 * (3 + 4)`         | `14`
-`[`, `]`    | Matrix, Index               | `[...]`     | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
+            | Array, function arguments   | `(x, y,...)`| None          | `((), (1,), (1,2))`   | `[[], [1], [1,2]]`
+`[`, `]`    | Matrix, Index               | `[...]`     | None          | `[[1,2],[3,4]]`       | `matrix([[1,2],[3,4]])`
 `{`, `}`    | Object                      | `{...}`     | None          | `{a: 1, b: 2}`        | `{a: 1, b: 2}`
 `,`         | Parameter separator         | `x, y`      | Left to right | `max(2, 1, 5)`        | `5`
 `.`         | Property accessor           | `obj.prop`  | Left to right | `obj={a: 12}; obj.a`  | `12`
@@ -112,7 +115,7 @@ The operators have the following precedence, from highest to lowest:
 
 Operators                         | Description
 --------------------------------- | --------------------
-`(...)`<br>`[...]`<br>`{...}`     | Grouping<br>Matrix<br>Object
+`(...)`<br>`[...]`<br>`{...}`     | Grouping/Array<br>Matrix<br>Object
 `x(...)`<br>`x[...]`<br>`obj.prop`<br>`:`| Function call<br>Matrix index<br>Property accessor<br>Key/value separator
 `'`                               | Matrix transpose
 `!`                               | Factorial

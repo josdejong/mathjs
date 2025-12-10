@@ -33,6 +33,20 @@ describe('zeros', function () {
     assert.deepStrictEqual(zeros([three]), [zero, zero, zero])
   })
 
+  it('should create a sparse matrix with zeros', function () {
+    assert.deepStrictEqual(
+      zeros(2, 3, 'sparse'), matrix([[0, 0, 0], [0, 0, 0]], 'sparse'))
+  })
+
+  it('should create a Range of zero vectors', function () {
+    const zeroRange = zeros(2, 3, 'range')
+    assert.strictEqual(zeroRange.length, 2)
+    assert.strictEqual(zeroRange.step, 0)
+    assert.deepStrictEqual(
+      zeroRange.start, new math.Range({ start: 0, step: 0, length: 3 }))
+    assert.strictEqual(zeroRange.get([1, 1]), 0)
+  })
+
   it('should create a 2D matrix with zeros from an array', function () {
     assert.deepStrictEqual(zeros(2, 3), matrix([[0, 0, 0], [0, 0, 0]]))
     assert.deepStrictEqual(zeros(3, 2), matrix([[0, 0], [0, 0], [0, 0]]))

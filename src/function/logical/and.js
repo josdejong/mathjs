@@ -9,19 +9,18 @@ import { andNumber } from '../../plain/number/index.js'
 const name = 'and'
 const dependencies = [
   'typed',
-  'matrix',
+  'DenseMatrix',
   'equalScalar',
   'zeros',
-  'not',
-  'concat'
+  'not'
 ]
 
-export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not, concat }) => {
+export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix, equalScalar, zeros, not }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, DenseMatrix })
 
   /**
    * Logical `and`. Test whether two values are both defined with a nonzero/nonempty value.
@@ -107,12 +106,12 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
 
       'Array, any': typed.referToSelf(self => (x, y) => {
         // use matrix implementation
-        return self(matrix(x), y).valueOf()
+        return self(new DenseMatrix(x), y).valueOf()
       }),
 
       'any, Array': typed.referToSelf(self => (x, y) => {
         // use matrix implementation
-        return self(x, matrix(y)).valueOf()
+        return self(x, new DenseMatrix(y)).valueOf()
       })
     },
     matrixAlgorithmSuite({

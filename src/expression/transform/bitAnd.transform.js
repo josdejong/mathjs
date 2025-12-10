@@ -3,10 +3,10 @@ import { factory } from '../../utils/factory.js'
 import { isCollection } from '../../utils/is.js'
 
 const name = 'bitAnd'
-const dependencies = ['typed', 'matrix', 'zeros', 'add', 'equalScalar', 'not', 'concat']
+const dependencies = ['typed', 'DenseMatrix', 'equalScalar']
 
-export const createBitAndTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not, concat }) => {
-  const bitAnd = createBitAnd({ typed, matrix, equalScalar, zeros, not, concat })
+export const createBitAndTransform = /* #__PURE__ */ factory(name, dependencies, provided => {
+  const bitAnd = createBitAnd(provided)
 
   function bitAndTransform (args, math, scope) {
     const condition1 = args[0].compile().evaluate(scope)

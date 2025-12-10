@@ -23,6 +23,14 @@ export function multiplyNumber (a, b) {
 }
 multiplyNumber.signature = n2
 
+/* Multiply every entry of A by the number n */
+export function deepMultiply (n, A) {
+  return A.map(item => {
+    if (Array.isArray(item)) return deepMultiply(n, item)
+    return n * item
+  })
+}
+
 export function divideNumber (a, b) {
   return a / b
 }

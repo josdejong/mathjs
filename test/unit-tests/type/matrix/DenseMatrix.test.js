@@ -488,6 +488,8 @@ describe('DenseMatrix', function () {
       m = new DenseMatrix(math.range(0, 10))
       assert.deepStrictEqual(m.size(), [10])
       assert.deepStrictEqual(m.subset(index(new Range(2, 5))).valueOf(), [2, 3, 4])
+      assert.deepStrictEqual(
+        m.subset(index('6:')), new DenseMatrix([6, 7, 8, 9], 'number'))
 
       // get 2-dimensional
       m = new DenseMatrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
@@ -499,6 +501,7 @@ describe('DenseMatrix', function () {
       assert.deepStrictEqual(m.subset(index(new Range(1, 3), 1)).valueOf(), [5, 8])
       assert.deepStrictEqual(m.subset(index(new Range(1, 3), 2)).valueOf(), [6, 9])
       assert.deepStrictEqual(m.subset(index([0, 1, 2], [1])).valueOf(), [[2], [5], [8]])
+      assert.deepStrictEqual(m.layer(1), new DenseMatrix([4, 5, 6]))
 
       // get n-dimensional
       m = new DenseMatrix([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
@@ -514,7 +517,8 @@ describe('DenseMatrix', function () {
     it('should squeeze the output when index contains a scalar', function () {
       let m = new DenseMatrix(math.range(0, 10))
       assert.deepStrictEqual(m.subset(index(1)), 1)
-      assert.deepStrictEqual(m.subset(index(new Range(1, 2))), new DenseMatrix([1]))
+      assert.deepStrictEqual(
+        m.subset(index(new Range(1, 2))), new DenseMatrix([1], 'number'))
 
       m = new DenseMatrix([[1, 2], [3, 4]])
       assert.deepStrictEqual(m.subset(index(1, 1)), 4)
@@ -550,9 +554,11 @@ describe('DenseMatrix', function () {
       // set 1-dimensional
       let m = new DenseMatrix(math.range(0, 7))
       m.subset(index(new Range(2, 4)), [20, 30])
-      assert.deepStrictEqual(m, new DenseMatrix([0, 1, 20, 30, 4, 5, 6]))
+      assert.deepStrictEqual(
+        m, new DenseMatrix([0, 1, 20, 30, 4, 5, 6], 'number'))
       m.subset(index(4), 40)
-      assert.deepStrictEqual(m, new DenseMatrix([0, 1, 20, 30, 40, 5, 6]))
+      assert.deepStrictEqual(
+        m, new DenseMatrix([0, 1, 20, 30, 40, 5, 6], 'number'))
 
       // set 2-dimensional
       m = new DenseMatrix()

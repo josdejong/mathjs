@@ -55,6 +55,7 @@ import { ceilDocs } from './function/arithmetic/ceil.js'
 import { cubeDocs } from './function/arithmetic/cube.js'
 import { divideDocs } from './function/arithmetic/divide.js'
 import { dotDivideDocs } from './function/arithmetic/dotDivide.js'
+import { scalarDivideDocs } from './function/arithmetic/scalarDivide.js'
 import { dotMultiplyDocs } from './function/arithmetic/dotMultiply.js'
 import { dotPowDocs } from './function/arithmetic/dotPow.js'
 import { expDocs } from './function/arithmetic/exp.js'
@@ -75,11 +76,13 @@ import { multiplyDocs } from './function/arithmetic/multiply.js'
 import { normDocs } from './function/arithmetic/norm.js'
 import { nthRootDocs } from './function/arithmetic/nthRoot.js'
 import { nthRootsDocs } from './function/arithmetic/nthRoots.js'
+import { oneDocs } from './function/arithmetic/one.js'
 import { powDocs } from './function/arithmetic/pow.js'
 import { roundDocs } from './function/arithmetic/round.js'
 import { signDocs } from './function/arithmetic/sign.js'
 import { sqrtDocs } from './function/arithmetic/sqrt.js'
 import { sqrtmDocs } from './function/arithmetic/sqrtm.js'
+import { zeroDocs } from './function/arithmetic/zero.js'
 import { sylvesterDocs } from './function/algebra/sylvester.js'
 import { schurDocs } from './function/algebra/schur.js'
 import { lyapDocs } from './function/algebra/lyap.js'
@@ -378,6 +381,7 @@ export const embeddedDocs = {
   cube: cubeDocs,
   divide: divideDocs,
   dotDivide: dotDivideDocs,
+  scalarDivide: scalarDivideDocs,
   dotMultiply: dotMultiplyDocs,
   dotPow: dotPowDocs,
   exp: expDocs,
@@ -397,6 +401,7 @@ export const embeddedDocs = {
   norm: normDocs,
   nthRoot: nthRootDocs,
   nthRoots: nthRootsDocs,
+  one: oneDocs,
   pow: powDocs,
   round: roundDocs,
   sign: signDocs,
@@ -408,6 +413,7 @@ export const embeddedDocs = {
   unaryPlus: unaryPlusDocs,
   xgcd: xgcdDocs,
   invmod: invmodDocs,
+  zero: zeroDocs,
 
   // functions - bitwise
   bitAnd: bitAndDocs,

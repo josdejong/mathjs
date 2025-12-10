@@ -59,6 +59,13 @@ describe('prod', function () {
     assert.strictEqual(prod(new DenseMatrix([1, 3, 5, 2])), 30)
   })
 
+  it('should return the prod of a Range', function () {
+    assert.strictEqual(prod(math.range(8, 1, -2)), 8 * 6 * 4 * 2) // 8!!
+    // and 2.5 rising 4:
+    assert.strictEqual(
+      prod(math.range({ start: 2.5, length: 4 })), 2.5 * 3.5 * 4.5 * 5.5)
+  })
+
   it('should return the prod element from a 2d array', function () {
     assert.deepStrictEqual(prod([
       [1, 7, 2],
@@ -86,12 +93,18 @@ describe('prod', function () {
     assert.throws(function () { prod() })
   })
 
-  it('should throw an error if called with not yet supported argument dim', function () {
-    assert.throws(function () { prod([], 2) }, /not yet supported/)
+  it('should throw an error if argument dim is too large', function () {
+    assert.throws(function () { prod([], 2) }, /no dimension 2/)
   })
 
-  it('should throw an error if called with an empty array', function () {
-    assert.throws(function () { prod([]) })
+  it('should multiply along either dimension of a 2D array', function () {
+    const nums = [[1, 2], [3, 4], [5, 6]]
+    assert.deepStrictEqual(prod(nums, 0), [15, 48])
+    assert.deepStrictEqual(prod(nums, 1), [2, 12, 30])
+  })
+
+  it('should return 1 on an empty array', function () {
+    assert.strictEqual(prod([]), 1)
   })
 
   it('should throw an error if called with invalid type of arguments', function () {

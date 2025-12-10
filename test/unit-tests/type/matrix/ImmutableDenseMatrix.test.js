@@ -274,7 +274,9 @@ describe('ImmutableDenseMatrix', function () {
     it('should squeeze the output when index contains a scalar', function () {
       let m = new ImmutableDenseMatrix(math.range(0, 10))
       assert.deepStrictEqual(m.subset(index(1)), 1)
-      assert.deepStrictEqual(m.subset(index(new Range(1, 2))), new ImmutableDenseMatrix([1]))
+      assert.deepStrictEqual(
+        m.subset(index(new Range(1, 2))),
+        new ImmutableDenseMatrix([1], 'number'))
 
       m = new ImmutableDenseMatrix([[1, 2], [3, 4]])
       assert.deepStrictEqual(m.subset(index(1, 1)), 4)

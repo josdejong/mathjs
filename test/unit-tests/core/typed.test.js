@@ -370,7 +370,7 @@ describe('typed', function () {
     assert.strictEqual(math.isChain(), false)
   })
 
-  it('should convert a bigint to number if possible', function () {
+  it('should convert a bigint/Fraction to number if possible', function () {
     const double = math.typed('double', {
       number: (x) => x + x
     })
@@ -378,6 +378,7 @@ describe('typed', function () {
     assert.strictEqual(double(2), 4)
     assert.strictEqual(double(2n), 4)
     assert.throws(() => double(12345678901234567890n), /value exceeds the max safe integer/)
+    assert.strictEqual(double(math.fraction(5, 2)), 5)
   })
 
   it('should convert a bigint to BigNumber', function () {
@@ -390,12 +391,14 @@ describe('typed', function () {
     assert.deepStrictEqual(double(12345678901234567890n), math.bignumber('24691357802469135780'))
   })
 
-  it('should convert a bigint to Fraction', function () {
+  it('should convert a bigint or number to Fraction', function () {
+    const frac4 = math.fraction(4)
     const double = math.typed('double', {
       Fraction: (x) => x.add(x)
     })
 
-    assert.deepStrictEqual(double(math.fraction(2)), math.fraction(4))
-    assert.deepStrictEqual(double(2n), math.fraction(4))
+    assert.deepStrictEqual(double(math.fraction(2)), frac4)
+    assert.deepStrictEqual(double(2n), frac4)
+    assert.deepStrictEqual(double(2), frac4)
   })
 })

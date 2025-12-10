@@ -5,15 +5,15 @@ import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
 import { DimensionError } from '../../error/DimensionError.js'
 
 const name = 'nullish'
-const dependencies = ['typed', 'matrix', 'size', 'flatten', 'deepEqual']
+const dependencies = ['typed', 'DenseMatrix', 'size', 'flatten', 'deepEqual']
 
 export const createNullish = /* #__PURE__ */ factory(
   name,
   dependencies,
-  ({ typed, matrix, size, flatten, deepEqual }) => {
+  ({ typed, DenseMatrix, size, flatten, deepEqual }) => {
     const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-    const matAlgo14xDs = createMatAlgo14xDs({ typed })
     const matAlgo13xDD = createMatAlgo13xDD({ typed })
+    const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
     /**
      * Nullish coalescing operator (??). Returns the right-hand side operand
@@ -66,14 +66,14 @@ export const createNullish = /* #__PURE__ */ factory(
         // DenseMatrix-first handlers (no broadcasting between collections)
         'DenseMatrix, DenseMatrix': typed.referToSelf(self => (x, y) => matAlgo13xDD(x, y, self)),
         'DenseMatrix, SparseMatrix': typed.referToSelf(self => (x, y) => matAlgo03xDSf(x, y, self, false)),
-        'DenseMatrix, Array': typed.referToSelf(self => (x, y) => matAlgo13xDD(x, matrix(y), self)),
+        'DenseMatrix, Array': typed.referToSelf(self => (x, y) => matAlgo13xDD(x, new DenseMatrix(y), self)),
         'DenseMatrix, any': typed.referToSelf(self => (x, y) => matAlgo14xDs(x, y, self, false)),
 
         // Array-first handlers (bridge via matrix() where needed)
-        'Array, Array': typed.referToSelf(self => (x, y) => matAlgo13xDD(matrix(x), matrix(y), self).valueOf()),
-        'Array, DenseMatrix': typed.referToSelf(self => (x, y) => matAlgo13xDD(matrix(x), y, self)),
-        'Array, SparseMatrix': typed.referToSelf(self => (x, y) => matAlgo03xDSf(matrix(x), y, self, false)),
-        'Array, any': typed.referToSelf(self => (x, y) => matAlgo14xDs(matrix(x), y, self, false).valueOf())
+        'Array, Array': typed.referToSelf(self => (x, y) => matAlgo13xDD(new DenseMatrix(x), new DenseMatrix(y), self).valueOf()),
+        'Array, DenseMatrix': typed.referToSelf(self => (x, y) => matAlgo13xDD(new DenseMatrix(x), y, self)),
+        'Array, SparseMatrix': typed.referToSelf(self => (x, y) => matAlgo03xDSf(new DenseMatrix(x), y, self, false)),
+        'Array, any': typed.referToSelf(self => (x, y) => matAlgo14xDs(new DenseMatrix(x), y, self, false).valueOf())
       }
     )
   }

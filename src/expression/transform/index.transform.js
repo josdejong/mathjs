@@ -4,9 +4,9 @@ import {
 import { factory } from '../../utils/factory.js'
 
 const name = 'index'
-const dependencies = ['Index', 'getMatrixDataType']
+export const dependencies = ['Index', 'Range', 'number', 'getMatrixDataType']
 
-export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, ({ Index, getMatrixDataType }) => {
+export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, ({ Index, Range, number, getMatrixDataType }) => {
   /**
    * Attach a transform function to math.index
    * Adds a property transform containing the transform function.
@@ -20,8 +20,11 @@ export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, 
 
       // change from one-based to zero based, convert BigNumber to number and leave Array of Booleans as is
       if (isRange(arg)) {
-        arg.start--
-        arg.end -= (arg.step > 0 ? 0 : 2)
+        arg = new Range({
+          start: number(arg.start) - 1,
+          length: arg.length,
+          step: number(arg.step)
+        })
       } else if (arg && arg.isSet === true) {
         arg = arg.map(function (v) { return v - 1 })
       } else if (isArray(arg) || isMatrix(arg)) {
@@ -33,7 +36,7 @@ export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, 
       } else if (isBigNumber(arg)) {
         arg = arg.toNumber() - 1
       } else if (typeof arg === 'string') {
-      // leave as is
+        // leave as is, will be interpreted later
       } else {
         throw new TypeError('Dimension must be an Array, Matrix, number, bigint, string, or Range')
       }
@@ -43,6 +46,8 @@ export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, 
 
     const res = new Index()
     Index.apply(res, args)
+    res.includeEnd = true
+    res.shiftPosition = 1
     return res
   }
 }, { isTransformFunction: true })

@@ -40,7 +40,7 @@ function extractValue (spec) {
   }
   const keywords = {
     number: 'Number(_)',
-    BigNumber: 'math.bignumber(_)',
+    BigNumber: "math.bignumber('_')",
     Fraction: 'math.fraction(_)',
     Complex: "math.complex('_')",
     Unit: "math.unit('_')",
@@ -92,10 +92,10 @@ const ignoreFunctions = new Set([
 ])
 
 const knownProblems = new Set([
-  'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
+  'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
   'random', 'pickRandom', 'kldivergence',
   'parser', 'compile', 're', 'im',
-  'subset', 'squeeze', 'rotationMatrix',
+  'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
   'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff',
   'nthRoots', 'nthRoot',
@@ -104,7 +104,6 @@ const knownProblems = new Set([
   'rationalize', 'qr', 'lusolve', 'lup', 'derivative',
   'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round',
   'import', 'typed',
-  'unit', 'sparse', 'matrix', 'index', 'bignumber', 'fraction', 'complex',
   'parse'
 ])
 
@@ -175,6 +174,7 @@ function checkExpectation (want, got) {
 const OKundocumented = new Set([
   'apply', // deprecated backwards-compatibility synonym of mapSlices
   'addScalar', 'subtractScalar', 'divideScalar', 'multiplyScalar', 'equalScalar',
+  'oneUnitless',
   'docs', 'FibonacciHeap',
   'IndexError', 'DimensionError', 'ArgumentsError'
 ])
@@ -410,8 +410,13 @@ describe('Testing examples from (jsdoc) comments', function () {
                 if (accumulation) { accumulation += '\n' }
                 accumulation += parts[0]
               }
+              let resetAccumulation = true
               if (accumulation !== '' && expectation === undefined) {
                 expectationFrom = parts[1]
+                if (expectationFrom.endsWith('...')) {
+                  expectationFrom = expectationFrom.slice(0, -3).trimEnd()
+                  resetAccumulation = false
+                }
                 expectation = extractExpectation(expectationFrom)
                 parts[1] = ''
               }
@@ -425,7 +430,7 @@ describe('Testing examples from (jsdoc) comments', function () {
                 }
                 maybeCheckExpectation(
                   doc.name, expectation, expectationFrom, value, accumulation)
-                accumulation = ''
+                if (resetAccumulation) accumulation = ''
               }
               expectationFrom = parts[1]
               expectation = extractExpectation(expectationFrom, 'requireSignal')

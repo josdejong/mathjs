@@ -83,6 +83,7 @@ export { createTyped } from './core/function/typed.js'
 // classes
 export { createResultSet } from './type/resultset/ResultSet.js'
 export { createRangeClass } from './type/matrix/Range.js'
+export { createMatrixClass } from './type/matrix/Matrix.js'
 export { createHelpClass } from './expression/Help.js'
 export { createChainClass } from './type/chain/Chain.js'
 export { createHelp } from './expression/function/help.js'
@@ -105,6 +106,7 @@ export const createSubtractScalar = /* #__PURE__ */ createNumberFactory('subtrac
 export const createCbrt = /* #__PURE__ */ createNumberFactory('cbrt', cbrtNumber)
 export { createCeilNumber as createCeil } from './function/arithmetic/ceil.js'
 export const createCube = /* #__PURE__ */ createNumberFactory('cube', cubeNumber)
+export { createDotMultiplyNumber } from './function/arithmetic/dotMultiply.js'
 export const createExp = /* #__PURE__ */ createNumberFactory('exp', expNumber)
 export const createExpm1 = /* #__PURE__ */ createNumberFactory('expm1', expm1Number)
 export { createFixNumber as createFix } from './function/arithmetic/fix.js'
@@ -115,7 +117,7 @@ export const createLog10 = /* #__PURE__ */ createNumberFactory('log10', log10Num
 export const createLog2 = /* #__PURE__ */ createNumberFactory('log2', log2Number)
 export const createMod = /* #__PURE__ */ createNumberFactory('mod', modNumber)
 export const createMultiplyScalar = /* #__PURE__ */ createNumberFactory('multiplyScalar', multiplyNumber)
-export const createMultiply = /* #__PURE__ */ createNumberFactory('multiply', multiplyNumber)
+export { createMultiplyNumber } from './function/arithmetic/multiply.js'
 export const createNthRoot = /* #__PURE__ */
   createNumberOptionalSecondArgFactory('nthRoot', nthRootNumber)
 export const createSign = /* #__PURE__ */ createNumberFactory('sign', signNumber)
@@ -125,8 +127,10 @@ export const createSubtract = /* #__PURE__ */ createNumberFactory('subtract', su
 export const createXgcd = /* #__PURE__ */ createNumberFactory('xgcd', xgcdNumber)
 export const createDivideScalar = /* #__PURE__ */ createNumberFactory('divideScalar', divideNumber)
 export const createPow = /* #__PURE__ */ createNumberFactory('pow', powNumber)
+export { createOneNumber } from './function/arithmetic/one.js'
 export const createRound = /* #__PURE__ */
   createNumberOptionalSecondArgFactory('round', roundNumber)
+export { createScalarDivide } from './function/arithmetic/scalarDivide.js'
 export const createLog = /* #__PURE__ */
   createNumberOptionalSecondArgFactory('log', logNumber)
 export const createLog1p = /* #__PURE__ */ createNumberFactory('log1p', log1pNumber)
@@ -134,6 +138,7 @@ export const createAdd = /* #__PURE__ */ createNumberFactory('add', addNumber)
 export { createHypot } from './function/arithmetic/hypot.js'
 export const createNorm = /* #__PURE__ */ createNumberFactory('norm', normNumber)
 export const createDivide = /* #__PURE__ */ createNumberFactory('divide', divideNumber)
+export { createZeroNumber } from './function/arithmetic/zero.js'
 
 // bitwise
 export const createBitAnd = /* #__PURE__ */ createNumberFactory('bitAnd', bitAndNumber)
@@ -209,6 +214,7 @@ export const createOr = /* #__PURE__ */ createNumberFactory('or', orNumber)
 export const createXor = /* #__PURE__ */ createNumberFactory('xor', xorNumber)
 
 // matrix
+export { createGetMatrixDataType } from './function/matrix/getMatrixDataType.js'
 export { createMapSlices } from './function/matrix/mapSlices.js'
 export { createFilter } from './function/matrix/filter.js'
 export { createForEach } from './function/matrix/forEach.js'
@@ -219,6 +225,8 @@ export { createSize } from './function/matrix/size.js'
 export const createIndex = /* #__PURE__ */ factory('index', [], () => noIndex)
 export const createMatrix = /* #__PURE__ */ factory('matrix', [], () => noMatrix) // FIXME: needed now because subset transform needs it. Remove the need for it in subset
 export const createSubset = /* #__PURE__ */ factory('subset', [], () => noSubset)
+export { createSqueeze } from './function/matrix/squeeze.js'
+
 // TODO: provide number+array implementations for map, filter, forEach, zeros, ...?
 // TODO: create range implementation for range?
 export { createPartitionSelect } from './function/matrix/partitionSelect.js'

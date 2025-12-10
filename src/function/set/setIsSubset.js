@@ -2,9 +2,9 @@ import { flatten, identify } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setIsSubset'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index']
+const dependencies = ['typed', 'size', 'compareNatural']
 
-export const createSetIsSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index }) => {
+export const createSetIsSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, compareNatural }) => {
   /**
    * Check whether a (multi)set is a subset of another (multi)set. (Every element of set1 is the element of set2.)
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -28,9 +28,10 @@ export const createSetIsSubset = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   return typed(name, {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
-      if (subset(size(a1), new Index(0)) === 0) { // empty is a subset of anything
+      if (size(a1)[0] === 0) { // empty is a subset of anything
         return true
-      } else if (subset(size(a2), new Index(0)) === 0) { // anything is not a subset of empty
+      }
+      if (size(a2)[0] === 0) { // anything nonempty is not a subset of empty
         return false
       }
       const b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))

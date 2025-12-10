@@ -6,11 +6,34 @@ import { DimensionError } from '../../error/DimensionError.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'subset'
-const dependencies = ['typed', 'matrix', 'zeros', 'add']
+export const dependencies = ['typed', 'matrix', 'zeros', 'add', 'index', 'size']
 
-export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, zeros, add }) => {
+export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, zeros, add, index, size }) => {
   /**
    * Get or set a subset of a matrix or string.
+   *
+   * The second argument should be a specification of the desired subset of
+   * the first argument. Therefore, the second argument is typically an Index
+   * object produced by the `index` function, which see (in short, for each
+   * dimension of the matrix, the Index specifies one position or a list or
+   * range of positions to include in the subset).
+   *
+   * For convenience, the second argument may be simply a number n, in which
+   * case the subset is the entire section of one dimension lower than the
+   * given matrix, at position n. In other words, it corresponds to the
+   * entry of a vector at position n, or the row of a 2D matrix at position
+   * n, etc.
+   *
+   * Furthermore, it can also be an array of appropriate arguments to the
+   * `index` function, in which case it will be passed to the `index` function
+   * for you. Beware, though: in the case of a 1d vector v,
+   * `math.subset(v, [2, 3])` will not therefore return the elements at
+   * positions 2 and 3, because passing those arguments to `index` would
+   * attempt to index the first dimension of v by 2 and its nonexistent second
+   * dimension by 3. You can call `math.subset(v, [[2, 3]])` to obtain the
+   * elements at positions 2 and 3, because now the inner `[2, 3]` will be
+   * interpreted as the list of positions with which to index into the first
+   * dimension.
    *
    * Syntax:
    *     math.subset(value, index)                                // retrieve a subset
@@ -20,15 +43,21 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *     // get a subset
    *     const d = [[1, 2], [3, 4]]
-   *     math.subset(d, math.index(1, 0))             // returns 3
-   *     math.subset(d, math.index([0, 1], [1]))        // returns [[2], [4]]
-   *     math.subset(d, math.index([false, true], [0])) // returns [[3]]
+   *     math.subset(d, math.index(1, 0))               // returns 3 ...
+   *     math.subset(d, [1, 0])                         // returns 3 ...
+   *     math.subset(d, math.index([0, 1], [1]))        // Array [[2], [4]] ...
+   *     math.subset(d, [[0, 1], [1]])                  // Array [[2], [4]] ...
+   *     math.subset(d, math.index([false, true], [0])) // Array [[3]] ...
+   *     math.subset(d, [[false, true], 0])             // Array [3] ...
+   *     math.subset(d, 1)                              // Array [3, 4]
    *
    *     // replace a subset
    *     const e = []
-   *     const f = math.subset(e, math.index(0, [0, 2]), [5, 6])  // f = [[5, 0, 6]]
-   *     const g = math.subset(f, math.index(1, 1), 7, 0)         // g = [[5, 0, 6], [0, 7, 0]]
-   *     math.subset(g, math.index([false, true], 1), 8)          // returns [[5, 0, 6], [0, 8, 0]]
+   *     const f = math.subset(e, math.index(0, [0, 2]), [5, 6])
+   *     f                                                 // Array [[5, 0, 6]] ...
+   *     const g = math.subset(f, math.index(1, 1), 7, 0)
+   *     g                                                 // Array [[5, 0, 6], [0, 7, 0]] ...
+   *     math.subset(g, math.index([false, true], 1), 8)   // Array [[5, 0, 6], [0, 8, 0]]
    *
    *     // get submatrix using ranges
    *     const M = [
@@ -36,7 +65,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *       [4, 5, 6],
    *       [7, 8, 9]
    *     ]
-   *     math.subset(M, math.index(math.range(0,2), math.range(0,3))) // [[1, 2, 3], [4, 5, 6]]
+   *     math.subset(M, math.index(math.range(0,2), math.range(0,3))) // Array [[1, 2, 3], [4, 5, 6]]
    *
    * See also:
    *
@@ -75,6 +104,23 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
     'string, Index': _getSubstring,
 
+    // Allow single number index to get layer:
+    'Matrix, number': function (M, position) {
+      return M.layer(position)
+    },
+
+    'Array, number': function (A, position) {
+      return A[position]
+    },
+
+    'string, number': function (s, position) {
+      return s.charAt(position)
+    },
+
+    // Otherwise pass second array argument to index function for convenience
+    'Matrix | Array | Object | string, Array': typed.referToSelf(
+      self => (v, i) => self(v, index(...i))),
+
     // set subset
     'Matrix, Index, any, any': function (value, index, replacement, defaultValue) {
       if (isEmptyIndex(index)) { return value }
@@ -89,19 +135,31 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
       }
     }),
 
-    'Array, Index, any': typed.referTo('Matrix, Index, any, any', function (subsetRef) {
-      return function (value, index, replacement) {
-        return subsetRef(matrix(value), index, replacement, undefined).valueOf()
-      }
-    }),
-
-    'Matrix, Index, any': typed.referTo('Matrix, Index, any, any', function (subsetRef) {
-      return function (value, index, replacement) { return subsetRef(value, index, replacement, undefined) }
-    }),
-
     'string, Index, string': _setSubstring,
     'string, Index, string, string': _setSubstring,
-    'Object, Index, any': _setObjectProperty
+    'Object, Index, any': _setObjectProperty,
+
+    // fourth argument defaults to undefined:
+    'Matrix | Array, Index | Array | number, any': typed.referToSelf(
+      self => (v, pos, rep) => self(v, pos, rep, undefined)
+    ),
+
+    // Allow 2nd index to be a number:
+    'Matrix | Array | Object | string, number, any, any': typed.referToSelf(
+      self => (v, pos, rep, def) => {
+        const ix = [pos]
+        let wildcards = size(v).length
+        while (--wildcards > 0) ix.push(':')
+        return self(v, index(...ix), rep, def)
+      }),
+
+    'string, number, string': typed.referTo(
+      'string, Index, string', sis => (s, n, rep) => sis(s, index(n), rep)),
+
+    // Or allow 2nd argument to be an array of arguments to index
+    'Matrix | Array | Object | string, Array, any, any': typed.referToSelf(
+      self => (v, ixes, rep, def) => self(v, index(...ixes), rep, def)
+    )
   })
 
   /**

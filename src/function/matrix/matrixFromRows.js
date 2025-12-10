@@ -24,7 +24,7 @@ export const createMatrixFromRows = /* #__PURE__ */ factory(name, dependencies, 
    *    matrix, matrixFromColumns, matrixFromFunction, zeros
    *
    * @param {... Array | Matrix} rows  Multiple rows
-   * @return { number[][] | Matrix } if at least one of the arguments is an array, an array will be returned
+   * @return { number[][] | Matrix } if at least one of the arguments is an Matrix, a Matrix will be returned
    */
   return typed(name, {
     '...Array': function (arr) {

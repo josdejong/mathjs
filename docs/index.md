@@ -38,3 +38,4 @@ Math.js can be used in the browser, in node.js and in any JavaScript engine. Ins
 - [Custom bundling](custom_bundling.md)
 - [Command Line Interface](command_line_interface.md)
 - [History](../HISTORY.md)
+- [Deprecation status](deprecation_status.md) of features

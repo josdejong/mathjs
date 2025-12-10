@@ -7,22 +7,20 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 const name = 'add'
 const dependencies = [
   'typed',
-  'matrix',
   'addScalar',
   'equalScalar',
   'DenseMatrix',
-  'SparseMatrix',
-  'concat'
+  'SparseMatrix'
 ]
 
 export const createAdd = /* #__PURE__ */ factory(
   name,
   dependencies,
-  ({ typed, matrix, addScalar, equalScalar, DenseMatrix, SparseMatrix, concat }) => {
+  ({ typed, addScalar, equalScalar, DenseMatrix, SparseMatrix, math, concat }) => {
     const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
     const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
     const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-    const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+    const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, DenseMatrix })
     /**
      * Add two or more values, `x + y`.
      * For matrices, the function is evaluated element wise.
@@ -70,7 +68,29 @@ export const createAdd = /* #__PURE__ */ factory(
           }
 
           return result
-        })
+        }),
+        'Range, Range': typed.referToSelf(self => (r, p) => {
+          if (r.for !== p.for) throw new Error('Range length mismatch')
+          return r.createRange({
+            start: self(r.start, p.start),
+            length: r.length,
+            step: self(r.step, p.step)
+          })
+        }),
+        'Range, Matrix': typed.referToSelf(
+          self => (r, m) => self(r.valueOf(), m)),
+        'Range, any': typed.referToSelf(self => (r, s) => r.createRange({
+          start: self(r.start, s),
+          length: r.length,
+          step: r.step
+        })),
+        'Matrix, Range': typed.referToSelf(
+          self => (m, r) => self(m, r.valueOf())),
+        'any, Range': typed.referToSelf(self => (s, r) => r.createRange({
+          start: self(s, r.start),
+          length: r.length,
+          step: r.step
+        }))
       },
       matrixAlgorithmSuite({
         elop: addScalar,

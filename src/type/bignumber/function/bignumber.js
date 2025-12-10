@@ -15,12 +15,12 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * Examples:
    *
-   *    0.1 + 0.2                                  // returns number 0.30000000000000004
-   *    math.bignumber(0.1) + math.bignumber(0.2)  // returns BigNumber 0.3
+   *    math.add(0.1, 0.2)                                  // returns number 0.30000000000000004
+   *    math.add(math.bignumber(0.1), math.bignumber(0.2))  // BigNumber 0.3
    *
    *
    *    7.2e500                                    // returns number Infinity
-   *    math.bignumber('7.2e500')                  // returns BigNumber 7.2e500
+   *    math.bignumber('7.2e500')                  // BigNumber 7.2e500
    *
    * See also:
    *

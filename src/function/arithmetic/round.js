@@ -13,14 +13,16 @@ const name = 'round'
 const dependencies = [
   'typed',
   'config',
-  'matrix',
   'equalScalar',
-  'zeros',
+  'isZero',
   'BigNumber',
-  'DenseMatrix'
+  'DenseMatrix',
+  'sparse'
 ]
 
-export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, equalScalar, zeros, BigNumber, DenseMatrix }) => {
+export const createRound = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, config, matrix, equalScalar, isZero, BigNumber, DenseMatrix, sparse
+}) => {
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
@@ -175,36 +177,29 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       return matAlgo11xS0s(x, n, self, false)
     }),
 
-    'DenseMatrix, number | BigNumber': typed.referToSelf(self => (x, n) => {
+    'Matrix, number | BigNumber': typed.referToSelf(self => (x, n) => {
       return matAlgo14xDs(x, n, self, false)
     }),
 
     'Array, number | BigNumber': typed.referToSelf(self => (x, n) => {
       // use matrix implementation
-      return matAlgo14xDs(matrix(x), n, self, false).valueOf()
+      return matAlgo14xDs(new DenseMatrix(x), n, self, false).valueOf()
     }),
 
-    'number | Complex | BigNumber | Fraction, SparseMatrix': typed.referToSelf(self => (x, n) => {
-      // check scalar is zero
-      if (equalScalar(x, 0)) {
-        // do not execute algorithm, result will be a zero matrix
-        return zeros(n.size(), n.storage())
+    'number | Complex | BigNumber | Fraction, SparseMatrix': typed.referToSelf(
+      self => (x, n) => {
+        const dense = matAlgo12xSfs(n, x, self, true)
+        if (isZero(x)) return sparse(dense)
+        return dense
       }
-      return matAlgo12xSfs(n, x, self, true)
-    }),
+    ),
 
-    'number | Complex | BigNumber | Fraction, DenseMatrix': typed.referToSelf(self => (x, n) => {
-      // check scalar is zero
-      if (equalScalar(x, 0)) {
-        // do not execute algorithm, result will be a zero matrix
-        return zeros(n.size(), n.storage())
-      }
-      return matAlgo14xDs(n, x, self, true)
-    }),
+    'number | Complex | BigNumber | Fraction, DenseMatrix': typed.referToSelf(
+      self => (x, n) => matAlgo14xDs(n, x, self, true)),
 
     'number | Complex | BigNumber | Fraction, Array': typed.referToSelf(self => (x, n) => {
       // use matrix implementation
-      return matAlgo14xDs(matrix(n), x, self, true).valueOf()
+      return matAlgo14xDs(new DenseMatrix(n), x, self, true).valueOf()
     })
   })
 })

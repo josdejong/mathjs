@@ -174,8 +174,10 @@ describe('parse', function () {
     })
 
     it('should spread a range over multiple lines', function () {
-      assert.deepStrictEqual(parse('2:\n4').compile().evaluate(), math.matrix([2, 3, 4]))
-      assert.deepStrictEqual(parse('2:\n2:\n6').compile().evaluate(), math.matrix([2, 4, 6]))
+      assert.deepStrictEqual(
+        parse('2:\n4').compile().evaluate(), math.range(2, 5))
+      assert.deepStrictEqual(
+        parse('2:\n2:\n6').compile().evaluate(), math.range(2, 7, 2))
     })
 
     it('should spread an index over multiple lines', function () {
@@ -850,9 +852,9 @@ describe('parse', function () {
       assert.deepStrictEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 1)', scope), math.matrix([[1, 2], [3, 4]]))
       assert.deepStrictEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 2)', scope), math.matrix([[1, 2, 3, 4]]))
       assert.deepStrictEqual(parseAndEval('c=concat([[1]], [2;3], 1)', scope), math.matrix([[1], [2], [3]]))
-      assert.deepStrictEqual(parseAndEval('d=1:3', scope), math.matrix([1, 2, 3]))
+      assert.deepStrictEqual(parseAndEval('d=1:3', scope), math.range(1, 4))
       assert.deepStrictEqual(parseAndEval('concat(d,d)', scope), math.matrix([1, 2, 3, 1, 2, 3]))
-      assert.deepStrictEqual(parseAndEval('e=1+d', scope), math.matrix([2, 3, 4]))
+      assert.deepStrictEqual(parseAndEval('e=1+d', scope), math.range(2, 5))
       assert.deepStrictEqual(parseAndEval('size(e)', scope), [3])
       assert.deepStrictEqual(parseAndEval('concat(e,e)', scope), math.matrix([2, 3, 4, 2, 3, 4]))
       assert.deepStrictEqual(parseAndEval('[[],[]]', scope), math.matrix([[], []]))
@@ -888,6 +890,19 @@ describe('parse', function () {
       const scope = {}
       assert.throws(function () { parseAndEval('c=concat(a, [1,2,3])', scope) })
     })
+
+    it(
+      'should interpret comma-separated expressions in parentheses as arrays',
+      function () {
+        assert.deepStrictEqual(parseAndEval('(3,4,5)'), [3, 4, 5])
+        assert.deepStrictEqual(parseAndEval('(5,12,13,)'), [5, 12, 13])
+        assert.deepStrictEqual(parseAndEval('(5,)'), [5])
+        assert.deepStrictEqual(parseAndEval('()'), [])
+        assert.strictEqual(parseAndEval('(7,24,25)[2]'), 24)
+        assert.deepStrictEqual(parseAndEval('size((8, 15, 17))'), [3])
+        assert.deepStrictEqual(
+          parseAndEval('((),(0,),(0,1))'), [[], [0], [0, 1]])
+      })
   })
 
   describe('objects', function () {
@@ -2213,17 +2228,17 @@ describe('parse', function () {
 
     it('should parse : (range)', function () {
       assert.ok(parseAndEval('2:5') instanceof Matrix)
-      assert.deepStrictEqual(parseAndEval('2:5'), math.matrix([2, 3, 4, 5]))
-      assert.deepStrictEqual(parseAndEval('10:-2:0'), math.matrix([10, 8, 6, 4, 2, 0]))
-      assert.deepStrictEqual(parseAndEval('2:4.0'), math.matrix([2, 3, 4]))
-      assert.deepStrictEqual(parseAndEval('2:4.5'), math.matrix([2, 3, 4]))
-      assert.deepStrictEqual(parseAndEval('2:4.1'), math.matrix([2, 3, 4]))
-      assert.deepStrictEqual(parseAndEval('2:3.9'), math.matrix([2, 3]))
-      assert.deepStrictEqual(parseAndEval('2:3.5'), math.matrix([2, 3]))
-      assert.deepStrictEqual(parseAndEval('3:-1:0.5'), math.matrix([3, 2, 1]))
-      assert.deepStrictEqual(parseAndEval('3:-1:0.5'), math.matrix([3, 2, 1]))
-      assert.deepStrictEqual(parseAndEval('3:-1:0.1'), math.matrix([3, 2, 1]))
-      assert.deepStrictEqual(parseAndEval('3:-1:-0.1'), math.matrix([3, 2, 1, 0]))
+      assert.deepStrictEqual(parseAndEval('2:5'), math.range(2, 6))
+      assert.deepStrictEqual(
+        parseAndEval('10:-2:0'), math.range(10, 0, -2, true))
+      assert.deepStrictEqual(parseAndEval('2:4.0'), math.range(2, 5))
+      assert.deepStrictEqual(parseAndEval('2:4.5'), math.range(2, 5))
+      assert.deepStrictEqual(parseAndEval('2:4.1'), math.range(2, 5))
+      assert.deepStrictEqual(parseAndEval('2:3.9'), math.range(2, 4))
+      assert.deepStrictEqual(parseAndEval('2:3.5'), math.range(2, 4))
+      assert.deepStrictEqual(parseAndEval('3:-1:0.5'), math.range(3, 0, -1))
+      assert.deepStrictEqual(parseAndEval('3:-1:0.1'), math.range(3, 0, -1))
+      assert.deepStrictEqual(parseAndEval('3:-1:-0.1'), math.range(3, -1, -1))
     })
 
     it('should parse to', function () {
@@ -2358,7 +2373,7 @@ describe('parse', function () {
         assert.deepStrictEqual(parseAndEval('3 ? true : false; 22'), new ResultSet([22]))
         assert.deepStrictEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'))
         assert.deepStrictEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), math.matrix([1, 2]))
-        assert.deepStrictEqual(parseAndEval('false ? 1:2:6'), math.matrix([2, 3, 4, 5, 6]))
+        assert.deepStrictEqual(parseAndEval('false ? 1:2:6'), math.range(2, 7))
       })
 
       it('should respect precedence between left/right shift and relational operators', function () {
@@ -2518,10 +2533,13 @@ describe('parse', function () {
     })
 
     it('should create a range from bignumbers', function () {
-      assert.deepStrictEqual(bigmath.evaluate('4:6'),
-        bigmath.matrix([new BigNumber(4), new BigNumber(5), new BigNumber(6)]))
-      assert.deepStrictEqual(bigmath.evaluate('0:2:4'),
-        bigmath.matrix([new BigNumber(0), new BigNumber(2), new BigNumber(4)]))
+      const four = new BigNumber(4)
+      assert.deepStrictEqual(
+        bigmath.evaluate('4:6'),
+        bigmath.range(four, new BigNumber(6), true))
+      assert.deepStrictEqual(
+        bigmath.evaluate('0:2:4'),
+        bigmath.range(new BigNumber(0), four, new BigNumber(2), true))
     })
 
     it('should create a matrix with bignumbers', function () {

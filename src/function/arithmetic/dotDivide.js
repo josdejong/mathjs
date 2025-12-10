@@ -9,11 +9,9 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 const name = 'dotDivide'
 const dependencies = [
   'typed',
-  'matrix',
   'equalScalar',
   'divideScalar',
   'DenseMatrix',
-  'concat',
   'SparseMatrix'
 ]
 
@@ -23,7 +21,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, DenseMatrix })
 
   /**
    * Divide two matrices element wise. The function accepts both matrices and

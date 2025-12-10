@@ -18,15 +18,20 @@ export const createSqueeze = /* #__PURE__ */ factory(name, dependencies, ({ type
    *     math.squeeze([3])           // returns 3
    *     math.squeeze([[3]])         // returns 3
    *
-   *     const A = math.zeros(3, 1)    // returns [[0], [0], [0]] (size 3x1)
-   *     math.squeeze(A)             // returns [0, 0, 0] (size 3)
+   *     // Squeezes size 3x1 to size 3:
+   *     const A = math.zeros(3, 1)
+   *     A                           // Matrix [[0], [0], [0]] ...
+   *     math.squeeze(A)             // Matrix [0, 0, 0]
    *
-   *     const B = math.zeros(1, 3)    // returns [[0, 0, 0]] (size 1x3)
-   *     math.squeeze(B)             // returns [0, 0, 0] (size 3)
+   *     // Also squeezes size 1x3 to 3:
+   *     const B = math.zeros(1, 3)
+   *     B                           // Matrix [[0, 0, 0]] ...
+   *     math.squeeze(B)             // Matrix [0, 0, 0]
    *
-   *     // only inner and outer dimensions are removed
-   *     const C = math.zeros(2, 1, 3) // returns [[[0, 0, 0]], [[0, 0, 0]]] (size 2x1x3)
-   *     math.squeeze(C)             // returns [[[0, 0, 0]], [[0, 0, 0]]] (size 2x1x3)
+   *     // only inner and outer dimensions are removed:
+   *     const C = math.zeros(2, 1, 3)
+   *     C                           // Matrix [[[0, 0, 0]], [[0, 0, 0]]] ...
+   *     math.squeeze(C)             // Matrix [[[0, 0, 0]], [[0, 0, 0]]]
    *
    * See also:
    *

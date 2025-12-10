@@ -85,15 +85,20 @@ Basic usage examples
   math.sqrt(-4)
 
   math.pow(m2by2, 2)
+  // @ts-expect-error: since one(number) returns 1, this comparison must fail
+  if (math.one(3.5) === 2) {
+    console.error('This should not happen')
+  }
+  // @ts-expect-error: since zero(bigint) returns 0n, this comparison fails
+  if (math.zero(-23n) === 1n) {
+    console.error('Nor should this happen')
+  }
   const angle = 0.2
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
   math.add(2, 3, 4)
   math.add(2, 3, math.bignumber(4))
-  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number)
   math.add(2, '3')
-  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
   assert.throws(() => math.add(2, '3 + 5'))
-  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
   assert.throws(() => math.add(2, '3 cm'))
   // @ts-expect-error: no arguments are not supported by the types, and should throw an error
   assert.throws(() => math.add())
@@ -102,11 +107,8 @@ Basic usage examples
 
   math.multiply(2, 3, 4)
   math.multiply(2, 3, math.bignumber(4))
-  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number)
   math.multiply(2, '2') // currently not supported by the types, but turns out to work
-  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
   assert.throws(() => math.multiply(2, '3 + 5'))
-  // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else
   assert.throws(() => math.multiply(2, '3 cm'))
   // @ts-expect-error: no arguments are not supported by the types, and should throw an error
   assert.throws(() => math.multiply())
@@ -782,6 +784,17 @@ Chaining examples
       .dotDivide(2)
   ).toMatchTypeOf<MathJsChain<Matrix>>()
 
+  // scalarDivide
+  expectTypeOf(math.chain(1).scalarDivide(2)).toMatchTypeOf<
+    MathJsChain<MathScalarType | undefined>
+  >()
+  expectTypeOf(math.chain([1, 2, 3]).scalarDivide(3)).toMatchTypeOf<
+    MathJsChain<undefined>
+  >()
+  expectTypeOf(math.chain([2, 5, 6]).scalarDivide([1, 2, 3])).toMatchTypeOf<
+    MathJsChain<MathScalarType | undefined>
+  >()
+
   // dotMultiply
   expectTypeOf(math.chain(1).dotMultiply(2)).toMatchTypeOf<
     MathJsChain<MathNumericType>
@@ -997,7 +1010,7 @@ Chaining examples
     MathJsChain<boolean>
   >()
   expectTypeOf(math.chain([1, Infinity]).isFinite()).toMatchTypeOf<
-    MathJsChain<MathCollection>
+    MathJsChain<MathCollection<boolean>>
   >()
 
   // bernoulli
@@ -1399,8 +1412,8 @@ Matrices examples
 
   // create matrices and arrays. a matrix is just a wrapper around an Array,
   // providing some handy utilities.
-  const a: Matrix = math.matrix([1, 4, 9, 16, 25])
-  const b: Matrix = math.matrix(math.ones([2, 3]))
+  const a: Matrix<number> = math.matrix([1, 4, 9, 16, 25])
+  const b: Matrix<number> = math.ones(math.matrix([2, 3]))
   b.size()
 
   // @ts-expect-error ... ones() in a chain cannot take more dimensions
@@ -1444,17 +1457,17 @@ Matrices examples
       (i: number[]) => math.fraction(i[0], i[1] + 1),
       'dense'
     )
-    const j: number[][] = math.matrixFromRows(
+    const j: Matrix<number> = math.matrixFromRows(
       [1, 2, 3],
       math.matrix([[4], [5], [6]])
     )
-    assert.strictEqual(j[1][2], 6)
+    assert.strictEqual(j.get([1, 2]), 6)
     const _k: Matrix = math.matrixFromRows(f, math.row(h, 1))
-    const l: number[][] = math.matrixFromColumns(
+    const l: Matrix<number> = math.matrixFromColumns(
       [1, 2, 3],
       math.matrix([[4], [5], [6]])
     )
-    assert.strictEqual(l[2][1], 6)
+    assert.strictEqual(l.get([2, 1]), 6)
     const _m: Matrix = math.matrixFromColumns(f, math.row(h, 1))
   }
 
@@ -1679,8 +1692,8 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
 {
   const math = create(all, {})
 
-  const abc: MathArray = [1, 2, 3, 4]
-  const bcd: MathArray = [
+  const abc = [1, 2, 3, 4]
+  const bcd = [
     [1, 2, 3, 4],
     [2, 3, 4, 5],
     [4, 5, 6, 7],
@@ -1694,7 +1707,7 @@ Math types examples: Type results after multiplying  'MathTypes' with matrices
   const hij: number[][] = [[1], [2], [3], [4]]
   const ijk: number[][] = [[1, 2, 3, 4]]
 
-  const Mbcd = math.matrix(bcd)
+  const Mbcd: Matrix<number> = math.matrix(bcd)
   const Mabc = math.matrix(abc)
 
   // Number
@@ -1894,6 +1907,8 @@ Units examples
   math.multiply(b, 2)
   math.divide(math.unit('1 m'), math.unit('1 s'))
   math.pow(math.unit('12 in'), 3)
+  math.one(math.unit('5m'))
+  math.zero(math.unit('22 m/secs^2'))
 
   // units can be converted to a specific type, or to a number
   b.to('cm')
@@ -3014,7 +3029,7 @@ Statistics functions' return types
       ],
       1
     )
-  ).toMatchTypeOf<MathScalarType>()
+  ).toMatchTypeOf<number | MathCollection<number>>()
 
   expectTypeOf(math.max(1, 2, 3)).toMatchTypeOf<number>()
   expectTypeOf(math.max([1, 2, 3])).toMatchTypeOf<number>()
@@ -3061,23 +3076,27 @@ Statistics functions' return types
     number | BigNumber | bigint | Fraction | Complex | Unit
   >()
 
-  expectTypeOf(math.quantileSeq([1, 2, 3], 0.75)).toMatchTypeOf<number>()
+  expectTypeOf(math.quantileSeq([1, 2, 3], 0.75)).toMatchTypeOf<
+    number | MathCollection<number>
+  >()
   expectTypeOf(math.quantileSeq([1, 2, 3, 4, 5], [0.25, 0.75])).toMatchTypeOf<
-    MathArray | MathScalarType
+    MathCollection<number>
   >()
   expectTypeOf(
     math.quantileSeq([1, 2, 3, 4, 5], [0.25, 0.75]) as number[]
   ).toMatchTypeOf<number[]>()
-  expectTypeOf(math.quantileSeq([[1, 2, 3]], 0.75)).toMatchTypeOf<number>()
-  expectTypeOf(
-    math.quantileSeq([math.bignumber('123')], 0.75)
-  ).toMatchTypeOf<BigNumber>()
+  expectTypeOf(math.quantileSeq([[1, 2, 3]], 0.75)).toMatchTypeOf<
+    number | MathCollection<number>
+  >()
+  expectTypeOf(math.quantileSeq([math.bignumber('123')], 0.75)).toMatchTypeOf<
+    BigNumber | MathCollection<BigNumber>
+  >()
   expectTypeOf(math.quantileSeq(math.matrix([1, 2, 3]), 0.75)).toMatchTypeOf<
-    MathScalarType | MathArray
+    number | MathCollection<number>
   >()
   expectTypeOf(
     math.quantileSeq([math.unit('5cm'), math.unit('10cm')], 0.75)
-  ).toMatchTypeOf<Unit>()
+  ).toMatchTypeOf<Unit | MathCollection<Unit>>()
 }
 
 /*

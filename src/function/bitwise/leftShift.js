@@ -13,22 +13,20 @@ import { leftShiftBigNumber } from '../../utils/bignumber/bitwise.js'
 const name = 'leftShift'
 const dependencies = [
   'typed',
-  'matrix',
   'equalScalar',
   'zeros',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix, concat }) => {
+export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, zeros, DenseMatrix }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo08xS0Sid = createMatAlgo08xS0Sid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
-  const useMatrixForArrayScalar = createUseMatrixForArrayScalar({ typed, matrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, DenseMatrix })
+  const useMatrixForArrayScalar = createUseMatrixForArrayScalar({ typed, DenseMatrix })
 
   /**
    * Bitwise left logical shift of a value x by y number of bits, `x << y`.

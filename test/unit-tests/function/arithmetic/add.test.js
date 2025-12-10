@@ -248,6 +248,19 @@ describe('add', function () {
     })
   })
 
+  describe('Range', function () {
+    it('should keep the result a Range when possible', function () {
+      assert.deepStrictEqual(add(math.range(2, 5), 7), new math.Range(9, 12))
+      assert.deepStrictEqual(
+        add(-3, math.range(6, 11, 2)), new math.Range(3, 8, 2))
+      assert.deepStrictEqual(
+        add(math.range(0.5, 4.5), math.range(0, 2.1, 0.5)),
+        new math.Range({ start: 0.5, step: 1.5, length: 4 }))
+      assert.deepStrictEqual(
+        add(math.range(2, 5), [1, 3, 6]), math.matrix([3, 6, 10]))
+    })
+  })
+
   describe('multiple arguments', function () {
     it('should add more than two arguments', function () {
       assert.deepStrictEqual(add(2, 3, 4), 9)

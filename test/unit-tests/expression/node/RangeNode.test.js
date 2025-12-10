@@ -6,6 +6,7 @@ const Node = math.Node
 const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
 const RangeNode = math.RangeNode
+const Range = math.Range
 const OperatorNode = math.OperatorNode
 
 describe('RangeNode', function () {
@@ -50,7 +51,8 @@ describe('RangeNode', function () {
     const n = new RangeNode(start, end, step)
 
     const expr = n.compile()
-    assert.deepStrictEqual(expr.evaluate(), math.matrix([0, 2, 4, 6, 8, 10]))
+    assert.deepStrictEqual(
+      expr.evaluate(), new Range({ start: 0, step: 2, last: 10 }))
   })
 
   it('should filter a RangeNode', function () {

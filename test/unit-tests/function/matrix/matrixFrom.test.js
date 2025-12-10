@@ -62,9 +62,9 @@ describe('matrixFrom...', function () {
     actual = math.matrixFromRows(matrix([[1, 2, 3]], 'sparse'), matrix([[4], [5], [6]], 'sparse'), matrix([[7, 8, 9]], 'sparse'))
     assert.deepStrictEqual(actual, matrix(expected))
 
-    // for a mixed type, returns an array
+    // for a mixed type, returns an Matrix
     actual = math.matrixFromRows([1, 2, 3], [4, 5, 6], matrix([7, 8, 9]))
-    assert.deepStrictEqual(actual, expected)
+    assert.deepStrictEqual(actual, matrix(expected))
   })
 
   it('...Columns', function () {
@@ -91,8 +91,8 @@ describe('matrixFrom...', function () {
     actual = math.matrixFromColumns(matrix([[1, 2, 3]], 'sparse'), matrix([[4], [5], [6]], 'sparse'), matrix([[7, 8, 9]], 'sparse'))
     assert.deepStrictEqual(actual, matrix(expected))
 
-    // for a mixed type, returns an array
+    // for a mixed type, returns a Matrix
     actual = math.matrixFromColumns([1, 2, 3], [4, 5, 6], matrix([7, 8, 9]))
-    assert.deepStrictEqual(actual, expected)
+    assert.deepStrictEqual(actual, matrix(expected))
   })
 })

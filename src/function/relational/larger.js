@@ -12,9 +12,7 @@ const dependencies = [
   'typed',
   'config',
   'bignumber',
-  'matrix',
   'DenseMatrix',
-  'concat',
   'SparseMatrix'
 ]
 
@@ -22,7 +20,7 @@ export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, DenseMatrix })
   const compareUnits = createCompareUnits({ typed })
 
   /**

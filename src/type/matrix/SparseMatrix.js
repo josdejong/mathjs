@@ -242,6 +242,14 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
   }
 
   /**
+   * Obtaining a layer (i.e. row) of a SparseMatrix is currently not
+   * supported, as only 2D SparseMatrix is implemented.
+   */
+  SparseMatrix.prototype.layer = function () {
+    throw new Error('SparseMatrix of dimensions != 2 not yet implemented')
+  }
+
+  /**
    * Get a subset of the matrix, or replace a subset of the matrix.
    *
    * Usage:
@@ -255,8 +263,12 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *                                  the matrix is resized. If not provided,
    *                                  new matrix elements will be filled with zeros.
    */
-  SparseMatrix.prototype.subset = function (index, replacement, defaultValue) { // check it is a pattern matrix
-    if (!this._values) { throw new Error('Cannot invoke subset on a Pattern only matrix') }
+  SparseMatrix.prototype.subset = function (index, replacement, defaultValue) {
+    // check if it is a pattern matrix [NB: Where is that term defined?]
+    if (!this._values) {
+      throw new Error('Cannot invoke subset on a Pattern only matrix')
+    }
+    if (isIndex(index)) index = Matrix.parseWithinIndex(index, this._size)
 
     // check arguments
     switch (arguments.length) {

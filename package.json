@@ -33,7 +33,7 @@
     "javascript-natural-sort": "^0.7.1",
     "seedrandom": "^3.0.5",
     "tiny-emitter": "^2.1.0",
-    "typed-function": "^4.2.1"
+    "typed-function": "^4.2.2"
   },
   "devDependencies": {
     "@babel/core": "7.28.5",

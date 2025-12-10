@@ -8,12 +8,14 @@ const dependencies = ['typed', '?bignumber', 'add', 'subtract', 'divide', 'multi
 export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, bignumber, add, subtract, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger, mapSlices }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
-   * The sequence is sorted and the middle value is returned.
+   * The sequence is sorted and the quntile value(s) are returned.
    * Supported types of sequence values are: Number, BigNumber, Unit
    * Supported types of probability are: Number, BigNumber
    *
    * In case of a multidimensional array or matrix, the prob order quantile
-   * of all elements will be calculated.
+   * of all elements will be calculated, unless the additional "dimension"
+   * argument (a number) is specified, in which case the quantiles are
+   * computed for all slices along that dimension.
    *
    * Syntax:
    *

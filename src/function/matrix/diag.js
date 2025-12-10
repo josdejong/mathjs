@@ -127,6 +127,7 @@ export const createDiag = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     // matrix size
     const ms = [l + kSub, l + kSuper]
 
+    if (format === 'range') format = 'dense'
     if (format && format !== 'sparse' && format !== 'dense') {
       throw new TypeError(`Unknown matrix type ${format}"`)
     }
