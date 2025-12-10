@@ -374,5 +374,10 @@ describe('range', function () {
     assert.strictEqual(r2.start, 0)
     assert.strictEqual(r2.end, 10)
     assert.strictEqual(r2.step, 2)
+
+    // Make sure old format works:
+    const oldToJSON = '{"mathjs": "Range", "start": 2, "end": 4, "step": 1}'
+    const revived = JSON.parse(oldToJSON, math.reviver)
+    assert.deepStrictEqual(revived, new Range(2, 4))
   })
 })
