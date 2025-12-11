@@ -1230,6 +1230,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       const saveState = Object.assign({}, state)
 
       getTokenSkipNewline(state)
+      // If the current expression looks like `not(stuff...`, i.e. appears
+      // in the guise of function-call syntax, then we pass on it here and
+      // let it be picked up by the function-call parsing
+      // (the combo of parseSymbol/parseAccessors) later, so that it will
+      // have the exact behavior/precedence of a function call.
       if (name !== 'not' || state.token !== '(') {
         const params = [parseUnary(state)]
         return new OperatorNode(name, fn, params)
