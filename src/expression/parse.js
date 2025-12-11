@@ -1217,7 +1217,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseUnary (state) {
-    let name, params, fn
     const operators = {
       '-': 'unaryMinus',
       '+': 'unaryPlus',
@@ -1226,13 +1225,15 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     if (hasOwnProperty(operators, state.token)) {
-      fn = operators[state.token]
-      name = state.token
+      const fn = operators[state.token]
+      const name = state.token
+      const saveState = Object.assign({}, state)
 
       getTokenSkipNewline(state)
-      params = [parseUnary(state)]
-
-      return new OperatorNode(name, fn, params)
+      if (name !== 'not' || state.token !== '(') {
+        const params = [parseUnary(state)]
+        return new OperatorNode(name, fn, params)
+      } else Object.assign(state, saveState)
     }
 
     return parsePow(state)

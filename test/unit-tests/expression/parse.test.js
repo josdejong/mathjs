@@ -2054,6 +2054,16 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('4 + not 2'), 4)
 
       assert.strictEqual(parseAndEval('10+not not 3'), 11)
+
+      assert.strictEqual(parseAndEval('not(2)'), false)
+      // not used in function call syntax has function-call precedence
+      assert.deepStrictEqual(
+        parseAndEval('not([0, 1]).map(_(x) = equal(x, true) ? 7 : -1)'),
+        math.matrix([7, -1]))
+      // not used as operator has unary-prefix-operator precedence
+      assert.deepStrictEqual(
+        parseAndEval('not [0, 1].map(_(x) = equal(x, true) ? 7 : -1)'),
+        math.matrix([false, false]))
     })
 
     it('should parse minus -', function () {
