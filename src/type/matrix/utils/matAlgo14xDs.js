@@ -20,19 +20,18 @@ export const createMatAlgo14xDs = /* #__PURE__ */ factory(name, dependencies, ({
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
    */
   return function matAlgo14xDs (a, b, callback, inverse) {
-    // datatype
-    let dt
+    // a arrays
+    const adt = a._datatype
+
     // callback signature to use
     let cf = callback
 
     // process data types
     if (typeof adt === 'string') {
-      // datatype
-      dt = a._datatype
       // convert b to the same datatype
-      b = typed.convert(b, dt)
+      b = typed.convert(b, adt)
       // callback
-      cf = typed.find(callback, [dt, dt])
+      cf = typed.find(callback, [adt, adt])
     }
 
     return inverse ? a.map(v => cf(b, v)) : a.map(v => cf(v, b))
