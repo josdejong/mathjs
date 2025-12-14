@@ -4,10 +4,11 @@ import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
 import { createMatAlgo08xS0Sid } from '../../type/matrix/utils/matAlgo08xS0Sid.js'
+import { createMatAlgo15xAs } from '../../type/matrix/utils/matAlgo15xAs.js'
 import { factory } from '../../utils/factory.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { rightLogShiftNumber } from '../../plain/number/index.js'
-import { createUseMatrixForArrayScalar } from './useMatrixForArrayScalar.js'
+import { deepMap, clone } from '../../utils/array.js'
 
 const name = 'rightLogShift'
 const dependencies = [
@@ -26,8 +27,8 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
+  const matAlgo15xAs = createMatAlgo15xAs()
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
-  const useMatrixForArrayScalar = createUseMatrixForArrayScalar({ typed, matrix })
 
   /**
    * Bitwise right logical shift of value x by y number of bits, `x >>> y`.
@@ -76,6 +77,14 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
         return matAlgo14xDs(x, y, self, false)
       }),
 
+      'Array, number | BigNumber': typed.referToSelf(self => (x, y) => {
+        // check scalar
+        if (equalScalar(y, 0)) {
+          return clone(x)
+        }
+        return matAlgo15xAs(x, y, self, false)
+      }),
+
       'number | BigNumber, SparseMatrix': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (equalScalar(x, 0)) {
@@ -90,9 +99,16 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
           return zeros(y.size(), y.storage())
         }
         return matAlgo14xDs(y, x, self, true)
+      }),
+
+      'number | BigNumber, Array': typed.referToSelf(self => (x, y) => {
+        // check scalar
+        if (equalScalar(x, 0)) {
+          return deepMap(y, () => x)
+        }
+        return matAlgo15xAs(y, x, self, true)
       })
     },
-    useMatrixForArrayScalar,
     matrixAlgorithmSuite({
       SS: matAlgo08xS0Sid,
       DS: matAlgo01xDSid,

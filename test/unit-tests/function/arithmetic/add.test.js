@@ -31,6 +31,11 @@ describe('add', function () {
       assert.deepStrictEqual(add([3, 4], 2), [5, 6])
     })
 
+    it('should add a scalar and a jagged array correctly', function () {
+      assert.deepStrictEqual(add(2, [[3, 4], 5]), [[5, 6], 7])
+      assert.deepStrictEqual(add([[3, 4], 5], 2), [[5, 6], 7])
+    })
+
     it('should add broadcastable arrays correctly', function () {
       const a2 = [1, 2]
       const a3 = [[3], [4]]
