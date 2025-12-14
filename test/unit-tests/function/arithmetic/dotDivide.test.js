@@ -68,6 +68,9 @@ describe('dotDivide', function () {
       const a = [[1, 2], [3, 4]]
       assert.deepStrictEqual(dotDivide(a, 2), [[0.5, 1], [1.5, 2]])
       assert.deepStrictEqual(dotDivide([], 2), [])
+      // jagged array
+      const ja = [[1, 2, 3], [4], [5, 6]]
+      assert.deepStrictEqual(dotDivide(ja, 2), [[0.5, 1, 1.5], [2], [2.5, 3]])
     })
 
     it('should divide 1 over a array element-wise', function () {
