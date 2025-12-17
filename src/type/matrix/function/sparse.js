@@ -33,6 +33,10 @@ export const createSparse = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    bignumber, boolean, complex, index, number, string, unit, matrix
    *
+   * History:
+   *
+   *    v1.5  Created
+   *
    * @param {Array | Matrix} [data]    A two dimensional array
    *
    * @return {Matrix} The created matrix
