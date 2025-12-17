@@ -34,6 +34,6 @@ export const createMatAlgo14xDs = /* #__PURE__ */ factory(name, dependencies, ({
       cf = typed.find(callback, [adt, adt])
     }
 
-    return inverse ? a.map(v => cf(b, v)) : a.map(v => cf(v, b))
+    return inverse ? a.map(v => cf(b, v), false, true) : a.map(v => cf(v, b), false, true)
   }
 })
