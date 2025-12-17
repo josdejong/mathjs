@@ -1647,6 +1647,50 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   const UNIT_NONE = { name: '', base: BASE_UNIT_NONE, value: 1, offset: 0, dimensions: BASE_DIMENSIONS.map(x => 0) }
 
   const UNITS = {
+    // unitless
+    '%': {
+      name: '%',
+      base: BASE_UNITS.NONE,
+      prefixes: PREFIXES.NONE,
+      value: 0.01,
+      offset: 0
+    },
+    'pu': {
+      name: 'pu',
+      base: BASE_UNITS.NONE,
+      prefixes: PREFIXES.NONE,
+      value: 1,
+      offset: 0
+    },
+    ppm: {
+      name: 'ppm',
+      base: BASE_UNITS.NONE,
+      prefixes: PREFIXES.NONE,
+      value: 1e-6,
+      offset: 0
+    },
+    ppb: {
+      name: 'ppb',
+      base: BASE_UNITS.NONE,
+      prefixes: PREFIXES.NONE,
+      value: 1e-9,
+      offset: 0
+    },
+    ppt: {
+      name: 'ppt',
+      base: BASE_UNITS.NONE,
+      prefixes: PREFIXES.NONE,
+      value: 1e-12,
+      offset: 0
+    },
+    ppq: {
+      name: 'ppq',
+      base: BASE_UNITS.NONE,
+      prefixes: PREFIXES.NONE,
+      value: 1e-15,
+      offset: 0
+    },
+
     // length
     meter: {
       name: 'meter',
