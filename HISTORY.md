@@ -6,6 +6,7 @@
   Thanks @gwhitney.
 - Fix: #3597 added nullish type definitions (#3601). Thanks @Ayo1984.
 - Docs: fix #3565, update Matrix documentation (#3591). Thanks @orelbn.
+- Docs: #3341 add per-function HISTORY sections (#3606). Thanks @gwhitney.
 
 # 2025-11-05, 15.1.0
 
