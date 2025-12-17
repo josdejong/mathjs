@@ -7,7 +7,7 @@ const dependencies = []
 export const createMatAlgo15xAs = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
    * Iterates over Array items and invokes the callback function f(Aij..z, b).
-   * Callback function invoked MxN times.
+   * Callback function invoked once for each item.
    *
    * C(i,j,...z) = f(Aij..z, b)
    *
