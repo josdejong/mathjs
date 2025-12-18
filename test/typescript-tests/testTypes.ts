@@ -3211,6 +3211,18 @@ Numerator and Denominator examples
   expectTypeOf(math.num(math.fraction(2, 3))).toMatchTypeOf<bigint>()
   expectTypeOf(math.den(math.fraction(2, 3))).toMatchTypeOf<bigint>()
 
+  // Number and bigint examples (automatic conversion to fraction)
+  assert.strictEqual(math.num(0.5), BigInt(1)) // 0.5 = 1/2
+  assert.strictEqual(math.den(0.5), BigInt(2))
+  assert.strictEqual(math.num(1.5), BigInt(3)) // 1.5 = 3/2
+  assert.strictEqual(math.den(1.5), BigInt(2))
+  assert.strictEqual(math.num(BigInt(3)), BigInt(3)) // 3 = 3/1
+  assert.strictEqual(math.den(BigInt(3)), BigInt(1))
+  expectTypeOf(math.num(0.5)).toMatchTypeOf<bigint>()
+  expectTypeOf(math.den(0.5)).toMatchTypeOf<bigint>()
+  expectTypeOf(math.num(BigInt(3))).toMatchTypeOf<bigint>()
+  expectTypeOf(math.den(BigInt(3))).toMatchTypeOf<bigint>()
+
   // Array of fractions
   const fractionArray = [math.fraction(1, 2), math.fraction(3, 4)]
   expectTypeOf(math.num(fractionArray)).toMatchTypeOf<MathArray>()
@@ -3220,8 +3232,8 @@ Numerator and Denominator examples
 
   // Matrix of fractions
   const fractionMatrix = math.matrix([math.fraction(1, 2), math.fraction(3, 4)])
-  expectTypeOf(math.num(fractionMatrix)).toMatchTypeOf<Matrix>()
-  expectTypeOf(math.den(fractionMatrix)).toMatchTypeOf<Matrix>()
+  expectTypeOf(math.num(fractionMatrix)).toMatchTypeOf<Matrix<bigint>>()
+  expectTypeOf(math.den(fractionMatrix)).toMatchTypeOf<Matrix<bigint>>()
   assert.deepStrictEqual(
     math.num(fractionMatrix),
     math.matrix([BigInt(1), BigInt(3)])

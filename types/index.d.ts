@@ -1822,9 +1822,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param x A fraction, BigNumber, or array with fractions
    * @returns The numerator of x
    */
-  num(x: Fraction): bigint
-  num(x: BigNumber): bigint
-  num<T extends MathCollection>(x: T): T
+  num(x: number | BigNumber | bigint | Fraction): bigint
+  num(x: MathArray<MathScalarType>): MathArray<bigint>
+  num(x: Matrix<MathScalarType>): Matrix<bigint>
 
   /**
    * Get the denominator of a fraction. For a fraction a/b, the function
@@ -1832,9 +1832,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param x A fraction, BigNumber, or array with fractions
    * @returns The denominator of x
    */
-  den(x: Fraction): bigint
-  den(x: BigNumber): bigint
-  den<T extends MathCollection>(x: T): T
+  den(x: number | BigNumber | bigint | Fraction): bigint
+  den(x: MathArray<MathScalarType>): MathArray<bigint>
+  den(x: Matrix<MathScalarType>): Matrix<bigint>
 
   /*************************************************************************
    * Geometry functions
@@ -5959,17 +5959,25 @@ export interface MathJsChain<TValue> {
    * Get the numerator of a fraction. For a fraction a/b, the function
    * returns a. For matrices, the function is evaluated element wise.
    */
-  num(this: MathJsChain<Fraction>): MathJsChain<bigint>
-  num(this: MathJsChain<BigNumber>): MathJsChain<bigint>
-  num(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
+  num(
+    this: MathJsChain<number | BigNumber | bigint | Fraction>
+  ): MathJsChain<bigint>
+  num(
+    this: MathJsChain<MathArray<MathScalarType>>
+  ): MathJsChain<MathArray<bigint>>
+  num(this: MathJsChain<Matrix<MathScalarType>>): MathJsChain<Matrix<bigint>>
 
   /**
    * Get the denominator of a fraction. For a fraction a/b, the function
    * returns b. For matrices, the function is evaluated element wise.
    */
-  den(this: MathJsChain<Fraction>): MathJsChain<bigint>
-  den(this: MathJsChain<BigNumber>): MathJsChain<bigint>
-  den(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
+  den(
+    this: MathJsChain<number | BigNumber | bigint | Fraction>
+  ): MathJsChain<bigint>
+  den(
+    this: MathJsChain<MathArray<MathScalarType>>
+  ): MathJsChain<MathArray<bigint>>
+  den(this: MathJsChain<Matrix<MathScalarType>>): MathJsChain<Matrix<bigint>>
 
   /*************************************************************************
    * Geometry functions

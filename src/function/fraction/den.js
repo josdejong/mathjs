@@ -12,6 +12,9 @@ export const createDen = /* #__PURE__ */ factory(
      * Get the denominator of a fraction.
      * For a fraction `a/b`, the function returns `b`.
      *
+     * The result is always in lowest terms. For example, `den(fraction(8, 6))`
+     * returns `3n` because 8/6 simplifies to 4/3.
+     *
      * For negative fractions like `-a/b` or `a/-b`, the denominator is
      * always returned as a positive bigint. The sign is stored in the
      * numerator. So `den(fraction(-2, 3))` and `den(fraction(2, -3))`
@@ -26,6 +29,7 @@ export const createDen = /* #__PURE__ */ factory(
      * Examples:
      *
      *    math.den(math.fraction(2, 3))   // returns 3n
+     *    math.den(math.fraction(8, 6))   // returns 3n
      *    math.den(math.fraction('5/8'))  // returns 8n
      *    math.den(math.fraction(-2, 3))  // returns 3n
      *    math.den(math.fraction(2, -3))  // returns 3n
@@ -37,12 +41,12 @@ export const createDen = /* #__PURE__ */ factory(
      *
      * @param {Fraction | BigNumber | Array | Matrix} x
      *            A fraction, BigNumber, or array with fractions
-     * @return {bigint | Array | Matrix} The denominator of x
+     * @return {bigint | Array | Matrix} The denominator of x (in lowest terms)
      */
     return typed(name, {
-      Fraction: (x) => x.d,
-      BigNumber: (x) => fraction(x).d,
-      'Array | Matrix': typed.referToSelf((self) => (x) => deepMap(x, self))
+      Fraction: x => x.d,
+      BigNumber: x => fraction(x).d,
+      'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
     })
   }
 )
