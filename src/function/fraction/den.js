@@ -39,14 +39,18 @@ export const createDen = /* #__PURE__ */ factory(
      *
      *    num, fraction
      *
+     * History:
+     *
+     *    v15.2.0      Created
+     *
      * @param {Fraction | BigNumber | Array | Matrix} x
      *            A fraction, BigNumber, or array with fractions
      * @return {bigint | Array | Matrix} The denominator of x (in lowest terms)
      */
     return typed(name, {
-      Fraction: x => x.d,
-      BigNumber: x => fraction(x).d,
-      'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
+      Fraction: (x) => x.d,
+      BigNumber: (x) => fraction(x).d,
+      'Array | Matrix': typed.referToSelf((self) => (x) => deepMap(x, self))
     })
   }
 )

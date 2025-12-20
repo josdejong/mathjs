@@ -2,10 +2,6 @@
 
 # unreleased changes since 15.1.0
 
-- Feat: implement function `num` to get numerator of fractions.
-  Thanks @AnslemHack.
-- Feat: implement function `den` to get denominator of fractions.
-  Thanks @AnslemHack.
 - Fix: #3578 interpret empty true-expr of conditional as error (#3581).
   Thanks @gwhitney.
 - Fix: #3597 added nullish type definitions (#3601). Thanks @Ayo1984.
