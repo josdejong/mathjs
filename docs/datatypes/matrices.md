@@ -12,13 +12,13 @@ dense and sparse matrices.
 Math.js supports two types of matrices:
 
 - `Array`, a regular JavaScript array. A multidimensional array can be created
-  by nesting arrays. If the elements of an array are of the same size, it is a
-  rectangular array. If the elements are all arrays but not of the same size, 
-  it is a jagged array and if not all elements are arrays then it's an 
-  heterogeneous array.
+  by nesting arrays. The following terminology will be used to define different kinds of nested arrays.
+  - **Recangular array**: All elements of an array are arrays of the same size. Like `[[1, 2], [3, 4]]`
+  - **Jagged arrays**: All elements of an array are arrays but not of the same size. Like `[[1, 2], [3, 4, 5]]`
+  - **Heterogeneous arrays**: If not all the elements inside an array are arrays. Like `[[1, 2], 3]`.
 - `Matrix`, a matrix implementation by math.js. A `Matrix` is an object wrapped
   around a regular JavaScript `Array`, providing utility functions for easy
-  matrix manipulation such as `subset`, `size`, `resize`, `clone`, and more.
+  matrix manipulation such as `subset`, `size`, `resize`, `clone`, and more. Nested arrays must be rectangular to be converted to a `Matrix`.
 
 In most cases, the type of matrix output from functions is determined by the
 function input: An `Array` as input will return an `Array`, a `Matrix` as input
