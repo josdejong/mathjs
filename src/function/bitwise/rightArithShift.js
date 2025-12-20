@@ -17,11 +17,10 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'zeros',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix, concat }) => {
+export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo08xS0Sid = createMatAlgo08xS0Sid({ typed, equalScalar })
@@ -29,7 +28,7 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
   const matAlgo15xAs = createMatAlgo15xAs()
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Bitwise right arithmetic shift of a value x by y number of bits, `x >> y`.
