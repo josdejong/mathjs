@@ -2,7 +2,9 @@
 
 # unreleased changes since 15.1.0
 
-- Feat: implement functions `num` and `den` to get numerator and denominator of fractions.
+- Feat: implement function `num` to get numerator of fractions.
+  Thanks @AnslemHack.
+- Feat: implement function `den` to get denominator of fractions.
   Thanks @AnslemHack.
 - Fix: #3578 interpret empty true-expr of conditional as error (#3581).
   Thanks @gwhitney.
