@@ -1231,10 +1231,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       getTokenSkipNewline(state)
       if (name === 'not' && state.token === '(') {
-        // This is the syntax of a unary function call with symbol `not`,
-        // so rather than handling here, we let it fall through to be handled
-        // by function-call parsing later.
+        // OK, this appears to be using `not` in the syntax of an ordinary
+        // function call, rather than as a unary operator, so re-parse the
+        // `not` as a Symbol and continue from there:
         Object.assign(state, saveState)
+        return parseSymbol(state)
       } else {
         // Bona-finde "unary operator" application
         const params = [parseUnary(state)]
