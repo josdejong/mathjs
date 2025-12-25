@@ -67,6 +67,12 @@ describe('Unit', function () {
       assert.strictEqual(unit1.units[0].unit.name, 'm3')
     })
 
+    it('should create ampere-hour correctly', function () {
+      const unit1 = new Unit(1.4, 'Ah')
+      assert.strictEqual(unit1.value, 1.4)
+      assert.strictEqual(unit1.units[0].unit.name, 'Ah')
+    })
+
     it('should create a unit from an existing unit', function () {
       const unit1 = new Unit(null, 'm/s^2')
       const unit2 = new Unit(5, unit1)
