@@ -318,7 +318,7 @@ Force               | newton (N), dyne (dyn), poundforce (lbf), kip
 Energy              | joule (J), erg, Wh, BTU, electronvolt (eV)
 Power               | watt (W), hp
 Pressure            | Pa, psi, atm, torr, bar, mmHg, mmH2O, cmH2O
-Electricity and magnetism | ampere (A), coulomb (C), watt (W), volt (V), ohm, farad (F), weber (Wb), tesla (T), henry (H), siemens (S), electronvolt (eV)
+Electricity and magnetism | ampere (A), ampere-hour (Ah), coulomb (C), watt (W), volt (V), ohm, farad (F), weber (Wb), tesla (T), henry (H), siemens (S), electronvolt (eV)
 Binary              | bits (b), bytes (B)
 
 Note: all time units are based on the Julian year, with one month being 1/12th of a Julian year, a year being one Julian year, a decade being 10 Julian years, a century being 100, and a millennium being 1000.
