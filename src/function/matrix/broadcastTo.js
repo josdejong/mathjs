@@ -5,7 +5,7 @@ const name = 'broadcastTo'
 const dependencies = ['typed']
 
 export const createBroadcastTo = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
-    /**
+  /**
      * Broadcast an array to a specified size.
      *
      * Syntax:

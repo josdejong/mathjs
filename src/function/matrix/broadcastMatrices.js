@@ -31,8 +31,8 @@ export const createBroadcastMatrices = /* #__PURE__ */ factory(name, dependencie
   return typed(name, {
     '...Array|Matrix': collections => {
       const areMatrices = collections.map(isMatrix)
-      if(areMatrices.includes(true)) {
-        const arrays = collections.map((c,i) => areMatrices[i] ? c.valueOf() : c)
+      if (areMatrices.includes(true)) {
+        const arrays = collections.map((c, i) => areMatrices[i] ? c.valueOf() : c)
         const broadcastedArrays = broadcastArrays(...arrays)
         const broadcastedCollections = broadcastedArrays.map((arr, i) => areMatrices[i] ? collections[i].create(arr) : arr)
         return broadcastedCollections
