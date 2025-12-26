@@ -29,8 +29,15 @@ export const createBroadcastMatrices = /* #__PURE__ */ factory(name, dependencie
    * @return {Array[Array|Matrix]} An array of matrices with the broadcasted sizes.
    */
   return typed(name, {
-    '...Array': broadcastArrays,
-    '...Matrix': matrices => broadcastArrays(...matrices.map(m => m.toArray())),
-    '...Array|Matrix': collections => broadcastArrays(...collections.map(c => isMatrix(c) ? c.toArray() : c))
+    '...Array|Matrix': collections => {
+      const areMatrices = collections.map(isMatrix)
+      if(areMatrices.includes(true)) {
+        const arrays = collections.map((c,i) => areMatrices[i] ? c.valueOf() : c)
+        const broadcastedArrays = broadcastArrays(...arrays)
+        const broadcastedCollections = broadcastedArrays.map((arr, i) => areMatrices[i] ? collections[i].create(arr) : arr)
+        return broadcastedCollections
+      }
+      return broadcastArrays(...collections)
+    }
   })
 })
