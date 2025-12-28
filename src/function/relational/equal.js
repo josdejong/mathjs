@@ -44,6 +44,10 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    const a = math.unit('50 cm')
    *    const b = math.unit('5 m')
+   *    math.equal(a, b)             // returns false
+   *
+   *    const a = math.unit('500 cm')
+   *    const b = math.unit('5 m')
    *    math.equal(a, b)             // returns true
    *
    *    const c = [2, 5, 1]
