@@ -702,9 +702,9 @@ describe('util.array', function () {
     })
 
     it('should broadcast leave arrays as such when only one is supplied', function () {
-      assert.deepStrictEqual(broadcastArrays([1, 2]), [1, 2], [3, 4])
-      assert.deepStrictEqual(broadcastArrays([[3], [4]]), [[3], [4]])
-      assert.deepStrictEqual(broadcastArrays([[5, 6]]), [[5, 6]])
+      assert.deepStrictEqual(broadcastArrays([1, 2])[0], [1, 2])
+      assert.deepStrictEqual(broadcastArrays([[3], [4]])[0], [[3], [4]])
+      assert.deepStrictEqual(broadcastArrays([[5, 6]])[0], [[5, 6]])
     })
 
     it('should throw an arryor when the broadcasting rules don\'t apply', function () {
