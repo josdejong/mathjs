@@ -19,7 +19,7 @@ export const createBroadcastSizes = /* #__PURE__ */ factory(name, dependencies, 
    *
    *     math.broadcastSizes([2, 3])          // returns [2, 3]
    *     math.broadcastSizes([2, 3], [3])     // returns [2, 3]
-   *     math.broadcastSizes([1, 2, 3], [[1, 2, 3]])  // returns [[1, 2, 3]]
+   *     math.broadcastSizes([1, 2, 3], [1, 2, 1])  // returns [[1, 2, 3]]
    *
    * See also:
    *
