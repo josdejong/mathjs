@@ -19,12 +19,15 @@ export const createBroadcastSizes = /* #__PURE__ */ factory(name, dependencies, 
    *
    *     math.broadcastSizes([2, 3])          // returns [2, 3]
    *     math.broadcastSizes([2, 3], [3])     // returns [2, 3]
-   *     math.broadcastSizes([1, 2, 3], [1, 2, 1])  // returns [[1, 2, 3]]
+   *     math.broadcastSizes([1, 2, 3], [1, 2, 1])  // returns [1, 2, 3]
    *
    * See also:
    *
    *     size, reshape, squeeze, broadcastTo
    *
+   * History:
+   * 
+   *     v15.1.1 created
    * @param {...(Array|Matrix)} x  One or more matrices or arrays
    * @return {Array} A vector with the broadcasted size.
    */

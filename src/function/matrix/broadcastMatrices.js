@@ -12,19 +12,22 @@ export const createBroadcastMatrices = /* #__PURE__ */ factory(name, dependencie
    *
    * Syntax:
    *
-  *     math.broadcastMatrices(x, y)
-  *     math.broadcastMatrices(x, y, ...)
+   *     math.broadcastMatrices(x, y)
+   *     math.broadcastMatrices(x, y, ...)
    *
    * Examples:
    *
-   *     math.broadcastMatrices([1, 2], [[3], [4]])  // returns [[[1, 2], [1, 2]], [[3, 3], [4, 4]]]
-  *     math.broadcastMatrices([2, 3])               // returns [[2, 3]]
-  *     math.broadcastMatrices([2, 3], [3, 1])       // returns [[2, 3], [3, 1]]
+   *     math.broadcastMatrices([1, 2], [[3], [4]])   // returns [[[1, 2], [1, 2]], [[3, 3], [4, 4]]]
+   *     math.broadcastMatrices([2, 3])               // returns [[2, 3]]
+   *     math.broadcastMatrices([2, 3], [3, 1])       // returns [[2, 3], [3, 1]]
    *
    * See also:
    *
    *     size, reshape, broadcastSizes, broadcastTo
    *
+   * History:
+   * 
+   *     v15.1.1 created
    * @param {...(Array|Matrix)} x  One or more matrices or arrays
    * @return {Array[Array|Matrix]} An array of matrices with the broadcasted sizes.
    */
