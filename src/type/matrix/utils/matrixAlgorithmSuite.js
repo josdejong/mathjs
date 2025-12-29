@@ -1,7 +1,8 @@
 import { factory } from '../../../utils/factory.js'
 import { extend } from '../../../utils/object.js'
-import { createMatAlgo13xDD } from './matAlgo13xDD.js'
+// import { createMatAlgo13xDD } from './matAlgo13xDD.js'
 import { createMatAlgo14xDs } from './matAlgo14xDs.js'
+import { createMatAlgo13xCC } from './matAlgo13xCC.js'
 import { broadcast } from './broadcast.js'
 
 const name = 'matrixAlgorithmSuite'
@@ -9,8 +10,9 @@ const dependencies = ['typed', 'matrix']
 
 export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
   name, dependencies, ({ typed, matrix }) => {
-    const matAlgo13xDD = createMatAlgo13xDD({ typed })
+    // const matAlgo13xDD = createMatAlgo13xDD({ typed })
     const matAlgo14xDs = createMatAlgo14xDs({ typed })
+    const matAlgo13xCC = createMatAlgo13xCC({ typed })
 
     /**
      * Return a signatures object with the usual boilerplate of
@@ -36,11 +38,11 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
       if (elop) {
         // First the dense ones
         matrixSignatures = {
-          'DenseMatrix, DenseMatrix': (x, y) => matAlgo13xDD(...broadcast(x, y), elop),
+          'DenseMatrix, DenseMatrix': (x, y) => matAlgo13xCC(x, y, elop),
           'Array, Array': (x, y) =>
-            matAlgo13xDD(...broadcast(matrix(x), matrix(y)), elop).valueOf(),
-          'Array, DenseMatrix': (x, y) => matAlgo13xDD(...broadcast(matrix(x), y), elop),
-          'DenseMatrix, Array': (x, y) => matAlgo13xDD(...broadcast(x, matrix(y)), elop)
+            matAlgo13xCC(matrix(x), matrix(y), elop).valueOf(),
+          'Array, DenseMatrix': (x, y) => matAlgo13xCC(matrix(x), y, elop),
+          'DenseMatrix, Array': (x, y) => matAlgo13xCC(x, matrix(y), elop)
         }
         // Now incorporate sparse matrices
         if (options.SS) {
@@ -64,16 +66,16 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
         // First the dense ones
         matrixSignatures = {
           'DenseMatrix, DenseMatrix': typed.referToSelf(self => (x, y) => {
-            return matAlgo13xDD(...broadcast(x, y), self)
+            return matAlgo13xCC(x, y, self)
           }),
           'Array, Array': typed.referToSelf(self => (x, y) => {
-            return matAlgo13xDD(...broadcast(matrix(x), matrix(y)), self).valueOf()
+            return matAlgo13xCC(matrix(x), matrix(y), self).valueOf()
           }),
           'Array, DenseMatrix': typed.referToSelf(self => (x, y) => {
-            return matAlgo13xDD(...broadcast(matrix(x), y), self)
+            return matAlgo13xCC(matrix(x), y, self)
           }),
           'DenseMatrix, Array': typed.referToSelf(self => (x, y) => {
-            return matAlgo13xDD(...broadcast(x, matrix(y)), self)
+            return matAlgo13xCC(x, matrix(y), self)
           })
         }
         // Now incorporate sparse matrices
