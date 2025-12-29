@@ -22,9 +22,9 @@ export const createBroadcastTo = /* #__PURE__ */ factory(name, dependencies, ({ 
      *     size, reshape, squeeze, broadcastSizes
      *
      * History:
-     * 
+     *
      *     v15.1.1 created
-     * 
+     *
      * @param {Array|Matrix} x  The array or matrix to broadcast
      * @param {Array|Matrix} size  The target size
      * @return {Array} The broadcasted array

@@ -26,7 +26,7 @@ export const createBroadcastMatrices = /* #__PURE__ */ factory(name, dependencie
    *     size, reshape, broadcastSizes, broadcastTo
    *
    * History:
-   * 
+   *
    *     v15.1.1 created
    * @param {...(Array|Matrix)} x  One or more matrices or arrays
    * @return {Array[Array|Matrix]} An array of matrices with the broadcasted sizes.

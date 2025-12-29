@@ -26,7 +26,7 @@ export const createBroadcastSizes = /* #__PURE__ */ factory(name, dependencies, 
    *     size, reshape, squeeze, broadcastTo
    *
    * History:
-   * 
+   *
    *     v15.1.1 created
    * @param {...(Array|Matrix)} x  One or more matrices or arrays
    * @return {Array} A vector with the broadcasted size.
