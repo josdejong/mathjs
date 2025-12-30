@@ -108,7 +108,7 @@ describe('broadcast utils', function () {
         assert.deepStrictEqual(result.size, [0])
       })
 
-      it('shoudl throw an error if arrays are not broadcastable', function () {
+      it('should throw an error if arrays are not broadcastable', function () {
         const a = [[1, 2], [3, 4]]
         const b = [10, 20, 30]
         assert.throws(function () { broadcast(a, b, [2, 2], [3], (x, y) => x + y) })
