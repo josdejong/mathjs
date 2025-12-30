@@ -123,7 +123,7 @@ describe('nullish', function () {
   describe('shape handling and sparse matrices', function () {
     it('should throw on mismatched shapes', function () {
       assert.throws(() => nullish([1], [7, 8]), /Dimension mismatch/)
-      assert.throws(() => nullish(matrix([1]), matrix([7, 8])), /RangeError/)
+      assert.throws(() => nullish(matrix([1]), matrix([7, 8])), /Dimension mismatch/)
       assert.throws(() => nullish(sparse([[1]]), matrix([7, 8])), /DimensionError/)
     })
 

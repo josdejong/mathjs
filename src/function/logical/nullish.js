@@ -57,24 +57,35 @@ export const createNullish = /* #__PURE__ */ factory(
 
         // SparseMatrix-first with collection RHS: enforce exact shape match
         'SparseMatrix, Array | Matrix': (x, y) => {
-          const sx = size(x)
-          const sy = size(y)
-          if (deepEqual(sx, sy)) return x
-          throw new DimensionError(sx, sy)
+          _validateSize(x, y)
+          return x
         },
 
         // DenseMatrix-first handlers (no broadcasting between collections)
-        'DenseMatrix, DenseMatrix': typed.referToSelf(self => (x, y) => matAlgo13xDD(x, y, self)),
+        'DenseMatrix, DenseMatrix': typed.referToSelf(self => (x, y) => _matAlgo13xDDnoBroadcast(x, y, self)
+        ),
         'DenseMatrix, SparseMatrix': typed.referToSelf(self => (x, y) => matAlgo03xDSf(x, y, self, false)),
-        'DenseMatrix, Array': typed.referToSelf(self => (x, y) => matAlgo13xDD(x, matrix(y), self)),
+        'DenseMatrix, Array': typed.referToSelf(self => (x, y) => _matAlgo13xDDnoBroadcast(x, y, self)),
         'DenseMatrix, any': typed.referToSelf(self => (x, y) => matAlgo14xDs(x, y, self, false)),
 
         // Array-first handlers (bridge via matrix() where needed)
-        'Array, Array': typed.referToSelf(self => (x, y) => matAlgo13xDD(matrix(x), matrix(y), self).valueOf()),
-        'Array, DenseMatrix': typed.referToSelf(self => (x, y) => matAlgo13xDD(matrix(x), y, self)),
+        'Array, Array': typed.referToSelf(self => (x, y) => _matAlgo13xDDnoBroadcast(x, y, self)),
+        'Array, DenseMatrix': typed.referToSelf(self => (x, y) => matrix(_matAlgo13xDDnoBroadcast(x, y, self))),
         'Array, SparseMatrix': typed.referToSelf(self => (x, y) => matAlgo03xDSf(matrix(x), y, self, false)),
         'Array, any': typed.referToSelf(self => (x, y) => matAlgo14xDs(matrix(x), y, self, false).valueOf())
       }
     )
+    function _validateSize (x, y) {
+      const sx = size(x)
+      const sy = size(y)
+      if (!deepEqual(sx, sy)) {
+        throw new DimensionError(sx, sy)
+      }
+    }
+    // Remve broadcasting from matAlgo13xDD
+    function _matAlgo13xDDnoBroadcast (x, y, callback) {
+      _validateSize(x, y)
+      return matAlgo13xDD(x, y, callback)
+    }
   }
 )

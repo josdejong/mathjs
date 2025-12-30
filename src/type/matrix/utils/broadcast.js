@@ -5,15 +5,15 @@ import { deepStrictEqual } from '../../../utils/object.js'
 * Broadcasts two matrices, and return both in an array
 * It checks if it's possible with broadcasting rules
 *
-* @param {Matrix}   A      First Matrix
-* @param {Matrix}   B      Second Matrix
+* @param {Matrix|Array}   A      First Matrix
+* @param {Matrix|Array}   B      Second Matrix
 *
-* @return {Matrix[]}      [ broadcastedA, broadcastedB ]
+* @return {Matrix|Array}      [ broadcastedA, broadcastedB ]
 */
 
-export function broadcast (A, B) {
+export function broadcastMatrices (A, B) {
   if (deepStrictEqual(A.size(), B.size())) {
-    // If matrices have the same size return them
+    // If matrices have the same size return them as such
     return [A, B]
   }
 
@@ -50,7 +50,7 @@ function _broadcastTo (M, size) {
  * @param {function} callback  The callback function to apply to each pair of elements
  * @returns {Array} The resulting array after applying the callback to each pair of elements
  */
-export function broadcastTwo (array1, array2, size1, size2, callback) {
+export function broadcast (array1, array2, size1, size2, callback) {
   if (![array1, array2, size1, size2].every(Array.isArray)) {
     throw new Error('Arrays and their sizes must be provided')
   }
