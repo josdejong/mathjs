@@ -5,12 +5,12 @@ import { createMatAlgo13xDD } from '../../type/matrix/utils/matAlgo13xDD.js'
 import { DimensionError } from '../../error/DimensionError.js'
 
 const name = 'nullish'
-const dependencies = ['typed', 'matrix', 'size', 'flatten', 'deepEqual']
+const dependencies = ['typed', 'matrix', 'size', 'deepEqual']
 
 export const createNullish = /* #__PURE__ */ factory(
   name,
   dependencies,
-  ({ typed, matrix, size, flatten, deepEqual }) => {
+  ({ typed, matrix, size, deepEqual }) => {
     const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
     const matAlgo14xDs = createMatAlgo14xDs({ typed })
     const matAlgo13xDD = createMatAlgo13xDD({ typed })
