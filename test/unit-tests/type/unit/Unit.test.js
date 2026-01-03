@@ -68,8 +68,9 @@ describe('Unit', function () {
     })
 
     it('should create ampere-hour correctly', function () {
-      const unit1 = new Unit(1.4, 'Ah')
-      assert.strictEqual(unit1.value, 1.4)
+      const n = 1.4
+      const unit1 = new Unit(n, 'Ah')
+      assert.strictEqual(unit1.value, n * 3600)
       assert.strictEqual(unit1.units[0].unit.name, 'Ah')
     })
 
@@ -1074,6 +1075,16 @@ describe('Unit', function () {
       assert.strictEqual(unit1.multiply(unit2).skipAutomaticSimplification, false)
       assert.strictEqual(unit1.divide(unit2).skipAutomaticSimplification, false)
       assert.strictEqual(unit1.pow(2).skipAutomaticSimplification, false)
+    })
+
+    it('should be able to combine A and h into Ah', function () {
+      const n1 = 2
+      const n2 = 3
+      const unit1 = new Unit(n1, 'A')
+      const unit2 = new Unit(n2, 'h')
+      const unitM = unit1.multiply(unit2).simplify()
+      assert.strictEqual(unitM.units[0].unit.name, 'Ah')
+      assert.strictEqual(unitM.value, n1 * n2 * 3600)
     })
 
     it('should retain the units of their operands without simplifying', function () {
