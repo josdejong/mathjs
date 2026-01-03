@@ -1078,12 +1078,24 @@ describe('Unit', function () {
     })
 
     it('should be able to combine A and h into Ah', function () {
+      // by default, this stays Ah, due to the default unit system
       const n1 = 2
       const n2 = 3
       const unit1 = new Unit(n1, 'A')
       const unit2 = new Unit(n2, 'h')
       const unitM = unit1.multiply(unit2).simplify()
       assert.strictEqual(unitM.units[0].unit.name, 'Ah')
+      assert.strictEqual(unitM.value, n1 * n2 * 3600)
+    })
+
+    it('should be able to combine W and h into Wh', function () {
+      // by default, this converts to J, due to the default unit system
+      const n1 = 2
+      const n2 = 3
+      const unit1 = new Unit(n1, 'W')
+      const unit2 = new Unit(n2, 'h')
+      const unitM = unit1.multiply(unit2).to('Wh')
+      assert.strictEqual(unitM.units[0].unit.name, 'Wh')
       assert.strictEqual(unitM.value, n1 * n2 * 3600)
     })
 
