@@ -1088,7 +1088,7 @@ describe('Unit', function () {
       assert.strictEqual(unitM.value, n1 * n2 * 3600)
     })
 
-    it('should be able to combine W and h into Wh', function () {
+    it('should be able to combine W and h into J', function () {
       // by default, this converts to J, due to the default unit system using J for ENERGY
       const n1 = 2
       const n2 = 3
