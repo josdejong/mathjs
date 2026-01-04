@@ -52,8 +52,8 @@ export const createMatAlgo13xDD = /* #__PURE__ */ factory(name, dependencies, ({
     // populate cdata, iterate through dimensions
     const cdata = broadcast(adata, bdata, asize, bsize, cf)
 
-    if (aIsMatrix) {
-      const cMatrix = a.createDenseMatrix()
+    if (aIsMatrix || bIsMatrix) {
+      const cMatrix = aIsMatrix ? a.createDenseMatrix() : b.createDenseMatrix()
       cMatrix._data = cdata.data
       cMatrix._size = cdata.size
       cMatrix._datatype = dt
