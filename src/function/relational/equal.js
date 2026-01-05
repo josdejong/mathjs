@@ -52,8 +52,10 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    const c = [2, 5, 1]
    *    const d = [2, 7, 1]
-   *
    *    math.equal(c, d)             // returns [true, false, true]
+   *
+   *    const c = [2, 5, 1]
+   *    const d = [2, 7, 1]
    *    math.deepEqual(c, d)         // returns false
    *
    *    math.equal("1000", "1e3")    // returns true
@@ -62,6 +64,10 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * See also:
    *
    *    unequal, smaller, smallerEq, larger, largerEq, compare, deepEqual, equalText
+   *
+   * History:
+   *
+   *     v15.1.1   Fixed incorrect documentation comment.
    *
    * @param  {number | BigNumber | bigint | boolean | Complex | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | boolean | Complex | Unit | string | Array | Matrix} y Second value to compare

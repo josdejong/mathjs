@@ -21,8 +21,8 @@ export const createDeepEqual = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    math.deepEqual(2, 4)   // returns false
    *
-   *    a = [2, 5, 1]
-   *    b = [2, 7, 1]
+   *    const a = [2, 5, 1]
+   *    const b = [2, 7, 1]
    *
    *    math.deepEqual(a, b)   // returns false
    *    math.equal(a, b)       // returns [true, false, true]
@@ -30,6 +30,10 @@ export const createDeepEqual = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * See also:
    *
    *    equal, unequal
+   *
+   * History:
+   *
+   *     v15.1.1   Fixed invalid documentation comment format.
    *
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First matrix to compare
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second matrix to compare
