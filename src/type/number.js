@@ -40,7 +40,9 @@ function makeNumberFromNonDecimalParts (parts) {
   return result
 }
 
-export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, Unit
+}) => {
   /**
    * Create a number or convert a string, boolean, or unit to a number.
    * When value is a matrix, all elements will be converted to number.
@@ -121,6 +123,7 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     Unit: typed.referToSelf(self => (x) => {
+      if (x.equalBase(x.constructor.BASE_UNITS.NONE)) return self(x.value)
       const clone = x.clone()
       clone.value = self(x.value)
       return clone

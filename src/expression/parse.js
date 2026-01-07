@@ -194,6 +194,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     not: true
   }
 
+  const UNIT_DELIMITERS = {
+    in: true,
+    '%': true
+  }
+
   const CONSTANTS = {
     true: true,
     false: false,
@@ -958,14 +963,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       getTokenSkipNewline(state)
 
-      if (name === 'in' && '])},;'.includes(state.token)) {
-        // end of expression -> this is the unit 'in' ('inch')
-        node = new OperatorNode('*', 'multiply', [node, new SymbolNode('in')], true)
-      } else {
-        // operator 'a to b' or 'a in b'
-        params = [node, parseRange(state)]
-        node = new OperatorNode(name, fn, params)
-      }
+      // operator 'a to b' or 'a in b'
+      params = [node, parseRange(state)]
+      node = new OperatorNode(name, fn, params)
     }
 
     return node
@@ -1032,25 +1032,18 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseAddSubtract (state) {
-    let node, name, fn, params
-
-    node = parseMultiplyDivideModulus(state)
+    let node = parseMultiplyDivideModulus(state)
 
     const operators = {
       '+': 'add',
       '-': 'subtract'
     }
     while (hasOwnProperty(operators, state.token)) {
-      name = state.token
-      fn = operators[name]
+      const name = state.token
+      const fn = operators[name]
 
       getTokenSkipNewline(state)
-      const rightNode = parseMultiplyDivideModulus(state)
-      if (rightNode.isPercentage) {
-        params = [node, new OperatorNode('*', 'multiply', [node, rightNode])]
-      } else {
-        params = [node, rightNode]
-      }
+      const params = [node, parseMultiplyDivideModulus(state)]
       node = new OperatorNode(name, fn, params)
     }
 
@@ -1105,9 +1098,71 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     last = node
 
     while (true) {
-      if ((state.tokenType === TOKENTYPE.SYMBOL) ||
-          (state.token === 'in' && isConstantNode(node)) ||
-          (state.token === 'in' && isOperatorNode(node) && node.fn === 'unaryMinus' && isConstantNode(node.args[0])) ||
+      // The idiosyncrasies of `%` in the mathjs language are handled
+      // here (and only here) because percent is treated as a dimensionless
+      // unit. Hence, we first encounter the possibility of the character `%`
+      // when we attempt an implicit multiplication. At this point, if we
+      // happen to be looking at `%`, we decide once and for all if it is a
+      // unit symbol or the 'mod' operator.
+      // Note this approach handles disambiguation of `in` as a unit or
+      // conversion operator in this same place, although unfortunately
+      // with somewhat different special cases.
+
+      // First determine if a unit delimiter is being used as a unit or
+      // a delimiter (in the former case it is implicit multiplication,
+      // in latter case not).
+      let delimiterAsUnit = state.token in UNIT_DELIMITERS
+      if (delimiterAsUnit) {
+        // Here we check if we are in a pattern in which this token should
+        // _not_ in fact be interpreted as a unit.
+
+        // First try looking ahead one token for general cases to disambiguate
+        const saveState = Object.assign({}, state)
+        getTokenSkipNewline(state)
+        if (state.token === '(' ||
+            state.tokenType === TOKENTYPE.NUMBER ||
+            state.tokenType === TOKENTYPE.SYMBOL ||
+            // Now check special cases for `in`:
+            // Parsing `5 in in`, the first `in` is a unit, second is operator
+            (saveState.token === 'in' &&
+             !(isConstantNode(node) ||
+               (isOperatorNode(node) && node.fn === 'unaryMinus')) &&
+             state.token in UNIT_DELIMITERS)
+        ) {
+          delimiterAsUnit = false
+        } else if (saveState.token === '%') { // Now check special cases for %
+          // Prevent doubled percent
+          if (isOperatorNode(node) &&
+              (node.fn === 'mod' ||
+               (isSymbolNode(node.args[1]) && node.args[1].name === '%'))
+          ) {
+            delimiterAsUnit = false
+            // So now % is an operator. If the next token is a
+            // UNIT_DELIMITER, that is a syntax error:
+            if (state.token in UNIT_DELIMITERS) {
+              throw createSyntaxError(
+                state, `Unexpected token '${state.token}' after '%'.`)
+            }
+          } else if (state.token !== '%') {
+            // only treat the '%' of '3 % +[EXPR]' or '3% - [EXPR]' as percent
+            // if '+[EXPR]' or '- [EXPR]' is a percentage.
+            // Otherwise, this % is the modulo operator, e.g.
+            // 3 % +100 == 3 and 3 % -100 == -97
+            try {
+              const rhs = parseImplicitMultiplication(state)
+              if (!(isOperatorNode(rhs) && rhs.implicit &&
+                    rhs.args[1].name in { percent: true, '%': true })
+              ) {
+                delimiterAsUnit = false
+              }
+            } catch {}
+          }
+        }
+        Object.assign(state, saveState)
+      }
+
+      // Now we can go ahead and check for implicit multiplication:
+      if ((state.tokenType === TOKENTYPE.SYMBOL) || delimiterAsUnit ||
           (state.tokenType === TOKENTYPE.NUMBER &&
               !isConstantNode(last) &&
               (!isOperatorNode(last) || last.op === '!')) ||
@@ -1116,6 +1171,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         //
         // symbol:      implicit multiplication like '2a', '(2+3)a', 'a b'
         // number:      implicit multiplication like '(2+3)2'
+        // units:       implicit multiplication like '5 m', '5 in', or '5%'
         // parenthesis: implicit multiplication like '2(3+4)', '(3+4)(1+2)'
         last = parseRule2(state)
         node = new OperatorNode('*', 'multiply', [node, last], true /* implicit */)
@@ -1137,7 +1193,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseRule2 (state) {
-    let node = parseUnaryPercentage(state)
+    let node = parseUnary(state)
     let last = node
     const tokenStates = []
 
@@ -1160,7 +1216,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             Object.assign(state, tokenStates.pop())
             tokenStates.pop()
-            last = parseUnaryPercentage(state)
+            last = parseUnary(state)
             node = new OperatorNode('/', 'divide', [node, last])
           } else {
             // Not a match, so rewind
@@ -1175,36 +1231,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
       } else {
         break
-      }
-    }
-
-    return node
-  }
-
-  /**
-   * Unary percentage operator (treated as `value / 100`)
-   * @return {Node} node
-   * @private
-   */
-  function parseUnaryPercentage (state) {
-    let node = parseUnary(state)
-
-    if (state.token === '%') {
-      const previousState = Object.assign({}, state)
-      getTokenSkipNewline(state)
-      // We need to decide if this is a unary percentage % or binary modulo %
-      // So we attempt to parse a unary expression at this point.
-      // If it fails, then the only possibility is that this is a unary percentage.
-      // If it succeeds, then we presume that this must be binary modulo, since the
-      // only things that parseUnary can handle are _higher_ precedence than unary %.
-      try {
-        parseUnary(state)
-        // Not sure if we could somehow use the result of that parseUnary? Without
-        // further analysis/testing, safer just to discard and let the parse proceed
-        Object.assign(state, previousState)
-      } catch {
-        // Not seeing a term at this point, so was a unary %
-        node = new OperatorNode('/', 'divide', [node, new ConstantNode(100)], false, true)
       }
     }
 
@@ -1383,7 +1409,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     let node, name
 
     if (state.tokenType === TOKENTYPE.SYMBOL ||
-        (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
+        (state.tokenType === TOKENTYPE.DELIMITER &&
+         (state.token in UNIT_DELIMITERS || state.token in NAMED_DELIMITERS))
+    ) {
       name = state.token
 
       getToken(state)

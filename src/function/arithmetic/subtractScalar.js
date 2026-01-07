@@ -2,9 +2,9 @@ import { factory } from '../../utils/factory.js'
 import { subtractNumber } from '../../plain/number/index.js'
 
 const name = 'subtractScalar'
-const dependencies = ['typed']
+const dependencies = ['typed', 'multiplyScalar']
 
-export const createSubtractScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
+export const createSubtractScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed, multiplyScalar }) => {
   /**
    * Subtract two scalar values, `x - y`.
    * This function is meant for internal use: it is used by the public function
@@ -44,7 +44,16 @@ export const createSubtractScalar = /* #__PURE__ */ factory(name, dependencies, 
       if (y.value === null || y.value === undefined) {
         throw new Error('Parameter y contains a unit with undefined value')
       }
-      if (!x.equalBase(y)) throw new Error('Units do not match')
+      if (!x.equalBase(y)) {
+        if (y.dimensions.every(dim => dim === 0) &&
+            y.units[0].unit.name in { percent: true, '%': true }
+        ) {
+          const res = x.clone()
+          res.value = self(res.value, multiplyScalar(res.value, y.value))
+          return res
+        }
+        throw new Error('Units do not match')
+      }
 
       const res = x.clone()
       res.value =

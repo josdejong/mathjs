@@ -10,6 +10,7 @@ describe('unit', function () {
   })
 
   it('should parse a valid string to a unit', function () {
+    assert.deepStrictEqual(unit('4 cm'), new Unit(4, 'cm'))
     assert.deepStrictEqual(unit('5 cm').toString(), '5 cm')
     assert.deepStrictEqual(unit('5000 cm').toString(), '50 m')
     assert.deepStrictEqual(unit('10 kg').toString(), '10 kg')

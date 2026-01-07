@@ -45,9 +45,14 @@ describe('cube', function () {
   })
 
   it('should return the cube of a unit', function () {
-    assert.strictEqual(cube(math.unit('4 cm')).toString(), '64 cm^3')
-    assert.strictEqual(cube(math.unit('-2 cm')).toString(), '-8 cm^3')
-    assert.strictEqual(cube(math.unit('0 cm')).toString(), '0 cm^3')
+    // powers simplify so test equality carefully
+    const ml64 = new math.Unit(64, 'cm^3')
+    ml64.skipAutomaticSimplification = false
+    assert.deepStrictEqual(cube(math.unit('4 cm')), ml64)
+    const mlneg8 = new math.Unit(-8, 'cm^3')
+    mlneg8.skipAutomaticSimplification = false
+    assert.deepStrictEqual(cube(math.unit('-2 cm')), mlneg8)
+    assert.strictEqual(cube(math.unit('0 cm')).toString(), '0 liter')
   })
 
   it('should throw an error with strings', function () {

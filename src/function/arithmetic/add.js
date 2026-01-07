@@ -10,73 +10,89 @@ const dependencies = [
   'matrix',
   'addScalar',
   'equalScalar',
+  'Unit',
   'DenseMatrix',
   'SparseMatrix',
-  'concat'
+  'multiply'
 ]
 
-export const createAdd = /* #__PURE__ */ factory(
-  name,
-  dependencies,
-  ({ typed, matrix, addScalar, equalScalar, DenseMatrix, SparseMatrix, concat }) => {
-    const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
-    const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
-    const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-    const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
-    /**
-     * Add two or more values, `x + y`.
-     * For matrices, the function is evaluated element wise.
-     *
-     * Syntax:
-     *
-     *    math.add(x, y)
-     *    math.add(x, y, z, ...)
-     *
-     * Examples:
-     *
-     *    math.add(2, 3)               // returns number 5
-     *    math.add(2, 3, 4)            // returns number 9
-     *
-     *    const a = math.complex(2, 3)
-     *    const b = math.complex(-4, 1)
-     *    math.add(a, b)               // returns Complex -2 + 4i
-     *
-     *    math.add([1, 2, 3], 4)       // returns Array [5, 6, 7]
-     *
-     *    const c = math.unit('5 cm')
-     *    const d = math.unit('2.1 mm')
-     *    math.add(c, d)               // returns Unit 52.1 mm
-     *
-     *    math.add("2.3", "4")         // returns number 6.3
-     *
-     * See also:
-     *
-     *    subtract, sum
-     *
-     * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to add
-     * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to add
-     * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
-     */
-    return typed(
-      name,
-      {
-        'any, any': addScalar,
+export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({
+  typed, matrix, addScalar, equalScalar, Unit, DenseMatrix, SparseMatrix,
+  multiply
+}) => {
+  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
+  const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
+  const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
+  /**
+   * Add two or more values, `x + y`.
+   * For matrices, the function is evaluated element wise.
+   *
+   * Syntax:
+   *
+   *    math.add(x, y)
+   *    math.add(x, y, z, ...)
+   *
+   * Examples:
+   *
+   *    math.add(2, 3)               // returns number 5
+   *    math.add(2, 3, 4)            // returns number 9
+   *
+   *    const a = math.complex(2, 3)
+   *    const b = math.complex(-4, 1)
+   *    math.add(a, b)               // returns Complex -2 + 4i
+   *
+   *    math.add([1, 2, 3], 4)       // returns Array [5, 6, 7]
+   *
+   *    const c = math.unit('5 cm')
+   *    const d = math.unit('2.1 mm')
+   *    math.add(c, d)               // returns Unit 52.1 mm
+   *
+   *    math.add("2.3", "4")         // returns number 6.3
+   *
+   * See also:
+   *
+   *    subtract, sum
+   *
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to add
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to add
+   * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
+   */
+  return typed(
+    name,
+    {
+      'any, Unit': typed.referToSelf(self => (s, u) => {
+        if (!u.equalBase(Unit.BASE_UNITS.NONE) ||
+            !(u.units[0].unit.name in { percent: true, '%': true })) {
+          throw new TypeError('Cannot add non-unit and dimensioned value')
+        }
+        return self(s, multiply(s, u.value))
+      }),
 
-        'any, any, ...any': typed.referToSelf(self => (x, y, rest) => {
-          let result = self(x, y)
+      'Unit, any': typed.referToSelf(self => (u, s) => {
+        if (!u.equalBase(Unit.BASE_UNITS.NONE)) {
+          throw new TypeError('Cannot add dimensioned and non-unit value')
+        }
+        return self(u.value, s)
+      }),
 
-          for (let i = 0; i < rest.length; i++) {
-            result = self(result, rest[i])
-          }
+      'any, any': addScalar,
 
-          return result
-        })
-      },
-      matrixAlgorithmSuite({
-        elop: addScalar,
-        DS: matAlgo01xDSid,
-        SS: matAlgo04xSidSid,
-        Ss: matAlgo10xSids
+      'any, any, ...any': typed.referToSelf(self => (x, y, rest) => {
+        let result = self(x, y)
+
+        for (let i = 0; i < rest.length; i++) {
+          result = self(result, rest[i])
+        }
+
+        return result
       })
-    )
-  })
+    },
+    matrixAlgorithmSuite({
+      elop: addScalar,
+      DS: matAlgo01xDSid,
+      SS: matAlgo04xSidSid,
+      Ss: matAlgo10xSids
+    })
+  )
+})

@@ -217,15 +217,15 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   function parseUnit () {
     let unitName = ''
 
-    // Alphanumeric characters only; matches [a-zA-Z0-9]
-    while (isDigit(c) || Unit.isValidAlpha(c)) {
+    // Alphanumeric characters and percent only; matches [a-zA-Z0-9%]
+    while (isDigit(c) || c === '%' || Unit.isValidAlpha(c)) {
       unitName += c
       next()
     }
 
-    // Must begin with [a-zA-Z]
+    // Must begin with [a-zA-Z%]
     const firstC = unitName.charAt(0)
-    if (Unit.isValidAlpha(firstC)) {
+    if (Unit.isValidAlpha(firstC) || firstC === '%') {
       return unitName
     } else {
       return null
@@ -671,6 +671,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (isUnit(_other)) {
       res.skipAutomaticSimplification = false
     }
+    // If either operand is valueless, preserve unit
+    if (this.value === null || other.value === null) return res
 
     return getNumericIfUnitless(res)
   }
@@ -1647,6 +1649,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   const UNIT_NONE = { name: '', base: BASE_UNIT_NONE, value: 1, offset: 0, dimensions: BASE_DIMENSIONS.map(x => 0) }
 
   const UNITS = {
+    // unitless
+    percent: {
+      name: 'percent',
+      base: BASE_UNITS.NONE,
+      prefixes: PREFIXES.NONE,
+      value: 0.01,
+      offset: 0
+    },
     // length
     meter: {
       name: 'meter',
@@ -2803,6 +2813,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   // aliases (formerly plurals)
   // note that ALIASES is only used at creation to create more entries in UNITS by copying the aliased units
   const ALIASES = {
+    '%': 'percent',
     meters: 'meter',
     inches: 'inch',
     feet: 'foot',
