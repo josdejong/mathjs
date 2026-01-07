@@ -202,7 +202,7 @@ Thanks, GitHub Actions and LambdaTest for the generous free hosting of this open
 mathjs is published under the Apache 2.0 license:
 
 ```
-Copyright (C) 2013-2025 Jos de Jong <wjosdejong@gmail.com>
+Copyright (C) 2013-2026 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
