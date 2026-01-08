@@ -76,21 +76,18 @@ export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    * Examples:
    *
-   *    math.nthRoots(1)
-   *    // returns [
-   *    //   {re: 1, im: 0},
-   *    //   {re: -1, im: 0}
-   *    // ]
+   *    math.nthRoots(1) // returns [ {re: 1, im: 0}, {re: -1, im: 0} ]
+   *
    *    math.nthRoots(1, 3)
-   *    // returns [
-   *    //   { re: 1, im: 0 },
-   *    //   { re: -0.4999999999999998, im: 0.8660254037844387 },
-   *    //   { re: -0.5000000000000004, im: -0.8660254037844385 }
-   *    // ]
+   *    // Complex [1, "-0.5+0.866025403784439i", "-0.5-0.866025403784439i"]
    *
    * See also:
    *
    *    nthRoot, pow, sqrt
+   *
+   * History:
+   *
+   *    v1.1   Created
    *
    * @param {number | BigNumber | Fraction | Complex} x Number to be rounded
    * @param {number} [root=2] Optional root, default value is 2
