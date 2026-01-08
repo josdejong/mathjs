@@ -76,6 +76,7 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
    *
    * History:
    *
+   *     v15.2   Handle bigints
    *     v3.14   Created
    *
    *

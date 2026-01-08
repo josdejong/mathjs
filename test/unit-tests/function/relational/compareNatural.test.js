@@ -123,6 +123,12 @@ describe('compareNatural', function () {
     assert.strictEqual(compareNatural(bignumber(2), 2), -1)
     assert.strictEqual(compareNatural(2, bignumber(2)), 1)
 
+    // numbers and bigints
+    assert.strictEqual(compareNatural(2n, 3), -1)
+    assert.strictEqual(compareNatural(3, 2n), 1)
+    assert.strictEqual(compareNatural(2n, 2), -1)
+    assert.strictEqual(compareNatural(2, 2n), 1)
+
     // array, DenseMatrix, SparseMatrix
     assert.strictEqual(compareNatural([2], matrix([2])), -1)
     assert.strictEqual(compareNatural(matrix([2]), [2]), 1)
