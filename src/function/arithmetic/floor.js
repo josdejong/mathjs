@@ -93,12 +93,18 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    const c = math.complex(3.24, -2.71)
    *    math.floor(c)                 // returns Complex 3 - 3i
+   *
+   *    const c = math.complex(3.24, -2.71)
    *    math.floor(c, 1)              // returns Complex 3.2 -2.8i
    *
    *    const unit = math.unit('3.241 cm')
    *    const cm = math.unit('cm')
    *    const mm = math.unit('mm')
    *    math.floor(unit, 1, cm)      // returns Unit 3.2 cm
+   *
+   *    const unit = math.unit('3.241 cm')
+   *    const cm = math.unit('cm')
+   *    const mm = math.unit('mm')
    *    math.floor(unit, 1, mm)      // returns Unit 32.4 mm
    *
    *    math.floor([3.2, 3.8, -4.7])       // returns Array [3, 3, -5]
@@ -111,6 +117,10 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * See also:
    *
    *    ceil, fix, round
+   *
+   * History:
+   *
+   *     v15.1.1   Fixed invalid documentation comment.
    *
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals

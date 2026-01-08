@@ -51,13 +51,20 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *    function isOdd(x) {
    *      return math.mod(x, 2) != 0
    *    }
-   *
    *    isOdd(2)                      // returns false
+   *
+   *    function isOdd(x) {
+   *      return math.mod(x, 2) != 0
+   *    }
    *    isOdd(3)                      // returns true
    *
    * See also:
    *
    *    divide
+   *
+   * History:
+   *
+   *     v15.1.1   Fixed invalid documentation comment.
    *
    * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} x Dividend
    * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} y Divisor

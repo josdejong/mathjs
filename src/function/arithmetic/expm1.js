@@ -24,16 +24,15 @@ export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *    math.exp(1e-8) - 1                 // returns number 9.9999999392253e-9
    *    math.log(math.expm1(2) + 1)        // returns number 2
    *
-   *    math.map([1, 2, 3], math.expm1)
-   *    // returns Array [
-   *    //   1.718281828459045,
-   *    //   6.3890560989306495,
-   *    //   19.085536923187668
-   *    // ]
+   *    math.map([1, 2, 3], math.expm1)   // returns Array [ 1.718281828459045, 6.3890560989306495, 19.085536923187668 ]
    *
    * See also:
    *
    *    exp, expm, log, pow
+   *
+   * History:
+   *
+   *     v15.1.1   Fixed invalid documentation comment.
    *
    * @param {number | BigNumber | Complex} x  The number to exponentiate
    * @return {number | BigNumber | Complex} Exponential of `x`, minus one
