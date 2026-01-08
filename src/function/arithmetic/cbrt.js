@@ -37,6 +37,8 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *
    *    const x = math.complex('8i')
    *    math.cbrt(x)                   // returns Complex 1.7320508075689 + i
+   *
+   *    const x = math.complex('8i')
    *    math.cbrt(x, true)             // returns Matrix [
    *                                    //    1.7320508075689 + i
    *                                    //   -1.7320508075689 + i

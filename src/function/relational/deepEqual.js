@@ -33,7 +33,7 @@ export const createDeepEqual = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * History:
    *
-   *     v15.1.1   Fixed invalid documentation comment format.
+   *     v15.1.1   Fixed invalid documentation comment.
    *
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First matrix to compare
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second matrix to compare
