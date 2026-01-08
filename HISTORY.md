@@ -2,6 +2,9 @@
 
 # unreleased changes since 15.1.0
 
+- Fix: #3631 Handle bigints in `compareNatural` (#3632). Thanks @Dheemanth07.
+- Docs: Correct several arithmetic and relational documentation examples
+  and add History (#3630). Thanks @Anadian.
 - Fix: #3578 interpret empty true-expr of conditional as error (#3581).
   Thanks @gwhitney.
 - Fix: #3597 added nullish type definitions (#3601). Thanks @Ayo1984.

@@ -86,13 +86,13 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *    math.ceil(-4.782, 2)         // returns number -4.78
    *
    *    const c = math.complex(3.24, -2.71)
-   *    math.ceil(c)                 // returns Complex 4 - 2i
+   *    math.ceil(c)                 // returns Complex 4 - 2i ...
    *    math.ceil(c, 1)              // returns Complex 3.3 - 2.7i
    *
    *    const unit = math.unit('3.241 cm')
    *    const cm = math.unit('cm')
    *    const mm = math.unit('mm')
-   *    math.ceil(unit, 1, cm)      // returns Unit 3.3 cm
+   *    math.ceil(unit, 1, cm)      // returns Unit 3.3 cm ...
    *    math.ceil(unit, 1, mm)      // returns Unit 32.5 mm
    *
    *    math.ceil([3.2, 3.8, -4.7])  // returns Array [4, 4, -4]
@@ -101,6 +101,14 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * See also:
    *
    *    floor, fix, round
+   *
+   * History:
+   *
+   *     v14    Handle Units
+   *     v7.4   Allow second "precision" argument
+   *     v5.7   Support tolerance for round-off errors
+   *     v2     Handle Fractions
+   *     v0.1   Created
    *
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals

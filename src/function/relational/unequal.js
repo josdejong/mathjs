@@ -47,18 +47,30 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *    const a = math.unit('50 cm')
    *    const b = math.unit('5 m')
+   *    math.unequal(a, b)           // returns true
+   *
+   *    const a = math.unit('500 cm')
+   *    const b = math.unit('5 m')
    *    math.unequal(a, b)           // returns false
    *
    *    const c = [2, 5, 1]
    *    const d = [2, 7, 1]
-   *
-   *    math.unequal(c, d)           // returns [false, true, false]
+   *    math.unequal(c, d)           // returns [false, true, false]...
    *    math.deepEqual(c, d)         // returns false
    *
    *    math.unequal(0, null)        // returns true
+   *
    * See also:
    *
    *    equal, deepEqual, smaller, smallerEq, larger, largerEq, compare
+   *
+   * History:
+   *
+   *    v13    Handle bigints
+   *    v11.6  Support matrix broadcasting
+   *    v4     Compare strings by their numeric values
+   *    v0.24  Handle `null` and `undefined`
+   *    v0.2   Created
    *
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} x First value to compare
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} y Second value to compare
