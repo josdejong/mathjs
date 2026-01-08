@@ -46,6 +46,10 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *     sqrt, pow
    *
+   * History:
+   *
+   *     v15.1.1   Fixed invalid documentation comment.
+   *
    * @param {number | BigNumber | Array | Matrix | Complex} a
    *              Value for which to calculate the nth root
    * @param {number | BigNumber} [root=2]    The root.
