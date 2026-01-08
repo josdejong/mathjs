@@ -38,6 +38,11 @@ function extractValue (spec) {
     words.shift()
     words[0] = 'DenseMatrix'
   }
+  // Collapse 'Complex Matrix' into 'ComplexMatrix'
+  if (words[0] === 'Complex' && words[1] === 'Matrix') {
+    words.shift()
+    words[0] = 'ComplexMatrix'
+  }
   const keywords = {
     number: 'Number(_)',
     BigNumber: 'math.bignumber(_)',
@@ -47,6 +52,7 @@ function extractValue (spec) {
     Array: '_',
     Matrix: 'math.matrix(_)',
     DenseMatrix: "math.matrix(_, 'dense')",
+    ComplexMatrix: 'math.complex(math.matrix(_))',
     string: '_',
     Node: 'math.parse(_)',
     value: 'math._',
@@ -97,8 +103,7 @@ const knownProblems = new Set([
   'parser', 'compile', 're', 'im',
   'subset', 'squeeze', 'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
-  'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff',
-  'cbrt', 'add', 'slu',
+  'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff', 'slu',
   'rationalize', 'qr', 'lusolve', 'lup', 'derivative',
   'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round',
   'import', 'typed',
@@ -121,7 +126,12 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
       }
     }
   } else {
-    checkExpectation(expected, got)
+    try {
+      checkExpectation(expected, got)
+    } catch (err) {
+      console.error(`DOC ERROR: '${gotFrom}' was supposed to '${expectedFrom}'`)
+      throw err
+    }
   }
 }
 
@@ -133,12 +143,15 @@ function checkExpectation (want, got) {
     return approxDeepEqual(got, want, 1e-9)
   }
   if (want instanceof math.Unit && got instanceof math.Unit) {
-    if (got.fixPrefix !== want.fixPrefix) {
+    if (got.fixPrefix !== want.fixPrefix ||
+      got.skipAutomaticSimplification !== want.skipAutomaticSimplification
+    ) {
       issueCount++
       if (debug) {
-        console.log('  Note: Ignoring different fixPrefix in Unit comparison')
+        console.log('  Note: Ignoring different flags in Unit comparison')
       }
       got.fixPrefix = want.fixPrefix
+      got.skipAutomaticSimplification = want.skipAutomaticSimplification
     }
     return approxDeepEqual(got, want, 1e-9)
   }
@@ -459,8 +472,13 @@ describe('Testing examples from (jsdoc) comments', function () {
                 if (accumulation) { accumulation += '\n' }
                 accumulation += parts[0]
               }
+              let discardAccumulation = true
               if (accumulation !== '' && expectation === undefined) {
                 expectationFrom = parts[1]
+                if (expectationFrom.endsWith('...')) {
+                  expectationFrom = expectationFrom.slice(0, -3)
+                  discardAccumulation = false
+                }
                 expectation = extractExpectation(expectationFrom)
                 parts[1] = ''
               }
@@ -474,7 +492,7 @@ describe('Testing examples from (jsdoc) comments', function () {
                 }
                 maybeCheckExpectation(
                   doc.name, expectation, expectationFrom, value, accumulation)
-                accumulation = ''
+                if (discardAccumulation) accumulation = ''
               }
               expectationFrom = parts[1]
               expectation = extractExpectation(expectationFrom, 'requireSignal')

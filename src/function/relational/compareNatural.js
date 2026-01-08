@@ -52,7 +52,8 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
    *
    *    math.compareNatural('Answer: 10', 'Answer: 2') // returns 1
    *    math.compareText('Answer: 10', 'Answer: 2')    // returns -1
-   *    math.compare('Answer: 10', 'Answer: 2')	       // Error: Cannot convert "Answer: 10" to a number
+   *    math.compare('Answer: 10', 'Answer: 2')
+   *    // Error: Cannot convert "Answer: 10" to a number
    *
    *    const a = math.unit('5 cm')
    *    const b = math.unit('40 mm')
@@ -75,7 +76,8 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
    *
    * History:
    *
-   *     v15.1.1   Fixed invalid documentation comment.
+   *     v3.14   Created
+   *
    *
    * @param  {*} x First value to compare
    * @param  {*} y Second value to compare
