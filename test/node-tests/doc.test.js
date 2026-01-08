@@ -92,15 +92,13 @@ const ignoreFunctions = new Set([
 ])
 
 const knownProblems = new Set([
-  'setUnion', /*'compareNatural',*/ 'randomInt',
+  'setUnion', 'randomInt',
   'random', 'pickRandom', 'kldivergence',
   'parser', 'compile', 're', 'im',
   'subset', 'squeeze', 'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
   'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff',
-  'nthRoots', 'nthRoot',
-  'mod', 'floor', 'fix', 'expm1', 'exp',
-  'ceil', 'cbrt', 'add', 'slu',
+  'cbrt', 'add', 'slu',
   'rationalize', 'qr', 'lusolve', 'lup', 'derivative',
   'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round',
   'import', 'typed',
@@ -123,12 +121,7 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
       }
     }
   } else {
-	try{
-		checkExpectation(expected, got);
-	} catch(error){
-		console.error(`checkExpectation threw an error: ${error} name=${name} expected=${expected} expectedFrom=${expectedFrom} got=${got} gotFrom=${gotFrom}`);
-		throw error;
-	}
+    checkExpectation(expected, got)
   }
 }
 
@@ -171,14 +164,7 @@ function checkExpectation (want, got) {
     return approxEqual(got, want, 1e-50)
   }
   if (typeof want !== 'undefined') {
-	var _return = null;
-	try{
-		_return = approxDeepEqual(got, want);
-	} catch(error){
-		//console.error(`approxDeepEqual threw an error: ${error} want=${want} got=${got}`);
-		throw error;
-	}
-	return _return;
+    return approxDeepEqual(got, want)
   } else {
     // don't check if we don't know what the result is supposed to be
   }
