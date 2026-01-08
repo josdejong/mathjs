@@ -23,7 +23,6 @@ export function approxEqual (a, b, epsilon) {
   if (epsilon === undefined) {
     epsilon = EPSILON
   }
-
   if (isNumber(a) && isNumber(b)) {
     if (a === b) {
       // great, we're done :)
@@ -69,8 +68,16 @@ export function approxEqual (a, b, epsilon) {
       approxEqual(a, b.re, epsilon)
       approxEqual(0, b.im, epsilon)
     }
-  } else {
-    assert.strictEqual(a, b)
+  } else if( a?.isUnit && b?.isUnit ){
+	  console.error( 'Both Units: a: %o b: %o', a, b );
+	  assert.strictEqual( a.equal( b ), true );
+  } else{
+	try{
+		assert.strictEqual(a, b);
+	} catch(error){
+		//console.error(`assert.strictEqual threw an error: ${error} a=${a} b=${b} epsilon=${epsilon}`);
+		throw error;
+	}
   }
 }
 
@@ -106,6 +113,11 @@ export function approxDeepEqual (a, b, epsilon) {
       }
     }
   } else {
-    approxEqual(a, b, epsilon)
+	try{
+		approxEqual(a, b, epsilon);
+	} catch(error){
+		//console.error(`approxEqual threw an error: ${error} a=${a} b=${b} epsilon=${epsilon}`);
+		throw error;
+	}
   }
 }
