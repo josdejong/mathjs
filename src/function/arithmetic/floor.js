@@ -92,19 +92,13 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *    math.floor(-4.782, 2)         // returns number -4.79
    *
    *    const c = math.complex(3.24, -2.71)
-   *    math.floor(c)                 // returns Complex 3 - 3i
-   *
-   *    const c = math.complex(3.24, -2.71)
+   *    math.floor(c)                 // returns Complex 3 - 3i ...
    *    math.floor(c, 1)              // returns Complex 3.2 -2.8i
    *
    *    const unit = math.unit('3.241 cm')
    *    const cm = math.unit('cm')
    *    const mm = math.unit('mm')
-   *    math.floor(unit, 1, cm)      // returns Unit 3.2 cm
-   *
-   *    const unit = math.unit('3.241 cm')
-   *    const cm = math.unit('cm')
-   *    const mm = math.unit('mm')
+   *    math.floor(unit, 1, cm)      // returns Unit 3.2 cm ...
    *    math.floor(unit, 1, mm)      // returns Unit 32.4 mm
    *
    *    math.floor([3.2, 3.8, -4.7])       // returns Array [3, 3, -5]
@@ -120,7 +114,11 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * History:
    *
-   *     v15.1.1   Fixed invalid documentation comment.
+   *     v14    Handle Units
+   *     v7.4   Allow second "precision" argument
+   *     v5.7   Support tolerance for round-off errors
+   *     v2     Handle Fractions
+   *     v0.1   Created
    *
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals

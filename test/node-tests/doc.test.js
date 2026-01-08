@@ -38,10 +38,17 @@ function extractValue (spec) {
     words.shift()
     words[0] = 'DenseMatrix'
   }
-  // Collapse 'Complex Matrix' into 'ComplexMatrix'
-  if (words[0] === 'Complex' && words[1] === 'Matrix') {
-    words.shift()
-    words[0] = 'ComplexMatrix'
+  // Collapse 'Complex Matrix' into 'ComplexMatrix', similarly for 'Array'
+  if (words[0] === 'Complex') {
+    if (words[1] === 'Matrix') {
+      words.shift()
+      words[0] = 'ComplexMatrix'
+    } else if (words[1] === 'Array') {
+      words.shift()
+      words[0] = 'ComplexArray'
+    } else if (words[1].startsWith('[')) {
+      words[0] = 'ComplexArray'
+    }
   }
   const keywords = {
     number: 'Number(_)',
@@ -52,6 +59,7 @@ function extractValue (spec) {
     Array: '_',
     Matrix: 'math.matrix(_)',
     DenseMatrix: "math.matrix(_, 'dense')",
+    ComplexArray: 'math.complex(_)',
     ComplexMatrix: 'math.complex(math.matrix(_))',
     string: '_',
     Node: 'math.parse(_)',

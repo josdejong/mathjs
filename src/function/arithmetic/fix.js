@@ -49,19 +49,13 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    *    math.fix(-4.17, 1)               // returns number -4.1
    *
    *    const c = math.complex(3.22, -2.78)
-   *    math.fix(c)                  // returns Complex 3 - 2i
-   *
-   *    const c = math.complex(3.22, -2.78)
+   *    math.fix(c)                  // returns Complex 3 - 2i ...
    *    math.fix(c, 1)               // returns Complex 3.2 -2.7i
    *
    *    const unit = math.unit('3.241 cm')
    *    const cm = math.unit('cm')
    *    const mm = math.unit('mm')
-   *    math.fix(unit, 1, cm)      // returns Unit 3.2 cm
-   *
-   *    const unit = math.unit('3.241 cm')
-   *    const cm = math.unit('cm')
-   *    const mm = math.unit('mm')
+   *    math.fix(unit, 1, cm)      // returns Unit 3.2 cm ...
    *    math.fix(unit, 1, mm)      // returns Unit 32.4 mm
    *
    *    math.fix([3.2, 3.8, -4.7])      // returns Array [3, 3, -4]
@@ -73,7 +67,11 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
    *
    * History:
    *
-   *     v15.1.1   Fixed invalid documentation comment.
+   *     v14    Handle Units
+   *     v7.4   Allow second "precision" argument
+   *     v5.7   Support tolerance for round-off errors
+   *     v2     Handle Fractions
+   *     v0.1   Created
    *
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x  Value to be rounded
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals

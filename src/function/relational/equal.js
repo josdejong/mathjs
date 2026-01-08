@@ -52,10 +52,7 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    const c = [2, 5, 1]
    *    const d = [2, 7, 1]
-   *    math.equal(c, d)             // returns [true, false, true]
-   *
-   *    const c = [2, 5, 1]
-   *    const d = [2, 7, 1]
+   *    math.equal(c, d)             // returns [true, false, true]...
    *    math.deepEqual(c, d)         // returns false
    *
    *    math.equal("1000", "1e3")    // returns true
@@ -67,7 +64,13 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * History:
    *
-   *     v15.1.1   Fixed incorrect documentation comment.
+   *    v13    Handle bigints
+   *    v11.6  Support matrix broadcasting
+   *    v4     Compare strings by their numerical value
+   *    v0.24  Handle `null` and `undefined`
+   *    v0.23  Compare collections elementwise
+   *    v0.20  Compare floating-point numbers within epsilon, allowing roundoff
+   *    v0.2   Created
    *
    * @param  {number | BigNumber | bigint | boolean | Complex | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | boolean | Complex | Unit | string | Array | Matrix} y Second value to compare

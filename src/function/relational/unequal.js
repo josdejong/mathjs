@@ -49,12 +49,13 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
    *    const b = math.unit('5 m')
    *    math.unequal(a, b)           // returns true
    *
-   *    const c = [2, 5, 1]
-   *    const d = [2, 7, 1]
-   *    math.unequal(c, d)           // returns [false, true, false]
+   *    const a = math.unit('500 cm')
+   *    const b = math.unit('5 m')
+   *    math.unequal(a, b)           // returns false
    *
    *    const c = [2, 5, 1]
    *    const d = [2, 7, 1]
+   *    math.unequal(c, d)           // returns [false, true, false]...
    *    math.deepEqual(c, d)         // returns false
    *
    *    math.unequal(0, null)        // returns true
@@ -65,7 +66,11 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * History:
    *
-   *     v15.1.1   Fixed invalid documentation comment.
+   *    v13    Handle bigints
+   *    v11.6  Support matrix broadcasting
+   *    v4     Compare strings by their numeric values
+   *    v0.24  Handle `null` and `undefined`
+   *    v0.2   Created
    *
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} x First value to compare
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} y Second value to compare

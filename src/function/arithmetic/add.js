@@ -52,10 +52,13 @@ export const createAdd = /* #__PURE__ */ factory(
      * See also:
      *
      *    subtract, sum
-   *
-   * History:
-   *
-   *     v15.1.1   Fixed invalid documentation comment.
+     *
+     * History:
+     *
+     *     v13     Handle bigint arguments
+     *     v11.6   Support matrix broadcasting
+     *     v3.8    Allow more than two arguments
+     *     v0.0.2  Created
      *
      * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to add
      * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to add

@@ -51,11 +51,7 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *    function isOdd(x) {
    *      return math.mod(x, 2) != 0
    *    }
-   *    isOdd(2)                      // returns false
-   *
-   *    function isOdd(x) {
-   *      return math.mod(x, 2) != 0
-   *    }
+   *    isOdd(2)                      // returns false...
    *    isOdd(3)                      // returns true
    *
    * See also:
@@ -64,7 +60,10 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    * History:
    *
-   *     v15.1.1   Fixed invalid documentation comment.
+   *    v13    Handle bigints
+   *    v11.6  Support matrix broadcasting
+   *    v2     Handle Fractions
+   *    v0.2   Created
    *
    * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} x Dividend
    * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} y Divisor

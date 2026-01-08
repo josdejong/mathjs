@@ -48,7 +48,9 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * History:
    *
-   *     v15.1.1   Fixed invalid documentation comment.
+   *     v11.6  Support matrix broadcasting
+   *     v2     Handle Complex
+   *     v1.1   Created
    *
    * @param {number | BigNumber | Array | Matrix | Complex} a
    *              Value for which to calculate the nth root
