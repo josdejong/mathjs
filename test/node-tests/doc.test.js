@@ -92,7 +92,7 @@ const ignoreFunctions = new Set([
 ])
 
 const knownProblems = new Set([
-  'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
+  'setUnion', /*'compareNatural',*/ 'randomInt',
   'random', 'pickRandom', 'kldivergence',
   'parser', 'compile', 're', 'im',
   'subset', 'squeeze', 'rotationMatrix',
@@ -123,7 +123,12 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
       }
     }
   } else {
-    checkExpectation(expected, got)
+	try{
+		checkExpectation(expected, got);
+	} catch(error){
+		console.error(`checkExpectation threw an error: ${error} name=${name} expected=${expected} expectedFrom=${expectedFrom} got=${got} gotFrom=${gotFrom}`);
+		throw error;
+	}
   }
 }
 
@@ -166,7 +171,14 @@ function checkExpectation (want, got) {
     return approxEqual(got, want, 1e-50)
   }
   if (typeof want !== 'undefined') {
-    return approxDeepEqual(got, want)
+	var _return = null;
+	try{
+		_return = approxDeepEqual(got, want);
+	} catch(error){
+		//console.error(`approxDeepEqual threw an error: ${error} want=${want} got=${got}`);
+		throw error;
+	}
+	return _return;
   } else {
     // don't check if we don't know what the result is supposed to be
   }
