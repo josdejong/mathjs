@@ -21,15 +21,20 @@ export const createDeepEqual = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    math.deepEqual(2, 4)   // returns false
    *
-   *    a = [2, 5, 1]
-   *    b = [2, 7, 1]
+   *    const a = [2, 5, 1]
+   *    const b = [2, 7, 1]
    *
-   *    math.deepEqual(a, b)   // returns false
+   *    math.deepEqual(a, b)   // returns false...
    *    math.equal(a, b)       // returns [true, false, true]
    *
    * See also:
    *
    *    equal, unequal
+   *
+   * History:
+   *
+   *    v2     Handle Fractions
+   *    v0.2   Created
    *
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First matrix to compare
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second matrix to compare

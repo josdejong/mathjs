@@ -22,15 +22,17 @@ export const createExp = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *    math.log(math.exp(2))        // returns number 2
    *
    *    math.map([1, 2, 3], math.exp)
-   *    // returns Array [
-   *    //   2.718281828459045,
-   *    //   7.3890560989306495,
-   *    //   20.085536923187668
-   *    // ]
+   *    // returns [2.718281828459045, 7.3890560989306495, 20.085536923187668]
    *
    * See also:
    *
    *    expm1, expm, log, pow
+   *
+   * History:
+   *
+   *    v11     Don't apply elementwise, avoid confusion with matrix exponential
+   *    v0.20   Handle BigNumbers
+   *    v0.0.2  Created
    *
    * @param {number | BigNumber | Complex} x  A number to exponentiate
    * @return {number | BigNumber | Complex} Exponential of `x`
