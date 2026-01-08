@@ -15,5 +15,3 @@ node_modules
 lib
 test-results
 *.generated.js
-
-pnpm-lock.yaml
