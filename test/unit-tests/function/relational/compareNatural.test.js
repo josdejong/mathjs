@@ -64,6 +64,12 @@ describe('compareNatural', function () {
     assert.strictEqual(compareNatural(math.add(math.fraction(0.1), math.fraction(0.2)), math.fraction(0.3)).valueOf(), 0) // this would fail with numbers
   })
 
+  it('should compare bigints', function () {
+    assert.strictEqual(compareNatural(3n, 10n), -1)
+    assert.strictEqual(compareNatural(10n, 3n), 1)
+    assert.strictEqual(compareNatural(3n, 3n), 0)
+  })
+
   it('should compare two measures of the same unit', function () {
     assert.strictEqual(compareNatural(unit('100cm'), unit('10inch')), 1)
     assert.strictEqual(compareNatural(unit('99cm'), unit('1m')), -1)
