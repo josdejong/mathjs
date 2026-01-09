@@ -45,13 +45,20 @@ export const createAdd = /* #__PURE__ */ factory(
      *
      *    const c = math.unit('5 cm')
      *    const d = math.unit('2.1 mm')
-     *    math.add(c, d)               // returns Unit 52.1 mm
+     *    math.add(c, d)               // returns Unit 5.21 cm
      *
      *    math.add("2.3", "4")         // returns number 6.3
      *
      * See also:
      *
      *    subtract, sum
+     *
+     * History:
+     *
+     *     v13     Handle bigint arguments
+     *     v11.6   Support matrix broadcasting
+     *     v3.8    Allow more than two arguments
+     *     v0.0.2  Created
      *
      * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to add
      * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to add
