@@ -1,6 +1,5 @@
 import { broadcastSizes } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
-import { isMatrix } from '../../utils/is.js'
 
 const name = 'broadcastSizes'
 const dependencies = ['typed']
@@ -32,13 +31,6 @@ export const createBroadcastSizes = /* #__PURE__ */ factory(name, dependencies, 
    * @return {Array} A vector with the broadcasted size.
    */
   return typed(name, {
-    '...Array|Matrix': collections => {
-      const areMatrices = collections.map(isMatrix)
-      if (areMatrices.includes(true)) {
-        const arrays = collections.map((c, i) => areMatrices[i] ? c.valueOf() : c)
-        return broadcastSizes(...arrays)
-      }
-      return broadcastSizes(...collections)
-    }
+    '...Array|Matrix': collections => broadcastSizes(...collections.map(collection => collection.valueOf()))
   })
 })
