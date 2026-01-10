@@ -2,10 +2,14 @@
 
 # unreleased changes since 15.1.0
 
+- Fix: #3631 Handle bigints in `compareNatural` (#3632). Thanks @Dheemanth07.
+- Docs: Correct several arithmetic and relational documentation examples
+  and add History (#3630). Thanks @Anadian.
 - Fix: #3578 interpret empty true-expr of conditional as error (#3581).
   Thanks @gwhitney.
 - Fix: #3597 added nullish type definitions (#3601). Thanks @Ayo1984.
 - Docs: fix #3565, update Matrix documentation (#3591). Thanks @orelbn.
+- Docs: #3341 add per-function HISTORY sections (#3606). Thanks @gwhitney.
 
 # 2025-11-05, 15.1.0
 

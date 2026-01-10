@@ -38,6 +38,18 @@ function extractValue (spec) {
     words.shift()
     words[0] = 'DenseMatrix'
   }
+  // Collapse 'Complex Matrix' into 'ComplexMatrix', similarly for 'Array'
+  if (words[0] === 'Complex') {
+    if (words[1] === 'Matrix') {
+      words.shift()
+      words[0] = 'ComplexMatrix'
+    } else if (words[1] === 'Array') {
+      words.shift()
+      words[0] = 'ComplexArray'
+    } else if (words[1].startsWith('[')) {
+      words[0] = 'ComplexArray'
+    }
+  }
   const keywords = {
     number: 'Number(_)',
     BigNumber: 'math.bignumber(_)',
@@ -47,6 +59,8 @@ function extractValue (spec) {
     Array: '_',
     Matrix: 'math.matrix(_)',
     DenseMatrix: "math.matrix(_, 'dense')",
+    ComplexArray: 'math.complex(_)',
+    ComplexMatrix: 'math.complex(math.matrix(_))',
     string: '_',
     Node: 'math.parse(_)',
     value: 'math._',
@@ -92,15 +106,12 @@ const ignoreFunctions = new Set([
 ])
 
 const knownProblems = new Set([
-  'setUnion', 'unequal', 'equal', 'deepEqual', 'compareNatural', 'randomInt',
+  'setUnion', 'randomInt',
   'random', 'pickRandom', 'kldivergence',
   'parser', 'compile', 're', 'im',
   'subset', 'squeeze', 'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
-  'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff',
-  'nthRoots', 'nthRoot',
-  'mod', 'floor', 'fix', 'expm1', 'exp',
-  'ceil', 'cbrt', 'add', 'slu',
+  'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff', 'slu',
   'rationalize', 'qr', 'lusolve', 'lup', 'derivative',
   'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round',
   'import', 'typed',
@@ -123,7 +134,12 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
       }
     }
   } else {
-    checkExpectation(expected, got)
+    try {
+      checkExpectation(expected, got)
+    } catch (err) {
+      console.error(`DOC ERROR: '${gotFrom}' was supposed to '${expectedFrom}'`)
+      throw err
+    }
   }
 }
 
@@ -135,12 +151,15 @@ function checkExpectation (want, got) {
     return approxDeepEqual(got, want, 1e-9)
   }
   if (want instanceof math.Unit && got instanceof math.Unit) {
-    if (got.fixPrefix !== want.fixPrefix) {
+    if (got.fixPrefix !== want.fixPrefix ||
+      got.skipAutomaticSimplification !== want.skipAutomaticSimplification
+    ) {
       issueCount++
       if (debug) {
-        console.log('  Note: Ignoring different fixPrefix in Unit comparison')
+        console.log('  Note: Ignoring different flags in Unit comparison')
       }
       got.fixPrefix = want.fixPrefix
+      got.skipAutomaticSimplification = want.skipAutomaticSimplification
     }
     return approxDeepEqual(got, want, 1e-9)
   }
@@ -354,10 +373,50 @@ const knownUndocumented = new Set([
   'wienDisplacement'
 ])
 
+// Functions yet to obtain individual History listings:
+const knownNoHistory = new Set([
+  'config', 'typed', 'derivative', 'leafCount', 'lsolve', 'lsolveAll', 'lup',
+  'lusolve', 'lyap', 'qr', 'rationalize', 'resolve', 'schur', 'simplify',
+  'simplifyConstant', 'simplifyCore', 'slu', 'sylvester', 'symbolicEqual',
+  'usolve', 'usolveAll', 'abs', 'add', 'cbrt', 'ceil', 'cube', 'divide',
+  'dotDivide', 'dotMultiply', 'dotPow', 'exp', 'expm', 'expm1', 'fix', 'floor',
+  'gcd', 'hypot', 'invmod', 'lcm', 'log10', 'log1p', 'log2', 'mod', 'multiply',
+  'norm', 'nthRoot', 'nthRoots', 'pow', 'round', 'sign', 'sqrt', 'sqrtm',
+  'square', 'subtract', 'unaryMinus', 'unaryPlus', 'xgcd', 'bitAnd', 'bitNot',
+  'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift',
+  'bellNumbers', 'catalan', 'composition', 'stirlingS2', 'arg', 'conj', 'im',
+  're', 'compile', 'evaluate', 'help', 'parser', 'distance', 'intersect',
+  'and', 'not', 'nullish', 'or', 'xor', 'column', 'concat', 'count', 'cross',
+  'ctranspose', 'det', 'diag', 'diff', 'dot', 'eigs', 'fft', 'filter',
+  'flatten', 'forEach', 'getMatrixDataType', 'identity', 'ifft', 'inv', 'kron',
+  'mapSlices', 'matrixFromColumns', 'matrixFromFunction', 'matrixFromRows',
+  'ones', 'partitionSelect', 'pinv', 'range', 'reshape', 'resize', 'rotate',
+  'rotationMatrix', 'row', 'size', 'sort', 'squeeze', 'subset', 'trace',
+  'transpose', 'zeros', 'solveODE', 'bernoulli', 'combinations',
+  'combinationsWithRep', 'factorial', 'gamma', 'kldivergence', 'lgamma',
+  'multinomial', 'permutations', 'pickRandom', 'random', 'randomInt',
+  'compareNatural', 'compareText', 'deepEqual', 'equal', 'equalText', 'larger',
+  'largerEq', 'smaller', 'smallerEq', 'unequal', 'setCartesian',
+  'setDifference', 'setDistinct', 'setIntersect', 'setIsSubset',
+  'setMultiplicity', 'setPowerset', 'setSize', 'setSymDifference', 'setUnion',
+  'freqz', 'zpk2tf', 'erf', 'zeta', 'corr', 'cumsum', 'mad', 'max', 'mean',
+  'median', 'min', 'mode', 'prod', 'quantileSeq', 'std', 'sum', 'variance',
+  'acos', 'acosh', 'acot', 'acoth', 'acsc', 'acsch', 'asec', 'asech', 'asin',
+  'asinh', 'atan', 'atan2', 'atanh', 'cos', 'cosh', 'cot', 'coth', 'csc',
+  'csch', 'sec', 'sech', 'sin', 'sinh', 'tan', 'tanh', 'to', 'toBest', 'bin',
+  'clone', 'hasNumericValue', 'hex', 'isBounded', 'isFinite', 'isInteger',
+  'isNaN', 'isNegative', 'isNumeric', 'isPositive', 'isPrime', 'isZero',
+  'oct', 'print', 'typeOf', 'bignumber', 'chain', 'number', 'splitUnit'
+])
+
 describe('Testing examples from (jsdoc) comments', function () {
   const allNames = Object.keys(math)
   const srcPath = path.resolve(__dirname, '../../src') + '/'
   const allDocs = collectDocs(allNames, srcPath)
+
+  const ignoreInternals = name => name.substr(0, 1) === '_' ||
+        name.substr(-12) === 'Dependencies' ||
+        name.substr(0, 6) === 'create'
 
   it("should cover all names (but doesn't yet)", function () {
     const documented = new Set(Object.keys(allDocs))
@@ -365,13 +424,24 @@ describe('Testing examples from (jsdoc) comments', function () {
       return !(documented.has(name) ||
                OKundocumented.has(name) ||
                knownUndocumented.has(name) ||
-               name.substr(0, 1) === '_' ||
-               name.substr(-12) === 'Dependencies' ||
-               name.substr(0, 6) === 'create'
+               ignoreInternals(name)
       )
     })
     assert.deepEqual(badUndocumented, [])
   })
+
+  it("should have history for all functions (but doesn't yet)", function () {
+    const badNoHistory = Object.keys(allDocs).filter(name => {
+      if (ignoreInternals(name)) return false
+      const doc = allDocs[name]
+      const history = doc.doc?.history
+      if (knownNoHistory.has(name)) return false
+      if (history && Object.keys(history).length) return false
+      return true
+    })
+    assert.deepEqual(badNoHistory, [])
+  })
+
   const byCategory = {}
   for (const fun of Object.values(allDocs)) {
     if (!(fun.category in byCategory)) {
@@ -410,8 +480,13 @@ describe('Testing examples from (jsdoc) comments', function () {
                 if (accumulation) { accumulation += '\n' }
                 accumulation += parts[0]
               }
+              let discardAccumulation = true
               if (accumulation !== '' && expectation === undefined) {
                 expectationFrom = parts[1]
+                if (expectationFrom.endsWith('...')) {
+                  expectationFrom = expectationFrom.slice(0, -3)
+                  discardAccumulation = false
+                }
                 expectation = extractExpectation(expectationFrom)
                 parts[1] = ''
               }
@@ -425,7 +500,7 @@ describe('Testing examples from (jsdoc) comments', function () {
                 }
                 maybeCheckExpectation(
                   doc.name, expectation, expectationFrom, value, accumulation)
-                accumulation = ''
+                if (discardAccumulation) accumulation = ''
               }
               expectationFrom = parts[1]
               expectation = extractExpectation(expectationFrom, 'requireSignal')
