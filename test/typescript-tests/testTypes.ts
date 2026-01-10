@@ -3225,8 +3225,8 @@ Numerator and Denominator examples
 
   // Array of fractions
   const fractionArray = [math.fraction(1, 2), math.fraction(3, 4)]
-  expectTypeOf(math.num(fractionArray)).toMatchTypeOf<MathArray>()
-  expectTypeOf(math.den(fractionArray)).toMatchTypeOf<MathArray>()
+  expectTypeOf(math.num(fractionArray)).toMatchTypeOf<MathArray<bigint>>()
+  expectTypeOf(math.den(fractionArray)).toMatchTypeOf<MathArray<bigint>>()
   assert.deepStrictEqual(math.num(fractionArray), [BigInt(1), BigInt(3)])
   assert.deepStrictEqual(math.den(fractionArray), [BigInt(2), BigInt(4)])
 

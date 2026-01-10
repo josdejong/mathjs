@@ -47,12 +47,12 @@ export const createNum = /* #__PURE__ */ factory(
      * @return {bigint | Array | Matrix} The numerator of x (in lowest terms)
      */
     return typed(name, {
-      Fraction: (x) => x.s * x.n,
-      BigNumber: (x) => {
+      Fraction: x => x.s * x.n,
+      BigNumber: x => {
         const f = fraction(x)
         return f.s * f.n
       },
-      'Array | Matrix': typed.referToSelf((self) => (x) => deepMap(x, self))
+      'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
     })
   }
 )
