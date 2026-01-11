@@ -55,8 +55,11 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
    *
    * Examples:
    *
-   *     const A = [[1, 0], [-4, 3]]
-   *     math.schur(A) // returns {U: [[0, 1], [-1, 0]], T: [[3, 4], [0, 1]]}
+   *     const A = [[1, 2], [0, 3]]
+   *     const result = math.schur(A)
+   *     // result.U is orthogonal: U * U' = I
+   *     // result.T is upper triangular (quasi-upper-triangular)
+   *     // A = U * T * U'
    *
    * See also:
    *
@@ -210,10 +213,7 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     const x0 = x[0]
     const x0sq = multiplyScalar(x0, x0)
 
-    // If the vector is already a multiple of e_1, no transformation needed
-    if (abs(sigma) < 1e-14 && abs(x0) < 1e-14) {
-      return null
-    }
+    // If the vector is already a multiple of e_1 (sigma ≈ 0), no transformation needed
     if (abs(sigma) < 1e-14) {
       return null
     }
@@ -292,7 +292,9 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
         const c = H[p][p - 1]
         const d = H[p][p]
 
-        // Discriminant: (a-d)^2 + 4bc (derived from characteristic polynomial)
+        // Discriminant of characteristic polynomial λ² - (a+d)λ + (ad-bc)
+        // discriminant = (a+d)² - 4(ad-bc) = (a-d)² + 4bc
+        // If discriminant < 0, eigenvalues are complex conjugates
         const diff = subtractScalar(a, d)
         const discriminant = addScalar(multiplyScalar(diff, diff), multiplyScalar(4, multiplyScalar(b, c)))
 
@@ -317,8 +319,10 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
 
       // Apply exceptional shift if convergence is slow
       if (iterCount === 10 || iterCount === 20) {
-        // Exceptional shift: use a random-ish perturbation
-        const shift = multiplyScalar(addScalar(abs(H[p][p - 1]), abs(H[p - 1][p - 2] || 0)), iterCount === 10 ? 1.5 : -1.5)
+        // Exceptional shift: use a random-ish perturbation based on subdiagonal elements
+        const subdiagVal = abs(H[p][p - 1])
+        const prevSubdiag = (p >= 2) ? abs(H[p - 1][p - 2]) : 0
+        const shift = multiplyScalar(addScalar(subdiagVal, prevSubdiag), iterCount === 10 ? 1.5 : -1.5)
         for (let i = q; i <= p; i++) {
           H[i][i] = addScalar(H[i][i], shift)
         }
