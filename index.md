@@ -113,7 +113,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 
   <div class="sponsor">
     Sponsored by <a href="https://www.testmu.ai" target="_blank">
-    <img alt="TestMu AI" src="./css/img/testmu-ai.svg" width="147" height="26" />
+    <img alt="TestMu AI" src="./css/img/testmu-ai.svg" width="157" height="25" />
     </a>
   </div>
 
