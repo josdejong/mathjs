@@ -771,14 +771,17 @@ describe('Unit', function () {
 
     it('should format a Complex unit', function () {
       assert.strictEqual(new Unit(math.complex(-2, 4.5), 'mm').format(14), '(-2 + 4.5i) mm')
+      assert.strictEqual(new Unit(math.complex(1), 'kW').format(14), '1 kW')
+      assert.strictEqual(new Unit(math.complex(0, 1), 'kW').format(14), 'i kW')
+      assert.strictEqual(new Unit(math.complex(0, 2), 'kW').format(14), '2i kW')
     })
 
     it('should format units with VA and VAR correctly', function () {
       assert.strictEqual(math.evaluate('4000 VAR + 3000 VA').format(), '(3 + 4i) kVA')
       assert.strictEqual(math.evaluate('3000 VA + 4000 VAR').format(), '(3 + 4i) kVA')
-      assert.strictEqual(math.evaluate('4000 VAR').format(), '(4) kVAR')
-      assert.strictEqual(math.evaluate('4000i VA').format(), '(4) kVAR')
-      assert.strictEqual(math.evaluate('4000i VAR').format(), '(-4) kVA')
+      assert.strictEqual(math.evaluate('4000 VAR').format(), '4 kVAR')
+      assert.strictEqual(math.evaluate('4000i VA').format(), '4 kVAR')
+      assert.strictEqual(math.evaluate('4000i VAR').format(), '-4 kVA')
       assert.strictEqual(math.evaluate('abs(4000 VAR + 3000 VA)').format(), '5 kW')
       assert.strictEqual(math.evaluate('abs(3000 VA + 4000 VAR)').format(), '5 kW')
       assert.strictEqual(math.evaluate('abs(4000 VAR)').format(), '4 kW')
