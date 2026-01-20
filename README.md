@@ -191,11 +191,11 @@ To see the coverage results, open the generated report in your browser:
 
 ### Continuous integration testing
 
-Continuous integration tests are run on [Github Actions](https://github.com/josdejong/mathjs/actions) and [LambdaTest](https://www.lambdatest.com) every time a commit is pushed to github. Github Actions runs the tests for different versions of node.js, and LambdaTest runs the tests on all major browsers.
+Continuous integration tests are run on [GitHub Actions](https://github.com/josdejong/mathjs/actions) and [TestMu AI](https://www.testmu.ai) (formerly LambdaTest) every time a commit is pushed to GitHub. GitHub Actions runs the tests for different versions of node.js, and TestMu AI runs the tests on all major browsers.
 
-[![LambdaTest](https://raw.github.com/josdejong/mathjs/master/misc/lambdatest.svg)](https://www.lambdatest.com)
+[![TestMu AI](https://raw.github.com/josdejong/mathjs/develop/misc/testmu-ai.svg)](https://www.testmu.ai)
 
-Thanks, GitHub Actions and LambdaTest for the generous free hosting of this open source project!
+Thanks, GitHub Actions and TestMu AI for the generous free hosting of this open source project!
 
 ## License
 
