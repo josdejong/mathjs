@@ -155,15 +155,16 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     { name: 'FunctionNode', test: isFunctionNode },
     { name: 'FunctionAssignmentNode', test: isFunctionAssignmentNode },
     { name: 'IndexNode', test: isIndexNode },
-    { name: 'Node', test: isNode },
     { name: 'ObjectNode', test: isObjectNode },
     { name: 'OperatorNode', test: isOperatorNode },
     { name: 'ParenthesisNode', test: isParenthesisNode },
     { name: 'RangeNode', test: isRangeNode },
     { name: 'RelationalNode', test: isRelationalNode },
     { name: 'SymbolNode', test: isSymbolNode },
+    { name: 'Node', test: isNode },
 
     { name: 'Map', test: isMap },
+    { name: 'Set', test: entity => entity instanceof Set },
     { name: 'Object', test: isObject } // order 'Object' last, it matches on other classes too
   ])
 
