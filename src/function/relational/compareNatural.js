@@ -53,7 +53,7 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
    *    math.compareNatural('Answer: 10', 'Answer: 2') // returns 1
    *    math.compareText('Answer: 10', 'Answer: 2')    // returns -1
    *    math.compare('Answer: 10', 'Answer: 2')
-   *        // Error: Cannot convert "Answer: 10" to a number
+   *    // Error: Cannot convert "Answer: 10" to a number
    *
    *    const a = math.unit('5 cm')
    *    const b = math.unit('40 mm')
@@ -74,6 +74,12 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
    *
    *    compare, compareText
    *
+   * History:
+   *
+   *     v15.2   Handle bigints
+   *     v3.14   Created
+   *
+   *
    * @param  {*} x First value to compare
    * @param  {*} y Second value to compare
    * @return {number} Returns the result of the comparison:
@@ -87,8 +93,8 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
     let c
 
     // numeric types
-    if ((typeX === 'number' || typeX === 'BigNumber' || typeX === 'Fraction') &&
-        (typeY === 'number' || typeY === 'BigNumber' || typeY === 'Fraction')) {
+    if ((typeX === 'number' || typeX === 'BigNumber' || typeX === 'Fraction' || typeX === 'bigint') &&
+        (typeY === 'number' || typeY === 'BigNumber' || typeY === 'Fraction' || typeY === 'bigint')) {
       c = compare(x, y)
       if (c.toString() !== '0') {
         // c can be number, BigNumber, or Fraction
