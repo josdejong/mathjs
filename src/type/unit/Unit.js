@@ -2525,6 +2525,20 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       value: 3600,
       offset: 0
     },
+    VAh: {
+      name: 'VAh',
+      base: BASE_UNITS.ENERGY,
+      prefixes: PREFIXES.SHORT,
+      value: 3600,
+      offset: 0
+    },
+    VARh: {
+      name: 'VARh',
+      base: BASE_UNITS.ENERGY,
+      prefixes: PREFIXES.SHORT,
+      value: 3600,
+      offset: 0
+    },
     BTU: {
       name: 'BTU',
       base: BASE_UNITS.ENERGY,
