@@ -37,13 +37,19 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * Examples:
    *
-   *     math.nthRoot(9, 2)    // returns 3 (since 3^2 == 9)
-   *     math.sqrt(9)          // returns 3 (since 3^2 == 9)
-   *     math.nthRoot(64, 3)   // returns 4 (since 4^3 == 64)
+   *     math.nthRoot(9, 2)    // returns 3
+   *     math.sqrt(9)          // returns 3
+   *     math.nthRoot(64, 3)   // returns 4
    *
    * See also:
    *
    *     sqrt, pow
+   *
+   * History:
+   *
+   *     v11.6  Support matrix broadcasting
+   *     v2     Handle Complex
+   *     v1.1   Created
    *
    * @param {number | BigNumber | Array | Matrix | Complex} a
    *              Value for which to calculate the nth root

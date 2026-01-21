@@ -36,16 +36,17 @@ export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *    math.map([27, 64, 125], x => math.cbrt(x))       // returns [3, 4, 5]
    *
    *    const x = math.complex('8i')
-   *    math.cbrt(x)                   // returns Complex 1.7320508075689 + i
-   *    math.cbrt(x, true)             // returns Matrix [
-   *                                    //    1.7320508075689 + i
-   *                                    //   -1.7320508075689 + i
-   *                                    //   -2i
-   *                                    // ]
+   *    math.cbrt(x)                   // returns 1.7320508075689 + i ...
+   *    math.cbrt(x, true)
+   *    // Complex Matrix ["1.7320508075689+i", "-1.7320508075689+i", "-2i"]
    *
    * See also:
    *
    *    square, sqrt, cube
+   *
+   * History:
+   *
+   *    v2.3  Created
    *
    * @param {number | BigNumber | Complex | Unit} x
    *            Value for which to calculate the cubic root.

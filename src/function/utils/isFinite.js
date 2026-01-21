@@ -33,8 +33,15 @@ export const createIsFinite = /* #__PURE__ */ factory(name, dependencies, ({
    *
    *    isBounded isNumeric, isPositive, isNegative, isNaN
    *
-   * @param {number | BigNumber | bigint | Complex | Fraction | Unit | Array | Matrix} x       Value to be tested
+   * History:
+   *
+   *    v15.1   Created
+   *
+   * @param {number | BigNumber | bigint | Complex | Fraction | Unit | Array | Matrix} x
+   *     Value to be tested
    * @return {boolean | Array | Matrix}
+   *     Whether the value, or its entries, are finite, as appropriate
+   *     to its type
    */
   return typed(name, {
     'Array | Matrix': A => map(A, isBounded),
