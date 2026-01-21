@@ -1816,6 +1816,26 @@ export interface MathJsInstance extends MathJsFactory {
   re(x: MathJsChain<number | Complex>): MathJsChain<number>
   re<T extends BigNumber | MathCollection>(x: MathJsChain<T>): MathJsChain<T>
 
+  /**
+   * Get the numerator of a fraction. For a fraction a/b, the function
+   * returns a. For matrices, the function is evaluated element wise.
+   * @param x A fraction, BigNumber, or array with fractions
+   * @returns The numerator of x
+   */
+  num(x: number | BigNumber | bigint | Fraction): bigint
+  num(x: MathArray<MathScalarType>): MathArray<bigint>
+  num(x: Matrix<MathScalarType>): Matrix<bigint>
+
+  /**
+   * Get the denominator of a fraction. For a fraction a/b, the function
+   * returns b. For matrices, the function is evaluated element wise.
+   * @param x A fraction, BigNumber, or array with fractions
+   * @returns The denominator of x
+   */
+  den(x: number | BigNumber | bigint | Fraction): bigint
+  den(x: MathArray<MathScalarType>): MathArray<bigint>
+  den(x: Matrix<MathScalarType>): Matrix<bigint>
+
   /*************************************************************************
    * Geometry functions
    ************************************************************************/
@@ -5935,6 +5955,30 @@ export interface MathJsChain<TValue> {
   re(this: MathJsChain<BigNumber>): MathJsChain<BigNumber>
   re(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
+  /**
+   * Get the numerator of a fraction. For a fraction a/b, the function
+   * returns a. For matrices, the function is evaluated element wise.
+   */
+  num(
+    this: MathJsChain<number | BigNumber | bigint | Fraction>
+  ): MathJsChain<bigint>
+  num(
+    this: MathJsChain<MathArray<MathScalarType>>
+  ): MathJsChain<MathArray<bigint>>
+  num(this: MathJsChain<Matrix<MathScalarType>>): MathJsChain<Matrix<bigint>>
+
+  /**
+   * Get the denominator of a fraction. For a fraction a/b, the function
+   * returns b. For matrices, the function is evaluated element wise.
+   */
+  den(
+    this: MathJsChain<number | BigNumber | bigint | Fraction>
+  ): MathJsChain<bigint>
+  den(
+    this: MathJsChain<MathArray<MathScalarType>>
+  ): MathJsChain<MathArray<bigint>>
+  den(this: MathJsChain<Matrix<MathScalarType>>): MathJsChain<Matrix<bigint>>
+
   /*************************************************************************
    * Geometry functions
    ************************************************************************/
@@ -7625,6 +7669,10 @@ export const {
   conj,
   im,
   re,
+
+  // fraction
+  num,
+  den,
 
   // geometry
   distance,
