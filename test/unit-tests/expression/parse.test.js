@@ -1256,7 +1256,7 @@ describe('parse', function () {
     })
 
     it('should create an object with unquoted keys that are keywords', function () {
-      assert.deepStrictEqual(parseAndEval('{ mod: 1, and: 1, not: 1, or: 1, xor: 1, to: 1, in: 1 }'), { mod: 1, and: 1, not: 1, or: 1, xor: 1, to: 1, in: 1 })
+      assert.deepStrictEqual(parseAndEval('{ mod: 1, and: 1, not: 1, or: 1, xor: 1, to: 1, in: 1, nor: 1, nand: 1 }'), { mod: 1, and: 1, not: 1, or: 1, xor: 1, to: 1, in: 1, nor: 1, nand: 1 })
     })
 
     it('should create an object with child object', function () {
@@ -1979,6 +1979,24 @@ describe('parse', function () {
       assert.strictEqual(scope.a, false)
     })
 
+    it('should parse logical nand', function () {
+      assert.strictEqual(parseAndEval('2 nand 6'), false)
+      assert.strictEqual(parseAndEval('2 nand 0'), true)
+      assert.strictEqual(parseAndEval('true nand true'), false)
+      assert.strictEqual(parseAndEval('true nand false'), true)
+      assert.strictEqual(parseAndEval('false nand true'), true)
+      assert.strictEqual(parseAndEval('false nand false'), true)
+      assert.throws(function () { parseAndEval('true nand undefined') }, TypeError)
+    })
+
+    it('should parse logical nand inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = x > 2 nand x < 4', scope)
+      assert.strictEqual(f(1), true)
+      assert.strictEqual(f(3), false)
+      assert.strictEqual(f(5), true)
+    })
+
     it('should always pass a Map as scope to a rawArgs function', function () {
       const myMath = math.create()
       function myFunction (args, _math, _scope) {
@@ -2038,6 +2056,24 @@ describe('parse', function () {
       const scope = {}
       parseAndEval('(a=true) or (b=true)', scope)
       assert.deepStrictEqual(scope, { a: true })
+    })
+
+    it('should parse logical nor', function () {
+      assert.strictEqual(parseAndEval('2 nor 6'), false)
+      assert.strictEqual(parseAndEval('2 nor 0'), false)
+      assert.strictEqual(parseAndEval('true nor true'), false)
+      assert.strictEqual(parseAndEval('true nor false'), false)
+      assert.strictEqual(parseAndEval('false nor true'), false)
+      assert.strictEqual(parseAndEval('false nor false'), true)
+      assert.throws(function () { parseAndEval('false nor undefined') }, TypeError)
+    })
+
+    it('should parse logical nor inside a function definition', function () {
+      const scope = {}
+      const f = parseAndEval('f(x) = x < 2 nor x > 4', scope)
+      assert.strictEqual(f(1), false)
+      assert.strictEqual(f(3), true)
+      assert.strictEqual(f(5), false)
     })
 
     it('should parse logical not', function () {
@@ -2355,6 +2391,7 @@ describe('parse', function () {
         assert.strictEqual(parseAndEval('2 > 3 ? true : false'), false)
         assert.strictEqual(parseAndEval('2 == 3 ? true : false'), false)
         assert.strictEqual(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6)
+        assert.strictEqual(parseAndEval('true ? false : false nand true'), false)
         assert.deepStrictEqual(parseAndEval('3 ? true : false; 22'), new ResultSet([22]))
         assert.deepStrictEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'))
         assert.deepStrictEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), math.matrix([1, 2]))
@@ -2379,6 +2416,10 @@ describe('parse', function () {
         assert.strictEqual(parseAndEval('4 and 2 | 2'), true)
       })
 
+      it('should respect precedence between bitwise or | and logical nand', function () {
+        assert.strictEqual(parseAndEval('true nand true | true'), false)
+      })
+
       it('should respect precedence between bitwise xor ^| and bitwise or |', function () {
         assert.strictEqual(parseAndEval('4 ^| 6 | 2'), 2)
         assert.strictEqual(parseAndEval('2 | 4 ^| 6'), 2)
@@ -2398,12 +2439,55 @@ describe('parse', function () {
         assert.strictEqual(parseAndEval('(true or true) and false'), false)
       })
 
+      it('should respect precedence between logical nand and or', function () {
+        assert.strictEqual(parseAndEval('true nand false or true'), true)
+        assert.strictEqual(parseAndEval('false or true nand true'), false)
+      })
+
+      it('should respect precedence between logical nand and and', function () {
+        assert.strictEqual(parseAndEval('true nand true and false'), true)
+        assert.strictEqual(parseAndEval('true nand false and false'), true)
+      })
+
+      it('should respect precedence between logical nand and xor', function () {
+        assert.strictEqual(parseAndEval('false nand false xor true'), true)
+        assert.strictEqual(parseAndEval('false nand true xor true'), true)
+      })
+
       it('should respect precedence of conditional operator and logical or', function () {
         const node = math.parse('1 or 0 ? 2 or 3 : 0 or 0')
         assert(node instanceof ConditionalNode)
         assert.strictEqual(node.condition.toString(), '1 or 0')
         assert.strictEqual(node.trueExpr.toString(), '2 or 3')
         assert.strictEqual(node.falseExpr.toString(), '0 or 0')
+        assert.strictEqual(node.compile().evaluate(), true)
+      })
+
+      it('should respect precedence between logical nor and or', function () {
+        assert.strictEqual(parseAndEval('true or false nor true'), true)
+        assert.strictEqual(parseAndEval('true or true nor false'), true)
+      })
+
+      it('should respect precedence between logical nor and bitwise or |', function () {
+        assert.strictEqual(parseAndEval('true nor false | true'), false)
+        assert.strictEqual(parseAndEval('false nor false | true'), false)
+      })
+
+      it('should respect precedence between logical nor and and', function () {
+        assert.strictEqual(parseAndEval('false nor true and false'), false)
+        assert.strictEqual(parseAndEval('true and false nor false'), true)
+      })
+
+      it('should respect precedence between logical nor and xor', function () {
+        assert.strictEqual(parseAndEval('false xor false nor true'), false)
+      })
+
+      it('should respect precedence of conditional operator and logical nor', function () {
+        const node = math.parse('1 nor 0 ? 2 nor 3 : 0 nor 0')
+        assert(node instanceof ConditionalNode)
+        assert.strictEqual(node.condition.toString(), '1 nor 0')
+        assert.strictEqual(node.trueExpr.toString(), '2 nor 3')
+        assert.strictEqual(node.falseExpr.toString(), '0 nor 0')
         assert.strictEqual(node.compile().evaluate(), true)
       })
 
@@ -2749,6 +2833,7 @@ describe('parse', function () {
       assert.strictEqual(parse('false and true').toString(), 'false and true')
       assert.strictEqual(parse('false xor true').toString(), 'false xor true')
       assert.strictEqual(parse('false or true').toString(), 'false or true')
+      assert.strictEqual(parse('false nor true').toString(), 'false nor true')
       assert.strictEqual(parse('not true').toString(), 'not true')
       assert.strictEqual(parse('5!').toString(), '5!')
     })

@@ -105,8 +105,10 @@ export const latexOperators = {
   bitXor: '\\underline{|}',
   bitOr: '|',
   and: '\\wedge',
+  nand: '\\uparrow',
   xor: '\\veebar',
-  or: '\\vee'
+  or: '\\vee',
+  nor: '\\downarrow'
 }
 
 export const latexFunctions = {
@@ -179,8 +181,10 @@ export const latexFunctions = {
 
   // logical
   and: { 2: `\\left(\${args[0]}${latexOperators.and}\${args[1]}\\right)` },
+  nand: { 2: `\\left(\${args[0]}${latexOperators.nand}\${args[1]}\\right)` },
   not: { 1: latexOperators.not + '\\left(${args[0]}\\right)' },
   or: { 2: `\\left(\${args[0]}${latexOperators.or}\${args[1]}\\right)` },
+  nor: { 2: `\\left(\${args[0]}${latexOperators.nor}\${args[1]}\\right)` },
   xor: { 2: `\\left(\${args[0]}${latexOperators.xor}\${args[1]}\\right)` },
 
   // matrix
