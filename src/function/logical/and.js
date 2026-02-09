@@ -12,16 +12,15 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'zeros',
-  'not',
-  'concat'
+  'not'
 ]
 
-export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not, concat }) => {
+export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Logical `and`. Test whether two values are both defined with a nonzero/nonempty value.

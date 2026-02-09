@@ -5,14 +5,13 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 const name = 'compareText'
 const dependencies = [
   'typed',
-  'matrix',
-  'concat'
+  'matrix'
 ]
 
 _compareText.signature = 'any, any'
 
-export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, concat }) => {
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Compare two strings lexically. Comparison is case sensitive.

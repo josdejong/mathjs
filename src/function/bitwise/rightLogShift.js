@@ -4,10 +4,11 @@ import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
 import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
 import { createMatAlgo08xS0Sid } from '../../type/matrix/utils/matAlgo08xS0Sid.js'
+import { createMatAlgo15xAs } from '../../type/matrix/utils/matAlgo15xAs.js'
 import { factory } from '../../utils/factory.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { rightLogShiftNumber } from '../../plain/number/index.js'
-import { createUseMatrixForArrayScalar } from './useMatrixForArrayScalar.js'
+import { deepMap, clone } from '../../utils/array.js'
 
 const name = 'rightLogShift'
 const dependencies = [
@@ -15,19 +16,18 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'zeros',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix, concat }) => {
+export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo08xS0Sid = createMatAlgo08xS0Sid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
-  const useMatrixForArrayScalar = createUseMatrixForArrayScalar({ typed, matrix })
+  const matAlgo15xAs = createMatAlgo15xAs()
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Bitwise right logical shift of value x by y number of bits, `x >>> y`.
@@ -76,6 +76,14 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
         return matAlgo14xDs(x, y, self, false)
       }),
 
+      'Array, number | BigNumber': typed.referToSelf(self => (x, y) => {
+        // check scalar
+        if (equalScalar(y, 0)) {
+          return clone(x)
+        }
+        return matAlgo15xAs(x, y, self, false)
+      }),
+
       'number | BigNumber, SparseMatrix': typed.referToSelf(self => (x, y) => {
         // check scalar
         if (equalScalar(x, 0)) {
@@ -90,9 +98,16 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
           return zeros(y.size(), y.storage())
         }
         return matAlgo14xDs(y, x, self, true)
+      }),
+
+      'number | BigNumber, Array': typed.referToSelf(self => (x, y) => {
+        // check scalar
+        if (equalScalar(x, 0)) {
+          return deepMap(y, () => x)
+        }
+        return matAlgo15xAs(y, x, self, true)
       })
     },
-    useMatrixForArrayScalar,
     matrixAlgorithmSuite({
       SS: matAlgo08xS0Sid,
       DS: matAlgo01xDSid,
