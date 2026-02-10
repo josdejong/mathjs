@@ -701,19 +701,19 @@ describe('util.array', function () {
       assert.deepStrictEqual(broadcastArrays([1, 2], [[3], [4]], [5, 6]), [[[1, 2], [1, 2]], [[3, 3], [4, 4]], [[5, 6], [5, 6]]])
     })
 
-    it('should broadcast leave arrays as such when only one is supplied', function () {
-      assert.deepStrictEqual(broadcastArrays([1, 2]), [1, 2], [3, 4])
-      assert.deepStrictEqual(broadcastArrays([[3], [4]]), [[3], [4]])
-      assert.deepStrictEqual(broadcastArrays([[5, 6]]), [[5, 6]])
+    it('should broadcast a single array, returning the array itself in an array', function () {
+      assert.deepStrictEqual(broadcastArrays([1, 2])[0], [1, 2])
+      assert.deepStrictEqual(broadcastArrays([[3], [4]])[0], [[3], [4]])
+      assert.deepStrictEqual(broadcastArrays([[5, 6]])[0], [[5, 6]])
     })
 
-    it('should throw an arryor when the broadcasting rules don\'t apply', function () {
+    it('should throw an error when the broadcasting rules don\'t apply', function () {
       assert.throws(function () { broadcastArrays([1, 2], [1, 2, 3]) })
       assert.throws(function () { broadcastArrays([1, 2], [1, 2, 3], [4, 5]) })
       assert.throws(function () { broadcastArrays([[1, 2], [1, 2]], [[1, 2, 3]]) })
     })
 
-    it('should throw an arryor when not enough arguments are supplied', function () {
+    it('should throw an error when not enough arguments are supplied', function () {
       assert.throws(function () { broadcastArrays() })
     })
   })
