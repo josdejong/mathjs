@@ -71,7 +71,7 @@ math.compare('10', '2')                // returns 1
 math.compareNatural('Answer: 10', 'Answer: 2') // returns 1
 math.compareText('Answer: 10', 'Answer: 2')    // returns -1
 math.compare('Answer: 10', 'Answer: 2')
-    // Error: Cannot convert "Answer: 10" to a number
+// Error: Cannot convert "Answer: 10" to a number
 
 const a = math.unit('5 cm')
 const b = math.unit('40 mm')
@@ -94,3 +94,9 @@ math.compareNatural({a: 2}, {a: 4})       // returns -1
 
 [compare](compare.html),
 [compareText](compareText.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v15.2 | Handle bigints
+v3.14 | Created

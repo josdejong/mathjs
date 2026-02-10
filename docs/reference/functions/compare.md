@@ -69,3 +69,10 @@ math.compare(2, [1, 2, 3])   // returns [1, 0, -1]
 [largerEq](largerEq.html),
 [compareNatural](compareNatural.html),
 [compareText](compareText.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v0.19 | Created
+v4 | Changed to compare strings by numerical value
+v13 | Change to use separate relative and absolute tolerances

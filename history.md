@@ -4,6 +4,18 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20260210-1511">2026-02-10, 15.1.1 <a href="#20260210-1511" title="Permalink">#</a></h1>
+
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3631">#3631</a> Handle bigints in `compareNatural` (<a href="https://github.com/josdejong/mathjs/issues/3632">#3632</a>). Thanks <a href="https://github.com/Dheemanth07">@Dheemanth07</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3578">#3578</a> interpret empty true-expr of conditional as error (<a href="https://github.com/josdejong/mathjs/issues/3581">#3581</a>).
+  Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3597">#3597</a> added nullish type definitions (<a href="https://github.com/josdejong/mathjs/issues/3601">#3601</a>). Thanks <a href="https://github.com/Ayo1984">@Ayo1984</a>.
+- Docs: Correct several arithmetic and relational documentation examples
+  and add History (<a href="https://github.com/josdejong/mathjs/issues/3630">#3630</a>). Thanks <a href="https://github.com/Anadian">@Anadian</a>.
+- Docs: fix <a href="https://github.com/josdejong/mathjs/issues/3565">#3565</a>, update Matrix documentation (<a href="https://github.com/josdejong/mathjs/issues/3591">#3591</a>). Thanks <a href="https://github.com/orelbn">@orelbn</a>.
+- Docs: <a href="https://github.com/josdejong/mathjs/issues/3341">#3341</a> add per-function HISTORY sections (<a href="https://github.com/josdejong/mathjs/issues/3606">#3606</a>). Thanks <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Docs: describe that `setDistinct` sorts the elements (see <a href="https://github.com/josdejong/mathjs/issues/3602">#3602</a>).
+
 <h1 id="20251105-1510">2025-11-05, 15.1.0 <a href="#20251105-1510" title="Permalink">#</a></h1>
 
 - Feat: implement functions `isFinite` and `isBounded` (<a href="https://github.com/josdejong/mathjs/issues/3554">#3554</a>, <a href="https://github.com/josdejong/mathjs/issues/3553">#3553</a>). 

@@ -65,3 +65,12 @@ math.fraction(4, 5.1)            // throws Error: Parameters must be integer
 [number](number.html),
 [string](string.html),
 [unit](unit.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v2 | Created
+v3 | Added conversion from BigNumber
+v11.8 | Added conversion from Unit
+v13 | Added conversion from bigint
+v14 | Move to bigint-based fraction.js@5; construct from two bigints

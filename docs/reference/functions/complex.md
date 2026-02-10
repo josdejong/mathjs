@@ -69,3 +69,10 @@ const d = math.add(a, b)          // Complex 5 + 2i
 [number](number.html),
 [string](string.html),
 [unit](unit.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v0.5 | Created
+v0.16 | Added conversion from BigNumber
+v6 | Added conversion from Fraction

@@ -61,3 +61,8 @@ math.polynomialRoot(1, 1, 1, 1)                                  // [-1 + 0i, 0 
 
 [cbrt](cbrt.html),
 [sqrt](sqrt.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11.4 | Created

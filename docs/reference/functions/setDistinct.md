@@ -8,6 +8,7 @@ layout: default
 
 Collect the distinct elements of a multiset.
 A multi-dimension array will be converted to a single-dimension array before the operation.
+The items of the returned array will be sorted in natural order.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -26,7 +27,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Array &#124; Matrix | A set containing the distinc elements of the multiset
+Array &#124; Matrix | A set containing the distinct elements of the multiset
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>

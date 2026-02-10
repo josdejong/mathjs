@@ -60,3 +60,15 @@ math.pow(2, 10)                // returns 1024
 [log2](log2.html),
 [log10](log10.html),
 [log1p](log1p.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v0.0.2 | Created
+v0.2 | Add optional base argument
+v0.3 | Handle Array input
+v0.5 | Handle Matrix input
+v0.16 | Handle BigNumber input
+v0.21 | Support negative BigNumbers
+v11 | Drop Array/Matrix support in favor of explicit map of the scalar log function, to avoid confusion with the log of a matrix
+v14 | Allow value and base to be Fractions, when the log is rational

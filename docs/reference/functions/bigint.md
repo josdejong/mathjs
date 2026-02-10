@@ -55,3 +55,9 @@ math.bigint([true, false, true, true]) // returns [1n, 0n, 1n, 1n]
 [matrix](matrix.html),
 [string](string.html),
 [unit](unit.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v13 | Created
+v14.2.1 | Added conversion options

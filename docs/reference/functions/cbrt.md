@@ -50,12 +50,9 @@ math.cbrt(math.unit('27 m^3')) // returns Unit 3 m
 math.map([27, 64, 125], x => math.cbrt(x))       // returns [3, 4, 5]
 
 const x = math.complex('8i')
-math.cbrt(x)                   // returns Complex 1.7320508075689 + i
-math.cbrt(x, true)             // returns Matrix [
-                                //    1.7320508075689 + i
-                                //   -1.7320508075689 + i
-                                //   -2i
-                                // ]
+math.cbrt(x)                   // returns 1.7320508075689 + i ...
+math.cbrt(x, true)
+// Complex Matrix ["1.7320508075689+i", "-1.7320508075689+i", "-2i"]
 ```
 
 
@@ -64,3 +61,8 @@ math.cbrt(x, true)             // returns Matrix [
 [square](square.html),
 [sqrt](sqrt.html),
 [cube](cube.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v2.3 | Created

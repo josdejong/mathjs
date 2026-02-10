@@ -22,13 +22,13 @@ math.isFinite(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; bigint &#124; Complex &#124; Fraction &#124; Unit &#124; Array &#124; Matrix | Value to be tested
+`x` | number &#124; BigNumber &#124; bigint &#124; Complex &#124; Fraction &#124; Unit &#124; Array &#124; Matrix |  Value to be tested
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-boolean &#124; Array &#124; Matrix | 
+boolean &#124; Array &#124; Matrix |  Whether the value, or its entries, are finite, as appropriate to its type
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -59,3 +59,8 @@ math.isFinite([2, -Infinity, -3])       // Array [true, false, true]
 [isPositive](isPositive.html),
 [isNegative](isNegative.html),
 [isNaN](isNaN.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v15.1 | Created

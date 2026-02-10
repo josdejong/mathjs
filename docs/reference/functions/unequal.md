@@ -55,12 +55,15 @@ math.unequal(2 + 2, 4)       // returns false
 
 const a = math.unit('50 cm')
 const b = math.unit('5 m')
+math.unequal(a, b)           // returns true
+
+const a = math.unit('500 cm')
+const b = math.unit('5 m')
 math.unequal(a, b)           // returns false
 
 const c = [2, 5, 1]
 const d = [2, 7, 1]
-
-math.unequal(c, d)           // returns [false, true, false]
+math.unequal(c, d)           // returns [false, true, false]...
 math.deepEqual(c, d)         // returns false
 
 math.unequal(0, null)        // returns true
@@ -76,3 +79,12 @@ math.unequal(0, null)        // returns true
 [larger](larger.html),
 [largerEq](largerEq.html),
 [compare](compare.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v13 | Handle bigints
+v11.6 | Support matrix broadcasting
+v4 | Compare strings by their numeric values
+v0.24 | Handle `null` and `undefined`
+v0.2 | Created

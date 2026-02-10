@@ -129,3 +129,13 @@ math.format([2.1, 3, 0.016], formatCurrency)            // returns '[$2.10, $3.0
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [print](print.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v0.4 | Created
+v0.7 | Round to a consistent number of digits (rather than decimals)
+v0.15 | Added multiple number notations and configurable precision
+v3 | Added support for JSON objects
+v9 | Added binary, hexadecimal, and octal notations
+v10.4.2 | Add `truncate` option

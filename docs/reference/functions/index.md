@@ -65,3 +65,10 @@ a.subset(math.index(0, [false, true])) // returns 2
 [number](number.html),
 [string](string.html),
 [unit](unit.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v? | Created
+v2 | Dropped support for `[start, end, step]` arguments in favor of lists of arbitrary values; added support for Range objects.
+v11.10 | Added support for arrays of booleans as indices.

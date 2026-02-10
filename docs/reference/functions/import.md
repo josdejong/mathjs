@@ -76,3 +76,11 @@ math.fibonacci(7) // returns 13
 ```
 
 
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v0.2 | Created
+v0.7 | Changed second parameter to an options object
+v2 | Dropped support for direct import of a module by name
+v14.2 | Add facility for specifying the former name of an import

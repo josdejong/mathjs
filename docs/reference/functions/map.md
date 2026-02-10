@@ -71,3 +71,10 @@ math.map([1, 2, 3], x => math.format(x)) // returns ['1', '2', '3']
 [filter](filter.html),
 [forEach](forEach.html),
 [sort](sort.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v0.13 | Created
+v1.1 | Clone the indices on each callback in case callback mutates
+v13.1 | Support multiple inputs to the callback

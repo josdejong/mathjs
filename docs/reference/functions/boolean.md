@@ -58,3 +58,10 @@ math.boolean([1, 0, 1, 1])     // returns [true, false, true, true]
 [matrix](matrix.html),
 [string](string.html),
 [unit](unit.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v0.11 | Created
+v0.16 | Added conversion from BigNumber
+v14.2.1 | Added conversion from bigint

@@ -13,7 +13,7 @@ File: [lorenz_interactive.html](lorenz_interactive.html) (click for a live demo)
 <head>
     <meta charset="UTF-8">
     <title>math.js | Lorenz Attractor</title>
-    <script src="https://unpkg.com/mathjs@15.1.0/lib/browser/math.js"></script>
+    <script src="https://unpkg.com/mathjs@15.1.1/lib/browser/math.js"></script>
 
     <script src="https://cdn.plot.ly/plotly-2.28.0.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"

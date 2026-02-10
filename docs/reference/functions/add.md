@@ -51,7 +51,7 @@ math.add([1, 2, 3], 4)       // returns Array [5, 6, 7]
 
 const c = math.unit('5 cm')
 const d = math.unit('2.1 mm')
-math.add(c, d)               // returns Unit 52.1 mm
+math.add(c, d)               // returns Unit 5.21 cm
 
 math.add("2.3", "4")         // returns number 6.3
 ```
@@ -61,3 +61,11 @@ math.add("2.3", "4")         // returns number 6.3
 
 [subtract](subtract.html),
 [sum](sum.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v13 | Handle bigint arguments
+v11.6 | Support matrix broadcasting
+v3.8 | Allow more than two arguments
+v0.0.2 | Created

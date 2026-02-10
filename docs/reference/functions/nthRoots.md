@@ -46,17 +46,10 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.nthRoots(1)
-// returns [
-//   {re: 1, im: 0},
-//   {re: -1, im: 0}
-// ]
+math.nthRoots(1) // returns [ {re: 1, im: 0}, {re: -1, im: 0} ]
+
 math.nthRoots(1, 3)
-// returns [
-//   { re: 1, im: 0 },
-//   { re: -0.4999999999999998, im: 0.8660254037844387 },
-//   { re: -0.5000000000000004, im: -0.8660254037844385 }
-// ]
+// Complex [1, "-0.5+0.866025403784439i", "-0.5-0.866025403784439i"]
 ```
 
 
@@ -65,3 +58,8 @@ math.nthRoots(1, 3)
 [nthRoot](nthRoot.html),
 [pow](pow.html),
 [sqrt](sqrt.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v1.1 | Created

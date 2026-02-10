@@ -59,3 +59,12 @@ a.to('m')                       // returns Unit 0.05 m
 [number](number.html),
 [string](string.html),
 [createUnit](createUnit.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v0.5 | Created
+v0.16 | Support conversion from BigNumber
+v2.5 | Support BigNumber and Fraction values in units
+v2.6 | Support Complex values in units
+v11.1 | Allow the type of unit to be specifed by a unit (not just string)

@@ -43,10 +43,10 @@ Type | Description
 ```js
 math.deepEqual(2, 4)   // returns false
 
-a = [2, 5, 1]
-b = [2, 7, 1]
+const a = [2, 5, 1]
+const b = [2, 7, 1]
 
-math.deepEqual(a, b)   // returns false
+math.deepEqual(a, b)   // returns false...
 math.equal(a, b)       // returns [true, false, true]
 ```
 
@@ -55,3 +55,9 @@ math.equal(a, b)       // returns [true, false, true]
 
 [equal](equal.html),
 [unequal](unequal.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v2 | Handle Fractions
+v0.2 | Created

@@ -45,9 +45,9 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.nthRoot(9, 2)    // returns 3 (since 3^2 == 9)
-math.sqrt(9)          // returns 3 (since 3^2 == 9)
-math.nthRoot(64, 3)   // returns 4 (since 4^3 == 64)
+math.nthRoot(9, 2)    // returns 3
+math.sqrt(9)          // returns 3
+math.nthRoot(64, 3)   // returns 4
 ```
 
 
@@ -55,3 +55,10 @@ math.nthRoot(64, 3)   // returns 4 (since 4^3 == 64)
 
 [sqrt](sqrt.html),
 [pow](pow.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11.6 | Support matrix broadcasting
+v2 | Handle Complex
+v1.1 | Created

@@ -65,3 +65,9 @@ m.get([1, 0])                    // number 3
 [string](string.html),
 [unit](unit.html),
 [sparse](sparse.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v0.5 | Created
+v1.5 | Support dense or sparse Matrix types; allow construction from string, Array, or another Matrix.

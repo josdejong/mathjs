@@ -57,3 +57,8 @@ math.string([true, false])      // returns ['true', 'false']
 [matrix](matrix.html),
 [number](number.html),
 [unit](unit.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v0.9 | Created

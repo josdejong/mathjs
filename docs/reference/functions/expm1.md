@@ -48,11 +48,7 @@ math.exp(1e-8) - 1                 // returns number 9.9999999392253e-9
 math.log(math.expm1(2) + 1)        // returns number 2
 
 math.map([1, 2, 3], math.expm1)
-// returns Array [
-//   1.718281828459045,
-//   6.3890560989306495,
-//   19.085536923187668
-// ]
+// returns [1.718281828459045, 6.3890560989306495, 19.085536923187668]
 ```
 
 
@@ -62,3 +58,9 @@ math.map([1, 2, 3], math.expm1)
 [expm](expm.html),
 [log](log.html),
 [pow](pow.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11 | Don't apply elementwise, avoids confusion with matrix exponential
+v4.2 | Created

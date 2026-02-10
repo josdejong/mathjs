@@ -65,3 +65,8 @@ v.get([2, 0])                   // number 1
 [string](string.html),
 [unit](unit.html),
 [matrix](matrix.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v1.5 | Created

@@ -52,8 +52,7 @@ math.mod(11, 2)               // returns 1
 function isOdd(x) {
   return math.mod(x, 2) != 0
 }
-
-isOdd(2)                      // returns false
+isOdd(2)                      // returns false...
 isOdd(3)                      // returns true
 ```
 
@@ -61,3 +60,11 @@ isOdd(3)                      // returns true
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [divide](divide.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v13 | Handle bigints
+v11.6 | Support matrix broadcasting
+v2 | Handle Fractions
+v0.2 | Created

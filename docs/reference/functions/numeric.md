@@ -57,3 +57,10 @@ math.numeric(math.fraction(2, 5), 'number') // returns 0.4
 [bigint](bigint.html),
 [string](string.html),
 [format](format.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v6 | Created
+v13 | Added `bigint` support
+v14.2.1 | Prefer mathjs `bigint()` to built-in `BigInt()`
