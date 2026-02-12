@@ -738,7 +738,7 @@ export function broadcastSizes (...sizes) {
     const dim = dimensions[i]
     for (let j = 0; j < dim; j++) {
       const n = N - dim + j
-      if (size[j] > sizeMax[n]) {
+      if (sizeMax[n] === null || size[j] > sizeMax[n]) {
         sizeMax[n] = size[j]
       }
     }
@@ -897,6 +897,57 @@ export function deepMap (array, callback, skipIndex = false) {
     } else {
       return callback(value)
     }
+  }
+}
+
+/**
+ * Recursively maps multiple arrays assuming they are rectangular, if a size is provided it's assumed
+ * to be validated already.
+ */
+export function deepMapMultiple (arrays, sizes = [], callback, skipIndex = false) {
+  arrays.forEach((array, arrayIndex) => {
+    if (!sizes[arrayIndex]) {
+      const size = arraySize(array)
+      validate(array, size)
+      sizes[arrayIndex] = size
+    }
+  })
+
+  const finalSize = broadcastSizes(...sizes)
+  const offsets = sizes.map((size) => finalSize.length - size.length)
+  const maxDepth = finalSize.length - 1
+  const callbackUsesIndex = skipIndex || callback.length > 1
+  const index = callbackUsesIndex ? [] : null
+  const resultsArray = iterate(arrays, 0)
+  return resultsArray
+
+  function iterate (arrays, depth = 0) {
+    const currentDimensionSize = finalSize[depth]
+    const result = Array(currentDimensionSize)
+    if (depth < maxDepth) {
+      for (let i = 0; i < currentDimensionSize; i++) {
+        if (index) index[depth] = i
+        result[i] = iterate(
+          arrays.map((array, arrayIndex) =>
+            offsets[arrayIndex] > depth
+              ? array
+              : array.length === 1
+                ? array[0]
+                : array[i]
+          ),
+          depth + 1
+        )
+      }
+    } else {
+      for (let i = 0; i < currentDimensionSize; i++) {
+        if (index) index[depth] = i
+        result[i] = callback(
+          arrays.map((a) => (a.length === 1 ? a[0] : a[i])),
+          index ? index.slice() : undefined
+        )
+      }
+    }
+    return result
   }
 }
 

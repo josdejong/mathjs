@@ -1,5 +1,7 @@
 import { factory } from '../../../utils/factory.js'
-import { DimensionError } from '../../../error/DimensionError.js'
+import { broadcast } from './broadcast.js'
+import { isMatrix } from '../../../utils/is.js'
+import { arraySize, validate } from '../../../utils/array.js'
 
 const name = 'matAlgo13xDD'
 const dependencies = ['typed']
@@ -11,36 +13,28 @@ export const createMatAlgo13xDD = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * C(i,j,...z) = f(Aij..z, Bij..z)
    *
-   * @param {Matrix}   a                 The DenseMatrix instance (A)
-   * @param {Matrix}   b                 The DenseMatrix instance (B)
+   * @param {Matrix|Array}   a                 The DenseMatrix instance (A)
+   * @param {Matrix|Array}   b                 The DenseMatrix instance (B)
    * @param {Function} callback          The f(Aij..z,Bij..z) operation to invoke
    *
-   * @return {Matrix}                    DenseMatrix (C)
+   * @return {Matrix|Array}                    DenseMatrix (C)
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97658658
    */
   return function matAlgo13xDD (a, b, callback) {
     // a arrays
-    const adata = a._data
-    const asize = a._size
-    const adt = a._datatype
+    const aIsMatrix = isMatrix(a)
+    const adata = aIsMatrix ? a._data : a
+    const asize = aIsMatrix ? a._size : arraySize(a)
+    if (!aIsMatrix) validate(adata, asize)
+    const adt = aIsMatrix ? a._datatype : undefined
+
     // b arrays
-    const bdata = b._data
-    const bsize = b._size
-    const bdt = b._datatype
-    // c arrays
-    const csize = []
-
-    // validate dimensions
-    if (asize.length !== bsize.length) { throw new DimensionError(asize.length, bsize.length) }
-
-    // validate each one of the dimension sizes
-    for (let s = 0; s < asize.length; s++) {
-      // must match
-      if (asize[s] !== bsize[s]) { throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')') }
-      // update dimension in c
-      csize[s] = asize[s]
-    }
+    const bIsMatrix = isMatrix(b)
+    const bdata = bIsMatrix ? b._data : b
+    const bsize = bIsMatrix ? b._size : arraySize(b)
+    if (!bIsMatrix) validate(bdata, bsize)
+    const bdt = bIsMatrix ? b._datatype : undefined
 
     // datatype
     let dt
@@ -56,34 +50,16 @@ export const createMatAlgo13xDD = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     // populate cdata, iterate through dimensions
-    const cdata = csize.length > 0 ? _iterate(cf, 0, csize, csize[0], adata, bdata) : []
+    const cdata = broadcast(adata, bdata, asize, bsize, cf)
 
-    // c matrix
-    return a.createDenseMatrix({
-      data: cdata,
-      size: csize,
-      datatype: dt
-    })
-  }
-
-  // recursive function
-  function _iterate (f, level, s, n, av, bv) {
-    // initialize array for this level
-    const cv = []
-    // check we reach the last level
-    if (level === s.length - 1) {
-      // loop arrays in last level
-      for (let i = 0; i < n; i++) {
-        // invoke callback and store value
-        cv[i] = f(av[i], bv[i])
-      }
+    if (aIsMatrix || bIsMatrix) {
+      const cMatrix = aIsMatrix ? a.createDenseMatrix() : b.createDenseMatrix()
+      cMatrix._data = cdata.data
+      cMatrix._size = cdata.size
+      cMatrix._datatype = dt
+      return cMatrix
     } else {
-      // iterate current level
-      for (let j = 0; j < n; j++) {
-        // iterate next level
-        cv[j] = _iterate(f, level + 1, s, s[level + 1], av[j], bv[j])
-      }
+      return cdata.data
     }
-    return cv
   }
 })
