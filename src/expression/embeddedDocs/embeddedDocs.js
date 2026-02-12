@@ -237,14 +237,57 @@ import { cloneDocs } from './function/utils/clone.js'
 import { formatDocs } from './function/utils/format.js'
 import { hasNumericValueDocs } from './function/utils/hasNumericValue.js'
 import { hexDocs } from './function/utils/hex.js'
+import { isAccessorNodeDocs } from './function/utils/isAccessorNode.js'
+import { isArrayDocs } from './function/utils/isArray.js'
+import { isArrayNodeDocs } from './function/utils/isArrayNode.js'
+import { isAssignmentNodeDocs } from './function/utils/isAssignmentNode.js'
+import { isBigIntDocs } from './function/utils/isBigInt.js'
+import { isBigNumberDocs } from './function/utils/isBigNumber.js'
+import { isBlockNodeDocs } from './function/utils/isBlockNode.js'
+import { isBooleanDocs } from './function/utils/isBoolean.js'
+import { isChainDocs } from './function/utils/isChain.js'
+import { isCollectionDocs } from './function/utils/isCollection.js'
+import { isComplexDocs } from './function/utils/isComplex.js'
+import { isConditionalNodeDocs } from './function/utils/isConditionalNode.js'
+import { isConstantNodeDocs } from './function/utils/isConstantNode.js'
+import { isDateDocs } from './function/utils/isDate.js'
+import { isDenseMatrixDocs } from './function/utils/isDenseMatrix.js'
+import { isFractionDocs } from './function/utils/isFraction.js'
+import { isFunctionDocs } from './function/utils/isFunction.js'
+import { isFunctionAssignmentNodeDocs } from './function/utils/isFunctionAssignmentNode.js'
+import { isFunctionNodeDocs } from './function/utils/isFunctionNode.js'
+import { isHelpDocs } from './function/utils/isHelp.js'
+import { isIndexDocs } from './function/utils/isIndex.js'
+import { isIndexNodeDocs } from './function/utils/isIndexNode.js'
 import { isIntegerDocs } from './function/utils/isInteger.js'
+import { isMapDocs } from './function/utils/isMap.js'
+import { isMatrixDocs } from './function/utils/isMatrix.js'
 import { isNaNDocs } from './function/utils/isNaN.js'
 import { isBoundedDocs } from './function/utils/isBounded.js'
 import { isFiniteDocs } from './function/utils/isFinite.js'
 import { isNegativeDocs } from './function/utils/isNegative.js'
+import { isNodeDocs } from './function/utils/isNode.js'
+import { isNullDocs } from './function/utils/isNull.js'
+import { isNumberDocs } from './function/utils/isNumber.js'
 import { isNumericDocs } from './function/utils/isNumeric.js'
+import { isObjectDocs } from './function/utils/isObject.js'
+import { isObjectNodeDocs } from './function/utils/isObjectNode.js'
+import { isObjectWrappingMapDocs } from './function/utils/isObjectWrappingMap.js'
+import { isOperatorNodeDocs } from './function/utils/isOperatorNode.js'
+import { isParenthesisNodeDocs } from './function/utils/isParenthesisNode.js'
+import { isPartitionedMapDocs } from './function/utils/isPartitionedMap.js'
 import { isPositiveDocs } from './function/utils/isPositive.js'
 import { isPrimeDocs } from './function/utils/isPrime.js'
+import { isRangeDocs } from './function/utils/isRange.js'
+import { isRangeNodeDocs } from './function/utils/isRangeNode.js'
+import { isRegExpDocs } from './function/utils/isRegExp.js'
+import { isRelationalNodeDocs } from './function/utils/isRelationalNode.js'
+import { isResultSetDocs } from './function/utils/isResultSet.js'
+import { isSparseMatrixDocs } from './function/utils/isSparseMatrix.js'
+import { isStringDocs } from './function/utils/isString.js'
+import { isSymbolNodeDocs } from './function/utils/isSymbolNode.js'
+import { isUndefinedDocs } from './function/utils/isUndefined.js'
+import { isUnitDocs } from './function/utils/isUnit.js'
 import { isZeroDocs } from './function/utils/isZero.js'
 import { numericDocs } from './function/utils/numeric.js'
 import { octDocs } from './function/utils/oct.js'
@@ -613,5 +656,48 @@ export const embeddedDocs = {
   isZero: isZeroDocs,
   print: printDocs,
   typeOf: typeOfDocs,
-  numeric: numericDocs
+  numeric: numericDocs,
+  isNumber: isNumberDocs,
+  isComplex: isComplexDocs,
+  isBigNumber: isBigNumberDocs,
+  isBigInt: isBigIntDocs,
+  isFraction: isFractionDocs,
+  isUnit: isUnitDocs,
+  isString: isStringDocs,
+  isArray: isArrayDocs,
+  isMatrix: isMatrixDocs,
+  isCollection: isCollectionDocs,
+  isDenseMatrix: isDenseMatrixDocs,
+  isSparseMatrix: isSparseMatrixDocs,
+  isRange: isRangeDocs,
+  isIndex: isIndexDocs,
+  isBoolean: isBooleanDocs,
+  isResultSet: isResultSetDocs,
+  isHelp: isHelpDocs,
+  isFunction: isFunctionDocs,
+  isDate: isDateDocs,
+  isRegExp: isRegExpDocs,
+  isObject: isObjectDocs,
+  isMap: isMapDocs,
+  isPartitionedMap: isPartitionedMapDocs,
+  isObjectWrappingMap: isObjectWrappingMapDocs,
+  isNull: isNullDocs,
+  isUndefined: isUndefinedDocs,
+  isAccessorNode: isAccessorNodeDocs,
+  isArrayNode: isArrayNodeDocs,
+  isAssignmentNode: isAssignmentNodeDocs,
+  isBlockNode: isBlockNodeDocs,
+  isConditionalNode: isConditionalNodeDocs,
+  isConstantNode: isConstantNodeDocs,
+  isFunctionAssignmentNode: isFunctionAssignmentNodeDocs,
+  isFunctionNode: isFunctionNodeDocs,
+  isIndexNode: isIndexNodeDocs,
+  isNode: isNodeDocs,
+  isObjectNode: isObjectNodeDocs,
+  isOperatorNode: isOperatorNodeDocs,
+  isParenthesisNode: isParenthesisNodeDocs,
+  isRangeNode: isRangeNodeDocs,
+  isRelationalNode: isRelationalNodeDocs,
+  isSymbolNode: isSymbolNodeDocs,
+  isChain: isChainDocs
 }
