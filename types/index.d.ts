@@ -178,8 +178,9 @@ export interface NodeCtor {
   new (): MathNode
 }
 
-export interface AccessorNode<TObject extends MathNode = MathNode>
-  extends MathNode {
+export interface AccessorNode<
+  TObject extends MathNode = MathNode
+> extends MathNode {
   type: 'AccessorNode'
   isAccessorNode: true
   object: TObject
@@ -195,8 +196,9 @@ export interface AccessorNodeCtor {
   ): AccessorNode<TObject>
 }
 
-export interface ArrayNode<TItems extends MathNode[] = MathNode[]>
-  extends MathNode {
+export interface ArrayNode<
+  TItems extends MathNode[] = MathNode[]
+> extends MathNode {
   type: 'ArrayNode'
   isArrayNode: true
   items: [...TItems]
@@ -207,8 +209,9 @@ export interface ArrayNodeCtor {
   ): ArrayNode<TItems>
 }
 
-export interface AssignmentNode<TValue extends MathNode = MathNode>
-  extends MathNode {
+export interface AssignmentNode<
+  TValue extends MathNode = MathNode
+> extends MathNode {
   type: 'AssignmentNode'
   isAssignmentNode: true
   object: SymbolNode | AccessorNode
@@ -295,8 +298,9 @@ export interface ConstantNodeCtor {
   ): ConstantNode<TValue>
 }
 
-export interface FunctionAssignmentNode<TExpr extends MathNode = MathNode>
-  extends MathNode {
+export interface FunctionAssignmentNode<
+  TExpr extends MathNode = MathNode
+> extends MathNode {
   type: 'FunctionAssignmentNode'
   isFunctionAssignmentNode: true
   name: string
@@ -329,8 +333,9 @@ export interface FunctionNodeCtor {
   onUndefinedFunction: (name: string) => any
 }
 
-export interface IndexNode<TDims extends MathNode[] = MathNode[]>
-  extends MathNode {
+export interface IndexNode<
+  TDims extends MathNode[] = MathNode[]
+> extends MathNode {
   type: 'IndexNode'
   isIndexNode: true
   dimensions: [...TDims]
@@ -420,8 +425,9 @@ export interface OperatorNodeCtor extends MathNode {
     implicit?: boolean
   ): OperatorNode<TOp, TFn, TArgs>
 }
-export interface ParenthesisNode<TContent extends MathNode = MathNode>
-  extends MathNode {
+export interface ParenthesisNode<
+  TContent extends MathNode = MathNode
+> extends MathNode {
   type: 'ParenthesisNode'
   isParenthesisNode: true
   content: TContent
@@ -453,8 +459,9 @@ export interface RangeNodeCtor {
   ): RangeNode<TStart, TEnd, TStep>
 }
 
-export interface RelationalNode<TParams extends MathNode[] = MathNode[]>
-  extends MathNode {
+export interface RelationalNode<
+  TParams extends MathNode[] = MathNode[]
+> extends MathNode {
   type: 'RelationalNode'
   isRelationalNode: true
   conditionals: string[]
