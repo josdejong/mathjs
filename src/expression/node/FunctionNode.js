@@ -305,6 +305,16 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     /**
+     * TODO
+     * @param {*} scope
+     * @param {*} within
+     * @returns
+     */
+    resolve (scope, within = new Set()) {
+      return new FunctionNode(this.name, this.args.map((a) => a.resolve(scope, within)))
+    }
+
+    /**
      * Execute a callback for each of the child nodes of this node
      * @param {function(child: Node, path: string, parent: Node)} callback
      */
