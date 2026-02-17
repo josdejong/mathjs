@@ -406,8 +406,17 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { multiply: { associative: true } }
     },
 
-    { l: 'n1/(-n2)', r: '-n1/n2' }
+    { l: 'n1/(-n2)', r: '-n1/n2' },
 
+    {
+      s: '(c1*v+c2)/c3 -> ((c1*v)/c3)+c2/c3',
+      assuming: { multiply: { associative: true } }
+    },
+
+    {
+      s: '(-(c1*v)-c2)/c3 -> (-c1/c3)*v+-(c2/c3)',
+      assuming: { multiply: { associative: true } }
+    }
   ]
 
   /**
