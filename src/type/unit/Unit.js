@@ -816,7 +816,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     for (const i in ret.units) {
-      if (ret.units[i].unit.name === 'VA' || ret.units[i].unit.name === 'VAR') {
+      if (ret.units[i].unit.name === 'VA' || ret.units[i].unit.name === 'var') {
         ret.units[i].unit = UNITS.W
       }
     }
@@ -1229,8 +1229,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       if (hasOwnProperty(simp.units, i)) {
         if (simp.units[i].unit) {
           if (simp.units[i].unit.name === 'VA' && isImaginary) {
-            simp.units[i].unit = UNITS.VAR
-          } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
+            simp.units[i].unit = UNITS.var
+          } else if (simp.units[i].unit.name === 'var' && !isImaginary) {
             simp.units[i].unit = UNITS.VA
           }
         }
@@ -2571,8 +2571,8 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     },
 
     // Electrical power units
-    VAR: {
-      name: 'VAR',
+    var: {
+      name: 'var',
       base: BASE_UNITS.POWER,
       prefixes: PREFIXES.SHORT,
       value: Complex.I,
@@ -2896,6 +2896,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     BTUs: 'BTU',
     watts: 'watt',
     joules: 'joule',
+    VAR: 'var',
 
     amperes: 'ampere',
     amps: 'ampere',
