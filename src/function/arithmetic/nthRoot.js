@@ -11,16 +11,15 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'BigNumber',
-  'concat'
+  'BigNumber'
 ]
 
-export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, concat }) => {
+export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Calculate the nth root of a value.

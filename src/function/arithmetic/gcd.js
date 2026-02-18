@@ -32,7 +32,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.

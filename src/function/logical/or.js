@@ -10,15 +10,14 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
+export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Logical `or`. Test if at least one value is defined with a nonzero/nonempty value.

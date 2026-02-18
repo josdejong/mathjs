@@ -10,15 +10,14 @@ const dependencies = [
   'typed',
   'matrix',
   'DenseMatrix',
-  'concat',
   'SparseMatrix'
 ]
 
-export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix, concat, SparseMatrix }) => {
+export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Logical `xor`. Test whether one and only one value is defined with a nonzero/nonempty value.

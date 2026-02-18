@@ -2,6 +2,7 @@ import { factory } from '../../../utils/factory.js'
 import { extend } from '../../../utils/object.js'
 import { createMatAlgo13xDD } from './matAlgo13xDD.js'
 import { createMatAlgo14xDs } from './matAlgo14xDs.js'
+import { createMatAlgo15xAs } from './matAlgo15xAs.js'
 import { broadcast } from './broadcast.js'
 
 const name = 'matrixAlgorithmSuite'
@@ -11,6 +12,7 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
   name, dependencies, ({ typed, matrix }) => {
     const matAlgo13xDD = createMatAlgo13xDD({ typed })
     const matAlgo14xDs = createMatAlgo14xDs({ typed })
+    const matAlgo15xAs = createMatAlgo15xAs()
 
     /**
      * Return a signatures object with the usual boilerplate of
@@ -115,9 +117,9 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
           matrixSignatures[scalar + ', DenseMatrix'] =
             (x, y) => matAlgo14xDs(y, x, elop, true)
           matrixSignatures['Array,' + scalar] =
-            (x, y) => matAlgo14xDs(matrix(x), y, elop, false).valueOf()
+            (x, y) => matAlgo15xAs(x, y, elop, false)
           matrixSignatures[scalar + ', Array'] =
-            (x, y) => matAlgo14xDs(matrix(y), x, elop, true).valueOf()
+            (x, y) => matAlgo15xAs(y, x, elop, true)
         } else {
           matrixSignatures['DenseMatrix,' + scalar] =
             typed.referToSelf(self => (x, y) => {
@@ -129,11 +131,11 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
             })
           matrixSignatures['Array,' + scalar] =
             typed.referToSelf(self => (x, y) => {
-              return matAlgo14xDs(matrix(x), y, self, false).valueOf()
+              return matAlgo15xAs(x, y, self, false)
             })
           matrixSignatures[scalar + ', Array'] =
             typed.referToSelf(self => (x, y) => {
-              return matAlgo14xDs(matrix(y), x, self, true).valueOf()
+              return matAlgo15xAs(y, x, self, true)
             })
         }
       }

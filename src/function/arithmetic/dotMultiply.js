@@ -9,15 +9,14 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'multiplyScalar',
-  'concat'
+  'multiplyScalar'
 ]
 
-export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar, concat }) => {
+export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Multiply two matrices element wise. The function accepts both matrices and
