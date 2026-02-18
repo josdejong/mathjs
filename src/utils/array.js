@@ -810,7 +810,7 @@ export function broadcastArrays (...arrays) {
     throw new Error('Insufficient number of arguments in function broadcastArrays')
   }
   if (arrays.length === 1) {
-    return arrays[0]
+    return arrays
   }
   const sizes = arrays.map(function (array) { return arraySize(array) })
   const broadcastedSize = broadcastSizes(...sizes)

@@ -2230,6 +2230,79 @@ export interface MathJsInstance extends MathJsFactory {
   ): T
 
   /**
+   * Broadcast a matrix or array to a specified size.
+   *
+   * The input collection is conceptually expanded to match the given dimensions,
+   * following broadcasting rules. The returned object is a new matrix or array
+   * with the requested size; the original input is not modified.
+   *
+   * @param x The matrix or array to broadcast.
+   * @param size The target size for each dimension of the broadcasted result.
+   * @returns A matrix or array with the specified size, containing broadcasted values.
+   * @param x The matrix or array to broadcast.
+   * @param size The target size of the broadcasted output, specified as an array of dimension lengths.
+   * @returns A new matrix or array with the requested size, containing the broadcasted values of `x`.
+   */
+  broadcastTo(
+    x: Matrix,
+    size: number[] | BigNumber[] | Matrix<number> | Matrix<BigNumber>
+  ): Matrix
+  broadcastTo(
+    x: MathArray,
+    size: number[] | BigNumber[] | Matrix<number> | Matrix<BigNumber>
+  ): MathArray
+
+  /**
+   * Calculate the broadcasted size of one or more matrices or arrays.
+   * Always returns an Array containing numbers.
+   *
+   * Syntax:
+   *
+   *     math.broadcastSizes(x, y)
+   *     math.broadcastSizes(x, y, ...)
+   *
+   * Examples:
+   *
+   *     math.broadcastSizes([2, 3])          // returns [2, 3]
+   *     math.broadcastSizes([2, 3], [3])     // returns [2, 3]
+   *     math.broadcastSizes([1, 2, 3], [[1, 2, 3]])  // returns [1, 2, 3]
+   *
+   * See also:
+   *
+   *     size, reshape, squeeze, broadcastTo
+   *
+   * @param {...(Array|Matrix)} x  One or more matrices or arrays
+   * @return {number[]} A vector with the broadcasted size.
+   */
+  broadcastSizes(...args: Array<MathCollection | Matrix>): number[]
+
+  /**
+   * Broadcast multiple matrices together.
+   * Return an array of matrices with the broadcasted sizes.
+   *
+   * Syntax:
+   *
+   *     math.broadcastMatrices(x, y)
+   *     math.broadcastMatrices(x, y, ...)
+   *
+   * Examples:
+   *
+   *     math.broadcastMatrices([1, 2], [[3], [4]])  // returns [[[1, 2], [1, 2]], [[3, 3], [4, 4]]]
+   *     math.broadcastMatrices([2, 3])               // returns [[2, 3]]
+   *     math.broadcastMatrices([2, 3], [3, 1])       // returns [[2, 3], [3, 1]]
+   *
+   * See also:
+   *
+   *     size, reshape, broadcastSizes, broadcastTo
+   *
+   * @param {...(Array|Matrix)} args One or more matrices or arrays
+   * @returns {(Array|Matrix)[]} An array of matrices with the broadcasted sizes.
+   */
+  broadcastMatrices(
+    ...args: Array<MathCollection | Matrix>
+  ): Array<MathCollection | Matrix>
+
+  /**
    * Create a matrix filled with ones. The created matrix can have one or
    * multiple dimensions.
    * @param size The size of each dimension of the matrix
