@@ -71,13 +71,13 @@ describe('divide', function () {
     approxDeepEqual(divide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'))
     approxDeepEqual(divide(complex('2i'), complex('4i')), complex('0.5'))
     approxDeepEqual(divide(4, complex('1+2i')), complex('0.8 - 1.6i'))
-    approxDeepEqual(divide(math.i, 0), complex(Infinity, Infinity))
-    approxDeepEqual(divide(complex(0, 1), 0), complex(Infinity, Infinity))
-    approxDeepEqual(divide(complex(1, 0), 0), complex(Infinity, Infinity))
-    approxDeepEqual(divide(complex(0, 1), complex(0, 0)), complex(Infinity, Infinity))
-    approxDeepEqual(divide(complex(1, 1), complex(0, 0)), complex(Infinity, Infinity))
-    approxDeepEqual(divide(complex(1, -1), complex(0, 0)), complex(Infinity, -Infinity))
-    approxDeepEqual(divide(complex(-1, 1), complex(0, 0)), complex(-Infinity, Infinity))
+    approxDeepEqual(divide(math.i, 0), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(0, 1), 0), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(1, 0), 0), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(0, 1), complex(0, 0)), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(1, 1), complex(0, 0)), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(1, -1), complex(0, 0)), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(-1, 1), complex(0, 0)), complex(Infinity, NaN))
     approxDeepEqual(divide(complex(1, 1), complex(0, 1)), complex(1, -1))
     approxDeepEqual(divide(complex(1, 1), complex(1, 0)), complex(1, 1))
 
@@ -228,6 +228,16 @@ describe('divide', function () {
 
   it('should throw an in case of wrong type of arguments', function () {
     assert.throws(function () { divide(null, 2) }, /TypeError: Unexpected type of argument/)
+  })
+
+  it('should normalize complex divide-by-zero boundaries', function () {
+    approxDeepEqual(divide(math.i, 0), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(0, 1), 0), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(1, 0), 0), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(0, 1), complex(0, 0)), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(1, 1), complex(0, 0)), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(1, -1), complex(0, 0)), complex(Infinity, NaN))
+    approxDeepEqual(divide(complex(-1, 1), complex(0, 0)), complex(Infinity, NaN))
   })
 
   it('should LaTeX divide', function () {
