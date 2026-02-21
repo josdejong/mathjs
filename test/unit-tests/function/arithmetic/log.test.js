@@ -134,6 +134,13 @@ describe('log', function () {
       matrix([[0, 0.693147180559945], [1.098612288668110, 1.386294361119891]]))
   })
 
+  it('should handle boundary cases for log(x, base)', function () {
+    approxDeepEqual(log(0, 1), complex(Infinity, NaN))
+    approxDeepEqual(log(-1, 1), complex(Infinity, NaN))
+    approxDeepEqual(log(-1, -1), complex(1, 0))
+    assert(isNaN(log(0, 0)))
+  })
+
   it('should LaTeX log', function () {
     const expr1 = math.parse('log(e)')
     const expr2 = math.parse('log(32,2)')
