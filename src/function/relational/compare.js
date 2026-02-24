@@ -63,7 +63,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
    *    v4     Changed to compare strings by numerical value
    *    v11.6  Support matrix broadcasting
    *    v13    Change to use separate relative and absolute tolerances
-   * 
+   *
    * @param  {number | BigNumber | bigint | Fraction | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | Fraction | Unit | string | Array | Matrix} y Second value to compare
    * @return {number | BigNumber | bigint | Fraction | Array | Matrix} Returns the result of the comparison:
