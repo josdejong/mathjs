@@ -53,10 +53,13 @@ export const createAdd = /* #__PURE__ */ factory(
      *
      * History:
      *
-     *     v13     Handle bigint arguments
+     *     v0.21.1 Fix not adding strings and matrices element wise
+     *     v3.8.   Allow more than two arguments
+     *     v3.16.5 Fix passing three or more arrays or matrices.
+     *     v5.0.3  Fix matrices with a `datatype` defined
      *     v11.6   Support matrix broadcasting
-     *     v3.8    Allow more than two arguments
-     *     v0.0.2  Created
+     *     v12.4.2 Fix type definitions to allow more than two arguments
+     *     v14.5.3 Refine type definitions to not allow zero or one argument
      *
      * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to add
      * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to add
