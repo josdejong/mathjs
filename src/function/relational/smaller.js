@@ -51,6 +51,14 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    *    equal, unequal, smallerEq, smaller, smallerEq, compare
    *
+  * History:
+  *
+  *    v14.1  Support bigints
+  *    v14    Return a sparse matrix for sparse inputs
+  *    v11.6  Support matrix broadcasting
+  *    v4     Compare strings by their numerical value and implemented nearly equal comparison
+  *    v3     Use nearly-equal comparison for BigNumbers
+  *
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
