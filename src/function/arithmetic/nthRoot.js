@@ -48,6 +48,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
    * History:
    *
   *     v11.6  Support matrix broadcasting
+  *     v10.5.1 Improve type definitions
   *     v5.0.0 Improve consistency with sqrt and pow
   *     v3.1.1 Fix negative roots of zero
   *     v2.4.1 Fix negative values like `nthRoot(-2, 3)`
