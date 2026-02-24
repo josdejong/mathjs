@@ -37,6 +37,11 @@ export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    bitNot, bitOr, bitXor, leftShift, rightArithShift, rightLogShift
    *
+  * History:
+  *
+  *    v11.6  Support matrix broadcasting
+  *    v1.2   Created
+  *
    * @param  {number | BigNumber | bigint | Array | Matrix} x First value to and
    * @param  {number | BigNumber | bigint | Array | Matrix} y Second value to and
    * @return {number | BigNumber | bigint | Array | Matrix} AND of `x` and `y`
