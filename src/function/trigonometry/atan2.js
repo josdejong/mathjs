@@ -49,6 +49,11 @@ export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    tan, atan, sin, cos
    *
+  * History:
+  *
+  *    v11.6  Support matrix broadcasting
+  *    v1.5   Support BigNumber arguments
+  *
    * @param {number | Array | Matrix} y  Second dimension
    * @param {number | Array | Matrix} x  First dimension
    * @return {number | Array | Matrix} Four-quadrant inverse tangent
