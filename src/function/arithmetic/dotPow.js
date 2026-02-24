@@ -51,6 +51,13 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    pow, sqrt, multiply
    *
+  * History:
+  *
+  *    v0.23    Renamed from `epow`
+  *    v11.5.1  Improve type definitions
+  *    v11.6    Support matrix broadcasting
+  *    v14.0.0  Return a sparse matrix for sparse inputs
+  *
    * @param  {number | BigNumber | Complex | Unit | Array | Matrix} x  The base
    * @param  {number | BigNumber | Complex | Unit | Array | Matrix} y  The exponent
    * @return {number | BigNumber | Complex | Unit | Array | Matrix}                     The value of `x` to the power `y`
