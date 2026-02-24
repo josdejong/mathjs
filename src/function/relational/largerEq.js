@@ -52,6 +52,7 @@ export const createLargerEq = /* #__PURE__ */ factory(name, dependencies, ({ typ
   *    v11.6  Support matrix broadcasting
   *    v4     Compare strings by their numerical value and implemented nearly equal comparison
   *    v3     Use nearly-equal comparison for BigNumbers
+  *    0.23   Renamed from `largereq`to `largerEq`
   *    v0.15  Removed support for complex numbers
   *    v0.2   Created
   *
