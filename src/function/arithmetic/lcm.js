@@ -55,6 +55,14 @@ export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    *    gcd, xgcd
    *
+  * History:
+  *
+  *    v0.6   Created
+  *    v0.13  Fixed some edge cases
+  *    v0.26  Implement BigNumber support
+  *    v2.3   Support Fractions
+  *    v11.6  Support matrix broadcasting
+  *
    * @param {... number | BigNumber | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Array | Matrix}                           The least common multiple
    */
