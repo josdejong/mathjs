@@ -51,6 +51,15 @@ export const createLarger = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    equal, unequal, smaller, smallerEq, largerEq, compare
    *
+  * History:
+  *
+  *    v14.1  Support bigints
+  *    v14    Return a sparse matrix for sparse inputs
+  *    v11.6  Support matrix broadcasting
+  *    v4     Compare strings by their numerical value and implemented nearly equal comparison
+  *    v3     Use nearly-equal comparison for BigNumbers
+  *    v0.15  Removed support for complex numbers
+  *
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
