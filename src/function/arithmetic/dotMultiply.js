@@ -40,6 +40,12 @@ export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    *    multiply, divide, dotDivide
    *
+  * History:
+  *
+  *    v0.23   Renamed from `emultiply`
+  *    v11.5.1 Improve type definitions
+  *    v11.6   Support matrix broadcasting
+  *
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Left hand value
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Right hand value
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Multiplication of `x` and `y`
