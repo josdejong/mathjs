@@ -45,6 +45,11 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    *    not, or, xor
    *
+  * History:
+  *.   v12.2  Lazy evaluation
+  *    v11.6  Support matrix broadcasting
+  *    v1.2   Created
+  *
    * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
    * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
    * @return {boolean | Array | Matrix}
