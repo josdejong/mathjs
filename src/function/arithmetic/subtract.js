@@ -51,6 +51,12 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    *    add
    *
+  * History:
+  *
+  *    v11.6  Support matrix broadcasting
+  *    v5.0.3 Fix matrices with a `datatype` defined
+  *    v0.8.2 Fixed a bug when subtracting a complex number from a real number
+  *
    * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x Initial value
    * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Value to subtract from `x`
    * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} Subtraction of `x` and `y`
