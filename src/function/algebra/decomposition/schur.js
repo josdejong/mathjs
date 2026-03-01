@@ -7,9 +7,6 @@ const dependencies = [
   'matrix',
   'identity',
   'multiply',
-  'qr',
-  'norm',
-  'subtract',
   'abs',
   'isZero',
   'isPositive',
@@ -19,8 +16,7 @@ const dependencies = [
   'divideScalar',
   'multiplyScalar',
   'subtractScalar',
-  'sqrt',
-  'transpose'
+  'sqrt'
 ]
 
 export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
@@ -29,9 +25,6 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     matrix,
     identity,
     multiply,
-    qr,
-    norm,
-    subtract,
     abs,
     isZero,
     isPositive,
@@ -41,8 +34,7 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     divideScalar,
     multiplyScalar,
     subtractScalar,
-    sqrt,
-    transpose
+    sqrt
   }
 ) => {
   /**
