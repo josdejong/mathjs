@@ -11,7 +11,7 @@ const dependencies = [
   'isZero',
   'isPositive',
   'isNegative',
-  'equal',
+  'equalScalar',
   'addScalar',
   'divideScalar',
   'multiplyScalar',
@@ -29,7 +29,7 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     isZero,
     isPositive,
     isNegative,
-    equal,
+    equalScalar,
     addScalar,
     divideScalar,
     multiplyScalar,
@@ -253,7 +253,7 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
       // Find the largest q such that H[q][q-1] is negligible
       while (q > 0) {
         const scale = addScalar(abs(H[q - 1][q - 1]), abs(H[q][q]))
-        if (equal(scale, addScalar(scale, H[q][q - 1]))) {
+        if (equalScalar(scale, addScalar(scale, H[q][q - 1]))) {
           H[q][q - 1] = zero
           break
         }
@@ -325,7 +325,7 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     for (let i = 1; i < n; i++) {
       // Use a relative threshold based on nearby diagonal elements
       const scale = addScalar(abs(H[i - 1][i - 1]), abs(H[i][i]))
-      if (equal(scale, addScalar(scale, H[i][i - 1]))) {
+      if (equalScalar(scale, addScalar(scale, H[i][i - 1]))) {
         H[i][i - 1] = zero
       }
     }
