@@ -82,10 +82,18 @@ function extractValue (spec) {
   try {
     value = eval(spec) // eslint-disable-line no-eval
   } catch (err) {
-    if (spec[0] === '[') {
-      // maybe it was an array with mathjs expressions in it
+    if ('[{'.includes(spec[0])) {
+      // maybe it was an array or object with mathjs expressions in it
       try {
-        value = math.evaluate(spec).toArray()
+        value = math.evaluate(spec)
+        if (spec[0] === '[') value = value.toArray()
+        else {
+          for (const key in value) {
+            if (math.isMatrix(value[key])) {
+              value[key] = value[key].toArray()
+            }
+          }
+        }
       } catch (newError) {
         value = spec
       }
@@ -113,7 +121,7 @@ const knownProblems = new Set([
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
   'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff', 'slu',
   'rationalize', 'qr', 'lusolve', 'lup', 'derivative',
-  'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round',
+  'symbolicEqual', 'sylvester', 'freqz', 'round',
   'import', 'typed',
   'unit', 'sparse', 'matrix', 'index', 'bignumber', 'fraction', 'complex',
   'parse'

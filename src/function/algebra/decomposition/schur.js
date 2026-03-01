@@ -1,3 +1,4 @@
+import { arraySize, clone } from '../../../utils/array.js'
 import { factory } from '../../../utils/factory.js'
 
 const name = 'schur'
@@ -10,6 +11,10 @@ const dependencies = [
   'norm',
   'subtract',
   'abs',
+  'isZero',
+  'isPositive',
+  'isNegative',
+  'equal',
   'addScalar',
   'divideScalar',
   'multiplyScalar',
@@ -28,6 +33,10 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     norm,
     subtract,
     abs,
+    isZero,
+    isPositive,
+    isNegative,
+    equal,
     addScalar,
     divideScalar,
     multiplyScalar,
@@ -38,14 +47,16 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
 ) => {
   /**
    *
-   * Performs a real Schur decomposition of the real matrix A = UTU' where U is orthogonal
-   * and T is upper quasi-triangular.
+   * Performs a real Schur decomposition of the real matrix A = UTU' where
+   * U is orthogonal and T is upper quasi-triangular.
    *
-   * Real Schur decomposition: For a real square matrix A, returns orthogonal U and
-   * quasi-upper-triangular T such that A = U*T*U'.
-   * T is block upper triangular with 1x1 and 2x2 blocks on the diagonal.
-   * 1x1 blocks correspond to real eigenvalues, 2x2 blocks correspond to
-   * complex conjugate eigenvalue pairs.
+   * Real Schur decomposition: For a real square matrix A, returns orthogonal
+   * U (which is to say, U * U' = I), and quasi-upper-triangular T such that
+   * A = U*T*U'. In more detail, T is block upper triangular with 1x1 and 2x2
+   * blocks on the diagonal. 1x1 blocks correspond to real eigenvalues and
+   * 2x2 blocks correspond to complex conjugate eigenvalue pairs.
+   * The two matrices are returned as a plain JavaScript object with properties
+   * 'T' and 'U' whose values are the respective matrices.
    *
    * https://en.wikipedia.org/wiki/Schur_decomposition
    *
@@ -55,11 +66,8 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
    *
    * Examples:
    *
-   *     const A = [[1, 2], [0, 3]]
-   *     const result = math.schur(A)
-   *     // result.U is orthogonal: U * U' = I
-   *     // result.T is upper triangular (quasi-upper-triangular)
-   *     // A = U * T * U'
+   *     const A = [[1, 0], [-4, 3]]
+   *     math.schur(A) // returns {T: [[1, 0], [-4, 3]], U: [[1, 0], [0, 1]]}
    *
    * See also:
    *
@@ -69,24 +77,17 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
    * @return {{U: Array | Matrix, T: Array | Matrix}} Object containing both matrix U and T of the Schur Decomposition A=UTU'
    */
   return typed(name, {
-    Array: function (X) {
-      const r = _schur(matrix(X))
-      return {
-        U: r.U.valueOf(),
-        T: r.T.valueOf()
-      }
-    },
-
-    Matrix: function (X) {
-      return _schur(X)
+    Array: X => _schur(X, arraySize(X)),
+    Matrix: X => {
+      const { U, T } = _schur(X.toArray(), X.size())
+      return { U: matrix(U), T: matrix(T) }
     }
   })
 
   /**
    * Main Schur decomposition function using Francis QR algorithm
    */
-  function _schur (X) {
-    const size = X.size()
+  function _schur (X, size) {
     if (size.length !== 2 || size[0] !== size[1]) {
       throw new RangeError('Matrix must be square')
     }
@@ -94,19 +95,12 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     const n = size[0]
 
     // Handle trivial cases
-    if (n === 0) {
-      return { U: matrix([]), T: matrix([]) }
-    }
-    if (n === 1) {
-      return { U: identity(1), T: X.clone() }
-    }
-
-    // Convert to 2D array for internal processing
-    const arr = X.toArray()
+    if (n === 0) return { U: [], T: [] }
+    if (n === 1) return { U: [[1]], T: clone(X) }
 
     // Step 1: Reduce to upper Hessenberg form
     // This is a similarity transformation: H = P' * A * P
-    const { H, P } = reduceToHessenberg(arr, n)
+    const { H, P } = reduceToHessenberg(X, n)
 
     // Step 2: Apply Francis QR algorithm to get quasi-triangular form
     // This computes the Schur form: T = Q' * H * Q
@@ -114,9 +108,7 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
 
     // Step 3: Combine transformations: U = P * Q
     // So that A = U * T * U'
-    const U = multiply(matrix(P), matrix(Q))
-
-    return { U, T: matrix(T) }
+    return { U: multiply(P, Q), T }
   }
 
   /**
@@ -124,15 +116,9 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
    * Returns H (upper Hessenberg) and P (orthogonal) such that H = P' * A * P
    */
   function reduceToHessenberg (arr, n) {
-    // Clone the array to avoid modifying the original
-    const H = arr.map(row => [...row])
-
+    const H = clone(arr)
     // P will accumulate the orthogonal transformation
-    const P = []
-    for (let i = 0; i < n; i++) {
-      P[i] = Array(n).fill(0)
-      P[i][i] = 1
-    }
+    const P = identity(n, '')
 
     for (let k = 0; k < n - 2; k++) {
       // Compute Householder vector for column k, rows k+1 to n-1
@@ -141,56 +127,67 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
         x.push(H[i][k])
       }
 
-      const householder = computeHouseholderVector(x)
-      if (householder === null) {
-        continue // Column is already zero, skip
-      }
-
-      const { v, beta } = householder
+      const { v, beta } = computeHouseholderVector(x)
+      if (!v) continue // Column is already zero, skip
 
       // Apply Householder reflection from the left: H := (I - beta*v*v') * H
       // Only affects rows k+1 to n-1
       for (let j = k; j < n; j++) {
-        let sum = 0
+        let sum = false
+        const Hcolj = []
         for (let i = 0; i < v.length; i++) {
-          sum = addScalar(sum, multiplyScalar(v[i], H[k + 1 + i][j]))
+          const Hentry = H[k + 1 + i][j]
+          Hcolj.push(Hentry)
+          const term = multiplyScalar(v[i], Hentry)
+          if (sum !== false) sum = addScalar(sum, term)
+          else sum = term
         }
         sum = multiplyScalar(sum, beta)
         for (let i = 0; i < v.length; i++) {
-          H[k + 1 + i][j] = subtractScalar(H[k + 1 + i][j], multiplyScalar(v[i], sum))
+          H[k + 1 + i][j] = subtractScalar(Hcolj[i], multiplyScalar(v[i], sum))
         }
       }
 
       // Apply Householder reflection from the right: H := H * (I - beta*v*v')
       // Affects all rows, columns k+1 to n-1
       for (let i = 0; i < n; i++) {
-        let sum = 0
+        const Hrow = H[i]
+        let sum = false
         for (let j = 0; j < v.length; j++) {
-          sum = addScalar(sum, multiplyScalar(H[i][k + 1 + j], v[j]))
+          const term = multiplyScalar(Hrow[k + 1 + j], v[j])
+          if (sum !== false) sum = addScalar(sum, term)
+          else sum = term
         }
         sum = multiplyScalar(sum, beta)
         for (let j = 0; j < v.length; j++) {
-          H[i][k + 1 + j] = subtractScalar(H[i][k + 1 + j], multiplyScalar(sum, v[j]))
+          H[i][k + 1 + j] = subtractScalar(
+            Hrow[k + 1 + j], multiplyScalar(sum, v[j]))
         }
       }
 
       // Accumulate P: P := P * (I - beta*v*v')
       for (let i = 0; i < n; i++) {
-        let sum = 0
+        const Prow = P[i]
+        let sum = false
         for (let j = 0; j < v.length; j++) {
-          sum = addScalar(sum, multiplyScalar(P[i][k + 1 + j], v[j]))
+          const term = multiplyScalar(Prow[k + 1 + j], v[j])
+          if (sum !== false) sum = addScalar(sum, term)
+          else sum = term
         }
         sum = multiplyScalar(sum, beta)
         for (let j = 0; j < v.length; j++) {
-          P[i][k + 1 + j] = subtractScalar(P[i][k + 1 + j], multiplyScalar(sum, v[j]))
+          Prow[k + 1 + j] = subtractScalar(
+            Prow[k + 1 + j], multiplyScalar(sum, v[j]))
         }
       }
     }
 
     // Clean up small subdiagonal entries (should be zero due to Householder)
+    const entry = H[0][0]
+    const zero = subtractScalar(entry, entry)
     for (let i = 2; i < n; i++) {
       for (let j = 0; j < i - 1; j++) {
-        H[i][j] = 0
+        H[i][j] = zero
       }
     }
 
@@ -203,36 +200,35 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
    */
   function computeHouseholderVector (x) {
     const m = x.length
-    if (m === 0) return null
+    if (m < 2) return { v: null, beta: null }
 
-    let sigma = 0
-    for (let i = 1; i < m; i++) {
+    let sigma = multiplyScalar(x[1], x[1])
+    for (let i = 2; i < m; i++) {
       sigma = addScalar(sigma, multiplyScalar(x[i], x[i]))
     }
 
     const x0 = x[0]
     const x0sq = multiplyScalar(x0, x0)
 
-    // If the vector is already a multiple of e_1 (sigma ≈ 0), no transformation needed
-    if (abs(sigma) < 1e-14) {
-      return null
-    }
+    // If the vector is already a multiple of e_1 (sigma ≈ 0),
+    // no transformation needed
+    if (isZero(sigma)) return { v: null, beta: null }
 
     const normX = sqrt(addScalar(x0sq, sigma))
 
     // Choose sign to avoid cancellation
-    let v0
-    if (x0 <= 0) {
-      v0 = subtractScalar(x0, normX)
-    } else {
-      v0 = divideScalar(-sigma, addScalar(x0, normX))
-    }
+    const zero = subtractScalar(x0, x0)
+    const v0 = isPositive(x0)
+      ? divideScalar(subtractScalar(zero, sigma), addScalar(x0, normX))
+      : subtractScalar(x0, normX)
 
     const v0sq = multiplyScalar(v0, v0)
-    const beta = divideScalar(2, addScalar(1, divideScalar(sigma, v0sq)))
+    const one = divideScalar(x0, x0)
+    const two = addScalar(one, one)
+    const beta = divideScalar(two, addScalar(one, divideScalar(sigma, v0sq)))
 
     // Construct v = [1, x[1]/v0, x[2]/v0, ...]
-    const v = [1]
+    const v = [one]
     for (let i = 1; i < m; i++) {
       v.push(divideScalar(x[i], v0))
     }
@@ -241,20 +237,16 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
   }
 
   /**
-   * Francis QR algorithm with implicit double shift for upper Hessenberg matrices.
+   * Francis QR algorithm with implicit double shift for upper
+   * Hessenberg matrices.
    * Computes the real Schur form T and orthogonal Q such that T = Q' * H * Q
    */
   function francisQR (Hin, n) {
-    const H = Hin.map(row => [...row])
-
+    const H = clone(Hin)
     // Q accumulates the orthogonal transformations
-    const Q = []
-    for (let i = 0; i < n; i++) {
-      Q[i] = Array(n).fill(0)
-      Q[i][i] = 1
-    }
+    const Q = identity(n, '')
 
-    const eps = Number.EPSILON // machine epsilon for convergence
+    const zero = subtractScalar(H[0][0], H[0][0])
     const maxIterationsPerEigenvalue = 30 // max iterations per eigenvalue
     const maxTotalIterations = 30 * n // safety limit
 
@@ -268,9 +260,9 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
 
       // Find the largest q such that H[q][q-1] is negligible
       while (q > 0) {
-        const threshold = eps * (abs(H[q - 1][q - 1]) + abs(H[q][q]))
-        if (abs(H[q][q - 1]) <= threshold) {
-          H[q][q - 1] = 0
+        const scale = addScalar(abs(H[q - 1][q - 1]), abs(H[q][q]))
+        if (equal(scale, addScalar(scale, H[q][q - 1]))) {
+          H[q][q - 1] = zero
           break
         }
         q--
@@ -296,9 +288,10 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
         // discriminant = (a+d)² - 4(ad-bc) = (a-d)² + 4bc
         // If discriminant < 0, eigenvalues are complex conjugates
         const diff = subtractScalar(a, d)
-        const discriminant = addScalar(multiplyScalar(diff, diff), multiplyScalar(4, multiplyScalar(b, c)))
+        const discriminant = addScalar(
+          multiplyScalar(diff, diff), multiplyScalar(4, multiplyScalar(b, c)))
 
-        if (discriminant < 0) {
+        if (isNegative(discriminant)) {
           // Complex eigenvalues - keep the 2x2 block
           p -= 2
           iterCount = 0
@@ -321,8 +314,9 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
       if (iterCount === 10 || iterCount === 20) {
         // Exceptional shift: use a random-ish perturbation based on subdiagonal elements
         const subdiagVal = abs(H[p][p - 1])
-        const prevSubdiag = (p >= 2) ? abs(H[p - 1][p - 2]) : 0
-        const shift = multiplyScalar(addScalar(subdiagVal, prevSubdiag), iterCount === 10 ? 1.5 : -1.5)
+        const prevSubdiag = (p >= 2) ? abs(H[p - 1][p - 2]) : zero
+        const shift = multiplyScalar(
+          addScalar(subdiagVal, prevSubdiag), iterCount === 10 ? 1.5 : -1.5)
         for (let i = q; i <= p; i++) {
           H[i][i] = addScalar(H[i][i], shift)
         }
@@ -338,9 +332,9 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     // Clean up tiny subdiagonal elements
     for (let i = 1; i < n; i++) {
       // Use a relative threshold based on nearby diagonal elements
-      const threshold = eps * (abs(H[i - 1][i - 1]) + abs(H[i][i]))
-      if (abs(H[i][i - 1]) <= threshold) {
-        H[i][i - 1] = 0
+      const scale = addScalar(abs(H[i - 1][i - 1]), abs(H[i][i]))
+      if (equal(scale, addScalar(scale, H[i][i - 1]))) {
+        H[i][i - 1] = zero
       }
     }
 
@@ -359,6 +353,8 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     const c = H[p][p - 1]
     const d = H[p][p]
 
+    const zero = subtractScalar(a, a)
+
     // Compute the eigenvalues of the 2x2 matrix [[a,b],[c,d]]
     // trace and determinant
     const trace = addScalar(a, d)
@@ -369,7 +365,8 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     // = H^2 - trace*H + det*I
     // First column is [H^2]_0 - trace*H_0 + det*e_0 for active block
 
-    // Compute first column of H^2 - trace*H + det*I (restricted to active block)
+    // Compute first column of H^2 - trace*H + det*I
+    // (restricted to active block)
     // For row q: sum_k H[q][k]*H[k][q] - trace*H[q][q] + det
     // Since H is Hessenberg, H[k][q] = 0 for k > q+1
 
@@ -397,7 +394,7 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
     )
 
     // M[q+2][q] = H[q+2][q+1]*H[q+1][q] (only nonzero element from Hessenberg structure)
-    let z = 0
+    let z = zero
     if (q + 2 <= p) {
       z = multiplyScalar(H[q + 2][q + 1], Hq1q)
     }
@@ -428,40 +425,48 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
       const { v, beta } = householder
 
       // Apply Householder reflection from the left
+      // TODO: Unify this code with the similar code in reduceToHessenberg
       const jStart = Math.max(0, k - 1)
       for (let j = jStart; j < n; j++) {
-        let sum = 0
+        let sum = false
+        const Hcolj = []
         for (let i = 0; i < r; i++) {
-          sum = addScalar(sum, multiplyScalar(v[i], H[k + i][j]))
+          const Hentry = H[k + i][j]
+          Hcolj.push(Hentry)
+          const term = multiplyScalar(v[i], Hentry)
+          if (sum !== false) sum = addScalar(sum, term)
+          else sum = term
         }
         sum = multiplyScalar(sum, beta)
         for (let i = 0; i < r; i++) {
-          H[k + i][j] = subtractScalar(H[k + i][j], multiplyScalar(v[i], sum))
+          H[k + i][j] = subtractScalar(Hcolj[i], multiplyScalar(v[i], sum))
         }
       }
 
       // Apply Householder reflection from the right
       const iEnd = Math.min(n, k + r + 1)
       for (let i = 0; i < iEnd; i++) {
+        const Hrow = H[i]
         let sum = 0
         for (let j = 0; j < r; j++) {
-          sum = addScalar(sum, multiplyScalar(H[i][k + j], v[j]))
+          sum = addScalar(sum, multiplyScalar(Hrow[k + j], v[j]))
         }
         sum = multiplyScalar(sum, beta)
         for (let j = 0; j < r; j++) {
-          H[i][k + j] = subtractScalar(H[i][k + j], multiplyScalar(sum, v[j]))
+          H[i][k + j] = subtractScalar(Hrow[k + j], multiplyScalar(sum, v[j]))
         }
       }
 
       // Accumulate Q
       for (let i = 0; i < n; i++) {
-        let sum = 0
-        for (let j = 0; j < r; j++) {
+        const Qrow = Q[i]
+        let sum = multiplyScalar(Qrow[k], v[0])
+        for (let j = 1; j < r; j++) {
           sum = addScalar(sum, multiplyScalar(Q[i][k + j], v[j]))
         }
         sum = multiplyScalar(sum, beta)
         for (let j = 0; j < r; j++) {
-          Q[i][k + j] = subtractScalar(Q[i][k + j], multiplyScalar(sum, v[j]))
+          Qrow[k + j] = subtractScalar(Qrow[k + j], multiplyScalar(sum, v[j]))
         }
       }
 
@@ -476,6 +481,7 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
 
   /**
    * Compute Householder vector for 3-element vector [x, y, z]
+   * Can this be unified with computeHouseholderVector?
    */
   function computeHouseholderVector3 (x, y, z) {
     const norm = sqrt(addScalar(addScalar(
@@ -483,17 +489,18 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
       multiplyScalar(y, y)
     ), multiplyScalar(z, z)))
 
-    if (abs(norm) < 1e-14) {
-      return null
-    }
+    if (isZero(norm)) return null
 
+    const zero = subtractScalar(x, x)
     // Choose sign to avoid cancellation
-    const s = x >= 0 ? 1 : -1
-    const u0 = addScalar(x, multiplyScalar(s, norm))
+    const signedNorm = isNegative(x) ? subtractScalar(zero, norm) : norm
+    const u0 = addScalar(x, signedNorm)
 
-    const v = [1, divideScalar(y, u0), divideScalar(z, u0)]
-    const vNormSq = addScalar(addScalar(1, multiplyScalar(v[1], v[1])), multiplyScalar(v[2], v[2]))
-    const beta = divideScalar(2, vNormSq)
+    const one = divideScalar(norm, norm)
+    const v = [one, divideScalar(y, u0), divideScalar(z, u0)]
+    const vNormSq = addScalar(
+      addScalar(one, multiplyScalar(v[1], v[1])), multiplyScalar(v[2], v[2]))
+    const beta = divideScalar(addScalar(one, one), vNormSq)
 
     return { v, beta }
   }
@@ -504,17 +511,17 @@ export const createSchur = /* #__PURE__ */ factory(name, dependencies, (
   function computeHouseholderVector2 (x, y) {
     const norm = sqrt(addScalar(multiplyScalar(x, x), multiplyScalar(y, y)))
 
-    if (abs(norm) < 1e-14) {
-      return null
-    }
+    if (isZero(norm)) return null
 
+    const zero = subtractScalar(x, x)
     // Choose sign to avoid cancellation
-    const s = x >= 0 ? 1 : -1
-    const u0 = addScalar(x, multiplyScalar(s, norm))
+    const signedNorm = isNegative(x) ? subtractScalar(zero, norm) : norm
+    const u0 = addScalar(x, signedNorm)
 
-    const v = [1, divideScalar(y, u0)]
-    const vNormSq = addScalar(1, multiplyScalar(v[1], v[1]))
-    const beta = divideScalar(2, vNormSq)
+    const one = divideScalar(norm, norm)
+    const v = [one, divideScalar(y, u0)]
+    const vNormSq = addScalar(one, multiplyScalar(v[1], v[1]))
+    const beta = divideScalar(addScalar(one, one), vNormSq)
 
     return { v, beta }
   }

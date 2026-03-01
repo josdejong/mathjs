@@ -951,5 +951,5 @@ export function deepForEach (array, callback, skipIndex = false) {
  * @returns {Array} cloned array
  */
 export function clone (array) {
-  return Object.assign([], array)
+  return array.map(elt => Array.isArray(elt) ? clone(elt) : elt)
 }
