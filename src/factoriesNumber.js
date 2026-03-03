@@ -48,9 +48,11 @@ import {
   modNumber,
   multiplyNumber,
   normNumber,
+  norNumber,
   notNumber,
   nthRootNumber,
   orNumber,
+  nandNumber,
   powNumber,
   rightArithShiftNumber,
   rightLogShiftNumber,
@@ -204,9 +206,11 @@ export { createParserClass } from './expression/Parser.js'
 
 // logical
 export const createAnd = /* #__PURE__ */ createNumberFactory('and', andNumber)
+export const createNand = /* #__PURE__ */ createNumberFactory('nand', nandNumber)
 export const createNot = /* #__PURE__ */ createNumberFactory('not', notNumber)
 export const createOr = /* #__PURE__ */ createNumberFactory('or', orNumber)
 export const createXor = /* #__PURE__ */ createNumberFactory('xor', xorNumber)
+export const createNor = /* #__PURE__ */ createNumberFactory('nor', norNumber)
 
 // matrix
 export { createMapSlices } from './function/matrix/mapSlices.js'
