@@ -1,5 +1,11 @@
 # History
 
+# Unpublished changes since 15.1.1
+
+- Chore: Provide TypeScript types for [and/or]TransformDependencies (#3639).
+  Thanks @NilsDietrich.
+- Feat: Add amp-hour charge unit `Ah` (#3617). Thanks @adrfantini.
+
 # 2026-02-10, 15.1.1
 
 - Fix: #3631 Handle bigints in `compareNatural` (#3632). Thanks @Dheemanth07.
