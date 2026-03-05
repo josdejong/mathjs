@@ -46,14 +46,14 @@ export const createSmallerEq = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    equal, unequal, smaller, larger, largerEq, compare
    *
-  * History:
-  *
-  *    v14.0.0 Return a sparse matrix for sparse inputs
-  *    v11.6  Support matrix broadcasting
-  *    v4     Compare strings by their numerical value and implemented nearly equal comparison
-  *    v0.23  Renamed from `smalleq`to `smallerEq`
-  *    v0.15  Removed support for complex numbers
-  *
+   * History:
+   *
+   *    v14.0.0 Return a sparse matrix for sparse inputs
+   *    v11.6  Support matrix broadcasting
+   *    v4     Compare strings by numerical value, allow tolerance in comparison
+   *    v0.23  Renamed from `smalleq`to `smallerEq`
+   *    v0.15  Removed support for complex numbers
+   *
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false

@@ -64,12 +64,12 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * History:
    *
-  *    v14.0.0 Return a sparse matrix for sparse inputs
-  *    v13     Handle bigints
-  *    v11.6   Support matrix broadcasting
-  *    v4      Compare strings by their numeric values
-  *    v0.24   Handle `null` and `undefined`
-  *    v0.2    Created
+   *    v14.0.0 Return a sparse matrix for sparse inputs
+   *    v13     Handle bigints
+   *    v11.6   Support matrix broadcasting
+   *    v4      Compare strings by their numeric values
+   *    v0.24   Handle `null` and `undefined`
+   *    v0.2    Created
    *
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} x First value to compare
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} y Second value to compare

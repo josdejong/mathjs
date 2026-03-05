@@ -59,14 +59,11 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    * History:
    *
-  *    v13     Handle bigints
-  *    v12.1   Support negative divisors for BigNumber and Fraction
-  *    v11.11.1 Fix round-off issues for some inputs
-  *    v11.6   Support matrix broadcasting
-  *    v7.3    Fix negative dividend for BigNumber and Fraction
-  *    v2      Handle Fractions
-  *    v0.14   Fixed non working operator
-  *    v0.2    Created
+   *    v13     Handle bigints
+   *    v12.1   Support negative divisors for BigNumber and Fraction
+   *    v11.6   Support matrix broadcasting
+   *    v2      Handle Fractions
+   *    v0.2    Created
    *
    * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} x Dividend
    * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} y Divisor

@@ -39,11 +39,11 @@ export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    bitAnd, bitNot, bitXor, leftShift, rightArithShift, rightLogShift
    *
-  * History:
-  *
-  *    v11.6  Support matrix broadcasting
-  *    v1.2   Created
-  *
+   * History:
+   *
+   *    v11.6  Support matrix broadcasting
+   *    v1.2   Created
+   *
    * @param  {number | BigNumber | bigint | Array | Matrix} x First value to or
    * @param  {number | BigNumber | bigint | Array | Matrix} y Second value to or
    * @return {number | BigNumber | bigint | Array | Matrix} OR of `x` and `y`

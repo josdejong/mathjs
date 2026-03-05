@@ -56,14 +56,13 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    *    lcm, xgcd
    *
-  * History:
-  *
-  *    v11.8  Improve type definitions
-  *    v11.7  Accept arrays as input
-  *    v11.6  Support matrix broadcasting
-  *    v0.26  Implement BigNumber support
-  *    v0.6   Created
-  *
+   * History:
+   *
+   *    v11.7  Accept arrays as input
+   *    v11.6  Support matrix broadcasting
+   *    v0.26  Implement BigNumber support
+   *    v0.6   Created
+   *
    * @param {... number | BigNumber | Fraction | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Fraction | Array | Matrix}                           The greatest common divisor
    */

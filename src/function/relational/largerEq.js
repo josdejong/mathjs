@@ -46,16 +46,16 @@ export const createLargerEq = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *
    *    equal, unequal, smaller, smallerEq, larger, compare
    *
-  * History:
-  *
-  *    v14.0.0 Return a sparse matrix for sparse inputs
-  *    v11.6  Support matrix broadcasting
-  *    v4     Compare strings by their numerical value and implemented nearly equal comparison
-  *    v3     Use nearly-equal comparison for BigNumbers
-  *    0.23   Renamed from `largereq`to `largerEq`
-  *    v0.15  Removed support for complex numbers
-  *    v0.2   Created
-  *
+   * History:
+   *
+   *    v14.0.0 Return a sparse matrix for sparse inputs
+   *    v11.6  Support matrix broadcasting
+   *    v4     Compare strings by numerical value, allow tolerance in comparison
+   *    v3     Use nearly-equal comparison for BigNumbers
+   *    0.23   Renamed from `largereq`to `largerEq`
+   *    v0.15  Removed support for complex numbers
+   *    v0.2   Created
+   *
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is larger or equal to y, else returns false

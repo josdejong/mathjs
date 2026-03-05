@@ -38,12 +38,12 @@ export const createBitXor = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    bitAnd, bitNot, bitOr, leftShift, rightArithShift, rightLogShift
    *
-  * History:
-  *
-  *    v14.0.0 Return a sparse matrix for sparse inputs
-  *    v11.6   Support matrix broadcasting
-  *    v1.2    Created
-  *
+   * History:
+   *
+   *    v14.0.0 Return a sparse matrix for sparse inputs
+   *    v11.6   Support matrix broadcasting
+   *    v1.2    Created
+   *
    * @param  {number | BigNumber | bigint | Array | Matrix} x First value to xor
    * @param  {number | BigNumber | bigint | Array | Matrix} y Second value to xor
    * @return {number | BigNumber | bigint | Array | Matrix} XOR of `x` and `y`

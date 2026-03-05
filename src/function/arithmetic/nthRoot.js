@@ -47,13 +47,12 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * History:
    *
-  *     v11.6  Support matrix broadcasting
-  *     v10.5.1 Improve type definitions
-  *     v5.0.0 Improve consistency with sqrt and pow
-  *     v3.1.1 Fix negative roots of zero
-  *     v2.4.1 Fix negative values like `nthRoot(-2, 3)`
-  *     v2     Handle Complex
-  *     v1.1   Created
+   *     v11.6  Support matrix broadcasting
+   *     v5.0.0 Improve consistency with sqrt and pow
+   *     v3.1.1 Support negative roots of zero
+   *     v2.4.1 Support negative values like `nthRoot(-2, 3)`
+   *     v2     Support roots of Complex
+   *     v1.1   Created
    *
    * @param {number | BigNumber | Array | Matrix | Complex} a
    *              Value for which to calculate the nth root

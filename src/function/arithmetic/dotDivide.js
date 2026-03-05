@@ -46,13 +46,12 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    divide, multiply, dotMultiply
    *
-  * History:
-  *
-  *    v0.23    Renamed from `edivide`
-  *    v11.5.1  Improve type definitions
-  *    v11.6    Support matrix broadcasting
-  *    v14.0.0  Return a sparse matrix for sparse inputs
-  *
+   * History:
+   *
+   *    v14.0.0  Return a sparse matrix for sparse inputs
+   *    v11.6    Support matrix broadcasting
+   *    v0.23    Renamed from `edivide`
+   *
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Numerator
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Denominator
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`

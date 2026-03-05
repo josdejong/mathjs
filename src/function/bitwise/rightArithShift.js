@@ -49,11 +49,11 @@ export const createRightArithShift = /* #__PURE__ */ factory(name, dependencies,
    *
    *    bitAnd, bitNot, bitOr, bitXor, rightArithShift, rightLogShift
    *
-  * History:
-  *
-  *    v11.6  Support matrix broadcasting
-  *    v1.2   Created
-  *
+   * History:
+   *
+   *    v11.6  Support matrix broadcasting
+   *    v1.2   Created
+   *
    * @param  {number | BigNumber | bigint | Array | Matrix} x Value to be shifted
    * @param  {number | BigNumber | bigint} y Amount of shifts
    * @return {number | BigNumber | bigint | Array | Matrix} `x` zero-filled shifted right `y` times
