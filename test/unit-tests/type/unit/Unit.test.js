@@ -67,6 +67,13 @@ describe('Unit', function () {
       assert.strictEqual(unit1.units[0].unit.name, 'm3')
     })
 
+    it('should create ampere-hour correctly', function () {
+      const n = 1.4
+      const unit1 = new Unit(n, 'Ah')
+      assert.strictEqual(unit1.value, n * 3600)
+      assert.strictEqual(unit1.units[0].unit.name, 'Ah')
+    })
+
     it('should create a unit from an existing unit', function () {
       const unit1 = new Unit(null, 'm/s^2')
       const unit2 = new Unit(5, unit1)
@@ -1068,6 +1075,28 @@ describe('Unit', function () {
       assert.strictEqual(unit1.multiply(unit2).skipAutomaticSimplification, false)
       assert.strictEqual(unit1.divide(unit2).skipAutomaticSimplification, false)
       assert.strictEqual(unit1.pow(2).skipAutomaticSimplification, false)
+    })
+
+    it('should be able to combine A and h into Ah', function () {
+      // by default, this stays Ah, due to the default unit system
+      const n1 = 2
+      const n2 = 3
+      const unit1 = new Unit(n1, 'A')
+      const unit2 = new Unit(n2, 'h')
+      const unitM = unit1.multiply(unit2).simplify()
+      assert.strictEqual(unitM.units[0].unit.name, 'Ah')
+      assert.strictEqual(unitM.value, n1 * n2 * 3600)
+    })
+
+    it('should be able to combine W and h into J', function () {
+      // by default, this converts to J, due to the default unit system using J for ENERGY
+      const n1 = 2
+      const n2 = 3
+      const unit1 = new Unit(n1, 'W')
+      const unit2 = new Unit(n2, 'h')
+      const unitM = unit1.multiply(unit2).simplify()
+      assert.strictEqual(unitM.units[0].unit.name, 'J')
+      assert.strictEqual(unitM.value, n1 * n2 * 3600)
     })
 
     it('should retain the units of their operands without simplifying', function () {
