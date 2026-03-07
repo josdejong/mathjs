@@ -1217,7 +1217,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseUnary (state) {
-    let name, params, fn
     const operators = {
       '-': 'unaryMinus',
       '+': 'unaryPlus',
@@ -1226,13 +1225,22 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     if (hasOwnProperty(operators, state.token)) {
-      fn = operators[state.token]
-      name = state.token
+      const fn = operators[state.token]
+      const name = state.token
+      const saveState = Object.assign({}, state)
 
       getTokenSkipNewline(state)
-      params = [parseUnary(state)]
-
-      return new OperatorNode(name, fn, params)
+      if (name === 'not' && state.token === '(') {
+        // OK, this appears to be using `not` in the syntax of an ordinary
+        // function call, rather than as a unary operator, so re-parse the
+        // `not` as a Symbol and continue from there:
+        Object.assign(state, saveState)
+        return parseSymbol(state)
+      } else {
+        // Bona-finde "unary operator" application
+        const params = [parseUnary(state)]
+        return new OperatorNode(name, fn, params)
+      }
     }
 
     return parsePow(state)
