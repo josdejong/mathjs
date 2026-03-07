@@ -32,7 +32,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.
@@ -55,6 +55,13 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * See also:
    *
    *    lcm, xgcd
+   *
+   * History:
+   *
+   *    v11.7  Accept arrays as input
+   *    v11.6  Support matrix broadcasting
+   *    v0.26  Implement BigNumber support
+   *    v0.6   Created
    *
    * @param {... number | BigNumber | Fraction | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Fraction | Array | Matrix}                           The greatest common divisor

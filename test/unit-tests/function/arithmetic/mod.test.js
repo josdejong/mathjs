@@ -155,6 +155,11 @@ describe('mod', function () {
       approxDeepEqual(mod(3, [[4, 3], [2, 1]]), [[3, 0], [1, 0]])
     })
 
+    it('should perform element-wise modulus on a jagged array and a scalar', function () {
+      approxDeepEqual(mod([[-4, -3, 0, -1], [0, 1, 2]], 3), [[2, 0, 0, 2], [0, 1, 2]])
+      approxDeepEqual(mod(3, [[4, 3, 2], [2, 1]]), [[3, 0, 1], [1, 0]])
+    })
+
     it('should perform element-wise modulus on broadcastable arrays', function () {
       approxDeepEqual(mod([-40, -31], [[3], [1]]), [[2, 2], [0, 0]])
       approxDeepEqual(mod([[-40], [-31]], [3, 1]), [[2, 0], [2, 0]])
