@@ -206,8 +206,8 @@ describe('evaluate', function () {
       assert.deepStrictEqual(math.evaluate(math.matrix(['null ?? 1', '2 ?? null'])), math.matrix([1, 2]))
 
       // Test shape mismatch with empty array
-      assert.throws(() => math.evaluate('[] ?? [7, 8]'), /RangeError/)
-      assert.throws(() => math.evaluate('[1] ?? [7, 8]'), /RangeError/)
+      assert.throws(() => math.evaluate('[] ?? [7, 8]'), /Dimension mismatch/)
+      assert.throws(() => math.evaluate('[1] ?? [7, 8]'), /Dimension mismatch/)
     })
 
     it('should handle nullish coalescing with function calls', function () {
