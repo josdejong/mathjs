@@ -60,6 +60,13 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
     }
 
     /**
+     * TODO
+     */
+    resolve (scope, within = new Set()) {
+      return this.map(child => child.resolve(scope, within))
+    }
+
+    /**
      * Compile a node into a JavaScript function.
      * This basically pre-calculates as much as possible and only leaves open
      * calculations which depend on a dynamic scope with variables.
