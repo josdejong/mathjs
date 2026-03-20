@@ -57,6 +57,26 @@ describe('lgamma', function () {
     approxEqual(lgamma(Math.E), 0.449461741820067667, EPSILON)
   })
 
+  it('should calculate the lgamma of a complex number with zero imaginary part and negative real part', function () {
+    // Computation reference: https://www.wolframalpha.com/input?i=LogGamma%5B-0.5%5D
+    // For negative non-integer reals, lgamma returns a complex value via the reflection formula
+    approxDeepEqual(
+      lgamma(math.complex(-0.5, 0)),
+      math.complex(1.26551212348464539649, -3.14159265358979323846),
+      CEPSILON
+    )
+    approxDeepEqual(
+      lgamma(math.complex(-1.5, 0)),
+      math.complex(0.86004701537648098127, -6.28318530717958647692),
+      CEPSILON
+    )
+    approxDeepEqual(
+      lgamma(math.complex(-2.5, 0)),
+      math.complex(-0.05624371649767405094, -9.42477796076937971538),
+      CEPSILON
+    )
+  })
+
   it('should calculate the lgamma of a complex number', function () {
     approxDeepEqual(lgamma(math.complex(0, 0)), math.complex(Infinity), EPSILON)
     approxDeepEqual(

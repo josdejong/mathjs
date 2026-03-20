@@ -40,16 +40,26 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
    * Logarithm of the gamma function for real, positive numbers and complex numbers,
    * using Lanczos approximation for numbers and Stirling series for complex numbers.
    *
+   * This function computes the principal branch of the log-gamma special function,
+   * which is the analytic continuation of ln(gamma(z)) for positive reals to the
+   * entire complex plane (except non-positive integers where gamma has poles).
+   * For complex inputs, this may differ from ln(gamma(z)) due to branch cuts.
+   * The real parts always coincide: Re(lgamma(z)) = ln(|gamma(z)|).
+   *
+   * For real number inputs, returns NaN for negative values since the result
+   * would be complex. Use a complex input to get the full complex result.
+   *
    * Syntax:
    *
    *    math.lgamma(n)
    *
    * Examples:
    *
-   *    math.lgamma(5)       // returns 3.178053830347945
-   *    math.lgamma(0)       // returns Infinity
-   *    math.lgamma(-0.5)    // returns NaN
-   *    math.lgamma(math.i)  // returns -0.6509231993018536 - 1.8724366472624294i
+   *    math.lgamma(5)                       // returns 3.178053830347945
+   *    math.lgamma(0)                       // returns Infinity
+   *    math.lgamma(-0.5)                    // returns NaN (use complex input)
+   *    math.lgamma(math.complex(-0.5, 0))   // returns 1.2655... - 3.1416...i
+   *    math.lgamma(math.i)                  // returns -0.6509... - 1.8724...i
    *
    * See also:
    *
@@ -74,7 +84,7 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
 
     if (n.isNaN()) {
       return new Complex(NaN, NaN)
-    } else if (n.im === 0) {
+    } else if (n.im === 0 && n.re >= 0) {
       return new Complex(lgammaNumber(n.re), 0)
     } else if (n.re >= SMALL_RE || Math.abs(n.im) >= SMALL_IM) {
       return lgammaStirling(n)
