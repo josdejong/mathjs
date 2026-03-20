@@ -3,6 +3,7 @@
 import assert from 'assert'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
+const mathPredictable = math.create({ predictable: true })
 const lgamma = math.lgamma
 
 // https://www.scratchcode.io/how-to-detect-ie-browser-in-javascript/
@@ -22,14 +23,32 @@ describe('lgamma', function () {
   it('should calculate the lgamma of 0 and negative numbers', function () {
     assert.strictEqual(lgamma(0), Infinity)
 
-    assert.ok(isNaN(lgamma(-0.0005)))
-    assert.ok(isNaN(lgamma(-0.5)))
-    assert.ok(isNaN(lgamma(-1)))
-    assert.ok(isNaN(lgamma(-1.5)))
-    assert.ok(isNaN(lgamma(-2)))
-    assert.ok(isNaN(lgamma(-2.5)))
-    assert.ok(isNaN(lgamma(-100000)))
-    assert.ok(isNaN(lgamma(-123456.123456)))
+    // Negative non-integer reals produce Complex results (principal branch of LogGamma)
+    // Reference: https://www.wolframalpha.com/input?i=LogGamma%5B-0.5%5D
+    approxDeepEqual(
+      lgamma(-0.5),
+      math.complex(1.26551212348464539649, -3.14159265358979323846),
+      CEPSILON
+    )
+    approxDeepEqual(
+      lgamma(-1.5),
+      math.complex(0.86004701537648098127, -6.28318530717958647692),
+      CEPSILON
+    )
+    approxDeepEqual(
+      lgamma(-2.5),
+      math.complex(-0.05624371649767405094, -9.42477796076937971538),
+      CEPSILON
+    )
+  })
+
+  it('should return NaN for negative numbers when predictable:true', function () {
+    assert.ok(isNaN(mathPredictable.lgamma(-0.5)))
+    assert.ok(isNaN(mathPredictable.lgamma(-1)))
+    assert.ok(isNaN(mathPredictable.lgamma(-1.5)))
+    assert.ok(isNaN(mathPredictable.lgamma(-2)))
+    assert.ok(isNaN(mathPredictable.lgamma(-2.5)))
+    assert.ok(isNaN(mathPredictable.lgamma(-100000)))
   })
 
   it('should calculate the lgamma of a positive numbers', function () {
