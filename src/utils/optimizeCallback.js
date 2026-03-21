@@ -1,5 +1,4 @@
 import typed from 'typed-function'
-import { get, arraySize } from './array.js'
 import { typeOf as _typeOf } from './is.js'
 
 /**
@@ -12,23 +11,22 @@ import { typeOf as _typeOf } from './is.js'
  * @returns {Function} Returns a simplified version of the callback function.
  */
 export function optimizeCallback (callback, array, name, isUnary) {
+  const isMatrix = array && array.isMatrix
   if (typed.isTypedFunction(callback)) {
     let numberOfArguments
     if (isUnary) {
       numberOfArguments = 1
     } else {
-      const size = array.isMatrix ? array.size() : arraySize(array)
-
+      const firstIndex = isMatrix ? array.size().map(() => 0) : [0] // it only needs to be an array to be recognized
+      const firstValue = _findFirst(isMatrix ? array._data : array)
+      const isEmpty = isMatrix ? array.size().at(-1) === 0 : array.length === 0
       // Check the size of the last dimension to see if the array/matrix is empty
-      const isEmpty = size.length ? size[size.length - 1] === 0 : true
-      if (isEmpty) {
+      if (isEmpty || firstValue === undefined) {
         // don't optimize callbacks for empty arrays/matrix, as they will never be called
         // and in fact will throw an exception when we try to access the first element below
         return { isUnary, fn: callback }
       }
 
-      const firstIndex = size.map(() => 0)
-      const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
       numberOfArguments = _findNumberOfArgumentsTyped(callback, firstValue, firstIndex, array)
     }
     let fastCallback
@@ -50,6 +48,25 @@ export function optimizeCallback (callback, array, name, isUnary) {
     return { isUnary: _findIfCallbackIsUnary(callback), fn: callback }
   } else {
     return { isUnary, fn: callback }
+  }
+}
+
+function _findFirst (array) {
+  if (array && array.isMatrix) {
+    const size = array.size()
+    const firstIndex = size.map(() => 0)
+    return array.get(firstIndex)
+  } else {
+    return traverse(array)
+  }
+  function traverse (value) {
+    if (Array.isArray(value)) {
+      for (let i = 0; i < value.length; i++) {
+        return traverse(value[i])
+      }
+    } else {
+      return value
+    }
   }
 }
 
