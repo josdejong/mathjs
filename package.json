@@ -28,7 +28,6 @@
     "@babel/runtime": "^7.26.10",
     "complex.js": "^2.2.5",
     "decimal.js": "^10.4.3",
-    "escape-latex": "^1.2.0",
     "fraction.js": "^5.2.1",
     "javascript-natural-sort": "^0.7.1",
     "seedrandom": "^3.0.5",

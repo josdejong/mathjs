@@ -1,6 +1,6 @@
 /* eslint no-template-curly-in-string: "off" */
 
-import escapeLatexLib from 'escape-latex'
+import { escapeLatex as escapeLatexLib } from './escapeLatex.js'
 import { hasOwnProperty } from './object.js'
 
 export const latexSymbols = {
