@@ -31,78 +31,22 @@ class ARC4 {
     }
     this.s = s
 
-    // RC4-drop[256]: advance state without accumulating a result
-    let si = 0
-    let sj = 0
-    for (let c = STATE_SIZE; c > 0; c--) {
-      si = (si + 1) & BYTE_MASK
-      const t = s[si]
-      sj = (sj + t) & BYTE_MASK
-      s[si] = s[sj]
-      s[sj] = t
-    }
-    this.i = si
-    this.j = sj
+    // RC4-drop[256]: advance state via g() which also sets this.i/j
+    this.i = 0
+    this.j = 0
+    this.g(STATE_SIZE)
   }
 
-  /** Generate a single random byte */
-  next () {
-    const s = this.s
-    const si = (this.i + 1) & BYTE_MASK
-    const t = s[si]
-    const sj = (this.j + t) & BYTE_MASK
-    s[si] = s[sj]
-    s[sj] = t
-    this.i = si
-    this.j = sj
-    return s[(s[si] + t) & BYTE_MASK]
-  }
-
-  /** Generate 6 random bytes as a number (for double) */
-  next6 () {
+  /** Generate `count` random bytes concatenated as a single number */
+  g (count) {
     const s = this.s
     let si = this.i
     let sj = this.j
     let r = 0
-    let t
-
-    si = (si + 1) & BYTE_MASK
-    t = s[si]
-    sj = (sj + t) & BYTE_MASK
-    s[si] = s[sj]
-    s[sj] = t
-    r = s[(s[si] + t) & BYTE_MASK]
-    si = (si + 1) & BYTE_MASK
-    t = s[si]
-    sj = (sj + t) & BYTE_MASK
-    s[si] = s[sj]
-    s[sj] = t
-    r = r * 256 + s[(s[si] + t) & BYTE_MASK]
-    si = (si + 1) & BYTE_MASK
-    t = s[si]
-    sj = (sj + t) & BYTE_MASK
-    s[si] = s[sj]
-    s[sj] = t
-    r = r * 256 + s[(s[si] + t) & BYTE_MASK]
-    si = (si + 1) & BYTE_MASK
-    t = s[si]
-    sj = (sj + t) & BYTE_MASK
-    s[si] = s[sj]
-    s[sj] = t
-    r = r * 256 + s[(s[si] + t) & BYTE_MASK]
-    si = (si + 1) & BYTE_MASK
-    t = s[si]
-    sj = (sj + t) & BYTE_MASK
-    s[si] = s[sj]
-    s[sj] = t
-    r = r * 256 + s[(s[si] + t) & BYTE_MASK]
-    si = (si + 1) & BYTE_MASK
-    t = s[si]
-    sj = (sj + t) & BYTE_MASK
-    s[si] = s[sj]
-    s[sj] = t
-    r = r * 256 + s[(s[si] + t) & BYTE_MASK]
-
+    while (count--) {
+      const t = s[si = (si + 1) & BYTE_MASK]
+      r = r * STATE_SIZE + s[((s[si] = s[sj = (sj + t) & BYTE_MASK]) + (s[sj] = t)) & BYTE_MASK]
+    }
     this.i = si
     this.j = sj
     return r
@@ -141,14 +85,14 @@ export function seedrandom (seed) {
   const arc4 = new ARC4(key)
 
   return function () {
-    let numerator = arc4.next6()
+    let numerator = arc4.g(6)
     let denominator = BASE_DENOMINATOR
     let extraBits = 0
 
     while (numerator < SIGNIFICANCE_THRESHOLD) {
-      numerator = (numerator + extraBits) * 256
-      denominator *= 256
-      extraBits = arc4.next()
+      numerator = (numerator + extraBits) * STATE_SIZE
+      denominator *= STATE_SIZE
+      extraBits = arc4.g(1)
     }
 
     // Scale down to avoid rounding up to 1.0
