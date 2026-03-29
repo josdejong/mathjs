@@ -58,10 +58,10 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *     Transformed map of x; always has the same type and shape as x
    */
   return typed(name, {
-    'Array, function': function (x, callback) { return _mapArray(x, callback, true) },
+    'Array, function': _mapArray,
 
     'Matrix, function': function (x, callback) {
-      return x.map(callback, false, true)
+      return x.map(callback)
     },
 
     'Array|Matrix, Array|Matrix, ...Array|Matrix|function': (A, B, rest) =>
@@ -124,9 +124,9 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
         idx)
 
     if (firstArrayIsMatrix) {
-      return broadcastedArrays[0].map(broadcastedArraysCallback, false)
+      return broadcastedArrays[0].map(broadcastedArraysCallback)
     } else {
-      return _mapArray(broadcastedArrays[0], broadcastedArraysCallback, false)
+      return _mapArray(broadcastedArrays[0], broadcastedArraysCallback)
     }
   }
 
@@ -251,8 +251,8 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
  * @return {Array}
  * @private
  */
-  function _mapArray (array, callback, isUnary) {
-    const fastCallback = optimizeCallback(callback, array, name, isUnary)
+  function _mapArray (array, callback) {
+    const fastCallback = optimizeCallback(callback, array, name)
     return deepMap(array, fastCallback.fn, fastCallback.isUnary)
   }
 })

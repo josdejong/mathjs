@@ -30,7 +30,7 @@ export function optimizeCallback (callback, array, name, isUnary) {
       numberOfArguments = _findNumberOfArgumentsTyped(callback, firstValue, firstIndex, array)
     }
     let fastCallback
-    if (array.isMatrix && (array.dataType !== 'mixed' && array.dataType !== undefined)) {
+    if (isMatrix && (array.dataType !== 'mixed' && array.dataType !== undefined)) {
       const singleSignature = _findSingleSignatureWithArity(callback, numberOfArguments)
       fastCallback = (singleSignature !== undefined) ? singleSignature : callback
     } else {
