@@ -2,13 +2,13 @@ import typed from 'typed-function'
 import { typeOf as _typeOf } from './is.js'
 
 /**
- * Simplifies a callback function by reducing its complexity and potentially improving its performance.
+ * Simplifies a callback function to be used in mapping functions like `map`, `forEach`, etc. It determines if the callback is unary and optimizes it accordingly.
  *
  * @param {Function} callback The original callback function to simplify.
  * @param {Array|Matrix} array The array that will be used with the callback function.
  * @param {string} name The name of the function that is using the callback.
  * @param {boolean} isUnary If true, the callback function is unary and will be optimized as such.
- * @returns {Function} Returns a simplified version of the callback function.
+ * @returns {Object} Returns an object with properties `isUnary` and `fn`.
  */
 export function optimizeCallback (callback, array, name, isUnary) {
   const isMatrix = array && array.isMatrix
@@ -44,16 +44,16 @@ export function optimizeCallback (callback, array, name, isUnary) {
     }
     return { isUnary: false, fn: (...args) => _tryFunctionWithArgs(fastCallback, args, name, callback.name) }
   }
-  if (isUnary === undefined) {
-    return { isUnary: _findIfCallbackIsUnary(callback), fn: callback }
-  } else {
+  if (isUnary) {
     return { isUnary, fn: callback }
+  } else {
+    return { isUnary: _findIfCallbackIsUnary(callback), fn: callback }
   }
 }
 
 export function findFirst (array) {
   if (array && array.isMatrix) {
-    if(array.size().at(-1) === 0) {
+    if (array.size().at(-1) === 0) {
       return undefined
     }
     const size = array.size()
