@@ -18,7 +18,7 @@ export function optimizeCallback (callback, array, name, isUnary) {
       numberOfArguments = 1
     } else {
       const firstIndex = isMatrix ? array.size().map(() => 0) : [0] // it only needs to be an array to be recognized
-      const firstValue = _findFirst(isMatrix ? array._data : array)
+      const firstValue = findFirst(array)
       const isEmpty = isMatrix ? array.size().at(-1) === 0 : array.length === 0
       // Check the size of the last dimension to see if the array/matrix is empty
       if (isEmpty || firstValue === undefined) {
@@ -51,8 +51,11 @@ export function optimizeCallback (callback, array, name, isUnary) {
   }
 }
 
-function _findFirst (array) {
+export function findFirst (array) {
   if (array && array.isMatrix) {
+    if(array.size().at(-1) === 0) {
+      return undefined
+    }
     const size = array.size()
     const firstIndex = size.map(() => 0)
     return array.get(firstIndex)
@@ -62,7 +65,10 @@ function _findFirst (array) {
   function traverse (value) {
     if (Array.isArray(value)) {
       for (let i = 0; i < value.length; i++) {
-        return traverse(value[i])
+        const found = traverse(value[i])
+        if (found !== undefined) {
+          return found
+        }
       }
     } else {
       return value

@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/defaultInstance.js'
-import { optimizeCallback } from '../../../src/utils/optimizeCallback.js'
+import { optimizeCallback, findFirst } from '../../../src/utils/optimizeCallback.js'
 
 describe('optimizeCallback', function () {
   function unaryCallback (a) {
@@ -62,7 +62,7 @@ describe('optimizeCallback', function () {
     const optimizedTypedTernary = optimizeCallback(typedTernaryCallback, arrayOfNumbers, name, true)
     assert.strictEqual(optimizedTypedTernary.isUnary, true)
   })
-  
+
   it('should run the optimized callback', function () {
     const optimizedUnary = optimizeCallback(unaryCallback, arrayOfNumbers, name, false)
     assert.strictEqual(optimizedUnary.fn(1), 2)
@@ -84,7 +84,29 @@ describe('optimizeCallback', function () {
     assert.strictEqual(optimizedUnarySparseMatrix.fn(1), 2)
     const optimizedTernarySparseMatrix = optimizeCallback(ternaryCallback, sparseMatrixOfNumbers, name, false)
     assert.strictEqual(optimizedTernarySparseMatrix.fn(1, 2, 3), 7)
-})
-
+  })
 }
 )
+
+describe('findFirst', function () {
+  it('should find the first value in a nested array', function () {
+    assert.strictEqual(findFirst([[[1, 2], [3, 4]], [[5, 6], [7, 8]]]), 1)
+    assert.strictEqual(findFirst([[[[1], [2]], [[3], [4]]], [[[5], [6]], [[7], [8]]]]), 1)
+    assert.strictEqual(findFirst([[[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [[[9, 10], [11, 12]], [[13, 14], [15, 16]]]]), 1)
+  })
+
+  it('should find the first value in a matrix', function () {
+    assert.strictEqual(findFirst(math.matrix([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])), 1)
+    assert.strictEqual(findFirst(math.matrix([[[[1], [2]], [[3], [4]]], [[[5], [6]], [[7], [8]]]])), 1)
+    assert.strictEqual(findFirst(math.matrix([[[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [[[9, 10], [11, 12]], [[13, 14], [15, 16]]]])), 1)
+  })
+  it('should return undefined for an empty array or matrix', function () {
+    assert.strictEqual(findFirst([]), undefined)
+    assert.strictEqual(findFirst(math.matrix([])), undefined)
+  })
+  it('should find the first value in a jagged array if the first element is empty', function () {
+    assert.strictEqual(findFirst([[], [1, 2], [3, 4]]), 1)
+    assert.strictEqual(findFirst([[], [[1], [2]], [[3], [4]]]), 1)
+    assert.strictEqual(findFirst([[], [[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [[[9, 10], [11, 12]], [[13, 14], [15, 16]]]]), 1)
+  })
+})
