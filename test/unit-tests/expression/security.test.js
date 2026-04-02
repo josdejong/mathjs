@@ -76,11 +76,55 @@ describe('security', function () {
   it('should not allow calling Function via Object.assign', function () {
     // TODO: simplify this test case, let it output console.log('hacked...')
     assert.throws(function () {
-      math.evaluate('{}.constructor.assign(cos.constructor, {binding: cos.bind})\n' +
+      math.evaluate(
+        '{}.constructor.assign(cos.constructor, {binding: cos.bind})\n' +
           '{}.constructor.assign(cos.constructor, {bind: null})\n' +
           'f=cos.constructor.binding()("console.log(\'hacked...\')")\n' +
-          'f()')
-    }, /Error: No access to property "bind/)
+          'f()'
+      )
+    }, /Error: No access to property "constructor/)
+  })
+
+  it('should not allow misusing setSafeProperty to set properties on Arrays', function () {
+    assert.throws(function () {
+      const exploit = `
+        constantNode = reviver('',{'mathjs':'ConstantNode','value':1});
+        
+        # get a reference to a raw JavaScript array
+        array = reviver('',{'mathjs':'ArrayNode'}).map().toJSON()['items'];
+        array.push({'name':'a','type':{}});
+        
+        # override params.map to hijack this.params and this.types
+        array.map = f(callback)=callback({'name':{'name':'a','map':f2(callback2)=callback2({},'constructor')},'type':cos});
+        
+        # trigger callback and get the pointer to Function.constructor
+        functionAssignmentNode = reviver('',{'mathjs':'FunctionAssignmentNode','name':'a','params':array,'expr':constantNode});
+        func = functionAssignmentNode.toJSON()['params']['type'];
+        
+        getProcess = func('return process');
+        getProcess()`
+
+      console.log(
+        'Hacked! node.js version:',
+        math.evaluate(exploit).entries[0].version
+      )
+    }, /Error: No access to property "map"/)
+  })
+
+  it('should not allow getting access to constructor via DenseMatrix.get index argument', function () {
+    assert.throws(function () {
+      const exploit = `
+        m = matrix();
+        func = m.get({"length":1,"reduce":f(callback,a)=callback(cos,"constructor")});
+        getProcess = func("return process");
+        getProcess()
+        `
+
+      console.log(
+        'Hacked! node.js version:',
+        math.evaluate(exploit).entries[0].version
+      )
+    }, /Error: Array expected for index/)
   })
 
   it('should not allow disguising forbidden properties with unicode characters', function () {
