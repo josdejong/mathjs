@@ -8,7 +8,7 @@ export const createBroadcastSizes = /* #__PURE__ */ factory(name, dependencies, 
   /**
    * Calculate the broadcasted size of one or more matrices or arrays.
    * Always returns an Array containing numbers.
-   *
+   * The broadcasting rules can be found in [Matrices#Broadcasting](./datatype/matrices#Broadcasting).*
    * Syntax:
    *
    *     math.broadcastSizes(x, y)

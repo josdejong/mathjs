@@ -7,7 +7,8 @@ const dependencies = ['typed']
 export const createBroadcastTo = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
      * Broadcast an array to a specified size.
-     *
+     * The broadcasting rules can be found in [Matrices#Broadcasting](./datatype/matrices#Broadcasting).   
+  *
      * Syntax:
      *
      *     math.broadcastTo(x, size)

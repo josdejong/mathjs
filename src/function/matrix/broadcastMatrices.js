@@ -8,6 +8,7 @@ const dependencies = ['typed']
 export const createBroadcastMatrices = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Broadcast any number of arrays or matrices against each other.
+   * The broadcasting rules can be found in [Matrices#Broadcasting](./datatype/matrices#Broadcasting).
    *
    * Syntax:
    *
