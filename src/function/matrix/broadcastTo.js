@@ -32,12 +32,12 @@ export const createBroadcastTo = /* #__PURE__ */ factory(name, dependencies, ({ 
   return typed(name, {
     'Array, Array': broadcastTo,
     'Array, Matrix': (arr, size) => broadcastTo(arr, size.valueOf()),
-    'Matrix, Array|Matrix': (M, size) => {
-      const result = M.create()
-      result._size = size.valueOf()
-      result._data = broadcastTo(M.valueOf(), size.valueOf())
-      result._datatype = M.datatype()
-      return result
+    'Matrix, Array|Matrix': function (M, size) {
+      return M.create({
+        data: broadcastTo(M.valueOf(), size.valueOf()),
+        size: size.valueOf()
+      },
+      M.datatype())
     }
   })
 })
