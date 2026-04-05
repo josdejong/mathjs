@@ -2660,6 +2660,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       value: 1,
       offset: 0
     },
+    Ah: {
+      name: 'Ah',
+      base: BASE_UNITS.ELECTRIC_CHARGE,
+      prefixes: PREFIXES.SHORT,
+      value: 3600,
+      offset: 0
+    },
     // Electric capacitance
     farad: {
       name: 'farad',

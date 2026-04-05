@@ -1,5 +1,13 @@
 # History
 
+# Unpublished changes since 15.1.1 (for release 15.2)
+
+- Chore: Provide TypeScript types for [and/or]TransformDependencies (#3639).
+  Thanks @NilsDietrich.
+- Feat: Add amp-hour charge unit `Ah` (#3617). Thanks @adrfantini.
+- Feat: #3595 implement `num` and `den` functions returning the parts of
+  a fraction (#3605). Thanks @AnslemHack.
+
 # 2026-02-10, 15.1.1
 
 - Fix: #3631 Handle bigints in `compareNatural` (#3632). Thanks @Dheemanth07.
