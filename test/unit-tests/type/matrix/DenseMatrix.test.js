@@ -724,6 +724,12 @@ describe('DenseMatrix', function () {
       assert.deepStrictEqual(m2.valueOf(), [2, 4, 6])
     })
 
+    it('should return a matrix (not a matrix of matrices) when the result of map is a matrix.', function () {
+      const m = new DenseMatrix([[1, 2]])
+      const m2 = m.map(function (value) { return new DenseMatrix([value, value]) })
+      assert.deepStrictEqual(m2.valueOf(), [[[1, 1], [2, 2]]])
+    })
+
     it('should work on empty matrices', function () {
       const m = new DenseMatrix([])
       const m2 = m.map(function (value) { return value * 2 })
