@@ -2,7 +2,8 @@ export const broadcastMatricesDocs = {
   name: 'broadcastMatrices',
   category: 'Matrix',
   syntax: [
-    'broadcastMatrices(A, B)'
+    'broadcastMatrices(A, B)',
+    'broadcastMatrices(A, B, ...)'
   ],
   description: 'Broadcast any number of arrays or matrices against each other.',
   examples: [
