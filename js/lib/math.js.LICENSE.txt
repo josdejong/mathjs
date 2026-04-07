@@ -14,8 +14,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 15.1.1
- * @date    2026-02-10
+ * @version 15.2.0
+ * @date    2026-04-07
  *
  * @license
  * Copyright (C) 2013-2026 Jos de Jong <wjosdejong@gmail.com>

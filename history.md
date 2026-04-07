@@ -4,6 +4,16 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20260407-1520">2026-04-07, 15.2.0 <a href="#20260407-1520" title="Permalink">#</a></h1>
+
+- Feat: Add amp-hour charge unit `Ah` (<a href="https://github.com/josdejong/mathjs/issues/3617">#3617</a>). Thanks <a href="https://github.com/adrfantini">@adrfantini</a>.
+- Feat: <a href="https://github.com/josdejong/mathjs/issues/3595">#3595</a> implement `num` and `den` functions returning the parts of
+  a fraction (<a href="https://github.com/josdejong/mathjs/issues/3605">#3605</a>). Thanks <a href="https://github.com/AnslemHack">@AnslemHack</a>.
+- Fix: Provide TypeScript types for [and/or]TransformDependencies (<a href="https://github.com/josdejong/mathjs/issues/3639">#3639</a>).
+  Thanks <a href="https://github.com/NilsDietrich">@NilsDietrich</a>.
+- Fix: two security vulnerabilities that allowed executing arbitrary JavaScript 
+  via the expression parser. Thanks <a href="https://github.com/CykuTW">@CykuTW</a> for finding and reporting them.
+
 <h1 id="20260210-1511">2026-02-10, 15.1.1 <a href="#20260210-1511" title="Permalink">#</a></h1>
 
 - Fix: <a href="https://github.com/josdejong/mathjs/issues/3631">#3631</a> Handle bigints in `compareNatural` (<a href="https://github.com/josdejong/mathjs/issues/3632">#3632</a>). Thanks <a href="https://github.com/Dheemanth07">@Dheemanth07</a>.

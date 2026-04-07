@@ -136,6 +136,13 @@ Function | Description
 [math.im(x)](functions/im.html) | Get the imaginary part of a complex number.
 [math.re(x)](functions/re.html) | Get the real part of a complex number.
 
+<h2 id="fraction-functions">Fraction functions <a href="#fraction-functions" title="Permalink">#</a></h2>
+
+Function | Description
+---- | -----------
+[math.den(x)](functions/den.html) | Get the denominator of a fraction.
+[math.num(x)](functions/num.html) | Get the numerator of a fraction.
+
 <h2 id="geometry-functions">Geometry functions <a href="#geometry-functions" title="Permalink">#</a></h2>
 
 Function | Description
