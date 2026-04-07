@@ -2,11 +2,13 @@
 
 # Unpublished changes since 15.1.1 (for release 15.2)
 
-- Chore: Provide TypeScript types for [and/or]TransformDependencies (#3639).
-  Thanks @NilsDietrich.
 - Feat: Add amp-hour charge unit `Ah` (#3617). Thanks @adrfantini.
 - Feat: #3595 implement `num` and `den` functions returning the parts of
   a fraction (#3605). Thanks @AnslemHack.
+- Fix: Provide TypeScript types for [and/or]TransformDependencies (#3639).
+  Thanks @NilsDietrich.
+- Fix: two security vulnerabilities that allowed executing arbitrary JavaScript 
+  via the expression parser. Thanks @CykuTW for finding and reporting them.
 
 # 2026-02-10, 15.1.1
 
