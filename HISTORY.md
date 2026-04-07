@@ -1,6 +1,6 @@
 # History
 
-# Unpublished changes since 15.1.1 (for release 15.2)
+# 2026-04-07, 15.2.0
 
 - Feat: Add amp-hour charge unit `Ah` (#3617). Thanks @adrfantini.
 - Feat: #3595 implement `num` and `den` functions returning the parts of
