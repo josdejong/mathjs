@@ -678,6 +678,16 @@ describe('util.array', function () {
       assert.throws(function () { get(m, null) })
       assert.throws(function () { get(m, [[1, 1]]) })
     })
+
+    it('should throw an error when getting a value given an index that is not an array', function () {
+      assert.throws(function () {
+        get(m, { length: 1, reduce: () => {} })
+      }, /Error: Array expected for index/)
+
+      assert.throws(function () {
+        get(m, new Date())
+      }, /Error: Array expected for index/)
+    })
   })
 
   describe('checkBroadcastingRules', function () {
