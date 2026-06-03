@@ -1,4 +1,4 @@
-import { isNode, isConstantNode, isOperatorNode, isParenthesisNode } from '../../utils/is.js'
+import { isAccessorNode, isConstantNode, isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../utils/is.js'
 import { map } from '../../utils/array.js'
 import { createSubScope } from '../../utils/scope.js'
 import { escape } from '../../utils/string.js'
@@ -28,6 +28,39 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
     if (isConstantNode(curNode)) return true
     if (isOperatorNode(curNode)) {
       return startsWithConstant(curNode.args[0], parenthesis)
+    }
+    return false
+  }
+
+  /**
+   * Returns true if the string representation of the expression ends with a
+   * SymbolNode or AccessorNode, i.e. something that a directly following
+   * parenthesis would bind to as a function invocation or matrix index
+   * (for example `x` in `a b x` or `A[1]` in `c A[1]`). In that situation a
+   * parenthesized ConstantNode must NOT be appended for an implicit
+   * multiplication, since e.g. `x (2)` would reparse as the function call
+   * `x(2)` instead of the implicit multiplication `x * 2`.
+   * @param {Node} expression
+   * @param {string} parenthesis
+   * @return {boolean}
+   */
+  function endsWithSymbolOrAccessor (expr, parenthesis) {
+    // A parenthesized expression ends with ')', which the parser treats as an
+    // implicit multiplication rather than a function call, so it is safe.
+    if (isParenthesisNode(expr)) return false
+    if (isSymbolNode(expr) || isAccessorNode(expr)) return true
+    // FunctionNode also ends with ')', and `)(...)` is implicit multiplication.
+    if (isFunctionNode(expr)) return false
+    if (isOperatorNode(expr)) {
+      if (expr.args.length === 1) {
+        // a prefix unary operator (like `-a`) prints its operand last and can
+        // expose a symbol/accessor, whereas a postfix one (like `a!`) ends with
+        // the operator symbol and is therefore safe
+        return getAssociativity(expr, parenthesis) === 'right' &&
+          endsWithSymbolOrAccessor(expr.args[0], parenthesis)
+      }
+      // binary (and n-ary) operators print their right-most operand last
+      return endsWithSymbolOrAccessor(expr.args[expr.args.length - 1], parenthesis)
     }
     return false
   }
@@ -226,11 +259,16 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
     // of ConstantNode.
     // In that case, parenthesize ConstantNodes that follow an unparenthesized
     // expression, even though they normally wouldn't be printed.
+    // The exception is when the preceding factor ends with a SymbolNode or
+    // AccessorNode: there a parenthesized ConstantNode would reparse as a
+    // function call or index access (e.g. `x (2)` parses as `x(2)`), so the
+    // ConstantNode must be left unparenthesized to keep the round-trip intact.
     if (args.length >= 2 && root.getIdentifier() === 'OperatorNode:multiply' &&
         root.implicit && parenthesis !== 'all' && implicit === 'hide') {
       for (let i = 1; i < result.length; ++i) {
         if (startsWithConstant(args[i], parenthesis) && !result[i - 1] &&
-            (parenthesis !== 'keep' || !isParenthesisNode(args[i - 1]))) {
+            (parenthesis !== 'keep' || !isParenthesisNode(args[i - 1])) &&
+            !endsWithSymbolOrAccessor(args[i - 1], parenthesis)) {
           result[i] = true
         }
       }
