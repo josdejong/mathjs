@@ -1,5 +1,6 @@
 import { factory } from '../../utils/factory.js'
 import { subtractNumber } from '../../plain/number/index.js'
+import { createUnitScalarHandler } from './unitArithmeticHelper.js'
 
 const name = 'subtractScalar'
 const dependencies = ['typed']
@@ -37,20 +38,6 @@ export const createSubtractScalar = /* #__PURE__ */ factory(name, dependencies, 
       return x.sub(y)
     },
 
-    'Unit, Unit': typed.referToSelf(self => (x, y) => {
-      if (x.value === null || x.value === undefined) {
-        throw new Error('Parameter x contains a unit with undefined value')
-      }
-      if (y.value === null || y.value === undefined) {
-        throw new Error('Parameter y contains a unit with undefined value')
-      }
-      if (!x.equalBase(y)) throw new Error('Units do not match')
-
-      const res = x.clone()
-      res.value =
-        typed.find(self, [res.valueType(), y.valueType()])(res.value, y.value)
-      res.fixPrefix = false
-      return res
-    })
+    'Unit, Unit': typed.referToSelf(self => createUnitScalarHandler(self, typed))
   })
 })
