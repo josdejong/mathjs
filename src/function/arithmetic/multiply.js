@@ -3,6 +3,7 @@ import { isMatrix } from '../../utils/is.js'
 import { arraySize } from '../../utils/array.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { validateMatrixMultiplicationDimensions } from './multiplyDimensionValidation.js'
 
 const name = 'multiply'
 const dependencies = [
@@ -18,55 +19,9 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
-  function _validateMatrixDimensions (size1, size2) {
-    // check left operand dimensions
-    switch (size1.length) {
-      case 1:
-        // check size2
-        switch (size2.length) {
-          case 1:
-            // Vector x Vector
-            if (size1[0] !== size2[0]) {
-              // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Vectors must have the same length')
-            }
-            break
-          case 2:
-            // Vector x Matrix
-            if (size1[0] !== size2[0]) {
-              // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Vector length (' + size1[0] + ') must match Matrix rows (' + size2[0] + ')')
-            }
-            break
-          default:
-            throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix B has ' + size2.length + ' dimensions)')
-        }
-        break
-      case 2:
-        // check size2
-        switch (size2.length) {
-          case 1:
-            // Matrix x Vector
-            if (size1[1] !== size2[0]) {
-              // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Matrix columns (' + size1[1] + ') must match Vector length (' + size2[0] + ')')
-            }
-            break
-          case 2:
-            // Matrix x Matrix
-            if (size1[1] !== size2[0]) {
-              // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Matrix A columns (' + size1[1] + ') must match Matrix B rows (' + size2[0] + ')')
-            }
-            break
-          default:
-            throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix B has ' + size2.length + ' dimensions)')
-        }
-        break
-      default:
-        throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix A has ' + size1.length + ' dimensions)')
-    }
-  }
+  // Matrix dimension validation is now in multiplyDimensionValidation.js
+  // for better cohesion and single responsibility.
+  // Inline calls replaced with validateMatrixMultiplicationDimensions()
 
   /**
    * C = A * B
@@ -798,7 +753,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
     'Array, Array': typed.referTo('Matrix, Matrix', selfMM => (x, y) => {
       // check dimensions
-      _validateMatrixDimensions(arraySize(x), arraySize(y))
+      validateMatrixMultiplicationDimensions(arraySize(x), arraySize(y))
 
       // use dense matrix implementation
       const m = selfMM(matrix(x), matrix(y))
@@ -812,7 +767,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       const ysize = y.size()
 
       // check dimensions
-      _validateMatrixDimensions(xsize, ysize)
+      validateMatrixMultiplicationDimensions(xsize, ysize)
 
       // process dimensions
       if (xsize.length === 1) {
