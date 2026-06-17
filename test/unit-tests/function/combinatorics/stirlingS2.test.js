@@ -26,6 +26,13 @@ describe('stirlingS2', function () {
     assert.deepStrictEqual(stirlingS2(bn(23), 9), bn('12320068811796900'))
     assert.deepStrictEqual(stirlingS2(bn(50), 14),
       bn('16132809270066494376125322988035691981158490930'))
+    // S(n,n) = 1 must return BigNumber when both inputs are BigNumber (n > 0)
+    // S(n,n) = 1 must return BigNumber when both inputs are BigNumber (n > 0)
+    assert.deepStrictEqual(stirlingS2(bn(1), bn(1)), bn(1))
+    assert.deepStrictEqual(stirlingS2(bn(3), bn(3)), bn(1))
+    assert.deepStrictEqual(stirlingS2(bn(7), bn(7)), bn(1))
+    // mixed: one BigNumber input still produces BigNumber when n===k
+    assert.deepStrictEqual(stirlingS2(bn(4), 4), bn(1))
   })
 
   it('should not work with non-integer and negative input', function () {
