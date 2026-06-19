@@ -2,14 +2,14 @@ import { deepForEach } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'multinomial'
-const dependencies = ['typed', 'add', 'divide', 'multiply', 'factorial', 'isInteger', 'isPositive']
+const dependencies = ['typed', 'add', 'divide', 'multiply', 'factorial', 'isInteger', 'isNegative']
 
-export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide, multiply, factorial, isInteger, isPositive }) => {
+export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide, multiply, factorial, isInteger, isNegative }) => {
   /**
    * Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities.
    *
    * multinomial takes one array of integers as an argument.
-   * The following condition must be enforced: every ai <= 0
+   * The following condition must be enforced: every ai >= 0
    *
    * Syntax:
    *
@@ -32,7 +32,7 @@ export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ 
       let denom = 1
 
       deepForEach(a, function (ai) {
-        if (!isInteger(ai) || !isPositive(ai)) {
+        if (!isInteger(ai) || isNegative(ai)) {
           throw new TypeError('Positive integer value expected in function multinomial')
         }
         sum = add(sum, ai)
