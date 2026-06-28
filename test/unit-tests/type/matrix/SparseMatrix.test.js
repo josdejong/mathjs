@@ -202,6 +202,26 @@ describe('SparseMatrix', function () {
     it('should throw an error when called with invalid datatype', function () {
       assert.throws(function () { console.log(new SparseMatrix([], 1)) })
     })
+
+    it('should create a Sparse Matrix from an array, boolean datatype', function () {
+      const m = new SparseMatrix([[true, false], [false, true]], 'boolean')
+      assert.deepStrictEqual(m._size, [2, 2])
+      // true entries are stored; false is the zero element and should NOT be stored
+      assert.deepStrictEqual(m._values, [true, true])
+      assert.deepStrictEqual(m._index, [0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2])
+      assert.strictEqual(m._datatype, 'boolean')
+    })
+
+    it('should round-trip boolean false through valueOf() with boolean datatype', function () {
+      const m = new SparseMatrix([[true, false]], 'boolean')
+      assert.deepStrictEqual(m.valueOf(), [[true, false]])
+    })
+
+    it('should round-trip boolean false through valueOf() with bigint datatype', function () {
+      const m = new SparseMatrix([[1n, 0n, 2n]], 'bigint')
+      assert.deepStrictEqual(m.valueOf(), [[1n, 0n, 2n]])
+    })
   })
 
   describe('size', function () {
