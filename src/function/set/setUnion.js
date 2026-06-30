@@ -2,9 +2,9 @@ import { flatten } from '../../utils/array.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'setUnion'
-const dependencies = ['typed', 'size', 'concat', 'subset', 'setIntersect', 'setSymDifference', 'Index']
+const dependencies = ['typed', 'size', 'concat', 'subset', 'setDifference', 'setIntersect', 'Index']
 
-export const createSetUnion = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, concat, subset, setIntersect, setSymDifference, Index }) => {
+export const createSetUnion = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, concat, subset, setDifference, setIntersect, Index }) => {
   /**
    * Create the union of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -35,7 +35,9 @@ export const createSetUnion = /* #__PURE__ */ factory(name, dependencies, ({ typ
       }
       const b1 = flatten(a1)
       const b2 = flatten(a2)
-      return concat(setSymDifference(b1, b2), setIntersect(b1, b2))
+      // union = elements only in a1 + elements in both + elements only in a2
+      // (all three sub-results are sorted by setDifference/setIntersect internally)
+      return concat(concat(setDifference(b1, b2), setIntersect(b1, b2)), setDifference(b2, b1))
     }
   })
 })

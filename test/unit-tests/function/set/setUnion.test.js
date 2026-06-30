@@ -9,10 +9,13 @@ describe('setUnion', function () {
     assert.deepStrictEqual(math.setUnion(['a', 'b'], ['c', 'd']), ['a', 'b', 'c', 'd'])
     assert.deepStrictEqual(math.setUnion([], [3, 4]), [3, 4])
     assert.deepStrictEqual(math.setUnion([], []), [])
+    // sets with overlapping elements must include all unique elements in sorted order
+    assert.deepStrictEqual(math.setUnion([1, 2, 3, 4], [3, 4, 5, 6]), [1, 2, 3, 4, 5, 6])
+    assert.deepStrictEqual(math.setUnion([1, 2], [2, 3]), [1, 2, 3])
   })
 
   it('should return the union of two multisets', function () {
-    assert.deepStrictEqual(math.setUnion([1, 1, 2, 3, 4, 4], [1, 2, 3, 4, 4, 4]), [1, 4, 1, 2, 3, 4, 4])
+    assert.deepStrictEqual(math.setUnion([1, 1, 2, 3, 4, 4], [1, 2, 3, 4, 4, 4]), [1, 1, 2, 3, 4, 4, 4])
   })
 
   it('should return the same type of output as the inputs', function () {
