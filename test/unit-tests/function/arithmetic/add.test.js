@@ -123,6 +123,13 @@ describe('add', function () {
       assert.deepStrictEqual(a4.size(), [2])
       assert.deepStrictEqual(a4.valueOf(), [math.bignumber(8), math.bignumber(10)])
     })
+
+    it('should promote when a scalar does not fit the matrix datatype (#3612)', function () {
+      const a = math.matrix([[1, 2]], 'dense', 'number')
+      const expected = math.matrix([[math.bignumber(4), math.bignumber(5)]])
+      assert.deepStrictEqual(add(a, math.bignumber(3)), expected)
+      assert.deepStrictEqual(add(math.bignumber(3), a), expected)
+    })
   })
 
   describe('SparseMatrix', function () {
