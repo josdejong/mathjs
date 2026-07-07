@@ -242,10 +242,36 @@ Get a string representation of the unit. The function
 will determine the best fitting prefix for the unit. See the [Format](../reference/functions/format.md)
 page for available options.
 
+When math.js determines a best prefix automatically, it uses the same heuristic as
+`unit.toBest()`:
+
+- The heuristic is applied only for single units with an integer power, and only
+  when `fixPrefix` is `false`.
+- First, math.js has a bias toward the current prefix: if the current prefix is in
+  a "good enough" range, it is kept.
+- Otherwise, it evaluates candidate prefixes and chooses the one minimizing
+  `abs(log10(abs(value) / (prefixValue * unitValue)^power) - offset)`.
+- In a tie, the shorter prefix name is chosen.
+- By default, only prefixes marked as scientific are considered during this search
+  (for example, `m`, `k`, `M`, but not `c`, `d`, `da`, `h`).
+
+The default `offset` is `1.2`. This means the heuristic prefers values around
+$10^{1.2} \approx 15.8$ rather than values around `1`. In practice this leads to
+results like preferring `0.6 m` over `600 mm`, and can also prefer tenths over
+hundreds depending on nearby prefix choices.
+
 ### unit.toBest(unitList, options)
 Converts a unit to the most appropriate display unit by choosing 
 from the list of passed units (unitList) or doing it automatically if no list is passed.
 It also accepts options. At the moment, the only available one is offset which is used for a better prefix calculation
+
+Without a `unitList`, `unit.toBest()` uses the same prefix heuristic described above
+for `unit.format([options])`, including:
+
+- a bias toward keeping the current prefix;
+- the default `offset: 1.2`, which favors values around $10^{1.2}$;
+- and candidate scoring in log space, which can prefer values in tenths over values
+  in the hundreds.
 
 ### unit.fromJSON(json)
 Revive a unit from a JSON object. Accepts
