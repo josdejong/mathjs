@@ -210,8 +210,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       index: 0, // current index in expr
       token: '', // current token
       tokenType: TOKENTYPE.NULL, // type of the token
-      nestingLevel: 0, // level of nesting inside parameters, used to ignore newline characters
-      conditionalLevel: null // when a conditional is being parsed, the level of the conditional is stored here
+      nestingLevel: 0 // level of nesting inside parameters, used to ignore newline characters
     }
   }
 
@@ -680,7 +679,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseAssignment (state) {
     let name, args, value, valid
 
-    const node = parseConditional(state)
+    const node = parseRange(state)
 
     if (state.token === '=') {
       if (isSymbolNode(node)) {
@@ -725,6 +724,51 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * parse range, "start:end", "start:step:end", ":", "start:", ":end", etc
+   * @return {Node} node
+   * @private
+   */
+  function parseRange (state) {
+    let node
+    const params = []
+
+    if (state.token === ':') {
+      // implicit start of range = 1 (one-based)
+      node = new ConstantNode(1)
+    } else {
+      // explicit start
+      node = parseConditional(state)
+    }
+
+    if (state.token === ':') {
+      params.push(node)
+
+      // parse step and end
+      while (state.token === ':' && params.length < 3) { // eslint-disable-line no-unmodified-loop-condition
+        getTokenSkipNewline(state)
+
+        if (state.token === ')' || state.token === ']' || state.token === ',' || state.token === '') {
+          // implicit end
+          params.push(new SymbolNode('end'))
+        } else {
+          // explicit end
+          params.push(parseConditional(state))
+        }
+      }
+
+      if (params.length === 3) {
+        // params = [start, step, end]
+        node = new RangeNode(params[0], params[2], params[1]) // start, end, step
+      } else { // length === 2
+        // params = [start, end]
+        node = new RangeNode(params[0], params[1]) // start, end
+      }
+    }
+
+    return node
+  }
+
+  /**
    * conditional operation
    *
    *     condition ? truePart : falsePart
@@ -738,26 +782,18 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     let node = parseLogicalOr(state)
 
     while (state.token === '?') { // eslint-disable-line no-unmodified-loop-condition
-      // set a conditional level, the range operator will be ignored as long
-      // as conditionalLevel === state.nestingLevel.
-      const prev = state.conditionalLevel
-      state.conditionalLevel = state.nestingLevel
       getTokenSkipNewline(state)
 
       const condition = node
-      const trueExpr = parseAssignment(state)
+      const trueExpr = parseConditional(state)
 
       if (state.token !== ':') throw createSyntaxError(state, 'False part of conditional expression expected')
 
-      state.conditionalLevel = null
       getTokenSkipNewline(state)
 
-      const falseExpr = parseAssignment(state) // Note: check for conditional operator again, right associativity
+      const falseExpr = parseConditional(state) // Note: check for conditional operator again, right associativity
 
       node = new ConditionalNode(condition, trueExpr, falseExpr)
-
-      // restore the previous conditional level
-      state.conditionalLevel = prev
     }
 
     return node
@@ -928,7 +964,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseConversion (state) {
     let node, name, fn, params
 
-    node = parseRange(state)
+    node = parseAddSubtract(state)
 
     const operators = {
       to: 'to',
@@ -946,63 +982,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         node = new OperatorNode('*', 'multiply', [node, new SymbolNode('in')], true)
       } else {
         // operator 'a to b' or 'a in b'
-        params = [node, parseRange(state)]
+        params = [node, parseAddSubtract(state)]
         node = new OperatorNode(name, fn, params)
-      }
-    }
-
-    return node
-  }
-
-  /**
-   * parse range, "start:end", "start:step:end", ":", "start:", ":end", etc
-   * @return {Node} node
-   * @private
-   */
-  function parseRange (state) {
-    let node
-    const params = []
-
-    if (state.token === ':') {
-      if (state.conditionalLevel === state.nestingLevel) {
-        // we are in the midst of parsing a conditional operator, so not
-        // a range, but rather an empty true-expr, which is considered a
-        // syntax error
-        throw createSyntaxError(
-          state,
-          'The true-expression of a conditional operator may not be empty')
-      } else {
-        // implicit start of range = 1 (one-based)
-        node = new ConstantNode(1)
-      }
-    } else {
-      // explicit start
-      node = parseAddSubtract(state)
-    }
-
-    if (state.token === ':' && (state.conditionalLevel !== state.nestingLevel)) {
-      // we ignore the range operator when a conditional operator is being processed on the same level
-      params.push(node)
-
-      // parse step and end
-      while (state.token === ':' && params.length < 3) { // eslint-disable-line no-unmodified-loop-condition
-        getTokenSkipNewline(state)
-
-        if (state.token === ')' || state.token === ']' || state.token === ',' || state.token === '') {
-          // implicit end
-          params.push(new SymbolNode('end'))
-        } else {
-          // explicit end
-          params.push(parseAddSubtract(state))
-        }
-      }
-
-      if (params.length === 3) {
-        // params = [start, step, end]
-        node = new RangeNode(params[0], params[2], params[1]) // start, end, step
-      } else { // length === 2
-        // params = [start, end]
-        node = new RangeNode(params[0], params[1]) // start, end
       }
     }
 

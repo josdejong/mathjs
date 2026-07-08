@@ -123,7 +123,6 @@ Operators                         | Description
 See section below                 | Implicit multiplication
 `*`, `/`, `.*`, `./`,`%`, `mod`   | Multiply, divide, modulus
 `+`, `-`                          | Add, subtract
-`:`                               | Range
 `to`, `in`                        | Unit conversion
 `<<`, `>>`, `>>>`                 | Bitwise left shift, bitwise right arithmetic shift, bitwise right logical shift
 `==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
@@ -134,6 +133,7 @@ See section below                 | Implicit multiplication
 `xor`                             | Logical xor
 `or`                              | Logical or (lazily evaluated)
 `?`, `:`                          | Conditional expression
+`:`                               | Range
 `=`                               | Assignment
 `,`                               | Parameter and column separator
 `;`                               | Row separator

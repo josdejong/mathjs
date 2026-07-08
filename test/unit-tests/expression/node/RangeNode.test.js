@@ -276,7 +276,7 @@ describe('RangeNode', function () {
 
     const n = new RangeNode(o1, o1, o2)
 
-    assert.strictEqual(n.toString(), '1 + 2:(1 < 2):1 + 2')
+    assert.strictEqual(n.toString(), '1 + 2:1 < 2:1 + 2')
   })
 
   it('should stringify a RangeNode with a RangeNode', function () {
@@ -372,6 +372,10 @@ describe('RangeNode', function () {
     const n = new RangeNode(start, end, step)
 
     assert.strictEqual(n.toTex(), '0:2:10')
+  })
+
+  it('should LaTeX a RangeNode with a ConditionalNode', function () {
+    assert.strictEqual(math.parse('(true ? 3 : -1) : 2 : 5').toTex(), '\\left(\\begin{cases} {3}, &\\quad{\\text{if }\\;true}\\\\{-1}, &\\quad{\\text{otherwise}}\\end{cases}\\right):2:5')
   })
 
   it('should LaTeX a RangeNode with custom toTex', function () {
