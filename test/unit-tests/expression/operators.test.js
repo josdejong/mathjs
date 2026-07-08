@@ -3,6 +3,7 @@ import math from '../../../src/defaultInstance.js'
 import { getAssociativity, getPrecedence, isAssociativeWith, getOperator } from '../../../src/expression/operators.js'
 const OperatorNode = math.OperatorNode
 const AssignmentNode = math.AssignmentNode
+const RangeNode = math.RangeNode
 const SymbolNode = math.SymbolNode
 const ConstantNode = math.ConstantNode
 const Node = math.Node
@@ -17,10 +18,14 @@ describe('operators', function () {
     const n2 = new OperatorNode('??', 'nullish', [a, b])
     const n3 = new OperatorNode('or', 'or', [a, b])
     const n4 = math.parse("M'")
+    const n5 = new RangeNode(a, b)
+    const n6 = math.parse('a ? b : c')
 
     assert.strictEqual(getPrecedence(n1, 'keep'), 0)
+    assert.strictEqual(getPrecedence(n5, 'keep'), 1)
+    assert.strictEqual(getPrecedence(n6, 'keep'), 2)
     assert.strictEqual(getPrecedence(n2, 'keep'), 17) // nullish coalescing
-    assert.strictEqual(getPrecedence(n3, 'keep'), 2) // logical or
+    assert.strictEqual(getPrecedence(n3, 'keep'), 3) // logical or
     assert.strictEqual(getPrecedence(n4, 'keep'), 19)
   })
 

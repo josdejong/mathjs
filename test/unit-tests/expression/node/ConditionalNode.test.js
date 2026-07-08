@@ -347,6 +347,10 @@ describe('ConditionalNode', function () {
     assert.strictEqual(n.toTex(), '\\begin{cases} { a=2}, &\\quad{\\text{if }\\;true}\\\\{\\mathrm{b}=3}, &\\quad{\\text{otherwise}}\\end{cases}')
   })
 
+  it('should LaTeX a ConditionalNode with RangeNode branches', function () {
+    assert.strictEqual(math.parse('a ? (b:c) : (d:e)').toTex(), '\\begin{cases} {\\left(\\mathrm{b}: c\\right)}, &\\quad{\\text{if }\\; a}\\\\{\\left( d: e\\right)}, &\\quad{\\text{otherwise}}\\end{cases}')
+  })
+
   it('should LaTeX a ConditionalNode with custom toTex', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {

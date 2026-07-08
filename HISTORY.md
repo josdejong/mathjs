@@ -2,6 +2,10 @@
 
 # unreleased changes since 15.1.0
 
+- Breaking: #3621 change the precedence of the range operator `:` to be between
+  assignment and conditional expressions. For example, `a:b==c:d` now parses as
+  `a:(b==c):d`, and `true ? a = 1 : 7` now requires parentheses as
+  `true ? (a = 1) : 7`.
 - Fix: #3578 interpret empty true-expr of conditional as error (#3581).
   Thanks @gwhitney.
 - Fix: #3597 added nullish type definitions (#3601). Thanks @Ayo1984.
