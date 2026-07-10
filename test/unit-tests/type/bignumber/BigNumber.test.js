@@ -32,4 +32,32 @@ describe('BigNumber', function () {
 
     assert.strictEqual(a.toJSON(), '2')
   })
+
+  it('should restore precision and rounding when a trigonometric method throws', function () {
+    const bigmath = math.create({ number: 'BigNumber', precision: 509 })
+    const BigNumber = bigmath.BigNumber
+
+    assert.throws(
+      () => bigmath.pi.div(2).tangent(),
+      error => {
+        assert.ok(error instanceof Error)
+        assert.match(error.message, /decimal\.js trigonometric functions are limited/)
+        assert.match(error.message, /configured precision is 509/)
+        return true
+      }
+    )
+    assert.strictEqual(BigNumber.precision, 509)
+    assert.strictEqual(BigNumber.rounding, Decimal.ROUND_HALF_UP)
+
+    bigmath.config({ precision: 100 })
+
+    const UnwrappedBigNumber = Decimal.clone({ precision: 100, modulo: Decimal.EUCLID })
+    const value = bigmath.pi.div(2)
+    const expected = new UnwrappedBigNumber(value.toString()).tan()
+
+    assert.strictEqual(BigNumber.precision, 100)
+    assert.strictEqual(bigmath.tan(value).toString(), expected.toString())
+
+    bigmath.config({ precision: 509 })
+  })
 })
