@@ -83,12 +83,16 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
           return x
         }
 
-        if (x < 0) {
-          const m = x % y
-          return m === 0n ? m : m + y
+        // floored modulo: the result takes the sign of the divisor, so that
+        // bigint matches the number, BigNumber and Fraction implementations
+        // (x - y * floor(x / y)). JavaScript's % takes the sign of the
+        // dividend, so correct it when the remainder and divisor disagree.
+        const m = x % y
+        if (m !== 0n && (m < 0n) !== (y < 0n)) {
+          return m + y
         }
 
-        return x % y
+        return m
       },
 
       'Fraction, Fraction': function (x, y) {

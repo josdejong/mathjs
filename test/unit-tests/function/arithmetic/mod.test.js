@@ -48,6 +48,13 @@ describe('mod', function () {
     assert.strictEqual(mod(-8n, 4n), 0n)
   })
 
+  it('should calculate the modulus of bigints for a negative divisor', function () {
+    assert.strictEqual(mod(10n, -4n), -2n)
+    assert.strictEqual(mod(-10n, -4n), -2n)
+    assert.strictEqual(mod(8n, -3n), -1n)
+    assert.strictEqual(mod(-8n, -3n), -2n)
+  })
+
   it('should handle precise approximation of float approximation', function () {
     approxEqual(mod(0.1, 0.01), 0)
     approxEqual(mod(0.15, 0.05), 0)
