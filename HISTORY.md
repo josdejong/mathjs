@@ -1,5 +1,20 @@
 # History
 
+# unpublished changes since 15.2.0
+
+- Docs: fix the browser example `rocket_trajectory_optimization.html` (#3654).
+  Thanks @dvd101x.
+
+# 2026-04-07, 15.2.0
+
+- Feat: Add amp-hour charge unit `Ah` (#3617). Thanks @adrfantini.
+- Feat: #3595 implement `num` and `den` functions returning the parts of
+  a fraction (#3605). Thanks @AnslemHack.
+- Fix: Provide TypeScript types for [and/or]TransformDependencies (#3639).
+  Thanks @NilsDietrich.
+- Fix: two security vulnerabilities that allowed executing arbitrary JavaScript 
+  via the expression parser. Thanks @CykuTW for finding and reporting them.
+
 # 2026-02-10, 15.1.1
 
 - Fix: #3631 Handle bigints in `compareNatural` (#3632). Thanks @Dheemanth07.

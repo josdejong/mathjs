@@ -844,6 +844,9 @@ export function stretch (arrayToStretch, sizeToStretch, dimToStretch) {
 */
 export function get (array, index) {
   if (!Array.isArray(array)) { throw new Error('Array expected') }
+  if (!Array.isArray(index)) {
+    throw new Error('Array expected for index')
+  }
   const size = arraySize(array)
   if (index.length !== size.length) { throw new DimensionError(index.length, size.length) }
   for (let x = 0; x < index.length; x++) { validateIndex(index[x], size[x]) }
