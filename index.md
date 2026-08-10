@@ -112,8 +112,8 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
   <div class="spacing"></div>
 
   <div class="sponsor">
-    Sponsored by <a href="https://www.testmuai.com/?utm_medium=sponsor&utm_source=mathjs" target="_blank">
-    <img alt="TestMu AI" src="./css/img/testmu-ai.svg" width="157" height="25" />
+    Sponsored by <a href="https://www.testmuai.com/?utm_medium=sponsor&utm_source=jos-de-jong" target="_blank">
+    <img alt="TestMu AI" src="./css/img/TestMu-AI-Black-Logo-512px.svg" width="157" height="25" />
     </a>
   </div>
 
