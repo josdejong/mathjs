@@ -5,6 +5,7 @@ import { approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
+const bignumber = math.bignumber
 const matrix = math.matrix
 const unit = math.unit
 const log2 = math.log2
@@ -38,7 +39,17 @@ describe('log2', function () {
   })
 
   it('should return the log base 2 of zero', function () {
-    approxDeepEqual(log2(0), -Infinity)
+    assert.deepStrictEqual(log2(0), -Infinity)
+    assert.deepStrictEqual(log2(0n), -Infinity)
+    assert.deepStrictEqual(log2(bignumber('0')), bignumber('-Infinity'))
+    assert.deepStrictEqual(log2(false), -Infinity)
+  })
+
+  it('should return the log base 2 of zero with predicable:true', function () {
+    assert.deepStrictEqual(mathPredictable.log2(0), -Infinity)
+    assert.deepStrictEqual(mathPredictable.log2(0n), NaN)
+    assert.deepStrictEqual(mathPredictable.log2(bignumber('0')), bignumber('-Infinity'))
+    assert.deepStrictEqual(mathPredictable.log2(false), -Infinity)
   })
 
   it('should return the log of positive bignumbers', function () {
