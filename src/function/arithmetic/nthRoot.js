@@ -11,16 +11,15 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'BigNumber',
-  'concat'
+  'BigNumber'
 ]
 
-export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, concat }) => {
+export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Calculate the nth root of a value.
@@ -49,7 +48,10 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
    * History:
    *
    *     v11.6  Support matrix broadcasting
-   *     v2     Handle Complex
+   *     v5.0.0 Improve consistency with sqrt and pow
+   *     v3.1.1 Support negative roots of zero
+   *     v2.4.1 Support negative values like `nthRoot(-2, 3)`
+   *     v2     Support roots of Complex
    *     v1.1   Created
    *
    * @param {number | BigNumber | Array | Matrix | Complex} a

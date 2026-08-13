@@ -92,12 +92,16 @@ describe('dotPow', function () {
       approxDeepEqual(dotPow([[1, 2], [0, 4]], 2), [[1, 4], [0, 16]])
       approxDeepEqual(dotPow([[1, 2], [0, 4]], 2.5), [[1, 5.65685424949238], [0, 32]])
       approxDeepEqual(dotPow([[1, 2, 3], [4, 5, 0]], 2), [[1, 4, 9], [16, 25, 0]])
+      // jagged array
+      approxDeepEqual(dotPow([[1, 2, 3], [4], [5, 6]], 2), [[1, 4, 9], [16], [25, 36]])
     })
 
     it('should elevate scalar .^ array', function () {
       approxDeepEqual(dotPow(2, [[1, 2], [0, 4]]), [[2, 4], [1, 16]])
       approxDeepEqual(dotPow(2.5, [[1, 2], [0, 4]]), [[2.5, 6.25], [1, 39.0625]])
       approxDeepEqual(dotPow(2, [[1, 2, 3], [4, 5, 0]]), [[2, 4, 8], [16, 32, 1]])
+      // jagged array
+      approxDeepEqual(dotPow(2, [[1, 2, 3], [4], [5, 6]]), [[2, 4, 8], [16], [32, 64]])
     })
 
     it('should elevate broadcastable arrays element-wise', function () {

@@ -4,12 +4,11 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 const name = 'to'
 const dependencies = [
   'typed',
-  'matrix',
-  'concat'
+  'matrix'
 ]
 
-export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, concat }) => {
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Change the unit of a value.
@@ -29,6 +28,12 @@ export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
    * See also:
    *
    *    unit
+   *
+   * History:
+   *
+   *    v11.6  Support matrix broadcasting
+   *    v2.2   Fix simplified unit conversions
+   *    v0.18  Renamed from `in` to `to`
    *
    * @param {Unit | Array | Matrix} x     The unit to be converted.
    * @param {Unit | Array | Matrix} unit  New unit. Can be a string like "cm"

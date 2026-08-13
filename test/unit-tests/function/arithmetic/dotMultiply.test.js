@@ -76,6 +76,10 @@ describe('dotMultiply', function () {
       approxDeepEqual(dotMultiply(3, a), [[3, 0], [9, 12]])
       approxDeepEqual(dotMultiply([1, 2, 3, 4], 2), [2, 4, 6, 8])
       approxDeepEqual(dotMultiply(2, [1, 2, 3, 4]), [2, 4, 6, 8])
+      // jagged array
+      const ja = [[1, 2, 3], [4], [5, 6]]
+      approxDeepEqual(dotMultiply(ja, 2), [[2, 4, 6], [8], [10, 12]])
+      approxDeepEqual(dotMultiply(2, ja), [[2, 4, 6], [8], [10, 12]])
     })
 
     it('should multiply broadcastable arrays element-wise', function () {

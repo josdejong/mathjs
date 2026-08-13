@@ -14,15 +14,14 @@ const dependencies = [
   'bignumber',
   'matrix',
   'DenseMatrix',
-  'concat',
   'SparseMatrix'
 ]
 
-export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, bignumber, matrix, DenseMatrix, concat, SparseMatrix }) => {
+export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, bignumber, matrix, DenseMatrix, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
   const compareUnits = createCompareUnits({ typed })
 
   /**
@@ -51,6 +50,14 @@ export const createSmaller = /* #__PURE__ */ factory(name, dependencies, ({ type
    * See also:
    *
    *    equal, unequal, smallerEq, smaller, smallerEq, compare
+   *
+   * History:
+   *
+   *    v14.1  Support bigints
+   *    v14    Return a sparse matrix for sparse inputs
+   *    v11.6  Support matrix broadcasting
+   *    v4     Compare strings by numerical value, allow tolerance in comparison
+   *    v3     Use nearly-equal comparison for BigNumbers
    *
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare

@@ -12,12 +12,10 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'subtractScalar',
-  'unaryMinus',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, subtractScalar, unaryMinus, DenseMatrix, concat }) => {
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, subtractScalar, DenseMatrix }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
@@ -25,7 +23,7 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Subtract two values, `x - y`.
@@ -52,6 +50,12 @@ export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * See also:
    *
    *    add
+   *
+   * History:
+   *
+   *    v11.6  Support matrix broadcasting
+   *    v5.0.3 Support matrices with a `datatype` defined
+   *    v0.8.2 Support complex - real mixed subtraction
    *
    * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x Initial value
    * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Value to subtract from `x`

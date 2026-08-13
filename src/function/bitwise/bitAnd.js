@@ -10,15 +10,14 @@ const name = 'bitAnd'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
-  'concat'
+  'equalScalar'
 ]
 
-export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, concat }) => {
+export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Bitwise AND two values, `x & y`.
@@ -37,6 +36,11 @@ export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * See also:
    *
    *    bitNot, bitOr, bitXor, leftShift, rightArithShift, rightLogShift
+   *
+   * History:
+   *
+   *    v11.6  Support matrix broadcasting
+   *    v1.2   Created
    *
    * @param  {number | BigNumber | bigint | Array | Matrix} x First value to and
    * @param  {number | BigNumber | bigint | Array | Matrix} y Second value to and

@@ -7,19 +7,17 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 const name = 'unequal'
 const dependencies = [
   'typed',
-  'config',
   'equalScalar',
   'matrix',
   'DenseMatrix',
-  'concat',
   'SparseMatrix'
 ]
 
-export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, equalScalar, matrix, DenseMatrix, concat, SparseMatrix }) => {
+export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, DenseMatrix, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Test whether two values are unequal.
@@ -66,11 +64,12 @@ export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * History:
    *
-   *    v13    Handle bigints
-   *    v11.6  Support matrix broadcasting
-   *    v4     Compare strings by their numeric values
-   *    v0.24  Handle `null` and `undefined`
-   *    v0.2   Created
+   *    v14.0.0 Return a sparse matrix for sparse inputs
+   *    v13     Handle bigints
+   *    v11.6   Support matrix broadcasting
+   *    v4      Compare strings by their numeric values
+   *    v0.24   Handle `null` and `undefined`
+   *    v0.2    Created
    *
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} x First value to compare
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} y Second value to compare

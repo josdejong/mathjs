@@ -12,16 +12,15 @@ const dependencies = [
   'matrix',
   'pow',
   'DenseMatrix',
-  'concat',
   'SparseMatrix'
 ]
 
-export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix, concat, SparseMatrix }) => {
+export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   const powScalarSignatures = {}
   for (const signature in pow.signatures) {
@@ -51,6 +50,12 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * See also:
    *
    *    pow, sqrt, multiply
+   *
+   * History:
+   *
+   *    v14.0.0  Return a sparse matrix for sparse inputs
+   *    v11.6    Support matrix broadcasting
+   *    v0.23    Renamed from `epow`
    *
    * @param  {number | BigNumber | Complex | Unit | Array | Matrix} x  The base
    * @param  {number | BigNumber | Complex | Unit | Array | Matrix} y  The exponent

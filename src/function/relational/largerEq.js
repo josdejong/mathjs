@@ -13,15 +13,14 @@ const dependencies = [
   'config',
   'matrix',
   'DenseMatrix',
-  'concat',
   'SparseMatrix'
 ]
 
-export const createLargerEq = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, DenseMatrix, concat, SparseMatrix }) => {
+export const createLargerEq = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, DenseMatrix, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
   const compareUnits = createCompareUnits({ typed })
 
   /**
@@ -46,6 +45,16 @@ export const createLargerEq = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * See also:
    *
    *    equal, unequal, smaller, smallerEq, larger, compare
+   *
+   * History:
+   *
+   *    v14.0.0 Return a sparse matrix for sparse inputs
+   *    v11.6  Support matrix broadcasting
+   *    v4     Compare strings by numerical value, allow tolerance in comparison
+   *    v3     Use nearly-equal comparison for BigNumbers
+   *    0.23   Renamed from `largereq`to `largerEq`
+   *    v0.15  Removed support for complex numbers
+   *    v0.2   Created
    *
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
