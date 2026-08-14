@@ -915,6 +915,33 @@ describe('Unit', function () {
       assert.strictEqual(unit1.units[0].power, 1)
     })
 
+    it('should parse units with parenthesized powers correctly', function () {
+      let unit1 = math.unit('m ^ (1)')
+      assert.strictEqual(unit1.equals(math.unit('m')), true)
+      assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.units[0].power, 1)
+
+      unit1 = Unit.parse('m^(-2)')
+      assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.units[0].power, -2)
+
+      unit1 = Unit.parse('s^(0.5)')
+      assert.strictEqual(unit1.units[0].unit.name, 's')
+      assert.strictEqual(unit1.units[0].power, 0.5)
+
+      unit1 = Unit.parse('m ^ ( 2 )')
+      assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.units[0].power, 2)
+
+      unit1 = Unit.parse('m^2')
+      assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.units[0].power, 2)
+
+      unit1 = Unit.parse('m^-2')
+      assert.strictEqual(unit1.units[0].unit.name, 'm')
+      assert.strictEqual(unit1.units[0].power, -2)
+    })
+
     it('should parse expressions with nested parentheses correctly', function () {
       let unit1 = Unit.parse('8.314 kg (m^2 / (s^2 / (K^-1 / mol)))')
       approxEqual(unit1.value, 8.314)
@@ -975,6 +1002,8 @@ describe('Unit', function () {
       assert.throws(function () { Unit.parse('/meter') }, /Unexpected "\/"/)
       assert.throws(function () { Unit.parse('1 */ s') }, /Unexpected "\/"/)
       assert.throws(function () { Unit.parse('45 kg 34 m') }, /Unexpected "3"/)
+      assert.throws(function () { Unit.parse('m^()') }, SyntaxError)
+      assert.throws(function () { Unit.parse('m^(2') }, SyntaxError)
     })
 
     it('should throw an exception when parsing an invalid type of argument', function () {

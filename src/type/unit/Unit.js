@@ -357,11 +357,24 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       skipWhitespace()
       if (parseCharacter('^')) {
         skipWhitespace()
+        const hasParentheses = parseCharacter('(')
+        if (hasParentheses) {
+          skipWhitespace()
+        }
+
         const p = parseNumber()
         if (p === null) {
           // No valid number found for the power!
           throw new SyntaxError('In "' + str + '", "^" must be followed by a floating-point number')
         }
+
+        if (hasParentheses) {
+          skipWhitespace()
+          if (!parseCharacter(')')) {
+            throw new SyntaxError('Unmatched "(" in "' + text + '"')
+          }
+        }
+
         power *= p
       }
 
