@@ -430,13 +430,37 @@ q[q > 3 and r < 4]     # [4]
 
 ## Iterating
 
-Matrices contain functions `map` and `forEach` to iterate over all elements of
-the (multidimensional) matrix. The callback function of `map` and `forEach` has
-three parameters: `value` (the value of the currently iterated element),
+Math.js `Matrix` instances implement the JavaScript iterable protocol. A
+`for...of` loop yields an object containing the current `value` and its `index`.
+Unlike `forEach`, a `for...of` loop can stop early with `break`:
+
+```js
+const a = math.matrix([[4, 7], [2, 9]])
+let firstAboveFive
+
+for (const { value, index } of a) {
+  if (value > 5) {
+    firstAboveFive = { value, index }
+    break
+  }
+}
+
+console.log(firstAboveFive) // { value: 7, index: [0, 1] }
+```
+
+The iterator of a dense matrix visits every element. The iterator of a sparse
+matrix visits only stored entries, matching `matrix.forEach(callback, true)`.
+Regular JavaScript arrays keep their native iteration behavior and yield their
+top-level elements instead of `{ value, index }` objects.
+
+Matrices also contain functions `map` and `forEach` to iterate over all elements
+of the (multidimensional) matrix. The callback function of `map` and `forEach`
+has three parameters: `value` (the value of the currently iterated element),
 `index` (an array with the index value for each dimension), and `matrix` (the
 matrix being iterated). This syntax is similar to the `map` and `forEach`
 functions of native JavaScript Arrays, except that the index is no number but
-an Array with numbers for each dimension.
+an Array with numbers for each dimension. A `forEach` callback's return value
+is ignored, so it cannot be used to stop iteration early.
 
 ```js
 const a = math.matrix([[0, 1], [2, 3], [4, 5]])
