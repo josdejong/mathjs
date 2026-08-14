@@ -208,6 +208,19 @@ Get a string representation of the Unit, with optional formatting options.
 ### unit.toBest(unitList, options) ⇒ <code>Unit</code>
 Converts a unit to the most appropriate display unit with optional unitList and options.
 
+When `unitList` is omitted, this method picks a prefix using a heuristic:
+
+- It only applies to single units with integer powers and when `fixPrefix` is `false`.
+- It first biases toward the current prefix. If the current prefix is in a
+  "good enough" range, it is kept.
+- Otherwise, it evaluates candidate prefixes by minimizing
+  `abs(log10(abs(value) / (prefixValue * unitValue)^power) - offset)`.
+- The default `offset` is `1.2`, so values around $10^{1.2} \approx 15.8$ are
+  preferred over values around `1`.
+- This can produce outcomes like preferring `0.6 m` over `600 mm`, and in general
+  can favor values in tenths over values in the hundreds.
+- In a tie, the shorter prefix name is chosen.
+
 **Kind**: instance method of <code>Unit</code>
 **Returns**: <code>Unit</code>  
 
