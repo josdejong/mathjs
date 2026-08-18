@@ -579,7 +579,7 @@ export function cleanup (outputPath, outputRoot) {
  *     giving the relevant information
  */
 export function collectDocs (functionNames, inputPath) {
-  function normalizeWindowsPath(path) {
+  function normalizeWindowsPath (path) {
     return path.replace(/\\/g, '/')
   }
 
