@@ -33,6 +33,10 @@ describe('ParenthesisNode', function () {
     assert.strictEqual(n.compile().evaluate.toString(), a.compile().evaluate.toString())
   })
 
+  it('should resolve a ParenthesisNode', function () {
+    // TODO
+  })
+
   it('should filter a ParenthesisNode', function () {
     const a = new ConstantNode(1)
     const n = new ParenthesisNode(a)

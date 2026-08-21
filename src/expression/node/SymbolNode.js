@@ -1,5 +1,6 @@
 import { escape } from '../../utils/string.js'
 import { getSafeProperty } from '../../utils/customs.js'
+import { isNode } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { toSymbol } from '../../utils/latex.js'
 
@@ -7,10 +8,11 @@ const name = 'SymbolNode'
 const dependencies = [
   'math',
   '?Unit',
-  'Node'
+  'Node',
+  'ConstantNode'
 ]
 
-export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ math, Unit, Node }) => {
+export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ math, Unit, Node, ConstantNode, parse }) => {
   /**
    * Check whether some name is a valueless unit like "inch".
    * @param {string} name
@@ -40,6 +42,35 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
 
     get type () { return 'SymbolNode' }
     get isSymbolNode () { return true }
+
+    /**
+     * TODO
+     * @param {*} scope
+     * @param {*} within
+     * @returns
+     */
+    resolve (scope, within = new Set()) {
+      if (within.has(this.name)) {
+        const variables = Array.from(within).join(', ')
+        throw new ReferenceError(
+          `recursive loop of variable definitions among {${variables}}`
+        )
+      }
+
+      const value = scope.get(this.name)
+
+      if (isNode(value)) {
+        const nextWithin = new Set(within)
+        nextWithin.add(this.name)
+        return value.resolve(scope, nextWithin)
+      } else if (typeof value === 'number') {
+        return math.parse(String(value))
+      } else if (value !== undefined) {
+        return new ConstantNode(value)
+      } else {
+        return this
+      }
+    }
 
     /**
      * Compile a node into a JavaScript function.

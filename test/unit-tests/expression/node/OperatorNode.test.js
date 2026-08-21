@@ -45,6 +45,10 @@ describe('OperatorNode', function () {
     assert.strictEqual(add23.compile().evaluate(), 5)
   })
 
+  it('should resolve an OperatorNode', function () {
+    // TODO
+  })
+
   it('should test whether a unary or binary operator', function () {
     const n1 = new OperatorNode('-', 'unaryMinus', [two])
     assert.strictEqual(n1.isUnary(), true)
