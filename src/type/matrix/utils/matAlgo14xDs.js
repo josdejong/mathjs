@@ -33,12 +33,19 @@ export const createMatAlgo14xDs = /* #__PURE__ */ factory(name, dependencies, ({
 
     // process data types
     if (typeof adt === 'string') {
-      // datatype
-      dt = adt
-      // convert b to the same datatype
-      b = typed.convert(b, dt)
-      // callback
-      cf = typed.find(callback, [dt, dt])
+      // Take the datatype fast-path only when the scalar converts into the
+      // matrix's datatype. When it cannot (e.g. a BigNumber scalar and a
+      // `number` matrix), fall through to the generic callback so the values
+      // promote as usual instead of throwing on the conversion.
+      let converted
+      try {
+        converted = typed.convert(b, adt)
+      } catch {}
+      if (converted !== undefined) {
+        b = converted
+        dt = adt
+        cf = typed.find(callback, [dt, dt])
+      }
     }
 
     // populate cdata, iterate through dimensions
