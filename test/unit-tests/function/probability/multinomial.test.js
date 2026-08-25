@@ -15,6 +15,16 @@ describe('multinomial', function () {
     assert.deepStrictEqual(multinomial([math.bignumber(10), math.bignumber(1), math.bignumber(2)]), math.bignumber(858))
   })
 
+  it('should allow zero values (0! = 1), consistent with combinations', function () {
+    assert.strictEqual(multinomial([0]), 1)
+    assert.strictEqual(multinomial([3, 0]), 1)
+    assert.strictEqual(multinomial([2, 0, 1]), 3)
+    assert.strictEqual(multinomial([0, 4, 4]), 70)
+    // multinomial([k, n - k]) must agree with combinations(n, k)
+    assert.strictEqual(multinomial([5, 0]), math.combinations(5, 5))
+    assert.deepStrictEqual(multinomial([math.bignumber(3), math.bignumber(0)]), math.bignumber(1))
+  })
+
   it('should not work with non-integer and negative input', function () {
     assert.throws(function () { multinomial([0.5, 3]) }, TypeError)
     assert.throws(function () { multinomial([math.bignumber(3), math.bignumber(0.5)]) }, TypeError)

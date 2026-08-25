@@ -2,6 +2,9 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: `multinomial` threw a `TypeError` on arrays containing a zero, like
+  `multinomial([2, 0, 1])`. Zero is a valid count (`0! = 1`), consistent with
+  `combinations` and `factorial`.
 - Docs: fix the browser example `rocket_trajectory_optimization.html` (#3654).
   Thanks @dvd101x.
 
