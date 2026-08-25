@@ -271,7 +271,7 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
     }
     // swap indices in permutation vectors (condition x < y)!
     const swapIndeces = function (x, y) {
-      // find pv indeces getting data from x and y
+      // find pv indices getting data from x and y
       const kx = pvOc[x]
       const ky = pvOc[y]
       // update permutation vector current -> original

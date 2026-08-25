@@ -7,7 +7,7 @@ export const createFibonacciHeapClass = /* #__PURE__ */ factory(name, dependenci
   const oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0)
 
   /**
-   * Fibonacci Heap implementation, used interally for Matrix math.
+   * Fibonacci Heap implementation, used internally for Matrix math.
    * @class FibonacciHeap
    * @constructor FibonacciHeap
    */

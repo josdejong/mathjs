@@ -137,11 +137,11 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
        *  * Initially Q = I and R = A.
        *  * Household matrix is a reflection in a plane normal to v which
        *    will zero out all but the top right element in R.
-       *  * Appplying reflection to both Q and R will not change product.
+       *  * Applying reflection to both Q and R will not change product.
        *  * Repeat this process on the (1,1) minor to get R as an upper
        *    triangular matrix.
        *  * Reflections leave the magnitude of the columns of Q unchanged
-       *    so Q remains othoganal.
+       *    so Q remains orthogonal.
        *
        */
 
@@ -174,7 +174,7 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
         let s
 
         /*
-         * tau and w have been choosen so that
+         * tau and w have been chosen so that
          *
          * 2 * v * tranpose(v) = tau * w * tranpose(w)
          */

@@ -437,7 +437,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
               vars.unshift(res)
               res = foldOp(fn, vars, makeNode, options)
             } else {
-              // we won't change the children order since it's not neccessary
+              // we won't change the children order since it's not necessary
               res = foldOp(fn, args, makeNode, options)
             }
           } else {
@@ -452,7 +452,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         return res
       }
       case 'ParenthesisNode':
-        // remove the uneccessary parenthesis
+        // remove the unnecessary parenthesis
         return foldFraction(node.content, options)
       case 'AccessorNode':
         return _foldAccessor(
