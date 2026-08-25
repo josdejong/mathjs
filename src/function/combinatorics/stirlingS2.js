@@ -92,7 +92,7 @@ export const createStirlingS2 = /* #__PURE__ */ factory(name, dependencies, (
         const prev = cache[m - 1]
         for (let i = row.length; i <= m && i <= nk; ++i) {
           if (i === m) {
-            row[i] = 1
+            row[i] = make(1)
           } else {
             row[i] = addScalar(multiplyScalar(make(i), prev[i]), prev[i - 1])
           }
