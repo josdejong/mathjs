@@ -207,4 +207,8 @@ describe('and', function () {
     const expression = math.parse('and(1,2)')
     assert.strictEqual(expression.toTex(), '\\left(1\\wedge2\\right)')
   })
+
+  it('should LaTeX and with boolean arguments, keeping spaces around the operator', function () {
+    assert.strictEqual(math.parse('true and false').toTex(), ' true\\wedge false')
+  })
 })

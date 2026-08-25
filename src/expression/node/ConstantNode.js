@@ -171,6 +171,10 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
         case 'Fraction':
           return this.value.toLatex()
 
+        case 'boolean': {
+          return ' ' + value
+        }
+
         default:
           return value
       }
