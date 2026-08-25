@@ -110,7 +110,7 @@ export const createCsLu = /* #__PURE__ */ factory(name, dependencies, ({ abs, di
         if (pinv[i] < 0) {
           // absolute value of x[i]
           const xabs = abs(x[i])
-          // check absoulte value is greater than pivot value
+          // check absolute value is greater than pivot value
           if (larger(xabs, a)) {
             // largest pivot candidate so far
             a = xabs

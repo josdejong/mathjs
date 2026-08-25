@@ -7,7 +7,7 @@ export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   /**
    * Calculate the inverse sine of a value.
    *
-   * To avoid confusion with the matric arcsine, this function does not apply
+   * To avoid confusion with the matrix arcsine, this function does not apply
    * to matrices.
    *
    * Syntax:

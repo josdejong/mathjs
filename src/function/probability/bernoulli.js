@@ -82,7 +82,7 @@ function _bernoulli (index, promote, A, plus, times, divide) {
   // We proceed as in https://math.stackexchange.com/a/2844337
   // (by no means the most efficient, but very simple to implement)
   // A cache entry consists of a triple
-  // [cotangent coefficient a_n, prefactor, Bernouilli number B_2n]
+  // [cotangent coefficient a_n, prefactor, Bernoulli number B_2n]
   const one = promote(1)
   if (A.length === 1) {
     A.push([

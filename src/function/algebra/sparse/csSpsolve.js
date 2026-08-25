@@ -23,7 +23,7 @@ export const createCsSpsolve = /* #__PURE__ */ factory(name, dependencies, ({ di
    * @param {Number}  k               The kth column in B
    * @param {Array}   xi              The nonzero pattern xi[top] .. xi[n - 1], an array of size = 2 * n
    *                                  The first n entries is the nonzero pattern, the last n entries is the stack
-   * @param {Array}   x               The soluton to the linear system G * x = b
+   * @param {Array}   x               The solution to the linear system G * x = b
    * @param {Array}   pinv            The inverse row permutation vector, must be null for L * x = b
    * @param {boolean} lo              The lower (true) upper triangular (false) flag
    *
@@ -57,7 +57,7 @@ export const createCsSpsolve = /* #__PURE__ */ factory(name, dependencies, ({ di
       const J = pinv ? pinv[j] : j
       // check column J is empty
       if (J < 0) { continue }
-      // column value indeces in G, p0 <= p < p1
+      // column value indices in G, p0 <= p < p1
       p0 = gptr[J]
       p1 = gptr[J + 1]
       // x(j) /= G(j,j)
