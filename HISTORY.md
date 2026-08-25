@@ -1900,12 +1900,12 @@ Non breaking changes:
 
 - Implement support for 3 or more arguments for operators `+` and `*` in
   `derivative`. Thanks @HarrySarson. See #1002.
-- Fixed `simplify` evalution of `simplify` of functions with more than two
+- Fixed `simplify` evaluation of `simplify` of functions with more than two
   arguments wrongly: `simplify('f(x, y, z)') evaluated to`f(f(x, y), z)`
   instead of `f(x, y, z)`. Thanks @joelhoover.
 - Fixed `simplify` throwing an error in some cases when simplifying unknown
   functions, for example `simplify('f(4)')`. Thanks @joelhoover.
-- Fixed #1013: `simplify` wrongly simplifing some expressions containing unary
+- Fixed #1013: `simplify` wrongly simplifying some expressions containing unary
   minus, like `0 - -x`. Thanks @joelhoover.
 - Fixed an error in an example in the documentation of `xor`. Thanks @denisx.
 
@@ -1936,8 +1936,8 @@ Non breaking changes:
 - Fixed #975: a wrong example in the docs of lusolve.
 - Fixed #983: `pickRandom` returning an array instead of single value
   when input was an array with just one value. Clarified docs.
-- Fixed #969: preven issues with yarn autoclean by renaming an
-  interally used folder "docs" to "embeddedDocs".
+- Fixed #969: prevent issues with yarn autoclean by renaming an
+  internally used folder "docs" to "embeddedDocs".
 
 ## 2017-11-18, version 3.17.0
 
