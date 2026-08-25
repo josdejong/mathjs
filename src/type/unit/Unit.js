@@ -2255,6 +2255,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       offset: 0,
       reciprocal: true
     },
+    rpm: {
+      name: 'rpm',
+      base: BASE_UNITS.FREQUENCY,
+      prefixes: PREFIXES.NONE,
+      value: 1 / 60,
+      offset: 0,
+      reciprocal: true
+    },
 
     // Angle
     rad: {
