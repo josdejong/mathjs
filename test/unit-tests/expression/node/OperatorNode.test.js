@@ -693,6 +693,35 @@ describe('OperatorNode', function () {
     }
   })
 
+  it('should not parenthesize a ConstantNode in an implicit multiplication when the preceding factor is a SymbolNode or AccessorNode', function () {
+    // A leading SymbolNode or AccessorNode followed by a parenthesized
+    // ConstantNode reparses as a function call / index access instead of an
+    // implicit multiplication, e.g. "x (2)" parses as the call "x(2)".
+    // Therefore the ConstantNode must not be parenthesized in those cases.
+    const xtimes2 = new OperatorNode('*', 'multiply', [xsym, two], true)
+    const abtimes2 = new OperatorNode('*', 'multiply',
+      [new OperatorNode('*', 'multiply', [asym, bsym], true), two], true)
+    const accessor = math.parse('A[1]')
+    const accessorTimes2 = new OperatorNode('*', 'multiply', [accessor, two], true)
+
+    for (const paren of ['auto', 'keep']) {
+      for (const expr of [xtimes2, abtimes2, accessorTimes2]) {
+        const estring = expr.toString({ parenthesis: paren, implicit: 'hide' })
+        const reparsed = math.parse(estring)
+        // Parsing the serialized form must reproduce the exact same grouping
+        assert.strictEqual(
+          reparsed.toString({ parenthesis: 'all' }),
+          expr.toString({ parenthesis: 'all' }),
+          `round-trip mismatch for ${estring} (parenthesis: ${paren})`)
+      }
+    }
+
+    // Spot-check the concrete serialized strings
+    assert.strictEqual(xtimes2.toString({ implicit: 'hide' }), 'x 2')
+    assert.strictEqual(abtimes2.toString({ implicit: 'hide' }), 'a b 2')
+    assert.strictEqual(accessorTimes2.toString({ implicit: 'hide' }), 'A[1] 2')
+  })
+
   it('should HTML implicit multiplications between ConstantNodes with parentheses', function () {
     const z = math.parse('(3)x')
     const a = math.parse('(4)(4)(4)(4)')

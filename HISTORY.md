@@ -2,6 +2,10 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: `Node.toString` of an implicit multiplication no longer wraps a
+  `ConstantNode` that follows a `SymbolNode` or `AccessorNode` in parentheses,
+  which made the output reparse as a function call or index access
+  (for example `x 2` was stringified as `x (2)`, which parses as `x(2)`).
 - Docs: fix the browser example `rocket_trajectory_optimization.html` (#3654).
   Thanks @dvd101x.
 
