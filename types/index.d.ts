@@ -1343,6 +1343,8 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Right hand value
    * @returns Multiplication of x and y
    */
+  dotMultiply(x: Unit, y: MathNumericType[]): Unit[]
+  dotMultiply(x: MathNumericType[], y: Unit): Unit[]
   dotMultiply<T extends MathCollection>(x: T, y: MathType): T
   dotMultiply<T extends MathCollection>(x: MathType, y: T): T
   dotMultiply(x: Unit, y: MathType): Unit
@@ -1526,6 +1528,8 @@ export interface MathJsInstance extends MathJsFactory {
   multiply<T extends MathArray>(x: T[], y: T[]): T[]
   multiply<T extends MathArray>(x: T, y: T): MathScalarType
   multiply(x: Unit, y: Unit): Unit
+  multiply(x: Unit, y: MathNumericType[]): Unit[]
+  multiply(x: MathNumericType[], y: Unit): Unit[]
   multiply(x: number, y: number): number
   multiply(x: MathType, y: MathType, ...values: MathType[]): MathType
   multiply<T extends MathType>(x: T, y: T, ...values: T[]): T
