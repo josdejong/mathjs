@@ -989,7 +989,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       } else {
         // Multiple units or units with powers are formatted like this:
         // 5 (kg m^2) / (s^3 mol)
-        // Build an representation from the base units of the current unit system
+        // Build a representation from the base units of the current unit system
         let missingBaseDim = false
         for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
           const baseDim = BASE_DIMENSIONS[i]
@@ -1027,7 +1027,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
 
     // Multiple units or units with powers are formatted like this:
     // 5 (kg m^2) / (s^3 mol)
-    // Build an representation from the base units of the SI unit system
+    // Build a representation from the base units of the SI unit system
     for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       const baseDim = BASE_DIMENSIONS[i]
       if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
@@ -1098,7 +1098,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     strNum = strNum.substr(1)
     strDen = strDen.substr(1)
 
-    // Add parans for better copy/paste back into evaluate, for example, or for better pretty print formatting
+    // Add parentheses for better copy/paste back into evaluate, for example, or for better pretty print formatting
     if (nNum > 1 && nDen > 0) {
       strNum = '(' + strNum + ')'
     }
@@ -1193,7 +1193,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
  * @private
  */
   function formatBest (unit, options = {}) {
-    // Simplfy the unit list, unless it is valueless or was created directly in the
+    // Simplify the unit list, unless it is valueless or was created directly in the
     // constructor or as the result of to or toSI
     const simp = unit.skipAutomaticSimplification || unit.value === null
       ? unit.clone()
