@@ -1837,9 +1837,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'acre',
       base: BASE_UNITS.SURFACE,
       prefixes: PREFIXES.NONE,
-      value: 4046.86,
+      value: 4046.8564224,
       offset: 0
-    }, // 4046.86 m2
+    }, // 4046.8564224 m2 (4840 sqyd)
     hectare: {
       name: 'hectare',
       base: BASE_UNITS.SURFACE,
