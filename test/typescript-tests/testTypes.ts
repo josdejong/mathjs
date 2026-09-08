@@ -3061,6 +3061,55 @@ Statistics functions' return types
     number | BigNumber | bigint | Fraction | Complex | Unit
   >()
 
+  const sumArray = [
+    [1, 2, 3],
+    [4, 5, 6]
+  ]
+  const sumMatrix = math.matrix(sumArray)
+  expectTypeOf(math.sum(1, 2, 3)).toMatchTypeOf<number>()
+  expectTypeOf(math.sum([1, 2, 3])).toEqualTypeOf<number>()
+  expectTypeOf(math.sum(sumArray)).toEqualTypeOf<MathScalarType>()
+  expectTypeOf(math.sum(sumMatrix)).toEqualTypeOf<MathScalarType>()
+  expectTypeOf(math.sum([1, 2, 3], 0)).toEqualTypeOf<number>()
+  expectTypeOf(math.sum(sumArray, 0)).toEqualTypeOf<number[]>()
+  expectTypeOf(math.sum(sumArray, math.bignumber(1))).toEqualTypeOf<number[]>()
+  expectTypeOf(math.sum(sumMatrix, 0)).toEqualTypeOf<Matrix>()
+  expectTypeOf(math.sum(sumMatrix, math.bignumber(1))).toEqualTypeOf<Matrix>()
+  assert.deepStrictEqual(math.sum(sumMatrix, 0).toArray(), [5, 7, 9])
+
+  const sumNumberLiterals = math.sum(
+    [
+      [1, 2],
+      [3, 4]
+    ],
+    0
+  )
+  expectTypeOf(sumNumberLiterals).toEqualTypeOf<number[]>()
+  assert.deepStrictEqual(sumNumberLiterals, [4, 6])
+  const sumBigintLiterals = math.sum([[BigInt(1) as 1n, BigInt(2) as 2n]], 1)
+  expectTypeOf(sumBigintLiterals).toEqualTypeOf<bigint[]>()
+  assert.deepStrictEqual(sumBigintLiterals, [BigInt(3)])
+  expectTypeOf(math.sum(math.matrix<1 | 2>([[1, 2]]), 0)).toEqualTypeOf<
+    Matrix<number>
+  >()
+
+  const sumBigNumbers = [[math.bignumber(1), math.bignumber(2)]]
+  expectTypeOf(math.sum(sumBigNumbers, 0)).toEqualTypeOf<BigNumber[]>()
+  expectTypeOf(
+    math.sum(math.matrix<BigNumber>(sumBigNumbers), 0)
+  ).toEqualTypeOf<Matrix<BigNumber>>()
+
+  const sumArray3d = [sumArray, sumArray]
+  expectTypeOf(math.sum(sumArray3d, 0)).toEqualTypeOf<
+    MathScalarType | MathArray<MathScalarType>
+  >()
+  expectTypeOf(math.sum(math.matrix(sumArray3d), 0)).toEqualTypeOf<Matrix>()
+
+  const sumCollection = sumArray as MathCollection
+  expectTypeOf(math.sum(sumCollection, 0)).toEqualTypeOf<
+    MathScalarType | MathCollection
+  >()
+
   expectTypeOf(math.quantileSeq([1, 2, 3], 0.75)).toMatchTypeOf<number>()
   expectTypeOf(math.quantileSeq([1, 2, 3, 4, 5], [0.25, 0.75])).toMatchTypeOf<
     MathArray | MathScalarType
