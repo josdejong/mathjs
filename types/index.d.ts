@@ -13,6 +13,8 @@ export type NoLiteralType<T> = T extends number
       ? boolean
       : T
 
+type SumScalarType<T> = T extends bigint ? bigint : NoLiteralType<T>
+
 export type MathNumericType = number | BigNumber | bigint | Fraction | Complex
 export type MathScalarType = MathNumericType | Unit
 export type MathGeneric<T extends MathScalarType = MathNumericType> = T
@@ -3254,19 +3256,35 @@ export interface MathJsInstance extends MathJsFactory {
   sum(...args: MathScalarType[]): MathScalarType
   /**
    * @param A A single matrix
-   * @param dimension The sum over the selected dimension
    * @returns The sum of all values
    */
-  sum<T extends MathScalarType>(
-    A: T[] | T[][],
-    dimension?: number | BigNumber
-  ): T
+  sum<T extends MathScalarType>(A: T[] | T[][]): T
+  sum(A: MathCollection): MathScalarType
   /**
    * @param A A single matrix
-   * @param dimension The sum over the selected dimension
-   * @returns The sum of all values
+   * @param dimension The dimension along which to sum
+   * @returns The sums along the selected dimension
    */
-  sum(A: MathCollection, dimension?: number | BigNumber): MathScalarType
+  sum<T extends MathScalarType>(
+    A: T[],
+    dimension: number | BigNumber
+  ): SumScalarType<T>
+  sum<T extends MathScalarType>(
+    A: T[][],
+    dimension: number | BigNumber
+  ): SumScalarType<T>[]
+  sum<T extends MathScalarType>(
+    A: MathArray<T>,
+    dimension: number | BigNumber
+  ): SumScalarType<T> | MathArray<SumScalarType<T>>
+  sum<T extends MathScalarType>(
+    A: Matrix<T>,
+    dimension: number | BigNumber
+  ): Matrix<SumScalarType<T>>
+  sum(
+    A: MathCollection,
+    dimension: number | BigNumber
+  ): MathScalarType | MathCollection
 
   /**
    * Count the number of elements of a matrix, array or string.
