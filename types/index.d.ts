@@ -18,6 +18,16 @@ export type MathScalarType = MathNumericType | Unit
 export type MathGeneric<T extends MathScalarType = MathNumericType> = T
 export type MathArray<T = MathGeneric> = T[] | Array<MathArray<T>>
 export type MathCollection<T = MathGeneric> = MathArray<T> | Matrix<T>
+
+// Preserve the result container while allowing `any` to include scalar input.
+type NumericCollectionResult<T> = unknown extends T
+  ? boolean | MathCollection<boolean>
+  : T extends null | undefined
+    ? boolean
+    : T extends Matrix<unknown>
+      ? Matrix<boolean>
+      : MathArray<boolean>
+
 export type MathType = MathScalarType | MathCollection
 export type MathExpression = string | string[] | MathCollection
 
@@ -3743,11 +3753,19 @@ export interface MathJsInstance extends MathJsFactory {
    *  true is returned if the string contains a numeric value.
    * @param x Value to be tested
    * @returns Returns true when x is a number, BigNumber, bigint, Fraction, Boolean, or a String containing number.
-   * Returns false for other types.
+   * Returns false for other types. For Arrays and Matrices, returns an
+   * element-wise result with the same container type.
    * Throws an error in case of unknown types.
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  hasNumericValue(x: any): boolean | boolean[]
+  // Handle nullable input before collections when strictNullChecks is disabled.
+  hasNumericValue<T extends null | undefined>(x: T): NumericCollectionResult<T>
+  hasNumericValue<T extends MathCollection<unknown>>(
+    x: T
+  ): NumericCollectionResult<T>
+  hasNumericValue(
+    x: MathScalarType | string | boolean | MathNode | null | undefined
+  ): boolean
+  hasNumericValue(x: unknown): boolean | MathCollection<boolean>
 
   /**
    * Test whether a value is bounded
@@ -3803,11 +3821,16 @@ export interface MathJsInstance extends MathJsFactory {
    * element-wise in case of Array or Matrix input.
    * @param x Value to be tested
    * @returns Returns true when x is a number, BigNumber, bigint, Fraction, or
-   * boolean. Returns false for other types. Throws an error in case of
-   * unknown types.
+   * boolean. Returns false for other types. For Arrays and Matrices, returns
+   * an element-wise result with the same container type. Throws an error in
+   * case of unknown types.
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  isNumeric(x: any): x is number | BigNumber | bigint | Fraction | boolean
+  isNumeric<T extends null | undefined>(x: T): NumericCollectionResult<T>
+  isNumeric<T extends MathCollection<unknown>>(x: T): NumericCollectionResult<T>
+  isNumeric(
+    x: MathScalarType | string | boolean | MathNode | null | undefined
+  ): x is number | BigNumber | bigint | Fraction | boolean
+  isNumeric(x: unknown): boolean | MathCollection<boolean>
 
   /**
    * Test whether a value is positive: larger than zero. The function
@@ -7418,8 +7441,20 @@ export interface MathJsChain<TValue> {
    * element-wise in case of Array or Matrix input.
    */
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  isNumeric(this: MathJsChain<any>): MathJsChain<boolean>
+  isNumeric<T extends null | undefined>(
+    this: MathJsChain<T>
+  ): MathJsChain<NumericCollectionResult<T>>
+  isNumeric<T extends MathCollection<unknown>>(
+    this: MathJsChain<T>
+  ): MathJsChain<NumericCollectionResult<T>>
+  isNumeric(
+    this: MathJsChain<
+      MathScalarType | string | boolean | MathNode | null | undefined
+    >
+  ): MathJsChain<boolean>
+  isNumeric(
+    this: MathJsChain<unknown>
+  ): MathJsChain<boolean | MathCollection<boolean>>
 
   /**
    * Test whether a value is positive: larger than zero. The function
