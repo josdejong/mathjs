@@ -2719,6 +2719,123 @@ Factory Test
 }
 
 /**
+ * Numeric tests preserve collection results, including through chains.
+ */
+{
+  const math = create(all)
+  const values = [2, 'foo', false]
+  const nested = [
+    [2, 'foo'],
+    [false, math.complex(2, 3)]
+  ]
+  const expected = [
+    [true, false],
+    [true, false]
+  ]
+  const matrix = math.matrix([[2, math.complex(2, 3)]])
+
+  for (const test of [math.isNumeric, math.hasNumericValue]) {
+    expectTypeOf(test(2)).toEqualTypeOf<boolean>()
+    expectTypeOf(test('2')).toEqualTypeOf<boolean>()
+    expectTypeOf(test([])).toEqualTypeOf<MathArray<boolean>>()
+    expectTypeOf(test(values)).toEqualTypeOf<MathArray<boolean>>()
+    expectTypeOf(test(nested)).toEqualTypeOf<MathArray<boolean>>()
+    expectTypeOf(test(matrix)).toEqualTypeOf<Matrix<boolean>>()
+    assert.deepStrictEqual(test(values), [true, false, true])
+    assert.deepStrictEqual(test(nested), expected)
+    assert.deepStrictEqual(test(matrix).valueOf(), [[true, false]])
+
+    const checkUnion = (value: number | string[] | Matrix) => {
+      expectTypeOf(test(value)).toEqualTypeOf<
+        boolean | MathCollection<boolean>
+      >()
+    }
+    checkUnion(2)
+    checkUnion(['foo'])
+    checkUnion(math.matrix([2]))
+  }
+
+  // Without strictNullChecks, null and undefined infer the same way as any.
+  expectTypeOf(math.isNumeric(null)).toEqualTypeOf<
+    boolean | MathCollection<boolean>
+  >()
+  expectTypeOf(math.isNumeric(undefined)).toEqualTypeOf<
+    boolean | MathCollection<boolean>
+  >()
+  expectTypeOf(math.hasNumericValue(null)).toEqualTypeOf<
+    boolean | MathCollection<boolean>
+  >()
+  expectTypeOf(math.hasNumericValue(undefined)).toEqualTypeOf<
+    boolean | MathCollection<boolean>
+  >()
+
+  const checkScalar = (value: number | string) => {
+    if (math.isNumeric(value)) {
+      expectTypeOf(value).toEqualTypeOf<number>()
+    } else {
+      expectTypeOf(value).toEqualTypeOf<string>()
+    }
+  }
+  checkScalar(2)
+  checkScalar('foo')
+
+  const checkUnknown = (value: unknown) => {
+    expectTypeOf(math.isNumeric(value)).toEqualTypeOf<
+      boolean | MathCollection<boolean>
+    >()
+    expectTypeOf(math.hasNumericValue(value)).toEqualTypeOf<
+      boolean | MathCollection<boolean>
+    >()
+    expectTypeOf(math.chain(value).isNumeric().done()).toEqualTypeOf<
+      boolean | MathCollection<boolean>
+    >()
+    if (math.isNumeric(value)) {
+      // A truthy collection result does not imply that the input is numeric.
+      expectTypeOf(value).toBeUnknown()
+    }
+  }
+  checkUnknown(['foo'])
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const checkAny = (value: any) => {
+    expectTypeOf(math.isNumeric(value)).toEqualTypeOf<
+      boolean | MathCollection<boolean>
+    >()
+    expectTypeOf(math.hasNumericValue(value)).toEqualTypeOf<
+      boolean | MathCollection<boolean>
+    >()
+    expectTypeOf(math.chain(value).isNumeric().done()).toEqualTypeOf<
+      boolean | MathCollection<boolean>
+    >()
+    if (math.isNumeric(value)) {
+      expectTypeOf(value).toBeAny()
+    }
+  }
+  checkAny(['foo'])
+
+  const checkChainUnion = (value: number | string[] | Matrix) => {
+    expectTypeOf(math.chain(value).isNumeric().done()).toEqualTypeOf<
+      boolean | MathCollection<boolean>
+    >()
+  }
+  checkChainUnion(2)
+  checkChainUnion(['foo'])
+  checkChainUnion(matrix)
+
+  expectTypeOf(math.chain(2).isNumeric().done()).toEqualTypeOf<boolean>()
+  expectTypeOf(math.chain(values).isNumeric().done()).toEqualTypeOf<
+    MathArray<boolean>
+  >()
+  expectTypeOf(math.chain(matrix).isNumeric().done()).toEqualTypeOf<
+    Matrix<boolean>
+  >()
+  assert.deepStrictEqual(math.chain(nested).isNumeric().done(), expected)
+  assert.deepStrictEqual(math.chain(matrix).isNumeric().done().valueOf(), [
+    [true, false]
+  ])
+}
+
+/**
  * src/util/is functions
  */
 {
