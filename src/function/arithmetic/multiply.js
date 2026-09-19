@@ -761,7 +761,8 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
   }
 
   /**
-   * Multiply two or more values, `x * y`.
+   * Multiply two or more values, `x * y`. In a two-dimensional array or matrix,
+   * each top-level element is a row; matrix multiplication computes `x * y`.
    * For matrices, the matrix product is calculated.
    *
    * Syntax:
