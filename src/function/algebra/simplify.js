@@ -264,6 +264,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: '(n1*n2)^(-1) -> n2^(-1) * n1^(-1)',
       assuming: { multiply: { commutative: false } }
     },
+    // Distributing a power over the unit factor that 'n/n1 -> n*n1^-1' leaves
+    // behind produces 1^n. Without this rule that factor is never eliminated
+    // and accumulates a larger exponent on every pass, so simplification of a
+    // symbolic power of a reciprocal never converges. See #3693.
+    { l: '1^n', r: '1' },
 
     // expand nested exponentiation
     {
