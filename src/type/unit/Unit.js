@@ -513,6 +513,37 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Return the value with an offset when comparing units with different origins.
+   * Offsets only apply to single, first-power units, not derived units.
+   * @private
+   */
+  Unit.prototype._valueForComparison = function (other) {
+    if (this.value === null || this.units.length === 0 || this._isDerived() ||
+        this.units[0].unit.offset === 0) {
+      return this.value
+    }
+
+    const unit = this.units[0].unit
+    if (other.units.length === 1 && !other._isDerived()) {
+      const otherUnit = other.units[0].unit
+      // Keep the existing origin when it is shared, preserving small differences.
+      if (unit.value === otherUnit.value && unit.offset === otherUnit.offset) {
+        return this.value
+      }
+      const offset = multiplyScalar(unit.value, unit.offset)
+      const otherOffset = multiplyScalar(otherUnit.value, otherUnit.offset)
+      if (Number.isFinite(offset) && offset === otherOffset) {
+        return this.value
+      }
+    }
+
+    const convert = this._numberConverter()
+    const unitValue = convert(unit.value)
+    const offset = convert(unit.offset)
+    return addScalar(this.value, multiplyScalar(unitValue, offset))
+  }
+
+  /**
    * Denormalize a value, based on its currently set unit(s)
    * @memberof Unit
    * @param {number} value
@@ -631,7 +662,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {boolean} true if both units are equal
    */
   Unit.prototype.equals = function (other) {
-    return (this.equalBase(other) && equal(this.value, other.value))
+    return (this.equalBase(other) && equal(this._valueForComparison(other), other._valueForComparison(this)))
   }
 
   /**
