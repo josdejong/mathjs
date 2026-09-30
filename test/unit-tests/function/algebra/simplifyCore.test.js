@@ -58,6 +58,35 @@ describe('simplifyCore', function () {
     testSimplifyCore('5*x*3', '5 * x * 3', {}, { context: { multiply: { commutative: false } } })
   })
 
+  it('should preserve the argument order of associative function calls', function () {
+    const options = { context: { multiply: { commutative: false } } }
+    testSimplifyCore('multiply(A, B, C)', 'A * B * C', {}, options)
+    testSimplifyCore('multiply(A, B, C, D)', 'A * B * C * D', {}, options)
+    testSimplifyCore('add(a, b, c, d)', 'a + b + c + d')
+  })
+
+  it('should preserve the value of matrix products in function-call form', function () {
+    const scope = {
+      A: [[1, 2], [0, 1]],
+      B: [[2, 0], [0, 3]],
+      C: [[1, 0], [4, 1]],
+      D: [[0, 1], [1, 0]]
+    }
+    const options = { context: { multiply: { commutative: false } } }
+    for (const expr of ['multiply(A, B, C)', 'multiply(A, B, C, D)']) {
+      const expected = math.evaluate(expr, scope)
+      assert.deepStrictEqual(math.simplifyCore(expr, options).evaluate(scope), expected)
+      assert.deepStrictEqual(math.simplify(expr, {}, options).evaluate(scope), expected)
+    }
+  })
+
+  it('should not mutate function arguments when converting to operators', function () {
+    const node = math.parse('multiply(A, B, C, D)')
+    const original = node.cloneDeep()
+    math.simplifyCore(node)
+    assert.deepStrictEqual(node, original)
+  })
+
   it('should remove any trivial function', function () {
     testSimplifyCore('foo(y)', 'y', {}, { context: { foo: { trivial: true } } })
   })

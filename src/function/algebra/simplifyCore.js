@@ -127,15 +127,16 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
       const op = getOperator(node.name)
       if (op) {
         // Replace FunctionNode with a new OperatorNode
-        if (node.args.length > 2 && hasProperty(node, 'associative', context)) {
+        const args = node.args.slice()
+        if (args.length > 2 && hasProperty(node, 'associative', context)) {
           // unflatten into binary operations since that's what simplifyCore handles
-          while (node.args.length > 2) {
-            const last = node.args.pop()
-            const seclast = node.args.pop()
-            node.args.push(new OperatorNode(op, node.name, [last, seclast]))
+          while (args.length > 2) {
+            const last = args.pop()
+            const seclast = args.pop()
+            args.push(new OperatorNode(op, node.name, [seclast, last]))
           }
         }
-        node = new OperatorNode(op, node.name, node.args)
+        node = new OperatorNode(op, node.name, args)
       } else {
         return new FunctionNode(
           _simplifyCore(node.fn), node.args.map(n => _simplifyCore(n, options)))
