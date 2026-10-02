@@ -70,6 +70,10 @@ const correct4 = math.evaluate('8.314 (m^3 * Pa) / (mol * K)') // Unit 8.314 (m^
 
 In summary: be careful with implicit multiplication. In case of doubt, always use an explicit `*` and parenthesis.
 
+In expressions, `min` and `sec` refer to the minimum and secant functions, not
+the minute and second units. Use `minute` or `second` with `math.evaluate`, or
+use `math.unit('5 min')` and `math.unit('5 sec')` to parse those abbreviations.
+
 
 ## Calculations
 
