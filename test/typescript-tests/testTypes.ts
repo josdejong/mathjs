@@ -60,6 +60,31 @@ import {
 // 1) examples of how to use math.js in TypeScript
 // 2) tests for the TypeScript declarations provided by math.js
 
+{
+  const math = create(all)
+  const fraction = math.fraction(1, 3)
+  const complex = math.complex(0, 1)
+  const unit = math.unit(1, 'm')
+  for (const value of [fraction, complex, unit]) {
+    expectTypeOf(math.boolean(value)).toEqualTypeOf<boolean>()
+    expectTypeOf(math.chain(value).boolean()).toEqualTypeOf<
+      MathJsChain<boolean>
+    >()
+  }
+  expectTypeOf(math.not(fraction)).toEqualTypeOf<boolean | MathCollection>()
+  expectTypeOf(math.chain(fraction).not()).toEqualTypeOf<
+    MathJsChain<boolean | MathCollection>
+  >()
+  for (const name of ['and', 'or', 'xor'] as const) {
+    expectTypeOf(math[name](fraction, unit)).toEqualTypeOf<
+      boolean | MathCollection
+    >()
+    expectTypeOf(math.chain(fraction)[name](unit)).toEqualTypeOf<
+      MathJsChain<boolean | MathCollection>
+    >()
+  }
+}
+
 /*
 Basic usage examples
 */

@@ -699,14 +699,19 @@ export interface MathJsInstance extends MathJsFactory {
   bigint<T extends MathCollection>(x: T): T
 
   /**
-   * Create a boolean or convert a string or number to a boolean. In case
-   * of a number, true is returned for non-zero numbers, and false in case
-   * of zero. Strings can be 'true' or 'false', or can contain a number.
+   * Create a boolean or convert a string, numeric value, or unit to a boolean.
+   * In case of a number, true is returned for non-zero numbers, and false
+   * in case of zero. A fraction is true if its numerator is nonzero.
+   * A complex number is true if either component is nonzero. A unit is
+   * converted using its value, or false if it has no value.
+   * Strings can be 'true' or 'false', or can contain a number.
    * When value is a matrix, all elements will be converted to boolean.
    * @param x A value of any type
    * @returns The boolean value
    */
-  boolean(x: string | number | boolean | null): boolean
+  boolean(
+    x: string | number | BigNumber | Fraction | Complex | Unit | boolean | null
+  ): boolean
   boolean(x: MathCollection): MathCollection
 
   /**
@@ -1902,8 +1907,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   and(
-    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
-    y: number | BigNumber | bigint | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1913,7 +1918,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when input is a zero or empty value.
    */
   not(
-    x: number | BigNumber | bigint | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1938,8 +1943,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   or(
-    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
-    y: number | BigNumber | bigint | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1952,8 +1957,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   xor(
-    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
-    y: number | BigNumber | bigint | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /*************************************************************************
@@ -4938,13 +4943,18 @@ export interface MathJsChain<TValue> {
   bigint<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
 
   /**
-   * Create a boolean or convert a string or number to a boolean. In case
-   * of a number, true is returned for non-zero numbers, and false in case
-   * of zero. Strings can be 'true' or 'false', or can contain a number.
+   * Create a boolean or convert a string, numeric value, or unit to a boolean.
+   * In case of a number, true is returned for non-zero numbers, and false
+   * in case of zero. A fraction is true if its numerator is nonzero.
+   * A complex number is true if either component is nonzero. A unit is
+   * converted using its value, or false if it has no value.
+   * Strings can be 'true' or 'false', or can contain a number.
    * When value is a matrix, all elements will be converted to boolean.
    */
   boolean(
-    this: MathJsChain<string | number | boolean | null>
+    this: MathJsChain<
+      string | number | BigNumber | Fraction | Complex | Unit | boolean | null
+    >
   ): MathJsChain<boolean>
   boolean(this: MathJsChain<MathCollection>): MathJsChain<MathCollection>
 
@@ -6039,9 +6049,9 @@ export interface MathJsChain<TValue> {
    */
   and(
     this: MathJsChain<
-      number | BigNumber | bigint | Complex | Unit | MathCollection
+      number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
     >,
-    y: number | BigNumber | bigint | Complex | Unit | MathCollection
+    y: number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -6050,7 +6060,7 @@ export interface MathJsChain<TValue> {
    */
   not(
     this: MathJsChain<
-      number | BigNumber | bigint | Complex | Unit | MathCollection
+      number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
     >
   ): MathJsChain<boolean | MathCollection>
 
@@ -6072,9 +6082,9 @@ export interface MathJsChain<TValue> {
    */
   or(
     this: MathJsChain<
-      number | BigNumber | bigint | Complex | Unit | MathCollection
+      number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
     >,
-    y: number | BigNumber | bigint | Complex | Unit | MathCollection
+    y: number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -6085,9 +6095,9 @@ export interface MathJsChain<TValue> {
    */
   xor(
     this: MathJsChain<
-      number | BigNumber | bigint | Complex | Unit | MathCollection
+      number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
     >,
-    y: number | BigNumber | bigint | Complex | Unit | MathCollection
+    y: number | BigNumber | bigint | Fraction | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /*************************************************************************
