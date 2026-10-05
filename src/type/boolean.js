@@ -6,9 +6,12 @@ const dependencies = ['typed']
 
 export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
-   * Create a boolean or convert a string or number to a boolean.
+   * Create a boolean or convert a string, numeric value, or unit to a boolean.
    * In case of a number, `true` is returned for non-zero numbers, and `false` in
    * case of zero.
+   * A fraction is true if its numerator is nonzero.
+   * A complex number is true if either component is nonzero. A unit is
+   * converted using its value, or false if it has no value.
    * Strings can be `'true'` or `'false'`, or can contain a number.
    * When value is a matrix, all elements will be converted to boolean.
    *
@@ -35,7 +38,7 @@ export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ type
    *    v0.16    Added conversion from BigNumber
    *    v14.2.1  Added conversion from bigint
    *
-   * @param {string | number | boolean | Array | Matrix | null} value  A value of any type
+   * @param {string | number | BigNumber | Fraction | Complex | Unit | boolean | Array | Matrix | null} value  A value of any type
    * @return {boolean | Array | Matrix} The boolean value
    */
   return typed(name, {
@@ -58,6 +61,16 @@ export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ type
     BigNumber: function (x) {
       return !x.isZero()
     },
+
+    Fraction: function (x) {
+      return x.n !== 0n
+    },
+
+    Complex: function (x) {
+      return x.re !== 0 || x.im !== 0
+    },
+
+    Unit: typed.referToSelf(self => x => x.value === null || x.value === undefined ? false : self(x.value)),
 
     string: function (x) {
       // try case insensitive

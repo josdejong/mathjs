@@ -10,10 +10,11 @@ const dependencies = [
   'typed',
   'matrix',
   'DenseMatrix',
+  'not',
   'SparseMatrix'
 ]
 
-export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix, SparseMatrix }) => {
+export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix, not, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
@@ -48,8 +49,8 @@ export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *    v11.6   Support matrix broadcasting
    *    v1.2    Created
    *
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to check
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to check
    * @return {boolean | Array | Matrix}
    *            Returns true when one and only one input is defined with a nonzero/nonempty value.
    */
@@ -68,8 +69,14 @@ export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         return ((!x.isZero() && !x.isNaN()) !== (!y.isZero() && !y.isNaN()))
       },
 
+      'Fraction, Fraction | number | BigNumber': (x, y) => not(x) !== not(y),
+      'number | BigNumber, Fraction': (x, y) => not(x) !== not(y),
+
       'Unit, Unit': typed.referToSelf(self =>
-        (x, y) => self(x.value || 0, y.value || 0))
+        (x, y) => self(x.value || 0, y.value || 0)),
+
+      'Unit, number | BigNumber | bigint | Fraction | Complex | boolean': (x, y) => not(x) !== not(y),
+      'number | BigNumber | bigint | Fraction | Complex | boolean, Unit': (x, y) => not(x) !== not(y)
     },
     matrixAlgorithmSuite({
       SS: matAlgo07xSSf,

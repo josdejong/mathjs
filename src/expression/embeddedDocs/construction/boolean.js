@@ -6,7 +6,7 @@ export const booleanDocs = {
     'boolean(x)'
   ],
   description:
-      'Convert a string or number into a boolean.',
+      'Convert a string, number, BigNumber, Fraction, Complex, or Unit into a boolean.',
   examples: [
     'boolean(0)',
     'boolean(1)',

@@ -10,7 +10,8 @@ export const createAndTransform = /* #__PURE__ */ factory(name, dependencies, ({
 
   function andTransform (args, math, scope) {
     const condition1 = args[0].compile().evaluate(scope)
-    if (!isCollection(condition1) && !and(condition1, true)) {
+    // Check truth without mixing the operand's type with a boolean.
+    if (!isCollection(condition1) && !and(condition1, condition1)) {
       return false
     }
     const condition2 = args[1].compile().evaluate(scope)

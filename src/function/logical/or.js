@@ -10,10 +10,11 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'DenseMatrix'
+  'DenseMatrix',
+  'not'
 ]
 
-export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
+export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, not }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
@@ -48,8 +49,8 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
    *    v11.6  Support matrix broadcasting
    *    v1.2   Created
    *
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to check
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to check
    * @return {boolean | Array | Matrix}
    *            Returns true when one of the inputs is defined with a nonzero/nonempty value.
    */
@@ -68,8 +69,14 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
 
       'bigint, bigint': orNumber,
 
+      'Fraction, Fraction | number | BigNumber': (x, y) => !not(x) || !not(y),
+      'number | BigNumber, Fraction': (x, y) => !not(x) || !not(y),
+
       'Unit, Unit': typed.referToSelf(self =>
-        (x, y) => self(x.value || 0, y.value || 0))
+        (x, y) => self(x.value || 0, y.value || 0)),
+
+      'Unit, number | BigNumber | bigint | Fraction | Complex | boolean': (x, y) => !not(x) || !not(y),
+      'number | BigNumber | bigint | Fraction | Complex | boolean, Unit': (x, y) => !not(x) || !not(y)
     },
     matrixAlgorithmSuite({
       SS: matAlgo05xSfSf,

@@ -27,7 +27,7 @@ export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *
    *    and, or, xor
    *
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to check
    * @return {boolean | Array | Matrix}
    *            Returns true when input is a zero or empty value.
    */
@@ -45,6 +45,8 @@ export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed })
     },
 
     bigint: x => !x,
+
+    Fraction: x => x.n === 0n,
 
     Unit: typed.referToSelf(self => x => typed.find(self, x.valueType())(x.value)),
 
