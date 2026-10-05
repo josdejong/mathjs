@@ -46,8 +46,8 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    *    not, or, xor
    *
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to check
+   * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to check
    * @return {boolean | Array | Matrix}
    *            Returns true when both inputs are defined with a nonzero/nonempty value.
    */
@@ -66,8 +66,14 @@ export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
 
       'bigint, bigint': andNumber,
 
+      'Fraction, Fraction | number | BigNumber': (x, y) => !not(x) && !not(y),
+      'number | BigNumber, Fraction': (x, y) => !not(x) && !not(y),
+
       'Unit, Unit': typed.referToSelf(self =>
         (x, y) => self(x.value || 0, y.value || 0)),
+
+      'Unit, number | BigNumber | bigint | Fraction | Complex | boolean': (x, y) => !not(x) && !not(y),
+      'number | BigNumber | bigint | Fraction | Complex | boolean, Unit': (x, y) => !not(x) && !not(y),
 
       'SparseMatrix, any': typed.referToSelf(self => (x, y) => {
         // check scalar
