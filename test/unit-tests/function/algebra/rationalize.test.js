@@ -48,7 +48,75 @@ describe('rationalize', function () {
     assert.throws(function () { math.rationalize('x^2.5 - 2*x + 3') }, /There is a non-integer exponent/)
     assert.throws(function () { math.rationalize('x^x') }, /There is a non-integer exponent/)
     assert.throws(function () { math.rationalize('x^2.5') }, /There is a non-integer exponent/)
-    assert.throws(function () { math.rationalize('1/(x^(-2))') }, /There is a non-integer exponent/)
+    assert.throws(function () { math.rationalize('x^-2.5') }, /There is a non-integer exponent/)
+    assert.throws(function () { math.rationalize('1/(x^-2.5)') }, /There is a non-integer exponent/)
+    assert.throws(function () { math.rationalize('x^-y') }, /There is a non-integer exponent/)
+    assert.throws(function () { math.rationalize('x^n', { n: -2.5 }) }, /There is a non-integer exponent/)
+  })
+
+  it('processing negative integer exponents', function () {
+    for (const n of [1, 2, 3]) {
+      assert.strictEqual(stri(math.rationalize('x^-' + n)), n === 1 ? '1/x' : '1/x^' + n)
+      assert.strictEqual(stri(math.rationalize('1/(x^(-' + n + '))')), n === 1 ? 'x' : 'x^' + n)
+    }
+    assert.strictEqual(stri(math.rationalize('x^(1-3)')), '1/x^2')
+    assert.strictEqual(stri(math.rationalize('x^(-(-2))')), 'x^2')
+  })
+
+  it('processing negative integer exponents in nodes and scope', function () {
+    const parsed = math.parse('x^-2')
+    const constantExponent = new math.OperatorNode('^', 'pow', [
+      new math.SymbolNode('x'), new math.ConstantNode(-2)
+    ])
+    assert.strictEqual(stri(math.rationalize(parsed)), '1/x^2')
+    assert.strictEqual(stri(math.rationalize(constantExponent)), '1/x^2')
+    assert.strictEqual(stri(math.rationalize('x^n', { n: -2 })), '1/x^2')
+    assert.strictEqual(stri(math.rationalize(parsed)), '1/x^2')
+    assert.strictEqual(parsed.toString(), 'x ^ (-2)')
+    assert.strictEqual(constantExponent.args[1].value, -2)
+  })
+
+  it('processing negative powers of compound bases and reciprocals', function () {
+    assert.strictEqual(stri(math.rationalize('(x+1)^-2')), '1/(x^2+2*x+1)')
+    assert.strictEqual(stri(math.rationalize('(-x)^-2')), '1/x^2')
+    assert.strictEqual(stri(math.rationalize('(1/x)^-2')), 'x^2')
+    assert.strictEqual(stri(math.rationalize('1/(x^-2+1)')), 'x^2/(x^2+1)')
+    assert.strictEqual(stri(math.rationalize('x^-2+1')), '(x^2+1)/x^2')
+  })
+
+  it('preserving values of rational expressions with negative powers away from poles', function () {
+    for (const expr of ['x^-2', 'x^-3', '(x+1)^-2', '(1/x)^-2', 'x^-2+x^-3', '(x/y)^-2']) {
+      const original = math.parse(expr)
+      const rationalized = math.rationalize(original)
+      for (const x of [-3, -2, 1, 2, 3]) {
+        const scope = { x, y: 2 }
+        assert.ok(Math.abs(original.evaluate(scope) - rationalized.evaluate(scope)) < 1e-12, expr + ' at x=' + x)
+      }
+    }
+  })
+
+  it('returning details for negative integer exponents', function () {
+    assert.deepStrictEqual(objToStrings(math.rationalize('x^-2', true)), {
+      coefficients: '1',
+      denominator: 'x^2',
+      expression: '1/x^2',
+      numerator: '1',
+      variables: 'x'
+    })
+    assert.deepStrictEqual(objToStrings(math.rationalize('1/(x^n)', { n: -2 }, true)), {
+      coefficients: '0,0,1',
+      denominator: null,
+      expression: 'x^2',
+      numerator: 'x^2',
+      variables: 'x'
+    })
+    assert.deepStrictEqual(objToStrings(math.rationalize('(x+1)^-2', true)), {
+      coefficients: '1',
+      denominator: 'x^2+2*x+1',
+      expression: '1/(x^2+2*x+1)',
+      numerator: '1',
+      variables: 'x'
+    })
   })
 
   it('calling error', function () {
