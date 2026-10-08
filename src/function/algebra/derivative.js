@@ -1,4 +1,4 @@
-import { isConstantNode, typeOf } from '../../utils/is.js'
+import { isConstantNode, isFunctionNode, isNode, typeOf } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { safeNumberType } from '../../utils/number.js'
 
@@ -83,8 +83,35 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
       return res
     }
 
-    const res = _derivative(expr, isConstCached)
+    const res = _derivative(_resolveExpressions(expr, isConstCached), isConstCached)
     return options.simplify ? simplify(res) : res
+  }
+
+  /**
+   * Replace function calls that return an expression, like a nested
+   * `derivative("x^2", "x")` or `parse("x^2")`, with the expression that they
+   * return. Such a call has constant arguments, but its result can depend on
+   * the variable that we are differentiating over.
+   *
+   * A function call that cannot be evaluated, for example because it
+   * contains an undefined variable like `log(y)`, is left as is.
+   *
+   * @param  {Node} expr
+   * @param  {function} isConst  Function that tells if a node is constant
+   * @return {Node}  The expression with the function calls replaced
+   */
+  function _resolveExpressions (expr, isConst) {
+    return expr.transform(function (node) {
+      if (isFunctionNode(node) && isConst(node)) {
+        try {
+          const value = node.evaluate()
+          if (isNode(value)) {
+            return value
+          }
+        } catch {}
+      }
+      return node
+    })
   }
 
   function parseIdentifier (string) {
