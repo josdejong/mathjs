@@ -70,6 +70,13 @@ const correct4 = math.evaluate('8.314 (m^3 * Pa) / (mol * K)') // Unit 8.314 (m^
 
 In summary: be careful with implicit multiplication. In case of doubt, always use an explicit `*` and parenthesis.
 
+The unit parser accepts parentheses for grouping, but exponents must follow an individual unit, not a parenthesized group. For example, `math.unit('(m/s)^2')` throws a syntax error. Apply the exponent to each unit instead, or use the expression parser:
+
+```js
+math.unit('m^2/s^2')       // Unit m^2 / s^2
+math.evaluate('(m/s)^2')   // Unit m^2 / s^2
+```
+
 
 ## Calculations
 
