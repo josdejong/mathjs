@@ -140,6 +140,23 @@ A common case is to implement a new function. This involves the following steps:
 - Ensure the code style is ok by running `npm run lint` (run `npm run format` to fix the code style automatically).
 
 
+The Number bundle (`./src/factoriesNumber.js`) is intended to stay lightweight,
+supporting JavaScript primitive numbers, booleans, and strings. Before adding a
+function to this bundle:
+
+- Avoid dependencies on heavyweight data types such as `DenseMatrix`,
+  `SparseMatrix`, `Complex`, `BigNumber`, and `Unit`. A factory shared with the
+  full bundle can use optional dependencies (prefixed with `?`) for types that
+  are unavailable in the Number bundle. Use a separate lightweight factory
+  when the shared factory requires these types.
+- Ensure all required dependencies, including their dependencies, are available
+  in the Number bundle. The entry generator in `./tools/entryGenerator.js` checks
+  for missing required dependencies during `npm run build` (also part of
+  `npm run build-and-test`); no separate dependency check is needed.
+- Consider functions operating on arrays case by case: their inclusion depends
+  on their size and dependencies, rather than array support alone.
+
+
 ### Build scripts
 
 The build script currently generates two types of output:
