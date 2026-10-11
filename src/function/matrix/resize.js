@@ -47,7 +47,7 @@ export const createResize = /* #__PURE__ */ factory(name, dependencies, ({ confi
       size = size.valueOf() // get Array
     }
 
-    if (isBigNumber(size[0])) {
+    if (size.some(isBigNumber)) {
       // convert bignumbers to numbers
       size = size.map(function (value) {
         return !isBigNumber(value) ? value : value.toNumber()

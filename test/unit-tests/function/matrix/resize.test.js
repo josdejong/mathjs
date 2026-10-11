@@ -37,6 +37,30 @@ describe('resize', function () {
       [[one, zero], [two, zero], [three, zero]])
   })
 
+  it('should resize with mixed number and BigNumber dimensions in any order', function () {
+    const array = [[1, 2], [3, 4]]
+    for (const size of [[3, math.bignumber(2)], [math.bignumber(3), 2]]) {
+      const originalSize = size.slice()
+      assert.deepStrictEqual(math.resize(array, size, 5), [[1, 2], [3, 4], [5, 5]])
+      assert.deepStrictEqual(size, originalSize)
+    }
+    assert.deepStrictEqual(array, [[1, 2], [3, 4]])
+  })
+
+  it('should resize a matrix with mixed dimensions supplied as an array or matrix', function () {
+    const input = math.matrix([[1, 2], [3, 4]])
+    const size = [3, math.bignumber(2)]
+    const expected = math.matrix([[1, 2], [3, 4], [5, 5]])
+    assert.deepStrictEqual(math.resize(input, size, 5), expected)
+    assert.deepStrictEqual(math.resize(input, math.matrix(size), 5), expected)
+    assert.deepStrictEqual(input, math.matrix([[1, 2], [3, 4]]))
+  })
+
+  it('should reject invalid BigNumber dimensions after a number dimension', function () {
+    assert.throws(() => math.resize([[1]], [2, math.bignumber(1.5)]), TypeError)
+    assert.throws(() => math.resize([[1]], [2, math.bignumber(-1)]), TypeError)
+  })
+
   it('should resize a matrix', function () {
     const matrix = math.matrix([[0, 1, 2], [3, 4, 5]])
     assert.deepStrictEqual(math.resize(matrix, [3, 2]),
