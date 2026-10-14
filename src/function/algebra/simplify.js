@@ -302,6 +302,24 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     simplifyConstant, // First: before collecting like terms
 
     // collect like terms
+    // Only distribute a numerical factor when another term can be collected;
+    // keep separated numerical factors in products without such a term.
+    {
+      s: 'cd * (vd * n1 + n2) + vd * n3 -> vd * (cd * n1 + n3) + cd * n2',
+      assuming: { multiply: { commutative: true }, add: { commutative: true } }
+    },
+    {
+      s: 'cd * (vd + n1) + vd * n2 -> vd * (cd + n2) + cd * n1',
+      assuming: { multiply: { commutative: true }, add: { commutative: true, total: true } }
+    },
+    {
+      s: 'cd * (vd * n1 + n2) + vd -> vd * (cd * n1 + 1) + cd * n2',
+      assuming: { multiply: { commutative: true }, add: { commutative: true, total: true } }
+    },
+    {
+      s: 'cd * (vd + n1) + vd -> vd * (cd + 1) + cd * n1',
+      assuming: { multiply: { commutative: true }, add: { commutative: true, total: true } }
+    },
     {
       s: 'n+n -> 2*n',
       assuming: { add: { total: true } } // 2 = 1 + 1 needs to exist
