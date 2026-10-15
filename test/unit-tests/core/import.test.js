@@ -384,6 +384,17 @@ describe('import', function () {
     // TODO: unit test importing an Array containing stuff
   })
 
+  it('should throw a clear error in case of a circular dependency between factories', function () {
+    const math2 = create()
+    math2.import([
+      factory('Dim', ['add'], ({ add }) => add),
+      factory('add', ['Dim'], ({ Dim }) => Dim)
+    ])
+
+    assert.throws(() => math2.add, /Error: Circular dependency detected: add -> Dim -> add/)
+    assert.throws(() => math2.Dim, /Error: Circular dependency detected: Dim -> add -> Dim/)
+  })
+
   it('should LaTeX import', function () {
     const expression = math.parse('import(object)')
     assert.strictEqual(expression.toTex(), '\\mathrm{import}\\left( object\\right)')
