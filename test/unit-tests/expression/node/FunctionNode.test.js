@@ -469,6 +469,74 @@ describe('FunctionNode', function () {
     assert.strictEqual(n2.toHTML({ handler: customFunction }), '[subtract](const(1, number), const(2, number), )')
   })
 
+  it('should render HTML using a handler map for nested functions', function () {
+    const n = math.parse('outer(inner(x), 2)')
+    const seen = []
+    const options = {
+      parenthesis: 'keep',
+      handler: {
+        outer: function (node, opts) {
+          assert.strictEqual(node, n)
+          assert.strictEqual(opts, options)
+          seen.push(node.name)
+          return '<outer>' + node.args.map(arg => arg.toHTML(opts)).join('|') + '</outer>'
+        },
+        inner: function (node, opts) {
+          assert.strictEqual(opts, options)
+          seen.push(node.name)
+          return '<inner>' + node.args[0].toHTML(opts) + '</inner>'
+        }
+      }
+    }
+
+    assert.strictEqual(n.toHTML(options), '<outer><inner><span class="math-symbol">x</span></inner>|<span class="math-number">2</span></outer>')
+    assert.deepStrictEqual(seen, ['outer', 'inner'])
+  })
+
+  it('should fall back to default HTML when a mapped handler returns undefined', function () {
+    const n = math.parse('outer(inner(x))')
+    let calls = 0
+    const options = {
+      handler: {
+        outer: function () {
+          calls++
+        },
+        inner: function () {
+          return '<custom>x</custom>'
+        }
+      }
+    }
+
+    assert.strictEqual(n.toHTML(options), n.toHTML().replace(n.args[0].toHTML(), '<custom>x</custom>'))
+    assert.strictEqual(calls, 1)
+  })
+
+  it('should preserve an empty HTML handler result', function () {
+    assert.strictEqual(math.parse('f(x)').toHTML({ handler: { f: () => '' } }), '')
+  })
+
+  it('should ignore inherited HTML handlers and support null-prototype maps', function () {
+    const n = math.parse('f(x)')
+    const inherited = Object.create({ f: () => 'inherited' })
+    assert.strictEqual(n.toHTML({ handler: inherited }), n.toHTML())
+    const handler = Object.create(null)
+    handler.f = () => 'own'
+    assert.strictEqual(n.toHTML({ handler }), 'own')
+  })
+
+  it('should pass callback handlers through the default HTML renderer', function () {
+    const n = math.parse('f(x)')
+    const seen = []
+    const html = n.toHTML({
+      handler: function (node) {
+        seen.push(node.type)
+        if (node.isSymbolNode) return '<custom>' + node.name + '</custom>'
+      }
+    })
+    assert.strictEqual(html, n.toHTML().replace(n.args[0].toHTML(), '<custom>x</custom>'))
+    assert.deepStrictEqual(seen, ['FunctionNode', 'SymbolNode'])
+  })
+
   it('should stringify a FunctionNode with custom toString for a single function', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = {
