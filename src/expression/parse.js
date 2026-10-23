@@ -1125,7 +1125,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         if (isFunctionNode(check) &&
              (check.args.length === 2 ||
                (saveState.token === 'not' && check.args.length === 1))) {
-          node = new OperatorNode('*', 'multiply', [node, check], true)
+          last = check
+          node = new OperatorNode('*', 'multiply', [node, last], true)
         } else {
           Object.assign(state, saveState)
           break
