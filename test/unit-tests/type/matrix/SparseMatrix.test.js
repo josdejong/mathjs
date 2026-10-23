@@ -730,6 +730,21 @@ describe('SparseMatrix', function () {
       assert.strictEqual(m.get([4, 5]), 13)
       assert.strictEqual(m.get([5, 5]), -1)
     })
+
+    it('should throw an error when getting a value given an index that is not an array', function () {
+      const m = new SparseMatrix([
+        [1, 2],
+        [3, 4]
+      ])
+
+      assert.throws(function () {
+        m.get({ length: 1, reduce: () => {} })
+      }, /Error: Array expected/)
+
+      assert.throws(function () {
+        m.get(new Date())
+      }, /Error: Array expected/)
+    })
   })
 
   describe('set', function () {

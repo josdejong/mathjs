@@ -151,8 +151,8 @@
       label: resultName.slice(7),
       data: sim.evaluate(
         'concat('
-        + `(${resultName}[:,4] - phi0) * r0 / rad / km,`  // Surface distance from start (in km)
-        + `(${resultName}[:,1] - r0) / km`                // Height above surface (in km)
+        + `(${resultName}[:,[4]] - phi0) * r0 / rad / km,`  // Surface distance from start (in km)
+        + `(${resultName}[:,[1]] - r0) / km`                // Height above surface (in km)
         + ')'
       ).toArray().map(([x, y]) => ({ x, y })),
       borderColor: i % 2 ? '#999' : '#dc3912',
@@ -173,7 +173,7 @@
     }])
     createChart([{
       label: 'height (in km)',
-      data: sim.evaluate("concat((result[:, 1] - r0), result[:, 6])")
+      data: sim.evaluate("concat((result[:, [1]] - r0), result[:, [6]])")
         .toArray()
         .map(([r, t]) => ({ x: t.toNumber('s'), y: r.toNumber('km') })),
     }])
@@ -185,7 +185,7 @@
     }])
     createChart([{
       label: 'acceleration (in m/s^2)',
-      data: sim.evaluate("concat(diff(result[:, 2]) ./ diff(result[:, 6]), result[:end-1, 6])")
+      data: sim.evaluate("concat(diff(result[:, [2]]) ./ diff(result[:, [6]]), result[:end-1, [6]])")
         .toArray()
         .map(([acc, t]) => ({ x: t.toNumber('s'), y: acc.toNumber('m/s^2') })),
     }])
@@ -209,6 +209,7 @@
         {
           data: sim.evaluate("map(0:0.25:360, function(angle) = rotate([r0/km, 0], angle))")
             .toArray()
+            .map(row => row.toArray())
             .map(([x, y]) => ({ x, y })),
           borderColor: "#999",
           fill: true

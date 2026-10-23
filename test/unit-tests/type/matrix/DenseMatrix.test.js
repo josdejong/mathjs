@@ -440,6 +440,16 @@ describe('DenseMatrix', function () {
       assert.throws(function () { m.get(math.index(1, 1)) })
       assert.throws(function () { m.get([[1, 1]]) })
     })
+
+    it('should throw an error when getting a value given an index that is not an array', function () {
+      assert.throws(function () {
+        m.get({ length: 1, reduce: () => {} })
+      }, /Error: Array expected for index/)
+
+      assert.throws(function () {
+        m.get(new Date())
+      }, /Error: Array expected for index/)
+    })
   })
 
   describe('set', function () {
