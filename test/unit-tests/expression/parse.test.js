@@ -634,6 +634,7 @@ describe('parse', function () {
       assert(parseAndEval('-2 meter^2').toString(), '-2 meter^2')
       assert(parseAndEval('2 in^2').toString(), '2 in^2')
       assert(parseAndEval('-2 in^2').toString(), '-2 in^2')
+      assert(parseAndEval('+2 in^2').toString(), '+2 in^2')
     })
   })
 
@@ -1963,7 +1964,7 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('and(0,undefined)'), false)
       assert.strictEqual(parseAndEval('and(false,undefined)'), false)
       assert.throws(function () { parseAndEval('and(true,undefined)') }, TypeError)
-      assert.strictEqual(parseAndEval('2 and(true,true)', 2), 2)
+      assert.strictEqual(parseAndEval('2 and(true,true)'), 2)
     })
 
     it('should parse logical and lazily', function () {
