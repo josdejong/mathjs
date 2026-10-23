@@ -1237,7 +1237,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         Object.assign(state, saveState)
         return parseSymbol(state)
       } else {
-        // Bona-finde "unary operator" application
+        // Bona-fide "unary operator" application
         const params = [parseUnary(state)]
         return new OperatorNode(name, fn, params)
       }
