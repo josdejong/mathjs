@@ -1108,12 +1108,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       // There are several patterns to recognize as implicit multiplication:
       if ((state.tokenType === TOKENTYPE.SYMBOL) || // 2a, 3f(6), (2+3)A[1], a b
           (state.token === 'in' && isConstantNode(node)) || // 7 in  (inches)
-          (state.token === 'in' && isOperatorNode(node)
-              && (node.fn === 'unaryMinus' || node.fn === 'unaryPlus')
-              && isConstantNode(node.args[0])) || // -7 in, +3 in  (inches)
-          (state.tokenType === TOKENTYPE.NUMBER
-              && !isConstantNode(last) // FORBID '3 7'
-              && (!isOperatorNode(last) || last.op === '!')) || // (3+4)2,  5! 6
+          (state.token === 'in' && isOperatorNode(node) &&
+            (node.fn === 'unaryMinus' || node.fn === 'unaryPlus') &&
+            isConstantNode(node.args[0])) || // -7 in, +3 in  (inches)
+          (state.tokenType === TOKENTYPE.NUMBER &&
+            !isConstantNode(last) && // FORBID '3 7'
+            (!isOperatorNode(last) || last.op === '!')) || // (3+4)2,  5! 6
           (state.token === '(')) { // (3+4)(1+2)
         last = parseRule2(state)
         node = new OperatorNode('*', 'multiply', [node, last], true /* implicit */)
@@ -1122,9 +1122,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // used as function symbol, and if so, allow the implicit multiplication
         const saveState = Object.assign({}, state)
         const check = parseRule2(state)
-        if (isFunctionNode(check)
-             && (check.args.length == 2
-               || (saveState.token === 'not' && check.args.length == 1))) {
+        if (isFunctionNode(check) &&
+             (check.args.length === 2 ||
+               (saveState.token === 'not' && check.args.length === 1))) {
           node = new OperatorNode('*', 'multiply', [node, check], true)
         } else {
           Object.assign(state, saveState)
