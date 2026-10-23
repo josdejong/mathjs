@@ -634,6 +634,7 @@ describe('parse', function () {
       assert(parseAndEval('-2 meter^2').toString(), '-2 meter^2')
       assert(parseAndEval('2 in^2').toString(), '2 in^2')
       assert(parseAndEval('-2 in^2').toString(), '-2 in^2')
+      assert(parseAndEval('+2 in^2').toString(), '+2 in^2')
     })
   })
 
@@ -1956,6 +1957,16 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('true and undefined') }, TypeError)
     })
 
+    it('should parse logical and as a function symbol', function () {
+      assert.strictEqual(parseAndEval('and(2,6)'), true)
+      assert.strictEqual(parseAndEval('and(2,0)'), false)
+      assert.strictEqual(parseAndEval('and(false,false)'), false)
+      assert.strictEqual(parseAndEval('and(0,undefined)'), false)
+      assert.strictEqual(parseAndEval('and(false,undefined)'), false)
+      assert.throws(function () { parseAndEval('and(true,undefined)') }, TypeError)
+      assert.strictEqual(parseAndEval('2 and(true,true)'), 2)
+    })
+
     it('should parse logical and lazily', function () {
       const scope = {}
       parseAndEval('(a=false) and (b=true)', scope)
@@ -2013,6 +2024,13 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('false xor false'), false)
     })
 
+    it('should parse logical xor as a function symbol', function () {
+      assert.strictEqual(parseAndEval('xor(2,6)'), false)
+      assert.strictEqual(parseAndEval('xor(2,0)'), true)
+      assert.strictEqual(parseAndEval('xor(false,false)'), false)
+      assert.strictEqual(parseAndEval('2 xor(false, true)'), 2)
+    })
+
     it('should parse logical or', function () {
       assert.strictEqual(parseAndEval('2 or 6'), true)
       assert.strictEqual(parseAndEval('2 or 0'), true)
@@ -2024,6 +2042,17 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('2 or undefined'), true)
       assert.strictEqual(parseAndEval('true or undefined'), true)
       assert.throws(function () { parseAndEval('false or undefined') }, TypeError)
+    })
+
+    it('should parse logical or as a function symbol', function () {
+      assert.strictEqual(parseAndEval('or(2,6)'), true)
+      assert.strictEqual(parseAndEval('or(0,0)'), false)
+      assert.strictEqual(parseAndEval('or(false,true)'), true)
+
+      assert.strictEqual(parseAndEval('or(2,undefined)'), true)
+      assert.strictEqual(parseAndEval('or(true,undefined)'), true)
+      assert.throws(function () { parseAndEval('or(false,undefined)') }, TypeError)
+      assert.strictEqual(parseAndEval('2 or(true,false)'), 2)
     })
 
     it('should parse logical or inside a function definition', function () {
@@ -2054,6 +2083,17 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('4 + not 2'), 4)
 
       assert.strictEqual(parseAndEval('10+not not 3'), 11)
+
+      assert.strictEqual(parseAndEval('not(2)'), false)
+      assert.strictEqual(parseAndEval('2 not(false)'), 2)
+      // not used in function call syntax has function-call precedence
+      assert.deepStrictEqual(
+        parseAndEval('not([0, 1]).map(_(x) = equal(x, true) ? 7 : -1)'),
+        math.matrix([7, -1]))
+      // not used as operator has unary-prefix-operator precedence
+      assert.deepStrictEqual(
+        parseAndEval('not [0, 1].map(_(x) = equal(x, true) ? 7 : -1)'),
+        math.matrix([false, false]))
     })
 
     it('should parse minus -', function () {
@@ -2474,6 +2514,7 @@ describe('parse', function () {
   describe('functions', function () {
     it('should evaluate function "mod"', function () {
       approxEqual(parseAndEval('mod(8, 3)'), 2)
+      approxEqual(parseAndEval('2 mod(8, 3)'), 4)
     })
 
     it('should evaluate function "to" ', function () {

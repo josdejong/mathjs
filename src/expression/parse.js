@@ -1105,20 +1105,32 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     last = node
 
     while (true) {
-      if ((state.tokenType === TOKENTYPE.SYMBOL) ||
-          (state.token === 'in' && isConstantNode(node)) ||
-          (state.token === 'in' && isOperatorNode(node) && node.fn === 'unaryMinus' && isConstantNode(node.args[0])) ||
+      // There are several patterns to recognize as implicit multiplication:
+      if ((state.tokenType === TOKENTYPE.SYMBOL) || // 2a, 3f(6), (2+3)A[1], a b
+          (state.token === 'in' && isConstantNode(node)) || // 7 in  (inches)
+          (state.token === 'in' && isOperatorNode(node) &&
+            (node.fn === 'unaryMinus' || node.fn === 'unaryPlus') &&
+            isConstantNode(node.args[0])) || // -7 in, +3 in  (inches)
           (state.tokenType === TOKENTYPE.NUMBER &&
-              !isConstantNode(last) &&
-              (!isOperatorNode(last) || last.op === '!')) ||
-          (state.token === '(')) {
-        // parse implicit multiplication
-        //
-        // symbol:      implicit multiplication like '2a', '(2+3)a', 'a b'
-        // number:      implicit multiplication like '(2+3)2'
-        // parenthesis: implicit multiplication like '2(3+4)', '(3+4)(1+2)'
+            !isConstantNode(last) && // FORBID '3 7'
+            (!isOperatorNode(last) || last.op === '!')) || // (3+4)2,  5! 6
+          (state.token === '(')) { // (3+4)(1+2)
         last = parseRule2(state)
         node = new OperatorNode('*', 'multiply', [node, last], true /* implicit */)
+      } else if (state.token in NAMED_DELIMITERS) {
+        // we have to check if the named delimiter (mod, and, etc.) is being
+        // used as function symbol, and if so, allow the implicit multiplication
+        const saveState = Object.assign({}, state)
+        const check = parseRule2(state)
+        if (isFunctionNode(check) &&
+             (check.args.length === 2 ||
+               (saveState.token === 'not' && check.args.length === 1))) {
+          last = check
+          node = new OperatorNode('*', 'multiply', [node, last], true)
+        } else {
+          Object.assign(state, saveState)
+          break
+        }
       } else {
         break
       }
@@ -1217,7 +1229,6 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseUnary (state) {
-    let name, params, fn
     const operators = {
       '-': 'unaryMinus',
       '+': 'unaryPlus',
@@ -1226,13 +1237,22 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     if (hasOwnProperty(operators, state.token)) {
-      fn = operators[state.token]
-      name = state.token
+      const fn = operators[state.token]
+      const name = state.token
+      const saveState = Object.assign({}, state)
 
       getTokenSkipNewline(state)
-      params = [parseUnary(state)]
-
-      return new OperatorNode(name, fn, params)
+      if (name === 'not' && state.token === '(') {
+        // OK, this appears to be using `not` in the syntax of an ordinary
+        // function call, rather than as a unary operator, so re-parse the
+        // `not` as a Symbol and continue from there:
+        Object.assign(state, saveState)
+        return parseSymbol(state)
+      } else {
+        // Bona-fide "unary operator" application
+        const params = [parseUnary(state)]
+        return new OperatorNode(name, fn, params)
+      }
     }
 
     return parsePow(state)
