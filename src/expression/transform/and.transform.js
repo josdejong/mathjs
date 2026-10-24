@@ -9,6 +9,11 @@ export const createAndTransform = /* #__PURE__ */ factory(name, dependencies, ({
   const and = createAnd({ typed, matrix, equalScalar, zeros, not, concat })
 
   function andTransform (args, math, scope) {
+    if (args.length !== 2) {
+      // Short-circuiting needs exactly two operands; let the function itself
+      // report the wrong number of arguments.
+      return and(...args.map(arg => arg.compile().evaluate(scope)))
+    }
     const condition1 = args[0].compile().evaluate(scope)
     if (!isCollection(condition1) && !and(condition1, true)) {
       return false

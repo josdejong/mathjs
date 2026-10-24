@@ -9,6 +9,11 @@ export const createBitOrTransform = /* #__PURE__ */ factory(name, dependencies, 
   const bitOr = createBitOr({ typed, matrix, equalScalar, DenseMatrix, concat })
 
   function bitOrTransform (args, math, scope) {
+    if (args.length !== 2) {
+      // Short-circuiting needs exactly two operands; let the function itself
+      // report the wrong number of arguments.
+      return bitOr(...args.map(arg => arg.compile().evaluate(scope)))
+    }
     const condition1 = args[0].compile().evaluate(scope)
     if (!isCollection(condition1)) {
       if (isNaN(condition1)) {

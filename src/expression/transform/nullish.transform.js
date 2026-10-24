@@ -9,6 +9,11 @@ export const createNullishTransform = /* #__PURE__ */ factory(name, dependencies
   const nullish = createNullish({ typed, matrix, size, flatten, deepEqual })
 
   function nullishTransform (args, math, scope) {
+    if (args.length !== 2) {
+      // Short-circuiting needs exactly two operands; let the function itself
+      // report the wrong number of arguments.
+      return nullish(...args.map(arg => arg.compile().evaluate(scope)))
+    }
     const left = args[0].compile().evaluate(scope)
 
     // If left is not a collection and not nullish, short-circuit and return it
