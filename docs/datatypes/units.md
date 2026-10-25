@@ -23,8 +23,8 @@ math.unit(unit: Unit) : Unit
 Example usage:
 
 ```js
-const a = math.unit(45, 'cm')             // Unit 450 mm
-const b = math.unit('0.1 kilogram')       // Unit 100 gram
+const a = math.unit(45, 'cm')             // Unit 45 cm
+const b = math.unit('0.1 kilogram')       // Unit 0.1 kilogram
 const c = math.unit('2 inch')             // Unit 2 inch
 const d = math.unit('90 km/h')            // Unit 90 km/h
 const e = math.unit('101325 kg/(m s^2)')  // Unit 101325 kg / (m s^2)
@@ -77,10 +77,10 @@ The operations that support units are `add`, `subtract`, `multiply`, `divide`, `
 Trigonometric functions like `cos` are also supported when the argument is an angle.
 
 ```js
-const a = math.unit(45, 'cm')       // Unit 450 mm
-const b = math.unit('0.1m')         // Unit 100 mm
-math.add(a, b)                      // Unit 0.55 m
-math.multiply(b, 2)                 // Unit 200 mm
+const a = math.unit(45, 'cm')       // Unit 45 cm
+const b = math.unit('0.1m')         // Unit 0.1 m
+math.add(a, b)                      // Unit 55 cm
+math.multiply(b, 2)                 // Unit 0.2 m
 
 const c = math.unit(45, 'deg')      // Unit 45 deg
 math.cos(c)                         // Number 0.7071067811865476
@@ -88,7 +88,7 @@ math.cos(c)                         // Number 0.7071067811865476
 // Kinetic energy of average sedan on highway
 const d = math.unit('80 mi/h')      // Unit 80 mi/h
 const e = math.unit('2 tonne')      // Unit 2 tonne
-const f = math.multiply(0.5, math.multipy(math.pow(d, 2), e))
+const f = math.multiply(0.5, math.multiply(math.pow(d, 2), e))
                                     // 1.2790064742399996 MJ
 ```
 

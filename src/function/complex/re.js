@@ -18,7 +18,7 @@ export const createRe = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    * Examples:
    *
    *    const a = math.complex(2, 3)
-   *    math.re(a)                     // returns number 2
+   *    math.re(a)                     // returns number 2 ...
    *    math.im(a)                     // returns number 3
    *
    *    math.re(math.complex('-5.2i')) // returns number 0

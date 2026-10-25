@@ -107,13 +107,13 @@ const ignoreFunctions = new Set([
 
 const knownProblems = new Set([
   'setUnion', 'randomInt',
-  'random', 'pickRandom', 'kldivergence',
-  'parser', 'compile', 're', 'im',
+  'random', 'pickRandom',
+  'parser', 'compile',
   'subset', 'squeeze', 'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
   'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff', 'slu',
   'rationalize', 'qr', 'lusolve', 'lup', 'derivative',
-  'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round',
+  'schur', 'sylvester', 'freqz', 'round',
   'import', 'typed',
   'unit', 'sparse', 'matrix', 'index', 'bignumber', 'fraction', 'complex',
   'parse'
