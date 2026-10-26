@@ -48,6 +48,85 @@ describe('RelationalNode', function () {
     assert.strictEqual(expr.evaluate(scope), false)
   })
 
+  it('should use scoped functions for each comparison in a chain', function () {
+    const calls = []
+    const scope = {
+      smaller: (a, b) => {
+        calls.push(['smaller', a, b])
+        return a > b
+      },
+      largerEq: (a, b) => {
+        calls.push(['largerEq', a, b])
+        return a <= b
+      }
+    }
+
+    assert.strictEqual(math.evaluate('3 < 2 >= 4', scope), true)
+    assert.deepStrictEqual(calls, [['smaller', 3, 2], ['largerEq', 2, 4]])
+  })
+
+  it('should resolve comparison functions on each evaluation', function () {
+    const expr = math.compile('1 < 2 < 3')
+    const scope = new Map()
+
+    assert.strictEqual(expr.evaluate(scope), true)
+    scope.set('smaller', (a, b) => a > b)
+    assert.strictEqual(expr.evaluate(scope), false)
+    scope.set('smaller', (a, b) => a < b)
+    assert.strictEqual(expr.evaluate(scope), true)
+    scope.delete('smaller')
+    assert.strictEqual(expr.evaluate(scope), true)
+  })
+
+  it('should use function parameters before scoped comparison functions', function () {
+    const scope = { smaller: () => false }
+    const f = math.evaluate('f(smaller) = 3 < 2 < 1', scope)
+
+    assert.strictEqual(f((a, b) => a > b), true)
+    assert.strictEqual(f((a, b) => a < b), false)
+  })
+
+  it('should evaluate shared operands once with scoped comparison functions', function () {
+    let calls = 0
+    const scope = {
+      next: () => 3 - calls++,
+      smaller: (a, b) => a > b
+    }
+
+    assert.strictEqual(math.evaluate('next() < next() < next()', scope), true)
+    assert.strictEqual(calls, 3)
+  })
+
+  it('should short-circuit overridden comparisons and their remaining operands', function () {
+    let calls = 0
+    const scope = {
+      next: () => ++calls,
+      smaller: () => false,
+      larger: () => assert.fail('The later comparison should not run')
+    }
+
+    assert.strictEqual(math.evaluate('next() < next() > next()', scope), false)
+    assert.strictEqual(calls, 2)
+  })
+
+  it('should reject non-function comparison overrides', function () {
+    for (const value of [undefined, null, 0, false]) {
+      assert.throws(
+        () => math.evaluate('1 < 2 < 3', new Map([['smaller', value]])),
+        /TypeError: 'smaller' is not a function/
+      )
+    }
+  })
+
+  it('should not allow unsafe comparison functions supplied through a scope', function () {
+    for (const name of ['constructor', '__proto__', '__lookupGetter__']) {
+      const node = new RelationalNode([name], [one, two])
+      const scope = new Map([[name, () => true]])
+
+      assert.throws(() => node.evaluate(scope), /No access to property/)
+    }
+  })
+
   it('should filter a RelationalNode', function () {
     const n = new RelationalNode(['smaller', 'smaller'], [one, two, three])
 

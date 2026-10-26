@@ -45,6 +45,164 @@ describe('OperatorNode', function () {
     assert.strictEqual(add23.compile().evaluate(), 5)
   })
 
+  describe('scope overrides', function () {
+    it('should use the same scoped function for an operator and a function call', function () {
+      const scope = { mod: (x, y) => y === 0 ? undefined : x % y }
+
+      assert.strictEqual(math.evaluate('22 % 0', scope), undefined)
+      assert.strictEqual(math.evaluate('22 % 0', scope), math.evaluate('mod(22, 0)', scope))
+      assert.strictEqual(math.evaluate('22 % 5', scope), 2)
+    })
+
+    it('should override unary operators', function () {
+      const scope = { unaryMinus: x => x * 10 }
+
+      assert.strictEqual(math.evaluate('-2', scope), 20)
+      assert.strictEqual(math.evaluate('-2', scope), math.evaluate('unaryMinus(2)', scope))
+    })
+
+    it('should support expression-defined overrides using the original function', function () {
+      const scope = { baseMultiply: math.multiply }
+      math.evaluate('multiply(x, y) = baseMultiply(x, y) + 1', scope)
+
+      assert.strictEqual(math.evaluate('2 * 3', scope), 7)
+      assert.strictEqual(math.evaluate('multiply(2, 3)', scope), 7)
+      assert.strictEqual(math.multiply(2, 3), 6)
+    })
+
+    it('should pass all arguments to binary and n-ary overrides', function () {
+      const scope = { add: (...values) => values }
+      const n = new OperatorNode('+', 'add', [two, three, four])
+
+      assert.deepStrictEqual(add23.evaluate(scope), [2, 3])
+      assert.deepStrictEqual(n.evaluate(scope), [2, 3, 4])
+    })
+
+    it('should call an override without arguments for a zero-argument operator', function () {
+      const n = new OperatorNode('!', 'factorial', [])
+      const scope = { factorial: (...values) => values }
+
+      assert.deepStrictEqual(n.evaluate(scope), [])
+    })
+
+    it('should resolve object scope overrides on each evaluation', function () {
+      const compiled = add23.compile()
+      const scope = { add: (x, y) => x * y }
+
+      assert.strictEqual(compiled.evaluate(), 5)
+      assert.strictEqual(compiled.evaluate(scope), 6)
+      assert.strictEqual(compiled.evaluate({ add: (x, y) => x - y }), -1)
+      scope.add = (x, y) => x ** y
+      assert.strictEqual(compiled.evaluate(scope), 8)
+      delete scope.add
+      assert.strictEqual(compiled.evaluate(scope), 5)
+    })
+
+    it('should resolve changed and removed Map scope overrides', function () {
+      const compiled = add23.compile()
+      const scope = new Map([['add', (x, y) => x * y]])
+
+      assert.strictEqual(compiled.evaluate(scope), 6)
+      scope.set('add', (x, y) => x - y)
+      assert.strictEqual(compiled.evaluate(scope), -1)
+      scope.delete('add')
+      assert.strictEqual(compiled.evaluate(scope), 5)
+    })
+
+    it('should prefer function parameters over the surrounding scope', function () {
+      const scope = { add: () => -1 }
+      const f = math.evaluate('f(add, x, y) = x + y', scope)
+
+      assert.strictEqual(f((x, y) => x * y, 2, 3), 6)
+      assert.strictEqual(f((x, y) => x ** y, 2, 3), 8)
+      assert.throws(() => f(undefined, 2, 3), TypeError)
+      assert.strictEqual(scope.add(), -1)
+    })
+
+    it('should retain an operator override in a nested function', function () {
+      const createAdder = math.evaluate('f(add) = g(x, y) = x + y')
+      const multiply = createAdder((x, y) => x * y)
+
+      assert.strictEqual(multiply(2, 3), 6)
+      assert.strictEqual(multiply(3, 4), 12)
+    })
+
+    it('should reject non-function scope bindings instead of using the default', function () {
+      for (const add of [undefined, null, 0, false]) {
+        assert.throws(() => add23.evaluate({ add }), TypeError)
+      }
+      assert.throws(() => add23.evaluate(new Map([['add', undefined]])), TypeError)
+    })
+
+    it('should resolve an override before evaluating the operands', function () {
+      const scope = {
+        add: (x, y) => x * y,
+        replace: () => {
+          scope.add = (x, y) => x - y
+          return 3
+        }
+      }
+      const compiled = math.compile('2 + replace()')
+
+      assert.strictEqual(compiled.evaluate(scope), 6)
+      assert.strictEqual(compiled.evaluate(scope), -1)
+    })
+
+    it('should preserve short-circuiting when no logical override is supplied', function () {
+      assert.strictEqual(math.evaluate('false and missing'), false)
+      assert.strictEqual(math.evaluate('true or missing'), true)
+
+      const f = math.evaluate('f(x) = x > 0 and x < 4')
+      assert.strictEqual(f(2), true)
+      assert.strictEqual(f(5), false)
+    })
+
+    it('should evaluate operands for ordinary overrides of raw logical operators', function () {
+      let calls = 0
+      const scope = {
+        and: (x, y) => [x, y],
+        or: (x, y) => [x, y],
+        value: () => {
+          calls++
+          return 'visited'
+        }
+      }
+
+      assert.deepStrictEqual(math.evaluate('false and value()', scope), [false, 'visited'])
+      assert.deepStrictEqual(math.evaluate('true or value()', scope), [true, 'visited'])
+      assert.strictEqual(calls, 2)
+    })
+
+    it('should pass local scope to a raw override of an imported raw operator', function () {
+      const mymath = math.create()
+      const defaultAdd = () => 'default'
+      defaultAdd.rawArgs = true
+      mymath.import({ add: defaultAdd }, { override: true })
+
+      function add (nodes, math, scope) {
+        assert(nodes[0] instanceof mymath.Node)
+        assert(nodes[1] instanceof mymath.Node)
+        return [nodes[0].compile().evaluate(scope), nodes[1].value, scope.get('outer')]
+      }
+      add.rawArgs = true
+      const f = mymath.evaluate('f(x) = x + 2', { add, outer: 7 })
+
+      assert.deepStrictEqual(f(3), [3, 2, 7])
+      assert.strictEqual(mymath.evaluate('3 + 2'), 'default')
+      assert.strictEqual(mymath.evaluate('3 + 2', { add: (x, y) => x * y }), 6)
+    })
+
+    it('should support a raw operator override supplied as a function parameter', function () {
+      function add (nodes, math, scope) {
+        return nodes.map(node => node.compile().evaluate(scope))
+      }
+      add.rawArgs = true
+      const f = math.evaluate('f(add, x) = x + 2')
+
+      assert.deepStrictEqual(f(add, 3), [3, 2])
+    })
+  })
+
   it('should test whether a unary or binary operator', function () {
     const n1 = new OperatorNode('-', 'unaryMinus', [two])
     assert.strictEqual(n1.isUnary(), true)

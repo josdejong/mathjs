@@ -1271,16 +1271,16 @@ Expressions examples
     assert.strictEqual(math.evaluate('z = x * 3', customMap), 12)
     assert.strictEqual(customMap.get('z'), 12)
 
-    math.evaluate('multiply(a, b) = a * b', customMap)
-    assert.strictEqual(math.evaluate('multiply(3, 4)', customMap), 12)
+    math.evaluate('product(a, b) = a * b', customMap)
+    assert.strictEqual(math.evaluate('product(3, 4)', customMap), 12)
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-    const multiply = customMap.get('multiply') as Function
-    assert.strictEqual(multiply(3, 4), 12)
+    const product = customMap.get('product') as Function
+    assert.strictEqual(product(3, 4), 12)
 
     const x = customMap.get('x')
     const z = customMap.get('z')
-    assert.deepStrictEqual(customMap.getAllValues(), [x, z, multiply])
+    assert.deepStrictEqual(customMap.getAllValues(), [x, z, product])
 
     assert.throws(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
