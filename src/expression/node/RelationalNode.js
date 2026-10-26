@@ -6,10 +6,11 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'RelationalNode'
 const dependencies = [
-  'Node'
+  'Node',
+  'SymbolNode'
 ]
 
-export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
+export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, SymbolNode }) => {
   const operatorMap = {
     equal: '==',
     unequal: '!=',
@@ -66,6 +67,11 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
       const self = this
 
       const compiled = this.params.map(p => p._compile(math, argNames))
+      const conditionals = this.conditionals.map(name => {
+        // Validate the name even when the function is supplied through a scope.
+        getSafeProperty(math, name)
+        return new SymbolNode(name)._compile(math, argNames)
+      })
 
       return function evalRelationalNode (scope, args, context) {
         let evalLhs
@@ -74,7 +80,10 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
         for (let i = 0; i < self.conditionals.length; i++) {
           evalLhs = evalRhs
           evalRhs = compiled[i + 1](scope, args, context)
-          const condFn = getSafeProperty(math, self.conditionals[i])
+          const condFn = conditionals[i](scope, args, context)
+          if (typeof condFn !== 'function') {
+            throw new TypeError("'" + self.conditionals[i] + "' is not a function")
+          }
           if (!condFn(evalLhs, evalRhs)) {
             return false
           }

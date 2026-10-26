@@ -2,6 +2,7 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: #2631 respect scoped operator functions, including chained comparisons.
 - Docs: fix the browser example `rocket_trajectory_optimization.html` (#3654).
   Thanks @dvd101x.
 

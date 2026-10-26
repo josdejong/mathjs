@@ -6,11 +6,43 @@ and outputting expressions.
 
 On this page:
 
+- [Scope functions and operators](#scope-functions-and-operators)
 - [Function transforms](#function-transforms)
 - [Custom argument parsing](#custom-argument-parsing)
 - [Custom LaTeX handlers](#custom-latex-handlers)
 - [Custom HTML, LaTeX and string output](#custom-html-latex-and-string-output)
 - [Customize supported characters](#customize-supported-characters)
+
+## Scope functions and operators
+
+Functions supplied in the evaluation scope override the corresponding operators
+as well as explicit function calls. For example, a scoped `mod` function controls
+both `mod(x, y)` and `x % y`:
+
+```js
+const scope = {
+  mod: (x, y) => y === 0 ? undefined : math.mod(x, y)
+}
+
+math.evaluate('mod(22, 0)', scope) // returns undefined
+math.evaluate('22 % 0', scope)    // returns undefined
+math.evaluate('22 % 5', scope)    // returns 2
+```
+
+This also applies to unary operators such as `-x` (`unaryMinus`) and comparisons,
+including chains such as `a < b < c` (`smaller`). Function parameters take
+precedence over functions in the surrounding scope, which take precedence over
+functions in the math namespace. Compiled expressions resolve these functions
+each time they are evaluated, so changes to the scope take effect immediately.
+
+An expression-defined override also applies inside its own body. To reuse the
+original implementation, pass it into the scope under another name:
+
+```js
+const scope = { baseMultiply: math.multiply }
+math.evaluate('multiply(x, y) = baseMultiply(x, y) + 1', scope)
+math.evaluate('2 * 3', scope) // returns 7
+```
 
 ## Function transforms
 

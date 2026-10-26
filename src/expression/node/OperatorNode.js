@@ -1,18 +1,17 @@
 import { isNode, isConstantNode, isOperatorNode, isParenthesisNode } from '../../utils/is.js'
-import { map } from '../../utils/array.js'
-import { createSubScope } from '../../utils/scope.js'
 import { escape } from '../../utils/string.js'
-import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
+import { isSafeMethod } from '../../utils/customs.js'
 import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators.js'
 import { latexOperators } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'OperatorNode'
 const dependencies = [
-  'Node'
+  'Node',
+  'FunctionNode'
 ]
 
-export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
+export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({ Node, FunctionNode }) => {
   /**
    * Returns true if the expression starts with a constant, under
    * the current parenthesization:
@@ -300,38 +299,8 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         }
       }
 
-      const fn = getSafeProperty(math, this.fn)
-      const evalArgs = map(this.args, function (arg) {
-        return arg._compile(math, argNames)
-      })
-
-      if (typeof fn === 'function' && fn.rawArgs === true) {
-        // pass unevaluated parameters (nodes) to the function
-        // "raw" evaluation
-        const rawArgs = this.args
-        return function evalOperatorNode (scope, args, context) {
-          return fn(rawArgs, math, createSubScope(scope, args))
-        }
-      } else if (evalArgs.length === 1) {
-        const evalArg0 = evalArgs[0]
-        return function evalOperatorNode (scope, args, context) {
-          return fn(evalArg0(scope, args, context))
-        }
-      } else if (evalArgs.length === 2) {
-        const evalArg0 = evalArgs[0]
-        const evalArg1 = evalArgs[1]
-        return function evalOperatorNode (scope, args, context) {
-          return fn(
-            evalArg0(scope, args, context),
-            evalArg1(scope, args, context))
-        }
-      } else {
-        return function evalOperatorNode (scope, args, context) {
-          return fn.apply(null, map(evalArgs, function (evalArg) {
-            return evalArg(scope, args, context)
-          }))
-        }
-      }
+      // Operators use the same scope lookup and argument handling as function calls.
+      return new FunctionNode(this.fn, this.args)._compile(math, argNames)
     }
 
     /**
