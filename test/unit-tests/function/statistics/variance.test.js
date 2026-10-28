@@ -88,6 +88,11 @@ describe('variance', function () {
     [[190, 20], [210, 220], [230, 240]]
   ]
 
+  it('should return a scalar for a one dimensional matrix along dimension 0', function () {
+    assert.strictEqual(variance([2, 6, 4], 0), 4)
+    assert.strictEqual(variance(new DenseMatrix([2, 6, 4]), 0), 4)
+  })
+
   it('should return the variance value along a dimension on a matrix', function () {
     assert.deepStrictEqual(variance([
       [2, 6],
