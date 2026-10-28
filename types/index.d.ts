@@ -2995,19 +2995,41 @@ export interface MathJsInstance extends MathJsFactory {
   max(...args: MathScalarType[]): MathScalarType
   /**
    * @param A A single matrix
+   * @returns The maximum value
+   */
+  max<T extends MathScalarType>(A: T[] | T[][]): T
+  /**
+   * @param A A one dimensional array
    * @param dimension The maximum over the selected dimension
    * @returns The maximum value
    */
-  max<T extends MathScalarType>(
-    A: T[] | T[][],
-    dimension?: number | BigNumber
-  ): T
+  max<T extends MathScalarType>(A: T[], dimension: number | BigNumber): T
+  /**
+   * @param A A two dimensional array
+   * @param dimension The maximum over the selected dimension
+   * @returns An array with the maximum over the selected dimension
+   */
+  max<T extends MathScalarType>(A: T[][], dimension: number | BigNumber): T[]
   /**
    * @param A A single matrix
    * @param dimension The maximum over the selected dimension
+   * @returns A matrix with the maximum over the selected dimension
+   */
+  max(A: Matrix, dimension: number | BigNumber): Matrix
+  /**
+   * @param A A single matrix
    * @returns The maximum value
    */
-  max(A: MathCollection, dimension?: number | BigNumber): MathScalarType
+  max(A: MathCollection): MathScalarType
+  /**
+   * @param A A single matrix
+   * @param dimension The maximum over the selected dimension
+   * @returns The maximum over the selected dimension
+   */
+  max(
+    A: MathCollection,
+    dimension: number | BigNumber
+  ): MathScalarType | MathCollection
 
   /**
    * Compute the mean value of matrix or a list with values. In case of a
@@ -3025,19 +3047,41 @@ export interface MathJsInstance extends MathJsFactory {
   mean(...args: MathScalarType[]): MathScalarType
   /**
    * @param A A single matrix
+   * @returns The mean value
+   */
+  mean<T extends MathScalarType>(A: T[] | T[][]): T
+  /**
+   * @param A A one dimensional array
    * @param dimension The mean over the selected dimension
    * @returns The mean value
    */
-  mean<T extends MathScalarType>(
-    A: T[] | T[][],
-    dimension?: number | BigNumber
-  ): T
+  mean<T extends MathScalarType>(A: T[], dimension: number | BigNumber): T
+  /**
+   * @param A A two dimensional array
+   * @param dimension The mean over the selected dimension
+   * @returns An array with the mean over the selected dimension
+   */
+  mean<T extends MathScalarType>(A: T[][], dimension: number | BigNumber): T[]
   /**
    * @param A A single matrix
    * @param dimension The mean over the selected dimension
+   * @returns A matrix with the mean over the selected dimension
+   */
+  mean(A: Matrix, dimension: number | BigNumber): Matrix
+  /**
+   * @param A A single matrix
    * @returns The mean value
    */
-  mean(A: MathCollection, dimension?: number | BigNumber): MathScalarType
+  mean(A: MathCollection): MathScalarType
+  /**
+   * @param A A single matrix
+   * @param dimension The mean over the selected dimension
+   * @returns The mean over the selected dimension
+   */
+  mean(
+    A: MathCollection,
+    dimension: number | BigNumber
+  ): MathScalarType | MathCollection
 
   /**
    * Compute the median of a matrix or a list with values. The values are
@@ -3082,19 +3126,41 @@ export interface MathJsInstance extends MathJsFactory {
   min(...args: MathScalarType[]): MathScalarType
   /**
    * @param A A single matrix
+   * @returns The minimum value
+   */
+  min<T extends MathScalarType>(A: T[] | T[][]): T
+  /**
+   * @param A A one dimensional array
    * @param dimension The minimum over the selected dimension
    * @returns The minimum value
    */
-  min<T extends MathScalarType>(
-    A: T[] | T[][],
-    dimension?: number | BigNumber
-  ): T
+  min<T extends MathScalarType>(A: T[], dimension: number | BigNumber): T
+  /**
+   * @param A A two dimensional array
+   * @param dimension The minimum over the selected dimension
+   * @returns An array with the minimum over the selected dimension
+   */
+  min<T extends MathScalarType>(A: T[][], dimension: number | BigNumber): T[]
   /**
    * @param A A single matrix
    * @param dimension The minimum over the selected dimension
+   * @returns A matrix with the minimum over the selected dimension
+   */
+  min(A: Matrix, dimension: number | BigNumber): Matrix
+  /**
+   * @param A A single matrix
    * @returns The minimum value
    */
-  min(A: MathCollection, dimension?: number | BigNumber): MathScalarType
+  min(A: MathCollection): MathScalarType
+  /**
+   * @param A A single matrix
+   * @param dimension The minimum over the selected dimension
+   * @returns The minimum over the selected dimension
+   */
+  min(
+    A: MathCollection,
+    dimension: number | BigNumber
+  ): MathScalarType | MathCollection
 
   /**
    * Computes the mode of a set of numbers or a list with values(numbers
@@ -3211,13 +3277,46 @@ export interface MathJsInstance extends MathJsFactory {
    * @param normalization Determines how to normalize the variance. Choose
    * ‘unbiased’ (default), ‘uncorrected’, or ‘biased’. Default value:
    * ‘unbiased’.
-   * @returns The standard deviation array
+   * @returns The standard deviation over the selected dimension
+   */
+  std(
+    array: MathNumericType[],
+    dimension: number | BigNumber,
+    normalization?: 'unbiased' | 'uncorrected' | 'biased'
+  ): MathNumericType
+  /**
+   * @param array A two dimensional array
+   * @param dimension A dimension to compute the standard deviation on
+   * @param normalization Determines how to normalize the variance
+   * @returns An array with the standard deviation over the selected dimension
+   */
+  std(
+    array: MathNumericType[][],
+    dimension: number | BigNumber,
+    normalization?: 'unbiased' | 'uncorrected' | 'biased'
+  ): MathNumericType[]
+  /**
+   * @param array A single matrix
+   * @param dimension A dimension to compute the standard deviation on
+   * @param normalization Determines how to normalize the variance
+   * @returns A matrix with the standard deviation over the selected dimension
+   */
+  std(
+    array: Matrix,
+    dimension: number | BigNumber,
+    normalization?: 'unbiased' | 'uncorrected' | 'biased'
+  ): Matrix
+  /**
+   * @param array A single matrix or array
+   * @param dimension A dimension to compute the standard deviation on
+   * @param normalization Determines how to normalize the variance
+   * @returns The standard deviation over the selected dimension
    */
   std(
     array: MathCollection,
-    dimension?: number,
+    dimension: number | BigNumber,
     normalization?: 'unbiased' | 'uncorrected' | 'biased'
-  ): MathNumericType[]
+  ): MathNumericType | MathCollection
   /**
    * Compute the standard deviation of a matrix or a list with values. The
    * standard deviations is defined as the square root of the variance:
@@ -3236,7 +3335,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   std(
     array: MathCollection,
-    normalization: 'unbiased' | 'uncorrected' | 'biased'
+    normalization?: 'unbiased' | 'uncorrected' | 'biased'
   ): MathNumericType
 
   /**
@@ -3254,19 +3353,41 @@ export interface MathJsInstance extends MathJsFactory {
   sum(...args: MathScalarType[]): MathScalarType
   /**
    * @param A A single matrix
+   * @returns The sum of all values
+   */
+  sum<T extends MathScalarType>(A: T[] | T[][]): T
+  /**
+   * @param A A one dimensional array
    * @param dimension The sum over the selected dimension
    * @returns The sum of all values
    */
-  sum<T extends MathScalarType>(
-    A: T[] | T[][],
-    dimension?: number | BigNumber
-  ): T
+  sum<T extends MathScalarType>(A: T[], dimension: number | BigNumber): T
+  /**
+   * @param A A two dimensional array
+   * @param dimension The sum over the selected dimension
+   * @returns An array with the sum over the selected dimension
+   */
+  sum<T extends MathScalarType>(A: T[][], dimension: number | BigNumber): T[]
   /**
    * @param A A single matrix
    * @param dimension The sum over the selected dimension
+   * @returns A matrix with the sum over the selected dimension
+   */
+  sum(A: Matrix, dimension: number | BigNumber): Matrix
+  /**
+   * @param A A single matrix
    * @returns The sum of all values
    */
-  sum(A: MathCollection, dimension?: number | BigNumber): MathScalarType
+  sum(A: MathCollection): MathScalarType
+  /**
+   * @param A A single matrix
+   * @param dimension The sum over the selected dimension
+   * @returns The sum over the selected dimension
+   */
+  sum(
+    A: MathCollection,
+    dimension: number | BigNumber
+  ): MathScalarType | MathCollection
 
   /**
    * Count the number of elements of a matrix, array or string.
@@ -3321,13 +3442,46 @@ export interface MathJsInstance extends MathJsFactory {
    * @param normalization normalization Determines how to normalize the
    * variance. Choose ‘unbiased’ (default), ‘uncorrected’, or ‘biased’.
    * Default value: ‘unbiased’.
-   * @returns variance matrix.
+   * @returns The variance over the selected dimension
+   */
+  variance(
+    array: MathNumericType[],
+    dimension: number | BigNumber,
+    normalization?: 'unbiased' | 'uncorrected' | 'biased'
+  ): MathNumericType
+  /**
+   * @param array A two dimensional array
+   * @param dimension A dimension to compute the variance on
+   * @param normalization Determines how to normalize the variance
+   * @returns An array with the variance over the selected dimension
+   */
+  variance(
+    array: MathNumericType[][],
+    dimension: number | BigNumber,
+    normalization?: 'unbiased' | 'uncorrected' | 'biased'
+  ): MathNumericType[]
+  /**
+   * @param array A single matrix
+   * @param dimension A dimension to compute the variance on
+   * @param normalization Determines how to normalize the variance
+   * @returns A matrix with the variance over the selected dimension
+   */
+  variance(
+    array: Matrix,
+    dimension: number | BigNumber,
+    normalization?: 'unbiased' | 'uncorrected' | 'biased'
+  ): Matrix
+  /**
+   * @param array A single matrix or array
+   * @param dimension A dimension to compute the variance on
+   * @param normalization Determines how to normalize the variance
+   * @returns The variance over the selected dimension
    */
   variance(
     array: MathCollection,
-    dimension?: number,
+    dimension: number | BigNumber,
     normalization?: 'unbiased' | 'uncorrected' | 'biased'
-  ): MathNumericType[]
+  ): MathNumericType | MathCollection
   /**
    * @param array A single matrix
    * @param normalization normalization Determines how to normalize the
@@ -3337,7 +3491,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   variance(
     array: MathCollection,
-    normalization: 'unbiased' | 'uncorrected' | 'biased'
+    normalization?: 'unbiased' | 'uncorrected' | 'biased'
   ): MathNumericType
 
   /**

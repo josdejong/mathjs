@@ -3014,7 +3014,7 @@ Statistics functions' return types
       ],
       1
     )
-  ).toMatchTypeOf<MathScalarType>()
+  ).toMatchTypeOf<number[]>()
 
   expectTypeOf(math.max(1, 2, 3)).toMatchTypeOf<number>()
   expectTypeOf(math.max([1, 2, 3])).toMatchTypeOf<number>()
@@ -3045,6 +3045,25 @@ Statistics functions' return types
   expectTypeOf(math.mean(123, math.bignumber('456'))).toMatchTypeOf<
     number | BigNumber | bigint | Fraction | Complex | Unit
   >()
+
+  // with a dimension, the result is reduced by one dimension
+  const A2 = [
+    [1, 2],
+    [3, 4]
+  ]
+  expectTypeOf(math.max(A2, 1)).toMatchTypeOf<number[]>()
+  expectTypeOf(math.mean(A2, 1)).toMatchTypeOf<number[]>()
+  expectTypeOf(math.min(A2, 0)).toMatchTypeOf<number[]>()
+  expectTypeOf(math.sum(A2, math.bignumber(0))).toMatchTypeOf<number[]>()
+  expectTypeOf(math.mean([1, 2, 3], 0)).toMatchTypeOf<number>()
+  expectTypeOf(math.max(math.matrix(A2), 0)).toMatchTypeOf<Matrix>()
+  expectTypeOf(math.mean(math.matrix(A2), 1)).toMatchTypeOf<Matrix>()
+  expectTypeOf(math.std(A2, 1)).toMatchTypeOf<MathNumericType[]>()
+  expectTypeOf(math.std(math.matrix(A2), 1, 'biased')).toMatchTypeOf<Matrix>()
+  expectTypeOf(math.std([1, 2, 3])).toMatchTypeOf<MathNumericType>()
+  expectTypeOf(math.variance(A2, 0)).toMatchTypeOf<MathNumericType[]>()
+  expectTypeOf(math.variance(math.matrix(A2), 0)).toMatchTypeOf<Matrix>()
+  expectTypeOf(math.variance([1, 2, 3], 0)).toMatchTypeOf<MathNumericType>()
 
   expectTypeOf(math.median(1, 2, 3)).toMatchTypeOf<number>()
   expectTypeOf(math.median([1, 2, 3])).toMatchTypeOf<number>()
