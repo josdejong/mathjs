@@ -536,9 +536,8 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
           ])
           break
         case 'acoth':
-          // d/dx(acoth(x)) = -1 / (1 - x^2)
+          // d/dx(acoth(x)) = 1 / (1 - x^2)
           div = true
-          negative = true
           funcDerivative = new OperatorNode('-', 'subtract', [
             createConstantNode(1),
             new OperatorNode('^', 'pow', [
