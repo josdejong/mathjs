@@ -13,7 +13,7 @@ Math.js supports two types of matrices:
 
 - `Array`, a regular JavaScript array. A multidimensional array can be created
   by nesting arrays. The following terminology will be used to define different kinds of nested arrays.
-  - **Recangular array**: All elements of an array are arrays of the same size. Like `[[1, 2], [3, 4]]`
+  - **Rectangular array**: All elements of an array are arrays of the same size. Like `[[1, 2], [3, 4]]`
   - **Jagged arrays**: All elements of an array are arrays but not of the same size. Like `[[1, 2], [3, 4, 5]]`
   - **Heterogeneous arrays**: If not all the elements inside an array are arrays. Like `[[1, 2], 3]`.
 - `Matrix`, a matrix implementation by math.js. A `Matrix` is an object wrapped

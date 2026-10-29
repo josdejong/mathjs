@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Feat: document and allow more operations on non-rectangular nested arrays,
+  along with speedup matrix/array w. scalar operations (#3607). Thanks @dvd101x.
 - Fix: correct the sign of the derivative of acoth (#3727) Thanks @chuanghiduoc.
 - Chore: fix spelling errors in various comments etc. (#3666-#3670). Thanks
   @rrbharath.
