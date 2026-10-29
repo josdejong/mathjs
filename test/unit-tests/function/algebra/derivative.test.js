@@ -158,7 +158,7 @@ describe('derivative', function () {
     compareString(derivativeWithoutSimplify('atanh((2x))', 'x'), '(2 * 1) / (1 - (2 x) ^ 2)')
     compareString(derivativeWithoutSimplify('asech((2x))', 'x'), '-(2 * 1) / ((2 x) * sqrt(1 - (2 x) ^ 2))')
     compareString(derivativeWithoutSimplify('acsch((2x))', 'x'), '-(2 * 1) / (abs((2 x)) * sqrt((2 x) ^ 2 + 1))')
-    compareString(derivativeWithoutSimplify('acoth((2x))', 'x'), '-(2 * 1) / (1 - (2 x) ^ 2)')
+    compareString(derivativeWithoutSimplify('acoth((2x))', 'x'), '(2 * 1) / (1 - (2 x) ^ 2)')
     compareString(derivativeWithoutSimplify('abs(2x)', 'x'), '2 * 1 * abs(2 x) / 2 x')
 
     // See power operator tests above
@@ -172,6 +172,12 @@ describe('derivative', function () {
     compareString(derivativeWithoutSimplify('pow(x^3 + x, 5x + 2)', 'x'), '(x ^ 3 + x) ^ (5 x + 2) * ((3 * 1 * x ^ (3 - 1) + 1) * (5 x + 2) / (x ^ 3 + x) + (5 * 1 + 0) * log(x ^ 3 + x))')
 
     compareString(derivativeWithoutSimplify('exp(2x)', 'x'), '2 * 1 * exp(2 x)')
+  })
+
+  it('should return the correct sign for the derivative of acoth', function () {
+    // d/dx(acoth(x)) = 1 / (1 - x^2), negative for |x| > 1
+    assert.ok(Math.abs(derivative('acoth(x)', 'x').evaluate({ x: 2 }) + 1 / 3) < 1e-12)
+    assert.ok(Math.abs(derivative('acoth(2x)', 'x').evaluate({ x: 1 }) + 2 / 3) < 1e-12)
   })
 
   it('should take the partial derivative of an expression', function () {

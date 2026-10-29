@@ -2,6 +2,9 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: correct the sign of the derivative of acoth (#3727) Thanks @chuanghiduoc.
+- Chore: fix spelling errors in various comments etc. (#3666-#3670). Thanks
+  @rrbharath.
 - Docs: fix the browser example `rocket_trajectory_optimization.html` (#3654).
   Thanks @dvd101x.
 
