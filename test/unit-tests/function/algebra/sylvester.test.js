@@ -62,7 +62,7 @@ describe('sylvester', function () {
     math2.config({ legacySubset: true })
 
     // Test legacy syntax with sylvester
-    // This is not strictly necessary and shoudl be removed after the deprecation period
+    // This is not strictly necessary and should be removed after the deprecation period
     const sylvesterA = [[-5.3, -1.4, -0.2, 0.7],
       [-0.4, -1.0, -0.1, -1.2],
       [0.3, 0.7, -2.5, 0.7],
