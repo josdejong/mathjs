@@ -27,6 +27,13 @@ describe('invmod', function () {
     assert.strictEqual(invmod(-2000000, 21), 10)
   })
 
+  it('should return a result between 0 and b for a negative modulus', function () {
+    assert.strictEqual(invmod(3, -11), -7)
+    assert.strictEqual(invmod(-3, -11), -4)
+    assert.strictEqual(invmod(2, -7), -3)
+    assert.deepStrictEqual(invmod(bignumber(3), bignumber(-11)), bignumber(-7))
+  })
+
   it('should calculate invmod for BigNumbers', function () {
     assert.deepStrictEqual(invmod(bignumber(13), bignumber(25)), bignumber(2))
     assert.deepStrictEqual(invmod(bignumber(-7), bignumber(48)), bignumber(41))
