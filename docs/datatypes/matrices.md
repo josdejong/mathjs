@@ -113,8 +113,8 @@ determined by the option `matrix` as discussed in section
 
 ```js
 // Array as input gives Array as output
-math.ones([2, 3])               // Array,  size [3, 2], [[1, 1, 1], [1, 1, 1]]
-math.ones(math.matrix([2, 3]))  // Matrix, size [3, 2], [[1, 1, 1], [1, 1, 1]]
+math.ones([2, 3])               // Array,  size [2, 3], [[1, 1, 1], [1, 1, 1]]
+math.ones(math.matrix([2, 3]))  // Matrix, size [2, 3], [[1, 1, 1], [1, 1, 1]]
 ```
 
 Ranges can be created using the function `range`. The function `range` is

@@ -50,5 +50,5 @@ math.number(42n)                   // number, 42
 math.bignumber(42n)                // BigNumber, 42
 
 // losing digits when converting to number
-math.number(70000000000000000123n) // number, 7000000000000000000
+math.number(70000000000000000123n) // number, 70000000000000000000
 ```
