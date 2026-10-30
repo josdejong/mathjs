@@ -1234,6 +1234,11 @@ describe('Unit', function () {
       assert.strictEqual(new Unit(1, 'kilogramforce').equals(new Unit(1, 'kgf')), true)
     })
 
+    it('should define acre exactly as 4840 sqyd', function () {
+      assert.strictEqual(new Unit(1, 'acre').equals(new Unit(4840, 'sqyd')), true)
+      assert.strictEqual(new Unit(1, 'acre').equals(new Unit(43560, 'sqft')), true)
+    })
+
     it("For each built-in unit, 'name' should match key", function () {
       for (const key in Unit.UNITS) {
         if (hasOwnProperty(Unit.UNITS, key)) {
