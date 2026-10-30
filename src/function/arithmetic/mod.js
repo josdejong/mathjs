@@ -15,18 +15,17 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'zeros',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix, concat }) => {
+export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix }) => {
   const floor = createFloor({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Calculates the modulus, the remainder of an integer division.
@@ -60,10 +59,11 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    * History:
    *
-   *    v13    Handle bigints
-   *    v11.6  Support matrix broadcasting
-   *    v2     Handle Fractions
-   *    v0.2   Created
+   *    v13     Handle bigints
+   *    v12.1   Support negative divisors for BigNumber and Fraction
+   *    v11.6   Support matrix broadcasting
+   *    v2      Handle Fractions
+   *    v0.2    Created
    *
    * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} x Dividend
    * @param  {number | BigNumber | bigint | Fraction | Array | Matrix} y Divisor

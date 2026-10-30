@@ -66,7 +66,7 @@ export const createTrace = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         const rows = size[0]
         const cols = size[1]
         if (rows === cols) {
-          // calulate sum
+          // calculate sum
           let sum = 0
           // loop diagonal
           for (let i = 0; i < rows; i++) { sum = add(sum, data[i][i]) }
@@ -93,7 +93,7 @@ export const createTrace = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     const columns = size[1]
     // matrix must be square
     if (rows === columns) {
-      // calulate sum
+      // calculate sum
       let sum = 0
       // check we have data (avoid looping columns)
       if (values.length > 0) {
