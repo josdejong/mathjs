@@ -161,7 +161,7 @@ All nodes have the following methods:
 
     ```js
     const node = math.parse('3+4*2')
-    node.toString()  // returns '3 + 4 * 2'
+    node.toString()  // returns '3 + (4 * 2)'
     ```
 
     Information about the options in [Customization](customization.md#custom-html-latex-and-string-output).

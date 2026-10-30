@@ -149,8 +149,8 @@ pretty print an expression in the browser with a library like
 ```js
 // parse an expression
 const node = math.parse('sqrt(x/x+1)')
-node.toString()   // returns 'sqrt(x / x + 1)'
-node.toTex()      // returns '\sqrt{\frac{ x}{ x}+1}'
+node.toString()   // returns 'sqrt((x / x) + 1)'
+node.toTex()      // returns '\sqrt{ {\frac{x}{x} }+{1} }'
 ```
 
 
