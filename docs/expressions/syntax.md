@@ -571,10 +571,10 @@ An overview of all available units can be found on the page
 [Units](../datatypes/units.md).
 
 In expressions, `min` and `sec` resolve by default to the minimum and secant
-functions instead of the minute and second units. Use `minute`, `second`, or
-`s` for those units in an expression, or parse the abbreviations with
-`math.unit('5 min')` and `math.unit('5 sec')`. A scope can explicitly override
-these symbols.
+functions instead of abbreviations for the minute and second units. Use
+`minute`, `second`, or `s` for those units in an expression, or parse the
+abbreviations with `math.unit('5 min')` and `math.unit('5 sec')`. A scope can
+explicitly override these symbols.
 
 Units can be converted using the operator `to` or `in`.
 

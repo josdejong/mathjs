@@ -77,10 +77,11 @@ math.unit('m^2/s^2')       // Unit m^2 / s^2
 math.evaluate('(m/s)^2')   // Unit m^2 / s^2
 ```
 
-In expressions, `min` and `sec` resolve by default to the minimum and secant
-functions, not the minute and second units. Use `minute` or `second` with
-`math.evaluate`, or use `math.unit('5 min')` and `math.unit('5 sec')` to parse
-those abbreviations. A scope can explicitly override these symbols.
+In math.js expressions, as parsed by `math.evaluate` and related methods,
+`min` and `sec` resolve by default to the minimum and secant functions, not the
+minute and second units. Use `minute` or `second` with `math.evaluate`, or use
+`math.unit('5 min')` and `math.unit('5 sec')` to parse those abbreviations. A
+scope can explicitly override these symbols.
 
 
 ## Calculations
@@ -333,9 +334,9 @@ Pressure            | Pa, psi, atm, torr, bar, mmHg, mmH2O, cmH2O
 Electricity and magnetism | ampere (A), ampere-hour (Ah), coulomb (C), watt (W), volt (V), ohm, farad (F), weber (Wb), tesla (T), henry (H), siemens (S), electronvolt (eV)
 Binary              | bits (b), bytes (B)
 
-In expressions, the `min` and `sec` abbreviations above refer to functions by
-default; use `minute`, `second`, or `s` instead. See the discussion of
-expression parsing above.
+In math.js expressions, the `min` and `sec` abbreviations above refer to
+functions by default; use `minute`, `second`, or `s` instead. See the discussion
+of expression parsing above.
 
 Note: all time units are based on the Julian year, with one month being 1/12th of a Julian year, a year being one Julian year, a decade being 10 Julian years, a century being 100, and a millennium being 1000.
 
