@@ -199,6 +199,11 @@ describe('bitAnd', function () {
     assert.deepStrictEqual(bitAnd([3, 9], 12), [0, 8])
   })
 
+  it('should bitwise and a scalar and an jagged array correctly', function () {
+    assert.deepStrictEqual(bitAnd(12, [[3, 9], 5]), [[0, 8], 4])
+    assert.deepStrictEqual(bitAnd([[3, 9], 5], 12), [[0, 8], 4])
+  })
+
   it('should bitwise and broadcastable arrays correctly', function () {
     assert.deepStrictEqual(bitAnd([12, 13], [[3], [9]]), [[0, 1], [8, 9]])
     assert.deepStrictEqual(bitAnd([[12], [13]], [3, 9]), [[0, 8], [1, 9]])

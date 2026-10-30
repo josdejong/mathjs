@@ -2,6 +2,11 @@
 
 # unpublished changes since 15.2.0
 
+- Feat: document and allow more operations on non-rectangular nested arrays,
+  along with speedup matrix/array w. scalar operations (#3607). Thanks @dvd101x.
+- Fix: correct the sign of the derivative of acoth (#3727) Thanks @chuanghiduoc.
+- Chore: fix spelling errors in various comments etc. (#3666-#3670). Thanks
+  @rrbharath.
 - Fix: #3620 allow parentheses around exponents in unit parsing.
 - Docs: fix the browser example `rocket_trajectory_optimization.html` (#3654).
   Thanks @dvd101x.
@@ -1695,7 +1700,7 @@ Breaking changes:
 - Dropped support for (non-primitive) instances of `Number`, `Boolean`, and
   `String` from functions `clone` and `typeof`.
 - Dropped official support for IE9 (probably still works, but it's not tested).
-- Fixed #851: More consistent behavior of sqrt, nthRoot, and pow.
+- Fixed #851: More consistent behavior of `sqrt`, `nthRoot`, and `pow`.
   Thanks @dakotablair.
 - Fixed #1103: Calling `toTex` on node that contains `derivative` causing
   an exception. Thanks @joelhoover.
@@ -2528,7 +2533,7 @@ Non breaking changes:
 
 ## 2015-07-12, version 1.7.1
 
-- Fixed #397: Inaccuracies in nthRoot for very large values, and wrong results
+- Fixed #397: Inaccuracies in `nthRoot` for very large values, and wrong results
   for very small values. (backported from v2)
 - Fixed #405: Parser throws error when defining a function in a multiline
   expression.
@@ -3069,7 +3074,7 @@ Non breaking changes:
 
 - Extended the import function and some other minor improvements.
 - Fixed a bug in merging one dimensional vectors into a matrix.
-- Fixed a bug in function subtract, when subtracting a complex number from a
+- Fixed a bug in function `subtract`, when subtracting a complex number from a
   real number.
 
 ## 2013-05-10, version 0.8.1
