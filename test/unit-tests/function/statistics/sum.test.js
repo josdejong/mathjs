@@ -101,6 +101,11 @@ describe('sum', function () {
     [[190, 200], [210, 220], [230, 240]]
   ]
 
+  it('should return a scalar for a one dimensional matrix along dimension 0', function () {
+    assert.strictEqual(sum([2, 6, 4], 0), 12)
+    assert.strictEqual(sum(new DenseMatrix([2, 6, 4]), 0), 12)
+  })
+
   it('should return the sum value along a dimension of a matrix', function () {
     assert.deepStrictEqual(sum([
       [2, 6],

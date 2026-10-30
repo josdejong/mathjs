@@ -121,6 +121,11 @@ describe('min', function () {
     assert.throws(function () { min(math.matrix([1, 2]), math.matrix([3, 4])) }, /Scalar values expected/)
   })
 
+  it('should return a scalar for a one dimensional matrix along dimension 0', function () {
+    assert.strictEqual(min([2, 6, 4], 0), 2)
+    assert.strictEqual(min(new DenseMatrix([2, 6, 4]), 0), 2)
+  })
+
   it('should throw an error if called a dimension out of range', function () {
     assert.throws(function () { min([1, 2, 3], -1) }, /IndexError: Index out of range \(-1 < 0\)/)
     assert.throws(function () { min([1, 2, 3], 1) }, /IndexError: Index out of range \(1 > 0\)/)
