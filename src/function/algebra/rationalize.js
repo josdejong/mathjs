@@ -336,13 +336,13 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
 
     setRules.firstRules = oldRules.concat(rulesFirst, rulesSucDiv) // First rule set
     setRules.distrDivRules = rulesDistrDiv // Just distr. div. rules
-    setRules.sucDivRules = rulesSucDiv // Jus succ. div. rules
+    setRules.sucDivRules = rulesSucDiv // Just succ. div. rules
     setRules.firstRulesAgain = oldRules.concat(rulesFirst) // Last rules set without succ. div.
 
     // Division simplification
 
     // Second rule set.
-    // There is no aggregate expression with parentesis, but the only variable can be scattered.
+    // There is no aggregate expression with parenthesis, but the only variable can be scattered.
     setRules.finalRules = [simplifyCore, // simplify.rules[0]
       { l: 'n*-n', r: '-n^2' }, // Joining multiply with power 1
       { l: 'n*n', r: 'n^2' }, // Joining multiply with power 2
@@ -451,7 +451,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
 
   // ---------------------------------------------------------------------------------------
   /**
-   * Auxilary function for rationalize
+   * Auxiliary function for rationalize
    * Convert near canonical polynomial in one variable in a canonical polynomial
    * with one term for each exponent in decreasing order
    *
@@ -515,7 +515,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
     if (first) { return new ConstantNode(0) } else { return no }
 
     /**
-     * Recursive auxilary function inside polyToCanonical for
+     * Recursive auxiliary function inside polyToCanonical for
      * converting expression in canonical form
      *
      * Syntax:

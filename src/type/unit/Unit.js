@@ -1118,7 +1118,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   /**
    * Get a unit, with optional formatting options.
    * @memberof Unit
-   * @param {string[] | Unit[]} [units]  Array of units strings or valueLess Unit objects in wich choose the best one
+   * @param {string[] | Unit[]} [units]  Array of units strings or valueLess Unit objects in which choose the best one
    * @param {Object} [options]  Options for parsing the unit. See parseUnit for details.
    *
    * @return {Unit} Returns a new Unit with the given value and unit.
@@ -3091,7 +3091,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * Retrieve the right convertor function corresponding with the type
+   * Retrieve the right converter function corresponding with the type
    * of provided exampleValue.
    *
    * @param {string} type   A string 'number', 'BigNumber', or 'Fraction'
@@ -3291,7 +3291,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (prefixes && prefixes.toUpperCase) { prefixes = PREFIXES[prefixes.toUpperCase()] || PREFIXES.NONE } else { prefixes = PREFIXES.NONE }
 
     // If defUnit is null, it is because the user did not
-    // specify a defintion. So create a new base dimension.
+    // specify a definition. So create a new base dimension.
     let newUnit = {}
     if (!defUnit) {
       // Add a new base dimension

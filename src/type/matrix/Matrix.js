@@ -20,7 +20,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    * Example usage:
    *
    *     let matrix = math.matrix([[1, 2], [3, 4]])
-   *     matix.size()              // [2, 2]
+   *     matrix.size()              // [2, 2]
    *     matrix.resize([3, 2], 5)
    *     matrix.valueOf()          // [[1, 2], [3, 4], [5, 5]]
    *     matrix.subset([1,2])       // 3 (indexes are zero-based)

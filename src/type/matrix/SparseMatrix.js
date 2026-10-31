@@ -420,7 +420,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
 
       // insert the sub matrix
       if (iSize.length === 1) {
-        // if the replacement index only has 1 dimension, go trough each one and set its value
+        // if the replacement index only has 1 dimension, go through each one and set its value
         const range = index.dimension(0)
         _forEachIndex(range, (dataIndex, subIndex) => {
           validateIndex(dataIndex)
@@ -1405,12 +1405,12 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *
    * @param {number} j            Column
    * @param {Array} values        Matrix values
-   * @param {Array} index         Matrix row indeces
+   * @param {Array} index         Matrix row indices
    * @param {Array} ptr           Matrix column pointers
    * @param {Function} callback   Callback function invoked for every row in column j
    */
   SparseMatrix._forEachRow = function (j, values, index, ptr, callback) {
-    // indeces for column j
+    // indices for column j
     const k0 = ptr[j]
     const k1 = ptr[j + 1]
 
@@ -1428,7 +1428,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * @param {number} y         Matrix row index 2
    * @param {number} columns   Number of columns in matrix
    * @param {Array} values     Matrix values
-   * @param {Array} index      Matrix row indeces
+   * @param {Array} index      Matrix row indices
    * @param {Array} ptr        Matrix column pointers
    */
   SparseMatrix._swapRows = function (x, y, columns, values, index, ptr) {

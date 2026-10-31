@@ -99,7 +99,7 @@ export const createSpaClass = /* #__PURE__ */ factory(name, dependencies, ({ add
     // node @ i and j
     let nodei = this._values[i]
     let nodej = this._values[j]
-    // check we need to insert indeces
+    // check we need to insert indices
     if (!nodei && nodej) {
       // insert in heap
       nodei = this._heap.insert(i, nodej.value)

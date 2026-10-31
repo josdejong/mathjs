@@ -132,7 +132,7 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     }
 
     // **for predictable mode** x^Infinity === NaN if x < -1
-    // N.B. this behavour is different from `Math.pow` which gives
+    // N.B. this behavior is different from `Math.pow` which gives
     // (-2)^Infinity === Infinity
     if (config.predictable &&
         ((x < -1 && y === Infinity) ||

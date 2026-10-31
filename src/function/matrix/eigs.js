@@ -211,7 +211,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
     }
 
     if (hasBig && hasComplex) {
-      console.warn('Complex BigNumbers not supported, this operation will lose precission.')
+      console.warn('Complex BigNumbers not supported, this operation will lose precision.')
     }
 
     if (hasComplex) {

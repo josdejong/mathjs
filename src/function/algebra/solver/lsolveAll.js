@@ -137,7 +137,7 @@ export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
         const iValues = []
         const iIndices = []
 
-        // first & last indeces in column
+        // first & last indices in column
         const firstIndex = ptr[i]
         const lastIndex = ptr[i + 1]
 

@@ -380,7 +380,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     for (let jb = 0; jb < bcolumns; jb++) {
       // update ptr
       cptr[jb] = cindex.length
-      // indeces in column jb
+      // indices in column jb
       const kb0 = bptr[jb]
       const kb1 = bptr[jb + 1]
       // do not process column jb if no data exists
