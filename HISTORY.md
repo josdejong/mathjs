@@ -14,6 +14,8 @@
   @rrbharath.
 - Docs: fix the browser example `rocket_trajectory_optimization.html` (#3654).
   Thanks @dvd101x.
+- Feat: #2483 support more than two arguments in the logical functions `and`,
+  `or`, and `xor` (#3744). Thanks @buzzgrewal.
 
 # 2026-04-07, 15.2.0
 

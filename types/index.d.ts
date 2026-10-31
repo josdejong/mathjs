@@ -1898,12 +1898,18 @@ export interface MathJsInstance extends MathJsFactory {
    * element wise.
    * @param x First value to and
    * @param y Second value to and
+   * @param values Additional values to and
    * @returns Returns true when both inputs are defined with a
    * nonzero/nonempty value.
    */
   and(
     x: number | BigNumber | bigint | Complex | Unit | MathCollection,
     y: number | BigNumber | bigint | Complex | Unit | MathCollection
+  ): boolean | MathCollection
+  and(
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    ...values: (number | BigNumber | bigint | Complex | Unit | MathCollection)[]
   ): boolean | MathCollection
 
   /**
@@ -1934,12 +1940,18 @@ export interface MathJsInstance extends MathJsFactory {
    * element wise.
    * @param x First value to or
    * @param y Second value to or
+   * @param values Additional values to or
    * @returns Returns true when one of the inputs is defined with a
    * nonzero/nonempty value.
    */
   or(
     x: number | BigNumber | bigint | Complex | Unit | MathCollection,
     y: number | BigNumber | bigint | Complex | Unit | MathCollection
+  ): boolean | MathCollection
+  or(
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    ...values: (number | BigNumber | bigint | Complex | Unit | MathCollection)[]
   ): boolean | MathCollection
 
   /**
@@ -1948,12 +1960,18 @@ export interface MathJsInstance extends MathJsFactory {
    * element wise.
    * @param x First value to xor
    * @param y Second value to xor
+   * @param values Additional values to xor
    * @returns Returns true when one and only one input is defined with a
    * nonzero/nonempty value.
    */
   xor(
     x: number | BigNumber | bigint | Complex | Unit | MathCollection,
     y: number | BigNumber | bigint | Complex | Unit | MathCollection
+  ): boolean | MathCollection
+  xor(
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    ...values: (number | BigNumber | bigint | Complex | Unit | MathCollection)[]
   ): boolean | MathCollection
 
   /*************************************************************************
