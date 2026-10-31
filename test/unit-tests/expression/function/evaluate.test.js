@@ -278,5 +278,11 @@ describe('evaluate', function () {
       assert.deepStrictEqual(res, math.matrix([1, 5]))
       assert.strictEqual(called, 1)
     })
+
+    it('should throw an error when calling nullish with a wrong number of arguments', function () {
+      assert.throws(() => math.evaluate('nullish()'), /TypeError: Too few arguments in function nullish/)
+      assert.throws(() => math.evaluate('nullish(null)'), /TypeError: Too few arguments in function nullish/)
+      assert.throws(() => math.evaluate('nullish(null, 8, null)'), /TypeError: Too many arguments in function nullish \(expected: 2, actual: 3\)/)
+    })
   })
 })

@@ -1901,6 +1901,12 @@ describe('parse', function () {
       assert.deepStrictEqual(scope, { a: false })
     })
 
+    it('should throw an error when calling bitAnd with a wrong number of arguments', function () {
+      assert.throws(function () { parseAndEval('bitAnd()') }, /TypeError: Too few arguments in function bitAnd/)
+      assert.throws(function () { parseAndEval('bitAnd(1)') }, /TypeError: Too few arguments in function bitAnd/)
+      assert.throws(function () { parseAndEval('bitAnd(1, 1, 0)') }, /TypeError: Too many arguments in function bitAnd \(expected: 2, actual: 3\)/)
+    })
+
     it('should parse bitwise xor ^|', function () {
       assert.strictEqual(parseAndEval('2 ^| 6'), 4)
       assert.strictEqual(parseAndEval('5 ^| 3'), 6)
@@ -1927,6 +1933,12 @@ describe('parse', function () {
       const scope = {}
       parseAndEval('(a=true) | (b=true)', scope)
       assert.deepStrictEqual(scope, { a: true })
+    })
+
+    it('should throw an error when calling bitOr with a wrong number of arguments', function () {
+      assert.throws(function () { parseAndEval('bitOr()') }, /TypeError: Too few arguments in function bitOr/)
+      assert.throws(function () { parseAndEval('bitOr(0)') }, /TypeError: Too few arguments in function bitOr/)
+      assert.throws(function () { parseAndEval('bitOr(0, 0, 1)') }, /TypeError: Too many arguments in function bitOr \(expected: 2, actual: 3\)/)
     })
 
     it('should parse bitwise left shift <<', function () {
@@ -1960,6 +1972,12 @@ describe('parse', function () {
       const scope = {}
       parseAndEval('(a=false) and (b=true)', scope)
       assert.deepStrictEqual(scope, { a: false })
+    })
+
+    it('should throw an error when calling and with a wrong number of arguments', function () {
+      assert.throws(function () { parseAndEval('and()') }, /TypeError: Too few arguments in function and/)
+      assert.throws(function () { parseAndEval('and(true)') }, /TypeError: Too few arguments in function and/)
+      assert.throws(function () { parseAndEval('and(true, true, false)') }, /TypeError: Too many arguments in function and \(expected: 2, actual: 3\)/)
     })
 
     it('should parse logical and inside a function definition', function () {
@@ -2038,6 +2056,12 @@ describe('parse', function () {
       const scope = {}
       parseAndEval('(a=true) or (b=true)', scope)
       assert.deepStrictEqual(scope, { a: true })
+    })
+
+    it('should throw an error when calling or with a wrong number of arguments', function () {
+      assert.throws(function () { parseAndEval('or()') }, /TypeError: Too few arguments in function or/)
+      assert.throws(function () { parseAndEval('or(false)') }, /TypeError: Too few arguments in function or/)
+      assert.throws(function () { parseAndEval('or(false, false, true)') }, /TypeError: Too many arguments in function or \(expected: 2, actual: 3\)/)
     })
 
     it('should parse logical not', function () {
