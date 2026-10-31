@@ -13,6 +13,8 @@
   @rrbharath.
 - Docs: fix the browser example `rocket_trajectory_optimization.html` (#3654).
   Thanks @dvd101x.
+- Fix: #3726 expression parser: throw an error on a wrong number of arguments
+  in `and`, `or`, `bitAnd`, `bitOr`, and `nullish` (#3743). Thanks @buzzgrewal.
 
 # 2026-04-07, 15.2.0
 
