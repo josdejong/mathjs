@@ -18,11 +18,11 @@ export const createIm = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    * Examples:
    *
    *    const a = math.complex(2, 3)
-   *    math.re(a)                     // returns number 2
+   *    math.re(a)                     // returns number 2 ...
    *    math.im(a)                     // returns number 3
    *
-   *    math.re(math.complex('-5.2i')) // returns number -5.2
-   *    math.re(math.complex(2.4))     // returns number 0
+   *    math.im(math.complex('-5.2i')) // returns number -5.2
+   *    math.im(math.complex(2.4))     // returns number 0
    *
    * See also:
    *
