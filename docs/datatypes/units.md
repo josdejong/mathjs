@@ -70,6 +70,19 @@ const correct4 = math.evaluate('8.314 (m^3 * Pa) / (mol * K)') // Unit 8.314 (m^
 
 In summary: be careful with implicit multiplication. In case of doubt, always use an explicit `*` and parenthesis.
 
+The unit parser accepts parentheses for grouping, but exponents must follow an individual unit, not a parenthesized group. For example, `math.unit('(m/s)^2')` throws a syntax error. Apply the exponent to each unit instead, or use the expression parser:
+
+```js
+math.unit('m^2/s^2')       // Unit m^2 / s^2
+math.evaluate('(m/s)^2')   // Unit m^2 / s^2
+```
+
+In math.js expressions, as parsed by `math.evaluate` and related methods,
+`min` and `sec` resolve by default to the minimum and secant functions, not the
+minute and second units. Use `minute` or `second` with `math.evaluate`, or use
+`math.unit('5 min')` and `math.unit('5 sec')` to parse those abbreviations. A
+scope can explicitly override these symbols.
+
 
 ## Calculations
 
@@ -307,7 +320,7 @@ Surface area        | m2, sqin, sqft, sqyd, sqmi, sqrd, sqch, sqmil, acre, hecta
 Volume              | m3, litre (l, L, lt, liter), cc, cuin, cuft, cuyd, teaspoon, tablespoon
 Liquid volume       | minim, fluiddram (fldr), fluidounce (floz), gill (gi), cup (cp), pint (pt), quart (qt), gallon (gal), beerbarrel (bbl), oilbarrel (obl), hogshead, drop (gtt)
 Angles              | rad (radian), deg (degree), grad (gradian), cycle, arcsec (arcsecond), arcmin (arcminute)
-Time                | second (s, secs, seconds), minute (min, mins, minutes), hour (h, hr, hrs, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia)
+Time                | second (s, sec, secs, seconds), minute (min, mins, minutes), hour (h, hr, hrs, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia)
 Frequency           | hertz (Hz)
 Mass                | gram(g), tonne, ton, grain (gr), dram (dr), ounce (oz), poundmass (lbm, lb, lbs), hundredweight (cwt), stick, stone
 Electric current    | ampere (A)
@@ -320,6 +333,10 @@ Power               | watt (W), hp
 Pressure            | Pa, psi, atm, torr, bar, mmHg, mmH2O, cmH2O
 Electricity and magnetism | ampere (A), ampere-hour (Ah), coulomb (C), watt (W), volt (V), ohm, farad (F), weber (Wb), tesla (T), henry (H), siemens (S), electronvolt (eV)
 Binary              | bits (b), bytes (B)
+
+In math.js expressions, the `min` and `sec` abbreviations above refer to
+functions by default; use `minute`, `second`, or `s` instead. See the discussion
+of expression parsing above.
 
 Note: all time units are based on the Julian year, with one month being 1/12th of a Julian year, a year being one Julian year, a decade being 10 Julian years, a century being 100, and a millennium being 1000.
 

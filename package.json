@@ -166,5 +166,8 @@
   "bugs": {
     "url": "https://github.com/josdejong/mathjs/issues"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "allowScripts": {
+    "wd@1.14.0": true
+  }
 }

@@ -1230,8 +1230,25 @@ describe('Unit', function () {
       assert.strictEqual(new Unit(1, 'Wb/m^2').equals(new Unit(1, 'T')), true)
       assert.strictEqual(new Unit(1, 'Wb/A').equals(new Unit(1, 'H')), true)
       assert.strictEqual(new Unit(1, 'ohm^-1').equals(new Unit(1, 'S')), true)
-      assert.strictEqual(new Unit(1, 'eV').equals(new Unit(1.602176565e-19, 'J')), true)
+      assert.strictEqual(new Unit(1, 'eV').equals(new Unit(1.602176634e-19, 'J')), true)
       assert.strictEqual(new Unit(1, 'kilogramforce').equals(new Unit(1, 'kgf')), true)
+    })
+
+    it('should define acre exactly as 4840 sqyd', function () {
+      assert.strictEqual(new Unit(1, 'acre').equals(new Unit(4840, 'sqyd')), true)
+      assert.strictEqual(new Unit(1, 'acre').equals(new Unit(43560, 'sqft')), true)
+    })
+
+    it('should match the exact definitions of the units they are based on', function () {
+      // compare numbers, because equals() has an absolute tolerance of 1e-15
+      assert.strictEqual(new Unit(1, 'eV').toNumber('J'), 1.602176634e-19)
+      assert.strictEqual(new Unit(1, 'electronvolt').toNumber('J'), 1.602176634e-19)
+      assert.strictEqual(math.evaluate('elementaryCharge * 1 V').toNumber('eV'), 1)
+      assert.strictEqual(new Unit(760, 'torr').equals(new Unit(1, 'atm')), true)
+      assert.strictEqual(new Unit(1, 'mmHg').equals(new Unit(133.322387415, 'Pa')), true)
+      assert.strictEqual(new Unit(1, 'kip').equals(new Unit(1000, 'lbf')), true)
+      assert.strictEqual(new Unit(1, 'sqrd').equals(new Unit(1, 'rod^2')), true)
+      assert.strictEqual(new Unit(1, 'sqch').equals(new Unit(1, 'chain^2')), true)
     })
 
     it("For each built-in unit, 'name' should match key", function () {

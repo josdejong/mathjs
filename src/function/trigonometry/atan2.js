@@ -12,17 +12,16 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'BigNumber',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix, concat }) => {
+export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Calculate the inverse tangent function with two arguments, y/x.
@@ -50,6 +49,11 @@ export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    *    tan, atan, sin, cos
    *
+  * History:
+  *
+  *    v11.6  Support matrix broadcasting
+  *    v1.5   Support BigNumber arguments
+  *
    * @param {number | Array | Matrix} y  Second dimension
    * @param {number | Array | Matrix} x  First dimension
    * @return {number | Array | Matrix} Four-quadrant inverse tangent

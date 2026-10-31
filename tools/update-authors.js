@@ -87,7 +87,11 @@ const replaceEmails = {
   '<91676649+ikemHood@users.noreply.github.com>': {
     author: 'Ikem Peter',
     email: '<ikempeter2020@gmail.com>'
-  }
+  },
+  '<282228220+Hugohong258@users.noreply.github.com>': {
+    author: 'Hugohong258',
+    email: '<ugfifkgfufyu@gmail.com>'
+  },
 }
 
 // Commits from which we do not want the author to pop up in the AUTHORS list,
