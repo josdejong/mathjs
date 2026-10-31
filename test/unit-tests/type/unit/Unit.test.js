@@ -1234,6 +1234,11 @@ describe('Unit', function () {
       assert.strictEqual(new Unit(1, 'kilogramforce').equals(new Unit(1, 'kgf')), true)
     })
 
+    it('should define acre exactly as 4840 sqyd', function () {
+      assert.strictEqual(new Unit(1, 'acre').equals(new Unit(4840, 'sqyd')), true)
+      assert.strictEqual(new Unit(1, 'acre').equals(new Unit(43560, 'sqft')), true)
+    })
+
     it('should match the exact definitions of the units they are based on', function () {
       // compare numbers, because equals() has an absolute tolerance of 1e-15
       assert.strictEqual(new Unit(1, 'eV').toNumber('J'), 1.602176634e-19)
