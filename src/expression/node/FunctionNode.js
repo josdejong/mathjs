@@ -5,6 +5,11 @@ import { getSafeProperty, getSafeMethod } from '../../utils/customs.js'
 import { createSubScope } from '../../utils/scope.js'
 import { factory } from '../../utils/factory.js'
 import { defaultTemplate, latexFunctions } from '../../utils/latex.js'
+import {
+  continuesOptionalChain,
+  detachOptionalChain,
+  shortCircuitOptionalChain
+} from './utils/optionalChain.js'
 
 const name = 'FunctionNode'
 const dependencies = [
@@ -140,10 +145,18 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
      *                        evalNode(scope: Object, args: Object, context: *)
      */
     _compile (math, argNames) {
-      // compile arguments
-      const evalArgs = this.args.map((arg) => arg._compile(math, argNames))
-      const fromOptionalChaining = this.optional ||
-        (isAccessorNode(this.fn) && this.fn.optionalChaining)
+      const fromOptionalChaining = this.optional || continuesOptionalChain(this.fn)
+
+      // compile arguments. When this call is part of an optional chain, the
+      // arguments are evaluated outside of it, so a short-circuit inside an
+      // argument does not short-circuit the chain around the call itself.
+      const evalArgs = this.args.map((arg) => {
+        const evalArg = arg._compile(math, argNames)
+
+        return fromOptionalChaining
+          ? (scope, args, context) => evalArg(scope, args, detachOptionalChain(context))
+          : evalArg
+      })
 
       if (isSymbolNode(this.fn)) {
         const name = this.fn.name
@@ -193,12 +206,12 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
             switch (evalArgs.length) {
               case 0: return function evalFunctionNode (scope, args, context) {
                 const fn = resolveFn(scope)
-                if (fromOptionalChaining && fn === undefined) return undefined
+                if (fromOptionalChaining && fn === undefined) return shortCircuitOptionalChain(context)
                 return fn()
               }
               case 1: return function evalFunctionNode (scope, args, context) {
                 const fn = resolveFn(scope)
-                if (fromOptionalChaining && fn === undefined) return undefined
+                if (fromOptionalChaining && fn === undefined) return shortCircuitOptionalChain(context)
                 const evalArg0 = evalArgs[0]
                 return fn(
                   evalArg0(scope, args, context)
@@ -206,7 +219,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
               }
               case 2: return function evalFunctionNode (scope, args, context) {
                 const fn = resolveFn(scope)
-                if (fromOptionalChaining && fn === undefined) return undefined
+                if (fromOptionalChaining && fn === undefined) return shortCircuitOptionalChain(context)
                 const evalArg0 = evalArgs[0]
                 const evalArg1 = evalArgs[1]
                 return fn(
@@ -216,7 +229,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
               }
               default: return function evalFunctionNode (scope, args, context) {
                 const fn = resolveFn(scope)
-                if (fromOptionalChaining && fn === undefined) return undefined
+                if (fromOptionalChaining && fn === undefined) return shortCircuitOptionalChain(context)
                 const values = evalArgs.map((evalArg) => evalArg(scope, args, context))
                 return fn(...values)
               }
@@ -226,7 +239,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
           const rawArgs = this.args
           return function evalFunctionNode (scope, args, context) {
             const fn = getSafeProperty(args, name)
-            if (fromOptionalChaining && fn === undefined) return undefined
+            if (fromOptionalChaining && fn === undefined) return shortCircuitOptionalChain(context)
             if (typeof fn !== 'function') {
               throw new TypeError(
                 `Argument '${name}' was not a function; received: ${strin(fn)}`
@@ -260,7 +273,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
           // Optional chaining: if the base object is nullish, short-circuit to undefined
           if (fromOptionalChaining &&
               (object == null || object[prop] === undefined)) {
-            return undefined
+            return shortCircuitOptionalChain(context)
           }
 
           const fn = getSafeMethod(object, prop)
@@ -284,7 +297,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
 
         return function evalFunctionNode (scope, args, context) {
           const fn = evalFn(scope, args, context)
-          if (fromOptionalChaining && fn === undefined) return undefined
+          if (fromOptionalChaining && fn === undefined) return shortCircuitOptionalChain(context)
           if (typeof fn !== 'function') {
             throw new TypeError(
               `Expression '${fnExpr}' did not evaluate to a function; value is:` +

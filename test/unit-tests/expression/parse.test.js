@@ -1070,6 +1070,34 @@ describe('parse', function () {
       assert.throws(function () { parseAndEval('obj?.foo.bar', { obj: { foo: null } }) }, TypeError)
     })
 
+    it('should return undefined accessing the rest of the chain after optional chaining short-circuited', function () {
+      assert.deepStrictEqual(parseAndEval('obj?.foo.bar.baz', { obj: undefined }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.foo.bar.baz.qux', { obj: null }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj.foo?.bar.baz', { obj: { foo: undefined } }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]["bar"]["baz"]', { obj: undefined }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.foo["bar"].baz', { obj: null }), undefined)
+    })
+
+    it('should not short-circuit the rest of the chain when optional chaining did not', function () {
+      const scope = { obj: { foo: { bar: { baz: 2 } } } }
+      assert.deepStrictEqual(parseAndEval('obj?.foo.bar.baz', scope), 2)
+      assert.deepStrictEqual(parseAndEval('obj.foo?.bar.baz', scope), 2)
+      assert.throws(function () { parseAndEval('obj?.foo.bar.qux.quux', scope) }, TypeError)
+    })
+
+    it('should not remember the optional chaining state of an index expression', function () {
+      const scope = {
+        A: [10, 20, 30],
+        first: function () { return 1 },
+        obj: { foo: { bar: 1 } },
+        nothing: null
+      }
+
+      assert.deepStrictEqual(parseAndEval('A[first(nothing?.foo)]', scope), 10)
+      assert.deepStrictEqual(parseAndEval('A[obj?.foo.bar]', scope), 10)
+      assert.deepStrictEqual(Object.keys(scope.A), ['0', '1', '2'])
+    })
+
     it('should get a nested object property e using dot notation', function () {
       // in the past, the parser was trying to parse '.e' as a number
       const scope = { a: { e: { x: 2 } } }
@@ -1147,6 +1175,30 @@ describe('parse', function () {
       }
       assert.deepStrictEqual(parseAndEval('obj.fn(2)?.foo', scope), undefined)
       assert.deepStrictEqual(parseAndEval('obj["fn"](2)?.foo', scope), undefined)
+    })
+
+    it('should return undefined invoking a function after optional chaining short-circuited', function () {
+      assert.deepStrictEqual(parseAndEval('obj?.foo.fn(2)', { obj: undefined }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["foo"]["fn"](2)', { obj: null }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj.foo?.bar.fn(2)', { obj: { foo: null } }), undefined)
+    })
+
+    it('should return undefined accessing a function result after optional chaining short-circuited', function () {
+      assert.deepStrictEqual(parseAndEval('obj?.fn().foo', { obj: undefined }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.fn().foo.bar', { obj: null }), undefined)
+      assert.deepStrictEqual(parseAndEval('obj?.["fn"]().foo', { obj: undefined }), undefined)
+    })
+
+    it('should not short-circuit a chain when an argument of a call in it short-circuits', function () {
+      const scope = {
+        obj: {
+          fn: function () {
+            return { foo: 2 }
+          }
+        },
+        nothing: null
+      }
+      assert.deepStrictEqual(parseAndEval('obj?.fn(nothing?.bar).foo', scope), 2)
     })
 
     it('should apply implicit multiplication after a function call', function () {
