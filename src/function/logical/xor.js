@@ -19,41 +19,8 @@ export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
-  /**
-   * Logical `xor`. Test whether one and only one value is defined with a nonzero/nonempty value.
-   * For matrices, the function is evaluated element wise.
-   *
-   * Syntax:
-   *
-   *    math.xor(x, y)
-   *
-   * Examples:
-   *
-   *    math.xor(2, 4)   // returns false
-   *
-   *    a = [2, 0, 0]
-   *    b = [2, 7, 0]
-   *    c = 0
-   *
-   *    math.xor(a, b)   // returns [false, true, false]
-   *    math.xor(a, c)   // returns [true, false, false]
-   *
-   * See also:
-   *
-   *    and, not, or
-   *
-   * History:
-   *
-   *    v14.0.0 Return a sparse matrix for sparse inputs
-   *    v11.6   Support matrix broadcasting
-   *    v1.2    Created
-   *
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
-   * @return {boolean | Array | Matrix}
-   *            Returns true when one and only one input is defined with a nonzero/nonempty value.
-   */
-  return typed(
+  // the implementation for two arguments
+  const xorTwo = typed(
     name,
     {
       'number, number': xorNumber,
@@ -77,4 +44,58 @@ export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       Ss: matAlgo12xSfs
     })
   )
+
+  /**
+   * Logical `xor`. Test whether one and only one value is defined with a nonzero/nonempty value.
+   * With more than two arguments, the function is applied from left to right,
+   * so it returns true when an odd number of values is nonzero/nonempty.
+   * For matrices, the function is evaluated element wise.
+   *
+   * Syntax:
+   *
+   *    math.xor(x, y)
+   *    math.xor(x, y, z, ...)
+   *
+   * Examples:
+   *
+   *    math.xor(2, 4)      // returns false
+   *    math.xor(2, 4, 6)   // returns true
+   *
+   *    a = [2, 0, 0]
+   *    b = [2, 7, 0]
+   *    c = 0
+   *
+   *    math.xor(a, b)   // returns [false, true, false]
+   *    math.xor(a, c)   // returns [true, false, false]
+   *
+   * See also:
+   *
+   *    and, not, or
+   *
+   * History:
+   *
+   *    v15.3   Support more than two arguments
+   *    v14.0.0 Return a sparse matrix for sparse inputs
+   *    v11.6   Support matrix broadcasting
+   *    v1.2    Created
+   *
+   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
+   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
+   * @param  {...number | BigNumber | bigint | Complex | Unit | Array | Matrix} rest Additional values to check
+   * @return {boolean | Array | Matrix}
+   *            Returns true when one and only one input is defined with a nonzero/nonempty value.
+   */
+  return typed(name, {
+    'any, any': xorTwo,
+
+    'any, any, ...any': function (x, y, rest) {
+      let result = xorTwo(x, y)
+
+      for (let i = 0; i < rest.length; i++) {
+        result = xorTwo(result, rest[i])
+      }
+
+      return result
+    }
+  })
 })
