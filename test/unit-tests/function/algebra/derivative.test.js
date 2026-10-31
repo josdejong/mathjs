@@ -214,6 +214,28 @@ describe('derivative', function () {
     compareString(derivative('1 + $x', '$x'), '1')
   })
 
+  it('should take the derivative of a nested function returning an expression', function () {
+    // see https://github.com/josdejong/mathjs/issues/3528
+    compareString(derivative('x * derivative("e^x", "x")', 'x'), 'e ^ x * (x + 1)')
+    compareString(derivative('derivative("x^3", "x")', 'x'), '6 * x')
+    compareString(derivative('sin(derivative("x^3", "x"))', 'x'), '6 * x * cos(3 * x ^ 2)')
+    compareString(derivative('x * parse("x^2")', 'x'), '3 * x ^ 2')
+    compareString(derivative('x * simplify("x + x")', 'x'), '4 * x')
+    compareString(derivativeWithoutSimplify('derivative("x^2", "x")', 'x'), '2 * 1')
+  })
+
+  it('should take the partial derivative of a nested function returning an expression', function () {
+    compareString(derivative('x * derivative("y * x^2", "x")', 'y'), '2 * x ^ 2')
+    compareString(derivative('x * derivative("x^2", "y")', 'x'), '0')
+  })
+
+  it('should leave a nested function that cannot be evaluated as a constant', function () {
+    compareString(derivative('x * log(y)', 'x'), 'log(y)')
+    compareString(derivative('x * f(y)', 'x'), 'f(y)')
+    compareString(derivative('x * derivative("e^x", z)', 'x'), 'derivative("e^x", z)')
+    compareString(derivativeWithoutSimplify('x * sqrt(4)', 'x'), 'sqrt(4) * 1')
+  })
+
   describe('expression parser', function () {
     it('should evaluate a derivative containing string value', function () {
       const res = math.evaluate('derivative("x^2", "x")')
