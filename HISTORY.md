@@ -2,6 +2,7 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: Units: exact values for seveal more units (#3739). Thanks @YashG1836.
 - Fix: Units: use exact value for `acre` unit (#3665). Thanks @spokodev.
 - Docs: #2095,#2771 Units: unit parser limitations and min/sec functions vs
   unit abbreviations (#3714). Thanks @hugohong258.
