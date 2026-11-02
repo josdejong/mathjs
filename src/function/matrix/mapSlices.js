@@ -58,7 +58,7 @@ export const createMapSlices = /* #__PURE__ */ factory(name, dependencies, ({ ty
       if (isMatrix(mat)) {
         const res = _mapSlices(mat.valueOf(), dim, callback)
         // the callback result for a one dimensional matrix need not be an Array
-        return Array.isArray(res) ? mat.create(res, mat.datatype()) : res
+        return Array.isArray(res) ? mat.create(res) : res
       } else {
         return _mapSlices(mat, dim, callback)
       }

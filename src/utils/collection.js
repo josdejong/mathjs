@@ -80,7 +80,7 @@ export function reduce (mat, dim, callback) {
   if (isMatrix(mat)) {
     const res = _reduce(mat.valueOf(), dim, callback)
     // reducing a one dimensional matrix gives a scalar, like for an Array
-    return Array.isArray(res) ? mat.create(res, mat.datatype()) : res
+    return Array.isArray(res) ? mat.create(res) : res
   } else {
     return _reduce(mat, dim, callback)
   }
