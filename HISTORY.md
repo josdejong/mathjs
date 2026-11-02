@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: #3736 don't throw error when reducing 1-D Matrix along dim 0. (#3734)
+  Thanks @b84330808.
 - Docs: #3559 clarify composition of number bundle (#3716). Thanks @Hugohong258.
 - Fix: Units: exact values for seveal more units (#3739). Thanks @YashG1836.
 - Fix: Units: use exact value for `acre` unit (#3665). Thanks @spokodev.
