@@ -693,6 +693,43 @@ describe('OperatorNode', function () {
     }
   })
 
+  it('should parenthesize implicit multiplication factors that start with a prefix operator', function () {
+    const ysym = new SymbolNode('y')
+    const minusY = new OperatorNode('-', 'unaryMinus', [ysym])
+    const scope = { a: 2, x: 5, y: 3 }
+
+    // 2 (-y) must not be printed as "2 -y", which parses as the subtraction 2 - y
+    const twoMinusY = new OperatorNode('*', 'multiply', [two, minusY], true)
+    assert.strictEqual(twoMinusY.toString(), '2 (-y)')
+    assert.strictEqual(twoMinusY.toString({ parenthesis: 'auto' }), '2 (-y)')
+    assert.strictEqual(twoMinusY.toTex(), '2~\\left(- y\\right)')
+    assert.strictEqual(math.evaluate(twoMinusY.toString(), scope), -6)
+
+    // substituting a symbol by a negated expression keeps its meaning
+    const substituted = math.parse('2 x').transform(function (node) {
+      return (node.isSymbolNode && node.name === 'x') ? math.parse('-y') : node
+    })
+    assert.strictEqual(substituted.toString(), '2 (-y)')
+
+    // round trip of parsed expressions with parenthesis: 'auto'
+    const exprs = ['(2)(-y)', '(2)(+y)', '(a + 1)(-y)', '(2)(-y^2)', '(2)((-y) x)',
+      '(2)(~y)', '(2)(not y)', '(2)((-y)^2)']
+    for (const expr of exprs) {
+      const node = math.parse(expr)
+      const str = node.toString({ parenthesis: 'auto' })
+      assert.strictEqual(math.parse(str).toString({ parenthesis: 'all' }),
+        node.toString({ parenthesis: 'all' }), expr + ' -> ' + str)
+      assert.deepStrictEqual(math.evaluate(str, scope), node.evaluate(scope), expr + ' -> ' + str)
+    }
+    assert.strictEqual(math.parse('(2)(-y)').toString({ parenthesis: 'auto' }), '2 (-y)')
+    assert.strictEqual(math.parse('(2)((-y) x)').toString({ parenthesis: 'auto' }), '2 (-y x)')
+
+    // factors that do not start with a prefix operator are left alone
+    assert.strictEqual(math.parse('(2)((-y)^2)').toString({ parenthesis: 'auto' }), '2 (-y) ^ 2')
+    assert.strictEqual(math.parse('(-y) x').toString({ parenthesis: 'auto' }), '-y x')
+    assert.strictEqual(math.parse('2 (-y)').toString(), '2 (-y)')
+  })
+
   it('should HTML implicit multiplications between ConstantNodes with parentheses', function () {
     const z = math.parse('(3)x')
     const a = math.parse('(4)(4)(4)(4)')

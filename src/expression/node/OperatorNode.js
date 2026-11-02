@@ -33,6 +33,38 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Returns true if the expression, when stringified under the current
+   * parenthesization, starts with a prefix operator such as unary minus,
+   * unary plus, bitwise not or logical not:
+   * @param {Node} expr
+   * @param {string} parenthesis
+   * @param {string} implicit
+   * @param {boolean} latex
+   * @return {boolean}
+   */
+  function startsWithPrefixOperator (expr, parenthesis, implicit, latex) {
+    let curNode = expr
+    if (parenthesis === 'auto') {
+      while (isParenthesisNode(curNode)) curNode = curNode.content
+    }
+    if (!isOperatorNode(curNode)) return false
+    const args = curNode.args
+    if (args.length === 1 && getAssociativity(curNode, parenthesis) === 'right') {
+      return true
+    }
+    // Only operators that are printed with their first operand in front can
+    // start with that operand's prefix operator (e.g. not `\frac{}{}`).
+    const id = curNode.getIdentifier()
+    if (args.length === 0 ||
+        (args.length > 2 && id !== 'OperatorNode:add' && id !== 'OperatorNode:multiply') ||
+        (latex && id === 'OperatorNode:divide')) {
+      return false
+    }
+    const parens = calculateNecessaryParentheses(curNode, parenthesis, implicit, args, latex)
+    return !parens[0] && startsWithPrefixOperator(args[0], parenthesis, implicit, latex)
+  }
+
+  /**
    * Calculate which parentheses are necessary. Gets an OperatorNode
    * (which is the root of the tree) and an Array of Nodes
    * (this.args) and returns an array where 'true' means that an argument
@@ -226,11 +258,17 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
     // of ConstantNode.
     // In that case, parenthesize ConstantNodes that follow an unparenthesized
     // expression, even though they normally wouldn't be printed.
+    // Likewise, always parenthesize factors that would start with a prefix
+    // operator: `2 (-y)` must not be printed as `2 -y`, which parses as the
+    // subtraction `2 - y`.
     if (args.length >= 2 && root.getIdentifier() === 'OperatorNode:multiply' &&
         root.implicit && parenthesis !== 'all' && implicit === 'hide') {
       for (let i = 1; i < result.length; ++i) {
         if (startsWithConstant(args[i], parenthesis) && !result[i - 1] &&
             (parenthesis !== 'keep' || !isParenthesisNode(args[i - 1]))) {
+          result[i] = true
+        }
+        if (startsWithPrefixOperator(args[i], parenthesis, implicit, latex)) {
           result[i] = true
         }
       }
