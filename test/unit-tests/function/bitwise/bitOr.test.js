@@ -199,6 +199,11 @@ describe('bitOr', function () {
     assert.deepStrictEqual(bitOr([3, 9], 12), [15, 13])
   })
 
+  it('should bitwise or a scalar and a jagged array correctly', function () {
+    assert.deepStrictEqual(bitOr(12, [[3, 9], 5]), [[15, 13], 13])
+    assert.deepStrictEqual(bitOr([[3, 9], 5], 12), [[15, 13], 13])
+  })
+
   it('should bitwise or broadcastable arrays correctly', function () {
     const a = [6, 4, 28]
     const b = [[13], [92], [101]]

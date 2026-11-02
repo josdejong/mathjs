@@ -10,15 +10,14 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
+export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Logical `or`. Test if at least one value is defined with a nonzero/nonempty value.
@@ -42,6 +41,12 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
    * See also:
    *
    *    and, not, xor
+   *
+   * History:
+   *
+   *    v12.2  Lazy evaluation
+   *    v11.6  Support matrix broadcasting
+   *    v1.2   Created
    *
    * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
    * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check

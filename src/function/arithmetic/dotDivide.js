@@ -13,17 +13,16 @@ const dependencies = [
   'equalScalar',
   'divideScalar',
   'DenseMatrix',
-  'concat',
   'SparseMatrix'
 ]
 
-export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, DenseMatrix, concat, SparseMatrix }) => {
+export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, DenseMatrix, SparseMatrix }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Divide two matrices element wise. The function accepts both matrices and
@@ -46,6 +45,12 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * See also:
    *
    *    divide, multiply, dotMultiply
+   *
+   * History:
+   *
+   *    v14.0.0  Return a sparse matrix for sparse inputs
+   *    v11.6    Support matrix broadcasting
+   *    v0.23    Renamed from `edivide`
    *
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Numerator
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Denominator
