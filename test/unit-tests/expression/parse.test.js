@@ -607,11 +607,25 @@ describe('parse', function () {
     it('should evaluate operator "to" with correct precedence ', function () {
       approxDeepEqual(parseAndEval('5.08 cm * 1000 to inch'),
         new Unit(2000, 'inch').to('inch'))
+      approxDeepEqual(parseAndEval('a = 5.08 cm * 1000 to mm', {}),
+        math.unit(50800, 'mm').to('mm'))
+      assert.deepStrictEqual(parseAndEval('10 km to meters + 100 meters'),
+        new Unit(10100, 'meters'))
+      approxDeepEqual(parseAndEval('10 miles + 10 km to meters'),
+        new Unit(26093.44, 'meters').to('meters'))
     })
 
     it('should evaluate operator "in" (alias of "to") ', function () {
       approxDeepEqual(parseAndEval('5.08 cm in inch'),
         new Unit(2, 'inch').to('inch'))
+      approxDeepEqual(parseAndEval('5.08 cm * x in inch', { x: 1000 }),
+        new Unit(2000, 'inch').to('inch'))
+      approxDeepEqual(parseAndEval('a = 5.08 cm * x in mm', { x: 1000 }),
+        math.unit(50800, 'mm').to('mm'))
+      assert.deepStrictEqual(parseAndEval('10 km in meters + 100 meters'),
+        new Unit(10100, 'meters'))
+      approxDeepEqual(parseAndEval('10 miles + 10 km in meters'),
+        new Unit(26093.44, 'meters').to('meters'))
     })
 
     it('should evaluate unit "in" (should not conflict with operator "in")', function () {
@@ -622,6 +636,8 @@ describe('parse', function () {
       approxEqual(parseAndEval('[2 lbf in; 5][1,1].toNumeric("lbf in")'), 2)
       approxEqual(parseAndEval('{foo:2 lbf in}["foo"].toNumeric("lbf in")'), 2)
       approxDeepEqual(parseAndEval('5.08 cm in in'), new Unit(2, 'in').to('in'))
+      approxDeepEqual(parseAndEval('2.54 cm * x in in', { x: 2 }),
+        new Unit(2, 'in').to('in'))
       approxDeepEqual(parseAndEval('5 in in in'), new Unit(5, 'in').to('in'))
       approxDeepEqual(parseAndEval('2 in to meter'), new Unit(2, 'inch').to('meter'))
       approxDeepEqual(parseAndEval('2 in in meter'), new Unit(2, 'inch').to('meter'))

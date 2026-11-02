@@ -962,25 +962,29 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // end of expression -> this is the unit 'in' ('inch')
         node = new OperatorNode('*', 'multiply', [node, new SymbolNode('in')], true)
       } else {
-        // operator 'a to b' or 'a in b'
-        params = [node, parseRange(state)]
+        // operator 'a to b' or 'a in b'; in this construction, b must be
+        // a multiplicative expression
+        params = [node, parseMultiplyDivideModulus(state)]
         node = new OperatorNode(name, fn, params)
       }
     }
 
-    return node
+    // OK, we have extracted the conversion. But it might be just the
+    // left-hand operand of a range or an AddSubtract. So we have to try that:
+    return parseRange(state, node)
   }
 
   /**
    * parse range, "start:end", "start:step:end", ":", "start:", ":end", etc
+   * if second argument `node` is specified, it means we have already
+   * parsed that node on the left.
    * @return {Node} node
    * @private
    */
-  function parseRange (state) {
-    let node
+  function parseRange (state, node) {
     const params = []
 
-    if (state.token === ':') {
+    if (!node && state.token === ':') {
       if (state.conditionalLevel === state.nestingLevel) {
         // we are in the midst of parsing a conditional operator, so not
         // a range, but rather an empty true-expr, which is considered a
@@ -994,7 +998,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       }
     } else {
       // explicit start
-      node = parseAddSubtract(state)
+      node = parseAddSubtract(state, node)
     }
 
     if (state.token === ':' && (state.conditionalLevel !== state.nestingLevel)) {
@@ -1028,13 +1032,15 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
   /**
    * add or subtract
+   * if optional node argument is specified, means we've already parsed that
+   * on the left
    * @return {Node} node
    * @private
    */
-  function parseAddSubtract (state) {
-    let node, name, fn, params
+  function parseAddSubtract (state, node) {
+    let name, fn, params
 
-    node = parseMultiplyDivideModulus(state)
+    if (!node) node = parseMultiplyDivideModulus(state)
 
     const operators = {
       '+': 'add',
