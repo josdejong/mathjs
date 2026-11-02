@@ -1,8 +1,6 @@
 import { factory } from '../../utils/factory.js'
-import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
-import { createMatAlgo09xS0Sf } from '../../type/matrix/utils/matAlgo09xS0Sf.js'
-import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
+import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
@@ -16,10 +14,8 @@ const dependencies = [
 ]
 
 export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix }) => {
-  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed, equalScalar })
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
@@ -72,10 +68,12 @@ export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
     matrixAlgorithmSuite({
       scalar: 'number | BigNumber',
-      SS: matAlgo09xS0Sf,
+      // atan2(0, x) is not 0 for x < 0 and atan2(y, 0) is not 0 for y != 0,
+      // so every entry has to be evaluated, not only the ones where both
+      // operands are nonzero
+      SS: matAlgo05xSfSf,
       DS: matAlgo03xDSf,
-      SD: matAlgo02xDS0,
-      Ss: matAlgo11xS0s,
+      Ss: matAlgo12xSfs,
       sS: matAlgo12xSfs
     })
   )
