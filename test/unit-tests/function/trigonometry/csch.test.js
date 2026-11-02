@@ -21,8 +21,9 @@ describe('csch', function () {
     approxEqual(csch(1), 0.85091812823932)
     approxEqual(csch(2), 0.27572056477178)
     approxEqual(csch(3), 0.099821569668823)
-    approxEqual(csch(1e-22), Number.POSITIVE_INFINITY)
-    approxEqual(csch(-1e-22), Number.NEGATIVE_INFINITY)
+    assert.strictEqual(csch(1e-22), 1e22)
+    assert.strictEqual(csch(-1e-22), -1e22)
+    approxEqual(csch(1e-8), 1e8, 1e-12)
   })
 
   it('should return the csch of a bignumber', function () {
