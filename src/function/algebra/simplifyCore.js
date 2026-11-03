@@ -95,6 +95,11 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    *
    *     simplify, simplifyConstant, resolve, derivative
    *
+   * History:
+   *     v11   Remove all constant-merging, moving it to `simplifyConstant`
+   *           Convert equivalent function calls into operators
+   *     v10.2 Created by moving an internal function of `simplify` to top level
+   *
    * @param {Node | string} node
    *     The expression to be simplified
    * @param {Object} options
