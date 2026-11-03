@@ -22,6 +22,10 @@ export const createInvmod = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    gcd, xgcd
    *
+   * History:
+   *
+   *    v10.1  Created
+   *
    * @param {number | BigNumber} a  An integer number
    * @param {number | BigNumber} b  An integer number
    * @return {number | BigNumber }  Returns an integer number
