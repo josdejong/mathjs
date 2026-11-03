@@ -11,15 +11,14 @@ const dependencies = [
   'typed',
   'matrix',
   'DenseMatrix',
-  'concat',
   'SparseMatrix'
 ]
 
-export const createBitXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix, concat, SparseMatrix }) => {
+export const createBitXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Bitwise XOR two values, `x ^ y`.
@@ -38,6 +37,12 @@ export const createBitXor = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * See also:
    *
    *    bitAnd, bitNot, bitOr, leftShift, rightArithShift, rightLogShift
+   *
+   * History:
+   *
+   *    v14.0.0 Return a sparse matrix for sparse inputs
+   *    v11.6   Support matrix broadcasting
+   *    v1.2    Created
    *
    * @param  {number | BigNumber | bigint | Array | Matrix} x First value to xor
    * @param  {number | BigNumber | bigint | Array | Matrix} y Second value to xor
