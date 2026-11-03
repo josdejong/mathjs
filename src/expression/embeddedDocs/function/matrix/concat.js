@@ -2,11 +2,11 @@ export const concatDocs = {
   name: 'concat',
   category: 'Matrix',
   syntax: [
-    'concat(A, B, C, ...)',
-    'concat(A, B, C, ..., dim)',
+    'concat(A, B, ...)',
+    'concat(A, B, ..., dim)',
     'concat(str1, str2, ...)'
   ],
-  description: 'Concatenate matrices or strings. By default, matrices are concatenated by the last dimension. The dimension on which to concatenate matrices can be provided as the last argument. Strings are joined in order and do not accept a dimension argument.',
+  description: 'Concatenate two or more arrays/matrices, or two or more strings; one input is also accepted. Only arrays/matrices take an optional final dimension (one-based; default: last).',
   examples: [
     'A = [1, 2; 5, 6]',
     'B = [3, 4; 7, 8]',
