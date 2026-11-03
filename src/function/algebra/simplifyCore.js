@@ -110,16 +110,13 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
         return _simplifyCore(nodeToSimplify.args[0], options)
       }
       // For other node types, we try the generic methods
-      let simpChild = false
+      let firstChild = false
       let childCount = 0
       nodeToSimplify.forEach(c => {
-        ++childCount
-        if (childCount === 1) {
-          simpChild = c
-        }
+        if (++childCount === 1) firstChild = c
       })
       if (childCount === 1) {
-        return _simplifyCore(simpChild, options)
+        return _simplifyCore(firstChild, options)
       }
     }
     let node = nodeToSimplify
