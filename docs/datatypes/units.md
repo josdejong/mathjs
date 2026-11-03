@@ -448,7 +448,7 @@ bohrRadius              | <i>a<sub>0</sub></i>         | 5.29177210903e-11    | 
 classicalElectronRadius | <i>r<sub>e</sub></i>         | 2.8179403262e-15    | m
 electronMass            | <i>m<sub>e</sub></i>         | 9.1093837015e-31      | kg
 fermiCoupling           | <i>G<sub>F</sub></i>         | 1.1663787e-5          | GeV<sup>-2</sup>
-fineStructure           | <i>&alpha;</i>               | 7.297352569824e-3     | -
+fineStructure           | <i>&alpha;</i>               | 7.2973525693e-3     | -
 hartreeEnergy           | <i>E<abbr>h</abbr> </i>      | 4.3597447222071e-18      | J
 protonMass              | <i>m<sub>p</sub></i>         | 1.67262192369e-27     | kg
 deuteronMass            | <i>m<sub>d</sub></i>         | 3.3435830926e-27      | kg
@@ -456,7 +456,7 @@ neutronMass             | <i>m<sub>n</sub></i>         | 1.6749271613e-27      |
 quantumOfCirculation    | <i>h / (2m<sub>e</sub>)</i>  | 3.6369475516e-4     | m<sup>2</sup> &#183; s<sup>-1</sup>
 rydberg                 | <i>R<sub>&infin;</sub></i>   | 10973731.568160     | m<sup>-1</sup>
 thomsonCrossSection     |                              | 6.6524587321e-29     | m<sup>2</sup>
-weakMixingAngle         |                              | 0.222321              | -
+weakMixingAngle         |                              | 0.22290              | -
 efimovFactor            |                              | 22.7                  | -
 
 
@@ -473,7 +473,7 @@ loschmidt           | <i>n<sub>0</sub></i>         | 2.686780111798444e25      |
 gasConstant         | <i>R</i>                     | 8.31446261815324         | J &#183; K<sup>-1</sup> &#183; mol<sup>-1</sup>
 molarPlanckConstant | <i>N<sub>A</sub> &#183; h</i>| 3.990312712893431e-10| J &#183; s &#183; mol<sup>-1</sup>
 molarVolume         | <i>V<sub>m</sub></i>         | 0.022413969545014137     | m<sup>3</sup> &#183; mol<sup>-1</sup>
-sackurTetrode       |                              | -1.164870823        | -
+sackurTetrode       |                              | -1.16487052358        | -
 secondRadiation     | <i>c<sub>2</sub></i>         | 0.014387768775039337      | m &#183; K
 stefanBoltzmann     | <i>&sigma;</i>               | 5.67037441918443e-8       | W &#183; m<sup>-2</sup> &#183; K<sup>-4</sup>
 wienDisplacement    | <i>b</i>                     | 2.897771955e-3      | m &#183; K
