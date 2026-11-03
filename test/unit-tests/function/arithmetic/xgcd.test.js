@@ -66,6 +66,14 @@ describe('xgcd', function () {
     assert.deepStrictEqual([2, -1, -0], xgcd(-2, -6))
   })
 
+  it('should calculate xgcd for BigNumbers with negative values', function () {
+    const big = math.bignumber
+    assert.deepStrictEqual(xgcd(big(2), big(-5)), [big(1), big(-2), big(-1)])
+    assert.deepStrictEqual(xgcd(big(-2), big(5)), [big(1), big(2), big(1)])
+    assert.deepStrictEqual(xgcd(big(-2), big(-5)), [big(1), big(2), big(-1)])
+    assert.deepStrictEqual(xgcd(big(1), big(-2)), [big(1), big(-1), big(-1)])
+  })
+
   it('should find the greatest common divisor of booleans', function () {
     assert.deepStrictEqual([1, 0, 1], xgcd(true, true))
     assert.deepStrictEqual([1, 1, 0], xgcd(true, false))
