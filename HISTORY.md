@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: #3758 correct gcd and atan2 when computed on arguments including
+  sparse matrices (#3751). Thanks @waw666waw666.
 - Fix: #3160, #3202 correct TypeScript types for various cases of matrix
   functions that return statistics (e.g., sum, variance, etc.) (#3735).
   Thanks @b84330808 and @WenJing95.

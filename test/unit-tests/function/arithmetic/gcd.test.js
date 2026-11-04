@@ -186,6 +186,19 @@ describe('gcd', function () {
       assert.deepStrictEqual(gcd(sparse([[5, 2, 3], [3, 2, 5]]), matrix([[0, 3, 6], [6, 0, 25]])), matrix([[5, 1, 3], [3, 2, 5]]))
     })
 
+    it('should return a non-negative gcd for negative entries paired with zero', function () {
+      const a = [[-6, 0, 0], [0, -4, 9]]
+      const b = [[0, 0, -3], [-8, 0, 0]]
+      const expected = [[6, 0, 3], [8, 4, 9]]
+      assert.deepStrictEqual(gcd(sparse(a), sparse(b)).toArray(), expected)
+      assert.deepStrictEqual(gcd(sparse(a), matrix(b)), matrix(expected))
+      assert.deepStrictEqual(gcd(matrix(a), sparse(b)), matrix(expected))
+      assert.deepStrictEqual(gcd(sparse(a), b), matrix(expected))
+      assert.deepStrictEqual(gcd(a, sparse(b)), matrix(expected))
+      assert.deepStrictEqual(gcd(sparse([[0, 6], [-4, 0]]), -3), matrix([[3, 3], [1, 3]]))
+      assert.deepStrictEqual(gcd(-3, sparse([[0, 6], [-4, 0]])), matrix([[3, 3], [1, 3]]))
+    })
+
     it('should find the greatest common divisor sparse matrix - sparse matrix', function () {
       assert.deepStrictEqual(gcd(sparse([[5, 2, 3], [3, 2, 5]]), sparse([[0, 3, 6], [6, 0, 25]])), sparse([[5, 1, 3], [3, 2, 5]]))
     })
