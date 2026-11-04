@@ -53,6 +53,8 @@ describe('mod', function () {
     assert.strictEqual(mod(-10n, -4n), -2n)
     assert.strictEqual(mod(8n, -3n), -1n)
     assert.strictEqual(mod(-8n, -3n), -2n)
+    assert.strictEqual(mod(8n, -4n), 0n)
+    assert.strictEqual(mod(-8n, -4n), 0n)
   })
 
   it('should handle precise approximation of float approximation', function () {
@@ -118,6 +120,8 @@ describe('mod', function () {
     assert.strictEqual(mod(14, 8n), 6n)
     assert.strictEqual(mod(12.5, 37n), 12.5)
     assert.strictEqual(mod(14n, 8.5), 5.5)
+    assert.strictEqual(mod(-10, -4n), -2n)
+    assert.strictEqual(mod(-10n, -4), -2n)
   })
 
   it('should calculate the modulus of mixed booleans and bignumbers', function () {

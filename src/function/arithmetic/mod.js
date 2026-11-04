@@ -128,7 +128,6 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
 
     const m = x % y
 
-    if (x < 0 || y < 0) return m === 0n ? m : m + y
-    return m
+    return m !== 0n && (m < 0n) !== (y < 0n) ? m + y : m
   }
 })

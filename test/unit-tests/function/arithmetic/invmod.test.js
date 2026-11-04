@@ -42,6 +42,8 @@ describe('invmod', function () {
   it('should calculate invmod for bigints', function () {
     assert.strictEqual(invmod(5n, 13n), 8n)
     assert.strictEqual(invmod(6n, -17n), -14n)
+    assert.strictEqual(invmod(2n, -7n), -3n)
+    assert.strictEqual(invmod(5n, -13n), -5n)
   })
 
   it('should calculate invmod for mixed BigNumbers and Numbers', function () {
