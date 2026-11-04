@@ -52,9 +52,11 @@ export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    v0.11  Use zero-based dimensions in the JavaScript API
    *    v0.5   Created
    *
-   * @param {... Array | Matrix | string | number | BigNumber} args  Arrays and/or
-   *                            matrices, optionally followed by a number or
-   *                            BigNumber dimension; or string arguments only
+   * @param {... Array | Matrix | string} args  Items to concatenate. Arrays and
+   *                            matrices may be mixed; strings must be separate.
+   * @param {number | BigNumber} [dimension]  Optional final dimension for arrays
+   *                            and matrices, defaulting to the last dimension.
+   *                            String arguments do not accept a dimension.
    * @return {Array | Matrix | string} Concatenated array, matrix, or string
    */
   return typed(name, {

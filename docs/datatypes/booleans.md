@@ -13,26 +13,41 @@ math.equal(2, 3)      // false
 
 Use [`math.boolean`](../reference/functions/boolean.md) to convert a value.
 For numbers, zero and `NaN` become `false`; other numbers become `true`.
-Strings can be `true` or `false` (case-insensitive), or contain a number.
-An empty string or an unrecognized string throws an error.
-Arrays and matrices are converted element by element.
 
 ```js
-math.boolean(0)            // false
-math.boolean(-3)           // true
-math.boolean('false')      // false
-math.boolean('TRUE')       // true
-math.boolean('0')          // false
-math.boolean([1, 0, -3])   // [true, false, true]
+math.boolean(0)       // false
+math.boolean(-3)      // true
 ```
 
-This string conversion differs from JavaScript's `Boolean('false')`, which
-returns `true`. Use [`math.number`](../reference/functions/number.md) for the
-reverse conversion to a number:
+For strings, `math.boolean` first compares the whole string with `true` and
+`false`, ignoring case. Other nonempty strings are converted to a number first,
+then to a boolean using the numeric rules above. An empty string or a string
+that cannot be converted to a number throws an error.
+
+```js
+math.boolean('false')   // false
+math.boolean('TRUE')    // true
+math.boolean('0')       // false
+math.boolean('')        // throws an error
+math.boolean('yes')     // throws an error
+```
+
+**Note:** This string conversion differs from JavaScript's `Boolean('false')`,
+which returns `true`.
+
+Arrays and matrices are converted element by element, including mixed types:
+
+```js
+math.boolean([true, 'false', 0, '2']) // [true, false, false, true]
+```
+
+To convert booleans to other types, use [`math.number`](../reference/functions/number.md)
+or [`math.string`](../reference/functions/string.md):
 
 ```js
 math.number(true)     // 1
 math.number(false)    // 0
+math.string(false)    // 'false'
 ```
 
 ## Logical operations

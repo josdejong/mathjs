@@ -46,12 +46,14 @@ Some functions listed under Matrix also accept strings:
 [`math.size`](../reference/functions/size.md),
 [`math.subset`](../reference/functions/subset.md), and
 [`math.resize`](../reference/functions/resize.md).
-The JavaScript API uses zero-based indices in `math.index`.
+The JavaScript API uses zero-based indices in `math.index`; the expression
+parser uses one-based indices.
 
 ```js
 math.count('hello')                      // 5
 math.size('hello')                       // [5]
 math.subset('hello', math.index(1))       // 'e'
+math.evaluate('"hello"[2]')               // 'e'
 math.resize('hello', [8], '!')            // 'hello!!!'
 ```
 
@@ -64,6 +66,8 @@ uses natural ordering, comparing numeric parts by their value:
 ```js
 math.compareText('10', '2')     // -1
 math.compareNatural('10', '2')  // 1
+math.compareText('file2part10', 'file2part2')     // -1
+math.compareNatural('file2part10', 'file2part2')  // 1
 ```
 
 Use [`math.format`](../reference/functions/format.md) to format values, or
