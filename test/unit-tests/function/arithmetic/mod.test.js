@@ -42,7 +42,7 @@ describe('mod', function () {
     assert.strictEqual(mod(1n, 0n), 1n)
     assert.strictEqual(mod(0n, 0n), 0n)
     assert.strictEqual(mod(7n, 0n), 7n)
-    assert.strictEqual(mod(-10, 4), 2)
+    assert.strictEqual(mod(-10n, 4n), 2n)
     assert.strictEqual(mod(-5n, 3n), 1n)
     assert.strictEqual(mod(-7n, 6n), 5n)
     assert.strictEqual(mod(-8n, 4n), 0n)
@@ -63,6 +63,7 @@ describe('mod', function () {
 
   it('should calculate mod for negative divisor', function () {
     assert.strictEqual(mod(10, -4), -2)
+    assert.deepStrictEqual(mod(10n, -4n), -2n)
   })
 
   it('should throw an error if used with wrong number of arguments', function () {
@@ -110,6 +111,13 @@ describe('mod', function () {
 
     assert.throws(function () { mod(7 / 3, bignumber(2)) }, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { mod(bignumber(7).div(3), 1 / 3) }, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/)
+  })
+
+  it('should calculate other mixed-type moduli', function () {
+    assert.strictEqual(mod(12n, 37), 12n)
+    assert.strictEqual(mod(14, 8n), 6n)
+    assert.strictEqual(mod(12.5, 37n), 12.5)
+    assert.strictEqual(mod(14n, 8.5), 5.5)
   })
 
   it('should calculate the modulus of mixed booleans and bignumbers', function () {
@@ -160,6 +168,11 @@ describe('mod', function () {
     it('should perform element-wise modulus on array and scalar', function () {
       approxDeepEqual(mod([[-4, -3, 0, -1], [0, 1, 2, 3]], 3), [[2, 0, 0, 2], [0, 1, 2, 0]])
       approxDeepEqual(mod(3, [[4, 3], [2, 1]]), [[3, 0], [1, 0]])
+    })
+
+    it('should perform element-wise modulus on a jagged array and a scalar', function () {
+      approxDeepEqual(mod([[-4, -3, 0, -1], [0, 1, 2]], 3), [[2, 0, 0, 2], [0, 1, 2]])
+      approxDeepEqual(mod(3, [[4, 3, 2], [2, 1]]), [[3, 0, 1], [1, 0]])
     })
 
     it('should perform element-wise modulus on broadcastable arrays', function () {

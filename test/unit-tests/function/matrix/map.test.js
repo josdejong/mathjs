@@ -16,6 +16,13 @@ describe('map', function () {
     assert.ok(Array.isArray(arr2))
   })
 
+  it('should map jagged arrays', function () {
+    const map = math.map
+    const sqrt = math.square
+    assert.deepStrictEqual(map([[2], []], sqrt), [[4], []])
+    assert.deepStrictEqual(map([[], [2]], sqrt), [[], [4]])
+  })
+
   it('should map two arrays', function () {
     const arrA = [[1, 2, 3], [4, 5, 6]]
     const arrB = [[10, 20, 30], [40, 50, 60]]

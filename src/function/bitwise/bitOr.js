@@ -11,15 +11,14 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat }) => {
+export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Bitwise OR two values, `x | y`.
@@ -39,6 +38,11 @@ export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * See also:
    *
    *    bitAnd, bitNot, bitXor, leftShift, rightArithShift, rightLogShift
+   *
+   * History:
+   *
+   *    v11.6  Support matrix broadcasting
+   *    v1.2   Created
    *
    * @param  {number | BigNumber | bigint | Array | Matrix} x First value to or
    * @param  {number | BigNumber | bigint | Array | Matrix} y Second value to or

@@ -148,7 +148,12 @@ describe('subtract', function () {
       assert.deepStrictEqual(subtract([3, 0], 2), [1, -2])
     })
 
-    it('should substract broadcastable arrays correctly', function () {
+    it('should subtract a scalar and a jagged array correctly', function () {
+      assert.deepStrictEqual(subtract(2, [[3, 4], 5]), [[-1, -2], -3])
+      assert.deepStrictEqual(subtract([[3, 4], 5], 2), [[1, 2], 3])
+    })
+
+    it('should subtract broadcastable arrays correctly', function () {
       const a2 = [1, 2]
       const a3 = [[3], [4]]
       const a4 = subtract(a2, a3)

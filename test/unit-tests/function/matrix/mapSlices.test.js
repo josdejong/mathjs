@@ -29,6 +29,11 @@ describe('mapSlices', function () {
     assert.deepStrictEqual(mapSlices(inputMatrix, 2, sum), [[3, 7, 11], [15, 19, 23], [27, 31, 35], [39, 43, 47]])
   })
 
+  it('should apply a function to a one dimensional matrix', function () {
+    assert.strictEqual(mapSlices(math.matrix([1, 2, 3]), 0, sum), 6)
+    assert.deepStrictEqual(mapSlices(math.matrix([3, 1, 2]), 0, math.sort), math.matrix([1, 2, 3]))
+  })
+
   it('should throw an error if the dimension is out of range', function () {
     assert.throws(function () { mapSlices([[1, 2], [3, 4]], 3, sum) }, /Index out of range/)
   })
