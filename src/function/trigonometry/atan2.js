@@ -73,8 +73,7 @@ export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       // operands are nonzero
       SS: matAlgo05xSfSf,
       DS: matAlgo03xDSf,
-      Ss: matAlgo12xSfs,
-      sS: matAlgo12xSfs
+      Ss: matAlgo12xSfs
     })
   )
 })
