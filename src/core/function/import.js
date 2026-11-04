@@ -4,6 +4,10 @@ import { hasOwnProperty, lazy } from '../../utils/object.js'
 import { ArgumentsError } from '../../error/ArgumentsError.js'
 
 export function importFactory (typed, load, math, importedFactories) {
+  // stack of the factory resolvers currently being resolved, to detect
+  // circular dependencies between factories
+  const resolving = []
+
   /**
    * Import functions from an object or a module.
    *
@@ -256,6 +260,22 @@ export function importFactory (typed, load, math, importedFactories) {
     const existing = hasOwnProperty(namespace, name) ? namespace[name] : undefined
 
     const resolver = function () {
+      const index = resolving.findIndex(entry => entry.resolver === resolver)
+      if (index !== -1) {
+        const cycle = resolving.slice(index).map(entry => entry.name)
+        cycle.push(name)
+        throw new Error('Circular dependency detected: ' + cycle.join(' -> '))
+      }
+
+      resolving.push({ resolver, name })
+      try {
+        return resolveFactory()
+      } finally {
+        resolving.pop()
+      }
+    }
+
+    function resolveFactory () {
       // collect all dependencies, handle finding both functions and classes and other special cases
       const dependencies = {}
       factory.dependencies
