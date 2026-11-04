@@ -13,6 +13,10 @@ export type NoLiteralType<T> = T extends number
       ? boolean
       : T
 
+// Like NoLiteralType, but also widens bigint literals. Used for values that
+// are computed from the inputs, such as a sum or a mean.
+type NoLiteralScalarType<T> = T extends bigint ? bigint : NoLiteralType<T>
+
 export type MathNumericType = number | BigNumber | bigint | Fraction | Complex
 export type MathScalarType = MathNumericType | Unit
 export type MathGeneric<T extends MathScalarType = MathNumericType> = T
@@ -3011,11 +3015,23 @@ export interface MathJsInstance extends MathJsFactory {
    */
   max<T extends MathScalarType>(A: T[][], dimension: number | BigNumber): T[]
   /**
+   * @param A A multi dimensional array
+   * @param dimension The maximum over the selected dimension
+   * @returns The maximum over the selected dimension
+   */
+  max<T extends MathScalarType>(
+    A: MathArray<T>,
+    dimension: number | BigNumber
+  ): T | MathArray<T>
+  /**
    * @param A A single matrix
    * @param dimension The maximum over the selected dimension
    * @returns A matrix with the maximum over the selected dimension
    */
-  max(A: Matrix, dimension: number | BigNumber): Matrix
+  max<T extends MathScalarType>(
+    A: Matrix<T>,
+    dimension: number | BigNumber
+  ): Matrix<T>
   /**
    * @param A A single matrix
    * @returns The maximum value
@@ -3055,19 +3071,37 @@ export interface MathJsInstance extends MathJsFactory {
    * @param dimension The mean over the selected dimension
    * @returns The mean value
    */
-  mean<T extends MathScalarType>(A: T[], dimension: number | BigNumber): T
+  mean<T extends MathScalarType>(
+    A: T[],
+    dimension: number | BigNumber
+  ): NoLiteralScalarType<T>
   /**
    * @param A A two dimensional array
    * @param dimension The mean over the selected dimension
    * @returns An array with the mean over the selected dimension
    */
-  mean<T extends MathScalarType>(A: T[][], dimension: number | BigNumber): T[]
+  mean<T extends MathScalarType>(
+    A: T[][],
+    dimension: number | BigNumber
+  ): NoLiteralScalarType<T>[]
+  /**
+   * @param A A multi dimensional array
+   * @param dimension The mean over the selected dimension
+   * @returns The mean over the selected dimension
+   */
+  mean<T extends MathScalarType>(
+    A: MathArray<T>,
+    dimension: number | BigNumber
+  ): NoLiteralScalarType<T> | MathArray<NoLiteralScalarType<T>>
   /**
    * @param A A single matrix
    * @param dimension The mean over the selected dimension
    * @returns A matrix with the mean over the selected dimension
    */
-  mean(A: Matrix, dimension: number | BigNumber): Matrix
+  mean<T extends MathScalarType>(
+    A: Matrix<T>,
+    dimension: number | BigNumber
+  ): Matrix<NoLiteralScalarType<T>>
   /**
    * @param A A single matrix
    * @returns The mean value
@@ -3142,11 +3176,23 @@ export interface MathJsInstance extends MathJsFactory {
    */
   min<T extends MathScalarType>(A: T[][], dimension: number | BigNumber): T[]
   /**
+   * @param A A multi dimensional array
+   * @param dimension The minimum over the selected dimension
+   * @returns The minimum over the selected dimension
+   */
+  min<T extends MathScalarType>(
+    A: MathArray<T>,
+    dimension: number | BigNumber
+  ): T | MathArray<T>
+  /**
    * @param A A single matrix
    * @param dimension The minimum over the selected dimension
    * @returns A matrix with the minimum over the selected dimension
    */
-  min(A: Matrix, dimension: number | BigNumber): Matrix
+  min<T extends MathScalarType>(
+    A: Matrix<T>,
+    dimension: number | BigNumber
+  ): Matrix<T>
   /**
    * @param A A single matrix
    * @returns The minimum value
@@ -3296,6 +3342,17 @@ export interface MathJsInstance extends MathJsFactory {
     normalization?: 'unbiased' | 'uncorrected' | 'biased'
   ): MathNumericType[]
   /**
+   * @param array A multi dimensional array
+   * @param dimension A dimension to compute the standard deviation on
+   * @param normalization Determines how to normalize the variance
+   * @returns The standard deviation over the selected dimension
+   */
+  std(
+    array: MathArray<MathNumericType>,
+    dimension: number | BigNumber,
+    normalization?: 'unbiased' | 'uncorrected' | 'biased'
+  ): MathNumericType | MathArray<MathNumericType>
+  /**
    * @param array A single matrix
    * @param dimension A dimension to compute the standard deviation on
    * @param normalization Determines how to normalize the variance
@@ -3361,19 +3418,37 @@ export interface MathJsInstance extends MathJsFactory {
    * @param dimension The sum over the selected dimension
    * @returns The sum of all values
    */
-  sum<T extends MathScalarType>(A: T[], dimension: number | BigNumber): T
+  sum<T extends MathScalarType>(
+    A: T[],
+    dimension: number | BigNumber
+  ): NoLiteralScalarType<T>
   /**
    * @param A A two dimensional array
    * @param dimension The sum over the selected dimension
    * @returns An array with the sum over the selected dimension
    */
-  sum<T extends MathScalarType>(A: T[][], dimension: number | BigNumber): T[]
+  sum<T extends MathScalarType>(
+    A: T[][],
+    dimension: number | BigNumber
+  ): NoLiteralScalarType<T>[]
+  /**
+   * @param A A multi dimensional array
+   * @param dimension The sum over the selected dimension
+   * @returns The sum over the selected dimension
+   */
+  sum<T extends MathScalarType>(
+    A: MathArray<T>,
+    dimension: number | BigNumber
+  ): NoLiteralScalarType<T> | MathArray<NoLiteralScalarType<T>>
   /**
    * @param A A single matrix
    * @param dimension The sum over the selected dimension
    * @returns A matrix with the sum over the selected dimension
    */
-  sum(A: Matrix, dimension: number | BigNumber): Matrix
+  sum<T extends MathScalarType>(
+    A: Matrix<T>,
+    dimension: number | BigNumber
+  ): Matrix<NoLiteralScalarType<T>>
   /**
    * @param A A single matrix
    * @returns The sum of all values
@@ -3460,6 +3535,17 @@ export interface MathJsInstance extends MathJsFactory {
     dimension: number | BigNumber,
     normalization?: 'unbiased' | 'uncorrected' | 'biased'
   ): MathNumericType[]
+  /**
+   * @param array A multi dimensional array
+   * @param dimension A dimension to compute the variance on
+   * @param normalization Determines how to normalize the variance
+   * @returns The variance over the selected dimension
+   */
+  variance(
+    array: MathArray<MathNumericType>,
+    dimension: number | BigNumber,
+    normalization?: 'unbiased' | 'uncorrected' | 'biased'
+  ): MathNumericType | MathArray<MathNumericType>
   /**
    * @param array A single matrix
    * @param dimension A dimension to compute the variance on

@@ -3065,6 +3065,95 @@ Statistics functions' return types
   expectTypeOf(math.variance(math.matrix(A2), 0)).toMatchTypeOf<Matrix>()
   expectTypeOf(math.variance([1, 2, 3], 0)).toMatchTypeOf<MathNumericType>()
 
+  const sumArray = [
+    [1, 2, 3],
+    [4, 5, 6]
+  ]
+  const sumMatrix = math.matrix(sumArray)
+  expectTypeOf(math.sum(1, 2, 3)).toMatchTypeOf<number>()
+  expectTypeOf(math.sum([1, 2, 3])).toEqualTypeOf<number>()
+  expectTypeOf(math.sum(sumArray)).toEqualTypeOf<MathScalarType>()
+  expectTypeOf(math.sum(sumMatrix)).toEqualTypeOf<MathScalarType>()
+  expectTypeOf(math.sum([1, 2, 3], 0)).toEqualTypeOf<number>()
+  expectTypeOf(math.sum(sumArray, 0)).toEqualTypeOf<number[]>()
+  expectTypeOf(math.sum(sumArray, math.bignumber(1))).toEqualTypeOf<number[]>()
+  expectTypeOf(math.sum(sumMatrix, 0)).toEqualTypeOf<Matrix>()
+  expectTypeOf(math.sum(sumMatrix, math.bignumber(1))).toEqualTypeOf<Matrix>()
+  assert.deepStrictEqual(math.sum(sumMatrix, 0).toArray(), [5, 7, 9])
+
+  const sumNumberLiterals = math.sum(
+    [
+      [1, 2],
+      [3, 4]
+    ],
+    0
+  )
+  expectTypeOf(sumNumberLiterals).toEqualTypeOf<number[]>()
+  assert.deepStrictEqual(sumNumberLiterals, [4, 6])
+  const sumBigintLiterals = math.sum([[BigInt(1) as 1n, BigInt(2) as 2n]], 1)
+  expectTypeOf(sumBigintLiterals).toEqualTypeOf<bigint[]>()
+  assert.deepStrictEqual(sumBigintLiterals, [BigInt(3)])
+  expectTypeOf(math.sum(math.matrix<1 | 2>([[1, 2]]), 0)).toEqualTypeOf<
+    Matrix<number>
+  >()
+
+  const sumBigNumbers = [[math.bignumber(1), math.bignumber(2)]]
+  expectTypeOf(math.sum(sumBigNumbers, 0)).toEqualTypeOf<BigNumber[]>()
+  expectTypeOf(
+    math.sum(math.matrix<BigNumber>(sumBigNumbers), 0)
+  ).toEqualTypeOf<Matrix<BigNumber>>()
+
+  const sumArray3d = [sumArray, sumArray]
+  expectTypeOf(math.sum(sumArray3d, 0)).toEqualTypeOf<
+    MathScalarType | MathArray<MathScalarType>
+  >()
+  expectTypeOf(math.sum(math.matrix(sumArray3d), 0)).toEqualTypeOf<Matrix>()
+
+  const sumCollection = sumArray as MathCollection
+  expectTypeOf(math.sum(sumCollection, 0)).toEqualTypeOf<
+    MathScalarType | MathCollection
+  >()
+
+  const meanNumberLiterals = math.mean(
+    [
+      [1, 2],
+      [3, 4]
+    ],
+    0
+  )
+  expectTypeOf(meanNumberLiterals).toEqualTypeOf<number[]>()
+  assert.deepStrictEqual(meanNumberLiterals, [2, 3])
+  expectTypeOf(math.mean(math.matrix<1 | 2>([[1, 2]]), 0)).toEqualTypeOf<
+    Matrix<number>
+  >()
+  expectTypeOf(math.mean(sumArray3d, 0)).toEqualTypeOf<
+    MathScalarType | MathArray<MathScalarType>
+  >()
+
+  // max and min return one of the entries, so they keep the entry type
+  expectTypeOf(
+    math.max(math.matrix<BigNumber>(sumBigNumbers), 0)
+  ).toEqualTypeOf<Matrix<BigNumber>>()
+  expectTypeOf(math.min(sumArray3d, 0)).toEqualTypeOf<
+    MathScalarType | MathArray<MathScalarType>
+  >()
+  expectTypeOf(math.max(sumCollection, 0)).toEqualTypeOf<
+    MathScalarType | MathCollection
+  >()
+  assert.deepStrictEqual(math.max(sumMatrix, 1).toArray(), [3, 6])
+
+  expectTypeOf(math.std(sumArray3d, 0)).toEqualTypeOf<
+    MathNumericType | MathArray<MathNumericType>
+  >()
+  const variance3d = math.variance(sumArray3d, 2, 'biased')
+  expectTypeOf(variance3d).toEqualTypeOf<
+    MathNumericType | MathArray<MathNumericType>
+  >()
+  assert.deepStrictEqual(math.variance(sumArray3d, 2), [
+    [1, 1],
+    [1, 1]
+  ])
+
   expectTypeOf(math.median(1, 2, 3)).toMatchTypeOf<number>()
   expectTypeOf(math.median([1, 2, 3])).toMatchTypeOf<number>()
   expectTypeOf(
