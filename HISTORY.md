@@ -2,6 +2,10 @@
 
 # unpublished changes since 15.2.0
 
+- Fix #3756 ensure invmod returns canonical negative representive for
+  inverse when modulus is negative. Also adds bigint support to invmod and
+  xgcd and prefers bigint results with mixed integer number - bigint arguments.
+  Conforms mod to these same conventions (#3710). Thanks @kevin9327.
 - Fix: #3704 avoid double-processing the first node in simplifyCore (#3698).
   Thanks @Wu-Li.
 - Fix: #3736 don't throw error when reducing 1-D Matrix along dim 0 (#3734).

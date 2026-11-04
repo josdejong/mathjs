@@ -24,28 +24,33 @@ export const createInvmod = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * History:
    *
+   *    v15.3  Added bigint support
    *    v10.1  Created
    *
-   * @param {number | BigNumber} a  An integer number
-   * @param {number | BigNumber} b  An integer number
+   * @param {number | BigNumber | bigint} a  An integer number
+   * @param {number | BigNumber | bigint} b  An integer number
    * @return {number | BigNumber }  Returns an integer number
    *                              where `invmod(a,b)*a ≣ 1 (mod b)`
    */
   return typed(name, {
-    'number, number': invmod,
-    'BigNumber, BigNumber': invmod
+    'bigint, bigint': invmodUnchecked,
+    'number | BigNumber, number | BigNumber | bigint': invmod,
+    'bigint, number | BigNumber': invmod
   })
 
   function invmod (a, b) {
-    if (!isInteger(a) || !isInteger(b)) throw new Error('Parameters in function invmod must be integer numbers')
-    a = mod(a, b)
-    if (equal(b, 0)) throw new Error('Divisor must be non zero')
-    let res = xgcd(a, b)
-    res = res.valueOf()
-    let [gcd, inv] = res
-    if (!equal(gcd, BigNumber(1))) return NaN
-    // mod() takes the sign of b, so the result already lies between 0 and b
-    inv = mod(inv, b)
-    return inv
+    if (!isInteger(a) || !isInteger(b)) {
+      throw new Error('Parameters in function invmod must be integer numbers')
+    }
+    return invmodUnchecked(a, b)
+  }
+
+  function invmodUnchecked (a, b) {
+    if (equal(b, 0)) return NaN
+    a = mod(a, b) // reduce the size of the problem
+    const [gcd, inv] = xgcd(a, b).valueOf()
+    if (!equal(gcd, 1)) return NaN
+    // Make sure we end up in the proper value range mod b:
+    return mod(inv, b)
   }
 })
