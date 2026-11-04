@@ -380,7 +380,7 @@ const knownNoHistory = new Set([
   'simplifyConstant', 'simplifyCore', 'slu', 'sylvester', 'symbolicEqual',
   'usolve', 'usolveAll', 'abs', 'add', 'cbrt', 'ceil', 'cube', 'divide',
   'dotDivide', 'dotMultiply', 'dotPow', 'exp', 'expm', 'expm1', 'fix', 'floor',
-  'gcd', 'hypot', 'invmod', 'lcm', 'log10', 'log1p', 'log2', 'mod', 'multiply',
+  'gcd', 'hypot', 'lcm', 'log10', 'log1p', 'log2', 'mod', 'multiply',
   'norm', 'nthRoot', 'nthRoots', 'pow', 'round', 'sign', 'sqrt', 'sqrtm',
   'square', 'subtract', 'unaryMinus', 'unaryPlus', 'xgcd', 'bitAnd', 'bitNot',
   'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift',

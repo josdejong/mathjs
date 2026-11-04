@@ -1,4 +1,5 @@
 import { factory } from '../../utils/factory.js'
+import { isInteger } from '../../utils/number.js'
 import { xgcdNumber } from '../../plain/number/index.js'
 
 const name = 'xgcd'
@@ -23,8 +24,13 @@ export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    *    gcd, lcm
    *
-   * @param {number | BigNumber} a  An integer number
-   * @param {number | BigNumber} b  An integer number
+   * History:
+   *    v15.3 Added bigint support
+   *    v0.26 Added BigNumber support
+   *    v0.7  Created
+   *
+   * @param {number | BigNumber | bigint} a  An integer number
+   * @param {number | BigNumber | bigint} b  An integer number
    * @return {Array}              Returns an array containing 3 integers `[div, m, n]`
    *                              where `div = gcd(a, b)` and `a*m + b*n = div`
    */
@@ -35,6 +41,19 @@ export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       return (config.matrix === 'Array')
         ? res
         : matrix(res)
+    },
+    'bigint, bigint': _xgcdBigint,
+    'number, bigint': function (a, b) {
+      if (!isInteger(a)) {
+        throw new Error(`xgcd: first argument ${a} not an integer`)
+      }
+      return _xgcdBigint(BigInt(a), b)
+    },
+    'bigint, number': function (a, b) {
+      if (!isInteger(b)) {
+        throw new Error(`xgcd: second argument ${b} not an integer`)
+      }
+      return _xgcdBigint(a, BigInt(b))
     },
     'BigNumber, BigNumber': _xgcdBigNumber
     // TODO: implement support for Fraction
@@ -91,6 +110,31 @@ export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     } else {
       res = [a, !a.isZero() ? lastx : 0, lasty]
     }
+    return (config.matrix === 'Array') ? res : matrix(res)
+  }
+
+  function _xgcdBigint (a, b) {
+    let x = 0n
+    let lastx = 1n
+    let y = 1n
+    let lasty = 0n
+    while (b !== 0n) {
+      const q = a / b
+      const r = a - q * b
+      let temp = x
+      x = lastx - q * x
+      lastx = temp
+      temp = y
+      y = lasty - q * y
+      lasty = temp
+
+      a = b
+      b = r
+    }
+
+    const res = (a < 0n)
+      ? [-a, -lastx, -lasty]
+      : [a, a !== 0n ? lastx : 0n, lasty]
     return (config.matrix === 'Array') ? res : matrix(res)
   }
 })
