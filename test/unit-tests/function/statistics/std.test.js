@@ -85,6 +85,11 @@ describe('std', function () {
     [[190, 20], [210, 220], [230, 240]]
   ]
 
+  it('should return a scalar for a one dimensional matrix along dimension 0', function () {
+    assert.strictEqual(std([2, 6, 4], 0), 2)
+    assert.strictEqual(std(new DenseMatrix([2, 6, 4]), 0), 2)
+  })
+
   it('should return the standard deviation value along a dimension on a matrix', function () {
     assert.deepStrictEqual(std([
       [2, 6],
