@@ -2,8 +2,6 @@
 
 # unpublished changes since 15.2.0
 
-- Fix: `atan2` and `gcd` returned wrong results for sparse matrices wherever
-  only one of the two operands is zero (e.g. `atan2(0, -3)`, `gcd(-3, 0)`).
 - Fix: #3736 don't throw error when reducing 1-D Matrix along dim 0. (#3734)
   Thanks @b84330808.
 - Docs: #3559 clarify composition of number bundle (#3716). Thanks @Hugohong258.
