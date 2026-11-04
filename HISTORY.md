@@ -2,7 +2,10 @@
 
 # unpublished changes since 15.2.0
 
-- Fix #3756 ensure invmod returns canonical negative representive for
+- Fix: #3160, #3202 correct TypeScript types for various cases of matrix
+  functions that return statistics (e.g., sum, variance, etc.) (#3735).
+  Thanks @b84330808 and @WenJing95.
+- Fix: #3756 ensure invmod returns canonical negative representive for
   inverse when modulus is negative. Also adds bigint support to invmod and
   xgcd and prefers bigint results with mixed integer number - bigint arguments.
   Conforms mod to these same conventions (#3710). Thanks @kevin9327.
