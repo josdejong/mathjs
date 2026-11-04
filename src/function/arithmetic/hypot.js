@@ -9,12 +9,18 @@ const dependencies = [
   'addScalar',
   'divideScalar',
   'multiplyScalar',
-  'sqrt',
-  'smaller',
-  'isPositive'
+  'sqrt'
 ]
 
-export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, addScalar, divideScalar, multiplyScalar, sqrt, smaller, isPositive }) => {
+export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, addScalar, divideScalar, multiplyScalar, sqrt }) => {
+  // Exact comparison of two values, without the tolerance of the relational
+  // functions like `smaller`: values smaller than config.absTol must not be
+  // treated as zero here, else hypot(3e-16, 4e-16) would return 0.
+  const isLarger = typed({
+    'number, number': (x, y) => x > y,
+    'BigNumber, BigNumber': (x, y) => x.gt(y)
+  })
+
   /**
    * Calculate the hypotenuse of a list with values. The hypotenuse is defined as:
    *
@@ -60,6 +66,8 @@ export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   function _hypot (args) {
     // code based on `hypot` from es6-shim:
     // https://github.com/paulmillr/es6-shim/blob/master/es6-shim.js#L1619-L1633
+    // The values are scaled by the largest absolute value to prevent
+    // overflow or underflow when squaring them.
     let result = 0
     let largest = 0
 
@@ -68,15 +76,16 @@ export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed,
         throw new TypeError('Unexpected type of argument to hypot')
       }
       const value = abs(args[i])
-      if (smaller(largest, value)) {
-        result = multiplyScalar(result,
-          multiplyScalar(divideScalar(largest, value), divideScalar(largest, value)))
-        result = addScalar(result, 1)
+      if (isLarger(value, largest)) {
+        const ratio = divideScalar(largest, value)
+        result = addScalar(multiplyScalar(result, multiplyScalar(ratio, ratio)), 1)
         largest = value
+      } else if (isLarger(largest, 0)) {
+        const ratio = divideScalar(value, largest)
+        result = addScalar(result, multiplyScalar(ratio, ratio))
       } else {
-        result = addScalar(result, isPositive(value)
-          ? multiplyScalar(divideScalar(value, largest), divideScalar(value, largest))
-          : value)
+        // largest is zero, hence value is zero (or NaN)
+        result = addScalar(result, value)
       }
     }
 
