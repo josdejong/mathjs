@@ -172,8 +172,11 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
             // Important: we pass childObject instead of context:
             const index = evalIndex(scope, args, childObject)
             const value = evalValue(scope, args, context)
-            setSafeProperty(
-              parent, parentProp, assign(childObject, index, value))
+            const updatedChild = assign(childObject, index, value)
+            // Mutable children are already updated; strings need replacement.
+            if (typeof childObject === 'string' || updatedChild !== childObject) {
+              setSafeProperty(parent, parentProp, updatedChild)
+            }
             return value
           }
         } else {
