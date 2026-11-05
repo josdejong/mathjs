@@ -209,11 +209,10 @@ const c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]
 math.size(c)                                  // Array, [2, 2, 3]
 ```
 
-Dimensions have no inherent meaning for a multidimensional matrix. For a
-two-dimensional array or matrix, however, each top-level element is a **row**:
-the first size entry counts rows, and the second counts columns. For example,
-`[[0, 1, 2], [3, 4, 5]]` has two rows and three columns. Matrix multiplication
-uses this layout, so `math.multiply(a, b)` computes the product `a * b`.
+Note that the dimensions themselves do not have a meaning attached.
+When creating and printing a two-dimensional matrix, the first dimension is
+normally rendered as the _row_, and the second dimension is rendered as
+the _column_. For example:
 
 ```js
 console.table(math.zeros([2, 4]))
@@ -221,8 +220,9 @@ console.table(math.zeros([2, 4]))
 // 0 0 0 0
 ```
 
-If the first dimension represents `x` and the second represents `y` in your
-data, `x` will appear vertically and `y` horizontally when printed.
+If you have a matrix where the first dimension means `x` and the second
+means `y`, this will look confusing since `x` is printed as _column_
+(vertically) and `y` as _row_ (horizontally).
 
 
 ## Resizing
