@@ -127,7 +127,8 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     }
 
     const m = x % y
-
+    // Ensure result m is always in desired range: 0 ≤ m < y for y positive,
+    // y < m ≤ 0 for y negative:
     return m !== 0n && (m < 0n) !== (y < 0n) ? m + y : m
   }
 })
