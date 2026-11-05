@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Feat: support bigint in stirlingS2(n,k) and ensure that result is
+  always of correct type (#3663). Thanks @JSap0914 and @gwhitney.
 - Docs: #3401 add pages for String and Boolean types, clarify that concat
   works on strings, and correct obsolete string manipulation examples (#3745)
   Thanks @Hugohong258.
