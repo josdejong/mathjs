@@ -126,18 +126,35 @@ The solution that mathjs uses has two main ingredients:
 
 - **Dependency injection**. When we have a function `multiply` with support for `MyDecimal`, thanks to the dependency injection, other functions using `multiply` under the hood, like `prod`, will automatically support `MyDecimal` too. This also works the other way around: if you don't need the heavyweight `multiply` (which supports BigNumbers, matrices, etc), and you just need a plain and simple number support, you can use a lightweight implementation of `multiply` just for numbers, and inject that in `prod` and other functions.
 
-At the lowest level, mathjs has immutable factory functions which create immutable functions. The core function `math.create(...)` creates a new instance having functions created from all passed factory functions. A mathjs instance is a collection of created functions. It contains a function like `math.import` to allow extending the instance with new functions, which can then be used in the expression parser.
+At the lowest level, mathjs has immutable "factory" functions which create immutable functions by gathering lower-level functions they depend on, and providing implementations of the new functions for different data types. The core function `math.create(...)` creates a new instance having functions created from all passed factory functions. A mathjs instance is a collection of created functions. It contains a function like `math.import` to allow extending the instance with new functions, which can then be used in the expression parser.
 
 ### Implementing a new function
 
 A common case is to implement a new function. This involves the following steps:
 
-- Implement the function in the right category, for example `./src/function/arithmetic/myNewFunction.js`, where you can replace `arithmetic` with the proper category, and `myNewFunction` with the name of the new function. Add the new function to the index files `./src/factoriesAny.js` and possibly `./src/factoriesNumber.js`.
+- Implement the function in the right category, for example `./src/function/arithmetic/myNewFunction.js`, where you can replace `arithmetic` with the proper category, and `myNewFunction` with the name of the new function. The implementation will generally consist of a factory as described above. Add the new function to the index files `./src/factoriesAny.js` and possibly `./src/factoriesNumber.js` (see below).
 - Write documentation on the function in the source code comment of `myNewFunction.js`. This documentation is used to auto generate documentation on the website. It should include a History section with one line, indicating the upcoming version number in which the function will be created.
 - Write embedded documentation for the new function in `./src/expression/embeddedDocs/function/arithmetic/myNewFunction.js`. Add the new documentation to the index file `./src/expression/embeddedDocs/embeddedDocs.js`.
 - Write unit tests for the function in `./test/unit-tests/function/arithmetic/myNewFunction.test.js`.
 - Write the necessary TypeScript definitions for the new function in `./types/index.d.ts`, and write tests for it in `./test/typescript-tests/testTypes.ts`. This is described in [./types/EXPLANATION.md](./types/EXPLANATION.md) -- make sure to read that page, as Typescript definitions must be added in _multiple_ places in the code.
 - Ensure the code style is ok by running `npm run lint` (run `npm run format` to fix the code style automatically).
+
+
+The Number bundle (`./src/factoriesNumber.js`) is intended to stay lightweight,
+supporting JavaScript primitive numbers, booleans, and strings. Before adding a
+function to this bundle:
+
+- Avoid dependencies on heavyweight data types such as `DenseMatrix`,
+  `SparseMatrix`, `Complex`, `BigNumber`, and `Unit`. A factory shared with the
+  full bundle can use optional dependencies (prefixed with `?`) for types that
+  are unavailable in the Number bundle. Use a separate lightweight factory
+  when the shared factory requires these types.
+- Ensure all required dependencies, including their dependencies, are available
+  in the Number bundle. The entry generator in `./tools/entryGenerator.js` checks
+  for missing required dependencies during `npm run build` (also part of
+  `npm run build-and-test`); no separate dependency check is needed.
+- Consider array functions on a case-by-case basis: their inclusion depends
+  on their size and dependencies, rather than on array support alone.
 
 
 ### Build scripts

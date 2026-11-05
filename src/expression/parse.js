@@ -82,20 +82,20 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * History:
    *
-   *     v0.9   Created
-   *     v0.13  Switched to one-based indices
-   *     v0.14  Added `[1,2;3,4]` notation for matrices
-   *     v0.18  Dropped the `function` keyword
-   *     v0.20  Added ternary conditional
-   *     v0.27  Allow multi-line expressions; allow functions that receive
-   *            unevaluated parameters (`rawArgs`)
+   *     v15.1  Add optional chaining operator
+   *     v14.8  Add nullish coalescing operator
+   *     v12.4  Allow trailing commas in matrices
+   *     v9.5   Support for calculations with percentages
+   *     v7.3   Supported binary, octal, and hexadecimal notation
    *     v3     Add object notation; allow assignments internal to other
    *            expressions
-   *     v7.3   Supported binary, octal, and hexadecimal notation
-   *     v9.5   Support for calculations with percentages
-   *     v12.4  Allow trailing commas in matrices
-   *     v14.8  Add nullish coalescing operator
-   *     v15.1  Add optional chaining operator
+   *     v0.27  Allow multi-line expressions; allow functions that receive
+   *            unevaluated parameters (`rawArgs`)
+   *     v0.20  Added ternary conditional
+   *     v0.18  Dropped the `function` keyword
+   *     v0.14  Added `[1,2;3,4]` notation for matrices
+   *     v0.13  Switched to one-based indices
+   *     v0.9   Created
    *
    * @param {string | string[] | Matrix} expr          Expression to be parsed
    * @param {{nodes: Object<string, Node>}} [options]  Available options:

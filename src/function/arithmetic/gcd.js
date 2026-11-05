@@ -1,9 +1,9 @@
 import { isInteger } from '../../utils/number.js'
 import { factory } from '../../utils/factory.js'
 import { createMod } from './mod.js'
-import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
-import { createMatAlgo04xSidSid } from '../../type/matrix/utils/matAlgo04xSidSid.js'
-import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
+import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
+import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { ArgumentsError } from '../../error/ArgumentsError.js'
 
@@ -29,10 +29,10 @@ function is1d (array) {
 
 export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config, round, equalScalar, zeros, BigNumber, DenseMatrix, concat }) => {
   const mod = createMod({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix, concat })
-  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
-  const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
-  const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
+  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.
@@ -56,6 +56,13 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    *
    *    lcm, xgcd
    *
+   * History:
+   *
+   *    v11.7  Accept arrays as input
+   *    v11.6  Support matrix broadcasting
+   *    v0.26  Implement BigNumber support
+   *    v0.6   Created
+   *
    * @param {... number | BigNumber | Fraction | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Fraction | Array | Matrix}                           The greatest common divisor
    */
@@ -67,9 +74,11 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       'Fraction, Fraction': (x, y) => x.gcd(y)
     },
     matrixAlgorithmSuite({
-      SS: matAlgo04xSidSid,
-      DS: matAlgo01xDSid,
-      Ss: matAlgo10xSids
+      // gcd(x, 0) is abs(x), not x, so the result can differ from both
+      // operands wherever one of them is zero
+      SS: matAlgo05xSfSf,
+      DS: matAlgo03xDSf,
+      Ss: matAlgo12xSfs
     }),
     {
       [gcdManyTypesSignature]: typed.referToSelf(self => (a, b, args) => {
