@@ -2,7 +2,25 @@
 
 # unpublished changes since 15.2.0
 
-- Fix: #3736 don't throw error when reducing 1-D Matrix along dim 0. (#3734)
+- Feat: support bigint in stirlingS2(n,k) and ensure that result is
+  always of correct type (#3663). Thanks @JSap0914 and @gwhitney.
+- Docs: #3401 add pages for String and Boolean types, clarify that concat
+  works on strings, and correct obsolete string manipulation examples (#3745)
+  Thanks @Hugohong258.
+- Fix: Adjust #3710 to ensure that mod of bigints ends up in intended
+  range for all sign combinations (#3684). Thanks @spokodev.
+- Fix: #3758 correct gcd and atan2 when computed on arguments including
+  sparse matrices (#3751). Thanks @waw666waw666.
+- Fix: #3160, #3202 correct TypeScript types for various cases of matrix
+  functions that return statistics (e.g., sum, variance, etc.) (#3735).
+  Thanks @b84330808 and @WenJing95.
+- Fix: #3756 ensure invmod returns canonical negative representive for
+  inverse when modulus is negative. Also adds bigint support to invmod and
+  xgcd and prefers bigint results with mixed integer number - bigint arguments.
+  Conforms mod to these same conventions (#3710). Thanks @kevin9327.
+- Fix: #3704 avoid double-processing the first node in simplifyCore (#3698).
+  Thanks @Wu-Li.
+- Fix: #3736 don't throw error when reducing 1-D Matrix along dim 0 (#3734).
   Thanks @b84330808.
 - Docs: #3559 clarify composition of number bundle (#3716). Thanks @Hugohong258.
 - Fix: Units: exact values for seveal more units (#3739). Thanks @YashG1836.

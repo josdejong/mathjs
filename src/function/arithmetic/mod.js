@@ -1,4 +1,5 @@
 import { factory } from '../../utils/factory.js'
+import { isInteger } from '../../utils/number.js'
 import { createFloor } from './floor.js'
 import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
@@ -59,6 +60,7 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    *
    * History:
    *
+   *    v15.3   Prefer bigint output if possible for mixed number/bigint input
    *    v13     Handle bigints
    *    v12.1   Support negative divisors for BigNumber and Fraction
    *    v11.6   Support matrix broadcasting
@@ -78,17 +80,15 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
         return y.isZero() ? x : x.sub(y.mul(floor(x.div(y))))
       },
 
-      'bigint, bigint': function (x, y) {
-        if (y === 0n) {
-          return x
-        }
-
-        if (x < 0) {
-          const m = x % y
-          return m === 0n ? m : m + y
-        }
-
-        return x % y
+      'bigint, bigint': _modBigint,
+      'number, bigint': function (n, b) {
+        // prefer bigint when number is an integer
+        if (isInteger(n)) return _modBigint(BigInt(n), b)
+        return _modNumber(n, Number(b))
+      },
+      'bigint, number': function (b, n) {
+        if (isInteger(n)) return _modBigint(b, BigInt(n))
+        return _modNumber(Number(b), n)
       },
 
       'Fraction, Fraction': function (x, y) {
@@ -119,5 +119,16 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     // We use mathjs floor to handle errors associated with
     // precision float approximation
     return (y === 0) ? x : x - y * floor(x / y)
+  }
+
+  function _modBigint (x, y) {
+    if (y === 0n) {
+      return x
+    }
+
+    const m = x % y
+    // Ensure result m is always in desired range: 0 ≤ m < y for y positive,
+    // y < m ≤ 0 for y negative:
+    return m !== 0n && (m < 0n) !== (y < 0n) ? m + y : m
   }
 })

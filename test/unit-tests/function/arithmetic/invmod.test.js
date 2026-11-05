@@ -27,9 +27,23 @@ describe('invmod', function () {
     assert.strictEqual(invmod(-2000000, 21), 10)
   })
 
+  it('should return a result between 0 and b for a negative modulus', function () {
+    assert.strictEqual(invmod(3, -11), -7)
+    assert.strictEqual(invmod(-3, -11), -4)
+    assert.strictEqual(invmod(2, -7), -3)
+    assert.deepStrictEqual(invmod(bignumber(3), bignumber(-11)), bignumber(-7))
+  })
+
   it('should calculate invmod for BigNumbers', function () {
     assert.deepStrictEqual(invmod(bignumber(13), bignumber(25)), bignumber(2))
     assert.deepStrictEqual(invmod(bignumber(-7), bignumber(48)), bignumber(41))
+  })
+
+  it('should calculate invmod for bigints', function () {
+    assert.strictEqual(invmod(5n, 13n), 8n)
+    assert.strictEqual(invmod(6n, -17n), -14n)
+    assert.strictEqual(invmod(2n, -7n), -3n)
+    assert.strictEqual(invmod(5n, -13n), -5n)
   })
 
   it('should calculate invmod for mixed BigNumbers and Numbers', function () {
@@ -37,8 +51,15 @@ describe('invmod', function () {
     assert.deepStrictEqual(invmod(4, math.bignumber(15)), bignumber(4))
   })
 
-  it('should throw an error if b is zero', function () {
-    assert.throws(function () { invmod(1, 0) }, /Divisor must be non zero/)
+  it('should calculate invmod for other mixed types', function () {
+    assert.strictEqual(invmod(5, 37n), 15n)
+    assert.strictEqual(invmod(12n, 37), 34n)
+    assert.deepStrictEqual(invmod(bignumber(2), 37n), bignumber(19))
+    assert.deepStrictEqual(invmod(10n, bignumber(37)), bignumber(26))
+  })
+
+  it('should return NaN if b is zero', function () {
+    assert(Number.isNaN(invmod(1, 0)))
   })
 
   it('should throw an error if only one argument', function () {
