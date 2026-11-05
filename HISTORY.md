@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: Adjust #3710 to ensure that mod of bigints ends up in intended
+  range for all sign combinations (#3684). Thanks @spokodev.
 - Fix: #3758 correct gcd and atan2 when computed on arguments including
   sparse matrices (#3751). Thanks @waw666waw666.
 - Fix: #3160, #3202 correct TypeScript types for various cases of matrix
