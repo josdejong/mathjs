@@ -10,9 +10,9 @@ import { factory } from '../../utils/factory.js'
 import { copysign } from '../../utils/number.js'
 
 const name = 'lgamma'
-const dependencies = ['Complex', 'typed']
+const dependencies = ['Complex', 'typed', 'config']
 
-export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Complex, typed }) => {
+export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Complex, typed, config }) => {
   // Stirling series is non-convergent, we need to use the recurrence `lgamma(z) = lgamma(z+1) - log z` to get
   // sufficient accuracy.
   //
@@ -37,8 +37,19 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
   ]
 
   /**
-   * Logarithm of the gamma function for real, positive numbers and complex numbers,
+   * Logarithm of the gamma function for real and complex numbers,
    * using Lanczos approximation for numbers and Stirling series for complex numbers.
+   *
+   * This function computes the principal branch of the log-gamma special function
+   * (LogGamma), which is the analytic continuation of ln(gamma(z)) for positive
+   * reals to the entire complex plane (except non-positive integers where gamma
+   * has poles). For complex inputs, this may differ from ln(gamma(z)) due to
+   * branch cuts. The real parts always coincide: Re(lgamma(z)) = ln(|gamma(z)|).
+   *
+   * For real number inputs, negative non-integer values produce a complex result.
+   * When `config.predictable` is true, such inputs return NaN instead (to
+   * guarantee a number return type). To always get the full complex result,
+   * pass a Complex input.
    *
    * Syntax:
    *
@@ -46,10 +57,11 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
    *
    * Examples:
    *
-   *    math.lgamma(5)       // returns 3.178053830347945
-   *    math.lgamma(0)       // returns Infinity
-   *    math.lgamma(-0.5)    // returns NaN
-   *    math.lgamma(math.i)  // returns -0.6509231993018536 - 1.8724366472624294i
+   *    math.lgamma(5)                       // returns 3.178053830347945
+   *    math.lgamma(0)                       // returns Infinity
+   *    math.lgamma(-0.5)                    // returns Complex(1.2655..., -3.1416...)
+   *    math.lgamma(math.complex(-0.5, 0))   // returns Complex(1.2655..., -3.1416...)
+   *    math.lgamma(math.i)                  // returns Complex(-0.6509..., -1.8724...)
    *
    * See also:
    *
@@ -59,7 +71,14 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
    * @return {number | Complex}    The log gamma of `n`
    */
   return typed(name, {
-    number: lgammaNumber,
+    number: function (x) {
+      if (x >= 0 || config.predictable) {
+        return lgammaNumber(x)
+      } else {
+        // negative number -> complex result via the complex code path
+        return lgammaComplex(new Complex(x, 0))
+      }
+    },
     Complex: lgammaComplex,
     BigNumber: function () {
       throw new Error("mathjs doesn't yet provide an implementation of the algorithm lgamma for BigNumber")
@@ -74,7 +93,7 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
 
     if (n.isNaN()) {
       return new Complex(NaN, NaN)
-    } else if (n.im === 0) {
+    } else if (n.im === 0 && n.re >= 0) {
       return new Complex(lgammaNumber(n.re), 0)
     } else if (n.re >= SMALL_RE || Math.abs(n.im) >= SMALL_IM) {
       return lgammaStirling(n)
