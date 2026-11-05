@@ -3,6 +3,8 @@ import math from '../../../../src/defaultInstance.js'
 const stirlingS2 = math.stirlingS2
 
 describe('stirlingS2', function () {
+  const bn = math.bignumber
+
   it('should calculate the number of ways to partition a set of n objects into k non-empty subsets', function () {
     assert.strictEqual(stirlingS2(5, 3), 25)
     assert.strictEqual(stirlingS2(0, 0), 1)
@@ -15,7 +17,6 @@ describe('stirlingS2', function () {
   })
 
   it('should calculate the stirlingS2 of n items taken k at a time with BigNumbers', function () {
-    const bn = math.bignumber
     assert.deepStrictEqual(stirlingS2(bn(7), bn(5)), bn(140))
     assert.deepStrictEqual(stirlingS2(bn(8), bn(6)), bn(266))
     assert.deepStrictEqual(stirlingS2(bn(14), 13), bn(91))
@@ -33,6 +34,14 @@ describe('stirlingS2', function () {
     assert.deepStrictEqual(stirlingS2(bn(7), bn(7)), bn(1))
     // mixed: one BigNumber input still produces BigNumber when n===k
     assert.deepStrictEqual(stirlingS2(bn(4), 4), bn(1))
+  })
+
+  it('should calculate stirlingS2 with bigints', function () {
+    assert.strictEqual(stirlingS2(5, 0n), 0n)
+    assert.strictEqual(stirlingS2(7n, 4), 350n)
+    assert.strictEqual(stirlingS2(30n, 15n), 12879868072770626040000n)
+    assert.strictEqual(stirlingS2(bn(8), 5n), 1050n)
+    assert.strictEqual(stirlingS2(19n, bn(19)), 1n)
   })
 
   it('should not work with non-integer and negative input', function () {
