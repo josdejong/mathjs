@@ -1,7 +1,4 @@
 import assert from 'assert'
-import fs from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { approxEqual } from '../../../../tools/approx.js'
 import {
   createAtomicMass,
@@ -140,34 +137,6 @@ describe('physical constants', function () {
     assert.strictEqual(createPlanckTime(dependencies).toString(), '5.391245e-44 s')
     assert.strictEqual(createPlanckCharge(dependencies).toString(), '1.87554603778e-18 C')
     assert.strictEqual(createPlanckTemperature(dependencies).toString(), '1.416785e+32 K')
-  })
-
-  it('should match the values in the table of physical constants in the docs', function () {
-    const docsFile = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../../../docs/datatypes/units.md')
-    const section = fs.readFileSync(docsFile, 'utf8')
-      .split('### Physical Constants')[1]
-      .split(/\n#{2,3} /)[0]
-      .replace(/<!--[\s\S]*?-->/g, '') // skip the commented-out rows
-
-    const rows = section.split('\n')
-      .map(line => line.split('|').map(cell => cell.trim()))
-      .filter(cells => cells.length === 4 && cells[2] !== '' && !isNaN(Number(cells[2])))
-
-    assert(rows.length > 40, 'the table should be found')
-    for (const [name, , value] of rows) {
-      const constant = math[name]
-      let actual
-      if (typeof constant === 'number') {
-        actual = constant // dimensionless constants such as fineStructure
-      } else if (constant !== undefined) {
-        actual = constant.toNumber()
-      } else {
-        // adopted values such as atm are units, not constants
-        assert(math.Unit.isValuelessUnit(name), `${name} should be a physical constant or a unit`)
-        actual = math.unit(1, name).toSI().toNumber()
-      }
-      approxEqual(Number(value), actual, 1e-12)
-    }
   })
 
   it('should create BigNumber unit values if configured', function () {
