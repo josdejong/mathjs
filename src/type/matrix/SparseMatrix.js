@@ -84,6 +84,24 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     }
   }
 
+  /**
+   * Return the zero value for the given datatype.
+   * Uses typed.convert(0, datatype) where possible, but falls back for types
+   * such as 'boolean' (zero = false) and 'bigint' (zero = 0n) that have no
+   * registered conversion from the number 0.
+   * @param {string} datatype
+   * @returns {*} zero value
+   */
+  function _zeroValue (datatype) {
+    try {
+      return typed.convert(0, datatype)
+    } catch (e) {
+      if (datatype === 'boolean') return false
+      if (datatype === 'bigint') return 0n
+      return 0
+    }
+  }
+
   function _createFromArray (matrix, data, datatype) {
     // initialize fields
     matrix._values = []
@@ -102,8 +120,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     if (isString(datatype)) {
       // find signature that matches (datatype, datatype)
       eq = typed.find(equalScalar, [datatype, datatype]) || equalScalar
-      // convert 0 to the same datatype
-      zero = typed.convert(0, datatype)
+      // get the zero value for this datatype
+      zero = _zeroValue(datatype)
     }
 
     // check we have rows (empty array)
@@ -510,8 +528,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     if (isString(this._datatype)) {
       // find signature that matches (datatype, datatype)
       eq = typed.find(equalScalar, [this._datatype, this._datatype]) || equalScalar
-      // convert 0 to the same datatype
-      zero = typed.convert(0, this._datatype)
+      // get the zero value for this datatype
+      zero = _zeroValue(this._datatype)
     }
 
     // check we need to resize matrix
@@ -634,8 +652,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     if (isString(matrix._datatype)) {
       // find signature that matches (datatype, datatype)
       eq = typed.find(equalScalar, [matrix._datatype, matrix._datatype]) || equalScalar
-      // convert 0 to the same datatype
-      zero = typed.convert(0, matrix._datatype)
+      // get the zero value for this datatype
+      zero = _zeroValue(matrix._datatype)
       // convert value to the same datatype
       value = typed.convert(value, matrix._datatype)
     }
@@ -911,8 +929,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     if (isString(matrix._datatype)) {
       // find signature that matches (datatype, datatype)
       eq = typed.find(equalScalar, [matrix._datatype, matrix._datatype]) || equalScalar
-      // convert 0 to the same datatype
-      zero = typed.convert(0, matrix._datatype)
+      // get the zero value for this datatype
+      zero = _zeroValue(matrix._datatype)
     }
 
     // invoke callback
@@ -1055,7 +1073,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * @returns {Array} array
    */
   SparseMatrix.prototype.toArray = function () {
-    return _toArray(this._values, this._index, this._ptr, this._size, true)
+    const zero = isString(this._datatype) ? _zeroValue(this._datatype) : 0
+    return _toArray(this._values, this._index, this._ptr, this._size, true, zero)
   }
 
   /**
@@ -1064,10 +1083,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * @returns {Array} array
    */
   SparseMatrix.prototype.valueOf = function () {
-    return _toArray(this._values, this._index, this._ptr, this._size, false)
+    const zero = isString(this._datatype) ? _zeroValue(this._datatype) : 0
+    return _toArray(this._values, this._index, this._ptr, this._size, false, zero)
   }
 
-  function _toArray (values, index, ptr, size, copy) {
+  function _toArray (values, index, ptr, size, copy, zero = 0) {
     // rows and columns
     const rows = size[0]
     const columns = size[1]
@@ -1078,7 +1098,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // initialize array
     for (i = 0; i < rows; i++) {
       a[i] = []
-      for (j = 0; j < columns; j++) { a[i][j] = 0 }
+      for (j = 0; j < columns; j++) { a[i][j] = zero }
     }
 
     // loop columns
@@ -1287,8 +1307,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     if (isString(datatype)) {
       // find signature that matches (datatype, datatype)
       eq = typed.find(equalScalar, [datatype, datatype]) || equalScalar
-      // convert 0 to the same datatype
-      zero = typed.convert(0, datatype)
+      // get the zero value for this datatype
+      zero = _zeroValue(datatype)
     }
 
     const kSuper = k > 0 ? k : 0
