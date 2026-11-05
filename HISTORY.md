@@ -2,6 +2,9 @@
 
 # unpublished changes since 15.2.0
 
+- Docs: #3401 add pages for String and Boolean types, clarify that concat
+  works on strings, and correct obsolete string manipulation examples (#3745)
+  Thanks @Hugohong258.
 - Fix: Adjust #3710 to ensure that mod of bigints ends up in intended
   range for all sign combinations (#3684). Thanks @spokodev.
 - Fix: #3758 correct gcd and atan2 when computed on arguments including
