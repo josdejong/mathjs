@@ -1,38 +1,36 @@
 import typed from 'typed-function'
-import { get, arraySize } from './array.js'
 import { typeOf as _typeOf } from './is.js'
 
 /**
- * Simplifies a callback function by reducing its complexity and potentially improving its performance.
+ * Simplifies a callback function to be used in mapping functions like `map`, `forEach`, etc. It determines if the callback is unary and optimizes it accordingly.
  *
  * @param {Function} callback The original callback function to simplify.
  * @param {Array|Matrix} array The array that will be used with the callback function.
  * @param {string} name The name of the function that is using the callback.
  * @param {boolean} isUnary If true, the callback function is unary and will be optimized as such.
- * @returns {Function} Returns a simplified version of the callback function.
+ * @returns {Object} Returns an object with properties `isUnary` and `fn`.
  */
 export function optimizeCallback (callback, array, name, isUnary) {
+  const isMatrix = array && array.isMatrix
   if (typed.isTypedFunction(callback)) {
     let numberOfArguments
     if (isUnary) {
       numberOfArguments = 1
     } else {
-      const size = array.isMatrix ? array.size() : arraySize(array)
-
+      const firstIndex = isMatrix ? array.size().map(() => 0) : [0] // it only needs to be an array to be recognized
+      const firstValue = findFirst(array)
+      const isEmpty = isMatrix ? array.size().at(-1) === 0 : array.length === 0
       // Check the size of the last dimension to see if the array/matrix is empty
-      const isEmpty = size.length ? size[size.length - 1] === 0 : true
-      if (isEmpty) {
+      if (isEmpty || firstValue === undefined) {
         // don't optimize callbacks for empty arrays/matrix, as they will never be called
         // and in fact will throw an exception when we try to access the first element below
         return { isUnary, fn: callback }
       }
 
-      const firstIndex = size.map(() => 0)
-      const firstValue = array.isMatrix ? array.get(firstIndex) : get(array, firstIndex)
       numberOfArguments = _findNumberOfArgumentsTyped(callback, firstValue, firstIndex, array)
     }
     let fastCallback
-    if (array.isMatrix && (array.dataType !== 'mixed' && array.dataType !== undefined)) {
+    if (isMatrix && (array.dataType !== 'mixed' && array.dataType !== undefined)) {
       const singleSignature = _findSingleSignatureWithArity(callback, numberOfArguments)
       fastCallback = (singleSignature !== undefined) ? singleSignature : callback
     } else {
@@ -46,10 +44,35 @@ export function optimizeCallback (callback, array, name, isUnary) {
     }
     return { isUnary: false, fn: (...args) => _tryFunctionWithArgs(fastCallback, args, name, callback.name) }
   }
-  if (isUnary === undefined) {
-    return { isUnary: _findIfCallbackIsUnary(callback), fn: callback }
-  } else {
+  if (isUnary) {
     return { isUnary, fn: callback }
+  } else {
+    return { isUnary: _findIfCallbackIsUnary(callback), fn: callback }
+  }
+}
+
+export function findFirst (array) {
+  if (array && array.isMatrix) {
+    if (array.size().at(-1) === 0) {
+      return undefined
+    }
+    const size = array.size()
+    const firstIndex = size.map(() => 0)
+    return array.get(firstIndex)
+  } else {
+    return traverse(array)
+  }
+  function traverse (value) {
+    if (Array.isArray(value)) {
+      for (let i = 0; i < value.length; i++) {
+        const found = traverse(value[i])
+        if (found !== undefined) {
+          return found
+        }
+      }
+    } else {
+      return value
+    }
   }
 }
 

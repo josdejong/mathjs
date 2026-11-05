@@ -2,6 +2,34 @@
 
 # unpublished changes since 15.2.0
 
+- Docs: #3401 add pages for String and Boolean types, clarify that concat
+  works on strings, and correct obsolete string manipulation examples (#3745)
+  Thanks @Hugohong258.
+- Fix: Adjust #3710 to ensure that mod of bigints ends up in intended
+  range for all sign combinations (#3684). Thanks @spokodev.
+- Fix: #3758 correct gcd and atan2 when computed on arguments including
+  sparse matrices (#3751). Thanks @waw666waw666.
+- Fix: #3160, #3202 correct TypeScript types for various cases of matrix
+  functions that return statistics (e.g., sum, variance, etc.) (#3735).
+  Thanks @b84330808 and @WenJing95.
+- Fix: #3756 ensure invmod returns canonical negative representive for
+  inverse when modulus is negative. Also adds bigint support to invmod and
+  xgcd and prefers bigint results with mixed integer number - bigint arguments.
+  Conforms mod to these same conventions (#3710). Thanks @kevin9327.
+- Fix: #3704 avoid double-processing the first node in simplifyCore (#3698).
+  Thanks @Wu-Li.
+- Fix: #3736 don't throw error when reducing 1-D Matrix along dim 0 (#3734).
+  Thanks @b84330808.
+- Docs: #3559 clarify composition of number bundle (#3716). Thanks @Hugohong258.
+- Fix: Units: exact values for seveal more units (#3739). Thanks @YashG1836.
+- Fix: Units: use exact value for `acre` unit (#3665). Thanks @spokodev.
+- Docs: #2095,#2771 Units: unit parser limitations and min/sec functions vs
+  unit abbreviations (#3714). Thanks @Hugohong258.
+- Feat: document and allow more operations on non-rectangular nested arrays,
+  along with speedup matrix/array w. scalar operations (#3607). Thanks @dvd101x.
+- Fix: correct the sign of the derivative of acoth (#3727) Thanks @chuanghiduoc.
+- Chore: fix spelling errors in various comments etc. (#3666-#3670). Thanks
+  @rrbharath.
 - Docs: fix the browser example `rocket_trajectory_optimization.html` (#3654).
   Thanks @dvd101x.
 
@@ -1694,7 +1722,7 @@ Breaking changes:
 - Dropped support for (non-primitive) instances of `Number`, `Boolean`, and
   `String` from functions `clone` and `typeof`.
 - Dropped official support for IE9 (probably still works, but it's not tested).
-- Fixed #851: More consistent behavior of sqrt, nthRoot, and pow.
+- Fixed #851: More consistent behavior of `sqrt`, `nthRoot`, and `pow`.
   Thanks @dakotablair.
 - Fixed #1103: Calling `toTex` on node that contains `derivative` causing
   an exception. Thanks @joelhoover.
@@ -2527,7 +2555,7 @@ Non breaking changes:
 
 ## 2015-07-12, version 1.7.1
 
-- Fixed #397: Inaccuracies in nthRoot for very large values, and wrong results
+- Fixed #397: Inaccuracies in `nthRoot` for very large values, and wrong results
   for very small values. (backported from v2)
 - Fixed #405: Parser throws error when defining a function in a multiline
   expression.
@@ -3068,7 +3096,7 @@ Non breaking changes:
 
 - Extended the import function and some other minor improvements.
 - Fixed a bug in merging one dimensional vectors into a matrix.
-- Fixed a bug in function subtract, when subtracting a complex number from a
+- Fixed a bug in function `subtract`, when subtracting a complex number from a
   real number.
 
 ## 2013-05-10, version 0.8.1

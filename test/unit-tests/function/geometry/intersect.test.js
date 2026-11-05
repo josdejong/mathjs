@@ -46,7 +46,7 @@ describe('intersect', function () {
   it('should throw an error for incompatible parameter types', function () {
     assert.throws(function () { math.intersect(2, 3, 6) }, /TypeError: Unexpected type of argument in function intersect/)
     assert.throws(function () { math.intersect([2, 0, 1], [1, 1, 1], [5, 1, 10]) }, /TypeError: Array with 4 numbers expected as third argument/)
-    assert.throws(function () { math.intersect([], [], [], []) }, /TypeError: Arrays with two or thee dimensional points expected/)
+    assert.throws(function () { math.intersect([], [], [], []) }, /TypeError: Arrays with two or three dimensional points expected/)
     assert.throws(function () { math.intersect([2, 8, 9], 3, 6) }, /TypeError: Unexpected type of argument in function intersect/)
     assert.throws(function () { math.intersect('a', 'b', 'c', 'd') }, /TypeError: Unexpected type of argument in function intersect/)
   })

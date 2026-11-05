@@ -124,7 +124,7 @@ export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ ty
     }
     // cumulative sum
     let sum = 0
-    // initialize cptr with the cummulative sum of row counts
+    // initialize cptr with the cumulative sum of row counts
     for (let i = 0; i < rows; i++) {
       // update cptr
       cptr.push(sum)
