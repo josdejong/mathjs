@@ -264,7 +264,7 @@ export const createCsAmd = /* #__PURE__ */ factory(name, dependencies, ({ add, m
       mark = _wclear(mark + lemax, lemax, W, w, n)
 
       // Supernode detection. Supernode detection relies on the hash function h(i) computed for each node i.
-      // If two nodes have identical adjacency lists, their hash functions wil be identical.
+      // If two nodes have identical adjacency lists, their hash functions will be identical.
       for (pk = pk1; pk < pk2; pk++) {
         i = cindex[pk]
         // check i is dead, skip it
@@ -391,7 +391,7 @@ export const createCsAmd = /* #__PURE__ */ factory(name, dependencies, ({ add, m
    *   P = M + M'
    *
    * Order: 2
-   *   Dense columns from M' are dropped, M recreated from M'. This is appropriatefor LU factorization of unsymmetric matrices.
+   *   Dense columns from M' are dropped, M recreated from M'. This is appropriate for LU factorization of unsymmetric matrices.
    *   P = M' * M
    *
    * Order: 3
@@ -481,7 +481,7 @@ export const createCsAmd = /* #__PURE__ */ factory(name, dependencies, ({ add, m
 
   /**
    * Initialize degree lists. Each node is placed in its degree lists. Nodes of zero degree are eliminated immediately. Nodes with
-   * degree >= dense are alsol eliminated and merged into a placeholder node n, a dead element. Thes nodes will appera last in the
+   * degree >= dense are alsol eliminated and merged into a placeholder node n, a dead element. These nodes will appera last in the
    * output permutation p.
    */
   function _initializeDegreeLists (n, cptr, W, degree, elen, w, dense, nv, head, last, next) {

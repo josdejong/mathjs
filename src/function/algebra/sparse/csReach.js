@@ -33,7 +33,7 @@ export function csReach (g, b, k, xi, pinv) {
   let p, p0, p1
   // initialize top
   let top = n
-  // loop column indeces in B
+  // loop column indices in B
   for (p0 = bptr[k], p1 = bptr[k + 1], p = p0; p < p1; p++) {
     // node i
     const i = bindex[p]

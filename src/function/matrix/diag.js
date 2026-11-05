@@ -97,7 +97,7 @@ export const createDiag = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   })
 
   /**
-   * Creeate diagonal matrix from a vector or vice versa
+   * Create diagonal matrix from a vector or vice versa
    * @param {Array | Matrix} x
    * @param {number} k
    * @param {string} format Storage format for matrix. If null,

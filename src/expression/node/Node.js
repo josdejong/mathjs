@@ -218,7 +218,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
      * Deep compare this node with another node.
      * @param {Node} other
      * @return {boolean} Returns true when both nodes are of the same type and
-     *                   contain the same values (as do their childs)
+     *                   contain the same values (as do their children)
      */
     equals (other) {
       return other

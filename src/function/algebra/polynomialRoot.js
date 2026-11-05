@@ -66,7 +66,7 @@ export const createPolynomialRoot = /* #__PURE__ */ factory(name, dependencies, 
    *     v11.4  Created
    *
    * @param {... number | Complex} coeffs
-   *     The coefficients of the polynomial, starting with with the constant coefficent, followed
+   *     The coefficients of the polynomial, starting with with the constant coefficient, followed
    *     by the linear coefficient and subsequent coefficients of increasing powers.
    * @return {Array} The distinct roots of the polynomial
    */

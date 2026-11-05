@@ -160,7 +160,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
         // we will not use the compile function of the AccessorNode, but
         // compile it ourselves here as we need the parent object of the
         // AccessorNode:
-        // wee need to apply the updated object to parent object
+        // we need to apply the updated object to parent object
         const evalParentObject = this.object.object._compile(math, argNames)
 
         if (this.object.index.isObjectProperty()) {
