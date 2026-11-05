@@ -1,4 +1,4 @@
-import { isComplex, isUnit, typeOf } from '../../utils/is.js'
+import { isComplex, isMatrix, isUnit, typeOf } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { memoize } from '../../utils/function.js'
 import { endsWith } from '../../utils/string.js'
@@ -1320,6 +1320,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {Array} An array of units.
    */
   Unit.prototype.splitUnit = function (parts) {
+    // When invoked as a method in the expression parser
+    // (e.g. `(1 m).splitUnit([ft, in])`), `parts` is passed as a Matrix rather
+    // than a plain Array. Normalize it to an Array so the iteration below works
+    // in both cases.
+    if (isMatrix(parts)) {
+      parts = parts.toArray()
+    }
+
     let x = this.clone()
     const ret = []
     for (let i = 0; i < parts.length; i++) {
