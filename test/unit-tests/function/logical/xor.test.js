@@ -224,4 +224,8 @@ describe('xor', function () {
     const expression = math.parse('xor(1,2)')
     assert.strictEqual(expression.toTex(), '\\left(1\\veebar2\\right)')
   })
+
+  it('should LaTeX xor with boolean arguments, keeping spaces around the operator', function () {
+    assert.strictEqual(math.parse('true xor false').toTex(), ' true\\veebar false')
+  })
 })

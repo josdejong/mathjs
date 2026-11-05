@@ -97,4 +97,10 @@ describe('not', function () {
     const node = new FunctionNode(new SymbolNode('not'), [c])
     assert.strictEqual(node.toTex(), '\\neg\\left(1\\right)')
   })
+
+  it('should LaTeX not with boolean arguments, keeping a space after \\neg', function () {
+    assert.strictEqual(math.parse('not true').toTex(), '\\neg true')
+    assert.strictEqual(math.parse('not false').toTex(), '\\neg false')
+    assert.strictEqual(math.parse('not not true').toTex(), '\\neg\\left(\\neg true\\right)')
+  })
 })
