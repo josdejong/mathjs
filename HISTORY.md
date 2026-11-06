@@ -2,6 +2,9 @@
 
 # unpublished changes since 15.2.0
 
+- Docs: update values of physical constants in units doc page, and
+  institute a check that they match the values in the math instance (#3740).
+  Thanks @YashG1836.
 - Feat: support bigint in stirlingS2(n,k) and ensure that result is
   always of correct type (#3663). Thanks @JSap0914 and @gwhitney.
 - Docs: #3401 add pages for String and Boolean types, clarify that concat

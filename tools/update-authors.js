@@ -92,6 +92,14 @@ const replaceEmails = {
     author: 'Hugohong258',
     email: '<ugfifkgfufyu@gmail.com>'
   },
+  '<24110399@iitgn.ac.in>': {
+    author: 'Yash Goyal',
+    email: '<yashgoyal17305@gmail.com>'
+  },
+  '<116227558+JSap0914@users.noreply.github.com>': {
+    author: 'JSap0914',
+    email: '<JSap0914@users.noreply.github.com>'
+  }
 }
 
 // Commits from which we do not want the author to pop up in the AUTHORS list,
