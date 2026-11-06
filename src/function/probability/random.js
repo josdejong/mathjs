@@ -11,8 +11,8 @@ export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed
   let rng = createRng(config.randomSeed)
 
   if (on) {
-    on('config', function (curr, prev) {
-      if (curr.randomSeed !== prev.randomSeed) {
+    on('config', function (curr, prev, changes) {
+      if (Object.prototype.hasOwnProperty.call(changes, 'randomSeed')) {
         rng = createRng(curr.randomSeed)
       }
     })
@@ -74,8 +74,8 @@ export const createRandomNumber = /* #__PURE__ */ factory(name, ['typed', 'confi
   let rng = createRng(config.randomSeed)
 
   if (on) {
-    on('config', function (curr, prev) {
-      if (curr.randomSeed !== prev.randomSeed) {
+    on('config', function (curr, prev, changes) {
+      if (Object.prototype.hasOwnProperty.call(changes, 'randomSeed')) {
         rng = createRng(curr.randomSeed)
       }
     })
