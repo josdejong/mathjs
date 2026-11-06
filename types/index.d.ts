@@ -932,7 +932,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param unit The unit to be created
    * @returns The created unit
    */
-  unit(value: MathNumericType, unit?: string): Unit
+  unit(value: MathNumericType, unit?: string | Unit): Unit
   unit(value: MathCollection): Unit[]
 
   /*************************************************************************
@@ -5343,7 +5343,10 @@ export interface MathJsChain<TValue> {
    * @param unit The unit to be created
    */
   unit(this: MathJsChain<string>, unit?: string): MathJsChain<Unit>
-  unit(this: MathJsChain<MathNumericType>, unit?: string): MathJsChain<Unit>
+  unit(
+    this: MathJsChain<MathNumericType>,
+    unit?: string | Unit
+  ): MathJsChain<Unit>
   unit(this: MathJsChain<MathCollection>): MathJsChain<Unit[]>
 
   /*************************************************************************

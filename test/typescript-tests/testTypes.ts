@@ -1822,6 +1822,14 @@ Units examples
     expectTypeOf(math.unit(math.fraction(5, 2), 'cm')).toExtend<Unit>()
     expectTypeOf(math.unit(math.complex(5, 0), 'cm')).toExtend<Unit>()
 
+    // Test unit function with MathNumericType and a valueless Unit
+    const cm = math.unit('cm')
+    expectTypeOf(math.unit(5, cm)).toExtend<Unit>()
+    expectTypeOf(math.unit(math.bignumber(5), cm)).toExtend<Unit>()
+    expectTypeOf(math.unit(math.fraction(5, 2), cm)).toExtend<Unit>()
+    expectTypeOf(math.unit(math.complex(5, 0), cm)).toExtend<Unit>()
+    expectTypeOf(math.chain(5).unit(cm)).toExtend<MathJsChain<Unit>>()
+
     // Test unit function with just MathNumericType (optional unit parameter)
     expectTypeOf(math.unit(5)).toExtend<Unit>()
     expectTypeOf(math.unit(math.bignumber(5))).toExtend<Unit>()
