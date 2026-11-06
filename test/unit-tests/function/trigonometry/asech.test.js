@@ -32,6 +32,11 @@ describe('asech', function () {
     approxEqual(asech(0.5), 1.31695789692481670862504634730797)
     approxEqual(asech(0.75), 0.7953654612239056305278909331478)
     assert.strictEqual(asech(1), 0)
+    approxEqual(asech(1 - 1e-15), 4.4703483581542987362e-8, 1e-12)
+    assert(Math.abs(asech(1e-200) - 461.21016577936908) < 1e-12)
+    const asechNegTiny = asech(-1e-200)
+    assert(Math.abs(asechNegTiny.re - 461.21016577936908) < 1e-12)
+    assert.strictEqual(asechNegTiny.im, pi)
   })
 
   it('should return the hyperbolic arcsec of a number when predictable:true', function () {
