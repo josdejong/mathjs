@@ -74,6 +74,9 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    * * Removes double unary '-', '~', and 'not'
    * * Eliminates addition/subtraction of 0 and multiplication/division/powers
    *   by 1 or 0.
+   * * Reduces any power of 1 to 1. (Powers of 0 are left alone, because the
+   *   value of `0^n` depends on `n`: it is 1 for `n = 0` and infinite for
+   *   negative `n`.)
    * * Converts addition of a negation into subtraction.
    * * Eliminates logical operations with constant true or false leading
    *   arguments.
@@ -96,6 +99,7 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    *     simplify, simplifyConstant, resolve, derivative
    *
    * History:
+   *     v15.3 Reduce powers of 1 to 1
    *     v11   Remove all constant-merging, moving it to `simplifyConstant`
    *           Convert equivalent function calls into operators
    *     v10.2 Created by moving an internal function of `simplify` to top level
@@ -240,6 +244,11 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
           } else if (equal(a1.value, 1)) {
             return a0
           }
+        }
+        // 1^n is 1 for any finite n. There is no such rule for 0^n, whose
+        // value depends on n: 0^0 is 1 and 0^n is infinite for negative n.
+        if (isConstantNode(a0) && equal(a0.value, 1)) {
+          return node1
         }
       }
       if (node.op === 'and') {

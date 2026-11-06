@@ -393,6 +393,13 @@ describe('simplify', function () {
     simplifyAndCompare('1^x*y', 'y')
     simplifyAndCompare('(1*x)^y', 'x^y')
     simplifyAndCompare('(x/2)^y', 'x^y/2^y')
+    simplifyAndCompare('(1/x)^y', '1/x^y')
+  })
+
+  it('should leave powers of zero alone, as their value depends on the exponent', function () {
+    simplifyAndCompare('0^x', '0^x')
+    simplifyAndCompare('0^(x-x)', '1')
+    simplifyAndCompare('0^(-1)', 'Infinity')
   })
 
   it('should terminate when simplifying symbolic powers of reciprocals', function () {
@@ -401,19 +408,33 @@ describe('simplify', function () {
       ['(1/(x*y))^z', '(1/x/y)^z'],
       ['(2/(x*y))^z', '2^z*(1/x/y)^z'],
       ['(1/(2*x))^y', '(1/2/x)^y'],
-      ['(1/(x*y*z))^w', '(1/y/z/x)^w']
+      ['(1/(x*y*z))^w', '(1/y/z/x)^w'],
+      ['(1/(x*y))^z*(1/(a*b))^z', '(1/x/y)^z*(1/a/b)^z']
     ]
-    for (const [expression, expected] of expressions) {
-      let passes = 0
-      const rules = [node => {
-        // Fail a non-terminating rule cycle without hanging the test runner.
-        assert.ok(++passes < 20, 'Simplification did not converge: ' + expression)
-        return node
-      }, ...math.simplify.rules]
-      const simplified = math.simplify(expression, rules)
-      assert.strictEqual(simplified.toString(), math.parse(expected).toString())
-      const scope = { x: 2, y: 3, z: 0.5, w: 1.5 }
-      assert.ok(Math.abs(simplified.evaluate(scope) - math.evaluate(expression, scope)) < 1e-14)
+    const contexts = {
+      default: math.simplify.defaultContext,
+      real: math.simplify.realContext,
+      positive: math.simplify.positiveContext,
+      'non-commutative addition': { add: { commutative: false } }
+    }
+    const scope = { x: 2, y: 3, z: 0.5, w: 1.5, a: 5, b: 7 }
+    for (const [name, context] of Object.entries(contexts)) {
+      for (const [expression, expected] of expressions) {
+        const label = `${expression} (${name} context)`
+        let passes = 0
+        const rules = [node => {
+          // Fail a non-terminating rule cycle without hanging the test runner.
+          assert.ok(++passes < 20, 'Simplification did not converge: ' + label)
+          return node
+        }, ...math.simplify.rules]
+        const simplified = math.simplify(expression, rules, {}, { context })
+        // No 1^n factor may be left behind in the result either.
+        assert.strictEqual(
+          simplified.toString(), math.parse(expected).toString(), label)
+        assert.ok(
+          Math.abs(simplified.evaluate(scope) - math.evaluate(expression, scope)) < 1e-14,
+          label)
+      }
     }
   })
 

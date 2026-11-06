@@ -224,6 +224,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // { l: '0*n', r: '0' },     // simplifyCore
     // { l: 'n/n', r: '1'},      // simplifyCore
     // { l: 'n^1', r: 'n' },     // simplifyCore
+    // { l: '1^n', r: '1' },     // simplifyCore
     // { l: '+n1', r:'n1' },     // simplifyCore
     // { l: 'n--n1', r:'n+n1' }, // simplifyCore
     { l: 'log(e)', r: '1' },
@@ -265,9 +266,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { multiply: { commutative: false } }
     },
     // Distributing a power over the unit factor that 'n/n1 -> n*n1^-1' leaves
-    // behind produces 1^n. Without this rule that factor is never eliminated
-    // and accumulates a larger exponent on every pass, so simplification of a
-    // symbolic power of a reciprocal never converges. See #3693.
+    // behind produces 1^n. simplifyCore reduces 1^n as well, but it runs at
+    // the start of a pass, before this factor exists, and the factor is
+    // created anew on every pass because the reciprocal is restored when the
+    // temporary rules are undone. So it also has to be removed here, or it
+    // would be left in the result. See #3693.
     { l: '1^n', r: '1' },
 
     // expand nested exponentiation
