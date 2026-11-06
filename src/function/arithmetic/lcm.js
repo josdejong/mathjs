@@ -9,15 +9,14 @@ const name = 'lcm'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
-  'concat'
+  'equalScalar'
 ]
 
-export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, concat }) => {
+export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   const lcmTypes = 'number | BigNumber | Fraction | Matrix | Array'
   const lcmManySignature = {}
@@ -55,6 +54,13 @@ export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    * See also:
    *
    *    gcd, xgcd
+   *
+   * History:
+   *
+   *    v11.6  Support matrix broadcasting
+   *    v2.3   Support Fractions
+   *    v0.26  Implement BigNumber support
+   *    v0.6   Created
    *
    * @param {... number | BigNumber | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Array | Matrix}                           The least common multiple

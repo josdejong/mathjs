@@ -13,7 +13,7 @@ const dependencies = [
   'SparseMatrix'
 ]
 
-export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, concat, SparseMatrix }) => {
+export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
@@ -64,9 +64,10 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    *
    * History:
    *
-   *    v13    Handle bigints
+   *    v14    Return a sparse matrix for sparse inputs
+   *    v13    Handle bigints; use separate relative and absolute tolerances
    *    v11.6  Support matrix broadcasting
-   *    v4     Compare strings by their numerical value
+   *    v4     Compare strings by numerical, allow tolerance in comparison
    *    v0.24  Handle `null` and `undefined`
    *    v0.23  Compare collections elementwise
    *    v0.20  Compare floating-point numbers within epsilon, allowing roundoff

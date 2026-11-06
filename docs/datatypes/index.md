@@ -7,7 +7,7 @@ Complex number or Array.
 
 The supported data types are:
 
-- Boolean
+- [Boolean](booleans.md)
 - [Number](numbers.md)
 - [BigNumber](bignumbers.md)
 - [Complex](complex_numbers.md)
@@ -15,7 +15,7 @@ The supported data types are:
 - [Array](matrices.md)
 - [Matrix](matrices.md)
 - [Unit](units.md)
-- String
+- [String](strings.md)
 
 Function [`math.typeOf(x)`](../reference/functions/typeOf.md) can be used to get
 the type of a variable.
