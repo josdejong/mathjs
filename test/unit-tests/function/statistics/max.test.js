@@ -112,6 +112,11 @@ describe('max', function () {
     assert.throws(function () { max(math.matrix([1, 2]), math.matrix([3, 4])) }, /Scalar values expected/)
   })
 
+  it('should return a scalar for a one dimensional matrix along dimension 0', function () {
+    assert.strictEqual(max([2, 6, 4], 0), 6)
+    assert.strictEqual(max(new DenseMatrix([2, 6, 4]), 0), 6)
+  })
+
   it('should throw an error if called a dimension out of range', function () {
     assert.throws(function () { max([1, 2, 3], -1) }, /IndexError: Index out of range \(-1 < 0\)/)
     assert.throws(function () { max([1, 2, 3], 1) }, /IndexError: Index out of range \(1 > 0\)/)

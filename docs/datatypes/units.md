@@ -70,6 +70,19 @@ const correct4 = math.evaluate('8.314 (m^3 * Pa) / (mol * K)') // Unit 8.314 (m^
 
 In summary: be careful with implicit multiplication. In case of doubt, always use an explicit `*` and parenthesis.
 
+The unit parser accepts parentheses for grouping, but exponents must follow an individual unit, not a parenthesized group. For example, `math.unit('(m/s)^2')` throws a syntax error. Apply the exponent to each unit instead, or use the expression parser:
+
+```js
+math.unit('m^2/s^2')       // Unit m^2 / s^2
+math.evaluate('(m/s)^2')   // Unit m^2 / s^2
+```
+
+In math.js expressions, as parsed by `math.evaluate` and related methods,
+`min` and `sec` resolve by default to the minimum and secant functions, not the
+minute and second units. Use `minute` or `second` with `math.evaluate`, or use
+`math.unit('5 min')` and `math.unit('5 sec')` to parse those abbreviations. A
+scope can explicitly override these symbols.
+
 
 ## Calculations
 
@@ -307,7 +320,7 @@ Surface area        | m2, sqin, sqft, sqyd, sqmi, sqrd, sqch, sqmil, acre, hecta
 Volume              | m3, litre (l, L, lt, liter), cc, cuin, cuft, cuyd, teaspoon, tablespoon
 Liquid volume       | minim, fluiddram (fldr), fluidounce (floz), gill (gi), cup (cp), pint (pt), quart (qt), gallon (gal), beerbarrel (bbl), oilbarrel (obl), hogshead, drop (gtt)
 Angles              | rad (radian), deg (degree), grad (gradian), cycle, arcsec (arcsecond), arcmin (arcminute)
-Time                | second (s, secs, seconds), minute (min, mins, minutes), hour (h, hr, hrs, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia)
+Time                | second (s, sec, secs, seconds), minute (min, mins, minutes), hour (h, hr, hrs, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia)
 Frequency           | hertz (Hz)
 Mass                | gram(g), tonne, ton, grain (gr), dram (dr), ounce (oz), poundmass (lbm, lb, lbs), hundredweight (cwt), stick, stone
 Electric current    | ampere (A)
@@ -320,6 +333,10 @@ Power               | watt (W), hp
 Pressure            | Pa, psi, atm, torr, bar, mmHg, mmH2O, cmH2O
 Electricity and magnetism | ampere (A), ampere-hour (Ah), coulomb (C), watt (W), volt (V), ohm, farad (F), weber (Wb), tesla (T), henry (H), siemens (S), electronvolt (eV)
 Binary              | bits (b), bytes (B)
+
+In math.js expressions, the `min` and `sec` abbreviations above refer to
+functions by default; use `minute`, `second`, or `s` instead. See the discussion
+of expression parsing above.
 
 Note: all time units are based on the Julian year, with one month being 1/12th of a Julian year, a year being one Julian year, a decade being 10 Julian years, a century being 100, and a millennium being 1000.
 
@@ -397,26 +414,26 @@ Math.js includes the following physical constants. See [Wikipedia](https://en.wi
 Name                  | Symbol                                                 | Value             | Unit
 ----------------------|--------------------------------------------------------|-------------------|-------------------------------------------------------
 speedOfLight          | <i>c</i>                                               | 299792458         | m &#183; s<sup>-1</sup>
-gravitationConstant   | <i>G</i>                                               | 6.6738480e-11     | m<sup>3</sup> &#183; kg<sup>-1</sup> &#183; s<sup>-2</sup>
-planckConstant        | <i>h</i>                                               | 6.626069311e-34   | J &#183; s
-reducedPlanckConstant | <i><span style="text-decoration:overline">h</span></i> | 1.05457172647e-34 | J &#183; s
+gravitationConstant   | <i>G</i>                                               | 6.67430e-11     | m<sup>3</sup> &#183; kg<sup>-1</sup> &#183; s<sup>-2</sup>
+planckConstant        | <i>h</i>                                               | 6.62607015e-34   | J &#183; s
+reducedPlanckConstant | <i><span style="text-decoration:overline">h</span></i> | 1.0545718176461565e-34 | J &#183; s
 
 
 #### Electromagnetic constants
 
 Name                      | Symbol                                           | Value                 | Unit
 --------------------------|--------------------------------------------------|-----------------------|----------------------------------------
-magneticConstant          | <i>&mu;<sub>0</sub></i>                          | 1.2566370614e-6       | N &#183; A<sup>-2</sup>
-electricConstant          | <i>&epsilon;<sub>0</sub></i>                     | 8.854187817e-12       | F &#183; m<sup>-1</sup>
-vacuumImpedance           | <i>Z<sub>0</sub></i>                             | 376.730313461         | &ohm;
-coulomb                   | <i>&kappa;</i>                                   | 8.9875517873681764e9  | N &#183; m<sup>2</sup> &#183; C<sup>-2</sup>
-elementaryCharge          | <i>e</i>                                         | 1.60217656535e-19     | C
-bohrMagneton              | <i>&mu;<sub>B</sub></i>                          | 9.2740096820e-24      | J &#183; T<sup>-1</sup>
-conductanceQuantum        | <i>G<sub>0</sub></i>                             | 7.748091734625e-5     | S
-inverseConductanceQuantum | <i>G<sub>0</sub><sup>-1</sup></i>                | 12906.403721742       | &ohm;
-magneticFluxQuantum       | <i><font face="Symbol">f</font><sub>0</sub></i>  | 2.06783375846e-15     | Wb
-nuclearMagneton           | <i>&mu;<sub>N</sub></i>                          | 5.0507835311e-27      | J &#183; T<sup>-1</sup>
-klitzing                  | <i>R<sub>K</sub></i>                             | 25812.807443484       | &ohm;
+magneticConstant          | <i>&mu;<sub>0</sub></i>                          | 1.25663706212e-6       | N &#183; A<sup>-2</sup>
+electricConstant          | <i>&epsilon;<sub>0</sub></i>                     | 8.8541878128e-12       | F &#183; m<sup>-1</sup>
+vacuumImpedance           | <i>Z<sub>0</sub></i>                             | 376.730313667         | &ohm;
+coulomb                   | <i>&kappa;</i>                                   | 8.987551792261171e9  | N &#183; m<sup>2</sup> &#183; C<sup>-2</sup>
+elementaryCharge          | <i>e</i>                                         | 1.602176634e-19     | C
+bohrMagneton              | <i>&mu;<sub>B</sub></i>                          | 9.2740100783e-24      | J &#183; T<sup>-1</sup>
+conductanceQuantum        | <i>G<sub>0</sub></i>                             | 7.748091729863649e-5     | S
+inverseConductanceQuantum | <i>G<sub>0</sub><sup>-1</sup></i>                | 12906.403729652257       | &ohm;
+magneticFluxQuantum       | <i><font face="Symbol">f</font><sub>0</sub></i>  | 2.0678338484619295e-15     | Wb
+nuclearMagneton           | <i>&mu;<sub>N</sub></i>                          | 5.0507837461e-27      | J &#183; T<sup>-1</sup>
+klitzing                  | <i>R<sub>K</sub></i>                             | 25812.807459304513       | &ohm;
 
 <!-- TODO: implement josephson
 josephson                 | <i>K<sub>J</sub></i>                             | 4.8359787011e-14    | Hz &#183; V<sup>-1</sup>
@@ -427,19 +444,19 @@ josephson                 | <i>K<sub>J</sub></i>                             | 4
 
 Name                    | Symbol                | Value                 | Unit
 ------------------------|------------------------------|-----------------------|----------------------------------
-bohrRadius              | <i>a<sub>0</sub></i>         | 5.291772109217e-11    | m
-classicalElectronRadius | <i>r<sub>e</sub></i>         | 2.817940326727e-15    | m
-electronMass            | <i>m<sub>e</sub></i>         | 9.1093829140e-31      | kg
-fermiCoupling           | <i>G<sub>F</sub></i>         | 1.1663645e-5          | GeV<sup>-2</sup>
-fineStructure           | <i>&alpha;</i>               | 7.297352569824e-3     | -
-hartreeEnergy           | <i>E<abbr>h</abbr> </i>      | 4.3597443419e-18      | J
-protonMass              | <i>m<sub>p</sub></i>         | 1.67262177774e-27     | kg
+bohrRadius              | <i>a<sub>0</sub></i>         | 5.29177210903e-11    | m
+classicalElectronRadius | <i>r<sub>e</sub></i>         | 2.8179403262e-15    | m
+electronMass            | <i>m<sub>e</sub></i>         | 9.1093837015e-31      | kg
+fermiCoupling           | <i>G<sub>F</sub></i>         | 1.1663787e-5          | GeV<sup>-2</sup>
+fineStructure           | <i>&alpha;</i>               | 7.2973525693e-3     | -
+hartreeEnergy           | <i>E<abbr>h</abbr> </i>      | 4.3597447222071e-18      | J
+protonMass              | <i>m<sub>p</sub></i>         | 1.67262192369e-27     | kg
 deuteronMass            | <i>m<sub>d</sub></i>         | 3.3435830926e-27      | kg
 neutronMass             | <i>m<sub>n</sub></i>         | 1.6749271613e-27      | kg
-quantumOfCirculation    | <i>h / (2m<sub>e</sub>)</i>  | 3.636947552024e-4     | m<sup>2</sup> &#183; s<sup>-1</sup>
-rydberg                 | <i>R<sub>&infin;</sub></i>   | 10973731.56853955     | m<sup>-1</sup>
-thomsonCrossSection     |                              | 6.65245873413e-29     | m<sup>2</sup>
-weakMixingAngle         |                              | 0.222321              | -
+quantumOfCirculation    | <i>h / (2m<sub>e</sub>)</i>  | 3.6369475516e-4     | m<sup>2</sup> &#183; s<sup>-1</sup>
+rydberg                 | <i>R<sub>&infin;</sub></i>   | 10973731.568160     | m<sup>-1</sup>
+thomsonCrossSection     |                              | 6.6524587321e-29     | m<sup>2</sup>
+weakMixingAngle         |                              | 0.22290              | -
 efimovFactor            |                              | 22.7                  | -
 
 
@@ -447,19 +464,19 @@ efimovFactor            |                              | 22.7                  |
 
 Name                | Symbol                       | Value               | Unit
 --------------------|------------------------------|---------------------|--------------------------------------------
-atomicMass          | <i>m<sub>u</sub></i>         | 1.66053892173e-27   | kg
-avogadro            | <i>N<sub>A</sub></i>         | 6.0221412927e23     | mol<sup>-1</sup>
-boltzmann           | <i>k</i>                     | 1.380648813e-23     | J &#183; K<sup>-1</sup>
-faraday             | <i>F</i>                     | 96485.336521        | C &#183; mol<sup>-1</sup>
-firstRadiation      | <i>c<sub>1</sub></i>         | 3.7417715317e-16    | W &#183; m<sup>2</sup>
-loschmidt           | <i>n<sub>0</sub></i>         | 2.686780524e25      | m<sup>-3</sup>
-gasConstant         | <i>R</i>                     | 8.314462175         | J &#183; K<sup>-1</sup> &#183; mol<sup>-1</sup>
-molarPlanckConstant | <i>N<sub>A</sub> &#183; h</i>| 3.990312717628e-10| J &#183; s &#183; mol<sup>-1</sup>
-molarVolume         | <i>V<sub>m</sub></i>         | 2.241396820e-10     | m<sup>3</sup> &#183; mol<sup>-1</sup>
-sackurTetrode       |                              | -1.164870823        | -
-secondRadiation     | <i>c<sub>2</sub></i>         | 1.438777013e-2      | m &#183; K
-stefanBoltzmann     | <i>&sigma;</i>               | 5.67037321e-8       | W &#183; m<sup>-2</sup> &#183; K<sup>-4</sup>
-wienDisplacement    | <i>b</i>                     | 2.897772126e-3      | m &#183; K
+atomicMass          | <i>m<sub>u</sub></i>         | 1.66053906660e-27   | kg
+avogadro            | <i>N<sub>A</sub></i>         | 6.02214076e23     | mol<sup>-1</sup>
+boltzmann           | <i>k</i>                     | 1.380649e-23     | J &#183; K<sup>-1</sup>
+faraday             | <i>F</i>                     | 96485.33212331001        | C &#183; mol<sup>-1</sup>
+firstRadiation      | <i>c<sub>1</sub></i>         | 3.7417718521927573e-16    | W &#183; m<sup>2</sup>
+loschmidt           | <i>n<sub>0</sub></i>         | 2.686780111798444e25      | m<sup>-3</sup>
+gasConstant         | <i>R</i>                     | 8.31446261815324         | J &#183; K<sup>-1</sup> &#183; mol<sup>-1</sup>
+molarPlanckConstant | <i>N<sub>A</sub> &#183; h</i>| 3.990312712893431e-10| J &#183; s &#183; mol<sup>-1</sup>
+molarVolume         | <i>V<sub>m</sub></i>         | 0.022413969545014137     | m<sup>3</sup> &#183; mol<sup>-1</sup>
+sackurTetrode       |                              | -1.16487052358        | -
+secondRadiation     | <i>c<sub>2</sub></i>         | 0.014387768775039337      | m &#183; K
+stefanBoltzmann     | <i>&sigma;</i>               | 5.67037441918443e-8       | W &#183; m<sup>-2</sup> &#183; K<sup>-4</sup>
+wienDisplacement    | <i>b</i>                     | 2.897771955e-3      | m &#183; K
 
 <!-- TODO: implement spectralRadiance
 spectralRadiance    | <i>c<sub>1L</sub></i>        | 1.19104286953e-16  | W &#183; m<sup>2</sup> &#183; sr<sup>-1</sup>
@@ -473,8 +490,8 @@ The value of `sackurTetrode` is at `T = 1 K` and `p = 101.325 kPa`.
 
 Name          | Symbol                       | Value   | Unit
 --------------|------------------------------|---------|-------------------------
-molarMass     | <i>M<sub>u</sub></i>         | 1e-3    | kg &#183; mol<sup>-1</sup>
-molarMassC12  | <i>M(<sub>12</sub>C)</i>     | 1.2e-2  | kg &#183; mol<sup>-1</sup>
+molarMass     | <i>M<sub>u</sub></i>         | 0.99999999965e-3    | kg &#183; mol<sup>-1</sup>
+molarMassC12  | <i>M(<sub>12</sub>C)</i>     | 11.9999999958e-3  | kg &#183; mol<sup>-1</sup>
 gravity       | <i>g<sub>n</sub></i>         | 9.80665 | m &#183; s<sup>-2</sup>
 atm           | <i>atm</i>                   | 101325  | Pa
 
@@ -483,8 +500,8 @@ atm           | <i>atm</i>                   | 101325  | Pa
 
 Name              | Symbol                | Value              | Unit
 ------------------|-----------------------|--------------------|-----
-planckLength      | <i>l<sub>P</sub></i>  | 1.61619997e-35     | m
-planckMass        | <i>m<sub>P</sub></i>  | 2.1765113e-8       | kg
-planckTime        | <i>t<sub>P</sub></i>  | 5.3910632e-44      | s
-planckCharge      | <i>q<sub>P</sub></i>  | 1.87554595641e-18  | C
-planckTemperature | <i>T<sub>P</sub></i>  | 1.41683385e+32     | K
+planckLength      | <i>l<sub>P</sub></i>  | 1.616255e-35     | m
+planckMass        | <i>m<sub>P</sub></i>  | 2.176435e-8       | kg
+planckTime        | <i>t<sub>P</sub></i>  | 5.391245e-44      | s
+planckCharge      | <i>q<sub>P</sub></i>  | 1.87554603778e-18  | C
+planckTemperature | <i>T<sub>P</sub></i>  | 1.416785e+32     | K

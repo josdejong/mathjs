@@ -15,15 +15,14 @@ const dependencies = [
   'equalScalar',
   'BigNumber',
   'Fraction',
-  'DenseMatrix',
-  'concat'
+  'DenseMatrix'
 ]
 
-export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, equalScalar, matrix, BigNumber, Fraction, DenseMatrix, concat }) => {
+export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, equalScalar, matrix, BigNumber, Fraction, DenseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix, concat })
+  const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
   const compareUnits = createCompareUnits({ typed })
 
   /**
@@ -60,9 +59,10 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * History:
    *
-   *    v0.19  Created
-   *    v4     Changed to compare strings by numerical value
    *    v13    Change to use separate relative and absolute tolerances
+   *    v11.6  Support matrix broadcasting
+   *    v4     Changed to compare strings by numerical value
+   *    v0.19  Created
    *
    * @param  {number | BigNumber | bigint | Fraction | Unit | string | Array | Matrix} x First value to compare
    * @param  {number | BigNumber | bigint | Fraction | Unit | string | Array | Matrix} y Second value to compare
