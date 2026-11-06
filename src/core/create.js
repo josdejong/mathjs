@@ -160,9 +160,7 @@ export function create (factories, config) {
 
   math.expression = {
     transform: {},
-    mathWithTransform: {
-      config: math.config
-    }
+    mathWithTransform: {}
   }
 
   // cached factories and instances used by function load
