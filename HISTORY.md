@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: TypeScript: allow a Unit value as 2nd argument of `unit` method (#3699).
+  Thanks @jakezwang.
 - Docs: update values of physical constants in units doc page, and
   institute a check that they match the values in the math instance (#3740).
   Thanks @YashG1836.
