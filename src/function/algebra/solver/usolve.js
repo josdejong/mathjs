@@ -135,7 +135,7 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
         const jValues = []
         const jIndices = []
 
-        // first & last indeces in column
+        // first & last indices in column
         const firstIndex = ptr[j]
         const lastIndex = ptr[j + 1]
 
