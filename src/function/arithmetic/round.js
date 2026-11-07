@@ -30,6 +30,20 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   }
 
   /**
+   * Round a Fraction half away from zero, like the number and BigNumber
+   * implementations do. Fraction.round rounds a half towards positive
+   * infinity, so round(fraction(-2.5)) returned -2 where round(-2.5) and
+   * round(bignumber(-2.5)) both return -3.
+   * @param {Fraction} x
+   * @param {number} [n=0]
+   * @returns {Fraction}
+   */
+  function roundFraction (x, n) {
+    const rounded = x.abs().round(n)
+    return x.s < 0n ? rounded.neg() : rounded
+  }
+
+  /**
    * Round a value towards the nearest rounded value.
    * For matrices, the function is evaluated element wise.
    *
@@ -139,17 +153,17 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     'bigint, BigNumber': (b, _dummy) => b,
 
     Fraction: function (x) {
-      return x.round()
+      return roundFraction(x, 0)
     },
 
     'Fraction, number': function (x, n) {
       if (n % 1) { throw new TypeError(NO_INT) }
-      return x.round(n)
+      return roundFraction(x, n)
     },
 
     'Fraction, BigNumber': function (x, n) {
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
-      return x.round(n.toNumber())
+      return roundFraction(x, n.toNumber())
     },
 
     'Unit, number, Unit': typed.referToSelf(self => function (x, n, unit) {

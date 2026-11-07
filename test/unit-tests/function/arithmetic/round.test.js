@@ -109,6 +109,23 @@ describe('round', function () {
     assert.deepStrictEqual(round(fraction(2, 3), bignumber(2)), fraction(67, 100))
   })
 
+  it('should round negative fractions half away from zero, like number and BigNumber', function () {
+    assert.strictEqual(round(fraction('-1/2')).toString(), '-1')
+    assert.strictEqual(round(fraction('-3/2')).toString(), '-2')
+    assert.strictEqual(round(fraction('-5/2')).toString(), '-3')
+    assert.strictEqual(round(fraction('-2/3')).toString(), '-1')
+    assert.strictEqual(round(fraction('-1/3')).toString(), '0')
+
+    assert.strictEqual(round(fraction('-1/4'), 1).toString(), '-0.3')
+    assert.deepStrictEqual(round(fraction(-1, 4), bignumber(1)), fraction(-3, 10))
+
+    // the number and BigNumber implementations agree with these
+    assert.strictEqual(round(-0.5).toString(), '-1')
+    assert.strictEqual(round(-2.5).toString(), '-3')
+    assert.strictEqual(round(bignumber(-2.5)).toString(), '-3')
+    assert.strictEqual(round(-0.25, 1).toString(), '-0.3')
+  })
+
   it('should gracefully handle round-off errors', function () {
     assert.strictEqual(round(0.145 * 100), 15)
     assert.strictEqual(round((0.145 * 100), 0), 15)
