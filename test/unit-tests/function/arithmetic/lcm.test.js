@@ -35,6 +35,12 @@ describe('lcm', function () {
     assert.strictEqual(lcm(0, 0), 0)
   })
 
+  it('should calculate lcm exactly when a * b exceeds the safe integer range', function () {
+    assert.strictEqual(lcm(261139108, 5933259318), 16292730087228)
+    assert.strictEqual(lcm(7160860200, 11762311360), 181198406500800)
+    assert.strictEqual(lcm(-7160860200, 11762311360), 181198406500800)
+  })
+
   it('should calculate lcm for BigNumbers', function () {
     assert.deepStrictEqual(lcm(math.bignumber(4), math.bignumber(6)), math.bignumber(12))
     assert.deepStrictEqual(lcm(math.bignumber(4), math.bignumber(6)), math.bignumber(12))

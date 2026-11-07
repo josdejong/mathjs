@@ -98,13 +98,16 @@ export function lcmNumber (a, b) {
   // https://en.wikipedia.org/wiki/Euclidean_algorithm
   // evaluate lcm here inline to reduce overhead
   let t
-  const prod = a * b
-  while (b !== 0) {
-    t = b
-    b = a % t
-    a = t
+  let x = a
+  let y = b
+  while (y !== 0) {
+    t = y
+    y = x % t
+    x = t
   }
-  return Math.abs(prod / a)
+  // divide before multiplying: a * b can exceed Number.MAX_SAFE_INTEGER
+  // and lose precision even when the lcm itself is exactly representable
+  return Math.abs((a / x) * b)
 }
 lcmNumber.signature = n2
 
