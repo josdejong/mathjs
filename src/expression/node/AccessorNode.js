@@ -12,6 +12,11 @@ import {
 import { getSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 import { accessFactory } from './utils/access.js'
+import {
+  continuesOptionalChain,
+  optionalChainOf,
+  shortCircuitOptionalChain
+} from './utils/optionalChain.js'
 
 const name = 'AccessorNode'
 const dependencies = [
@@ -99,20 +104,19 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
       const evalIndex = this.index._compile(math, argNames)
 
       const optionalChaining = this.optionalChaining
-      const prevOptionalChaining = isAccessorNode(this.object) && this.object.optionalChaining
+      const inOptionalChain = continuesOptionalChain(this.object)
 
       if (this.index.isObjectProperty()) {
         const prop = this.index.getObjectProperty()
         return function evalAccessorNode (scope, args, context) {
-          const ctx = context || {}
-          const object = evalObject(scope, args, ctx)
+          const chain = optionalChainOf(context)
+          const object = evalObject(scope, args, chain)
 
           if (optionalChaining && object == null) {
-            ctx.optionalShortCircuit = true
-            return undefined
+            return shortCircuitOptionalChain(chain)
           }
 
-          if (prevOptionalChaining && ctx?.optionalShortCircuit) {
+          if (inOptionalChain && chain.shortCircuited) {
             return undefined
           }
 
@@ -121,15 +125,14 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
         }
       } else {
         return function evalAccessorNode (scope, args, context) {
-          const ctx = context || {}
-          const object = evalObject(scope, args, ctx)
+          const chain = optionalChainOf(context)
+          const object = evalObject(scope, args, chain)
 
           if (optionalChaining && object == null) {
-            ctx.optionalShortCircuit = true
-            return undefined
+            return shortCircuitOptionalChain(chain)
           }
 
-          if (prevOptionalChaining && ctx?.optionalShortCircuit) {
+          if (inOptionalChain && chain.shortCircuited) {
             return undefined
           }
 
