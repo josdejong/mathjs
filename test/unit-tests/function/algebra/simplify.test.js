@@ -392,7 +392,7 @@ describe('simplify', function () {
     simplifyAndCompare('1^(2*x)', '1')
     simplifyAndCompare('1^x*y', 'y')
     simplifyAndCompare('(1*x)^y', 'x^y')
-    simplifyAndCompare('(x/2)^y', 'x^y/2^y')
+    simplifyAndCompare('(x/2)^y', '(x/2)^y')
     simplifyAndCompare('(1/x)^y', '1/x^y')
   })
 
@@ -431,7 +431,7 @@ describe('simplify', function () {
       }],
       ['(1/(x*y))^z*(1/(a*b))^z', {
         default: '1/(x*y*a*b)^z',
-        real: '(1/(a*b*y*x))^z', // TODO: Why variables permuted in this case?
+        real: '(1/(x*y*a*b))^z',
         positive: '(1/(x*y*a*b))^z',
         addNoCommute: '1/(x*y*a*b)^z'
       }]
@@ -463,6 +463,30 @@ describe('simplify', function () {
           label)
       }
     }
+  })
+
+  it('should keep the order of the factors it collects in a denominator', function () {
+    simplifyAndCompare('x/y/z', 'x/(y*z)')
+    simplifyAndCompare('x/y/z/w', 'x/(y*z*w)')
+    simplifyAndCompare('1/(x*y)', '1/(x*y)')
+    simplifyAndCompare('(z/(x*y))^w', '(z/(x*y))^w')
+  })
+
+  it('should simplify a product under a symbolic power', function () {
+    simplifyAndCompare('(x*y/x)^z', 'y^z')
+    simplifyAndCompare('(x*y*x)^z', 'x^(2*z)*y^z')
+    simplifyAndCompare('(2*x/2)^z', 'x^z')
+    simplifyAndCompare('(2*3)^z', '6^z')
+    simplifyAndCompare('(1/2/3)^z', '1/6^z')
+    simplifyAndCompare('2^x*3^x', '6^x')
+    simplifyAndCompare('x^z/y^z', '(x/y)^z')
+    simplifyAndCompare('(-x)^x', '(-x)^x')
+    simplifyAndCompare('(y-x)/(x*x)', 'y/x^2 - 1/x')
+  })
+
+  it('should collect a bare reciprocal power with a term of the same base', function () {
+    simplifyAndCompare('x/y^2 + 1/y', '(x+y)/y^2')
+    simplifyAndCompare('x/y^3 + 1/y^2', '(x+y)/y^3')
   })
 
   it('should handle non-existing functions like a pro', function () {

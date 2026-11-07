@@ -266,7 +266,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { s: '1*n -> n' }, // If any of the above introduced factor of 1, remove it
     {
       s: '(n1*n2)^n3 -> n1^n3 * n2^n3',
-      assuming: { multiply: { commutative: true } }
+      assuming: { multiply: { commutative: true } },
+      repeat: true // over every factor, as this is undone again at the end of the pass
     },
     {
       s: '(n1*n2)^(-1) -> n2^(-1) * n1^(-1)',
@@ -323,6 +324,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
     { l: 'n3^(-n4)*n1 +   n3  * n2', r: 'n3^(-n4)*(n1 + n3^(n4+1) *n2)' },
     { l: 'n3^(-n4)*n1 + n3^n5 * n2', r: 'n3^(-n4)*(n1 + n3^(n4+n5)*n2)' },
+    // same with a bare power as the other term: by now 1/y is y^-1, not 1*y^-1
+    { l: 'n3^(-n4)*n1 + n3^n5', r: 'n3^(-n4)*(n1 + n3^(n4+n5))' },
     // noncommutative additional cases (term collection & factoring)
     {
       s: 'n*vd + vd -> (n+1)*vd',
@@ -357,6 +360,18 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: 'cd + cd*n -> cd*(1+n)',
       assuming: { multiply: { commutative: false } }
     },
+
+    // Undo the distribution of powers over products (the last of the
+    // temporary rules) here, in front of the second constant simplification,
+    // so that the products and exponents this builds (2*3, -1*2, x*(-1)) still
+    // get their constants folded, their signs fixed and their constants ordered.
+    {
+      s: 'n1^vd * n2^vd -> (n1*n2)^vd', // note customary to leave constant
+      assuming: { multiply: { commutative: true } }, // exponents distributed
+      repeat: true
+    },
+    { s: '(n1^n2)^n3 -> n1^(n2*n3)' }, // exponent stacks may have recurred
+
     simplifyConstant, // Second: before returning expressions to "standard form"
 
     // make factors positive (and undo 'make non-constant terms positive')
@@ -383,22 +398,26 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     // Undo temporary rules
     // --------------------
-    // Should proceed in reverse order of the temporary rules
+    // Should proceed in reverse order of the temporary rules (the power
+    // distribution was already undone above, before the second
+    // simplifyConstant)
 
     {
-      s: 'n1^vd * n2^vd -> (n1*n2)^vd', // note customary to leave constant
-      assuming: { multiply: { commutative: true } }, // exponents distributed
+      // Merge reciprocal factors before they are turned back into divisions:
+      // 'n*(n1^-1) -> n/n1' below takes the first of them out, so one at a
+      // time they would come back in reverse order, x*y^-1*z^-1 as x/(z*y).
+      s: 'n1^-1 * n2^-1 -> (n1*n2)^-1',
+      assuming: { multiply: { commutative: true } },
       repeat: true
     },
-    { s: '(n1^n2)^n3 -> n1^(n2*n3)' }, // exponent stacks may have recurred
-
     {
       s: 'n*(n1^-1) -> n/n1', // undo replace 'divide'; for * commutative
       assuming: { multiply: { commutative: true } } // o.w. / not conventional
     },
     {
       s: 'n*n1^-n2 -> n/n1^n2',
-      assuming: { multiply: { commutative: true } } // o.w. / not conventional
+      assuming: { multiply: { commutative: true } }, // o.w. / not conventional
+      repeat: true // a product may hold several negative powers
     },
     {
       s: 'n^-1 -> 1/n',
@@ -417,6 +436,12 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // simplifyConstant can leave an extra factor of 1, which can always
     // be eliminated, since the identity always commutes
     { l: '1*n', r: 'n', imposeContext: { multiply: { commutative: true } } },
+    {
+      // A power of a quotient was distributed over numerator and denominator
+      // above; put it back together, (x/2)^y rather than x^y/2^y
+      s: 'n1^vd / n2^vd -> (n1/n2)^vd',
+      assuming: { multiply: { commutative: true } }
+    },
     {
       s: 'n1/(n2/n3) -> (n1*n3)/n2',
       assuming: { multiply: { associative: true } }
