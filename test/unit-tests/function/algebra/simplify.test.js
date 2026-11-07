@@ -404,18 +404,43 @@ describe('simplify', function () {
 
   it('should terminate when simplifying symbolic powers of reciprocals', function () {
     const expressions = [
-      ['(1/(x*(y-1)))^(1/(y-1))', '(1/x/(y-1))^(1/(y-1))'],
-      ['(1/(x*y))^z', '(1/x/y)^z'],
-      ['(2/(x*y))^z', '2^z*(1/x/y)^z'],
-      ['(1/(2*x))^y', '(1/2/x)^y'],
-      ['(1/(x*y*z))^w', '(1/y/z/x)^w'],
-      ['(1/(x*y))^z*(1/(a*b))^z', '(1/x/y)^z*(1/a/b)^z']
+      ['(1/(x*(y-1)))^(1/(y-1))', {
+        default: '1/(x*(y-1))^(1/(y-1))',
+        real: '(1/(x*(y-1)))^(1/(y-1))',
+        positive: '(1/(x*(y-1)))^(1/(y-1))',
+        addNoCommute: '1/(x*(y-1))^(1/(y-1))'
+      }],
+      ['(1/(x*y))^z', {
+        default: '1/(x*y)^z',
+        real: '(1/(x*y))^z',
+        positive: '(1/(x*y))^z',
+        addNoCommute: '1/(x*y)^z'
+      }],
+      ['(2/(x*y))^z', '(2/(x*y))^z'],
+      ['(1/(2*x))^y', {
+        default: '1/(2*x)^y',
+        real: '(1/(2*x))^y',
+        positive: '(1/(2*x))^y',
+        addNoCommute: '1/(2*x)^y'
+      }],
+      ['(1/(x*y*z))^w', {
+        default: '1/(x * y * z)^w',
+        real: '(1/(x * y * z))^w',
+        positive: '(1/(x * y * z))^w',
+        addNoCommute: '1/(x * y * z)^w'
+      }],
+      ['(1/(x*y))^z*(1/(a*b))^z', {
+        default: '1/(x*y*a*b)^z',
+        real: '(1/(a*b*y*x))^z', // TODO: Why variables permuted in this case?
+        positive: '(1/(x*y*a*b))^z',
+        addNoCommute: '1/(x*y*a*b)^z'
+      }]
     ]
     const contexts = {
       default: math.simplify.defaultContext,
       real: math.simplify.realContext,
       positive: math.simplify.positiveContext,
-      'non-commutative addition': { add: { commutative: false } }
+      addNoCommute: { add: { commutative: false } }
     }
     const scope = { x: 2, y: 3, z: 0.5, w: 1.5, a: 5, b: 7 }
     for (const [name, context] of Object.entries(contexts)) {
@@ -429,8 +454,10 @@ describe('simplify', function () {
         }, ...math.simplify.rules]
         const simplified = math.simplify(expression, rules, {}, { context })
         // No 1^n factor may be left behind in the result either.
+        const expectation =
+          typeof expected === 'string' ? expected : expected[name]
         assert.strictEqual(
-          simplified.toString(), math.parse(expected).toString(), label)
+          simplified.toString(), math.parse(expectation).toString(), label)
         assert.ok(
           Math.abs(simplified.evaluate(scope) - math.evaluate(expression, scope)) < 1e-14,
           label)
