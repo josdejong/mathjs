@@ -207,9 +207,30 @@ describe('xor', function () {
     })
   })
 
+  describe('multiple arguments', function () {
+    it('should xor more than two scalars', function () {
+      assert.strictEqual(xor(2, 4, 6), true)
+      assert.strictEqual(xor(2, 4, 0), false)
+      assert.strictEqual(xor(true, true, true), true)
+      assert.strictEqual(xor(true, true, true, true), false)
+      assert.strictEqual(xor(2, bignumber(0), 0n, false), true)
+      assert.strictEqual(xor(2, bignumber(4), 0n, false), false)
+      assert.strictEqual(xor(complex(1, 1), complex(0, 0), 0, bignumber(0)), true)
+      assert.strictEqual(xor(unit('100cm'), unit('10inch'), 0, bignumber(0)), false)
+    })
+
+    it('should xor more than two collections element wise', function () {
+      assert.deepStrictEqual(xor([1, 1, 0], [1, 0, 1], [1, 0, 0]), [true, true, true])
+      assert.deepStrictEqual(xor([1, 1, 0], 1, [1, 0, 0]), [true, false, true])
+      assert.deepStrictEqual(xor([1, 1, 0], [1, 0, 1], 0), [false, true, true])
+      assert.deepStrictEqual(xor(matrix([1, 1, 0]), matrix([1, 0, 1]), matrix([1, 0, 0])), matrix([true, true, true]))
+      assert.deepStrictEqual(xor(sparse([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]]), sparse([[0, 0], [0, 0]])), sparse([[false, true], [true, false]]))
+    })
+  })
+
   it('should throw an error in case of invalid number of arguments', function () {
+    assert.throws(function () { xor() }, /TypeError: Too few arguments/)
     assert.throws(function () { xor(1) }, /TypeError: Too few arguments/)
-    assert.throws(function () { xor(1, 2, 3) }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of arguments', function () {

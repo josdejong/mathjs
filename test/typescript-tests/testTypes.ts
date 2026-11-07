@@ -89,6 +89,9 @@ Basic usage examples
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
   math.add(2, 3, 4)
   math.add(2, 3, math.bignumber(4))
+  math.and(1, 2, 3)
+  math.or(0, 0, math.bignumber(1))
+  math.xor(1, 0, [1, 0])
   // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number)
   math.add(2, '3')
   // @ts-expect-error: string arguments are not supported by the types, but it works (if the string contains a number), but should throw an error if it is something else

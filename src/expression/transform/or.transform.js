@@ -9,12 +9,22 @@ export const createOrTransform = /* #__PURE__ */ factory(name, dependencies, ({ 
   const or = createOr({ typed, matrix, equalScalar, DenseMatrix, concat })
 
   function orTransform (args, math, scope) {
-    const condition1 = args[0].compile().evaluate(scope)
-    if (!isCollection(condition1) && or(condition1, false)) {
-      return true
+    if (args.length < 2) {
+      // let the underlying function throw a "Too few arguments" error,
+      // like when calling it directly
+      return or(...args.map(arg => arg.compile().evaluate(scope)))
     }
-    const condition2 = args[1].compile().evaluate(scope)
-    return or(condition1, condition2)
+
+    // evaluate the arguments lazily: stop as soon as the result is true
+    let result = args[0].compile().evaluate(scope)
+    for (let i = 1; i < args.length; i++) {
+      if (!isCollection(result) && or(result, false)) {
+        return true
+      }
+      result = or(result, args[i].compile().evaluate(scope))
+    }
+
+    return result
   }
 
   orTransform.rawArgs = true

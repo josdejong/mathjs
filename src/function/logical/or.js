@@ -19,41 +19,8 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
-  /**
-   * Logical `or`. Test if at least one value is defined with a nonzero/nonempty value.
-   * For matrices, the function is evaluated element wise.
-   *
-   * Syntax:
-   *
-   *    math.or(x, y)
-   *
-   * Examples:
-   *
-   *    math.or(2, 4)   // returns true
-   *
-   *    a = [2, 5, 0]
-   *    b = [0, 22, 0]
-   *    c = 0
-   *
-   *    math.or(a, b)   // returns [true, true, false]
-   *    math.or(b, c)   // returns [false, true, false]
-   *
-   * See also:
-   *
-   *    and, not, xor
-   *
-   * History:
-   *
-   *    v12.2  Lazy evaluation
-   *    v11.6  Support matrix broadcasting
-   *    v1.2   Created
-   *
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
-   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
-   * @return {boolean | Array | Matrix}
-   *            Returns true when one of the inputs is defined with a nonzero/nonempty value.
-   */
-  return typed(
+  // the implementation for two arguments
+  const orTwo = typed(
     name,
     {
       'number, number': orNumber,
@@ -77,4 +44,56 @@ export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, ma
       Ss: matAlgo12xSfs
     })
   )
+
+  /**
+   * Logical `or`. Test if at least one value is defined with a nonzero/nonempty value.
+   * For matrices, the function is evaluated element wise.
+   *
+   * Syntax:
+   *
+   *    math.or(x, y)
+   *    math.or(x, y, z, ...)
+   *
+   * Examples:
+   *
+   *    math.or(2, 4)      // returns true
+   *    math.or(0, 0, 4)   // returns true
+   *
+   *    a = [2, 5, 0]
+   *    b = [0, 22, 0]
+   *    c = 0
+   *
+   *    math.or(a, b)   // returns [true, true, false]
+   *    math.or(b, c)   // returns [false, true, false]
+   *
+   * See also:
+   *
+   *    and, not, xor
+   *
+   * History:
+   *
+   *    v15.3  Support more than two arguments
+   *    v12.2  Lazy evaluation
+   *    v11.6  Support matrix broadcasting
+   *    v1.2   Created
+   *
+   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} x First value to check
+   * @param  {number | BigNumber | bigint | Complex | Unit | Array | Matrix} y Second value to check
+   * @param  {...number | BigNumber | bigint | Complex | Unit | Array | Matrix} rest Additional values to check
+   * @return {boolean | Array | Matrix}
+   *            Returns true when one of the inputs is defined with a nonzero/nonempty value.
+   */
+  return typed(name, {
+    'any, any': orTwo,
+
+    'any, any, ...any': function (x, y, rest) {
+      let result = orTwo(x, y)
+
+      for (let i = 0; i < rest.length; i++) {
+        result = orTwo(result, rest[i])
+      }
+
+      return result
+    }
+  })
 })
