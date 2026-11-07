@@ -32,6 +32,14 @@ describe('fraction', function () {
     equalFraction(f, new Fraction('0.6666666666666666666666666666666666666666666666666666666666666667'))
   })
 
+  it('should create a fraction from exponent notation', function () {
+    equalFraction(math.fraction('1e3'), new Fraction(1000))
+    equalFraction(math.fraction('-2.5E-3'), new Fraction(-1, 400))
+    equalFraction(math.fraction(math.bignumber('1e-7')), new Fraction(1, 10000000))
+    equalFraction(math.fraction(math.bignumber('1e21')), new Fraction(10n ** 21n))
+    assert.throws(function () { math.fraction('1e') }, /Invalid argument/)
+  })
+
   it('should create a fraction from a bigint', function () {
     equalFraction(math.fraction(42), new Fraction(42))
     equalFraction(math.fraction(42n), new Fraction(42))

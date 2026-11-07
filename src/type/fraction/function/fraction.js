@@ -60,7 +60,7 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     string: function (x) {
-      return new Fraction(x)
+      return fromString(x)
     },
 
     'number, number': function (numerator, denominator) {
@@ -76,7 +76,7 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
     },
 
     BigNumber: function (x) {
-      return new Fraction(x.toString())
+      return fromString(x.toString())
     },
 
     bigint: function (x) {
@@ -99,4 +99,16 @@ export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
   })
+
+  // Fraction.js does not read exponent notation such as '2.5e-3'
+  function fromString (x) {
+    const match = /^\s*([+-]?(?:\d+\.?\d*|\.\d+))e([+-]?\d+)\s*$/i.exec(x)
+    if (!match) {
+      return new Fraction(x)
+    }
+    const exponent = Number(match[2])
+    const power = new Fraction(10).pow(Math.abs(exponent))
+    const mantissa = new Fraction(match[1])
+    return exponent < 0 ? mantissa.div(power) : mantissa.mul(power)
+  }
 })

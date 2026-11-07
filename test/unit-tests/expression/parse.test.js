@@ -398,6 +398,15 @@ describe('parse', function () {
       assert.strictEqual(fmath.parse('1/3').compile().evaluate().toString(), '0.(3)')
       assert.strictEqual(fmath.parse('0.1+0.2').compile().evaluate().toString(), '0.3')
     })
+
+    it('should parse numbers in exponent notation as fractions', function () {
+      const fmath = math.create({
+        number: 'Fraction'
+      })
+
+      assert.strictEqual(fmath.evaluate('1e3 / 3').toFraction(), '1000/3')
+      assert.strictEqual(fmath.evaluate('2.5e-3').toFraction(), '1/400')
+    })
   })
 
   describe('string (double quotes)', function () {
