@@ -218,19 +218,18 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   // To evaluate lhs constants for rhs constants, use: { l: 'c1+c2', r: 'c3', evaluate: 'c3 = c1 + c2' }. Multiple assignments are separated by ';' in block format.
   // It is possible to get into an infinite loop with conflicting rules
   simplify.rules = [
-    simplifyCore,
-    // { l: 'n+0', r: 'n' },     // simplifyCore
-    // { l: 'n^0', r: '1' },     // simplifyCore
-    // { l: '0*n', r: '0' },     // simplifyCore
-    // { l: 'n/n', r: '1'},      // simplifyCore
-    // { l: 'n^1', r: 'n' },     // simplifyCore
-    // { l: '+n1', r:'n1' },     // simplifyCore
-    // { l: 'n--n1', r:'n+n1' }, // simplifyCore
+    simplifyCore, // converts functions to operators and elminates trivial ops
     { l: 'log(e)', r: '1' },
 
-    // temporary rules
+    // Temporary rules
+    // ---------------
+    // These expand an expression into an unsimplified form in which we
+    // will be more likely to find common terms and/or cancellations
+    // They will be undone at the end to return to a more standard
+    // simplified form.
     // Note initially we tend constants to the right because like-term
-    // collection prefers the left, and we would rather collect nonconstants
+    // collection prefers the left, and we would rather collect nonconstants.
+    // At the end, we will move constants to the left of terms.
     {
       s: 'n-n1 -> n+-n1', // temporarily replace 'subtract' so we can further flatten the 'add' operator
       assuming: { subtract: { total: true } }
@@ -251,20 +250,34 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: '-(v*cl) -> v * (-cl)', // non-commutative version, part 2
       assuming: { multiply: { commutative: false }, subtract: { total: true } }
     },
-    { l: '-(n1/n2)', r: '-n1/n2' },
+    { l: '-(n1/n2)', r: '-n1/n2', assuming: { subtract: { total: true } } },
     { l: '-v', r: 'v * (-1)' }, // finish making non-constant terms positive
-    { l: '(n1 + n2)*(-1)', r: 'n1*(-1) + n2*(-1)', repeat: true }, // expand negations to achieve as much sign cancellation as possible
-    { l: 'n/n1^n2', r: 'n*n1^-n2' }, // temporarily replace 'divide' so we can further flatten the 'multiply' operator
-    { l: 'n/n1', r: 'n*n1^-1' },
+    // expand negations to achieve as much sign cancellation as possible:
+    {
+      s: '(n1 + n2)*(-1) -> n1*(-1) + n2*(-1)',
+      repeat: true,
+      assuming: { subtract: { total: true } }
+    },
+    // temporarily replace 'divide' so we can further flatten the 'multiply'
+    // operator:
+    { l: 'n/n1^n2', r: 'n*n1^-n2', assuming: { subtract: { total: true } } },
+    { l: 'n/n', r: '1', assuming: { divide: { total: true } } },
+    { l: 'n/n1', r: 'n*n1^-1', assuming: { subtract: { total: true } } },
+    { s: '1*n -> n' }, // If any of the above introduced factor of 1, remove it
     {
       s: '(n1*n2)^n3 -> n1^n3 * n2^n3',
-      assuming: { multiply: { commutative: true } }
+      assuming: { multiply: { commutative: true } },
+      repeat: true // over every factor, as this is undone again at the end of the pass
     },
     {
       s: '(n1*n2)^(-1) -> n2^(-1) * n1^(-1)',
       assuming: { multiply: { commutative: false } }
     },
 
+    // Main simplification rules
+    // -------------------------
+    // These are the heart of what makes progress on simplifying complex
+    // expressions.
     // expand nested exponentiation
     {
       s: '(n ^ n1) ^ n2 -> n ^ (n1 * n2)',
@@ -311,6 +324,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
     { l: 'n3^(-n4)*n1 +   n3  * n2', r: 'n3^(-n4)*(n1 + n3^(n4+1) *n2)' },
     { l: 'n3^(-n4)*n1 + n3^n5 * n2', r: 'n3^(-n4)*(n1 + n3^(n4+n5)*n2)' },
+    // same with a bare power as the other term: by now 1/y is y^-1, not 1*y^-1
+    { l: 'n3^(-n4)*n1 + n3^n5', r: 'n3^(-n4)*(n1 + n3^(n4+n5))' },
     // noncommutative additional cases (term collection & factoring)
     {
       s: 'n*vd + vd -> (n+1)*vd',
@@ -345,6 +360,18 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: 'cd + cd*n -> cd*(1+n)',
       assuming: { multiply: { commutative: false } }
     },
+
+    // Undo the distribution of powers over products (the last of the
+    // temporary rules) here, in front of the second constant simplification,
+    // so that the products and exponents this builds (2*3, -1*2, x*(-1)) still
+    // get their constants folded, their signs fixed and their constants ordered.
+    {
+      s: 'n1^vd * n2^vd -> (n1*n2)^vd', // note customary to leave constant
+      assuming: { multiply: { commutative: true } }, // exponents distributed
+      repeat: true
+    },
+    { s: '(n1^n2)^n3 -> n1^(n2*n3)' }, // exponent stacks may have recurred
+
     simplifyConstant, // Second: before returning expressions to "standard form"
 
     // make factors positive (and undo 'make non-constant terms positive')
@@ -369,45 +396,75 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       imposeContext: { multiply: { commutative: false } }
     },
 
-    // undo temporary rules
-    // { l: '(-1) * n', r: '-n' }, // #811 added test which proved this is redundant
-    { l: 'n+-n1', r: 'n-n1' }, // undo replace 'subtract'
-    { l: 'n+-(n1)', r: 'n-(n1)' },
+    // Undo temporary rules
+    // --------------------
+    // Should proceed in reverse order of the temporary rules (the power
+    // distribution was already undone above, before the second
+    // simplifyConstant)
+
+    {
+      // Merge reciprocal factors before they are turned back into divisions:
+      // 'n*(n1^-1) -> n/n1' below takes the first of them out, so one at a
+      // time they would come back in reverse order, x*y^-1*z^-1 as x/(z*y).
+      s: 'n1^-1 * n2^-1 -> (n1*n2)^-1',
+      assuming: { multiply: { commutative: true } },
+      repeat: true
+    },
     {
       s: 'n*(n1^-1) -> n/n1', // undo replace 'divide'; for * commutative
       assuming: { multiply: { commutative: true } } // o.w. / not conventional
     },
     {
       s: 'n*n1^-n2 -> n/n1^n2',
-      assuming: { multiply: { commutative: true } } // o.w. / not conventional
+      assuming: { multiply: { commutative: true } }, // o.w. / not conventional
+      repeat: true // a product may hold several negative powers
     },
     {
       s: 'n^-1 -> 1/n',
       assuming: { multiply: { commutative: true } } // o.w. / not conventional
     },
+    {
+      s: 'n^-n1 -> 1/n^n1',
+      assuming: { multiply: { commutative: true } } // o.w. / not conventional
+    },
     { l: 'n^1', r: 'n' }, // can be produced by power cancellation
+    // { l: '(-1) * n', r: '-n' }, // #811 added test which proved this is redundant
     {
       s: 'n*(n1/n2) -> (n*n1)/n2', // '*' before '/'
       assuming: { multiply: { associative: true } }
     },
-    {
-      s: 'n-(n1+n2) -> n-n1-n2', // '-' before '+'
-      assuming: { addition: { associative: true, commutative: true } }
-    },
-    // { l: '(n1/n2)/n3', r: 'n1/(n2*n3)' },
-    // { l: '(n*n1)/(n*n2)', r: 'n1/n2' },
-
     // simplifyConstant can leave an extra factor of 1, which can always
     // be eliminated, since the identity always commutes
     { l: '1*n', r: 'n', imposeContext: { multiply: { commutative: true } } },
-
+    {
+      // A power of a quotient was distributed over numerator and denominator
+      // above; put it back together, (x/2)^y rather than x^y/2^y
+      s: 'n1^vd / n2^vd -> (n1/n2)^vd',
+      assuming: { multiply: { commutative: true } }
+    },
     {
       s: 'n1/(n2/n3) -> (n1*n3)/n2',
       assuming: { multiply: { associative: true } }
     },
+    {
+      s: 'n1/n2/n3 -> n1/(n2*n3)',
+      assuming: { multiply: { commutative: true } }
+    },
+    {
+      s: 'n1/n2/n3 -> n1/(n3*n2)',
+      assuming: { multiply: { commutative: false } }
+    },
+    { l: 'n1/(-n2)', r: '-n1/n2', assuming: { subtract: { total: true } } },
 
-    { l: 'n1/(-n2)', r: '-n1/n2' }
-
+    { l: 'n+-n1', r: 'n-n1', assuming: { subtract: { total: true } } },
+    { l: 'n+-(n1)', r: 'n-(n1)', assuming: { subtract: { total: true } } },
+    {
+      s: 'n-(n1+n2) -> n-n1-n2', // '-' before '+'
+      assuming: {
+        addition: { associative: true, commutative: true },
+        subtract: { total: true }
+      }
+    }
   ]
 
   /**
@@ -540,6 +597,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           if (debug) rulestr = rules[i].name
         } else {
           flatten(res, options.context)
+          const flatstr = res.toString({ parenthesis: 'all' })
+          if (debug && flatstr !== laststr) {
+            console.log('Flattens to:\n', flatstr)
+            laststr = flatstr
+          }
           res = applyRule(res, rules[i], options.context)
           if (debug) {
             rulestr = `${rules[i].l.toString()} -> ${rules[i].r.toString()}`
@@ -548,7 +610,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         if (debug) {
           const newstr = res.toString({ parenthesis: 'all' })
           if (newstr !== laststr) {
-            console.log('Applying', rulestr, 'produced', newstr)
+            console.log('Applying', rulestr, 'produced:\n', newstr)
             laststr = newstr
           }
         }
@@ -558,6 +620,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         unflattenl(res, options.context)
       }
       str = res.toString({ parenthesis: 'all' })
+      if (debug) { console.log('Pass completed:', str, '\n') }
     }
     return res
   }
