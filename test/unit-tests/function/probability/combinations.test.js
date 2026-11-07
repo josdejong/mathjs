@@ -1,4 +1,5 @@
 import assert from 'assert'
+import { approxEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
 const combinations = math.combinations
 
@@ -11,6 +12,35 @@ describe('combinations', function () {
     assert.strictEqual(combinations(25, 6), 177100)
     assert.strictEqual(combinations(42, 21), 538257874440)
     assert.strictEqual(combinations(44, 21), 2012616400080)
+  })
+
+  const largeResults = [
+    [280, 139, 9.189269586344626e82],
+    [300, 150, 9.375970277282745e88],
+    [876, 694, 8.286457300994857e192],
+    [1000, 500, 2.7028824094543655e299],
+    [1029, 514, 1.429820686498904e308]
+  ]
+  for (const [n, k, expected] of largeResults) {
+    it(`should avoid intermediate overflow for combinations(${n}, ${k})`, function () {
+      for (const count of [k, n - k]) {
+        const actual = combinations(n, count)
+        assert.ok(Number.isFinite(actual))
+        approxEqual(actual / expected, 1, 1e-13)
+      }
+    })
+  }
+
+  it('should return Infinity when the result exceeds the number range', function () {
+    assert.strictEqual(combinations(1030, 515), Infinity)
+    assert.strictEqual(combinations(1100, 550), Infinity)
+  })
+
+  it('should keep boundary choices exact for large n', function () {
+    assert.strictEqual(combinations(1000, 0), 1)
+    assert.strictEqual(combinations(1000, 1), 1000)
+    assert.strictEqual(combinations(1000, 999), 1000)
+    assert.strictEqual(combinations(1000, 1000), 1)
   })
 
   it('should calculate the combinations of n items taken k at a time with BigNumbers', function () {

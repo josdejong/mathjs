@@ -21,6 +21,11 @@ export function combinationsNumber (n, k) {
   // balance multiplications and divisions to try to keep intermediate values
   // in exact-integer range as long as possible
   for (let nextnumerator = firstnumerator; nextnumerator <= n; ++nextnumerator) {
+    // Pending divisors can prevent an otherwise overflowing multiplication.
+    while (nextdivisor <= lastdivisor && answer > Number.MAX_VALUE / nextnumerator) {
+      answer /= nextdivisor
+      ++nextdivisor
+    }
     answer *= nextnumerator
     while (nextdivisor <= lastdivisor && answer % nextdivisor === 0) {
       answer /= nextdivisor
