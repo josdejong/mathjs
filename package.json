@@ -67,7 +67,7 @@
     "glob": "11.0.3",
     "gulp": "5.0.1",
     "gulp-babel": "8.0.0",
-    "handlebars": "4.7.8",
+    "handlebars": "4.7.10",
     "jsep": "1.4.0",
     "karma": "6.4.4",
     "karma-firefox-launcher": "2.1.3",
