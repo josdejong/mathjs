@@ -19,6 +19,7 @@ describe('factorial', function () {
     const bigmath = math.create({ number: 'BigNumber', precision: 5 })
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(0)), bigmath.bignumber(1))
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(Infinity)).toString(), 'Infinity')
+    assert.ok(bigmath.factorial(bigmath.bignumber(NaN)).isNaN())
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(11)), bigmath.bignumber(39917000))
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(22)), bigmath.bignumber(1.124e+21))
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(24)), bigmath.bignumber(6.2045e+23))

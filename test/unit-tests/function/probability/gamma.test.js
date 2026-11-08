@@ -68,6 +68,11 @@ describe('gamma', function () {
     assert.deepStrictEqual(gamma(bignumber(-2)).toString(), 'Infinity')
     assert.ok(gamma(bignumber(-Infinity)).isNaN())
   })
+
+  it('should return NaN for a NaN bignumber', function () {
+    assert.ok(isNaN(gamma(NaN)))
+    assert.ok(gamma(bignumber(NaN)).isNaN())
+  })
   /*
   it('should calculate the gamma of a rational bignumber', function () {
     assert.deepStrictEqual(gamma(bignumber(0.125)), bignumber('7.5339415987976'))

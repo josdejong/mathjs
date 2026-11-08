@@ -83,7 +83,7 @@ export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       }
 
       if (!n.isFinite()) {
-        return new BigNumber(n.isNegative() ? NaN : Infinity)
+        return new BigNumber(n.isNaN() || n.isNegative() ? NaN : Infinity)
       }
 
       throw new Error('Integer BigNumber expected')
