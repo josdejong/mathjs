@@ -123,15 +123,32 @@ describe('atan2', function () {
   describe('SparseMatrix', function () {
     it('should calculate atan2 sparse matrix - scalar', function () {
       assert.deepStrictEqual(divide(atan2(1, sparse([[1, -1], [0, 1]])), pi), matrix([[0.25, 0.75], [0.5, 0.25]]))
-      assert.deepStrictEqual(divide(atan2(sparse([[1, -1], [0, 1]]), 1), pi), sparse([[0.25, -0.25], [0, 0.25]]))
+      assert.deepStrictEqual(divide(atan2(sparse([[1, -1], [0, 1]]), 1), pi), matrix([[0.25, -0.25], [0, 0.25]]))
     })
 
     it('should calculate atan2 sparse matrix - array', function () {
-      assert.deepStrictEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), [[-1, 0, 1], [1, 1, 1]]), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+      assert.deepStrictEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), [[-1, 0, 1], [1, 1, 1]]), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
     })
 
     it('should calculate atan2 sparse matrix - dense matrix', function () {
-      assert.deepStrictEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), matrix([[-1, 0, 1], [1, 1, 1]])), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+      assert.deepStrictEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), matrix([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+    })
+
+    it('should evaluate atan2 where an entry is zero in only one sparse operand', function () {
+      // atan2(0, x) is pi for x < 0 and atan2(y, 0) is +-pi/2 for y != 0
+      const y = [[0, 0, 2], [-2, 0, 0]]
+      const x = [[-1, 0, 0], [0, 0, -1]]
+      const expected = matrix([[1, 0, 0.5], [-0.5, 0, 1]])
+      assert.deepStrictEqual(divide(atan2(sparse(y), sparse(x)), pi).toArray(), [[1, 0, 0.5], [-0.5, 0, 1]])
+      assert.deepStrictEqual(divide(atan2(sparse(y), matrix(x)), pi), expected)
+      assert.deepStrictEqual(divide(atan2(sparse(y), x), pi), expected)
+      assert.deepStrictEqual(divide(atan2(matrix(y), sparse(x)), pi), expected)
+      assert.deepStrictEqual(divide(atan2(y, sparse(x)), pi), expected)
+    })
+
+    it('should evaluate atan2 of a sparse matrix and a negative scalar', function () {
+      assert.deepStrictEqual(divide(atan2(sparse([[0, 1], [0, 0]]), -1), pi), matrix([[1, 0.75], [1, 1]]))
+      assert.deepStrictEqual(divide(atan2(-1, sparse([[0, 1], [0, 0]])), pi), matrix([[-0.5, -0.25], [-0.5, -0.5]]))
     })
 
     it('should calculate atan2 sparse matrix - sparse matrix', function () {
