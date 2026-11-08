@@ -24,6 +24,14 @@ export const createCombinations = /* #__PURE__ */ factory(name, dependencies, ({
    *
    *    combinationsWithRep, permutations, factorial
    *
+   * History:
+   *
+   *    v15.3   Avoid intermediate overflow for finite number results
+   *    v10.2   Improve integer precision for larger values
+   *    v2.4.1  Reject non-integer values of k
+   *    v0.18.1 Fix large-number results and improve performance
+   *    v0.18   Created
+   *
    * @param {number | BigNumber} n    Total number of objects in the set
    * @param {number | BigNumber} k    Number of objects in the subset
    * @return {number | BigNumber}     Number of possible combinations.

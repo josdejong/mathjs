@@ -390,7 +390,7 @@ const knownNoHistory = new Set([
   'mapSlices', 'matrixFromColumns', 'matrixFromFunction', 'matrixFromRows',
   'ones', 'partitionSelect', 'pinv', 'range', 'reshape', 'resize', 'rotate',
   'rotationMatrix', 'row', 'size', 'sort', 'squeeze', 'subset', 'trace',
-  'transpose', 'zeros', 'solveODE', 'bernoulli', 'combinations',
+  'transpose', 'zeros', 'solveODE', 'bernoulli',
   'combinationsWithRep', 'factorial', 'gamma', 'kldivergence', 'lgamma',
   'multinomial', 'permutations', 'pickRandom', 'random', 'randomInt',
   'compareText', 'equalText',
