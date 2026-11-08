@@ -481,7 +481,18 @@ describe('simplify', function () {
     simplifyAndCompare('2^x*3^x', '6^x')
     simplifyAndCompare('x^z/y^z', '(x/y)^z')
     simplifyAndCompare('(-x)^x', '(-x)^x')
-    simplifyAndCompare('(y-x)/(x*x)', 'y/x^2 - 1/x')
+    // The following represent a somewhat subjective choice of what is most
+    // simple. For example, the first could also simplify to `y/x^2 - 1/x` or
+    // even (y/x - 1)/x. After some consideration of the options, and reference
+    // to other simplifiers like symbolab, the conclusion was reached to
+    // consider a single fraction with the largest power of the common factor
+    // in the denominator as simplest.
+    simplifyAndCompare('(y-x)/(x*x)', '(y-x)/x^2')
+    simplifyAndCompare('(y+x)/(x*x)', '(y+x)/x^2')
+    simplifyAndCompare('(x-y)/(x*x)', '(x-y)/x^2')
+    simplifyAndCompare('(x+y)/(x*x)', '(x+y)/x^2')
+    simplifyAndCompare('(x^2-y*x)/x^3', '(x-y)/x^2')
+    simplifyAndCompare('(x^2+x*y)/x^3', '(y+x)/x^2') // TODO: why numerator swap?
   })
 
   it('should collect a bare reciprocal power with a term of the same base', function () {
