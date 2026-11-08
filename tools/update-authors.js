@@ -99,6 +99,10 @@ const replaceEmails = {
   '<116227558+JSap0914@users.noreply.github.com>': {
     author: 'JSap0914',
     email: '<JSap0914@users.noreply.github.com>'
+  },
+  '<jakezwang@users.noreply.github.com>': {
+    author: 'Jake Wang',
+    email: '<jake.wang@argonlabs.tech>'
   }
 }
 
