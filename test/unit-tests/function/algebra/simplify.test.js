@@ -48,6 +48,14 @@ describe('simplify', function () {
     assert.strictEqual(math.simplify(left).evaluate(scope), math.parse(right).evaluate(scope))
   }
 
+  describe('safety limit', function () {
+    it('should throw if simplification takes too many passes', function () {
+      assert.throws(
+        () => math.simplify('2/x^2 - x^(2*z)', {}, { passLimit: 2 }),
+        /[Mm]ore.*2 passes needed/)
+    })
+  })
+
   describe('wildcard types', function () {
     it('should match constants (\'c\' and \'cl\') correctly', function () {
       // c, cl - ConstantNode

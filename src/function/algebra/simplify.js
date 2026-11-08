@@ -135,6 +135,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *  - `fractionsLimit` (10000): when `exactFractions` is true, constants will
    *    be expressed as fractions only when both numerator and denominator
    *    are smaller than `fractionsLimit`.
+   *  - `passLimit` (32): if simplify runs this many passes without settling,
+   *    throws an error.
    *
    * Syntax:
    *
@@ -600,7 +602,13 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     res = removeParens(res)
     const visited = {}
     let str = res.toString(allP)
+    const passLimit = options.passLimit || 32
+    let passesRemaining = passLimit
     while (!visited[str]) {
+      if (passesRemaining-- === 0) {
+        throw new Error(`More than ${passLimit} passes needed ` +
+          `to simplify '${expr.toString()}'`)
+      }
       visited[str] = true
       _lastsym = 0 // counter for placeholder symbols
       let laststr = str
