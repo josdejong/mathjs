@@ -4128,11 +4128,16 @@ export interface MathJsFactory {
     config?: ConfigOptions
   ) => MathJsInstance
 
-  factory: <T, TDeps extends readonly MathJsFunctionName[]>(
+  factory: <T, TDeps extends readonly string[]>(
     name: string,
-    dependencies: TDeps,
+    dependencies: readonly [...TDeps],
     create: (
-      injected: Pick<MathJsInstance, Extract<MathJsFunctionName, TDeps[number]>>
+      injected: Pick<
+        MathJsInstance,
+        Extract<MathJsFunctionName, TDeps[number]>
+      > &
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        Record<Exclude<TDeps[number], MathJsFunctionName>, any>
     ) => T,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     meta?: any
