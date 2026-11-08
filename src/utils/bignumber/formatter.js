@@ -193,6 +193,11 @@ export function format (value, options) {
  * @param {number} [precision]        Optional number of significant figures to return.
  */
 export function toEngineering (value, precision) {
+  // round first, so a carry like 999.9 -> 1000 moves to the next exponent
+  if (precision !== undefined) {
+    value = value.toSignificantDigits(precision)
+  }
+
   // find nearest lower multiple of 3 for exponent
   const e = value.e
   const newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))
