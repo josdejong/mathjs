@@ -16,6 +16,10 @@ export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({
      *     math.kldivergence([0.7,0.5,0.4], [0.2,0.9,0.5])   //returns 0.3086145781062587
      *
      *
+     * History:
+     *
+     *     v2.1   Created
+     *
      * @param  {Array | Matrix} q    First vector
      * @param  {Array | Matrix} p    Second vector
      * @return {number}              Returns distance between q and p

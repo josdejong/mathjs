@@ -28,6 +28,12 @@ export const createRe = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    *
    *    im, conj, abs, arg
    *
+   * History:
+   *
+   *    v9.4   Support Fraction
+   *    v0.16  Support BigNumber
+   *    v0.2   Created
+   *
    * @param {number | BigNumber | Complex | Array | Matrix} x
    *            A complex number or array with complex numbers
    * @return {number | BigNumber | Array | Matrix} The real part of x

@@ -62,6 +62,13 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
    *
    *     simplify, parse, evaluate
    *
+   * History:
+   *
+   *     v5.7   Support `pow()`
+   *     v3.20  Support `+` and `*` with more than two arguments
+   *     v3.13  Support `abs()`
+   *     v3.9   Created
+   *
    * @param  {Node | string} expr           The expression to differentiate
    * @param  {SymbolNode | string} variable The variable over which to differentiate
    * @param  {{simplify: boolean}} [options]

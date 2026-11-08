@@ -28,6 +28,12 @@ export const createIm = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    *
    *    re, conj, abs, arg
    *
+   * History:
+   *
+   *    v9.4   Support Fraction
+   *    v0.16  Support BigNumber
+   *    v0.2   Created
+   *
    * @param {number | BigNumber | Complex | Array | Matrix} x
    *            A complex number or array with complex numbers
    * @return {number | BigNumber | Array | Matrix} The imaginary part of x
