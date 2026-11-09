@@ -69,9 +69,9 @@ by nesting Arrays in each other.
 
 ```js
 // create arrays
-[]                                      // Array, size [0]
-[0, 1, 2]                               // Array, size [3]
-[[0, 1], [2, 3], [4, 5]]                // Array, size [3, 2]
+const empty = []                        // Array, size [0]
+const vector = [0, 1, 2]                // Array, size [3]
+const nested = [[0, 1], [2, 3], [4, 5]] // Array, size [3, 2]
 ```
 
 Matrices can contain different types of values: numbers, complex numbers,
@@ -91,8 +91,7 @@ content: `ones`, `zeros`, `identity`.
 // zeros creates a matrix filled with zeros
 math.zeros(3)           // Matrix, size [3],    [0, 0, 0]
 math.zeros(3, 2)        // Matrix, size [3, 2], [[0, 0], [0, 0], [0, 0]]
-math.zeros(2, 2, 2)     // Matrix, size [2, 2, 2],
-                        //   [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]
+math.zeros(2, 2, 2)     // Matrix, size [2, 2, 2], [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]
 
 // ones creates a matrix filled with ones
 math.ones(3)                        // Matrix, size [3],    [1, 1, 1]
@@ -173,10 +172,10 @@ It's not possible to broadcast in cases where the size in that dimension is high
 
 ```js
 math.add([1, 2], [3, 4, 5])
-// Error: shape missmatch: missmatch is found in arg with shape (2) not possible to broadcast dimension 0 with size 2 to size 3
+// Error: shape mismatch: mismatch is found in arg with shape (2) not possible to broadcast dimension 1 with size 2 to size 3
 
 math.add([[1], [2], [3]], [[4], [5]])
-// Error: shape missmatch: missmatch is found in arg with shape (2,1) not possible to broadcast dimension 0 with size 2 to size 3
+// Error: shape mismatch: mismatch is found in arg with shape (2,1) not possible to broadcast dimension 2 with size 2 to size 3
 ```
 
 ## Size and Dimensions
@@ -263,8 +262,7 @@ the entries haven't been explicitly set.
 ```js
 const a = math.matrix() // Matrix, size [0],       []
 a.resize([2, 3])        // Matrix, size [2, 3],    [[0, 0, 0], [0, 0, 0]]
-a.resize([2, 2, 2])     // Matrix, size [2, 2, 2],
-                        //   [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]
+a.resize([2, 2, 2])     // Matrix, size [2, 2, 2], [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]
 
 const b = math.matrix()
 b.resize([3], 7)        // Matrix, size [3],    [7, 7, 7]
@@ -286,7 +284,7 @@ math.squeeze([[3]])         // 3
 // when getting/setting a single value in a matrix using subset, 
 // it automatically squeeze/unsqueeze the value
 const b = math.matrix([[0, 1], [2, 3]])
-b.subset(math.index(1, 0))  // 2 and not [[2]]
+b.subset(math.index(1, 0))  // 2; and not [[2]]
 ```
 
 
@@ -317,10 +315,10 @@ const m = [
 ]
 
 // Scalar index eliminates the dimension:
-math.subset(m, math.index(1, 2))           // 22 (both dimensions indexed by scalars, result is a value)
-math.subset(m, math.index(1, [2]))         // [22] (row dimension eliminated, column dimension preserved as array)
-math.subset(m, math.index([1], 2))         // [22] (column dimension eliminated, row dimension preserved as array)
-math.subset(m, math.index([1], [2]))       // [[22]] (both dimensions preserved as arrays)
+math.subset(m, math.index(1, 2))           // 22; both dimensions indexed by scalars, result is a value
+math.subset(m, math.index(1, [2]))         // [22]; row dimension eliminated, column dimension preserved as array
+math.subset(m, math.index([1], 2))         // [22]; column dimension eliminated, row dimension preserved as array
+math.subset(m, math.index([1], [2]))       // [[22]]; both dimensions preserved as arrays
 
 math.config({legacySubset: true}) // switch to legacy behavior
 math.subset(m, math.index(1, 2))           // 22
@@ -419,7 +417,7 @@ For example, a boolean array can be created to represent all the even numbers in
 
 
 ```js
-const q = [1, 2, 3, 4]
+let q = [1, 2, 3, 4]
 math.subset(q, math.index([true, false, true, false]))      // Array [1, 3]
 
 // filtering
@@ -429,10 +427,12 @@ math.subset(q, math.index(math.larger(q, 2)))               // Array [3, 4]
 math.subset(q, math.index(math.larger(q, 5)))               // Array []
 
 // setting specific values, please note that the replacement value is broadcasted
-q = math.subset(q, math.index(math.smaller(q, 3)), 0)       // q = [0, 0, 3, 4]
+q = math.subset(q, math.index(math.smaller(q, 3)), 0)
+q                                                           // [0, 0, 3, 4]
 
 // replacing specific values
-math.subset(q, math.index(math.equal(q, 0)), [1, 2])        // q = [1, 2, 3, 4]
+q = math.subset(q, math.index(math.equal(q, 0)), [1, 2])
+q                                                           // [1, 2, 3, 4]
 ```
 
 The same can be accomplished in the parser in a much more compact manner. Please note that everything after `#` are comments.

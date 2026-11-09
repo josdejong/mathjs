@@ -36,6 +36,7 @@ console.log(math.simplify('multiply(x,3)').toString())  // '3 * x'
 Note that `simplify` has an optional argument `scope` that allows the definitions of variables in the expression (as numeric values, or as further expressions) to be specified and used in the simplification, e.g. continuing the previous example,
 
 ```js
+const f = math.parse('2x + x')
 console.log(math.simplify(f, {x: 4}).toString()) // '12'
 console.log(math.simplify(f, {x: math.parse('y+z')}).toString()) // '3 * (y + z)'
 ```
@@ -48,16 +49,16 @@ As a result, `simplify()` has an additional optional argument, `options`, which 
 - `context` - an object whose keys are the names of operations ('add', 'multiply', etc.) and whose values specify algebraic properties of the corresponding operation (currently any of 'total', 'trivial', 'commutative', and 'associative'). Simplifications will only be performed if the properties they rely on are true in the given context. For example,
 ```js
 const expr = math.parse('x*y-y*x')
-console.log(math.simplify(expr).toString())  // 0; * is commutative by default
-console.log(math.simplify(expr, {}, {context: {multiply: {commutative: false}}}))
-  // 'x*y-y*x'; the order of the right multiplication can't be reversed.
+console.log(math.simplify(expr).toString())  // '0'; * is commutative by default
+console.log(math.simplify(expr, {}, {context: {multiply: {commutative: false}}}).toString())
+  // 'x * y - y * x'; the order of the right multiplication can't be reversed.
 ```
 
 Note that the default context is very permissive (allows a lot of simplifications) but that there is also a `math.simplify.realContext` that only allows simplifications that are guaranteed to preserve the value of the expression on all real numbers:
 ```js
 const rational = math.parse('(x-1)*x/(x-1)')
-console.log(math.simplify(expr, {}, {context: math.simplify.realContext})
-  // '(x-1)*x/(x-1)'; canceling the 'x-1' makes the expression defined at 1
+console.log(math.simplify(rational, {}, {context: math.simplify.realContext}).toString())
+  // '(x - 1) * x / (x - 1)'; canceling the 'x-1' makes the expression defined at 1
 ```
 
 For more details on the theory of expression simplification, see:

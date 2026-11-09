@@ -80,11 +80,11 @@ const one = math.bignumber(1)
 const three = math.bignumber(3)
 const third = math.divide(one, three)
 console.log(third.toString())
-// outputs 0.3333333333333333333333333333333333333333333333333333333333333333
+// outputs '0.3333333333333333333333333333333333333333333333333333333333333333'
 
 const ans = math.multiply(third, three)
 console.log(ans.toString())
-// outputs 0.9999999999999999999999999999999999999999999999999999999999999999
+// outputs '0.9999999999999999999999999999999999999999999999999999999999999999'
 // this should be 1 again, but `third` is rounded to a limited number of digits 3
 ```
 

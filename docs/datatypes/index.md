@@ -61,9 +61,9 @@ const matrix = math.matrix([1, 4, 9, 16, 25]) // Matrix, [1, 4, 9, 16, 25]
 math.map(matrix, math.sqrt)                   // Matrix, [1, 2, 3, 4, 5]
 
 // use units
-const c = math.unit(55, 'cm')    // 550 mm
-const d = math.unit('0.1m')      // 100 mm
-math.add(c, d)                   // 0.65 m
+const c = math.unit(55, 'cm')    // Unit 55 cm
+const d = math.unit('0.1m')      // Unit 0.1 m
+math.add(c, d)                   // Unit 65 cm
 
 // check the type of a variable
 math.typeOf(2)                   // 'number'

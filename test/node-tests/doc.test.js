@@ -8,6 +8,13 @@ import { valueFromComment, compareWithExpected } from './docExpectations.js'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const math = create(all)
 const debug = process.argv.includes('--debug-docs')
+// list the example comments that are not checked, with the reason:
+//     npx mocha test/node-tests/doc.test.js --ignored-docs
+const showIgnored = process.argv.includes('--ignored-docs')
+
+function ignore (name, comment, reason) {
+  if (showIgnored) console.log(`IGNORED ${name}: // ${comment}  (${reason})`)
+}
 
 const ignoreFunctions = new Set([
   'config'
@@ -336,6 +343,7 @@ describe('Testing examples from (jsdoc) comments', function () {
                 // Indented comment, unusual in examples
                 // assume this is a comment within some code to evaluate
                 // i.e., ignore it
+                ignore(doc.name, parts.slice(1).join('//').trim(), 'indented comment')
                 continue
               }
               // Comment specifying a future value or the return of prior code
@@ -365,9 +373,16 @@ describe('Testing examples from (jsdoc) comments', function () {
                 maybeCheckExpectation(
                   doc.name, expectation, expectationFrom, value, accumulation)
                 if (discardAccumulation) accumulation = ''
+              } else if (accumulation && expectationFrom) {
+                ignore(doc.name, expectationFrom, 'example contains console.log')
               }
               expectationFrom = parts[1]
               expectation = extractExpectation(expectationFrom, 'requireSignal')
+              if (expectation === undefined && expectationFrom) {
+                // only a comment with 'returns' or 'outputs' states the
+                // value of the code after it
+                ignore(doc.name, expectationFrom, 'no value stated')
+              }
             } else {
               if (line !== '') {
                 if (accumulation) { accumulation += '\n' }

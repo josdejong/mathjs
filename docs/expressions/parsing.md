@@ -42,7 +42,7 @@ The following code demonstrates how to evaluate expressions.
 // evaluate expressions
 math.evaluate('sqrt(3^2 + 4^2)')        // 5
 math.evaluate('sqrt(-4)')               // 2i
-math.evaluate('2 inch to cm')           // 5.08 cm
+math.evaluate('2 inch to cm')           // Unit 5.08 cm
 math.evaluate('cos(45 deg)')            // 0.7071067811865476
 
 // provide a scope
@@ -194,7 +194,7 @@ const parser = math.parser()
 // evaluate expressions
 parser.evaluate('sqrt(3^2 + 4^2)')      // 5
 parser.evaluate('sqrt(-4)')             // 2i
-parser.evaluate('2 inch to cm')         // 5.08 cm
+parser.evaluate('2 inch to cm')         // Unit 5.08 cm
 parser.evaluate('cos(45 deg)')          // 0.7071067811865476
 
 // define variables and functions
@@ -204,9 +204,9 @@ parser.evaluate('f(x, y) = x^y')        // f(x, y)
 parser.evaluate('f(2, 3)')              // 8
 
 // get and set variables and functions
-const x = parser.get('x')               // x = 3.5
+const x = parser.get('x')               // 3.5
 const f = parser.get('f')               // function
-const g = f(3, 3)                       // g = 27
+const g = f(3, 3)                       // 27
 parser.set('h', 500)
 parser.evaluate('h / 2')                // 250
 parser.set('hello', function (name) {

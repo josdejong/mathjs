@@ -152,7 +152,7 @@ math.import({
 
 // use the function
 math.evaluate('myFunction(2 + 3, sqrt(4))')
-// returns 'arguments: 2 + 3, sqrt(4), evaluated: 5, 2'
+// returns 'arguments: 2 + 3,sqrt(4), evaluated: 5,2'
 ```
 
 ## Custom LaTeX handlers

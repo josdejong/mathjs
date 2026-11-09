@@ -4,13 +4,16 @@
 // place that defines which comments state a value. `math` is the instance the
 // examples run in; `onIssue` is called with a note for differences that are
 // tolerated, like inexact numbers.
+import assert from 'node:assert'
 import { approxEqual, approxDeepEqual } from '../../tools/approx.js'
 
 // Return the value stated by an example comment, like "returns 5",
 // "Matrix [1, 2]" or "'abc'". A comment that does not evaluate to a value is
 // returned as is, or, when `proseIsNoValue` is set, gives undefined: the
 // docs pages mix comments with values and comments with prose.
+// Text after a semicolon is prose about the value, as in "6; *not* 10".
 export function valueFromComment (math, comment, optional = false, proseIsNoValue = false) {
+  comment = comment.split(';')[0].trim()
   if (comment === '') return undefined
   const returnsParts = comment.split('eturns').map(s => s.trim())
   if (returnsParts.length > 1) return extractValue(math, returnsParts[1], proseIsNoValue)
@@ -27,6 +30,10 @@ export function valueFromComment (math, comment, optional = false, proseIsNoValu
 }
 
 function extractValue (math, spec, proseIsNoValue) {
+  // A comment like "SyntaxError: Unexpected end" states the error thrown
+  if (/^\w*Error\b/.test(spec)) return spec
+  // A comment like "Prints: 1, 4" is prose (eval would read a label)
+  if (/^\w+:/.test(spec)) return proseIsNoValue ? undefined : spec
   // First check for a leading keyword:
   const words = spec.split(' ')
   // The docs pages also write the keyword with a comma, as in "Matrix, [1, 2]"
@@ -69,6 +76,7 @@ function extractValue (math, spec, proseIsNoValue) {
     string: '_',
     String: '_',
     Node: 'math.parse(_)',
+    ResultSet: 'new math.ResultSet(_)',
     value: 'math._',
     throws: "'_'"
   }
@@ -108,10 +116,31 @@ function extractValue (math, spec, proseIsNoValue) {
   return value
 }
 
+// The docs pages can state the size of a matrix or array, as in
+// "Matrix, size [3, 2], [[0, 0], [0, 0], [0, 0]]" or "Array, size [3]",
+// or only its type, as in "Matrix". Return the stated size, the type when
+// the comment states no value besides it ('Matrix' or 'Array'), and the
+// comment without the size.
+export function sizeFromComment (comment) {
+  let size
+  const match = comment.match(/size (\[[\d, ]*\])/)
+  if (match) {
+    size = JSON.parse(match[1])
+    comment = comment.replace(match[0], '') // like "Matrix, , [0, 0, 0]"
+      .replace(/,\s*,/, ',').trim().replace(/,$/, '')
+  }
+  if (comment === 'Matrix' || comment === 'Array') return { size, type: comment, comment: '' }
+  return { size, comment }
+}
+
 export function compareWithExpected (math, want, got, onIssue = () => {}) {
   if (Array.isArray(want)) {
     if (!Array.isArray(got)) {
       got = want.valueOf()
+    }
+    if (want.some(entry => entry?.isUnit)) { // compare the units as below
+      assert.strictEqual(got.length, want.length)
+      return want.forEach((entry, i) => compareWithExpected(math, entry, got[i], onIssue))
     }
     return approxDeepEqual(got, want, 1e-9)
   }
@@ -123,7 +152,9 @@ export function compareWithExpected (math, want, got, onIssue = () => {}) {
       got.fixPrefix = want.fixPrefix
       got.skipAutomaticSimplification = want.skipAutomaticSimplification
     }
-    return approxDeepEqual(got, want, 1e-9)
+    // the same units, in any order, like (m^3 Pa K) / mol, and the same value
+    assert.strictEqual(got.formatUnits(), want.formatUnits())
+    return approxEqual(got.value, want.value, 1e-9)
   }
   if (want?.isComplex && got?.isComplex) {
     return approxDeepEqual(got, want, 1e-9)
@@ -135,10 +166,10 @@ export function compareWithExpected (math, want, got, onIssue = () => {}) {
   if (
     typeof want === 'string' &&
     typeof got === 'string' &&
-    want.endsWith('Error') &&
+    /^\w*Error\b/.test(want) &&
     got.startsWith(want)
   ) {
-    return true // we obtained the expected error type
+    return true // we obtained the expected error (type and maybe message)
   }
   if (want && got && want.isBigNumber && got.isBigNumber) {
     return approxEqual(got, want, 1e-50)

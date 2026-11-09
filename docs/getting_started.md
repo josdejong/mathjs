@@ -104,7 +104,7 @@ math.pow([[-1, 2], [3, 1]], 2)       // [[7, 0], [0, 7]]
 
 // expressions
 math.evaluate('12 / (2.3 + 0.7)')    // 4
-math.evaluate('12.7 cm to inch')     // 5 inch
+math.evaluate('12.7 cm to inch')     // Unit 5 inch
 math.evaluate('sin(45 deg) ^ 2')     // 0.5
 math.evaluate('9 / 3 + 2i')          // 3 + 2i
 math.evaluate('det([-1, 2; 3, 1])')  // -7

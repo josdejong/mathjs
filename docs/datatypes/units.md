@@ -111,7 +111,7 @@ Operations with arrays are supported too:
 // Force on a charged particle moving through a magnetic field
 const B = math.evaluate('[1, 0, 0] T')         // [1 T, 0 T, 0 T]
 const v = math.evaluate('[0, 1, 0] m/s')       // [0 m / s, 1 m / s, 0 m / s]
-const q = math.evaluate('1 C')                 // 1 C
+const q = math.evaluate('1 C')                 // Unit 1 C
 
 const F = math.multiply(q, math.cross(v, B))   // [0 N, 0 N, -1 N]
 ```
@@ -122,11 +122,11 @@ In general, you should avoid calculations using `celsius` and `fahrenheit`. Rath
 This example highlights some problems when using `celsius` and `fahrenheit` in calculations:
 
 ```js
-const T_14F = math.unit('14 degF')            // Unit 14 degF (263.15 K)
-const T_28F = math.multiply(T_14F, 2)         // Unit 28 degF (270.93 K), not 526.3 K
+const T_14F = math.unit('14 degF')            // Unit 14 degF; 263.15 K
+const T_28F = math.multiply(T_14F, 2)         // Unit 28 degF; 270.93 K, not 526.3 K
 
-const Tnegative = math.unit(-13, 'degF')      // Unit -13 degF (248.15 K)
-const Tpositive = math.abs(Tnegative)         // Unit -13 degF (248.15 K), not 13 degF
+const Tnegative = math.unit(-13, 'degF')      // Unit -13 degF; 248.15 K
+const Tpositive = math.abs(Tnegative)         // Unit -13 degF; 248.15 K, not 13 degF
 ```
 
 The expression parser supports units too. This is described in the section about
@@ -271,7 +271,7 @@ Split a unit into the specified parts. For example:
 
 ```js
 const u = math.unit(1, 'm')
-u.splitUnit(['ft', 'in'])    // 3 feet,3.3700787401574765 inch
+u.splitUnit(['ft', 'in'])    // Array [3 ft, 3.3700787401574765 in]
 ```
 
 ### unit.to(unitName)
