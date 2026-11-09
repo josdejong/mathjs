@@ -13,8 +13,12 @@ export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({
      *
      * Examples:
      *
-     *     math.kldivergence([0.7,0.5,0.4], [0.2,0.9,0.5])   //returns 0.24376698773121153
+     *     math.kldivergence([0.7,0.5,0.4], [0.2,0.9,0.5])   //returns 0.3086145781062587
      *
+     *
+     * History:
+     *
+     *     v2.1   Created
      *
      * @param  {Array | Matrix} q    First vector
      * @param  {Array | Matrix} p    Second vector
