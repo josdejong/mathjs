@@ -125,6 +125,15 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
 
         totalWeights += weights[i]
       }
+
+      if (totalWeights === Infinity) {
+        const maxWeight = weights.reduce((max, weight) => Math.max(max, weight), 0)
+        if (Number.isFinite(maxWeight)) {
+          // Scaling every finite weight by the same factor preserves the distribution.
+          weights = weights.map(weight => weight / maxWeight)
+          totalWeights = weights.reduce((total, weight) => total + weight, 0)
+        }
+      }
     }
 
     const length = possibles.length
