@@ -2,6 +2,9 @@
 
 # unpublished changes since 15.2.0
 
+- Docs: fix miscellaneous errors in examples on doc pages, in partial
+  preparation for a systematic test harness on all such examples (#3741).
+  Thanks @yxshee.
 - Docs: chip away five more functions with JSDoc errors: re, im, derivative,
   kldivergence, and symbolicEqual (#3731). Thanks @yxshee.
 - Fix: #3768 Units: `rd` should always have been an alias for `rod` (#3772).
