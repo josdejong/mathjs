@@ -87,6 +87,22 @@ const replaceEmails = {
   '<91676649+ikemHood@users.noreply.github.com>': {
     author: 'Ikem Peter',
     email: '<ikempeter2020@gmail.com>'
+  },
+  '<282228220+Hugohong258@users.noreply.github.com>': {
+    author: 'Hugohong258',
+    email: '<ugfifkgfufyu@gmail.com>'
+  },
+  '<24110399@iitgn.ac.in>': {
+    author: 'Yash Goyal',
+    email: '<yashgoyal17305@gmail.com>'
+  },
+  '<116227558+JSap0914@users.noreply.github.com>': {
+    author: 'JSap0914',
+    email: '<JSap0914@users.noreply.github.com>'
+  },
+  '<jakezwang@users.noreply.github.com>': {
+    author: 'Jake Wang',
+    email: '<jake.wang@argonlabs.tech>'
   }
 }
 

@@ -1754,13 +1754,6 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       value: 0.201168,
       offset: 0
     },
-    rd: {
-      name: 'rd',
-      base: BASE_UNITS.LENGTH,
-      prefixes: PREFIXES.NONE,
-      value: 5.029210,
-      offset: 0
-    },
     ch: {
       name: 'ch',
       base: BASE_UNITS.LENGTH,
@@ -1816,16 +1809,16 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'sqrd',
       base: BASE_UNITS.SURFACE,
       prefixes: PREFIXES.NONE,
-      value: 25.29295,
+      value: 25.29285264,
       offset: 0
-    }, // 25.29295 m2
+    }, // 25.29285264 m2 (1 rod^2)
     sqch: {
       name: 'sqch',
       base: BASE_UNITS.SURFACE,
       prefixes: PREFIXES.NONE,
-      value: 404.6873,
+      value: 404.68564224,
       offset: 0
-    }, // 404.6873 m2
+    }, // 404.68564224 m2 (1 chain^2)
     sqmil: {
       name: 'sqmil',
       base: BASE_UNITS.SURFACE,
@@ -1837,9 +1830,9 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'acre',
       base: BASE_UNITS.SURFACE,
       prefixes: PREFIXES.NONE,
-      value: 4046.86,
+      value: 4046.8564224,
       offset: 0
-    }, // 4046.86 m2
+    }, // 4046.8564224 m2 (4840 sqyd)
     hectare: {
       name: 'hectare',
       base: BASE_UNITS.SURFACE,
@@ -2485,7 +2478,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'kip',
       base: BASE_UNITS.FORCE,
       prefixes: PREFIXES.LONG,
-      value: 4448.2216,
+      value: 4448.2216152605,
       offset: 0
     },
     kilogramforce: {
@@ -2536,14 +2529,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'eV',
       base: BASE_UNITS.ENERGY,
       prefixes: PREFIXES.SHORT,
-      value: 1.602176565e-19,
+      value: 1.602176634e-19,
       offset: 0
     },
     electronvolt: {
       name: 'electronvolt',
       base: BASE_UNITS.ENERGY,
       prefixes: PREFIXES.LONG,
-      value: 1.602176565e-19,
+      value: 1.602176634e-19,
       offset: 0
     },
 
@@ -2620,14 +2613,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       name: 'torr',
       base: BASE_UNITS.PRESSURE,
       prefixes: PREFIXES.NONE,
-      value: 133.322,
+      value: 101325 / 760,
       offset: 0
     },
     mmHg: {
       name: 'mmHg',
       base: BASE_UNITS.PRESSURE,
       prefixes: PREFIXES.NONE,
-      value: 133.322,
+      value: 133.322387415,
       offset: 0
     },
     mmH2O: {
@@ -2817,6 +2810,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     miles: 'mile',
     links: 'link',
     rods: 'rod',
+    rd: 'rod',
     chains: 'chain',
     angstroms: 'angstrom',
 
