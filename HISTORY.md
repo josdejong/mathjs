@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Docs: chip away five more functions with JSDoc errors: re, im, derivative,
+  kldivergence, and symbolicEqual (#3731). Thanks @yxshee.
 - Fix: #3768 Units: `rd` should always have been an alias for `rod` (#3772).
   Thanks @Narek-Khachikyan.
 - Fix: #3637 TypeScript: allow a Unit value as second argument of `unit`
