@@ -11,6 +11,6 @@ export function product (i, n) {
     return n
   }
 
-  const half = (n + i) >> 1 // divide (n + i) by 2 and truncate to integer
+  const half = i + Math.floor((n - i) / 2)
   return product(i, half) * product(half + 1, n)
 }

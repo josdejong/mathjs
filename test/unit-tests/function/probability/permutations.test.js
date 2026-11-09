@@ -30,6 +30,14 @@ describe('permutations', function () {
     assert.strictEqual(permutations(7, 5), 2520)
   })
 
+  it('should calculate short permutations of large safe integers', function () {
+    for (const n of [Number.MAX_SAFE_INTEGER, 2 ** 30, 2 ** 30 + 1, 2 ** 31, 2 ** 32]) {
+      assert.strictEqual(permutations(n, 0), 1)
+      assert.strictEqual(permutations(n, 1), n)
+      assert.strictEqual(permutations(n, 2), n * (n - 1))
+    }
+  })
+
   it('should fail loudly when k is larger than x', function () {
     assert.throws(function () { permutations(5, 6) }, TypeError)
     assert.throws(function () { permutations(math.bignumber(5), math.bignumber(6)) }, TypeError)
