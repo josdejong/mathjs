@@ -117,6 +117,9 @@ math.ones([2, 3])               // Array,  size [2, 3], [[1, 1, 1], [1, 1, 1]]
 math.ones(math.matrix([2, 3]))  // Matrix, size [2, 3], [[1, 1, 1], [1, 1, 1]]
 ```
 
+(Note the contrast with the function `size` described below, which always
+returns an Array, even when its argument is a Matrix.)
+
 Ranges can be created using the function `range`. The function `range` is
 called with parameters start and end, and optionally a parameter step.
 The start of the range is included, the end of the range is excluded.
