@@ -1,9 +1,10 @@
 import { factory } from '../../utils/factory.js'
+import { isBigNumber } from '../../utils/is.js'
 
 const name = 'kldivergence'
-const dependencies = ['typed', 'matrix', 'divide', 'sum', 'multiply', 'map', 'dotDivide', 'log', 'isNumeric']
+const dependencies = ['typed', 'matrix', 'divide', 'sum', 'multiply', 'map', 'log', 'isNumeric', 'sign']
 
-export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divide, sum, multiply, map, dotDivide, log, isNumeric }) => {
+export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divide, sum, multiply, map, log, isNumeric, sign }) => {
   /**
      * Calculate the Kullback-Leibler (KL) divergence  between two distributions
      *
@@ -54,24 +55,30 @@ export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({
       throw new Error('second object must be one dimensional')
     }
 
-    if (plength !== qlength) {
+    if (p.size()[0] !== q.size()[0]) {
       throw new Error('Length of two vectors must be equal')
     }
 
     // Before calculation, apply normalization
     const sumq = sum(q)
-    if (sumq === 0) {
+    if (isExactZero(sumq)) {
       throw new Error('Sum of elements in first object must be non zero')
     }
 
     const sump = sum(p)
-    if (sump === 0) {
+    if (isExactZero(sump)) {
       throw new Error('Sum of elements in second object must be non zero')
     }
-    const qnorm = divide(q, sum(q))
-    const pnorm = divide(p, sum(p))
+    const qnorm = divide(q, sumq)
+    const pnorm = divide(p, sump)
 
-    const result = sum(multiply(qnorm, map(dotDivide(qnorm, pnorm), x => log(x))))
+    const result = sum(map(qnorm, (value, index) => {
+      const reference = pnorm.get(index)
+      if (isExactZero(value) && isNumeric(reference) && Number(sign(reference)) >= 0) {
+        return value
+      }
+      return multiply(value, log(divide(value, reference)))
+    }))
     if (isNumeric(result)) {
       return result
     } else {
@@ -79,3 +86,15 @@ export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({
     }
   }
 })
+
+/**
+ * Test distribution zeros exactly, independent of comparison tolerances.
+ * @param {*} value
+ * @returns {boolean}
+ */
+function isExactZero (value) {
+  if (isBigNumber(value)) {
+    return value.isZero()
+  }
+  return value === 0 || value === 0n
+}
