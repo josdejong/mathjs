@@ -593,8 +593,8 @@ math.evaluate('number(5 cm, mm)')           // Number, 50
 
 // calculations with units
 math.evaluate('0.5kg + 33g')                // Unit, 0.533 kg
-math.evaluate('3 inch + 2 cm')              // Unit, 3.7874 inch
-math.evaluate('3 inch + 2 cm')              // Unit, 3.7874 inch
+math.evaluate('3 inch + 2 cm')              // Unit, 3.7874015748031495 inch
+math.evaluate('3 inch + 2 cm')              // Unit, 3.7874015748031495 inch
 math.evaluate('12 seconds * 2')             // Unit, 24 seconds
 math.evaluate('sin(45 deg)')                // Number, 0.7071067811865475
 math.evaluate('9.81 m/s^2 * 5 s to mi/h')   // Unit, 109.72172512527 mi / h
@@ -622,7 +622,7 @@ parser.evaluate('"hello"')                        // String, "hello"
 
 // string manipulation
 parser.evaluate('a = concat("hello", " world")')  // String, "hello world"
-parser.evaluate('size(a)')                        // Matrix [11]
+parser.evaluate('size(a)')                        // [11]
 parser.evaluate('a[1:5]')                         // String, "hello"
 parser.evaluate('a[1] = "H"')                     // String, "H"
 parser.evaluate('a[7:12] = "there!"')             // String, "there!"

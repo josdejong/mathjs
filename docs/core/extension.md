@@ -147,7 +147,7 @@ math.import({add: add})
 
 // use the new type
 const ans = math.add(new MyType(2), new MyType(3)) // returns MyType(5)
-console.log(ans)                                 // outputs 'MyType:5'
+console.log(ans.toString())                      // outputs 'MyType:5'
 ```
 
 Detailed information on typed functions is available here:

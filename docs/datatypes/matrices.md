@@ -348,7 +348,7 @@ math.subset(a, math.index([2, 3]))            // Array, [2, 3]
 math.subset(a, math.index(math.range(0,4)))   // Array, [0, 1, 2, 3]
 math.subset(b, math.index(1, 0))              // 2
 math.subset(b, math.index(1, [0, 1]))         // Array, [2, 3]
-math.subset(b, math.index([0, 1], [0]))       // Matrix, [[0], [2]]
+math.subset(b, math.index([0, 1], [0]))       // Array, [[0], [2]]
 
 // get a subset
 d.subset(math.index([1, 2], [0, 1]))          // Matrix, [[3, 4], [6, 7]]

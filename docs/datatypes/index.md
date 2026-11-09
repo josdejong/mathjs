@@ -54,11 +54,11 @@ math.sqrt(-4)                    // 2i
 // use arrays
 const array = [1, 2, 3, 4, 5]
 math.factorial(array)            // Array,  [1, 2, 6, 24, 120]
-math.add(array, 3)               // Array,  [3, 5, 6, 7, 8]
+math.add(array, 3)               // Array,  [4, 5, 6, 7, 8]
 
 // use matrices
 const matrix = math.matrix([1, 4, 9, 16, 25]) // Matrix, [1, 4, 9, 16, 25]
-math.sqrt(matrix)                             // Matrix, [1, 2, 3, 4, 5]
+math.map(matrix, math.sqrt)                   // Matrix, [1, 2, 3, 4, 5]
 
 // use units
 const a = math.unit(55, 'cm')    // 550 mm

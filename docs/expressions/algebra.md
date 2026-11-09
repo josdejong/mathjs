@@ -36,8 +36,8 @@ console.log(math.simplify('multiply(x,3)').toString())  // '3 * x'
 Note that `simplify` has an optional argument `scope` that allows the definitions of variables in the expression (as numeric values, or as further expressions) to be specified and used in the simplification, e.g. continuing the previous example,
 
 ```js
-console.log(math.simplify(f, {x: 4}).toString()) // 12
-console.log(math.simplify(f, {x: math.parse('y+z')}).toString()) // '3*(y+z)'
+console.log(math.simplify(f, {x: 4}).toString()) // '12'
+console.log(math.simplify(f, {x: math.parse('y+z')}).toString()) // '3 * (y + z)'
 ```
 
 In general, simplification is an inherently dfficult problem; in fact, for certain classes of expressions and algebraic equivalences, it is undecidable whether a given expression is equivalent to zero. Moreover, simplification generally depends on the properties of the operations involved; since multiplication (for example) may have different properties (e.g., it might or might not be commutative) depending on the domain under consideration, different simplifications might be appropriate.
@@ -84,7 +84,7 @@ const h = math.parse('x^2 + x')
 const x = math.parse('x')
 const dh = math.derivative(h, x)
 console.log(dh.toString())        // '2 * x + 1'
-console.log(dh.evaluate({x: 3}))  // '7'
+console.log(dh.evaluate({x: 3}))  // 7
 ```
 
 The rules used by `math.derivative` can be found on Wikipedia:
@@ -106,8 +106,8 @@ math.rationalize('(2x+1)^6')
 math.rationalize('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')
               // -20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)
 
-math.rationalize('x+x+x+y',{y:1}) // 3*x+1
-math.rationalize('x+x+x+y',{})    // 3*x+y
+math.rationalize('x+x+x+y',{y:1}) // Node '3 * x + 1'
+math.rationalize('x+x+x+y',{})    // Node '3 * x + y'
 
 const ret = math.rationalize('x+x+x+y',{},true)
               // ret.expression=3*x+y, ret.variables = ["x","y"]

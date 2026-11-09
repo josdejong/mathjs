@@ -227,10 +227,10 @@ functions of that name.
 ```js
 const expression = math.parse('(1+1+1)')
 
-expression.toString()                      // (1 + 1 + 1)
-expression.toString({parenthesis: 'keep'}) // (1 + 1 + 1)
-expression.toString({parenthesis: 'auto'}) // 1 + 1 + 1
-expression.toString({parenthesis: 'all'})  // (1 + 1) + 1
+expression.toString()                      // '(1 + 1 + 1)'
+expression.toString({parenthesis: 'keep'}) // '(1 + 1 + 1)'
+expression.toString({parenthesis: 'auto'}) // '1 + 1 + 1'
+expression.toString({parenthesis: 'all'})  // '(1 + 1) + 1'
 ```
 
 ### Handler
