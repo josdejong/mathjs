@@ -161,11 +161,11 @@ math.det(d)                               // 23
 Functions that require two or more matrix like arguments that operate elementwise automatically operate as if the arguments were the same size.
 
 ```js
-A = math.matrix([1, 2])       // Matrix, [1, 2]
-math.add(A, 3)                // Matrix, [4, 5]
+const A = math.matrix([1, 2])     // Matrix, [1, 2]
+math.add(A, 3)                    // Matrix, [4, 5]
 
-B = math.matrix([[3], [4]])   // Matrix, [[3], [4]]
-math.add(A, B)                // Matrix, [[4, 5], [5, 6]]
+const B = math.matrix([[3], [4]]) // Matrix, [[3], [4]]
+math.add(A, B)                    // Matrix, [[4, 5], [5, 6]]
 ```
 Any index that is in one of the arguments, can be found as if it existed on the others when the size on that dimension is one or not existing. This is valid in N dimensions.
 

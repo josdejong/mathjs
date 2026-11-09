@@ -35,7 +35,7 @@ math.add(math.bignumber(0.1), math.bignumber(0.2)) // BigNumber, 0.3
 math.add(300000000000000000n, 1n) // 300000000000000001n
 
 // use Fractions
-math.add(math.fraction(1), math.fraction(3)) // Fraction, 0.(3)
+math.divide(math.fraction(1), math.fraction(3)) // Fraction, 1/3
 
 // use strings containing numbers
 math.add('2', '3')               // 5
@@ -61,9 +61,9 @@ const matrix = math.matrix([1, 4, 9, 16, 25]) // Matrix, [1, 4, 9, 16, 25]
 math.map(matrix, math.sqrt)                   // Matrix, [1, 2, 3, 4, 5]
 
 // use units
-const a = math.unit(55, 'cm')    // 550 mm
-const b = math.unit('0.1m')      // 100 mm
-math.add(a, b)                   // 0.65 m
+const c = math.unit(55, 'cm')    // 550 mm
+const d = math.unit('0.1m')      // 100 mm
+math.add(c, d)                   // 0.65 m
 
 // check the type of a variable
 math.typeOf(2)                   // 'number'

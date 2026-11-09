@@ -31,7 +31,6 @@ const a = [[1, 2], [3, 4]]       // a 2x2 matrix
 math.subset(a, math.index(0, 1)) // returns 2
 
 // using the expression parser, indices are transformed to one-based:
-const a = [[1, 2], [3, 4]] // a 2x2 matrix
 let scope = {
   a: a
 }

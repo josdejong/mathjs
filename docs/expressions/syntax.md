@@ -695,7 +695,7 @@ math applications.*
 *IMPORTANT: The matrix indexing behavior has been changed in mathjs `v15`, see section [Migrate matrix indexing to mathjs v15](#migrate-matrix-indexing-to-mathjs-v15).*
 
 ```js
-parser = math.parser()
+const parser = math.parser()
 
 // create matrices
 parser.evaluate('a = [1, 2; 3, 4]')       // Matrix, [[1, 2], [3, 4]]

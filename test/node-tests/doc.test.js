@@ -3,7 +3,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { collectDocs } from '../../tools/docgenerator.js'
 import { create, all } from '../../lib/esm/index.js'
-import { extractExpectation as extract, checkExpectation as check } from './docExpectations.js'
+import { valueFromComment, compareWithExpected } from './docExpectations.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const math = create(all)
@@ -33,8 +33,8 @@ function onIssue (note) {
   issueCount++
   if (debug) console.log(note)
 }
-const extractExpectation = (comment, optional) => extract(math, comment, optional)
-const checkExpectation = (want, got) => check(math, want, got, onIssue)
+const extractExpectation = (comment, optional) => valueFromComment(math, comment, optional)
+const checkExpectation = (want, got) => compareWithExpected(math, want, got, onIssue)
 
 function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
   if (knownProblems.has(name)) {

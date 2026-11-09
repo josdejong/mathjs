@@ -1,29 +1,36 @@
 // Helpers to read the expected value from an example comment and compare it
 // with the actual result. Shared by doc.test.js (JSDoc examples) and
-// docs-examples.test.js (the markdown pages under docs/). `math` is the
-// instance the examples run in; `onIssue` is called with a note for
-// differences that are tolerated, like inexact numbers.
+// docs-examples.test.js (the markdown pages under docs/), so this is the one
+// place that defines which comments state a value. `math` is the instance the
+// examples run in; `onIssue` is called with a note for differences that are
+// tolerated, like inexact numbers.
 import { approxEqual, approxDeepEqual } from '../../tools/approx.js'
 
-export function extractExpectation (math, comment, optional = false) {
+// Return the value stated by an example comment, like "returns 5",
+// "Matrix [1, 2]" or "'abc'". A comment that does not evaluate to a value is
+// returned as is, or, when `proseIsNoValue` is set, gives undefined: the
+// docs pages mix comments with values and comments with prose.
+export function valueFromComment (math, comment, optional = false, proseIsNoValue = false) {
   if (comment === '') return undefined
   const returnsParts = comment.split('eturns').map(s => s.trim())
-  if (returnsParts.length > 1) return extractValue(math, returnsParts[1])
+  if (returnsParts.length > 1) return extractValue(math, returnsParts[1], proseIsNoValue)
   const outputsParts = comment.split('utputs')
   if (outputsParts.length > 1) {
     let output = outputsParts[1]
     if (output[0] === ':') output = output.substring(1)
-    return extractValue(math, output.trim())
+    return extractValue(math, output.trim(), proseIsNoValue)
   }
   // None of the usual flags; if we need a value,
   // assume the whole comment is the desired value. Otherwise return undefined
   if (optional) return undefined
-  return extractValue(math, comment)
+  return extractValue(math, comment, proseIsNoValue)
 }
 
-function extractValue (math, spec) {
+function extractValue (math, spec, proseIsNoValue) {
   // First check for a leading keyword:
   const words = spec.split(' ')
+  // The docs pages also write the keyword with a comma, as in "Matrix, [1, 2]"
+  if (words[0].endsWith(',')) words[0] = words[0].slice(0, -1)
   // If the last word end in 'i' and the value is not labeled as complex,
   // label it for the comment writer:
   if (words[words.length - 1].substr(-1) === 'i' && words[0] !== 'Complex') {
@@ -48,7 +55,9 @@ function extractValue (math, spec) {
   }
   const keywords = {
     number: 'Number(_)',
-    BigNumber: 'math.bignumber(_)',
+    Number: 'Number(_)',
+    bigint: '_',
+    BigNumber: "math.bignumber('_')", // quoted to keep all digits
     Fraction: 'math.fraction(_)',
     Complex: "math.complex('_')",
     Unit: "math.unit('_')",
@@ -58,6 +67,7 @@ function extractValue (math, spec) {
     ComplexArray: 'math.complex(_)',
     ComplexMatrix: 'math.complex(math.matrix(_))',
     string: '_',
+    String: '_',
     Node: 'math.parse(_)',
     value: 'math._',
     throws: "'_'"
@@ -76,35 +86,36 @@ function extractValue (math, spec) {
   }
   let value
   try {
-    value = eval(spec) // eslint-disable-line no-eval
+    // parentheses make an object like {a: 3} an object, not a block of code
+    value = eval(spec[0] === '{' ? '(' + spec + ')' : spec) // eslint-disable-line no-eval
   } catch (err) {
     if (spec[0] === '[') {
       // maybe it was an array with mathjs expressions in it
       try {
         value = math.evaluate(spec).toArray()
       } catch (newError) {
-        value = spec
+        value = proseIsNoValue ? undefined : spec
       }
     } else if (err instanceof SyntaxError || err instanceof ReferenceError) {
-      value = spec
+      value = proseIsNoValue ? undefined : spec
     } else {
       throw err
     }
   }
-  if (words[0] === 'Node') { // and even more :(
+  if (words[0] === 'Node' && value) { // and even more :(
     delete value.comment
   }
   return value
 }
 
-export function checkExpectation (math, want, got, onIssue = () => {}) {
+export function compareWithExpected (math, want, got, onIssue = () => {}) {
   if (Array.isArray(want)) {
     if (!Array.isArray(got)) {
       got = want.valueOf()
     }
     return approxDeepEqual(got, want, 1e-9)
   }
-  if (want instanceof math.Unit && got instanceof math.Unit) {
+  if (want?.isUnit && got?.isUnit) { // also for units of another math instance
     if (got.fixPrefix !== want.fixPrefix ||
       got.skipAutomaticSimplification !== want.skipAutomaticSimplification
     ) {
@@ -114,7 +125,7 @@ export function checkExpectation (math, want, got, onIssue = () => {}) {
     }
     return approxDeepEqual(got, want, 1e-9)
   }
-  if (want instanceof math.Complex && got instanceof math.Complex) {
+  if (want?.isComplex && got?.isComplex) {
     return approxDeepEqual(got, want, 1e-9)
   }
   if (typeof want === 'number' && typeof got === 'number' && want !== got) {

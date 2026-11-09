@@ -136,7 +136,7 @@ math.typed.addType({
 })
 
 // use the type in a new typed function
-const add = typed('add', {
+const add = math.typed('add', {
   'MyType, MyType': function (a, b) {
     return new MyType(a.value + b.value)
   }
