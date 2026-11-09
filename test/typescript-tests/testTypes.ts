@@ -2646,6 +2646,38 @@ Factory Test
   negativeSquare(3)
 }
 
+/*
+Custom factory dependencies
+ */
+{
+  const math = create(all)
+  class DateTime {}
+  factory('builtin', ['typed'], (injected) => {
+    expectTypeOf<keyof typeof injected>().toEqualTypeOf<'typed'>()
+    expectTypeOf(injected.typed).toEqualTypeOf<typeof math.typed>()
+    return injected.typed
+  })
+  // @ts-expect-error: sqrt is not a declared dependency
+  factory('missingDependency', ['typed'], ({ sqrt }) => sqrt(4))
+  const createDateTime = factory('DateTime', [], () => DateTime)
+  const createDatetime = factory(
+    'datetime',
+    ['typed', 'DateTime'] as const,
+    ({ typed, DateTime: DateTimeType }) => {
+      expectTypeOf(typed).toEqualTypeOf<typeof math.typed>()
+      return () => new DateTimeType()
+    }
+  )
+  math.import([createDateTime, createDatetime])
+  assert.ok(math.evaluate('datetime()') instanceof DateTime)
+
+  const dependencies = ['typed', 'DateTime']
+  factory('custom', dependencies, ({ typed, DateTime: DateTimeType }) => {
+    expectTypeOf(typed).toEqualTypeOf<typeof math.typed>()
+    return DateTimeType
+  })
+}
+
 /**
  * Dependency map typing test from mathjs official document:
  * https://mathjs.org/docs/custom_bundling.html#using-just-a-few-functions
