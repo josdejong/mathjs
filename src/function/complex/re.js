@@ -34,9 +34,9 @@ export const createRe = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    *    v0.16  Support BigNumber
    *    v0.2   Created
    *
-   * @param {number | BigNumber | Complex | Array | Matrix} x
+   * @param {number | BigNumber | Fraction | Complex | Array | Matrix} x
    *            A complex number or array with complex numbers
-   * @return {number | BigNumber | Array | Matrix} The real part of x
+   * @return {number | BigNumber | Fraction | Array | Matrix} The real part of x
    */
   return typed(name, {
     'number | BigNumber | Fraction': x => x,
