@@ -1,6 +1,5 @@
 import { factory } from '../../utils/factory.js'
 import { isInteger } from '../../utils/number.js'
-import { product } from '../../utils/product.js'
 
 const name = 'combinationsWithRep'
 const dependencies = ['typed']
@@ -20,6 +19,11 @@ export const createCombinationsWithRep = /* #__PURE__ */ factory(name, dependenc
    * Examples:
    *
    *    math.combinationsWithRep(7, 5) // returns 462
+   *
+   * History:
+   *
+   *    v15.3   Compute the number path exactly with BigInt so results are exact
+   *            whenever they are representable as a number
    *
    * See also:
    *
@@ -41,12 +45,19 @@ export const createCombinationsWithRep = /* #__PURE__ */ factory(name, dependenc
         throw new TypeError('k must be less than or equal to n + k - 1')
       }
 
-      if (k < n - 1) {
-        const prodrange = product(n, n + k - 1)
-        return prodrange / product(1, k)
+      // combinationsWithRep(n, k) == combinations(n + k - 1, k).
+      // Compute the binomial coefficient in exact integer arithmetic so the
+      // result is exact whenever it fits in a double, instead of dividing two
+      // large floating point products (e.g. combinationsWithRep(33, 12) used
+      // to return 21090682613.000004 instead of 21090682613).
+      const N = BigInt(n + k - 1)
+      const K = BigInt(k)
+      const kk = K < N - K ? K : N - K // C(N, K) == C(N, N - K)
+      let result = 1n
+      for (let i = 1n; i <= kk; i++) {
+        result = result * (N - kk + i) / i
       }
-      const prodrange = product(k + 1, n + k - 1)
-      return prodrange / product(1, n - 1)
+      return Number(result)
     },
 
     'BigNumber, BigNumber': function (n, k) {

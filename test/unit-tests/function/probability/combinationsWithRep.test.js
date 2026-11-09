@@ -11,6 +11,16 @@ describe('combinations', function () {
     assert.strictEqual(combinationsWithRep(25, 6), 593775)
   })
 
+  it('should return exact results whenever the value fits a double', function () {
+    // exact values of C(n + k - 1, k); the old implementation divided two
+    // large floating point products and returned e.g. 21090682613.000004
+    assert.strictEqual(combinationsWithRep(33, 12), 21090682613)
+    assert.strictEqual(combinationsWithRep(34, 12), 28760021745)
+    assert.strictEqual(combinationsWithRep(38, 12), 92263734836)
+    assert.strictEqual(combinationsWithRep(39, 12), 121399651100)
+    assert.strictEqual(combinationsWithRep(45, 11), 119653565850)
+  })
+
   it('should calculate the combinations of n items taken k at a time with BigNumbers', function () {
     assert.deepStrictEqual(combinationsWithRep(math.bignumber(7), math.bignumber(5)), math.bignumber(462))
     assert.deepStrictEqual(combinationsWithRep(math.bignumber(3), math.bignumber(10)), math.bignumber(66))
