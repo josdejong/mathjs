@@ -9,6 +9,17 @@ describe('catalan', function () {
     assert.strictEqual(catalan(8), 1430)
   })
 
+  it('should calculate exact catalan numbers whenever the result fits a double', function () {
+    // exact values from the recurrence C(0)=1, C(i+1) = C(i) * 2 * (2i+1) / (i+2)
+    assert.strictEqual(catalan(26), 18367353072152)
+    assert.strictEqual(catalan(27), 69533550916004)
+    assert.strictEqual(catalan(28), 263747951750360)
+    assert.strictEqual(catalan(29), 1002242216651368)
+    // C(30) is exactly representable as a double; the old implementation
+    // inherited rounding from the inexact intermediate combinations(60, 30)
+    assert.strictEqual(catalan(30), 3814986502092304)
+  })
+
   it('should calculate the nth catalan number with BigNumbers', function () {
     assert.deepStrictEqual(catalan(math.bignumber(7)), math.bignumber(429))
     assert.deepStrictEqual(catalan(math.bignumber(13)), math.bignumber(742900))
