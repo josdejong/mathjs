@@ -15,14 +15,31 @@ describe('catalan', function () {
     assert.strictEqual(catalan(27), 69533550916004)
     assert.strictEqual(catalan(28), 263747951750360)
     assert.strictEqual(catalan(29), 1002242216651368)
-    // C(30) is exactly representable as a double; the old implementation
-    // inherited rounding from the inexact intermediate combinations(60, 30)
+    // C(30) is the largest exactly representable Catalan number; the old
+    // implementation inherited rounding from the inexact intermediate
+    // combinations(60, 30)
     assert.strictEqual(catalan(30), 3814986502092304)
+  })
+
+  it('should stay close to the true value beyond the exact number range', function () {
+    // C(31) no longer fits in a double exactly; the number path continues the
+    // recurrence in plain number arithmetic and is approximately correct
+    assert.ok(Math.abs(catalan(31) - 14544636039226909) <= 2)
+    assert.ok(Math.abs(catalan(32) - 55534064877048198) <= 16)
   })
 
   it('should calculate the nth catalan number with BigNumbers', function () {
     assert.deepStrictEqual(catalan(math.bignumber(7)), math.bignumber(429))
     assert.deepStrictEqual(catalan(math.bignumber(13)), math.bignumber(742900))
+    assert.deepStrictEqual(catalan(math.bignumber(31)), math.bignumber('14544636039226909'))
+  })
+
+  it('should calculate the nth catalan number with bigints', function () {
+    assert.strictEqual(catalan(0n), 1n)
+    assert.strictEqual(catalan(8n), 1430n)
+    assert.strictEqual(catalan(30n), 3814986502092304n)
+    assert.strictEqual(catalan(31n), 14544636039226909n)
+    assert.strictEqual(catalan(33n), 212336130412243110n)
   })
 
   it('should not work with non-integer and negative input', function () {
