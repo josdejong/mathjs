@@ -127,7 +127,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
     // TODO: deprecate the identifier type (it's not used anymore, see https://github.com/josdejong/mathjs/issues/3253)
     {
       name: 'identifier',
-      test: s => isString && /^\p{L}[\p{L}\d]*$/u.test(s)
+      test: s => isString(s) && /^\p{L}[\p{L}\d]*$/u.test(s)
     },
     { name: 'string', test: isString },
     { name: 'Chain', test: isChain },

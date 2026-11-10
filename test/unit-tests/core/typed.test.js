@@ -15,6 +15,16 @@ describe('typed', function () {
     assert.throws(() => fn(47), TypeError)
   })
 
+  it('should only match strings as identifiers', function () {
+    const fn = math.typed({ identifier: value => value })
+
+    assert.strictEqual(fn('alpha2'), 'alpha2')
+    assert.strictEqual(fn('λ2'), 'λ2')
+    for (const value of [null, undefined, true, ['alpha']]) {
+      assert.throws(() => fn(value), TypeError)
+    }
+  })
+
   // TODO: Move (most) of the type checks like isNumber, isComplex, to is.test.js
 
   it('should test whether a value is a number', function () {

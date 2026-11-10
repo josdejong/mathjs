@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: restrict the `identifier` type to strings. Thanks @Hugohong258.
+
 - Docs: fix miscellaneous errors in examples on doc pages, in partial
   preparation for a systematic test harness on all such examples (#3741).
   Thanks @yxshee.
