@@ -2,9 +2,9 @@ import { deepForEach } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'multinomial'
-const dependencies = ['typed', 'add', 'divide', 'multiply', 'factorial', 'isInteger', 'isPositive']
+const dependencies = ['typed', 'add', 'multiply', 'combinations', 'isInteger', 'isPositive']
 
-export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide, multiply, factorial, isInteger, isPositive }) => {
+export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, combinations, isInteger, isPositive }) => {
   /**
    * Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities.
    *
@@ -29,17 +29,20 @@ export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ 
   return typed(name, {
     'Array | Matrix': function (a) {
       let sum = 0
-      let denom = 1
+      let result = 1
 
+      // (a1 + ... + an)! / (a1! ... an!) is the product of the binomial
+      // coefficients combinations(a1 + ... + ai, ai). Unlike dividing two
+      // factorials, every step of that product is an exact integer.
       deepForEach(a, function (ai) {
         if (!isInteger(ai) || !isPositive(ai)) {
           throw new TypeError('Positive integer value expected in function multinomial')
         }
         sum = add(sum, ai)
-        denom = multiply(denom, factorial(ai))
+        result = multiply(result, combinations(sum, ai))
       })
 
-      return divide(factorial(sum), denom)
+      return result
     }
   })
 })

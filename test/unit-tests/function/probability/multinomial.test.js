@@ -15,6 +15,21 @@ describe('multinomial', function () {
     assert.deepStrictEqual(multinomial([math.bignumber(10), math.bignumber(1), math.bignumber(2)]), math.bignumber(858))
   })
 
+  it('should return exact integers', function () {
+    assert.strictEqual(multinomial([30, 1, 1]), 992)
+    assert.strictEqual(multinomial([100, 2]), 5151)
+    assert.strictEqual(multinomial([20, 20]), 137846528820)
+    assert.strictEqual(multinomial([10, 10, 10]), 5550996791340)
+    assert.strictEqual(multinomial(math.matrix([30, 1, 1])), 992)
+  })
+
+  it('should return exact integers with BigNumbers', function () {
+    assert.deepStrictEqual(multinomial([math.bignumber(100), math.bignumber(2)]), math.bignumber(5151))
+    assert.deepStrictEqual(
+      multinomial([math.bignumber(20), math.bignumber(20), math.bignumber(20)]),
+      math.bignumber('577831214478475823831865900'))
+  })
+
   it('should not work with non-integer and negative input', function () {
     assert.throws(function () { multinomial([0.5, 3]) }, TypeError)
     assert.throws(function () { multinomial([math.bignumber(3), math.bignumber(0.5)]) }, TypeError)
