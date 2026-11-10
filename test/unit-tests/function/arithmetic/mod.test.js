@@ -68,6 +68,25 @@ describe('mod', function () {
     assert.deepStrictEqual(mod(10n, -4n), -2n)
   })
 
+  it('should calculate the exact modulus of two integer numbers', function () {
+    // the quotient is within the rounding tolerance of a whole number
+    assert.strictEqual(mod(1999999999999, 1000000000000), 999999999999)
+    assert.strictEqual(mod(29999999999999, 10000000000000), 9999999999999)
+    assert.strictEqual(mod(-1999999999999, 1000000000000), 1)
+    assert.strictEqual(mod(1999999999999, -1000000000000), -1)
+    assert.strictEqual(mod(-1999999999999, -1000000000000), -999999999999)
+
+    // x / y is rounded, but the integers themselves are exact
+    assert.strictEqual(mod(1e17, 7), 5)
+    assert.strictEqual(mod(-1e17, 7), 2)
+    assert.strictEqual(mod(2 ** 60, 3), 1)
+
+    assert.strictEqual(mod(-8, 4), 0)
+    assert.strictEqual(mod(8, -4), 0)
+    assert.deepStrictEqual(mod([1999999999999, 7], 1000000000000), [999999999999, 7])
+    assert.strictEqual(math.evaluate('1999999999999 % 1000000000000'), 999999999999)
+  })
+
   it('should throw an error if used with wrong number of arguments', function () {
     assert.throws(function () { mod(1) }, /TypeError: Too few arguments/)
     assert.throws(function () { mod(1, 2, 3) }, /TypeError: Too many arguments/)
@@ -99,6 +118,18 @@ describe('mod', function () {
 
   it('should calculate the modulus of bignumbers for a negative divisor', function () {
     assert.deepStrictEqual(mod(bignumber(10), bignumber(-4)), bignumber(-2))
+  })
+
+  it('should calculate the exact modulus of two integer bignumbers', function () {
+    assert.deepStrictEqual(mod(bignumber('1999999999999'), bignumber('1000000000000')), bignumber('999999999999'))
+    assert.deepStrictEqual(
+      mod(bignumber('1999999999999999999999999999999'), bignumber('1000000000000000000000000000000')),
+      bignumber('999999999999999999999999999999'))
+    assert.deepStrictEqual(mod(bignumber('-1999999999999'), bignumber('1000000000000')), bignumber(1))
+    assert.deepStrictEqual(mod(bignumber('1999999999999'), bignumber('-1000000000000')), bignumber(-1))
+    assert.deepStrictEqual(mod(bignumber('-1999999999999'), bignumber('-1000000000000')), bignumber('-999999999999'))
+    assert.deepStrictEqual(mod(bignumber(-8), bignumber(4)), bignumber(0))
+    assert.deepStrictEqual(mod(bignumber(8), bignumber(-4)), bignumber(0))
   })
 
   it('should calculate the modulus of mixed numbers and bignumbers', function () {
