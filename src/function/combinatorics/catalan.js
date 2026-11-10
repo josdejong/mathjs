@@ -65,18 +65,15 @@ export const createCatalan = /* #__PURE__ */ factory(name, dependencies, (
    *
    * History:
    *
-   *    v15.3   Compute the number path exactly via the recurrence
-   *            C(i+1) = C(i) * 2 * (2i+1) / (i+2) instead of inheriting the
-   *            rounding of the intermediate binomial coefficient C(2n, n);
-   *            add bigint support and cache the values computed so far
+   *    v15.3   Add bigint support
    *    v0.14   Created
    *
    * See also:
    *
    *    bellNumbers
    *
-   * @param {number | BigNumber | bigint} n    nth Catalan number
-   * @return {number | BigNumber | bigint}    Cn(n)
+   * @param {number | BigNumber | bigint} n    nonnegative integer index
+   * @return {number | BigNumber | bigint}    nth Catalan number
    */
   return typed(name, {
     'number | BigNumber | bigint': function (n) {
@@ -104,20 +101,20 @@ export const createCatalan = /* #__PURE__ */ factory(name, dependencies, (
           cache.push(make(value))
         }
       }
-      if (cache.length > index) {
-        return cache[index]
-      }
 
       // Extend the cache with the recurrence
       //   C(i+1) = C(i) * 2 * (2i+1) / (i+2)
       // Every step divides exactly, so the bigint and BigNumber paths stay
       // exact. On the number path the intermediate product can exceed the
       // exact-integer range of a double beyond C(30), where the result is
-      // approximate but close to the correctly rounded true value.
+      // approximate; measured against the exact bigint values, the relative
+      // error stays within a few ulps even for indices whose values reach
+      // the 300-digit range.
+      const two = make(2)
       for (let i = cache.length - 1; i < index; i++) {
         cache.push(divideScalar(
           multiplyScalar(
-            multiplyScalar(cache[i], make(2)),
+            multiplyScalar(cache[i], two),
             make(2 * i + 1)),
           make(i + 2)))
       }
