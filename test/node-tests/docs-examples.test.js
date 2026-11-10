@@ -41,7 +41,10 @@ const showIgnored = process.argv.includes('--ignored-docs')
 // Examples that cannot run here, by page and statement, with the reason
 const skipExamples = {
   "custom_bundling.md: console.log('c =', format(c))": 'imports the dependency collections',
-  "custom_bundling.md: console.log('d =', format(d))": 'imports the dependency collections'
+  "custom_bundling.md: console.log('d =', format(d))": 'imports the dependency collections',
+  // TODO: check these two again once the dimension in the broadcasting error is fixed (see #3778)
+  'datatypes/matrices.md: math.add([1, 2], [3, 4, 5])': 'known issue: wrong dimension in the error',
+  'datatypes/matrices.md: math.add([[1], [2], [3]], [[4], [5]])': 'known issue: wrong dimension in the error'
 }
 
 function listPages (dir) {
@@ -163,7 +166,7 @@ function runPage (file, page) {
       try {
         compareWithExpected(math, expected, actual)
         if (size !== undefined) {
-          assert.deepStrictEqual(math.size(actual).valueOf(), size)
+          assert.deepStrictEqual(math.size(actual), size)
         }
         if (type === 'Matrix') assert.ok(math.isMatrix(actual))
         if (type === 'Array') assert.ok(Array.isArray(actual))

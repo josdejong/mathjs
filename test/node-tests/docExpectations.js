@@ -15,6 +15,8 @@ import { approxEqual, approxDeepEqual } from '../../tools/approx.js'
 export function valueFromComment (math, comment, optional = false, proseIsNoValue = false) {
   comment = comment.split(';')[0].trim()
   if (comment === '') return undefined
+  // "result: 5" is another way to write "returns 5"
+  if (comment.startsWith('result:')) comment = 'returns' + comment.slice('result:'.length)
   const returnsParts = comment.split('eturns').map(s => s.trim())
   if (returnsParts.length > 1) return extractValue(math, returnsParts[1], proseIsNoValue)
   const outputsParts = comment.split('utputs')
@@ -155,6 +157,9 @@ export function compareWithExpected (math, want, got, onIssue = () => {}) {
     // the same units, in any order, like (m^3 Pa K) / mol, and the same value
     assert.strictEqual(got.formatUnits(), want.formatUnits())
     return approxEqual(got.value, want.value, 1e-9)
+  }
+  if (want?.isNode && got?.isNode) { // parentheses in the comment are not nodes
+    return assert.strictEqual(got.toString(), want.toString())
   }
   if (want?.isComplex && got?.isComplex) {
     return approxDeepEqual(got, want, 1e-9)

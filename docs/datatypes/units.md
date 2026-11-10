@@ -102,7 +102,7 @@ math.cos(c)                         // Number 0.7071067811865476
 const d = math.unit('80 mi/h')      // Unit 80 mi/h
 const e = math.unit('2 tonne')      // Unit 2 tonne
 const f = math.multiply(0.5, math.multiply(math.pow(d, 2), e))
-                                    // 1.2790064742399996 MJ
+f.to('MJ')                          // Unit 1.2790064742399996 MJ
 ```
 
 Operations with arrays are supported too:
@@ -193,7 +193,7 @@ math.evaluate('50000 kilofoo/s')  // 4.5 gigabaz
 
 ```js
 math.evaluate('45 mile/hour to createUnit("knot", "0.514444m/s")')
-// 39.103964668651976 knot
+// Unit 39.103964668651976 knot
 ```
 
 ### Support of custom characters in unit names

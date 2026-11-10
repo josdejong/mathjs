@@ -106,7 +106,7 @@ const c = math.number(b)                           // number, 0.3
 const d = math.bignumber('1.2e500')                // BigNumber, 1.2e+500
 const e = math.number(d)                           // number, Infinity
 
-// loosing precision when converting to number
+// losing precision when converting to number
 const f = math.bignumber('0.2222222222222222222')  // BigNumber, 0.2222222222222222222
 const g = math.number(f)                           // number,    0.2222222222222222
 ```

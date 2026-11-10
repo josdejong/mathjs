@@ -172,10 +172,10 @@ It's not possible to broadcast in cases where the size in that dimension is high
 
 ```js
 math.add([1, 2], [3, 4, 5])
-// Error: shape mismatch: mismatch is found in arg with shape (2) not possible to broadcast dimension 1 with size 2 to size 3
+// Error: shape mismatch: mismatch is found in arg with shape (2) not possible to broadcast dimension 0 with size 2 to size 3
 
 math.add([[1], [2], [3]], [[4], [5]])
-// Error: shape mismatch: mismatch is found in arg with shape (2,1) not possible to broadcast dimension 2 with size 2 to size 3
+// Error: shape mismatch: mismatch is found in arg with shape (2,1) not possible to broadcast dimension 1 with size 2 to size 3
 ```
 
 ## Size and Dimensions
@@ -284,7 +284,7 @@ math.squeeze([[3]])         // 3
 // when getting/setting a single value in a matrix using subset, 
 // it automatically squeeze/unsqueeze the value
 const b = math.matrix([[0, 1], [2, 3]])
-b.subset(math.index(1, 0))  // 2; and not [[2]]
+b.subset(math.index(1, 0))  // 2; note it's not [[2]]
 ```
 
 
@@ -400,7 +400,7 @@ mutate the matrix.
 ```js
 const p = math.matrix([[1, 2], [3, 4]])
 p.set([0, 1], 5)
-// p is now [[1, 5], [3, 4]]
+p             // Matrix, [[1, 5], [3, 4]]
 p.get([1, 0]) // 3
 ```
 

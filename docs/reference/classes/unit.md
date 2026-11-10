@@ -38,10 +38,11 @@ const c = Unit.parse(str)
 Example usage:
 
 ```js
-const a = new Unit(5, 'cm')               // 50 mm
-const b = Unit.parse('23 kg')             // 23 kg
-const c = math.in(a, new Unit(null, 'm')  // 0.05 m
-const d = new Unit(9.81, "m/s^2")         // 9.81 m/s^2
+const Unit = math.Unit
+const a = new Unit(5, 'cm')               // Unit 5 cm
+const b = Unit.parse('23 kg')             // Unit 23 kg
+const c = math.to(a, new Unit(null, 'm')) // Unit 0.05 m
+const d = new Unit(9.81, "m/s^2")         // Unit 9.81 m/s^2
 ```
 
 | Param | Type | Description |

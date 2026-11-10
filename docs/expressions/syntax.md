@@ -349,7 +349,7 @@ All available constants are listed on he page
 math.evaluate('pi')                 // 3.141592653589793
 math.evaluate('e ^ 2')              // 7.3890560989306495
 math.evaluate('log(e)')             // 1
-math.evaluate('e ^ (pi * i) + 1')   // 0; up to round-off (Euler)
+math.evaluate('e ^ (pi * i) + 1')   // 0; Euler's identity
 ```
 
 Variables can be defined using the assignment operator `=`, and can be used
