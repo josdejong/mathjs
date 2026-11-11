@@ -1,12 +1,17 @@
 import { factory } from '../../utils/factory.js'
-import { isMatrix } from '../../utils/is.js'
-import { arraySize } from '../../utils/array.js'
 import { DimensionError } from '../../error/DimensionError.js'
 
 const name = 'multinomial'
-const dependencies = ['typed', 'add', 'multiply', 'combinations', 'isInteger', 'isNegative']
+const dependencies = ['typed', 'add', 'multiply', 'combinations', 'isInteger', 'isNegative', 'size']
 
-export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, combinations, isInteger, isNegative }) => {
+export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, combinations, isInteger, isNegative, size }) => {
+  function nonnegativeInteger (ai) {
+    if (!isInteger(ai) || isNegative(ai)) {
+      throw new TypeError(`Nonnegative integer value expected in function multinomial, but got ${ai}`)
+    }
+    return ai
+  }
+
   /**
    * Computes the number of ways of dividing a1 + a2 + ... + an distinct items
    * into n groups of sizes a1, a2, ..., an, where the order of the items
@@ -46,29 +51,30 @@ export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   return typed(name, {
     'Array | Matrix': function (a) {
-      const size = isMatrix(a) ? a.size() : arraySize(a)
-      if (size.length !== 1) {
-        throw new DimensionError(size.length, 1)
-      }
-
-      // (a1 + ... + an)! / (a1! ... an!) is the product of the binomial
-      // coefficients combinations(a1 + ... + ai, ai). Unlike dividing two
-      // factorials, every step of that product is an exact integer. Both
-      // running values start from the first entry rather than from the
-      // numbers 0 and 1, so they keep the type of the entries.
-      let sum
-      let result
-      for (const ai of a.valueOf()) {
-        if (!isInteger(ai) || isNegative(ai)) {
-          throw new TypeError(`Nonnegative integer value expected in function multinomial, but got ${ai}`)
-        }
-        sum = sum === undefined ? ai : add(sum, ai)
-        const ways = combinations(sum, ai)
-        result = result === undefined ? ways : multiply(result, ways)
+      const dimensions = size(a)
+      if (dimensions.length !== 1) {
+        throw new DimensionError(dimensions.length, 1)
       }
 
       // like combinations(0, 0), the empty product is 1
-      return result === undefined ? 1 : result
+      if (dimensions[0] === 0) {
+        return 1
+      }
+      const entries = a.valueOf()
+
+      // (a1 + ... + an)! / (a1! ... an!) is the product of the binomial
+      // coefficients combinations(a1 + ... + ai, ai). Unlike dividing two
+      // factorials, every step of that product is an exact integer. The
+      // product starts from combinations(a1, a1) rather than the number 1,
+      // so it keeps the type of the entries.
+      let sum = nonnegativeInteger(entries[0])
+      let result = combinations(sum, sum)
+      for (let i = 1; i < entries.length; i++) {
+        const ai = nonnegativeInteger(entries[i])
+        sum = add(sum, ai)
+        result = multiply(result, combinations(sum, ai))
+      }
+      return result
     }
   })
 })
