@@ -1,29 +1,31 @@
-import { deepForEach } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
+import { isMatrix } from '../../utils/is.js'
+import { arraySize } from '../../utils/array.js'
+import { DimensionError } from '../../error/DimensionError.js'
 
 const name = 'multinomial'
 const dependencies = ['typed', 'add', 'multiply', 'combinations', 'isInteger', 'isNegative']
 
 export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, combinations, isInteger, isNegative }) => {
   /**
-   * Computes the number of ways of dividing a1 + a2 + ... + am distinct items
-   * into m groups of sizes a1, a2, ..., am, where the order of the items
+   * Computes the number of ways of dividing a1 + a2 + ... + an distinct items
+   * into n groups of sizes a1, a2, ..., an, where the order of the items
    * within each group does not matter. These numbers are known as the
-   * multinomial coefficients, (a1 + a2 + ... + am)! / (a1! a2! ... am!).
+   * multinomial coefficients, (a1 + a2 + ... + an)! / (a1! a2! ... an!).
    *
-   * multinomial takes a single array of nonnegative integers, and throws a
-   * TypeError if any entry is negative or not an integer. An entry of zero is
-   * a group with no items, so it does not change the result.
+   * multinomial takes a single one-dimensional array or Matrix, and throws an
+   * error if any entry is negative or not an integer. A zero entry corresponds
+   * to a group with no items, so it does not change the result.
    *
    * The multinomial coefficient equals the product of the binomial
-   * coefficients combinations(a1 + ... + ai, ai) for i = 1, ..., m, which is
+   * coefficients combinations(a1 + ... + ai, ai) for i = 1, ..., n, which is
    * how it is computed here. The entries can be of any numeric type that
    * combinations() handles, written as Numeric below, and the result has the
    * type that combinations() returns for them.
    *
    * Syntax:
    *
-   *     math.multinomial(a) // a is an array or matrix
+   *     math.multinomial(a) // a is a one-dimensional array or matrix
    *
    * Examples:
    *
@@ -36,7 +38,7 @@ export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * History:
    *
-   *    v15.3  Allow zero inputs
+   *    v15.3  Allow zero inputs; throw on input of more than one dimension
    *    v1.7   Created
    *
    * @param {Numeric[] | Matrix} a    Nonnegative integer sizes of the groups
@@ -44,21 +46,29 @@ export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ 
    */
   return typed(name, {
     'Array | Matrix': function (a) {
-      let sum = 0
-      let result = 1
+      const size = isMatrix(a) ? a.size() : arraySize(a)
+      if (size.length !== 1) {
+        throw new DimensionError(size.length, 1)
+      }
 
-      // (a1 + ... + am)! / (a1! ... am!) is the product of the binomial
+      // (a1 + ... + an)! / (a1! ... an!) is the product of the binomial
       // coefficients combinations(a1 + ... + ai, ai). Unlike dividing two
-      // factorials, every step of that product is an exact integer.
-      deepForEach(a, function (ai) {
+      // factorials, every step of that product is an exact integer. Both
+      // running values start from the first entry rather than from the
+      // numbers 0 and 1, so they keep the type of the entries.
+      let sum
+      let result
+      for (const ai of a.valueOf()) {
         if (!isInteger(ai) || isNegative(ai)) {
           throw new TypeError(`Nonnegative integer value expected in function multinomial, but got ${ai}`)
         }
-        sum = add(sum, ai)
-        result = multiply(result, combinations(sum, ai))
-      })
+        sum = sum === undefined ? ai : add(sum, ai)
+        const ways = combinations(sum, ai)
+        result = result === undefined ? ways : multiply(result, ways)
+      }
 
-      return result
+      // like combinations(0, 0), the empty product is 1
+      return result === undefined ? 1 : result
     }
   })
 })

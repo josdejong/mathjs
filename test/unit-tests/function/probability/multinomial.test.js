@@ -51,6 +51,20 @@ describe('multinomial', function () {
     assert.throws(function () { multinomial([math.bignumber(3), math.bignumber(-3)]) }, TypeError)
   })
 
+  it('should return 1 for no entries, like combinations(0, 0)', function () {
+    assert.strictEqual(multinomial([]), 1)
+    assert.strictEqual(multinomial(math.matrix([])), 1)
+  })
+
+  it('should keep the type of a single BigNumber entry', function () {
+    assert.deepStrictEqual(multinomial([math.bignumber(7)]), math.bignumber(1))
+  })
+
+  it('should only accept one-dimensional input', function () {
+    assert.throws(function () { multinomial([[2, 1], [1, 1]]) }, /Dimension mismatch \(2 != 1\)/)
+    assert.throws(function () { multinomial(math.matrix([[1, 2], [3, 4]])) }, /Dimension mismatch \(2 != 1\)/)
+  })
+
   it('should not work with the wrong number or type of arguments', function () {
     assert.throws(function () { multinomial(5, 3, 2) })
     assert.throws(function () { multinomial(true, 'hello world') })

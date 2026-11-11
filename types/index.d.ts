@@ -2599,11 +2599,11 @@ export interface MathJsInstance extends MathJsFactory {
   lgamma<T extends number | Complex>(n: T): NoLiteralType<T>
 
   /**
-   * Computes the number of ways of dividing a1 + a2 + ... + am distinct
-   * items into m groups of sizes a1, a2, ..., am, where the order within
+   * Computes the number of ways of dividing a1 + a2 + ... + an distinct
+   * items into n groups of sizes a1, a2, ..., an, where the order within
    * each group does not matter (the multinomial coefficient). multinomial
-   * takes one array of nonnegative integers, and throws a TypeError if any
-   * entry is negative or not an integer.
+   * takes a single one-dimensional array, and throws an error if any entry
+   * is negative or not an integer.
    * @param a Nonnegative integer sizes of the groups
    * @returns multinomial coefficient
    */
@@ -6727,11 +6727,11 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<number>
 
   /**
-   * Computes the number of ways of dividing a1 + a2 + ... + am distinct
-   * items into m groups of sizes a1, a2, ..., am, where the order within
+   * Computes the number of ways of dividing a1 + a2 + ... + an distinct
+   * items into n groups of sizes a1, a2, ..., an, where the order within
    * each group does not matter (the multinomial coefficient). multinomial
-   * takes one array of nonnegative integers, and throws a TypeError if any
-   * entry is negative or not an integer.
+   * takes a single one-dimensional array, and throws an error if any entry
+   * is negative or not an integer.
    */
 
   multinomial<T extends number | BigNumber>(
