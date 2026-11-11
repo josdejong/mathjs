@@ -392,7 +392,7 @@ const knownNoHistory = new Set([
   'rotationMatrix', 'row', 'size', 'sort', 'squeeze', 'subset', 'trace',
   'transpose', 'zeros', 'solveODE', 'bernoulli', 'combinations',
   'combinationsWithRep', 'factorial', 'gamma', 'lgamma',
-  'multinomial', 'permutations', 'pickRandom', 'random', 'randomInt',
+  'permutations', 'pickRandom', 'random', 'randomInt',
   'compareText', 'equalText',
   'setCartesian', 'setDifference', 'setDistinct', 'setIntersect', 'setIsSubset',
   'setMultiplicity', 'setPowerset', 'setSize', 'setSymDifference', 'setUnion',
