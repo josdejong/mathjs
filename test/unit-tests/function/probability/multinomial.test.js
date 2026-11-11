@@ -45,7 +45,9 @@ describe('multinomial', function () {
     assert.throws(function () { multinomial([math.bignumber(3), math.bignumber(0.5)]) }, TypeError)
     assert.throws(function () { multinomial([math.bignumber(3.5), math.bignumber(-3)]) }, TypeError)
     assert.throws(function () { multinomial([math.bignumber(3.5), 1 / 3]) }, TypeError)
-    assert.throws(function () { multinomial([-1, 2]) }, TypeError)
+    assert.throws(function () { multinomial([-1, 2]) },
+      /TypeError: Nonnegative integer value expected in function multinomial, but got -1/)
+    assert.throws(function () { multinomial([2, 0.5]) }, /but got 0\.5/)
     assert.throws(function () { multinomial([math.bignumber(3), math.bignumber(-3)]) }, TypeError)
   })
 

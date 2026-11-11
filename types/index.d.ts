@@ -2599,11 +2599,12 @@ export interface MathJsInstance extends MathJsFactory {
   lgamma<T extends number | Complex>(n: T): NoLiteralType<T>
 
   /**
-   * Multinomial Coefficients compute the number of ways of picking a1,
-   * a2, ..., ai unordered outcomes from n possibilities. multinomial
-   * takes one array of integers as an argument. The following condition
-   * must be enforced: every ai <= 0
-   * @param a Integer number of objects in the subset
+   * Computes the number of ways of dividing a1 + a2 + ... + am distinct
+   * items into m groups of sizes a1, a2, ..., am, where the order within
+   * each group does not matter (the multinomial coefficient). multinomial
+   * takes one array of nonnegative integers, and throws a TypeError if any
+   * entry is negative or not an integer.
+   * @param a Nonnegative integer sizes of the groups
    * @returns multinomial coefficient
    */
   multinomial<T extends number | BigNumber>(a: T[]): NoLiteralType<T>
@@ -6726,10 +6727,11 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<number>
 
   /**
-   * Multinomial Coefficients compute the number of ways of picking a1,
-   * a2, ..., ai unordered outcomes from n possibilities. multinomial
-   * takes one array of integers as an argument. The following condition
-   * must be enforced: every ai <= 0
+   * Computes the number of ways of dividing a1 + a2 + ... + am distinct
+   * items into m groups of sizes a1, a2, ..., am, where the order within
+   * each group does not matter (the multinomial coefficient). multinomial
+   * takes one array of nonnegative integers, and throws a TypeError if any
+   * entry is negative or not an integer.
    */
 
   multinomial<T extends number | BigNumber>(
