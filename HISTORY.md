@@ -2,6 +2,11 @@
 
 # unpublished changes since 15.2.0
 
+- Feat: multinomial allows zero arguments and direct list of arguments.
+  Reduce overflow-related accuracy issues by using formula based on
+  combinations, with no division needed. Throw on likely erroneous
+  multidimensional input. Improve documentation and TypeScript typing (#3790).
+  Thanks @Dx-Alz-xD and @chatman-media.
 - Docs: fix miscellaneous errors in examples on doc pages, in partial
   preparation for a systematic test harness on all such examples (#3741).
   Thanks @yxshee.

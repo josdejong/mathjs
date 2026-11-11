@@ -2,9 +2,14 @@ export const multinomialDocs = {
   name: 'multinomial',
   category: 'Probability',
   syntax: [
+    'multinomial(a1, a2, ..., an)',
     'multinomial(A)'
   ],
-  description: 'Computes the number of ways of dividing a1 + a2 + ... + an distinct items into n unordered groups of sizes a1, a2, ..., an: the multinomial coefficient (a1 + ... + an)! / (a1! ... an!). Takes one one-dimensional array or Matrix of nonnegative integers.',
+  description: 'Computes the number of ways of dividing a1 + a2 + ... + an ' +
+    'distinct items into n unordered groups of sizes a1, a2, ..., an: ' +
+    'the multinomial coefficient (a1 + ... + an)! / (a1! ... an!). ' +
+    'Takes the ai as argument list, or one one-dimensional array or Matrix ' +
+    'of nonnegative integers.',
   examples: [
     'multinomial([1, 2, 1])',
     'multinomial([2, 0, 1])'

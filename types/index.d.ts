@@ -826,16 +826,21 @@ export interface MathJsInstance extends MathJsFactory {
    * @param dataType The Matrix data type
    * @returns The created Matrix
    */
-  matrix(
-    data: MathCollection | string[],
+  matrix<T extends MathNumericType>(
+    data: MathCollection<T>,
     format?: MatrixStorageFormat,
     dataType?: string
-  ): Matrix
+  ): Matrix<T>
   matrix<T extends MathScalarType>(
     data: MathCollection<T>,
     format?: MatrixStorageFormat,
     dataType?: string
   ): Matrix<T>
+  matrix(
+    data: MathCollection | string[],
+    format?: MatrixStorageFormat,
+    dataType?: string
+  ): Matrix
 
   /**
    * Create a number or convert a string, boolean, or unit to a number.
@@ -2602,12 +2607,13 @@ export interface MathJsInstance extends MathJsFactory {
    * Computes the number of ways of dividing a1 + a2 + ... + an distinct
    * items into n groups of sizes a1, a2, ..., an, where the order within
    * each group does not matter (the multinomial coefficient). multinomial
-   * takes a single one-dimensional array, and throws an error if any entry
-   * is negative or not an integer.
+   * takes the ai as arguments, or a single one-dimensional array, and throws
+   * an error if any entry is negative or not an integer.
    * @param a Nonnegative integer sizes of the groups
    * @returns multinomial coefficient
    */
-  multinomial<T extends number | BigNumber>(a: T[]): NoLiteralType<T>
+  multinomial<T extends MathNumericType>(...a: T[]): NoLiteralType<T>
+  multinomial<T extends MathNumericType>(a: MathCollection<T>): NoLiteralType<T>
 
   /**
    * Compute the number of ways of obtaining an ordered subset of k
@@ -6730,12 +6736,16 @@ export interface MathJsChain<TValue> {
    * Computes the number of ways of dividing a1 + a2 + ... + an distinct
    * items into n groups of sizes a1, a2, ..., an, where the order within
    * each group does not matter (the multinomial coefficient). multinomial
-   * takes a single one-dimensional array, and throws an error if any entry
+   * takes the ai as arguments, or a single one-dimensional array, and
+   * throws an error if any entry
    * is negative or not an integer.
    */
-
-  multinomial<T extends number | BigNumber>(
-    a: MathJsChain<T[]>
+  multinomial<T extends MathNumericType>(
+    a1: MathJsChain<T>,
+    ...rest: T[]
+  ): MathJsChain<NoLiteralType<T>>
+  multinomial<T extends MathNumericType>(
+    a: MathJsChain<MathCollection<T>>
   ): MathJsChain<NoLiteralType<T>>
 
   /**
