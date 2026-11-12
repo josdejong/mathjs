@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'zeta'
-const dependencies = ['typed', 'config', 'multiply', 'pow', 'divide', 'factorial', 'equal', 'smallerEq', 'isBounded', 'isNegative', 'gamma', 'sin', 'subtract', 'add', '?Complex', '?BigNumber', 'pi']
+const dependencies = ['typed', 'config', 'multiply', 'pow', 'divide', 'factorial', 'equal', 'smallerEq', 'isBounded', 'isNegative', 'isInteger', 'isNaN', 'gamma', 'sin', 'subtract', 'add', '?Complex', '?BigNumber', 'pi']
 
-export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiply, pow, divide, factorial, equal, smallerEq, isBounded, isNegative, gamma, sin, subtract, add, Complex, BigNumber, pi }) => {
+export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiply, pow, divide, factorial, equal, smallerEq, isBounded, isNegative, isInteger, isNaN, gamma, sin, subtract, add, Complex, BigNumber, pi }) => {
   /**
    * Compute the Riemann Zeta function of a value using an infinite series for
    * all of the complex plane using Riemann's Functional equation.
@@ -32,14 +32,18 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @return {number | Complex | BigNumber}    The Riemann Zeta of `s`
    */
   return typed(name, {
-    number: (s) => zetaNumeric(s, value => value, () => 20),
+    number: (s) => zetaNumeric(s, value => value, () => 20, s => s >= 0),
     BigNumber: (s) => zetaNumeric(
       s,
       value => new BigNumber(value),
       () => {
         // relTol is for example 1e-12. Extract the positive exponent 12 from that
         return Math.abs(Math.log10(config.relTol))
-      }
+      },
+      // gamma only supports integer BigNumbers, so the reflection can only be
+      // used for negative integers. Other values keep the old (less accurate)
+      // range of the series.
+      (s, n) => !s.isNegative() || (!s.isInteger() && s.gt(-(n - 1) / 2))
     ),
     Complex: zetaComplex
   })
@@ -48,9 +52,10 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @param {number | BigNumber} s
    * @param {(value: number) => number | BigNumber} createValue
    * @param {(value: number | BigNumber | Complex) => number} determineDigits
+   * @param {(value: number | BigNumber, n: number) => boolean} useSeries
    * @returns {number | BigNumber}
    */
-  function zetaNumeric (s, createValue, determineDigits) {
+  function zetaNumeric (s, createValue, determineDigits, useSeries) {
     if (equal(s, 0)) {
       return createValue(-0.5)
     }
@@ -60,8 +65,12 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     if (!isBounded(s)) {
       return isNegative(s) ? createValue(NaN) : createValue(1)
     }
+    if (isNegative(s) && isInteger(divide(s, 2))) {
+      // trivial zeros at the negative even integers
+      return createValue(0)
+    }
 
-    return zeta(s, createValue, determineDigits, s => s)
+    return zeta(s, createValue, determineDigits, useSeries)
   }
 
   /**
@@ -81,27 +90,38 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     if (s.im === Infinity || s.re === -Infinity) {
       return new Complex(NaN, NaN)
     }
+    if (s.im === 0 && s.re < 0 && s.re % 2 === 0) {
+      // trivial zeros at the negative even integers
+      return new Complex(0)
+    }
 
-    return zeta(s, value => value, s => Math.round(1.3 * 15 + 0.9 * Math.abs(s.im)), s => s.re)
+    return zeta(s, value => value, s => Math.round(1.3 * 15 + 0.9 * Math.abs(s.im)), s => s.re >= 0)
   }
 
   /**
    * @param {number | BigNumber | Complex} s
    * @param {(value: number) => number | BigNumber | Complex} createValue
    * @param {(value: number | BigNumber | Complex) => number} determineDigits
-   * @param {(value: number | BigNumber | Complex) => number} getRe
+   * @param {(value: number | BigNumber | Complex, n: number) => boolean} useSeries
+   *   Whether to use the series directly. The series loses precision for
+   *   Re(s) < 0, because its terms grow like k^|s|.
    * @returns {*|number}
    */
-  function zeta (s, createValue, determineDigits, getRe) {
+  function zeta (s, createValue, determineDigits, useSeries) {
     const n = determineDigits(s)
-    if (getRe(s) > -(n - 1) / 2) {
+    if (useSeries(s, n)) {
       return f(s, createValue(n), createValue)
     } else {
-      // Function Equation for reflection to x < 1
+      // Function Equation for reflection to Re(s) > 1
+      const zetaReflected = zeta(subtract(1, s), createValue, determineDigits, useSeries)
+      if (isNaN(zetaReflected)) {
+        // Complex multiplication turns NaN into Infinity, keep it NaN
+        return zetaReflected
+      }
       let c = multiply(pow(2, s), pow(createValue(pi), subtract(s, 1)))
       c = multiply(c, (sin(multiply(divide(createValue(pi), 2), s))))
       c = multiply(c, gamma(subtract(1, s)))
-      return multiply(c, zeta(subtract(1, s), createValue, determineDigits, getRe))
+      return multiply(c, zetaReflected)
     }
   }
 

@@ -30,6 +30,21 @@ describe('Riemann Zeta', function () {
     assert.ok(isNaN(zeta(-Infinity)))
   })
 
+  it('should calculate the Riemann Zeta Function of a negative integer between -3 and -10', function () {
+    approxEqual(zeta(-5), -1 / 252)
+    approxEqual(zeta(-7), 1 / 240)
+    approxEqual(zeta(-9), -1 / 132)
+  })
+
+  it('should return exactly zero at the trivial zeros', function () {
+    assert.strictEqual(zeta(-2), 0)
+    assert.strictEqual(zeta(-4), 0)
+    assert.strictEqual(zeta(-6), 0)
+    assert.strictEqual(zeta(-8), 0)
+    assert.strictEqual(zeta(-20), 0)
+    assert.deepStrictEqual(zeta(math.complex(-6, 0)), math.complex(0, 0))
+  })
+
   it('should calculate the Riemann Zeta Function of a BigNumber', function () {
     const bigEpsilon = 1e-5 // FIXME: should work with for example an epsilon of 1e-64
     const digits = Math.abs(Math.log10(bigEpsilon))
@@ -56,6 +71,10 @@ describe('Riemann Zeta', function () {
     bigApproxEqual(zeta(math2.bignumber(100)), math2.bignumber('1.0000000000000000000000000000007888609052210118073520537827660414'))
     bigApproxEqual(zeta(math2.bignumber(Infinity)), math2.bignumber('1')) // shouldn't stall
     bigApproxEqual(zeta(math2.bignumber(-Infinity)), math2.bignumber(NaN)) // shouldn't stall
+    bigApproxEqual(zeta(math2.bignumber(-5)), math2.bignumber(-1).div(252))
+    bigApproxEqual(zeta(math2.bignumber(-7)), math2.bignumber(1).div(240))
+    assert.ok(zeta(math2.bignumber(-4)).isZero())
+    bigApproxEqual(zeta(math2.bignumber(-0.5)), math2.bignumber('-0.2078862249773545660173067'))
   })
 
   it('should calculate the Riemann Zeta Function of a rational number', function () {
@@ -71,6 +90,11 @@ describe('Riemann Zeta', function () {
     approxEqual(zeta(-0.5), -0.2078862249773545660173067)
     approxEqual(zeta(-1.5), -0.0254852018898330359495429)
     approxEqual(zeta(-2.5), 0.00851692877785033054235856)
+    approxEqual(zeta(-4.5), -0.003091669247215833844824)
+    approxEqual(zeta(-7.5), 0.003269039572600220021717)
+    approxEqual(zeta(-9.0686), -0.007750275806028939706942)
+    approxEqual(zeta(-9.5), -0.006672172296466640756764)
+    approxEqual(zeta(-12.25), -0.01835281051383905969517)
   })
 
   it('should calculate the Riemann Zeta Function of an irrational number', function () {
@@ -90,5 +114,14 @@ describe('Riemann Zeta', function () {
     approxEqual(zeta(math.complex(3.9, -5.2)), math.complex(0.952389583517691366229, -0.03276345793831000384775143962))
     approxEqual(zeta(math.complex(-1.2, -9.3)), math.complex(2.209608454242663005234, -0.67864225792147162441259999407))
     approxEqual(zeta(math.complex(0.5, 14.14)), math.complex(-0.00064921838659084911, 0.004134963322496717323762898714))
+    approxEqual(zeta(math.complex(-7.5, 1)), math.complex(0.009175356699535502595975, 0.005003748974683791482234))
+    approxEqual(zeta(math.complex(-5, 3)), math.complex(-0.0949938807478883714693, -0.026534735139453045673))
+    approxEqual(zeta(math.complex(-12, 0.5)), math.complex(0.01168787692187827100465, 0.03261005164625773541181))
+  })
+
+  it('should return NaN, not Infinity, for a Complex number it cannot evaluate', function () {
+    // the series does not converge numerically for a large imaginary part
+    assert.ok(isNaN(zeta(math.complex(2, 100)).re))
+    assert.ok(isNaN(zeta(math.complex(-1, 100)).re))
   })
 })
