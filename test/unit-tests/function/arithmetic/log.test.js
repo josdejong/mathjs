@@ -117,6 +117,12 @@ describe('log', function () {
     approxDeepEqual(log(ten16), 16 * log(10n))
   })
 
+  it('should return the complex log of a negative bigint', function () {
+    approxDeepEqual(log(-8n), log(-8))
+    approxDeepEqual(log(-8n), complex(Math.log(8), Math.PI))
+    assert(isNaN(mathPredictable.log(-8n)))
+  })
+
   it('should throw an error when used on a unit', function () {
     assert.throws(function () { log(unit('5cm')) })
   })

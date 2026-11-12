@@ -86,6 +86,12 @@ describe('log2', function () {
     assert.strictEqual(log2(two70), 70)
   })
 
+  it('should return the complex log base two of a negative bigint', function () {
+    approxDeepEqual(log2(-8n), log2(-8))
+    approxDeepEqual(log2(-8n), complex(3, Math.PI / Math.LN2))
+    assert(isNaN(mathPredictable.log2(-8n)))
+  })
+
   it('should throw an error when used on a unit', function () {
     assert.throws(function () { log2(unit('5cm')) })
   })
