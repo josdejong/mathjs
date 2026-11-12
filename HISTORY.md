@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: #3779 Use one-based dimension index in parsed expressions with
+  std and variance (#3770). Thanks @jayhemnani9910.
 - Feat: multinomial allows zero arguments and direct list of arguments.
   Reduce overflow-related accuracy issues by using formula based on
   combinations, with no division needed. Throw on likely erroneous
