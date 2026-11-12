@@ -5,9 +5,9 @@ import { csPermute } from '../../../../../src/function/algebra/sparse/csPermute.
 import { createCsLu } from '../../../../../src/function/algebra/sparse/csLu.js'
 import { createCsSqr } from '../../../../../src/function/algebra/sparse/csSqr.js'
 
-const { abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, SparseMatrix } = math
+const { typed, abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, SparseMatrix } = math
 
-const csLu = createCsLu({ abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })
+const csLu = createCsLu({ typed, abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })
 const csSqr = createCsSqr({ add, multiply, transpose })
 
 describe('csLu', function () {
