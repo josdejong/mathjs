@@ -107,13 +107,13 @@ const ignoreFunctions = new Set([
 
 const knownProblems = new Set([
   'setUnion', 'randomInt',
-  'random', 'pickRandom', 'kldivergence',
-  'parser', 'compile', 're', 'im',
+  'random', 'pickRandom',
+  'parser', 'compile',
   'subset', 'squeeze', 'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
   'matrixFromColumns', 'getMatrixDataType', 'eigs', 'diff', 'slu',
-  'rationalize', 'qr', 'lusolve', 'lup', 'derivative',
-  'symbolicEqual', 'schur', 'sylvester', 'freqz', 'round',
+  'rationalize', 'qr', 'lusolve', 'lup',
+  'schur', 'sylvester', 'freqz', 'round',
   'import', 'typed',
   'unit', 'sparse', 'matrix', 'index', 'bignumber', 'fraction', 'complex',
   'parse'
@@ -375,15 +375,15 @@ const knownUndocumented = new Set([
 
 // Functions yet to obtain individual History listings:
 const knownNoHistory = new Set([
-  'config', 'typed', 'derivative', 'leafCount', 'lsolve', 'lsolveAll', 'lup',
+  'config', 'typed', 'leafCount', 'lsolve', 'lsolveAll', 'lup',
   'lusolve', 'lyap', 'qr', 'rationalize', 'resolve', 'schur', 'simplify',
-  'simplifyConstant', 'slu', 'sylvester', 'symbolicEqual',
+  'simplifyConstant', 'slu', 'sylvester',
   'usolve', 'usolveAll', 'abs', 'cube', 'divide', 'expm',
   'hypot', 'log10', 'log1p', 'log2', 'multiply',
   'norm', 'pow', 'round', 'sign', 'sqrt', 'sqrtm',
   'square', 'unaryMinus', 'unaryPlus', 'bitNot',
-  'bellNumbers', 'catalan', 'composition', 'arg', 'conj', 'im',
-  're', 'compile', 'evaluate', 'help', 'parser', 'distance', 'intersect',
+  'bellNumbers', 'catalan', 'composition', 'arg', 'conj',
+  'compile', 'evaluate', 'help', 'parser', 'distance', 'intersect',
   'not', 'nullish', 'column', 'count', 'cross',
   'ctranspose', 'det', 'diag', 'diff', 'dot', 'eigs', 'fft', 'filter',
   'flatten', 'forEach', 'getMatrixDataType', 'identity', 'ifft', 'inv', 'kron',
@@ -391,8 +391,8 @@ const knownNoHistory = new Set([
   'ones', 'partitionSelect', 'pinv', 'range', 'reshape', 'resize', 'rotate',
   'rotationMatrix', 'row', 'size', 'sort', 'squeeze', 'subset', 'trace',
   'transpose', 'zeros', 'solveODE', 'bernoulli', 'combinations',
-  'combinationsWithRep', 'factorial', 'gamma', 'kldivergence', 'lgamma',
-  'multinomial', 'permutations', 'pickRandom', 'random', 'randomInt',
+  'combinationsWithRep', 'factorial', 'gamma', 'lgamma',
+  'permutations', 'pickRandom', 'random', 'randomInt',
   'compareText', 'equalText',
   'setCartesian', 'setDifference', 'setDistinct', 'setIntersect', 'setIsSubset',
   'setMultiplicity', 'setPowerset', 'setSize', 'setSymDifference', 'setUnion',

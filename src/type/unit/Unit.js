@@ -1754,13 +1754,6 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       value: 0.201168,
       offset: 0
     },
-    rd: {
-      name: 'rd',
-      base: BASE_UNITS.LENGTH,
-      prefixes: PREFIXES.NONE,
-      value: 5.029210,
-      offset: 0
-    },
     ch: {
       name: 'ch',
       base: BASE_UNITS.LENGTH,
@@ -2817,6 +2810,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     miles: 'mile',
     links: 'link',
     rods: 'rod',
+    rd: 'rod',
     chains: 'chain',
     angstroms: 'angstrom',
 

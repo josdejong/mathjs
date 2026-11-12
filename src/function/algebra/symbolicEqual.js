@@ -40,11 +40,15 @@ export const createSymbolicEqual = /* #__PURE__ */ factory(name, dependencies, (
    *     math.symbolicEqual('x*y', 'y*x', {context: {multiply: {commutative: false}}}) // Returns false
    *     math.symbolicEqual('x/y', '(y*x^(-1))^(-1)') // Returns true
    *     math.symbolicEqual('abs(x)','x') // Returns false
-   *     math.symbolicEqual('abs(x)','x', simplify.positiveContext) // Returns true
+   *     math.symbolicEqual('abs(x)','x', {context: math.simplify.positiveContext}) // Returns true
    *
    * See also:
    *
    *     simplify, evaluate
+   *
+   * History:
+   *
+   *     v10.3  Created
    *
    * @param {Node|string} expr1  The first expression to compare
    * @param {Node|string} expr2  The second expression to compare
