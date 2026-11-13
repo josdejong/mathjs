@@ -2,6 +2,9 @@
 
 # unpublished changes since 15.2.0
 
+- Feat: Add bigint support to catalan() and fix #3780, significantly improve
+  catalan() accuracy by computing with exact-division recurrence (#3781).
+  Thanks @rahul05ranjan.
 - Fix: #3779 Use one-based dimension index in parsed expressions with
   std and variance (#3770). Thanks @jayhemnani9910.
 - Feat: multinomial allows zero arguments and direct list of arguments.
