@@ -27,21 +27,16 @@ describe('catalan', function () {
     assert.ok(Math.abs(catalan(32) - Number('55534064877048198')) <= 16)
 
     // Accuracy check in the 200-300 digit range: the number path is compared
-    // against the exact bigint value of the same recurrence. The measured
-    // relative error stays within a few ulps there (see the review
-    // discussion); 1e-14 leaves an order of magnitude of headroom.
-    const exactCatalan = function (n) {
-      let c = 1n
-      for (let i = 0n; i < BigInt(n); i++) {
-        c = c * 2n * (2n * i + 1n) / (i + 2n)
-      }
-      return c
-    }
+    // against math.catalan's own exact bigint result (checked against OEIS
+    // A000108 elsewhere in this file, and cached by the implementation).
+    // The measured relative error stays within a few ulps there (see the
+    // review discussion); 2e-15 is roughly as tight as the number path can
+    // pass, so any future drift shows up as a failure.
     // C(332) has 196, C(400) 237, C(450) 267 and C(500) 297 digits
     for (const n of [332, 400, 450, 500]) {
-      const exact = exactCatalan(n)
+      const exact = catalan(BigInt(n))
       const relativeError = Math.abs(catalan(n) / Number(exact) - 1)
-      assert.ok(relativeError < 1e-14,
+      assert.ok(relativeError < 2e-15,
         'relative error ' + relativeError.toExponential(3) + ' at n=' + n)
     }
   })

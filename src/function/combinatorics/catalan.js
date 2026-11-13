@@ -73,7 +73,7 @@ export const createCatalan = /* #__PURE__ */ factory(name, dependencies, (
    *    bellNumbers
    *
    * @param {number | BigNumber | bigint} n    nonnegative integer index
-   * @return {number | BigNumber | bigint}    nth Catalan number
+   * @return {number | BigNumber | bigint}    nth Catalan number Cn(n)
    */
   return typed(name, {
     'number | BigNumber | bigint': function (n) {
