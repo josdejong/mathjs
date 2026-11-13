@@ -92,6 +92,12 @@ describe('log10', function () {
     assert.strictEqual(log10(ten16), 16)
   })
 
+  it('should return the complex log base 10 of a negative bigint', function () {
+    approxDeepEqual(log10(-100n), log10(-100))
+    approxDeepEqual(log10(-100n), complex(2, Math.PI / Math.LN10))
+    assert(isNaN(mathPredictable.log10(-100n)))
+  })
+
   it('should throw an error when used on a unit', function () {
     assert.throws(function () { log10(unit('5cm')) })
   })
