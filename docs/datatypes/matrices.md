@@ -113,9 +113,12 @@ determined by the option `matrix` as discussed in section
 
 ```js
 // Array as input gives Array as output
-math.ones([2, 3])               // Array,  size [3, 2], [[1, 1, 1], [1, 1, 1]]
-math.ones(math.matrix([2, 3]))  // Matrix, size [3, 2], [[1, 1, 1], [1, 1, 1]]
+math.ones([2, 3])               // Array,  size [2, 3], [[1, 1, 1], [1, 1, 1]]
+math.ones(math.matrix([2, 3]))  // Matrix, size [2, 3], [[1, 1, 1], [1, 1, 1]]
 ```
+
+(Note the contrast with the function `size` described below, which always
+returns an Array, even when its argument is a Matrix.)
 
 Ranges can be created using the function `range`. The function `range` is
 called with parameters start and end, and optionally a parameter step.
@@ -212,10 +215,10 @@ const c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]
 math.size(c)                                  // Array, [2, 2, 3]
 ```
 
-Note that the dimensions themselves do not have a meaning attached. 
-When creating and printing a two-dimensional matrix, the first dimension is 
-normally rendered as the _column_, and the second dimension is rendered as 
-the _row_. For example:
+Note that the dimensions themselves do not have a meaning attached.
+When creating and printing a two-dimensional matrix, the first dimension is
+normally rendered as the _row_, and the second dimension is rendered as
+the _column_. For example:
 
 ```js
 console.table(math.zeros([2, 4]))
@@ -223,8 +226,8 @@ console.table(math.zeros([2, 4]))
 // 0 0 0 0
 ```
 
-If you have a matrix where the first dimension means `x` and the second 
-means `y`, this will look confusing since `x` is printed as _column_ 
+If you have a matrix where the first dimension means `x` and the second
+means `y`, this will look confusing since `x` is printed as _column_
 (vertically) and `y` as _row_ (horizontally).
 
 ## Non-rectangular arrays

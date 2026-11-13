@@ -1234,6 +1234,15 @@ describe('Unit', function () {
       assert.strictEqual(new Unit(1, 'kilogramforce').equals(new Unit(1, 'kgf')), true)
     })
 
+    it('should use the exact rod value for rd', function () {
+      assert.strictEqual(new Unit(1, 'rod').toNumber('rd'), 1)
+      assert.strictEqual(new Unit(1, 'rd').toNumber('rod'), 1)
+      assert.strictEqual(new Unit(1, 'rd').toNumber('ft'), 16.5)
+      assert.strictEqual(new Unit(1, 'rd').equals(new Unit(1, 'rod')), true)
+      assert.strictEqual(new Unit(1, 'rd^2').equals(new Unit(1, 'sqrd')), true)
+      assert.strictEqual(new Unit(1, 'rd').toString(), '1 rd')
+    })
+
     it('should define acre exactly as 4840 sqyd', function () {
       assert.strictEqual(new Unit(1, 'acre').equals(new Unit(4840, 'sqyd')), true)
       assert.strictEqual(new Unit(1, 'acre').equals(new Unit(43560, 'sqft')), true)

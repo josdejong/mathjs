@@ -3,6 +3,7 @@ import assert from 'assert'
 
 import defaultMath from '../../../../src/defaultInstance.js'
 const math = defaultMath.create({ matrix: 'Array' })
+const big = math.bignumber
 const gcd = math.gcd
 const xgcd = math.xgcd
 
@@ -45,13 +46,27 @@ describe('xgcd', function () {
   })
 
   it('should calculate xgcd for BigNumbers', function () {
-    assert.deepStrictEqual(xgcd(math.bignumber(65), math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)])
-    assert.deepStrictEqual(xgcd(math.bignumber(65), math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)])
+    assert.deepStrictEqual(xgcd(big(65), big(40)), [big(5), big(-3), big(5)])
+    assert.deepStrictEqual(xgcd(big(65), big(40)), [big(5), big(-3), big(5)])
   })
 
   it('should calculate xgcd for mixed BigNumbers and Numbers', function () {
-    assert.deepStrictEqual(xgcd(math.bignumber(65), 40), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)])
-    assert.deepStrictEqual(xgcd(65, math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)])
+    assert.deepStrictEqual(xgcd(big(65), 40), [big(5), big(-3), big(5)])
+    assert.deepStrictEqual(xgcd(65, big(40)), [big(5), big(-3), big(5)])
+  })
+
+  it('should calculate xgcd for bigints', function () {
+    assert.deepStrictEqual(xgcd(65n, 40n), [5n, -3n, 5n])
+    assert.deepStrictEqual(xgcd(36163n, 21199n), [1247n, -7n, 12n])
+    assert.deepStrictEqual(xgcd(-36163n, 21199n), [1247n, 7n, 12n])
+    assert.deepStrictEqual(xgcd(36163n, -21199n), [1247n, -7n, -12n])
+  })
+
+  it('should calculate xgcd for mixed types', function () {
+    assert.deepStrictEqual(xgcd(-65, 40n), [5n, 3n, 5n])
+    assert.deepStrictEqual(xgcd(-36163n, -21199), [1247n, 7n, -12n])
+    assert.deepStrictEqual(xgcd(18n, big(12)), [big(6), big(1), big(-1)])
+    assert.deepStrictEqual(xgcd(big(14), 6n), [big(2), big(1), big(-2)])
   })
 
   it('should calculate xgcd for edge cases with negative values', function () {

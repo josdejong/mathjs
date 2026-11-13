@@ -28,6 +28,13 @@ describe('std.transform', function () {
       [[math.sqrt(18050), math.sqrt(50), math.sqrt(50)], [math.sqrt(50), math.sqrt(50), math.sqrt(1800)], [math.sqrt(50), math.sqrt(50), math.sqrt(1800)], [math.sqrt(14450), math.sqrt(50), math.sqrt(50)]])
   })
 
+  it('should use a one based dimension together with a normalization', function () {
+    assert.deepStrictEqual(std([[2, 6], [4, 10]], 1, 'uncorrected'), [1, 2])
+    assert.deepStrictEqual(std([[2, 6], [4, 10]], 2, 'uncorrected'), [2, 3])
+    assert.deepStrictEqual(math.evaluate('std([[2, 6], [4, 10]], 1, "unbiased")'), math.evaluate('std([[2, 6], [4, 10]], 1)'))
+    assert.throws(function () { std([[2, 6], [4, 10]], 0, 'biased') }, /Index out of range/)
+  })
+
   it('should throw an error if called with an invalid one based index', function () {
     assert.throws(function () { std(inputMatrix, 0) }, /Index out of range/)
     assert.throws(function () { std(inputMatrix, 4) }, /Index out of range/)

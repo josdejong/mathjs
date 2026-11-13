@@ -2,10 +2,50 @@
 
 # unpublished changes since 15.2.0
 
-- Fix: #3736 don't throw error when reducing 1-D Matrix along dim 0. (#3734)
+- Feat: Add bigint support to catalan() and fix #3780, significantly improve
+  catalan() accuracy by computing with exact-division recurrence (#3781).
+  Thanks @rahul05ranjan.
+- Fix: #3779 Use one-based dimension index in parsed expressions with
+  std and variance (#3770). Thanks @jayhemnani9910.
+- Feat: multinomial allows zero arguments and direct list of arguments.
+  Reduce overflow-related accuracy issues by using formula based on
+  combinations, with no division needed. Throw on likely erroneous
+  multidimensional input. Improve documentation and TypeScript typing (#3790).
+  Thanks @Dx-Alz-xD and @chatman-media.
+- Docs: fix miscellaneous errors in examples on doc pages, in partial
+  preparation for a systematic test harness on all such examples (#3741).
+  Thanks @yxshee.
+- Docs: chip away five more functions with JSDoc errors: re, im, derivative,
+  kldivergence, and symbolicEqual (#3731). Thanks @yxshee.
+- Fix: #3768 Units: `rd` should always have been an alias for `rod` (#3772).
+  Thanks @Narek-Khachikyan.
+- Fix: #3637 TypeScript: allow a Unit value as second argument of `unit`
+  method (#3699). Thanks @jakezwang.
+- Docs: update values of physical constants in units doc page, and
+  institute a check that they match the values in the math instance (#3740).
+  Thanks @YashG1836.
+- Feat: support bigint in stirlingS2(n,k) and ensure that result is
+  always of correct type (#3663). Thanks @JSap0914 and @gwhitney.
+- Docs: #3401 add pages for String and Boolean types, clarify that concat
+  works on strings, and correct obsolete string manipulation examples (#3745)
+  Thanks @Hugohong258.
+- Fix: Adjust #3710 to ensure that mod of bigints ends up in intended
+  range for all sign combinations (#3684). Thanks @spokodev.
+- Fix: #3758 correct gcd and atan2 when computed on arguments including
+  sparse matrices (#3751). Thanks @waw666waw666.
+- Fix: #3160, #3202 correct TypeScript types for various cases of matrix
+  functions that return statistics (e.g., sum, variance, etc.) (#3735).
+  Thanks @b84330808 and @WenJing95.
+- Fix: #3756 ensure invmod returns canonical negative representive for
+  inverse when modulus is negative. Also adds bigint support to invmod and
+  xgcd and prefers bigint results with mixed integer number - bigint arguments.
+  Conforms mod to these same conventions (#3710). Thanks @kevin9327.
+- Fix: #3704 avoid double-processing the first node in simplifyCore (#3698).
+  Thanks @Wu-Li.
+- Fix: #3736 don't throw error when reducing 1-D Matrix along dim 0 (#3734).
   Thanks @b84330808.
 - Docs: #3559 clarify composition of number bundle (#3716). Thanks @Hugohong258.
-- Fix: Units: exact values for seveal more units (#3739). Thanks @YashG1836.
+- Fix: Units: exact values for several more units (#3739). Thanks @YashG1836.
 - Fix: Units: use exact value for `acre` unit (#3665). Thanks @spokodev.
 - Docs: #2095,#2771 Units: unit parser limitations and min/sec functions vs
   unit abbreviations (#3714). Thanks @Hugohong258.

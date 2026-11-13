@@ -18,19 +18,25 @@ export const createIm = /* #__PURE__ */ factory(name, dependencies, ({ typed }) 
    * Examples:
    *
    *    const a = math.complex(2, 3)
-   *    math.re(a)                     // returns number 2
+   *    math.re(a)                     // returns number 2 ...
    *    math.im(a)                     // returns number 3
    *
-   *    math.re(math.complex('-5.2i')) // returns number -5.2
-   *    math.re(math.complex(2.4))     // returns number 0
+   *    math.im(math.complex('-5.2i')) // returns number -5.2
+   *    math.im(math.complex(2.4))     // returns number 0
    *
    * See also:
    *
    *    re, conj, abs, arg
    *
-   * @param {number | BigNumber | Complex | Array | Matrix} x
+   * History:
+   *
+   *    v9.4   Support Fraction
+   *    v0.16  Support BigNumber
+   *    v0.2   Created
+   *
+   * @param {number | BigNumber | Fraction | Complex | Array | Matrix} x
    *            A complex number or array with complex numbers
-   * @return {number | BigNumber | Array | Matrix} The imaginary part of x
+   * @return {number | BigNumber | Fraction | Array | Matrix} The imaginary part of x
    */
   return typed(name, {
     number: () => 0,
