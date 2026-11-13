@@ -26,6 +26,11 @@ describe('acsch', function () {
     approxEqual(acsch(1), 0.88137358701954302523260932497979)
     approxEqual(acsch(2), 0.48121182505960344749775891342437)
     approxEqual(acsch(pi), 0.3131658804508683758718693082657)
+    approxEqual(acsch(1e-8), 19.113827924512310807)
+    assert.strictEqual(acsch(-1e-8), -acsch(1e-8))
+    approxEqual(acsch(-1e-5), -12.206072645555173963, 1e-12)
+    assert(Math.abs(acsch(1e-200) - 461.21016577936908) < 1e-12)
+    assert.strictEqual(acsch(-1e-200), -acsch(1e-200))
   })
 
   it('should return the hyperbolic arccsc of a bignumber', function () {

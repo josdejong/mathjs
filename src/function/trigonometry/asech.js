@@ -35,8 +35,7 @@ export const createAsech = /* #__PURE__ */ factory(name, dependencies, ({ typed,
           return asechNumber(x)
         }
 
-        const ret = Math.sqrt(xInv * xInv - 1)
-        return new Complex(Math.log(ret - xInv), Math.PI)
+        return new Complex(asechNumber(-x), Math.PI)
       }
 
       return new Complex(x, 0).asech()

@@ -1,4 +1,4 @@
-import { acosh, asinh, atanh, cosh, sign, sinh, tanh } from '../../utils/number.js'
+import { acosh, asinh, atanh, cosh, log1p, sinh, tanh } from '../../utils/number.js'
 
 const n1 = 'number'
 const n2 = 'number, number'
@@ -19,9 +19,9 @@ export function acotNumber (x) {
 acotNumber.signature = n1
 
 export function acothNumber (x) {
-  return Number.isFinite(x)
-    ? (Math.log((x + 1) / x) + Math.log(x / (x - 1))) / 2
-    : 0
+  // acoth(x) = log1p(2 / (x - 1)) / 2 stays accurate both close to |x| = 1
+  // and for large |x|. acoth is odd, so negative x reuses the positive branch.
+  return x < 0 ? -acothNumber(-x) : log1p(2 / (x - 1)) / 2
 }
 acothNumber.signature = n1
 
@@ -31,8 +31,7 @@ export function acscNumber (x) {
 acscNumber.signature = n1
 
 export function acschNumber (x) {
-  const xInv = 1 / x
-  return Math.log(xInv + Math.sqrt(xInv * xInv + 1))
+  return asinh(1 / x)
 }
 acschNumber.signature = n1
 
@@ -42,9 +41,9 @@ export function asecNumber (x) {
 asecNumber.signature = n1
 
 export function asechNumber (x) {
-  const xInv = 1 / x
-  const ret = Math.sqrt(xInv * xInv - 1)
-  return Math.log(ret + xInv)
+  // asech(x) = log((1 + sqrt(1 - x^2)) / x), written with log1p so that it
+  // neither overflows for tiny x nor loses precision close to x = 1
+  return log1p((1 - x + Math.sqrt((1 - x) * (1 + x))) / x)
 }
 asechNumber.signature = n1
 
@@ -89,8 +88,7 @@ export function cotNumber (x) {
 cotNumber.signature = n1
 
 export function cothNumber (x) {
-  const e = Math.exp(2 * x)
-  return (e + 1) / (e - 1)
+  return 1 / tanh(x)
 }
 cothNumber.signature = n1
 
@@ -100,12 +98,7 @@ export function cscNumber (x) {
 cscNumber.signature = n1
 
 export function cschNumber (x) {
-  // consider values close to zero (+/-)
-  if (x === 0) {
-    return Number.POSITIVE_INFINITY
-  } else {
-    return Math.abs(2 / (Math.exp(x) - Math.exp(-x))) * sign(x)
-  }
+  return 1 / sinh(x)
 }
 cschNumber.signature = n1
 
