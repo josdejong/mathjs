@@ -1,4 +1,4 @@
-import { isFunctionNode, isOperatorNode, isParenthesisNode } from '../../../utils/is.js'
+import { isOperatorNode } from '../../../utils/is.js'
 import { factory } from '../../../utils/factory.js'
 import { hasOwnProperty } from '../../../utils/object.js'
 
@@ -6,82 +6,35 @@ const name = 'simplifyUtil'
 const dependencies = [
   'FunctionNode',
   'OperatorNode',
-  'SymbolNode'
+  'SymbolNode',
+  'operatorIs'
 ]
 
-export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ FunctionNode, OperatorNode, SymbolNode }) => {
+/* So that properties of an operator fit on one line: */
+const T = true
+const F = false
+
+export const defaultContext = {
+  /*      */ add: { trivial: T, total: T, commutative: T, associative: T },
+  /**/ unaryPlus: { trivial: T, total: T, commutative: T, associative: T },
+  /* */ subtract: { trivial: F, total: T, commutative: F, associative: F },
+  /* */ multiply: { trivial: T, total: T, commutative: T, associative: T },
+  /*   */ divide: { trivial: F, total: T, commutative: F, associative: F },
+  /*    */ paren: { trivial: T, total: T, commutative: T, associative: F },
+  /* */ defaultF: { trivial: F, total: T, commutative: F, associative: F }
+}
+export const realContext = { divide: { total: F }, log: { total: F } }
+export const positiveContext = {
+  subtract: { total: F },
+  abs: { trivial: T },
+  log: { total: T }
+}
+
+export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ FunctionNode, OperatorNode, SymbolNode, operatorIs }) => {
   // TODO commutative/associative properties rely on the arguments
   // e.g. multiply is not commutative for matrices
   // The properties should be calculated from an argument to simplify, or possibly something in math.config
   // the other option is for typed() to specify a return type so that we can evaluate the type of arguments
-
-  /* So that properties of an operator fit on one line: */
-  const T = true
-  const F = false
-
-  const defaultName = 'defaultF'
-  const defaultContext = {
-    /*      */ add: { trivial: T, total: T, commutative: T, associative: T },
-    /**/ unaryPlus: { trivial: T, total: T, commutative: T, associative: T },
-    /* */ subtract: { trivial: F, total: T, commutative: F, associative: F },
-    /* */ multiply: { trivial: T, total: T, commutative: T, associative: T },
-    /*   */ divide: { trivial: F, total: T, commutative: F, associative: F },
-    /*    */ paren: { trivial: T, total: T, commutative: T, associative: F },
-    /* */ defaultF: { trivial: F, total: T, commutative: F, associative: F }
-  }
-  const realContext = { divide: { total: F }, log: { total: F } }
-  const positiveContext = {
-    subtract: { total: F },
-    abs: { trivial: T },
-    log: { total: T }
-  }
-
-  function hasProperty (nodeOrName, property, context = defaultContext) {
-    let name = defaultName
-    if (typeof nodeOrName === 'string') {
-      name = nodeOrName
-    } else if (isOperatorNode(nodeOrName)) {
-      name = nodeOrName.fn.toString()
-    } else if (isFunctionNode(nodeOrName)) {
-      name = nodeOrName.name
-    } else if (isParenthesisNode(nodeOrName)) {
-      name = 'paren'
-    }
-    if (hasOwnProperty(context, name)) {
-      const properties = context[name]
-      if (hasOwnProperty(properties, property)) {
-        return properties[property]
-      }
-      if (hasOwnProperty(defaultContext, name)) {
-        return defaultContext[name][property]
-      }
-    }
-    if (hasOwnProperty(context, defaultName)) {
-      const properties = context[defaultName]
-      if (hasOwnProperty(properties, property)) {
-        return properties[property]
-      }
-      return defaultContext[defaultName][property]
-    }
-    /* name not found in context and context has no global default */
-    /* So use default context. */
-    if (hasOwnProperty(defaultContext, name)) {
-      const properties = defaultContext[name]
-      if (hasOwnProperty(properties, property)) {
-        return properties[property]
-      }
-    }
-    return defaultContext[defaultName][property]
-  }
-
-  function isCommutative (node, context = defaultContext) {
-    return hasProperty(node, 'commutative', context)
-  }
-
-  function isAssociative (node, context = defaultContext) {
-    return hasProperty(node, 'associative', context)
-  }
-
   /**
    * Merge the given contexts, with primary overriding secondary
    * wherever they might conflict
@@ -130,7 +83,7 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
       }
     }
 
-    if (isAssociative(node, context)) {
+    if (operatorIs(node, 'associative', context)) {
       op = node.op
       findChildren(node)
       return children
@@ -151,7 +104,7 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
     for (let i = 0; i < l; i++) {
       unflattenr(node.args[i], context)
     }
-    if (l > 2 && isAssociative(node, context)) {
+    if (l > 2 && operatorIs(node, 'associative', context)) {
       let curnode = node.args.pop()
       while (node.args.length > 0) {
         curnode = makeNode([node.args.pop(), curnode])
@@ -172,7 +125,7 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
     for (let i = 0; i < l; i++) {
       unflattenl(node.args[i], context)
     }
-    if (l > 2 && isAssociative(node, context)) {
+    if (l > 2 && operatorIs(node, 'associative', context)) {
       let curnode = node.args.shift()
       while (node.args.length > 0) {
         curnode = makeNode([curnode, node.args.shift()])
@@ -200,9 +153,6 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
 
   return {
     createMakeNodeFunction,
-    hasProperty,
-    isCommutative,
-    isAssociative,
     mergeContext,
     flatten,
     allChildren,

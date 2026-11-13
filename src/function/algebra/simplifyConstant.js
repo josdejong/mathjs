@@ -11,6 +11,7 @@ const dependencies = [
   'mathWithTransform',
   'matrix',
   'isBounded',
+  'operatorIs',
   '?fraction',
   '?bignumber',
   'AccessorNode',
@@ -29,6 +30,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   mathWithTransform,
   matrix,
   isBounded,
+  operatorIs,
   fraction,
   bignumber,
   AccessorNode,
@@ -40,8 +42,8 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   OperatorNode,
   SymbolNode
 }) => {
-  const { isCommutative, isAssociative, allChildren, createMakeNodeFunction } =
-    createUtil({ FunctionNode, OperatorNode, SymbolNode })
+  const { allChildren, createMakeNodeFunction } =
+        createUtil({ FunctionNode, OperatorNode, SymbolNode, operatorIs })
 
   /**
    * simplifyConstant() takes a mathjs expression (either a Node representing
@@ -415,11 +417,11 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           } else {
             res = makeNode(args)
           }
-        } else if (isAssociative(node, options.context)) {
+        } else if (operatorIs(node, 'associative', options.context)) {
           args = allChildren(node, options.context)
           args = args.map(arg => foldFraction(arg, options))
 
-          if (isCommutative(fn, options.context)) {
+          if (operatorIs(fn, 'commutative', options.context)) {
             // commutative binary operator
             const consts = []
             const vars = []

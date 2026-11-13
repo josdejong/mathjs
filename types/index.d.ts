@@ -489,6 +489,9 @@ export interface SymbolNodeCtor {
   onUndefinedSymbol: (name: string) => any
 }
 
+// Needed in context argument for operatorIs
+type OpProp = 'associative' | 'commutative' | 'total' | 'trivial'
+
 /**
  * @deprecated since version 11.3. Prefer `MathNode` instead
  */
@@ -983,6 +986,20 @@ export interface MathJsInstance extends MathJsFactory {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   help(search: () => any): Help
+
+  /**
+   * Retrieve a property, like commutative, of an operator.
+   * @param {Node | string} op  The operator being queried
+   * @param {string} property  The property being queried
+   * @param {Context} [context = simplify.defaultContext]
+   *    An object encoding properties of operators
+   * @return {boolean}  Whether op has the given property in context
+   */
+  operatorIs(
+    operator: MathNode | string,
+    property: string,
+    context?: Record<string, Partial<Record<OpProp, boolean>>>
+  ): boolean
 
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
@@ -5387,6 +5404,15 @@ export interface MathJsChain<TValue> {
    * from the documentation in math.expression.docs.
    */
   help(this: MathJsChain<unknown>): MathJsChain<unknown>
+
+  /**
+   * Retrieve an operator property
+   */
+  operatorIs(
+    this: MathJsChain<MathNode> | MathJsChain<string>,
+    property: string,
+    context?: Record<string, Partial<Record<OpProp, boolean>>>
+  ): MathJsChain<boolean>
 
   /**
    * @param options Available options: nodes - a set of custome nodes

@@ -1,12 +1,12 @@
 import { isAccessorNode, isArrayNode, isConstantNode, isFunctionNode, isIndexNode, isObjectNode, isOperatorNode } from '../../utils/is.js'
 import { getOperator } from '../../expression/operators.js'
-import { createUtil } from './simplify/util.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'simplifyCore'
 const dependencies = [
   'typed',
   'parse',
+  'operatorIs',
   'equal',
   'isZero',
   'add',
@@ -28,6 +28,7 @@ const dependencies = [
 export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
   typed,
   parse,
+  operatorIs,
   equal,
   isZero,
   add,
@@ -55,8 +56,6 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
     return isOperatorNode(node) && ['and', 'not', 'or'].includes(node.op)
   }
 
-  const { hasProperty, isCommutative } =
-    createUtil({ FunctionNode, OperatorNode, SymbolNode })
   /**
    * simplifyCore() performs single pass simplification suitable for
    * applications requiring ultimate performance. To roughly summarize,
@@ -108,7 +107,7 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function _simplifyCore (nodeToSimplify, options = {}) {
     const context = options ? options.context : undefined
-    if (hasProperty(nodeToSimplify, 'trivial', context)) {
+    if (operatorIs(nodeToSimplify, 'trivial', context)) {
       // This node does nothing if it has only one argument, so if so,
       // return that argument simplified
       if (isFunctionNode(nodeToSimplify) && nodeToSimplify.args.length === 1) {
@@ -129,7 +128,7 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
       const op = getOperator(node.name)
       if (op) {
         // Replace FunctionNode with a new OperatorNode
-        if (node.args.length > 2 && hasProperty(node, 'associative', context)) {
+        if (node.args.length > 2 && operatorIs(node, 'associative', context)) {
           // unflatten into binary operations since that's what simplifyCore handles
           while (node.args.length > 2) {
             const last = node.args.pop()
@@ -218,7 +217,7 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
           } else if (equal(a1.value, 1)) {
             return a0
           }
-          if (isCommutative(node, context)) {
+          if (operatorIs(node, 'commutative', context)) {
             return new OperatorNode(node.op, node.fn, [a1, a0], node.implicit) // constants on left
           }
         }

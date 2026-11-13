@@ -1,7 +1,11 @@
 import { isParenthesisNode } from '../../utils/is.js'
-import { isConstantNode, isVariableNode, isNumericNode, isConstantExpression } from './simplify/wildcards.js'
+import {
+  isConstantNode, isVariableNode, isNumericNode, isConstantExpression
+} from './simplify/wildcards.js'
 import { factory } from '../../utils/factory.js'
-import { createUtil } from './simplify/util.js'
+import {
+  createUtil, defaultContext, realContext, positiveContext
+} from './simplify/util.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { createEmptyMap, createMap } from '../../utils/map.js'
 
@@ -10,6 +14,7 @@ const dependencies = [
   'typed',
   'parse',
   'equal',
+  'operatorIs',
   'resolve',
   'simplifyConstant',
   'simplifyCore',
@@ -30,6 +35,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     typed,
     parse,
     equal,
+    operatorIs,
     resolve,
     simplifyConstant,
     simplifyCore,
@@ -45,8 +51,14 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     replacer
   }
 ) => {
-  const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction, defaultContext, realContext, positiveContext } =
-    createUtil({ FunctionNode, OperatorNode, SymbolNode })
+  function isCommutative (node, context = defaultContext) {
+    return operatorIs(node, 'commutative', context)
+  }
+  function isAssociative (node, context = defaultContext) {
+    return operatorIs(node, 'associative', context)
+  }
+  const { mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
+        createUtil({ FunctionNode, OperatorNode, SymbolNode, operatorIs })
 
   /**
    * Simplify an expression tree.
@@ -594,7 +606,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     if (rule.assuming) {
       for (const symbol in rule.assuming) {
         for (const property in rule.assuming[symbol]) {
-          if (hasProperty(symbol, property, context) !==
+          if (operatorIs(symbol, property, context) !==
               rule.assuming[symbol][property]) {
             return node
           }
