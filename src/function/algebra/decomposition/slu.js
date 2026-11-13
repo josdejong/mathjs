@@ -19,7 +19,7 @@ const dependencies = [
 
 export const createSlu = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, add, multiply, transpose, divideScalar, subtract, larger, largerEq, SparseMatrix }) => {
   const csSqr = createCsSqr({ add, multiply, transpose })
-  const csLu = createCsLu({ abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })
+  const csLu = createCsLu({ typed, abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })
 
   /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting. Sparse Matrix `A` is decomposed in two matrices (`L`, `U`) and two permutation vectors (`pinv`, `q`) where

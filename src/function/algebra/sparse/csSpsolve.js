@@ -6,12 +6,34 @@ import { factory } from '../../../utils/factory.js'
 
 const name = 'csSpsolve'
 const dependencies = [
+  'typed',
   'divideScalar',
   'multiply',
   'subtract'
 ]
 
-export const createCsSpsolve = /* #__PURE__ */ factory(name, dependencies, ({ divideScalar, multiply, subtract }) => {
+export const createCsSpsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, divideScalar, multiply, subtract }) => {
+  const divideNumber = numberOperation(divideScalar)
+  const multiplyNumber = numberOperation(multiply)
+  const subtractNumber = numberOperation(subtract)
+
+  // Keep injected operations, including plain functions and broader signatures.
+  // A typed scalar implementation may itself change the numeric domain, so
+  // mixed intermediate values must still go through the original dispatcher.
+  function numberOperation (operation) {
+    let implementation = operation
+    const seen = new Set()
+    while (typed.isTypedFunction(implementation) && !seen.has(implementation)) {
+      seen.add(implementation)
+      if (!implementation.signatures['number,number'] &&
+          !implementation.signatures['any,any']) {
+        break
+      }
+      implementation = typed.find(implementation, ['number', 'number'], { exact: true })
+    }
+    return implementation
+  }
+
   /**
    * The function csSpsolve() computes the solution to G * x = bk, where bk is the
    * kth column of B. When lo is true, the function assumes G = L is lower triangular with the
@@ -30,6 +52,8 @@ export const createCsSpsolve = /* #__PURE__ */ factory(name, dependencies, ({ di
    * @return {Number}                 The index for the nonzero pattern
    */
   return function csSpsolve (g, b, k, xi, x, pinv, lo) {
+    // Select scalar arithmetic once for the declared numeric matrix domain.
+    const numbers = b._datatype === 'number'
     // g arrays
     const gvalues = g._values
     const gindex = g._index
@@ -61,7 +85,11 @@ export const createCsSpsolve = /* #__PURE__ */ factory(name, dependencies, ({ di
       p0 = gptr[J]
       p1 = gptr[J + 1]
       // x(j) /= G(j,j)
-      x[j] = divideScalar(x[j], gvalues[lo ? p0 : (p1 - 1)])
+      const current = x[j]
+      const diagonal = gvalues[lo ? p0 : (p1 - 1)]
+      x[j] = numbers && typeof current === 'number' && typeof diagonal === 'number'
+        ? divideNumber(current, diagonal)
+        : divideScalar(current, diagonal)
       // first entry L(j,j)
       p = lo ? (p0 + 1) : p0
       q = lo ? (p1) : (p1 - 1)
@@ -70,7 +98,15 @@ export const createCsSpsolve = /* #__PURE__ */ factory(name, dependencies, ({ di
         // row
         const i = gindex[p]
         // x(i) -= G(i,j) * x(j)
-        x[i] = subtract(x[i], multiply(gvalues[p], x[j]))
+        const previous = x[i]
+        const value = gvalues[p]
+        const pivot = x[j]
+        const product = numbers && typeof value === 'number' && typeof pivot === 'number'
+          ? multiplyNumber(value, pivot)
+          : multiply(value, pivot)
+        x[i] = numbers && typeof previous === 'number' && typeof product === 'number'
+          ? subtractNumber(previous, product)
+          : subtract(previous, product)
       }
     }
     // return top of stack

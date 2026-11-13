@@ -7,6 +7,7 @@ import { createCsSpsolve } from './csSpsolve.js'
 
 const name = 'csLu'
 const dependencies = [
+  'typed',
   'abs',
   'divideScalar',
   'multiply',
@@ -16,8 +17,8 @@ const dependencies = [
   'SparseMatrix'
 ]
 
-export const createCsLu = /* #__PURE__ */ factory(name, dependencies, ({ abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix }) => {
-  const csSpsolve = createCsSpsolve({ divideScalar, multiply, subtract })
+export const createCsLu = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix }) => {
+  const csSpsolve = createCsSpsolve({ typed, divideScalar, multiply, subtract })
 
   /**
    * Computes the numeric LU factorization of the sparse matrix A. Implements a Left-looking LU factorization
