@@ -28,8 +28,8 @@ that cannot be converted to a number throws an error.
 math.boolean('false')   // false
 math.boolean('TRUE')    // true
 math.boolean('0')       // false
-math.boolean('')        // throws an error
-math.boolean('yes')     // throws an error
+math.boolean('')        // throws Error
+math.boolean('yes')     // throws Error
 ```
 
 **Note:** This string conversion differs from JavaScript's `Boolean('false')`,

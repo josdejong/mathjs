@@ -174,7 +174,7 @@ All nodes have the following methods:
 
     ```js
     const node = math.parse('sqrt(2/3)')
-    node.toTex() // returns '\sqrt{\frac{2}{3}}'
+    node.toTex() // returns '\\sqrt{\\frac{2}{3}}'
     ```
 
     Information about the options in [Customization](customization.md#custom-html-latex-and-string-output).

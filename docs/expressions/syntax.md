@@ -143,7 +143,7 @@ Lazy evaluation is used where logically possible for bitwise and logical
 operators. In the following example, the sub-expression `x` will not even be
 evaluated because it cannot affect the final result:
 ```js
-math.evaluate('false and x')        // false, no matter what x equals
+math.evaluate('false and x')        // false; no matter what x equals
 ```
 
 
@@ -184,7 +184,7 @@ parser.evaluate('x = 7')
 parser.evaluate('h(y) = x + y')
 parser.evaluate('h(3)')         // 10
 parser.evaluate('x = 3')
-parser.evaluate('h(3)')         // 6, *not* 10
+parser.evaluate('h(3)')         // 6; *not* 10
 ```
 
 It is however possible to pass functions as parameters:
@@ -320,11 +320,11 @@ The `forEach` function applies a function to each element of an array or matrix 
 math.import({consoleLog: x => console.log(x)})
 const parser = math.parser()
 
-// Define a squareConsleLog function
+// Define a squareConsoleLog function
 parser.evaluate('squareConsoleLog(x) = consoleLog(x ^ 2)')
 
-// Apply the squareConsleLog function to each element of the array
-parser.evaluate('forEach([1, 2, 3, 4], squareConsleLog)')
+// Apply the squareConsoleLog function to each element of the array
+parser.evaluate('forEach([1, 2, 3, 4], squareConsoleLog)')
 // Prints: 1, 4, 9, 16
 
 // Apply an inline function to each element of the array
@@ -349,7 +349,7 @@ All available constants are listed on he page
 math.evaluate('pi')                 // 3.141592653589793
 math.evaluate('e ^ 2')              // 7.3890560989306495
 math.evaluate('log(e)')             // 1
-math.evaluate('e ^ (pi * i) + 1')   // ~0 (Euler)
+math.evaluate('e ^ (pi * i) + 1')   // 0; Euler's identity
 ```
 
 Variables can be defined using the assignment operator `=`, and can be used
@@ -584,7 +584,7 @@ math.evaluate('5.4 kg')                     // Unit, 5.4 kg
 
 // convert a unit
 math.evaluate('2 inch to cm')               // Unit, 5.08 cm
-math.evaluate('20 celsius in fahrenheit')   // Unit, ~68 fahrenheit
+math.evaluate('20 celsius in fahrenheit')   // Unit, 68 fahrenheit
 math.evaluate('90 km/h to m/s')             // Unit, 25 m / s
 
 // convert a unit to a number
@@ -593,8 +593,8 @@ math.evaluate('number(5 cm, mm)')           // Number, 50
 
 // calculations with units
 math.evaluate('0.5kg + 33g')                // Unit, 0.533 kg
-math.evaluate('3 inch + 2 cm')              // Unit, 3.7874 inch
-math.evaluate('3 inch + 2 cm')              // Unit, 3.7874 inch
+math.evaluate('3 inch + 2 cm')              // Unit, 3.7874015748031495 inch
+math.evaluate('3 inch + 2 cm')              // Unit, 3.7874015748031495 inch
 math.evaluate('12 seconds * 2')             // Unit, 24 seconds
 math.evaluate('sin(45 deg)')                // Number, 0.7071067811865475
 math.evaluate('9.81 m/s^2 * 5 s to mi/h')   // Unit, 109.72172512527 mi / h
@@ -622,7 +622,7 @@ parser.evaluate('"hello"')                        // String, "hello"
 
 // string manipulation
 parser.evaluate('a = concat("hello", " world")')  // String, "hello world"
-parser.evaluate('size(a)')                        // Matrix [11]
+parser.evaluate('size(a)')                        // [11]
 parser.evaluate('a[1:5]')                         // String, "hello"
 parser.evaluate('a[1] = "H"')                     // String, "H"
 parser.evaluate('a[7:12] = "there!"')             // String, "there!"
@@ -695,7 +695,7 @@ math applications.*
 *IMPORTANT: The matrix indexing behavior has been changed in mathjs `v15`, see section [Migrate matrix indexing to mathjs v15](#migrate-matrix-indexing-to-mathjs-v15).*
 
 ```js
-parser = math.parser()
+const parser = math.parser()
 
 // create matrices
 parser.evaluate('a = [1, 2; 3, 4]')       // Matrix, [[1, 2], [3, 4]]
@@ -835,8 +835,8 @@ parentheses are interpreted as an implicit multiplication.
 Math.js will always evaluate implicit multiplication before explicit multiplication `*`, so that the expression `x * y z` is parsed as `x * (y * z)`. Math.js also gives implicit multiplication higher precedence than division, *except* when the division matches the pattern `[unaryPrefixOp]?[number] / [number] [symbol]` or `[unaryPrefixOp]?[number] / [number] [left paren]`. In that special case, the division is evaluated first:
 
 ```js
-math.evaluate('20 kg / 4 kg')   // 5      Evaluated as (20 kg) / (4 kg)
-math.evaluate('20 / 4 kg')      // 5 kg   Evaluated as (20 / 4) kg
+math.evaluate('20 kg / 4 kg')   // 5;         evaluated as (20 kg) / (4 kg)
+math.evaluate('20 / 4 kg')      // Unit 5 kg; evaluated as (20 / 4) kg
 ```
 
 The behavior of implicit multiplication can be summarized by these operator precedence rules, listed from highest to lowest precedence:

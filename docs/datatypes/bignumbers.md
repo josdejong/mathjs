@@ -80,11 +80,11 @@ const one = math.bignumber(1)
 const three = math.bignumber(3)
 const third = math.divide(one, three)
 console.log(third.toString())
-// outputs 0.3333333333333333333333333333333333333333333333333333333333333333
+// outputs '0.3333333333333333333333333333333333333333333333333333333333333333'
 
 const ans = math.multiply(third, three)
 console.log(ans.toString())
-// outputs 0.9999999999999999999999999999999999999999999999999999999999999999
+// outputs '0.9999999999999999999999999999999999999999999999999999999999999999'
 // this should be 1 again, but `third` is rounded to a limited number of digits 3
 ```
 
@@ -106,7 +106,7 @@ const c = math.number(b)                           // number, 0.3
 const d = math.bignumber('1.2e500')                // BigNumber, 1.2e+500
 const e = math.number(d)                           // number, Infinity
 
-// loosing precision when converting to number
+// losing precision when converting to number
 const f = math.bignumber('0.2222222222222222222')  // BigNumber, 0.2222222222222222222
 const g = math.number(f)                           // number,    0.2222222222222222
 ```

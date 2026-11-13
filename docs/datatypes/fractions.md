@@ -67,7 +67,7 @@ const a = math.number(0.3)                       // number, 0.3
 const b = math.fraction(a)                       // Fraction, 3/10
 const c = math.number(b)                         // number, 0.3
 
-// loosing precision when converting to number: a fraction can represent
+// losing precision when converting to number: a fraction can represent
 // a number with an infinite number of repeating decimals, a number just
 // stores about 16 digits and cuts consecutive digits.
 const d = math.fraction('2/5')                   // Fraction, 2/5
