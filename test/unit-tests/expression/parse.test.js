@@ -1962,6 +1962,24 @@ describe('parse', function () {
       assert.deepStrictEqual(scope, { a: false })
     })
 
+    it('should parse function and with more than two arguments', function () {
+      assert.strictEqual(parseAndEval('and(true, true, true)'), true)
+      assert.strictEqual(parseAndEval('and(true, true, false)'), false)
+      assert.strictEqual(parseAndEval('and(2, 4, 6, 8)'), true)
+      assert.deepStrictEqual(parseAndEval('and([1, 1, 0], [1, 0, 1], [1, 1, 1])'), math.matrix([true, false, false]))
+    })
+
+    it('should parse function and with more than two arguments lazily', function () {
+      const scope = {}
+      parseAndEval('and((a=true), (b=false), (c=true))', scope)
+      assert.deepStrictEqual(scope, { a: true, b: false })
+    })
+
+    it('should throw an error when calling function and with too few arguments', function () {
+      assert.throws(function () { parseAndEval('and()') }, /TypeError: Too few arguments in function and/)
+      assert.throws(function () { parseAndEval('and(true)') }, /TypeError: Too few arguments in function and/)
+    })
+
     it('should parse logical and inside a function definition', function () {
       const scope = {}
       const f = parseAndEval('f(x) = x > 2 and x < 4', scope)
@@ -2038,6 +2056,30 @@ describe('parse', function () {
       const scope = {}
       parseAndEval('(a=true) or (b=true)', scope)
       assert.deepStrictEqual(scope, { a: true })
+    })
+
+    it('should parse function or with more than two arguments', function () {
+      assert.strictEqual(parseAndEval('or(false, false, true)'), true)
+      assert.strictEqual(parseAndEval('or(false, false, false)'), false)
+      assert.strictEqual(parseAndEval('or(0, 0, 0, 8)'), true)
+      assert.deepStrictEqual(parseAndEval('or([0, 1, 0], [0, 0, 0], [1, 0, 0])'), math.matrix([true, true, false]))
+    })
+
+    it('should parse function or with more than two arguments lazily', function () {
+      const scope = {}
+      parseAndEval('or((a=false), (b=true), (c=true))', scope)
+      assert.deepStrictEqual(scope, { a: false, b: true })
+    })
+
+    it('should throw an error when calling function or with too few arguments', function () {
+      assert.throws(function () { parseAndEval('or()') }, /TypeError: Too few arguments in function or/)
+      assert.throws(function () { parseAndEval('or(false)') }, /TypeError: Too few arguments in function or/)
+    })
+
+    it('should parse function xor with more than two arguments', function () {
+      assert.strictEqual(parseAndEval('xor(true, true, true)'), true)
+      assert.strictEqual(parseAndEval('xor(true, true, false)'), false)
+      assert.deepStrictEqual(parseAndEval('xor([1, 1, 0], [1, 0, 1], [1, 0, 0])'), math.matrix([true, true, true]))
     })
 
     it('should parse logical not', function () {

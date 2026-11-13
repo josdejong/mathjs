@@ -9,12 +9,22 @@ export const createAndTransform = /* #__PURE__ */ factory(name, dependencies, ({
   const and = createAnd({ typed, matrix, equalScalar, zeros, not, concat })
 
   function andTransform (args, math, scope) {
-    const condition1 = args[0].compile().evaluate(scope)
-    if (!isCollection(condition1) && !and(condition1, true)) {
-      return false
+    if (args.length < 2) {
+      // let the underlying function throw a "Too few arguments" error,
+      // like when calling it directly
+      return and(...args.map(arg => arg.compile().evaluate(scope)))
     }
-    const condition2 = args[1].compile().evaluate(scope)
-    return and(condition1, condition2)
+
+    // evaluate the arguments lazily: stop as soon as the result is false
+    let result = args[0].compile().evaluate(scope)
+    for (let i = 1; i < args.length; i++) {
+      if (!isCollection(result) && !and(result, true)) {
+        return false
+      }
+      result = and(result, args[i].compile().evaluate(scope))
+    }
+
+    return result
   }
 
   andTransform.rawArgs = true
