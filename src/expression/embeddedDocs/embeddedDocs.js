@@ -145,6 +145,9 @@ import { partitionSelectDocs } from './function/matrix/partitionSelect.js'
 import { rangeDocs } from './function/matrix/range.js'
 import { reshapeDocs } from './function/matrix/reshape.js'
 import { resizeDocs } from './function/matrix/resize.js'
+import { broadcastMatricesDocs } from './function/matrix/broadcastMatrices.js'
+import { broadcastToDocs } from './function/matrix/broadcastTo.js'
+import { broadcastSizesDocs } from './function/matrix/broadcastSizes.js'
 import { rotateDocs } from './function/matrix/rotate.js'
 import { rotationMatrixDocs } from './function/matrix/rotationMatrix.js'
 import { rowDocs } from './function/matrix/row.js'
@@ -485,6 +488,9 @@ export const embeddedDocs = {
   partitionSelect: partitionSelectDocs,
   range: rangeDocs,
   resize: resizeDocs,
+  broadcastMatrices: broadcastMatricesDocs,
+  broadcastTo: broadcastToDocs,
+  broadcastSizes: broadcastSizesDocs,
   reshape: reshapeDocs,
   rotate: rotateDocs,
   rotationMatrix: rotationMatrixDocs,
