@@ -419,6 +419,26 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     /**
+     * Get HTML representation, allowing handlers for individual functions.
+     * @param {Object} options
+     * @return {string}
+     */
+    toHTML (options) {
+      let customHTML
+      if (options &&
+          (typeof options.handler === 'object') &&
+          hasOwnProperty(options.handler, this.name)) {
+        customHTML = options.handler[this.name](this, options)
+      }
+
+      if (typeof customHTML !== 'undefined') {
+        return customHTML
+      }
+
+      return super.toHTML(options)
+    }
+
+    /**
      * Get HTML representation
      * @param {Object} options
      * @return {string} str
