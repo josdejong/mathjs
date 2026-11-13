@@ -200,8 +200,12 @@ export { createFunctionNode } from './expression/node/FunctionNode.js'
 export { createParse } from './expression/parse.js'
 export { createCompile } from './expression/function/compile.js'
 export { createEvaluate } from './expression/function/evaluate.js'
-export { createParserClass } from './expression/Parser.js'
+export {
+  createFlattenAssociation
+} from './expression/function/flattenAssociation.js'
 export { createOperatorIs } from './expression/function/operatorIs.js'
+export { createParserClass } from './expression/Parser.js'
+
 // logical
 export const createAnd = /* #__PURE__ */ createNumberFactory('and', andNumber)
 export const createNot = /* #__PURE__ */ createNumberFactory('not', notNumber)

@@ -458,7 +458,8 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         return stringifiedArgs.join(' ' + this.op + ' ')
       } else {
         // fallback to formatting as a function call
-        return this.fn + '(' + this.args.join(', ') + ')'
+        return this.fn + '(' +
+          this.args.map(arg => arg.toString(options)).join(', ') + ')'
       }
     }
 

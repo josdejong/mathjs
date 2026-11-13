@@ -15,6 +15,7 @@ const dependencies = [
   'parse',
   'equal',
   'operatorIs',
+  'flattenAssociation',
   'resolve',
   'simplifyConstant',
   'simplifyCore',
@@ -36,6 +37,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     parse,
     equal,
     operatorIs,
+    flattenAssociation,
     resolve,
     simplifyConstant,
     simplifyCore,
@@ -57,7 +59,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   function isAssociative (node, context = defaultContext) {
     return operatorIs(node, 'associative', context)
   }
-  const { mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
+  const { mergeContext, unflattenr, unflattenl, createMakeNodeFunction } =
         createUtil({ FunctionNode, OperatorNode, SymbolNode, operatorIs })
 
   /**
@@ -463,7 +465,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       newRule.expanded.l = makeNode([newRule.l, expandsym])
       // Push the expandsym into the deepest possible branch.
       // This helps to match the newRule against nodes returned from getSplits() later on.
-      flatten(newRule.expanded.l, context)
+      newRule.expanded.l = flattenAssociation(newRule.expanded.l, context)
       unflattenr(newRule.expanded.l, context)
       newRule.expanded.r = makeNode([newRule.r, expandsym])
 
@@ -551,7 +553,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           res = rules[i](res, options)
           if (debug) rulestr = rules[i].name
         } else {
-          flatten(res, options.context)
+          res = flattenAssociation(res, options.context)
           res = applyRule(res, rules[i], options.context)
           if (debug) {
             rulestr = `${rules[i].l.toString()} -> ${rules[i].r.toString()}`

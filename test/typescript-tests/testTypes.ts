@@ -425,6 +425,11 @@ Chaining examples
     math.chain('add').operatorIs('total', { add: { total: false } })
   ).toMatchTypeOf<MathJsChain<boolean>>()
 
+  // flattenAssociation
+  expectTypeOf(
+    math.chain(math.parse('3 + 4 + 5')).flattenAssociation()
+  ).toMatchTypeOf<MathJsChain<MathNode>>()
+
   // parse
   expectTypeOf(math.chain('1 + 1').parse()).toMatchTypeOf<
     MathJsChain<MathNode>
@@ -1301,6 +1306,7 @@ Expressions examples
     node2.toString()
     math.operatorIs(node2, 'commutative')
     math.operatorIs('not', 'trivial', { not: { trivial: false } })
+    math.flattenAssociation(node2, { pow: { associative: true } })
   }
 
   // 3. using function math.compile

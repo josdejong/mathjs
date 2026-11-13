@@ -7,8 +7,8 @@ export const operatorIsDocs = {
     'operatorIs(node, property, context)',
     'operatorIs(opName, property, context)'
   ],
-  description: 'Returns true or false depending on whether the operator in the' +
-    'first argument has the specified property, optionally relative to a' +
+  description: 'Returns true or false depending on whether the operator in ' +
+    'the first argument has the specified property, optionally relative to a' +
     'supplied context',
   examples: [
     "operatorIs(parse('x y'), 'associative')",

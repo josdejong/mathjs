@@ -52,20 +52,6 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
   }
 
   /**
-   * Flatten all associative operators in an expression tree.
-   * Assumes parentheses have already been removed.
-   */
-  function flatten (node, context) {
-    if (!node.args || node.args.length === 0) {
-      return node
-    }
-    node.args = allChildren(node, context)
-    for (let i = 0; i < node.args.length; i++) {
-      flatten(node.args[i], context)
-    }
-  }
-
-  /**
    * Get the children of a node as if it has been flattened.
    * TODO implement for FunctionNodes
    */
@@ -154,7 +140,6 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
   return {
     createMakeNodeFunction,
     mergeContext,
-    flatten,
     allChildren,
     unflattenr,
     unflattenl,

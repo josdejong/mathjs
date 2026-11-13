@@ -1002,6 +1002,17 @@ export interface MathJsInstance extends MathJsFactory {
   ): boolean
 
   /**
+   * Flatten associative subtrees of an expression tree
+   * @param {Node} node  The expression tree
+   * @param {Context} [context = simplify.defaultContext]
+   *    An object encoding properties of operators
+   */
+  flattenAssociation(
+    node: MathNode,
+    context?: Record<string, Partial<Record<OpProp, boolean>>>
+  ): MathNode
+
+  /**
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.evaluate();
    */
@@ -5413,6 +5424,14 @@ export interface MathJsChain<TValue> {
     property: string,
     context?: Record<string, Partial<Record<OpProp, boolean>>>
   ): MathJsChain<boolean>
+
+  /**
+   * Flatten associative subtrees
+   */
+  flattenAssociation(
+    this: MathJsChain<MathNode>,
+    context?: Record<string, Partial<Record<OpProp, boolean>>>
+  ): MathJsChain<MathNode>
 
   /**
    * @param options Available options: nodes - a set of custome nodes
