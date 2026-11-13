@@ -152,6 +152,10 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
       throw new Error('Root must be odd when a is negative.')
     }
 
+    if (a.isNaN()) {
+      return a
+    }
+
     // edge cases zero and infinity
     if (a.isZero()) {
       return inv ? new Big(Infinity) : 0
