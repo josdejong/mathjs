@@ -245,7 +245,6 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
         throw new Error('There is an unsolved function call')
       } else if (tp === 'OperatorNode') {
         if (node.op === '^') {
-          // TODO: handle negative exponents like in '1/x^(-2)'
           if (node.args[1].type !== 'ConstantNode' || !isInteger(parseFloat(node.args[1].value))) {
             throw new Error('There is a non-integer exponent')
           } else {
@@ -291,7 +290,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
       simplifyConstant, // sConstant
       { l: 'n*(n1^-1)', r: 'n/n1' },
       { l: 'n*n1^-n2', r: 'n/n1^n2' },
-      { l: 'n1^-1', r: '1/n1' },
+      { l: 'n1^-c1', r: '1/n1^c1' }, // Normalize negative powers before checking polynomial exponents
       { l: 'n*(n1/n2)', r: '(n*n1)/n2' },
       { l: '1*n', r: 'n' }]
 
