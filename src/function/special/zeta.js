@@ -37,8 +37,11 @@ export const createZeta = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       s,
       value => new BigNumber(value),
       () => {
-        // relTol is for example 1e-12. Extract the positive exponent 12 from that
-        return Math.abs(Math.log10(config.relTol))
+        // relTol is for example 1e-12. Extract the positive exponent 12 from that.
+        // Round to guard against floating point errors in Math.log10 for very
+        // small relTol like 1e-320, which would otherwise yield a non-integer
+        // digit count (see https://github.com/josdejong/mathjs/issues/3532).
+        return Math.round(Math.abs(Math.log10(config.relTol)))
       }
     ),
     Complex: zetaComplex

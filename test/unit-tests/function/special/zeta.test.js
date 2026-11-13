@@ -58,6 +58,20 @@ describe('Riemann Zeta', function () {
     bigApproxEqual(zeta(math2.bignumber(-Infinity)), math2.bignumber(NaN)) // shouldn't stall
   })
 
+  it('should calculate the Riemann Zeta Function of a BigNumber when relTol has a non-integer base-10 logarithm', function () {
+    // See https://github.com/josdejong/mathjs/issues/3532
+    // The digit count is derived from Math.abs(Math.log10(config.relTol)).
+    // For a relTol that is not an exact power of ten (e.g. 5e-8, or 1e-320
+    // where floating point rounding makes log10 non-integer), this yielded a
+    // non-integer digit count that eventually reached factorial/gamma as a
+    // non-integer BigNumber, throwing "Integer BigNumber expected".
+    const math2 = math.create()
+    math2.config({ number: 'BigNumber', relTol: 5e-16, absTol: 5e-19 })
+
+    assert.doesNotThrow(() => math2.evaluate('zeta(3)'))
+    approxEqual(Number(math2.evaluate('zeta(3)')), 1.2020569031595942)
+  })
+
   it('should calculate the Riemann Zeta Function of a rational number', function () {
     approxEqual(zeta(0.125), -0.6327756234986952552935)
     approxEqual(zeta(0.25), -0.81327840526189165652144)
