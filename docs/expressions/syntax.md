@@ -122,9 +122,10 @@ Operators                         | Description
 `%`                               | Unary percentage
 See section below                 | Implicit multiplication
 `*`, `/`, `.*`, `./`,`%`, `mod`   | Multiply, divide, modulus
+`to`, `in` _rightwards_           | Unit conversion
 `+`, `-`                          | Add, subtract
 `:`                               | Range
-`to`, `in`                        | Unit conversion
+`to`, `in` _leftwards_            | Unit conversion
 `<<`, `>>`, `>>>`                 | Bitwise left shift, bitwise right arithmetic shift, bitwise right logical shift
 `==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
 `&`                               | Bitwise and (lazily evaluated)
@@ -138,6 +139,15 @@ See section below                 | Implicit multiplication
 `,`                               | Parameter and column separator
 `;`                               | Row separator
 `\n`, `;`                         | Statement separators
+
+Note that the conversion operators `to` and `in` have the unusual property of
+different precedence to the left and right: addition on the left of a
+conversion binds more tightly, whereas a conversion binds more tightly that
+addition on its right. In other words, `100 mi + 100 km to meters` parses as
+`(100 mi + 100 km) to meters`, whereas `100 mi to meters + 100 km` parses as
+`(100 mi to meters) + 100 km` (as opposed to `100 mi to (meters + 100 km)`,
+which would be the outcome if conversion had lower precedence than addition
+in all cases).
 
 Lazy evaluation is used where logically possible for bitwise and logical
 operators. In the following example, the sub-expression `x` will not even be
