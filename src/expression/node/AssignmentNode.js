@@ -1,4 +1,4 @@
-import { isAccessorNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is.js'
+import { isAccessorNode, isIndexNode, isMatrix, isNode, isSymbolNode } from '../../utils/is.js'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs.js'
 import { factory } from '../../utils/factory.js'
 import { accessFactory } from './utils/access.js'
@@ -177,20 +177,62 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
             return value
           }
         } else {
-          // if some parameters use the 'end' parameter, we need to calculate
-          // the size
-          const evalParentIndex = this.object.index._compile(math, argNames)
+          const accessors = []
+          let root = this.object
+          do {
+            const property = root.index.isObjectProperty()
+              ? root.index.getObjectProperty()
+              : null
+            accessors.unshift({
+              property,
+              evalIndex: property === null ? root.index._compile(math, argNames) : null
+            })
+            root = root.object
+            // Leave optional reads to the AccessorNode compiler.
+          } while (isAccessorNode(root) && !root.optionalChaining && !root.object.optionalChaining)
+          const evalRoot = root === this.object.object
+            ? evalParentObject
+            : root._compile(math, argNames)
+          const rootName = isSymbolNode(root) ? root.name : null
 
           return function evalAssignmentNode (scope, args, context) {
-            const parent = evalParentObject(scope, args, context)
-            // Important: we pass parent instead of context:
-            const parentIndex = evalParentIndex(scope, args, parent)
-            const childObject = access(parent, parentIndex)
-            // Important:  we pass childObject instead of context
+            const rootValue = evalRoot(scope, args, context)
+            const path = []
+            let childObject = rootValue
+            for (const accessor of accessors) {
+              const parent = childObject
+              const { property } = accessor
+              const index = accessor.evalIndex?.(scope, args, parent)
+              childObject = property === null
+                ? access(parent, index)
+                : getSafeProperty(parent, property)
+              path.push({ parent, property, index, childObject })
+            }
             const index = evalIndex(scope, args, childObject)
             const value = evalValue(scope, args, context)
 
-            assign(parent, parentIndex, assign(childObject, index, value))
+            let updated = assign(childObject, index, value)
+            for (let i = path.length - 1; i >= 0; i--) {
+              const step = path[i]
+              if (i < path.length - 1 && step.childObject === updated) {
+                // A copied range needs write-back even if it was mutated in place.
+                const copiedRange = step.property === null &&
+                  !step.index.isObjectProperty() && !step.index.isScalar() &&
+                  (Array.isArray(updated) || isMatrix(updated))
+                if (!copiedRange) {
+                  return value
+                }
+              }
+              if (step.property === null) {
+                updated = assign(step.parent, step.index, updated)
+              } else {
+                setSafeProperty(step.parent, step.property, updated)
+                updated = step.parent
+              }
+            }
+            if (rootName !== null && rootValue !== updated) {
+              scope.set(rootName, updated)
+            }
 
             return value
           }

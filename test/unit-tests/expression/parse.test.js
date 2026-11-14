@@ -1014,6 +1014,60 @@ describe('parse', function () {
       assert.deepStrictEqual(scope, { obj: { foo: ['hella', 'worl!'] } })
     })
 
+    it('should write a nested string subset back to its variable', function () {
+      const scope = { s: 'abcde' }
+      assert.strictEqual(parseAndEval('s[[1,3,5]][2:3] = "xy"', scope), 'xy')
+      assert.strictEqual(scope.s, 'abxdy')
+    })
+
+    it('should write a nested string subset back to its object property', function () {
+      const scope = { obj: { s: 'abcde' } }
+      assert.strictEqual(parseAndEval('obj.s[[1,3,5]][end] = "x"', scope), 'x')
+      assert.strictEqual(scope.obj.s, 'abcdx')
+    })
+
+    it('should write a subset back through three levels of matrix indices', function () {
+      assert.deepStrictEqual(
+        parseAndEval('a = [10, 11, 12, 13, 14]; a[[1,3,5]][2:3][1] = 88; a').valueOf(),
+        [math.matrix([10, 11, 88, 13, 14])]
+      )
+    })
+
+    it('should evaluate each index and the assigned expression once in order', function () {
+      const calls = []
+      const scope = {
+        s: 'abcde',
+        indices: () => { calls.push('indices'); return [1, 3, 5] },
+        index: () => { calls.push('index'); return 2 },
+        value: () => { calls.push('value'); return 'x' }
+      }
+      assert.strictEqual(parseAndEval('s[indices()][index()] = value()', scope), 'x')
+      assert.deepStrictEqual(calls, ['indices', 'index', 'value'])
+      assert.strictEqual(scope.s, 'abxde')
+    })
+
+    it('should update a mutable subset under a read-only object property', function () {
+      const scope = { obj: Object.freeze({ values: ['hello', 'world'] }) }
+      assert.strictEqual(parseAndEval('obj.values[1][end] = "a"', scope), 'a')
+      assert.deepStrictEqual(scope.obj.values, ['hella', 'world'])
+    })
+
+    it('should update a mutable subset through a read-only array reference', function () {
+      const words = ['hello']
+      const scope = { a: Object.freeze([{ words }]) }
+      assert.strictEqual(parseAndEval('a[1].words[1][2] = "x"', scope), 'x')
+      assert.deepStrictEqual(words, ['hxllo'])
+    })
+
+    it('should preserve an ancestor replacement made by the assigned expression', function () {
+      const original = { words: ['hello'] }
+      const replacement = { v: 'x' }
+      const scope = { a: [original], replacement }
+      assert.strictEqual(parseAndEval('a[1].words[1][2] = (a[1] = replacement).v', scope), 'x')
+      assert.strictEqual(scope.a[0], replacement)
+      assert.deepStrictEqual(original.words, ['hxllo'])
+    })
+
     // TODO: test whether 1-based IndexErrors are thrown
 
     it('should get an object property with dot notation', function () {
