@@ -80,6 +80,7 @@ export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * @private
    */
   function _zeros (size, format) {
+    size = size.slice()
     const hasBigNumbers = _normalize(size)
     const defaultValue = hasBigNumbers ? new BigNumber(0) : 0
     _validate(size)
