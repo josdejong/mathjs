@@ -112,11 +112,7 @@ const replaceEmails = {
     author: 'yash',
     email: '<yxshdogra@gmail.com>'
   },
-  '<11793455+rahul05ranjan@users.noreply.github.com>': {
-    author: 'Rahul Ranjan',
-    email: '<rahulsingh.ranjan06@gmail.com>',
-  },
-  '<rahul05ranjan@users.noreply.github.com>': {
+  '<rahulsingh.ranjan06@gmail.com>': {
     author: 'Rahul Ranjan',
     email: '<rahulsingh.ranjan06@gmail.com>',
   }
