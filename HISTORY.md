@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: #3802 Disallow too-negative bigint -> number auto conversion (#3803).
+  Thanks @spokodev.
 - Feat: Add bigint support to catalan() and fix #3780, significantly improve
   catalan() accuracy by computing with exact-division recurrence (#3781).
   Thanks @rahul05ranjan.

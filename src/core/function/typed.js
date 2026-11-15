@@ -212,6 +212,10 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
           throw new TypeError('Cannot implicitly convert bigint to number: ' +
             'value exceeds the max safe integer value (value: ' + x + ')')
         }
+        if (x < Number.MIN_SAFE_INTEGER) {
+          throw new TypeError('Cannot implicitly convert bigint to number: ' +
+            'value is below the min safe integer value (value: ' + x + ')')
+        }
 
         return Number(x)
       }

@@ -377,7 +377,12 @@ describe('typed', function () {
 
     assert.strictEqual(double(2), 4)
     assert.strictEqual(double(2n), 4)
+    assert.strictEqual(double(BigInt(Number.MAX_SAFE_INTEGER)), 2 * Number.MAX_SAFE_INTEGER)
+    assert.strictEqual(double(BigInt(Number.MIN_SAFE_INTEGER)), 2 * Number.MIN_SAFE_INTEGER)
     assert.throws(() => double(12345678901234567890n), /value exceeds the max safe integer/)
+    assert.throws(() => double(-12345678901234567890n), /value is below the min safe integer/)
+    assert.throws(() => double(BigInt(Number.MAX_SAFE_INTEGER) + 1n), /value exceeds the max safe integer/)
+    assert.throws(() => double(BigInt(Number.MIN_SAFE_INTEGER) - 1n), /value is below the min safe integer/)
   })
 
   it('should convert a bigint to BigNumber', function () {
