@@ -32,6 +32,15 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
   }
   const powScalar = typed(powScalarSignatures)
 
+  // The zeros of a sparse base only stay zero for a positive exponent:
+  // 0 ^ 0 is 1 and 0 ^ -1 is Infinity. In that case every entry has to be
+  // evaluated and the result is no longer sparse.
+  const matAlgoSs = (x, y, f, inverse) => {
+    const keepsZeros = equalScalar(f(0, y), 0)
+    const algorithm = keepsZeros ? matAlgo11xS0s : matAlgo12xSfs
+    return algorithm(x, y, f, inverse)
+  }
+
   /**
    * Calculates the power of x to y element wise.
    *
@@ -65,7 +74,7 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
     elop: powScalar,
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,
-    Ss: matAlgo11xS0s,
+    Ss: matAlgoSs,
     sS: matAlgo12xSfs
   }))
 })

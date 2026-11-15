@@ -159,6 +159,13 @@ describe('dotPow', function () {
       approxDeepEqual(dotPow(sparse([[1, 2, 3], [4, 5, 0]]), 2), sparse([[1, 4, 9], [16, 25, 0]]))
     })
 
+    it('should elevate the zeros of a sparse matrix .^ zero or negative scalar', function () {
+      assert.deepStrictEqual(dotPow(sparse([[1, 2], [0, 4]]), 0), matrix([[1, 1], [1, 1]]))
+      assert.deepStrictEqual(dotPow(sparse([[1, 2], [0, 4]]), -1), matrix([[1, 0.5], [Infinity, 0.25]]))
+      assert.deepStrictEqual(dotPow(sparse([[1, 2], [0, 4]]), math.bignumber(0)), dotPow(matrix([[1, 2], [0, 4]]), math.bignumber(0)))
+      assert.deepStrictEqual(dotPow(sparse([[1, 2], [0, 4]]), NaN), matrix([[NaN, NaN], [NaN, NaN]]))
+    })
+
     it('should elevate scalar .^ sparse matrix', function () {
       approxDeepEqual(dotPow(2, sparse([[1, 2], [0, 4]])), matrix([[2, 4], [1, 16]]))
       approxDeepEqual(dotPow(2.5, sparse([[1, 2], [0, 4]])), matrix([[2.5, 6.25], [1, 39.0625]]))
