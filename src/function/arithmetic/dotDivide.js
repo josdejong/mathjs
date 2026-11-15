@@ -24,6 +24,15 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
+  // The zeros of a sparse numerator do not stay zero for every divisor:
+  // 0 / 0 and 0 / NaN are NaN. In that case every entry has to be evaluated
+  // and the result is no longer sparse.
+  const matAlgoSs = (x, y, f, inverse) => {
+    const keepsZeros = equalScalar(f(0, y), 0)
+    const algorithm = keepsZeros ? matAlgo11xS0s : matAlgo12xSfs
+    return algorithm(x, y, f, inverse)
+  }
+
   /**
    * Divide two matrices element wise. The function accepts both matrices and
    * scalar values.
@@ -61,7 +70,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,
     SD: matAlgo02xDS0,
-    Ss: matAlgo11xS0s,
+    Ss: matAlgoSs,
     sS: matAlgo12xSfs
   }))
 })
