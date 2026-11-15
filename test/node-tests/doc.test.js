@@ -382,7 +382,7 @@ const knownNoHistory = new Set([
   'hypot', 'log10', 'log1p', 'log2', 'multiply',
   'norm', 'pow', 'round', 'sign', 'sqrt', 'sqrtm',
   'square', 'unaryMinus', 'unaryPlus', 'bitNot',
-  'bellNumbers', 'catalan', 'composition', 'arg', 'conj',
+  'bellNumbers', 'composition', 'arg', 'conj',
   'compile', 'evaluate', 'help', 'parser', 'distance', 'intersect',
   'not', 'nullish', 'column', 'count', 'cross',
   'ctranspose', 'det', 'diag', 'diff', 'dot', 'eigs', 'fft', 'filter',
