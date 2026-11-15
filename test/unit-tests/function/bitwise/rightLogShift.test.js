@@ -126,6 +126,22 @@ describe('rightLogShift', function () {
     })
   })
 
+  it('should convert negative numbers in a matrix when shifting by zero', function () {
+    const a = [[0, -3], [4, -8]]
+    const b = [[0, 0], [1, 0]]
+    const shifted = [[0, 4294967293], [4, 4294967288]]
+    const shiftedByB = [[0, 4294967293], [2, 4294967288]]
+
+    assert.deepStrictEqual(rightLogShift(a, 0), shifted)
+    assert.deepStrictEqual(rightLogShift(matrix(a), 0), matrix(shifted))
+    assert.deepStrictEqual(rightLogShift(sparse(a), 0), sparse(shifted))
+
+    assert.deepStrictEqual(rightLogShift(a, b), shiftedByB)
+    assert.deepStrictEqual(rightLogShift(matrix(a), sparse(b)), matrix(shiftedByB))
+    assert.deepStrictEqual(rightLogShift(sparse(a), matrix(b)), sparse(shiftedByB))
+    assert.deepStrictEqual(rightLogShift(sparse(a), sparse(b)), sparse(shiftedByB))
+  })
+
   it('should throw an error if used with wrong number of arguments', function () {
     assert.throws(function () { rightLogShift(1) }, /TypeError: Too few arguments/)
     assert.throws(function () { rightLogShift(1, 2, 3) }, /TypeError: Too many arguments/)
