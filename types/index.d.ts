@@ -489,9 +489,6 @@ export interface SymbolNodeCtor {
   onUndefinedSymbol: (name: string) => any
 }
 
-// Needed in context argument for operatorIs
-type OpProp = 'associative' | 'commutative' | 'total' | 'trivial'
-
 /**
  * @deprecated since version 11.3. Prefer `MathNode` instead
  */
@@ -998,18 +995,21 @@ export interface MathJsInstance extends MathJsFactory {
   operatorIs(
     operator: MathNode | string,
     property: string,
-    context?: Record<string, Partial<Record<OpProp, boolean>>>
+    context?: SimplifyContext
   ): boolean
 
   /**
-   * Flatten associative subtrees of an expression tree
+   * Reconfigure associative operators in an expression tree
    * @param {Node} node  The expression tree
    * @param {Context} [context = simplify.defaultContext]
    *    An object encoding properties of operators
+   * @param {Object} [options = {direction: 'flat'}]  how to reassociate
+   * @return {Node}  Reconfigured expression tree
    */
-  flattenAssociation(
+  reassociate(
     node: MathNode,
-    context?: Record<string, Partial<Record<OpProp, boolean>>>
+    context?: SimplifyContext,
+    options?: { direction?: string; inplace?: boolean }
   ): MathNode
 
   /**
@@ -4791,12 +4791,12 @@ export interface CreateUnitOptions {
 export type SimplifyContext = Partial<
   Record<
     OperatorNodeFn,
-    {
+    Partial<{
       trivial: boolean
       total: boolean
       commutative: boolean
       associative: boolean
-    }
+    }>
   >
 >
 
@@ -4853,6 +4853,9 @@ export interface Simplify {
   ): MathNode
 
   rules: SimplifyRule[]
+  defaultContext: SimplifyContext
+  realContext: SimplifyContext
+  positiveContext: SimplifyContext
 }
 
 export interface UnitDefinition {
@@ -5422,15 +5425,16 @@ export interface MathJsChain<TValue> {
   operatorIs(
     this: MathJsChain<MathNode> | MathJsChain<string>,
     property: string,
-    context?: Record<string, Partial<Record<OpProp, boolean>>>
+    context?: SimplifyContext
   ): MathJsChain<boolean>
 
   /**
-   * Flatten associative subtrees
+   * Reconfigure associative subtrees
    */
-  flattenAssociation(
+  reassociate(
     this: MathJsChain<MathNode>,
-    context?: Record<string, Partial<Record<OpProp, boolean>>>
+    context?: SimplifyContext,
+    options?: { description?: string; inplace?: string }
   ): MathJsChain<MathNode>
 
   /**

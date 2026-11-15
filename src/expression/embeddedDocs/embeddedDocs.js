@@ -111,9 +111,7 @@ import { parseDocs } from './function/expression/parse.js'
 import { compileDocs } from './function/expression/compile.js'
 import { helpDocs } from './function/expression/help.js'
 import { operatorIsDocs } from './function/expression/operatorIs.js'
-import {
-  flattenAssociationDocs
-} from './function/expression/flattenAssociation.js'
+import { reassociateDocs } from './function/expression/reassociate.js'
 import { distanceDocs } from './function/geometry/distance.js'
 import { intersectDocs } from './function/geometry/intersect.js'
 import { andDocs } from './function/logical/and.js'
@@ -450,7 +448,7 @@ export const embeddedDocs = {
   parser: parserDocs,
   compile: compileDocs,
   operatorIs: operatorIsDocs,
-  flattenAssociation: flattenAssociationDocs,
+  reassociate: reassociateDocs,
 
   // functions - geometry
   distance: distanceDocs,

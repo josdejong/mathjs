@@ -212,12 +212,10 @@ export { createFunctionNode } from './expression/node/FunctionNode.js'
 export { createParse } from './expression/parse.js'
 export { createCompile } from './expression/function/compile.js'
 export { createEvaluate } from './expression/function/evaluate.js'
-export {
-  createFlattenAssociation
-} from './expression/function/flattenAssociation.js'
 export { createOperatorIs } from './expression/function/operatorIs.js'
 export { createParserClass } from './expression/Parser.js'
 export { createParser } from './expression/function/parser.js'
+export { createReassociate } from './expression/function/reassociate.js'
 export { createLup } from './function/algebra/decomposition/lup.js'
 export { createQr } from './function/algebra/decomposition/qr.js'
 export { createSlu } from './function/algebra/decomposition/slu.js'

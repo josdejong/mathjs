@@ -78,48 +78,6 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
     }
   }
 
-  /**
-   *  Unflatten all flattened operators to a right-heavy binary tree.
-   */
-  function unflattenr (node, context) {
-    if (!node.args || node.args.length === 0) {
-      return
-    }
-    const makeNode = createMakeNodeFunction(node)
-    const l = node.args.length
-    for (let i = 0; i < l; i++) {
-      unflattenr(node.args[i], context)
-    }
-    if (l > 2 && operatorIs(node, 'associative', context)) {
-      let curnode = node.args.pop()
-      while (node.args.length > 0) {
-        curnode = makeNode([node.args.pop(), curnode])
-      }
-      node.args = curnode.args
-    }
-  }
-
-  /**
-   *  Unflatten all flattened operators to a left-heavy binary tree.
-   */
-  function unflattenl (node, context) {
-    if (!node.args || node.args.length === 0) {
-      return
-    }
-    const makeNode = createMakeNodeFunction(node)
-    const l = node.args.length
-    for (let i = 0; i < l; i++) {
-      unflattenl(node.args[i], context)
-    }
-    if (l > 2 && operatorIs(node, 'associative', context)) {
-      let curnode = node.args.shift()
-      while (node.args.length > 0) {
-        curnode = makeNode([curnode, node.args.shift()])
-      }
-      node.args = curnode.args
-    }
-  }
-
   function createMakeNodeFunction (node) {
     if (isOperatorNode(node)) {
       return function (args) {
@@ -141,8 +99,6 @@ export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ Functio
     createMakeNodeFunction,
     mergeContext,
     allChildren,
-    unflattenr,
-    unflattenl,
     defaultContext,
     realContext,
     positiveContext

@@ -15,7 +15,7 @@ const dependencies = [
   'parse',
   'equal',
   'operatorIs',
-  'flattenAssociation',
+  'reassociate',
   'resolve',
   'simplifyConstant',
   'simplifyCore',
@@ -37,7 +37,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     parse,
     equal,
     operatorIs,
-    flattenAssociation,
+    reassociate,
     resolve,
     simplifyConstant,
     simplifyCore,
@@ -59,7 +59,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   function isAssociative (node, context = defaultContext) {
     return operatorIs(node, 'associative', context)
   }
-  const { mergeContext, unflattenr, unflattenl, createMakeNodeFunction } =
+  const { mergeContext, createMakeNodeFunction } =
         createUtil({ FunctionNode, OperatorNode, SymbolNode, operatorIs })
 
   /**
@@ -465,8 +465,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       newRule.expanded.l = makeNode([newRule.l, expandsym])
       // Push the expandsym into the deepest possible branch.
       // This helps to match the newRule against nodes returned from getSplits() later on.
-      newRule.expanded.l = flattenAssociation(newRule.expanded.l, context)
-      unflattenr(newRule.expanded.l, context)
+      reassociate(newRule.expanded.l, context, { inplace: true })
+      reassociate(newRule.expanded.l,
+        context,
+        { direction: 'right', inplace: true })
       newRule.expanded.r = makeNode([newRule.r, expandsym])
 
       // In and for a non-commutative context, attempting with yet additional expansion rules makes
@@ -553,7 +555,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           res = rules[i](res, options)
           if (debug) rulestr = rules[i].name
         } else {
-          res = flattenAssociation(res, options.context)
+          reassociate(res, options.context, { inplace: true })
           res = applyRule(res, rules[i], options.context)
           if (debug) {
             rulestr = `${rules[i].l.toString()} -> ${rules[i].r.toString()}`
@@ -569,7 +571,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         /* Use left-heavy binary tree internally,
          * since custom rule functions may expect it
          */
-        unflattenl(res, options.context)
+        reassociate(res, options.context, { direction: 'left', inplace: true })
       }
       str = res.toString({ parenthesis: 'all' })
     }
