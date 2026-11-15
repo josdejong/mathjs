@@ -32,6 +32,12 @@ describe('median', function () {
       new BigNumber(2))
   })
 
+  it('should return the median of Fractions as a Fraction', function () {
+    assert.deepStrictEqual(median(math.fraction(1), math.fraction(4), math.fraction(2)), math.fraction(2))
+    assert.deepStrictEqual(median(math.fraction(1), math.fraction(4), math.fraction(5), math.fraction(2)), math.fraction(3))
+    assert.deepStrictEqual(median([math.fraction(1, 3), math.fraction(1, 2)]), math.fraction(5, 12))
+  })
+
   it('should return the median of an even number of booleans', function () {
     assert.strictEqual(median(true, true, false, false), 0.5)
   })

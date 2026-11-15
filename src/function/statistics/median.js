@@ -49,14 +49,14 @@ export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
   // helper function to type check the middle value of the array
   const middle = typed({
-    'number | BigNumber | Complex | Unit': function (value) {
+    'number | BigNumber | Fraction | Complex | Unit': function (value) {
       return value
     }
   })
 
   // helper function to type check the two middle value of the array
   const middle2 = typed({
-    'number | BigNumber | Complex | Unit, number | BigNumber | Complex | Unit': function (left, right) {
+    'number | BigNumber | Fraction | Complex | Unit, number | BigNumber | Fraction | Complex | Unit': function (left, right) {
       return divide(add(left, right), 2)
     }
   })
