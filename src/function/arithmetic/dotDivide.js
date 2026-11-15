@@ -2,8 +2,8 @@ import { factory } from '../../utils/factory.js'
 import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
-import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatAlgo16xSs } from '../../type/matrix/utils/matAlgo16xSs.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'dotDivide'
@@ -20,18 +20,9 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo16xSs = createMatAlgo16xSs({ typed, equalScalar, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
-
-  // The zeros of a sparse numerator do not stay zero for every divisor:
-  // 0 / 0 and 0 / NaN are NaN. In that case every entry has to be evaluated
-  // and the result is no longer sparse.
-  const matAlgoSs = (x, y, f, inverse) => {
-    const keepsZeros = equalScalar(f(0, y), 0)
-    const algorithm = keepsZeros ? matAlgo11xS0s : matAlgo12xSfs
-    return algorithm(x, y, f, inverse)
-  }
 
   /**
    * Divide two matrices element wise. The function accepts both matrices and
@@ -70,7 +61,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,
     SD: matAlgo02xDS0,
-    Ss: matAlgoSs,
+    Ss: matAlgo16xSs,
     sS: matAlgo12xSfs
   }))
 })

@@ -1,8 +1,8 @@
 import { factory } from '../../utils/factory.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
-import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatAlgo16xSs } from '../../type/matrix/utils/matAlgo16xSs.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'dotPow'
@@ -18,8 +18,8 @@ const dependencies = [
 export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo16xSs = createMatAlgo16xSs({ typed, equalScalar, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   const powScalarSignatures = {}
@@ -31,15 +31,6 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
     }
   }
   const powScalar = typed(powScalarSignatures)
-
-  // The zeros of a sparse base only stay zero for a positive exponent:
-  // 0 ^ 0 is 1 and 0 ^ -1 is Infinity. In that case every entry has to be
-  // evaluated and the result is no longer sparse.
-  const matAlgoSs = (x, y, f, inverse) => {
-    const keepsZeros = equalScalar(f(0, y), 0)
-    const algorithm = keepsZeros ? matAlgo11xS0s : matAlgo12xSfs
-    return algorithm(x, y, f, inverse)
-  }
 
   /**
    * Calculates the power of x to y element wise.
@@ -74,7 +65,7 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
     elop: powScalar,
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,
-    Ss: matAlgoSs,
+    Ss: matAlgo16xSs,
     sS: matAlgo12xSfs
   }))
 })

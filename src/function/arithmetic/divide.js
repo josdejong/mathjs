@@ -1,7 +1,7 @@
 import { factory } from '../../utils/factory.js'
 import { extend } from '../../utils/object.js'
-import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
+import { createMatAlgo16xSs } from '../../type/matrix/utils/matAlgo16xSs.js'
 
 const name = 'divide'
 const dependencies = [
@@ -10,12 +10,13 @@ const dependencies = [
   'multiply',
   'equalScalar',
   'divideScalar',
-  'inv'
+  'inv',
+  'DenseMatrix'
 ]
 
-export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv }) => {
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv, DenseMatrix }) => {
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
+  const matAlgo16xSs = createMatAlgo16xSs({ typed, equalScalar, DenseMatrix })
 
   /**
    * Divide two values, `x / y`.
@@ -64,12 +65,9 @@ export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'SparseMatrix, any': function (x, y) {
-      // 0 / 0 and 0 / NaN are NaN, so for those divisors the zeros of x do
-      // not stay zero and the result is no longer sparse
-      if (!equalScalar(divideScalar(0, y), 0)) {
-        return matAlgo14xDs(matrix(x, 'dense'), y, divideScalar, false)
-      }
-      return matAlgo11xS0s(x, y, divideScalar, false)
+      // the result is only sparse when 0 / y is zero, which is not the case
+      // for a divisor like 0 or NaN
+      return matAlgo16xSs(x, y, divideScalar, false)
     },
 
     'Array, any': function (x, y) {

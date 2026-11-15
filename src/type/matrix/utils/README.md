@@ -129,6 +129,16 @@ separator, unfortunately.)
     Cij = x(Aij, N);    Aij != 0
     Cij = x(0, N)  ;    otherwise
     ````
+
+- **Algorithm 16 (Ss) `x(sparse, scalar)`**
+  * Algorithm should evaluate `x(0, N)` once to find out what the zero values of matrix A are mapped to. When that is zero it continues with Algorithm 11, otherwise with Algorithm 12.
+  * Output type is a `SparseMatrix` when `x(0, N)` is zero, and a `DenseMatrix` otherwise
+  * `x()` operation invoked NZ + 1 times when `x(0, N)` is zero, MxN + 1 times otherwise.
+
+    ````
+    Cij = x(Aij, N);    Aij != 0
+    Cij = x(0, N)  ;    otherwise
+    ````
   
 ###Algorithms for the implementation of element wise operations between a Dense and Dense matrices:
 
