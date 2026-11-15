@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'median'
-const dependencies = ['typed', 'add', 'divide', 'compare', 'partitionSelect']
+const dependencies = ['typed', 'add', 'unaryPlus', 'divide', 'compare', 'partitionSelect']
 
-export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide, compare, partitionSelect }) => {
+export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, unaryPlus, divide, compare, partitionSelect }) => {
   /**
    * Recursively calculate the median of an n-dimensional array
    * @param {Array} array
@@ -35,31 +35,19 @@ export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed
           }
         }
 
-        return middle2(left, right)
+        return divide(add(left, right), 2)
       } else {
         // odd: return the middle value
         const m = partitionSelect(array, (num - 1) / 2)
 
-        return middle(m)
+        // unaryPlus keeps numeric values as they are, and converts
+        // strings and booleans into a numeric value
+        return unaryPlus(m)
       }
     } catch (err) {
       throw improveErrorMessage(err, 'median')
     }
   }
-
-  // helper function to type check the middle value of the array
-  const middle = typed({
-    'number | BigNumber | Fraction | Complex | Unit': function (value) {
-      return value
-    }
-  })
-
-  // helper function to type check the two middle value of the array
-  const middle2 = typed({
-    'number | BigNumber | Fraction | Complex | Unit, number | BigNumber | Fraction | Complex | Unit': function (left, right) {
-      return divide(add(left, right), 2)
-    }
-  })
 
   /**
    * Compute the median of a matrix or a list with values. The values are
