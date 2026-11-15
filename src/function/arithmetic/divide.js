@@ -64,6 +64,11 @@ export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed
     },
 
     'SparseMatrix, any': function (x, y) {
+      // 0 / 0 and 0 / NaN are NaN, so for those divisors the zeros of x do
+      // not stay zero and the result is no longer sparse
+      if (!equalScalar(divideScalar(0, y), 0)) {
+        return matAlgo14xDs(matrix(x, 'dense'), y, divideScalar, false)
+      }
       return matAlgo11xS0s(x, y, divideScalar, false)
     },
 
