@@ -2,6 +2,8 @@
 
 # unpublished changes since 15.2.0
 
+- Feat: support Fraction and bigint in median (#3809). Thanks @Ryzuuuu.
+- Fix: Properly logically shift matrix entries by zero (#3808). Thanks @Ryzuuuu.
 - Fix: #3802 Disallow too-negative bigint -> number auto conversion (#3803).
   Thanks @spokodev.
 - Feat: Add bigint support to catalan() and fix #3780, significantly improve
