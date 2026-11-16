@@ -2,9 +2,9 @@ import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
 
 const name = 'matAlgo02xDS0'
-const dependencies = ['typed', 'equalScalar']
+const dependencies = ['typed', 'isZero']
 
-export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
+export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, ({ typed, isZero }) => {
   /**
    * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij).
    * Callback function invoked NNZ times (number of nonzero items in SparseMatrix).
@@ -18,13 +18,13 @@ export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, (
    * @param {Matrix}   denseMatrix       The DenseMatrix instance (D)
    * @param {Matrix}   sparseMatrix      The SparseMatrix instance (S)
    * @param {Function} callback          The f(Dij,Sij) operation to invoke, where Dij = DenseMatrix(i,j) and Sij = SparseMatrix(i,j)
-   * @param {boolean}  inverse           A true value indicates callback should be invoked f(Sij,Dij)
+   * @param {boolean}  flip              A true value indicates callback should be invoked f(Sij,Dij)
    *
    * @return {Matrix}                    SparseMatrix (C)
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97477571
    */
-  return function matAlgo02xDS0 (denseMatrix, sparseMatrix, callback, inverse) {
+  return function matAlgo02xDS0 (denseMatrix, sparseMatrix, callback, flip) {
     // dense matrix arrays
     const adata = denseMatrix._data
     const asize = denseMatrix._size
@@ -51,10 +51,8 @@ export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, (
 
     // datatype
     let dt
-    // equal signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
+    // isZero signature to use
+    let isZ = isZero
     // callback signature to use
     let cf = callback
 
@@ -63,9 +61,7 @@ export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, (
       // datatype
       dt = adt
       // find signature that matches (dt, dt)
-      eq = typed.find(equalScalar, [dt, dt])
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt)
+      isZ = typed.find(isZero, [dt])
       // callback
       cf = typed.find(callback, [dt, dt])
     }
@@ -84,9 +80,9 @@ export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, (
         // row
         const i = bindex[k]
         // update C(i,j)
-        const cij = inverse ? cf(bvalues[k], adata[i][j]) : cf(adata[i][j], bvalues[k])
+        const cij = flip ? cf(bvalues[k], adata[i][j]) : cf(adata[i][j], bvalues[k])
         // check for nonzero
-        if (!eq(cij, zero)) {
+        if (!isZ(cij)) {
           // push i & v
           cindex.push(i)
           cvalues.push(cij)

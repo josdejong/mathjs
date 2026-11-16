@@ -10,11 +10,12 @@ const name = 'bitAnd'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar'
+  'equalScalar',
+  'isZero'
 ]
 
-export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
-  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
+export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, isZero }) => {
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, isZero })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })

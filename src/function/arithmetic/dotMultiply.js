@@ -9,11 +9,12 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
+  'isZero',
   'multiplyScalar'
 ]
 
-export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar }) => {
-  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
+export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, isZero, multiplyScalar }) => {
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, isZero })
   const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
