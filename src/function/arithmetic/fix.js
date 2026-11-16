@@ -21,7 +21,7 @@ export const createFixNumber = /* #__PURE__ */ factory(
 )
 
 export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex, matrix, ceil, floor, equalScalar, zeros, DenseMatrix }) => {
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   const fixNumber = createFixNumber({ typed, ceil, floor })

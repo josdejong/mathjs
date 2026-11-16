@@ -25,7 +25,7 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**

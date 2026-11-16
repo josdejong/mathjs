@@ -3,7 +3,6 @@ import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatAlgo16xSs } from '../../type/matrix/utils/matAlgo16xSs.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'dotDivide'
@@ -20,8 +19,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matAlgo16xSs = createMatAlgo16xSs({ typed, equalScalar, DenseMatrix })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
@@ -61,7 +59,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,
     SD: matAlgo02xDS0,
-    Ss: matAlgo16xSs,
+    Ss: matAlgo12xSfs,
     sS: matAlgo12xSfs
   }))
 })

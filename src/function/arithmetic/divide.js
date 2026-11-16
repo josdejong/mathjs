@@ -1,7 +1,7 @@
 import { factory } from '../../utils/factory.js'
 import { extend } from '../../utils/object.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
-import { createMatAlgo16xSs } from '../../type/matrix/utils/matAlgo16xSs.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 
 const name = 'divide'
 const dependencies = [
@@ -16,7 +16,7 @@ const dependencies = [
 
 export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv, DenseMatrix }) => {
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-  const matAlgo16xSs = createMatAlgo16xSs({ typed, equalScalar, DenseMatrix })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
 
   /**
    * Divide two values, `x / y`.
@@ -45,6 +45,13 @@ export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    multiply
    *
+   * History:
+   *
+   *    v13     Handle bigints
+   *    v2      Support Fractions
+   *    v0.16   Support BigNumbers
+   *    v0.0.2  Created
+   *
    * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x   Numerator
    * @param  {number | BigNumber | bigint | Fraction | Complex | Array | Matrix} y          Denominator
    * @return {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix}                      Quotient, `x / y`
@@ -67,7 +74,7 @@ export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed
     'SparseMatrix, any': function (x, y) {
       // the result is only sparse when 0 / y is zero, which is not the case
       // for a divisor like 0 or NaN
-      return matAlgo16xSs(x, y, divideScalar, false)
+      return matAlgo12xSfs(x, y, divideScalar, false)
     },
 
     'Array, any': function (x, y) {

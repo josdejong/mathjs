@@ -2,7 +2,6 @@ import { factory } from '../../utils/factory.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
-import { createMatAlgo16xSs } from '../../type/matrix/utils/matAlgo16xSs.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'dotPow'
@@ -18,8 +17,7 @@ const dependencies = [
 export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix, SparseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
-  const matAlgo16xSs = createMatAlgo16xSs({ typed, equalScalar, DenseMatrix })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   const powScalarSignatures = {}
@@ -65,7 +63,7 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
     elop: powScalar,
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,
-    Ss: matAlgo16xSs,
+    Ss: matAlgo12xSfs,
     sS: matAlgo12xSfs
   }))
 })

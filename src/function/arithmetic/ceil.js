@@ -48,7 +48,7 @@ export const createCeilNumber = /* #__PURE__ */ factory(
 
 export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix }) => {
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   const ceilNumber = createCeilNumber({ typed, config, round })
