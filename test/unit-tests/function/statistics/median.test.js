@@ -38,6 +38,14 @@ describe('median', function () {
     assert.deepStrictEqual(median([math.fraction(1, 3), math.fraction(1, 2)]), math.fraction(5, 12))
   })
 
+  it('should return the median of bigints as a bigint', function () {
+    assert.strictEqual(median(1n, 4n, 2n), 2n)
+    assert.strictEqual(median(1n, 4n, 5n, 2n), 3n)
+    assert.strictEqual(median([2n, 3n]), 2n)
+    assert.strictEqual(median([-2n, -3n]), -2n)
+    assert.strictEqual(median([2n ** 70n, 2n ** 70n + 4n]), 2n ** 70n + 2n)
+  })
+
   it('should return the median of an even number of booleans', function () {
     assert.strictEqual(median(true, true, false, false), 0.5)
   })
