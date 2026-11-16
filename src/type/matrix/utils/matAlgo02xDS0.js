@@ -2,9 +2,9 @@ import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
 
 const name = 'matAlgo02xDS0'
-const dependencies = ['typed', 'isZero']
+const dependencies = ['typed']
 
-export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, ({ typed, isZero }) => {
+export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij).
    * Callback function invoked NNZ times (number of nonzero items in SparseMatrix).
@@ -52,7 +52,7 @@ export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, (
     // datatype
     let dt
     // isZero signature to use
-    let isZ = isZero
+    let isZ = sparseMatrix.isZero_Full
     // callback signature to use
     let cf = callback
 
@@ -60,10 +60,11 @@ export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, (
     if (typeof adt === 'string' && adt === bdt && adt !== 'mixed') {
       // datatype
       dt = adt
-      // find signature that matches (dt, dt)
-      isZ = typed.find(isZero, [dt])
       // callback
       cf = typed.find(callback, [dt, dt])
+    }
+    if (dt && dt === sparseMatrix._datatype) {
+      isZ = sparseMatrix.isZero
     }
 
     // result (SparseMatrix)

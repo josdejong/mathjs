@@ -7,16 +7,11 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 import { bitOrNumber } from '../../plain/number/index.js'
 
 const name = 'bitOr'
-const dependencies = [
-  'typed',
-  'matrix',
-  'equalScalar',
-  'DenseMatrix'
-]
+const dependencies = ['typed', 'matrix', 'DenseMatrix']
 
-export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
+export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
-  const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
+  const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 

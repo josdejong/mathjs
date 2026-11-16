@@ -62,7 +62,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * Note that every sparse matrix must be aware of its zero value, and its
    * test for zero-ness. It can be convenient to use these when working with
    * a SparseMatrix, so they are exposed as the `zero` and `isZero` properties
-   * of a SparseMatrix instance.
+   * of a SparseMatrix instance. For additional convenience, the full
+   * typed-function `isZero` is stored and exposed as `isZero_Full`.
    * @class SparseMatrix
    */
   function SparseMatrix (data, datatype) {
@@ -98,6 +99,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       this.zero = zisZ[0]
       this.isZero = zisZ[1]
     }
+    this.isZero_Full = isZero
   }
 
   function _createFromMatrix (matrix, source, datatype) {

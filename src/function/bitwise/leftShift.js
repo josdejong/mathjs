@@ -16,14 +16,13 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'isZero',
   'zeros',
   'DenseMatrix'
 ]
 
-export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, isZero, zeros, DenseMatrix }) => {
+export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
-  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, isZero })
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
   const matAlgo08xS0Sid = createMatAlgo08xS0Sid({ typed, equalScalar })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })

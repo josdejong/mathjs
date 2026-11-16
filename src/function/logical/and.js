@@ -11,13 +11,12 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'isZero',
   'zeros',
   'not'
 ]
 
 export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, isZero, zeros, not }) => {
-  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, isZero })
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
