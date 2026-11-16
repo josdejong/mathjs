@@ -55,14 +55,16 @@ export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * Compute the median of a matrix or a list with values. The values are
    * sorted and the middle value is returned. In case of an even number of
    * values, the average of the two middle values is returned.
-   * Supported types of values are: Number, BigNumber, bigint, Fraction, Unit
+   * All types of values that can be compared, added, and divided by two
+   * are supported.
    *
    * In case of a (multi dimensional) array or matrix, the median of all
    * elements will be calculated.
    *
    * The median of bigints is a bigint. For an even number of bigints it is
    * the average of the two middle values rounded towards zero, so it is not
-   * always the exact midpoint and can be equal to one of the two.
+   * always the exact midpoint and can be equal to one of the two middle
+   * values.
    *
    * Syntax:
    *
