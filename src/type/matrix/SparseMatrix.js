@@ -10,11 +10,32 @@ import { optimizeCallback } from '../../utils/optimizeCallback.js'
 const name = 'SparseMatrix'
 const dependencies = [
   'typed',
-  'equalScalar',
+  'isZero',
+  'numeric',
   'Matrix'
 ]
 
-export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, Matrix }) => {
+export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, isZero, numeric, Matrix }) => {
+  // conversion helper (there may not be a default conversion to the
+  // desired datatype:
+  function convert (val, type) {
+    let cval
+    try {
+      cval = typed.convert(val, type)
+    } catch {
+      cval = numeric(val, type)
+    }
+    return cval
+  }
+
+  // helper to get zero and isZero of a type:
+  function getzisZ (datatype) {
+    if (isString(datatype)) {
+      return [convert(0, datatype), typed.find(isZero, [datatype])]
+    }
+    return [0, isZero]
+  }
+
   /**
    * Sparse Matrix implementation. This type (currently) implements 2D
    * matrices only via the format known as
@@ -37,6 +58,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *    the number of columns.
    * 5. _datatype, if set, is the mathjs typeOf value of all entries of the
    *    SparseMatrix.
+   *
+   * Note that every sparse matrix must be aware of its zero value, and its
+   * test for zero-ness. It can be convenient to use these when working with
+   * a SparseMatrix, so they are exposed as the `zero` and `isZero` properties
+   * of a SparseMatrix instance.
    * @class SparseMatrix
    */
   function SparseMatrix (data, datatype) {
@@ -67,6 +93,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       this._size = [0, 0]
       this._datatype = datatype
     }
+    if (!('zero' in this && 'isZero' in this)) {
+      const zisZ = getzisZ(this._datatype)
+      this.zero = zisZ[0]
+      this.isZero = zisZ[1]
+    }
   }
 
   function _createFromMatrix (matrix, source, datatype) {
@@ -78,6 +109,13 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       matrix._ptr = clone(source._ptr)
       matrix._size = clone(source._size)
       matrix._datatype = datatype || source._datatype
+      if (isString(matrix._datatype) &&
+        matrix._datatype !== source._datatype &&
+        matrix._values
+      ) {
+        matrix._values = matrix._values.map(
+          val => convert(val, matrix._datatype))
+      }
     } else {
       // build from matrix data
       _createFromArray(matrix, source.valueOf(), datatype || source._datatype)
@@ -94,17 +132,9 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     const rows = data.length
     let columns = 0
 
-    // equal signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
-
-    if (isString(datatype)) {
-      // find signature that matches (datatype, datatype)
-      eq = typed.find(equalScalar, [datatype, datatype]) || equalScalar
-      // convert 0 to the same datatype
-      zero = typed.convert(0, datatype)
-    }
+    const zisZ = getzisZ(datatype)
+    matrix.zero = zisZ[0]
+    matrix.isZero = zisZ[1]
 
     // check we have rows (empty array)
     if (rows > 0) {
@@ -116,7 +146,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         // loop rows
         for (let i = 0; i < rows; i++) {
           // current row
-          const row = data[i]
+          let row = data[i]
           // check row is an array
           if (isArray(row)) {
             // update columns if needed (only on first column)
@@ -124,9 +154,10 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
             // check row has column
             if (j < row.length) {
               // value
-              const v = row[j]
+              let v = row[j]
+              if (isString(datatype)) v = convert(v, datatype)
               // check value != 0
-              if (!eq(v, zero)) {
+              if (!matrix.isZero(v)) {
                 // store value
                 matrix._values.push(v)
                 // index
@@ -137,7 +168,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
             // update columns if needed (only on first column)
             if (j === 0 && columns < 1) { columns = 1 }
             // check value != 0 (row is a scalar)
-            if (!eq(row, zero)) {
+            if (isString(datatype)) row = convert(row, datatype)
+            if (!matrix.isZero(row)) {
               // store value
               matrix._values.push(row)
               // index
@@ -474,7 +506,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // check k is prior to next column k and it is in the correct row
     if (k < this._ptr[j + 1] && this._index[k] === i) { return this._values[k] }
 
-    return 0
+    return this.zero
   }
 
   /**
@@ -502,18 +534,6 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     let rows = this._size[0]
     let columns = this._size[1]
 
-    // equal signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
-
-    if (isString(this._datatype)) {
-      // find signature that matches (datatype, datatype)
-      eq = typed.find(equalScalar, [this._datatype, this._datatype]) || equalScalar
-      // convert 0 to the same datatype
-      zero = typed.convert(0, this._datatype)
-    }
-
     // check we need to resize matrix
     if (i > rows - 1 || j > columns - 1) {
       // resize matrix
@@ -522,6 +542,9 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       rows = this._size[0]
       columns = this._size[1]
     }
+
+    // Ensure v is of the correct data type
+    if (isString(this._datatype)) v = convert(v, this._datatype)
 
     // check i, j are valid
     validateIndex(i, rows)
@@ -532,7 +555,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // check k is prior to next column k and it is in the correct row
     if (k < this._ptr[j + 1] && this._index[k] === i) {
       // check value != 0
-      if (!eq(v, zero)) {
+      if (!this.isZero(v)) {
         // update value
         this._values[k] = v
       } else {
@@ -540,7 +563,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         _remove(k, j, this._values, this._index, this._ptr)
       }
     } else {
-      if (!eq(v, zero)) {
+      if (!this.isZero(v)) {
         // insert value @ (i, j)
         _insert(k, i, j, v, this._values, this._index, this._ptr)
       }
@@ -626,22 +649,12 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // value to insert at the time of growing matrix
     let value = defaultValue || 0
 
-    // equal signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
-
     if (isString(matrix._datatype)) {
-      // find signature that matches (datatype, datatype)
-      eq = typed.find(equalScalar, [matrix._datatype, matrix._datatype]) || equalScalar
-      // convert 0 to the same datatype
-      zero = typed.convert(0, matrix._datatype)
-      // convert value to the same datatype
-      value = typed.convert(value, matrix._datatype)
+      value = convert(value, matrix._datatype)
     }
 
     // should we insert the value?
-    const ins = !eq(value, zero)
+    const ins = !matrix.isZero(value)
 
     // old columns and rows
     const r = matrix._size[0]
@@ -903,24 +916,16 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     const index = []
     const ptr = []
 
-    // equal signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
-
-    if (isString(matrix._datatype)) {
-      // find signature that matches (datatype, datatype)
-      eq = typed.find(equalScalar, [matrix._datatype, matrix._datatype]) || equalScalar
-      // convert 0 to the same datatype
-      zero = typed.convert(0, matrix._datatype)
-    }
-
     // invoke callback
     const invoke = function (v, x, y) {
       // invoke callback
-      const value = callback(v, x, y)
+      let value = callback(v, x, y)
+      // Ensure value is of correct datatype
+      if (isString(matrix._datatype)) {
+        value = convert(value, matrix._datatype)
+      }
       // check value != 0
-      if (!eq(value, zero)) {
+      if (!matrix.isZero(value)) {
         // store value
         values.push(value)
         // index
@@ -957,7 +962,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         // loop over all rows (indexes can be unordered so we can't use that),
         // and either read the value or zero
         for (let i = minRow; i <= maxRow; i++) {
-          const value = (i in values) ? values[i] : 0
+          const value = (i in values) ? values[i] : matrix.zero
           invoke(value, i - minRow, j - minColumn)
         }
       }
@@ -1020,7 +1025,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         // loop over all rows (indexes can be unordered so we can't use that),
         // and either read the value or zero
         for (let i = 0; i < rows; i++) {
-          const value = (i in values) ? values[i] : 0
+          const value = (i in values) ? values[i] : me.zero
           fastCallback.fn(value, [i, j], me)
         }
       }
@@ -1055,7 +1060,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * @returns {Array} array
    */
   SparseMatrix.prototype.toArray = function () {
-    return _toArray(this._values, this._index, this._ptr, this._size, true)
+    return _toArray(
+      this.zero, this._values, this._index, this._ptr, this._size, true)
   }
 
   /**
@@ -1064,10 +1070,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * @returns {Array} array
    */
   SparseMatrix.prototype.valueOf = function () {
-    return _toArray(this._values, this._index, this._ptr, this._size, false)
+    return _toArray(
+      this.zero, this._values, this._index, this._ptr, this._size, false)
   }
 
-  function _toArray (values, index, ptr, size, copy) {
+  function _toArray (zero, values, index, ptr, size, copy) {
     // rows and columns
     const rows = size[0]
     const columns = size[1]
@@ -1078,7 +1085,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // initialize array
     for (i = 0; i < rows; i++) {
       a[i] = []
-      for (j = 0; j < columns; j++) { a[i][j] = 0 }
+      for (j = 0; j < columns; j++) { a[i][j] = zero }
     }
 
     // loop columns
@@ -1279,24 +1286,24 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       k = 0
     }
 
-    // equal signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
-
-    if (isString(datatype)) {
-      // find signature that matches (datatype, datatype)
-      eq = typed.find(equalScalar, [datatype, datatype]) || equalScalar
-      // convert 0 to the same datatype
-      zero = typed.convert(0, datatype)
-    }
-
     const kSuper = k > 0 ? k : 0
     const kSub = k < 0 ? -k : 0
 
     // rows and columns
     const rows = size[0]
     const columns = size[1]
+
+    // zero test
+    const isZ = getzisZ(datatype)[1]
+
+    // validate defaultValue
+    if (defaultValue !== undefined) {
+      if (isString(datatype)) defaultValue = convert(defaultValue, datatype)
+      if (!isZ(defaultValue)) {
+        throw new RangeError(
+          `SparseMatrix only allows zero default value, not ${defaultValue}`)
+      }
+    }
 
     // number of non-zero items
     const n = Math.min(rows - kSub, columns - kSuper)
@@ -1305,31 +1312,29 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     let _value
 
     // check value
+    if (isMatrix(value)) {
+      const ms = value.size()
+      if (ms.length !== 1) throw new DimensionError(1, ms.length)
+      value = value.valueOf()
+    }
     if (isArray(value)) {
       // validate array
       if (value.length !== n) {
         // number of values in array must be n
-        throw new Error('Invalid value array length')
+        throw new RangeError(
+          `Invalid value array length: expected ${n}, got ${value.length}`)
       }
+      // Make sure all values are of proper type:
+      if (isString(datatype)) value = value.map(v => convert(v, datatype))
+
       // define function
       _value = function (i) {
         // return value @ i
         return value[i]
       }
-    } else if (isMatrix(value)) {
-      // matrix size
-      const ms = value.size()
-      // validate matrix
-      if (ms.length !== 1 || ms[0] !== n) {
-        // number of values in array must be n
-        throw new Error('Invalid matrix length')
-      }
-      // define function
-      _value = function (i) {
-        // return value @ i
-        return value.get([i])
-      }
     } else {
+      // Ensure value is proper type:
+      if (isString(datatype)) value = convert(value, datatype)
       // define function
       _value = function () {
         // return value
@@ -1353,7 +1358,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         // get value @ i
         const v = _value(i)
         // check for zero
-        if (!eq(v, zero)) {
+        if (!isZ(v)) {
           // column
           index.push(i + kSub)
           // add value
@@ -1368,7 +1373,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       values,
       index,
       ptr,
-      size: [rows, columns]
+      size: [rows, columns],
+      datatype
     })
   }
 
