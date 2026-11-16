@@ -2,6 +2,7 @@
 
 # unpublished changes since 15.2.0
 
+- Fix: Properly logically shift matrix entries by zero (#3808). Thanks @Ryzuuuu.
 - Fix: #3802 Disallow too-negative bigint -> number auto conversion (#3803).
   Thanks @spokodev.
 - Feat: Add bigint support to catalan() and fix #3780, significantly improve
