@@ -58,12 +58,42 @@ describe('boolean', function () {
     assert.throws(function () { bool(1, 2) }, /TypeError: Too many arguments/)
   })
 
-  it('should throw an error if used with a complex', function () {
-    assert.throws(function () { bool(math.complex(2, 3)) }, /TypeError: Unexpected type of argument/)
+  it('should convert a complex into a boolean', function () {
+    assert.strictEqual(bool(math.complex(0, 0)), false)
+    assert.strictEqual(bool(math.complex(0, 3)), true)
+    assert.strictEqual(bool(math.complex(2, 0)), true)
+    assert.strictEqual(bool(math.complex(2, 3)), true)
   })
 
-  it('should throw an error if used with a unit', function () {
-    assert.throws(function () { bool(math.unit('5cm')) }, /TypeError: Unexpected type of argument/)
+  it('should convert a fraction into a boolean', function () {
+    assert.strictEqual(bool(math.fraction(0)), false)
+    assert.strictEqual(bool(math.fraction(1, 3)), true)
+    assert.strictEqual(bool(math.fraction(-1, 3)), true)
+    assert.strictEqual(bool(math.fraction(1n, 10n ** 400n)), true)
+  })
+
+  it('should convert a unit value into a boolean', function () {
+    assert.strictEqual(bool(math.unit('m')), false)
+    for (const makeValue of [x => x, math.bignumber, math.fraction, math.complex]) {
+      assert.strictEqual(bool(math.unit(makeValue(0), 'm')), false)
+      assert.strictEqual(bool(math.unit(makeValue(1), 'm')), true)
+    }
+  })
+
+  it('should preserve BigNumber NaN conversion', function () {
+    assert.strictEqual(bool(math.bignumber(NaN)), true)
+  })
+
+  it('should convert units constructed without a value to false', function () {
+    assert.strictEqual(bool(new math.Unit(undefined, 'm')), false)
+    assert.strictEqual(bool(new math.Unit()), false)
+    assert.throws(() => bool(undefined), TypeError)
+  })
+
+  it('should convert complex, fraction and unit collections', function () {
+    const values = [math.complex(0, 1), math.fraction(0), math.unit('1m')]
+    assert.deepStrictEqual(bool(values), [true, false, true])
+    assert.deepStrictEqual(bool(math.matrix(values)), math.matrix([true, false, true]))
   })
 
   it('should LaTeX boolean', function () {
