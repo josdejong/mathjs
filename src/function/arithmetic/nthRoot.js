@@ -17,7 +17,7 @@ const dependencies = [
 export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
-  const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed, equalScalar })
+  const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 

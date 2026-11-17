@@ -74,7 +74,6 @@ export const createMatAlgo05xSfSf = /* #__PURE__ */ factory(name, dependencies, 
     } else if (dt === b._datatype) {
       isZ = b.isZero
     }
-
     // try to pin down a callback signature:
     if (typeof adt === 'string' && adt !== 'mixed' &&
       typeof bdt === 'string' && bdt !== 'mixed'
