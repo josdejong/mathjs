@@ -14,15 +14,15 @@ const dependencies = [
   'typed',
   'config',
   'matrix',
-  'equalScalar',
+  'isZero',
   'zeros',
   'BigNumber',
   'DenseMatrix'
 ]
 
-export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, equalScalar, zeros, BigNumber, DenseMatrix }) => {
+export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, isZero, zeros, BigNumber, DenseMatrix }) => {
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   function toExponent (epsilon) {
@@ -186,7 +186,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'number | Complex | BigNumber | Fraction, SparseMatrix': typed.referToSelf(self => (x, n) => {
       // check scalar is zero
-      if (equalScalar(x, 0)) {
+      if (isZero(x)) {
         // do not execute algorithm, result will be a zero matrix
         return zeros(n.size(), n.storage())
       }
@@ -195,7 +195,7 @@ export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'number | Complex | BigNumber | Fraction, DenseMatrix': typed.referToSelf(self => (x, n) => {
       // check scalar is zero
-      if (equalScalar(x, 0)) {
+      if (isZero(x)) {
         // do not execute algorithm, result will be a zero matrix
         return zeros(n.size(), n.storage())
       }

@@ -4,7 +4,9 @@ import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'fix'
-const dependencies = ['typed', 'Complex', 'matrix', 'ceil', 'floor', 'equalScalar', 'zeros', 'DenseMatrix']
+const dependencies = [
+  'typed', 'Complex', 'matrix', 'ceil', 'floor', 'isZero', 'zeros', 'DenseMatrix'
+]
 
 export const createFixNumber = /* #__PURE__ */ factory(
   name, ['typed', 'ceil', 'floor'], ({ typed, ceil, floor }) => {
@@ -20,8 +22,8 @@ export const createFixNumber = /* #__PURE__ */ factory(
   }
 )
 
-export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex, matrix, ceil, floor, equalScalar, zeros, DenseMatrix }) => {
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
+export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex, matrix, ceil, floor, isZero, zeros, DenseMatrix }) => {
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   const fixNumber = createFixNumber({ typed, ceil, floor })
@@ -156,7 +158,7 @@ export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, C
 
     'number | Complex | Fraction | BigNumber, Matrix':
       typed.referToSelf(self => (x, y) => {
-        if (equalScalar(x, 0)) return zeros(y.size(), y.storage())
+        if (isZero(x)) return zeros(y.size(), y.storage())
         if (y.storage() === 'dense') {
           return matAlgo14xDs(y, x, self, true)
         }

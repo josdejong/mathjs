@@ -13,7 +13,6 @@ const dependencies = [
   'config',
   'round',
   'matrix',
-  'equalScalar',
   'isZero',
   'zeros',
   'BigNumber',
@@ -28,13 +27,13 @@ function is1d (array) {
   return !array.some(element => Array.isArray(element))
 }
 
-export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config, round, equalScalar, isZero, zeros, BigNumber, DenseMatrix, concat }) => {
+export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config, round, isZero, zeros, BigNumber, DenseMatrix, concat }) => {
   const mod = createMod({
-    typed, config, round, matrix, equalScalar, isZero, zeros, DenseMatrix, concat
+    typed, config, round, matrix, isZero, zeros, DenseMatrix, concat
   })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**

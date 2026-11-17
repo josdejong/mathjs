@@ -8,15 +8,14 @@ const dependencies = [
   'typed',
   'matrix',
   'multiply',
-  'equalScalar',
   'divideScalar',
   'inv',
   'DenseMatrix'
 ]
 
-export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv, DenseMatrix }) => {
+export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiply, divideScalar, inv, DenseMatrix }) => {
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
 
   /**
    * Divide two values, `x / y`.

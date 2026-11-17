@@ -8,7 +8,7 @@ import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'ceil'
-const dependencies = ['typed', 'config', 'round', 'matrix', 'equalScalar', 'zeros', 'DenseMatrix']
+const dependencies = ['typed', 'config', 'round', 'matrix', 'isZero', 'zeros', 'DenseMatrix']
 
 const bigTen = new Decimal(10)
 
@@ -46,9 +46,9 @@ export const createCeilNumber = /* #__PURE__ */ factory(
   }
 )
 
-export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, equalScalar, zeros, DenseMatrix }) => {
+export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, isZero, zeros, DenseMatrix }) => {
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   const ceilNumber = createCeilNumber({ typed, config, round })
@@ -194,7 +194,7 @@ export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     'number | Complex | Fraction | BigNumber, Matrix':
       typed.referToSelf(self => (x, y) => {
-        if (equalScalar(x, 0)) return zeros(y.size(), y.storage())
+        if (isZero(x)) return zeros(y.size(), y.storage())
         if (y.storage() === 'dense') {
           return matAlgo14xDs(y, x, self, true)
         }

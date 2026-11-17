@@ -9,17 +9,16 @@ const name = 'dotDivide'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
   'divideScalar',
   'DenseMatrix',
   'SparseMatrix'
 ]
 
-export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, DenseMatrix, SparseMatrix }) => {
+export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, DenseMatrix, SparseMatrix }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
