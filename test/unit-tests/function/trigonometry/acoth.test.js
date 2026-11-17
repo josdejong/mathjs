@@ -118,7 +118,7 @@ describe('acoth', function () {
   })
 
   describe('edge cases (#3754)', function () {
-    // expected: correctly rounded value (mpmath, 60 digits), within 4 ulp.
+    // expected: correctly rounded value (mpmath, 1000 digits), within 4 ulp.
     // Cases with a third entry are known issues and are skipped until fixed.
     testEdgeCases('acoth', acoth, [
       ['Infinity', 0],
@@ -132,9 +132,11 @@ describe('acoth', function () {
       ['-1e300', -1e-300, 'result underflows to 0 (correct -1e-300)'],
       ['1e-8', complex(1e-8, -1.5707963267948966), 'real part 8.3 correct digits (rel err 5.0e-09)'],
       ['1e-17', complex(1e-17, -1.5707963267948966), 'real part underflows to 0 (correct 1e-17)'],
+      // mpmath at 60 digits cancels the real part to 0; requires higher precision.
       ['1e-200', complex(1e-200, -1.5707963267948966), 'real part NaN instead of 1e-200'],
       ['-1e-8', complex(-1e-8, 1.5707963267948966), 'real part 8.8 correct digits (rel err 1.6e-09)'],
       ['-1e-17', complex(-1e-17, 1.5707963267948966), 'real part underflows to 0 (correct -1e-17)'],
+      // mpmath at 60 digits cancels the real part to 0; requires higher precision.
       ['-1e-200', complex(-1e-200, 1.5707963267948966), 'real part NaN instead of -1e-200'],
       ['0', complex(0, 1.5707963267948966)],
       ['-0', complex(0, 1.5707963267948966)],

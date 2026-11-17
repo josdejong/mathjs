@@ -115,7 +115,7 @@ describe('acosh', function () {
   })
 
   describe('edge cases (#3754)', function () {
-    // expected: correctly rounded value (mpmath, 60 digits), within 4 ulp.
+    // expected: correctly rounded value (mpmath, 1000 digits), within 4 ulp.
     // Cases with a third entry are known issues and are skipped until fixed.
     testEdgeCases('acosh', acosh, [
       ['Infinity', Infinity],
