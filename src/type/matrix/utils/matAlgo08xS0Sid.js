@@ -2,7 +2,7 @@ import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
 
 const name = 'matAlgo08xS0Sid'
-const dependencies = ['typed', 'equalScalar']
+const dependencies = ['typed']
 
 export const createMatAlgo08xS0Sid = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
@@ -53,22 +53,25 @@ export const createMatAlgo08xS0Sid = /* #__PURE__ */ factory(name, dependencies,
     // datatype
     let dt
     // equal signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
+    let isZ = a.isZero_Full
     // callback signature to use
     let cf = callback
 
     // process data types
     if (typeof adt === 'string' && adt === bdt && adt !== 'mixed') {
-      // datatype
       dt = adt
-      // find signature that matches (dt, dt)
-      eq = typed.find(equalScalar, [dt, dt])
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt)
-      // callback
-      cf = typed.find(callback, [dt, dt])
+    }
+    // try to find an isZero signature:
+    if (dt === a._datatype) {
+      isZ = a.isZero
+    } else if (dt === b._datatype) {
+      isZ = b.isZero
+    }
+    // try to pin down a callback signature:
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      cf = typed.find(callback, [adt, bdt])
     }
 
     // result arrays
@@ -120,7 +123,7 @@ export const createMatAlgo08xS0Sid = /* #__PURE__ */ factory(name, dependencies,
         // value @ i
         const v = x[i]
         // check for zero value
-        if (!eq(v, zero)) {
+        if (!isZ(v)) {
           // push value
           cvalues.push(v)
           // increment pointer
