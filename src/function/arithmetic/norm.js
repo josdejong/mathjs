@@ -9,7 +9,7 @@ const dependencies = [
   'conj',
   'sqrt',
   'multiply',
-  'equalScalar',
+  'isZero',
   'larger',
   'smaller',
   'matrix',
@@ -28,7 +28,7 @@ export const createNorm = /* #__PURE__ */ factory(
     conj,
     sqrt,
     multiply,
-    equalScalar,
+    isZero,
     larger,
     smaller,
     matrix,
@@ -57,13 +57,18 @@ export const createNorm = /* #__PURE__ */ factory(
      *
      *    math.norm([3, 4], 2)                   // returns 5
      *
-     *    math.norm([[1, 2], [3, 4]], 1)          // returns 6
+     *    math.norm([[1, 2], [3, 4]], 1)         // returns 6
      *    math.norm([[1, 2], [3, 4]], 'inf')     // returns 7
      *    math.norm([[1, 2], [3, 4]], 'fro')     // returns 5.477225575051661
      *
      * See also:
      *
      *    abs, hypot
+     *
+     * History:
+     *
+     *    v7.2   Support 2-norm for matrices
+     *    v0.20  Created
      *
      * @param  {number | BigNumber | Complex | Array | Matrix} x
      *            Value for which to calculate the norm
@@ -165,7 +170,7 @@ export const createNorm = /* #__PURE__ */ factory(
       }
       if (typeof p === 'number' && !isNaN(p)) {
         // check p != 0
-        if (!equalScalar(p, 0)) {
+        if (!isZero(p)) {
           // norm(x, p) = sum(abs(xi) ^ p) ^ 1/p
           let n = 0
           // skip zeros since abs(0) === 0

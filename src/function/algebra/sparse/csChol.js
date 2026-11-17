@@ -14,7 +14,7 @@ const dependencies = [
   'im',
   're',
   'conj',
-  'equal',
+  'isZero',
   'smallerEq',
   'SparseMatrix'
 ]
@@ -28,7 +28,7 @@ export const createCsChol = /* #__PURE__ */ factory(name, dependencies, (
     im,
     re,
     conj,
-    equal,
+    isZero,
     smallerEq,
     SparseMatrix
   }
@@ -115,7 +115,7 @@ export const createCsChol = /* #__PURE__ */ factory(name, dependencies, (
         lvalues[p] = conj(lki)
       }
       // compute L(k,k)
-      if (smallerEq(re(d), 0) || !equal(im(d), 0)) {
+      if (smallerEq(re(d), 0) || !isZero(im(d))) {
         // not pos def
         return null
       }
