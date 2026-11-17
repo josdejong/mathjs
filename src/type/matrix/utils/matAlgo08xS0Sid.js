@@ -4,7 +4,7 @@ import { DimensionError } from '../../../error/DimensionError.js'
 const name = 'matAlgo08xS0Sid'
 const dependencies = ['typed']
 
-export const createMatAlgo08xS0Sid = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
+export const createMatAlgo08xS0Sid = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij).
    * Callback function invoked MAX(NNZA, NNZB) times

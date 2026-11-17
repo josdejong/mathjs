@@ -22,7 +22,7 @@ const dependencies = [
 export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed, equalScalar })
+  const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
