@@ -7,12 +7,12 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 import { bitAndNumber } from '../../plain/number/index.js'
 
 const name = 'bitAnd'
-const dependencies = ['typed', 'matrix', 'equalScalar']
+const dependencies = ['typed', 'matrix']
 
-export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
+export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed })
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**

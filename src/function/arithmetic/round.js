@@ -21,7 +21,7 @@ const dependencies = [
 ]
 
 export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, equalScalar, zeros, BigNumber, DenseMatrix }) => {
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 

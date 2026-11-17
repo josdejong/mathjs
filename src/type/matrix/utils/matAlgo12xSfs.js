@@ -5,7 +5,7 @@ const name = 'matAlgo12xSfs'
 const dependencies = ['typed', 'DenseMatrix', 'equalScalar']
 
 export const createMatAlgo12xSfs = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix, equalScalar }) => {
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
 
   /**
    * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).

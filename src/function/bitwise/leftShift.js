@@ -15,17 +15,17 @@ const name = 'leftShift'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
+  'isZero',
   'zeros',
   'DenseMatrix'
 ]
 
-export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
+export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, isZero, zeros, DenseMatrix }) => {
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
   const matAlgo08xS0Sid = createMatAlgo08xS0Sid({ typed })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
   const matAlgo15xAs = createMatAlgo15xAs()
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
@@ -69,7 +69,7 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
       'SparseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
         // check scalar
-        if (equalScalar(y, 0)) {
+        if (isZero(y)) {
           return x.clone()
         }
         return matAlgo11xS0s(x, y, self, false)
@@ -77,7 +77,7 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
       'DenseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
         // check scalar
-        if (equalScalar(y, 0)) {
+        if (isZero(y)) {
           return x.clone()
         }
         return matAlgo14xDs(x, y, self, false)
@@ -85,7 +85,7 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
       'Array, number | BigNumber': typed.referToSelf(self => (x, y) => {
         // check scalar
-        if (equalScalar(y, 0)) {
+        if (isZero(y)) {
           return clone(x)
         }
         return matAlgo15xAs(x, y, self, false)
@@ -93,7 +93,7 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
       'number | BigNumber, SparseMatrix': typed.referToSelf(self => (x, y) => {
         // check scalar
-        if (equalScalar(x, 0)) {
+        if (isZero(x)) {
           return zeros(y.size(), y.storage())
         }
         return matAlgo10xSids(y, x, self, true)
@@ -101,14 +101,14 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
       'number | BigNumber, DenseMatrix': typed.referToSelf(self => (x, y) => {
         // check scalar
-        if (equalScalar(x, 0)) {
+        if (isZero(x)) {
           return zeros(y.size(), y.storage())
         }
         return matAlgo14xDs(y, x, self, true)
       }),
       'number | BigNumber, Array': typed.referToSelf(self => (x, y) => {
         // check scalar
-        if (equalScalar(x, 0)) {
+        if (isZero(x)) {
           return deepMap(y, () => x)
         }
         return matAlgo15xAs(y, x, self, true)

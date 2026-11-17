@@ -14,17 +14,17 @@ const name = 'rightLogShift'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
+  'isZero',
   'zeros',
   'DenseMatrix'
 ]
 
-export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
+export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, isZero, zeros, DenseMatrix }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
   const matAlgo15xAs = createMatAlgo15xAs()
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
@@ -81,7 +81,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
 
       'number | BigNumber, SparseMatrix': typed.referToSelf(self => (x, y) => {
         // check scalar
-        if (equalScalar(x, 0)) {
+        if (isZero(x)) {
           return zeros(y.size(), y.storage())
         }
         return matAlgo10xSids(y, x, self, true)
@@ -89,7 +89,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
 
       'number | BigNumber, DenseMatrix': typed.referToSelf(self => (x, y) => {
         // check scalar
-        if (equalScalar(x, 0)) {
+        if (isZero(x)) {
           return zeros(y.size(), y.storage())
         }
         return matAlgo14xDs(y, x, self, true)
@@ -97,7 +97,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
 
       'number | BigNumber, Array': typed.referToSelf(self => (x, y) => {
         // check scalar
-        if (equalScalar(x, 0)) {
+        if (isZero(x)) {
           return deepMap(y, () => x)
         }
         return matAlgo15xAs(y, x, self, true)
