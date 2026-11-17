@@ -9,16 +9,15 @@ const dependencies = [
   'typed',
   'matrix',
   'addScalar',
-  'equalScalar',
   'DenseMatrix'
 ]
 
 export const createAdd = /* #__PURE__ */ factory(
   name,
   dependencies,
-  ({ typed, matrix, addScalar, equalScalar, DenseMatrix }) => {
+  ({ typed, matrix, addScalar, DenseMatrix }) => {
     const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
-    const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed, equalScalar })
+    const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed })
     const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
     const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
     /**

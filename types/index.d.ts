@@ -36,8 +36,7 @@ export type FactoryFunction<T> = (scope: MathScope) => T
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type MathScope<TValue = any> =
-  | Record<string, TValue>
-  | MapLike<string, TValue>
+  Record<string, TValue> | MapLike<string, TValue>
 
 // FactoryFunctionMap can be nested; all nested objects will be flattened
 export interface FactoryFunctionMap {
@@ -850,14 +849,7 @@ export interface MathJsInstance extends MathJsFactory {
    */
   number(
     value?:
-      | string
-      | number
-      | BigNumber
-      | bigint
-      | Fraction
-      | boolean
-      | Unit
-      | null
+      string | number | BigNumber | bigint | Fraction | boolean | Unit | null
   ): number
   number(value?: MathCollection): number | MathCollection
   /**
@@ -5118,13 +5110,7 @@ export interface FormatOptions {
    * example '123.4' and '1.4e7'.
    */
   notation?:
-    | 'fixed'
-    | 'exponential'
-    | 'engineering'
-    | 'auto'
-    | 'hex'
-    | 'bin'
-    | 'oct'
+    'fixed' | 'exponential' | 'engineering' | 'auto' | 'hex' | 'bin' | 'oct'
 
   /**
    * A number between 0 and 16 to round the digits of the number. In case

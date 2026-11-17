@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory.js'
 import { improveErrorMessage } from './utils/improveErrorMessage.js'
 
 const name = 'median'
-const dependencies = ['typed', 'add', 'divide', 'compare', 'partitionSelect']
+const dependencies = ['typed', 'add', 'unaryPlus', 'divide', 'compare', 'partitionSelect']
 
-export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide, compare, partitionSelect }) => {
+export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, unaryPlus, divide, compare, partitionSelect }) => {
   /**
    * Recursively calculate the median of an n-dimensional array
    * @param {Array} array
@@ -35,40 +35,36 @@ export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed
           }
         }
 
-        return middle2(left, right)
+        // divide a bigint sum by a bigint, so it is not converted to number
+        const sum = add(left, right)
+        return divide(sum, typeof sum === 'bigint' ? 2n : 2)
       } else {
         // odd: return the middle value
         const m = partitionSelect(array, (num - 1) / 2)
 
-        return middle(m)
+        // unaryPlus keeps numeric values as they are, and converts
+        // strings and booleans into a numeric value
+        return unaryPlus(m)
       }
     } catch (err) {
       throw improveErrorMessage(err, 'median')
     }
   }
 
-  // helper function to type check the middle value of the array
-  const middle = typed({
-    'number | BigNumber | Complex | Unit': function (value) {
-      return value
-    }
-  })
-
-  // helper function to type check the two middle value of the array
-  const middle2 = typed({
-    'number | BigNumber | Complex | Unit, number | BigNumber | Complex | Unit': function (left, right) {
-      return divide(add(left, right), 2)
-    }
-  })
-
   /**
    * Compute the median of a matrix or a list with values. The values are
    * sorted and the middle value is returned. In case of an even number of
    * values, the average of the two middle values is returned.
-   * Supported types of values are: Number, BigNumber, Unit
+   * All types of values that can be compared, added, and divided by two
+   * are supported.
    *
    * In case of a (multi dimensional) array or matrix, the median of all
    * elements will be calculated.
+   *
+   * The median of bigints is a bigint. For an even number of bigints it is
+   * the average of the two middle values rounded towards zero, so it is not
+   * always the exact midpoint and can be equal to one of the two middle
+   * values.
    *
    * Syntax:
    *
@@ -79,10 +75,16 @@ export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *     math.median(5, 2, 7)        // returns 5
    *     math.median([3, -1, 5, 7])  // returns 4
+   *     math.median(2n, 3n)         // returns 2n
    *
    * See also:
    *
    *     mean, min, max, sum, prod, std, variance, quantileSeq
+   *
+   * History:
+   *
+   *    v15.3  Support Fraction and bigint arguments
+   *    v0.19  Created
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The median
