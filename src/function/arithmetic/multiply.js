@@ -10,12 +10,12 @@ const dependencies = [
   'matrix',
   'addScalar',
   'multiplyScalar',
-  'equalScalar',
+  'isZero',
   'dot'
 ]
 
-export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar, dot }) => {
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, isZero, dot }) => {
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   function _validateMatrixDimensions (size1, size2) {
@@ -123,16 +123,21 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let dt
     // addScalar signature to use
     let af = addScalar
+    let focusAddition = false
     // multiplyScalar signature to use
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
-      // datatype
-      dt = adt
-      // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt])
-      mf = typed.find(multiplyScalar, [dt, dt])
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      mf = typed.find(multiplyScalar, [adt, bdt])
+      focusAddition = true
+      if (adt === bdt) {
+        dt = adt
+        af = typed.find(addScalar, [dt, dt])
+        focusAddition = false
+      }
     }
 
     // result
@@ -145,7 +150,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       // loop vector
       for (let i = 1; i < alength; i++) {
         // multiply & accumulate
-        sum = af(sum, mf(adata[i], bdata[i][j]))
+        const prod = mf(adata[i], bdata[i][j])
+        if (focusAddition) {
+          af = typed.resolve(addScalar, [sum, prod]).implementation
+          focusAddition = false
+        }
+        sum = af(sum, prod)
       }
       c[j] = sum
     }
@@ -210,16 +220,21 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let dt
     // addScalar signature to use
     let af = addScalar
+    let focusAddition = false
     // multiplyScalar signature to use
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
-      // datatype
-      dt = adt
-      // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt])
-      mf = typed.find(multiplyScalar, [dt, dt])
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      mf = typed.find(multiplyScalar, [adt, bdt])
+      focusAddition = true
+      if (adt === bdt) {
+        dt = adt
+        af = typed.find(addScalar, [dt, dt])
+        focusAddition = false
+      }
     }
 
     // result
@@ -234,7 +249,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       // loop matrix a columns
       for (let j = 1; j < acolumns; j++) {
         // multiply & accumulate
-        sum = af(sum, mf(row[j], bdata[j]))
+        const prod = mf(row[j], bdata[j])
+        if (focusAddition) {
+          af = typed.resolve(addScalar, [sum, prod]).implementation
+          focusAddition = false
+        }
+        sum = af(sum, prod)
       }
       c[i] = sum
     }
@@ -273,16 +293,21 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let dt
     // addScalar signature to use
     let af = addScalar
+    let focusAddition = false
     // multiplyScalar signature to use
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed' && adt !== 'mixed') {
-      // datatype
-      dt = adt
-      // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt])
-      mf = typed.find(multiplyScalar, [dt, dt])
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      mf = typed.find(multiplyScalar, [adt, bdt])
+      focusAddition = true
+      if (adt === bdt) {
+        dt = adt
+        af = typed.find(addScalar, [dt, dt])
+        focusAddition = false
+      }
     }
 
     // result
@@ -301,7 +326,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
         // loop matrix a columns
         for (let x = 1; x < acolumns; x++) {
           // multiply & accumulate
-          sum = af(sum, mf(row[x], bdata[x][j]))
+          const prod = mf(row[x], bdata[x][j])
+          if (focusAddition) {
+            af = typed.resolve(addScalar, [sum, prod]).implementation
+            focusAddition = false
+          }
+          sum = af(sum, prod)
         }
         c[i][j] = sum
       }
@@ -344,23 +374,24 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let dt
     // addScalar signature to use
     let af = addScalar
+    let focusAddition = false
     // multiplyScalar signature to use
     let mf = multiplyScalar
-    // equalScalar signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
+    // isZero signature to use
+    let isZ = isZero
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
-      // datatype
-      dt = adt
-      // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt])
-      mf = typed.find(multiplyScalar, [dt, dt])
-      eq = typed.find(equalScalar, [dt, dt])
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt)
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      mf = typed.find(multiplyScalar, [adt, bdt])
+      focusAddition = true
+      if (adt === bdt) {
+        dt = adt
+        af = typed.find(addScalar, [dt, dt])
+        isZ = typed.find(isZero, [dt])
+        focusAddition = false
+      }
     }
 
     // result
@@ -405,11 +436,16 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
               last = mark
             } else {
               // accumulate value
-              cij = af(cij, mf(adata[i][ib], bvalues[kb]))
+              const prod = mf(adata[i][ib], bvalues[kb])
+              if (focusAddition) {
+                af = typed.resolve(addScalar, [cij, prod]).implementation
+                focusAddition = false
+              }
+              cij = af(cij, prod)
             }
           }
           // check column has been processed and value != 0
-          if (last === mark && !eq(cij, zero)) {
+          if (last === mark && !isZ(cij)) {
             // push row & value
             cindex.push(i)
             cvalues.push(cij)
@@ -455,23 +491,25 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let dt
     // addScalar signature to use
     let af = addScalar
+    let focusAddition = false
     // multiplyScalar signature to use
     let mf = multiplyScalar
-    // equalScalar signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
+    // isZero signature to use
+    let isZ = isZero
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
-      // datatype
-      dt = adt
-      // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt])
-      mf = typed.find(multiplyScalar, [dt, dt])
-      eq = typed.find(equalScalar, [dt, dt])
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt)
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      // NOTE mf is used in with b-value first below
+      mf = typed.find(multiplyScalar, [bdt, adt])
+      focusAddition = true
+      if (adt === bdt) {
+        dt = adt
+        af = typed.find(addScalar, [dt, dt])
+        isZ = typed.find(isZero, [dt])
+        focusAddition = false
+      }
     }
 
     // workspace
@@ -486,7 +524,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
       // b[ib]
       const vbi = bdata[ib]
       // check b[ib] != 0, avoid loops
-      if (!eq(vbi, zero)) {
+      if (!isZ(vbi)) {
         // A values & index in ib column
         for (let ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
           // a row
@@ -500,8 +538,13 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
             // x(ia) = A
             x[ia] = mf(vbi, avalues[ka])
           } else {
+            const prod = mf(vbi, avalues[ka])
+            if (focusAddition) {
+              af = typed.resolve(addScalar, [x[ia], prod]).implementation
+              focusAddition = false
+            }
             // i exists in C already
-            x[ia] = af(x[ia], mf(vbi, avalues[ka]))
+            x[ia] = af(x[ia], prod)
           }
         }
       }
@@ -554,23 +597,24 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let dt
     // addScalar signature to use
     let af = addScalar
+    let focusAddition = false
     // multiplyScalar signature to use
     let mf = multiplyScalar
-    // equalScalar signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
+    // isZero signature to use
+    let isZ = isZero
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
-      // datatype
-      dt = adt
-      // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt])
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
       mf = typed.find(multiplyScalar, [dt, dt])
-      eq = typed.find(equalScalar, [dt, dt])
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt)
+      focusAddition = true
+      if (adt === bdt) {
+        dt = adt
+        af = typed.find(addScalar, [dt, dt])
+        isZ = typed.find(isZero, [dt])
+        focusAddition = false
+      }
     }
 
     // result
@@ -602,7 +646,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
         // b[ib, jb]
         const vbij = bdata[ib][jb]
         // check b[ib, jb] != 0, avoid loops
-        if (!eq(vbij, zero)) {
+        if (!isZ(vbij)) {
           // A values & index in ib column
           for (let ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
             // a row
@@ -616,8 +660,13 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
               // x(ia) = A
               x[ia] = mf(vbij, avalues[ka])
             } else {
+              const prod = mf(vbij, avalues[ka])
+              if (focusAddition) {
+                af = typed.resolve(addScalar, [x[ia], prod]).implementation
+                focusAddition = false
+              }
               // i exists in C already
-              x[ia] = af(x[ia], mf(vbij, avalues[ka]))
+              x[ia] = af(x[ia], prod)
             }
           }
         }
@@ -667,16 +716,22 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let dt
     // addScalar signature to use
     let af = addScalar
+    let focusAddition = false
     // multiplyScalar signature to use
     let mf = multiplyScalar
 
     // process data types
-    if (adt && bdt && adt === bdt && typeof adt === 'string' && adt !== 'mixed') {
-      // datatype
-      dt = adt
-      // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt])
-      mf = typed.find(multiplyScalar, [dt, dt])
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      // NOTE mf is used in with b-value first below
+      mf = typed.find(multiplyScalar, [bdt, adt])
+      focusAddition = true
+      if (adt === bdt) {
+        dt = adt
+        af = typed.find(addScalar, [dt, dt])
+        focusAddition = false
+      }
     }
 
     // result
@@ -724,7 +779,12 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
               x[ia] = mf(bvalues[kb], avalues[ka])
             } else {
               // i exists in C already
-              x[ia] = af(x[ia], mf(bvalues[kb], avalues[ka]))
+              const prod = mf(bvalues[kb], avalues[ka])
+              if (focusAddition) {
+                af = typed.resolve(addScalar, [x[ia], prod]).implementation
+                focusAddition = false
+              }
+              x[ia] = af(x[ia], prod)
             }
           }
         } else {
@@ -788,6 +848,17 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * See also:
    *
    *    divide, prod, cross, dot
+   *
+   * History:
+   *
+   *    v13     Support bigint
+   *    v11.6   Support matrix broadcasting
+   *    v3.8    Support more than two arguments
+   *    v2      Support Fraction
+   *    v0.17   Support Complex arguments
+   *    v0.16   Support BigNumber
+   *    v0.15   Support matrix times vector
+   *    v0.0.2  Created
    *
    * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} x First value to multiply
    * @param  {number | BigNumber | bigint | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply

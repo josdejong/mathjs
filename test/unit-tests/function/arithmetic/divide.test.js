@@ -187,6 +187,14 @@ describe('divide', function () {
     assert.deepStrictEqual(divide([], 2), [])
   })
 
+  it('should divide a sparse matrix by a number', function () {
+    const a = math.sparse([[2, 0], [0, -4]])
+    assert.deepStrictEqual(divide(a, 2), math.sparse([[1, 0], [0, -2]]))
+    // 0 / 0 and 0 / NaN are NaN, so the zeros do not stay zero
+    assert.deepStrictEqual(divide(a, 0), math.matrix([[Infinity, NaN], [NaN, -Infinity]]))
+    assert.deepStrictEqual(divide(a, NaN), math.matrix([[NaN, NaN], [NaN, NaN]]))
+  })
+
   it('should divide 1 over a matrix (matrix inverse)', function () {
     approxDeepEqual(divide(1, [
       [1, 4, 7],
