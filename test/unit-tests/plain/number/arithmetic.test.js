@@ -24,4 +24,13 @@ describe('mod', function () {
   it('should calculate mod for negative divisor', function () {
     assert.strictEqual(modNumber(10, -4), -2)
   })
+
+  it('should calculate the exact modulus of large integers', function () {
+    assert.strictEqual(modNumber(1e17, 7), 5)
+    assert.strictEqual(modNumber(-1e17, 7), 2)
+    assert.strictEqual(modNumber(1e17, -7), -2)
+    assert.strictEqual(modNumber(2 ** 60, 3), 1)
+    assert.strictEqual(modNumber(1999999999999, 1000000000000), 999999999999)
+    assert.strictEqual(modNumber(-8, 4), 0)
+  })
 })
