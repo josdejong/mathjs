@@ -1,6 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -84,5 +85,39 @@ describe('cosh', function () {
   it('should LaTeX cosh', function () {
     const expression = math.parse('cosh(1)')
     assert.strictEqual(expression.toTex(), '\\cosh\\left(1\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 60 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('cosh', cosh, [
+      ['Infinity', Infinity],
+      ['-Infinity', Infinity],
+      ['NaN', NaN],
+      ['1e300', Infinity],
+      ['710', 1.1169973830808555e+308],
+      ['400', 2.610734844882072e+173],
+      ['-400', 2.610734844882072e+173],
+      ['-710', 1.1169973830808555e+308],
+      ['-1e300', Infinity],
+      ['1e-8', 1],
+      ['1e-17', 1],
+      ['1e-200', 1],
+      ['-1e-8', 1],
+      ['-1e-17', 1],
+      ['-1e-200', 1],
+      ['0', 1],
+      ['-0', 1],
+      ['1', 1.5430806348152437],
+      ['1-1e-15', 1.5430806348152426],
+      ['1-2^-53', 1.5430806348152437],
+      ['1+2^-52', 1.543080634815244],
+      ['1+1e-15', 1.543080634815245],
+      ['-1', 1.5430806348152437],
+      ['-(1-1e-15)', 1.5430806348152426],
+      ['-(1-2^-53)', 1.5430806348152437],
+      ['-(1+2^-52)', 1.543080634815244],
+      ['-(1+1e-15)', 1.543080634815245]
+    ])
   })
 })

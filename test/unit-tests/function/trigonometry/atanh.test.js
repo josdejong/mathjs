@@ -3,6 +3,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const pi = math.pi
 const atanh = math.atanh
 const tanh = math.tanh
@@ -113,5 +114,39 @@ describe('atanh', function () {
   it('should LaTeX atanh', function () {
     const expression = math.parse('atanh(0.5)')
     assert.strictEqual(expression.toTex(), '\\tanh^{-1}\\left(0.5\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 60 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('atanh', atanh, [
+      ['Infinity', complex(0, -1.5707963267948966), 'real part NaN instead of 0'],
+      ['-Infinity', complex(0, 1.5707963267948966), 'real part NaN instead of 0'],
+      ['NaN', NaN, 'returns Complex NaN + 1.5707963267948966i instead of NaN'],
+      ['1e300', complex(1e-300, -1.5707963267948966), 'real part underflows to 0 (correct 1e-300)'],
+      ['710', complex(0.0014084516355566889, -1.5707963267948966), 'real part 14.8 correct digits (rel err 1.5e-15)'],
+      ['400', complex(0.0025000052083528645, -1.5707963267948966), 'real part 13.7 correct digits (rel err 2.2e-14)'],
+      ['-400', complex(-0.0025000052083528645, 1.5707963267948966), 'real part 14.4 correct digits (rel err 4.4e-15)'],
+      ['-710', complex(-0.0014084516355566889, 1.5707963267948966), 'real part 15.0 correct digits (rel err 9.2e-16)'],
+      ['-1e300', complex(-1e-300, 1.5707963267948966), 'real part underflows to 0 (correct -1e-300)'],
+      ['1e-8', 1e-8],
+      ['1e-17', 1e-17],
+      ['1e-200', 1e-200],
+      ['-1e-8', -1e-8],
+      ['-1e-17', -1e-17],
+      ['-1e-200', -1e-200],
+      ['0', 0],
+      ['-0', -0],
+      ['1', Infinity],
+      ['1-1e-15', 17.616361586450413],
+      ['1-2^-53', 18.714973875118524],
+      ['1+2^-52', complex(18.36840028483855, -1.5707963267948966)],
+      ['1+1e-15', complex(17.563681328621502, -1.5707963267948966)],
+      ['-1', -Infinity],
+      ['-(1-1e-15)', -17.616361586450413],
+      ['-(1-2^-53)', -18.714973875118524],
+      ['-(1+2^-52)', complex(-18.36840028483855, 1.5707963267948966)],
+      ['-(1+1e-15)', complex(-17.563681328621502, 1.5707963267948966)]
+    ])
   })
 })

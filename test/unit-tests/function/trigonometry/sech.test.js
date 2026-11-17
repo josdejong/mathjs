@@ -1,6 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -74,5 +75,39 @@ describe('sech', function () {
   it('should LaTeX sech', function () {
     const expression = math.parse('sech(1)')
     assert.strictEqual(expression.toTex(), '\\mathrm{sech}\\left(1\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 60 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('sech', sech, [
+      ['Infinity', 0],
+      ['-Infinity', 0],
+      ['NaN', NaN],
+      ['1e300', 0],
+      ['710', 8.95257245135026e-309, 'result underflows to 0 (correct 8.95257245135026e-309)'],
+      ['400', 3.8303391934280114e-174],
+      ['-400', 3.8303391934280114e-174],
+      ['-710', 8.95257245135026e-309, 'result underflows to 0 (correct 8.95257245135026e-309)'],
+      ['-1e300', 0],
+      ['1e-8', 1],
+      ['1e-17', 1],
+      ['1e-200', 1],
+      ['-1e-8', 1],
+      ['-1e-17', 1],
+      ['-1e-200', 1],
+      ['0', 1],
+      ['-0', 1],
+      ['1', 0.6480542736638853],
+      ['1-1e-15', 0.6480542736638859],
+      ['1-2^-53', 0.6480542736638855],
+      ['1+2^-52', 0.6480542736638852],
+      ['1+1e-15', 0.6480542736638849],
+      ['-1', 0.6480542736638853],
+      ['-(1-1e-15)', 0.6480542736638859],
+      ['-(1-2^-53)', 0.6480542736638855],
+      ['-(1+2^-52)', 0.6480542736638852],
+      ['-(1+1e-15)', 0.6480542736638849]
+    ])
   })
 })
