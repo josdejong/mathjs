@@ -3,10 +3,12 @@ import { factory } from '../../utils/factory.js'
 import { isCollection } from '../../utils/is.js'
 
 const name = 'and'
-const dependencies = ['typed', 'matrix', 'zeros', 'add', 'equalScalar', 'not', 'concat']
+const dependencies = ['typed', 'matrix', 'zeros', 'add', 'equalScalar', 'isZero', 'not', 'concat']
 
-export const createAndTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not, concat }) => {
-  const and = createAnd({ typed, matrix, equalScalar, zeros, not, concat })
+export const createAndTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, isZero, zeros, not, concat }) => {
+  const and = createAnd({
+    typed, matrix, equalScalar, isZero, zeros, not, concat
+  })
 
   function andTransform (args, math, scope) {
     const condition1 = args[0].compile().evaluate(scope)

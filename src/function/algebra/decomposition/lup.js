@@ -11,7 +11,7 @@ const dependencies = [
   'multiplyScalar',
   'subtractScalar',
   'larger',
-  'equalScalar',
+  'isZero',
   'unaryMinus',
   'DenseMatrix',
   'SparseMatrix',
@@ -28,7 +28,7 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
     multiplyScalar,
     subtractScalar,
     larger,
-    equalScalar,
+    isZero,
     unaryMinus,
     DenseMatrix,
     SparseMatrix,
@@ -46,16 +46,18 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
    * Example:
    *
    *    const m = [[2, 1], [1, 4]]
-   *    const r = math.lup(m)
-   *    // r = {
-   *    //   L: [[1, 0], [0.5, 1]],
-   *    //   U: [[2, 1], [0, 3.5]],
-   *    //   P: [0, 1]
-   *    // }
+   *    const {L, U, P} = math.lup(m)
+   *    L  // [[1, 0], [0.5, 1]] ...
+   *    U  // [[2, 1], [0, 3.5]] ...
+   *    P  // [0, 1]
    *
    * See also:
    *
    *    slu, lsolve, lusolve, usolve
+   *
+   * History:
+   *
+   *    v2  Created
    *
    * @param {Matrix | Array} A    A two dimensional matrix or array for which to get the LUP decomposition.
    *
@@ -155,7 +157,7 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
         for (i = j + 1; i < rows; i++) {
           // value @ i, j
           const vij = data[i][j]
-          if (!equalScalar(vij, 0)) {
+          if (!isZero(vij)) {
             // update data
             data[i][j] = divideScalar(data[i][j], vjj)
           }
@@ -359,7 +361,7 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
           // update value
           v = divideScalar(v, vjj)
           // check value is non zero
-          if (!equalScalar(v, 0)) {
+          if (!isZero(v)) {
             // update lower triangular matrix
             lvalues.push(v)
             lindex.push(x)

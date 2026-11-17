@@ -5,17 +5,12 @@ import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
 const name = 'dotMultiply'
-const dependencies = [
-  'typed',
-  'matrix',
-  'equalScalar',
-  'multiplyScalar'
-]
+const dependencies = ['typed', 'matrix', 'multiplyScalar']
 
-export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar }) => {
-  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
-  const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed, equalScalar })
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
+export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiplyScalar }) => {
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
+  const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**

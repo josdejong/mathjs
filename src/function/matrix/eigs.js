@@ -7,10 +7,17 @@ import { typeOf, isNumber, isBigNumber, isComplex, isFraction } from '../../util
 const name = 'eigs'
 
 // The absolute state of math.js's dependency system:
-const dependencies = ['config', 'typed', 'matrix', 'addScalar', 'equal', 'subtract', 'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv', 'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number', 'complex', 'sqrt', 'diag', 'size', 'reshape', 'qr', 'usolve', 'usolveAll', 'im', 're', 'smaller', 'matrixFromColumns', 'dot']
-export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equal, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, size, reshape, qr, usolve, usolveAll, im, re, smaller, matrixFromColumns, dot }) => {
-  const doRealSymmetric = createRealSymmetric({ config, addScalar, subtract, column, flatten, equal, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
-  const doComplexEigs = createComplexEigs({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, size, reshape, qr, inv, usolve, usolveAll, equal, complex, larger, smaller, matrixFromColumns, dot })
+const dependencies = [
+  'config', 'typed', 'matrix', 'addScalar', 'equalScalar', 'isZero', 'subtract',
+  'abs', 'atan', 'cos', 'sin', 'multiplyScalar', 'divideScalar', 'inv',
+  'bignumber', 'multiply', 'add', 'larger', 'column', 'flatten', 'number',
+  'complex', 'sqrt', 'diag', 'size', 'reshape', 'qr', 'usolve', 'usolveAll',
+  'im', 're', 'smaller', 'matrixFromColumns', 'dot'
+]
+
+export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, matrix, addScalar, subtract, equalScalar, isZero, abs, atan, cos, sin, multiplyScalar, divideScalar, inv, bignumber, multiply, add, larger, column, flatten, number, complex, sqrt, diag, size, reshape, qr, usolve, usolveAll, im, re, smaller, matrixFromColumns, dot }) => {
+  const doRealSymmetric = createRealSymmetric({ config, addScalar, subtract, column, flatten, abs, atan, cos, sin, multiplyScalar, inv, bignumber, complex, multiply, add })
+  const doComplexEigs = createComplexEigs({ config, addScalar, subtract, multiply, multiplyScalar, flatten, divideScalar, sqrt, abs, bignumber, diag, size, reshape, qr, inv, usolve, usolveAll, equalScalar, isZero, complex, larger, smaller, matrixFromColumns, dot })
 
   /**
    * Compute eigenvalues and optionally eigenvectors of a square matrix.
@@ -51,20 +58,38 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
    *
    *     const { eigs, multiply, column, transpose, matrixFromColumns } = math
    *     const H = [[5, 2.3], [2.3, 1]]
-   *     const ans = eigs(H) // returns {values: [E1,E2...sorted], eigenvectors: [{value: E1, vector: v2}, {value: e, vector: v2}, ...]
+   *     const ans = eigs(H)
    *     const E = ans.values
    *     const V = ans.eigenvectors
-   *     multiply(H, V[0].vector)) // returns multiply(E[0], V[0].vector))
+   *     E            // [-0.04795013082563382, 6.04795013082563382] ...
+   *     V[0].value   // -0.04795013082563382 ...
+   *     V[0].vector  // [-0.41462108308382806, 0.9099941524330766] ...
+   *     V[1].value   // 6.04795013082563382 ...
+   *     V[1].vector  // [0.9099941524330766, 0.41462108308382806] ...
+   *     const v0 = V[0].vector
+   *     math.deepEqual(multiply(H, v0), multiply(E[0], v0)) // true ...
    *     const U = matrixFromColumns(...V.map(obj => obj.vector))
-   *     const UTxHxU = multiply(transpose(U), H, U) // diagonalizes H if possible
-   *     E[0] == UTxHxU[0][0]  // returns true always
+   *     const UTxHxU = multiply(transpose(U), H, U)
+   *     UTxHxU       // [[-0.04795013082563382, 0], [0, 6.04795013082563382]] ...
+   *     math.equalScalar(E[0], UTxHxU[0][0])  // true
    *
    *     // Compute only approximate eigenvalues:
-   *     const {values} = eigs(H, {eigenvectors: false, precision: 1e-6})
+   *     const M = [[-2, -2, 4], [-4, 1, 2], [2, 2, 5]]
+   *     const E = math.eigs(M, {eigenvectors: false, precision: 1e-6})
+   *     Object.keys(E)   // ['values'] ...
+   *     E.values         // [3, -5, 6]
    *
    * See also:
    *
    *     inv
+   *
+   * History:
+   *
+   *     v12   Changed return type to split the eigenvectors into individual
+   *             1D vectors, each associated with its eigenvalue.
+   *           Added option to turn of eigenvector calculation.
+   *     v9.4  Support general Complex matrices
+   *     v6.6  Created
    *
    * @param {Array | Matrix} x  Matrix to be diagonalized
    *

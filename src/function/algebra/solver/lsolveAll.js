@@ -8,11 +8,11 @@ const dependencies = [
   'divideScalar',
   'multiplyScalar',
   'subtractScalar',
-  'equalScalar',
+  'isZero',
   'DenseMatrix'
 ]
 
-export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtractScalar, equalScalar, DenseMatrix }) => {
+export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtractScalar, isZero, DenseMatrix }) => {
   const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**
@@ -33,6 +33,11 @@ export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * See also:
    *
    *    lsolve, lup, slu, usolve, lusolve
+   *
+   *
+   * History:
+   *
+   *    v7.3  Created
    *
    * @param {Matrix, Array} L       A N x N matrix or array (L)
    * @param {Matrix, Array} b       A column vector with the b values
@@ -75,7 +80,7 @@ export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
       for (let k = 0; k < L; k++) {
         const b = B[k]
 
-        if (!equalScalar(M[i][i], 0)) {
+        if (!isZero(M[i][i])) {
           // non-singular row
 
           b[i] = divideScalar(b[i], M[i][i])
@@ -84,7 +89,7 @@ export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
             // b[j] -= b[i] * M[j,i]
             b[j] = subtractScalar(b[j], multiplyScalar(b[i], M[j][i]))
           }
-        } else if (!equalScalar(b[i], 0)) {
+        } else if (!isZero(b[i])) {
           // singular row, nonzero RHS
 
           if (k === 0) {
@@ -155,7 +160,7 @@ export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
           }
         }
 
-        if (!equalScalar(Mii, 0)) {
+        if (!isZero(Mii)) {
           // non-singular row
 
           b[i] = divideScalar(b[i], Mii)
@@ -164,7 +169,7 @@ export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
             const J = iIndices[j]
             b[J] = subtractScalar(b[J], multiplyScalar(b[i], iValues[j]))
           }
-        } else if (!equalScalar(b[i], 0)) {
+        } else if (!isZero(b[i])) {
           // singular row, nonzero RHS
 
           if (k === 0) {
