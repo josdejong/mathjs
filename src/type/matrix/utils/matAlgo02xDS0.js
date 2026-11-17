@@ -58,11 +58,16 @@ export const createMatAlgo02xDS0 = /* #__PURE__ */ factory(name, dependencies, (
 
     // process data types
     if (typeof adt === 'string' && adt === bdt && adt !== 'mixed') {
-      // datatype
       dt = adt
-      // callback
-      cf = typed.find(callback, [dt, dt])
     }
+
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      if (flip) cf = typed.find(callback, [bdt, adt])
+      else cf = typed.find(callback, [adt, bdt])
+    }
+
     if (dt && dt === sparseMatrix._datatype) {
       isZ = sparseMatrix.isZero
     }

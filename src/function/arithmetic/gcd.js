@@ -33,7 +33,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
     typed, config, round, matrix, equalScalar, isZero, zeros, DenseMatrix, concat
   })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
+  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix, equalScalar })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 

@@ -50,24 +50,26 @@ export const createMatAlgo04xSidSid = /* #__PURE__ */ factory(name, dependencies
     // datatype
     let dt
     // isZero signature to use
-    let isZ
+    let isZ = a.isZero_Full
     // callback signature to use
     let cf = callback
 
     // process data types
     if (typeof adt === 'string' && adt === bdt && adt !== 'mixed') {
-      // datatype
       dt = adt
-      // callback
-      cf = typed.find(callback, [dt, dt])
     }
     // try to find an isZero signature:
     if (dt === a._datatype) {
       isZ = a.isZero
     } else if (dt === b._datatype) {
       isZ = b.isZero
-    } else {
-      isZ = a.isZero_Full
+    }
+
+    // try to pin down a callback signature:
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      cf = typed.find(callback, [adt, bdt])
     }
 
     // result arrays

@@ -2,9 +2,9 @@ import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
 
 const name = 'matAlgo05xSfSf'
-const dependencies = ['typed', 'equalScalar']
+const dependencies = ['typed']
 
-export const createMatAlgo05xSfSf = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
+export const createMatAlgo05xSfSf = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij).
    * Callback function invoked MAX(NNZA, NNZB) times
@@ -49,23 +49,37 @@ export const createMatAlgo05xSfSf = /* #__PURE__ */ factory(name, dependencies, 
 
     // datatype
     let dt
-    // equal signature to use
-    let eq = equalScalar
-    // zero value
+    // isZero signature to use
+    let isZ = a.isZero_Full
+    // zero to use
     let zero = 0
     // callback signature to use
     let cf = callback
 
     // process data types
     if (typeof adt === 'string' && adt === bdt && adt !== 'mixed') {
-      // datatype
       dt = adt
-      // find signature that matches (dt, dt)
-      eq = typed.find(equalScalar, [dt, dt])
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt)
-      // callback
-      cf = typed.find(callback, [dt, dt])
+      // OK, need a zero of that type
+      if (adt === a._datatype) {
+        zero = a.zero
+      } else if (adt === b._datatype) {
+        zero = b.zero
+      } else {
+        zero = typed.convert(0, adt)
+      }
+    }
+    // try to find an isZero signature:
+    if (dt === a._datatype) {
+      isZ = a.isZero
+    } else if (dt === b._datatype) {
+      isZ = b.isZero
+    }
+
+    // try to pin down a callback signature:
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      cf = typed.find(callback, [adt, bdt])
     }
 
     // result arrays
@@ -133,7 +147,7 @@ export const createMatAlgo05xSfSf = /* #__PURE__ */ factory(name, dependencies, 
             // Cij
             const vc = cf(va, vb)
             // check for zero
-            if (!eq(vc, zero)) {
+            if (!isZ(vc)) {
               // push value
               cvalues.push(vc)
               // increment pointer
