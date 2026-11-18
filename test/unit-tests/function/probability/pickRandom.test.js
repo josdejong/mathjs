@@ -44,6 +44,40 @@ describe('pickRandom', function () {
     }, /Weights must be an array of positive numbers/)
   })
 
+  it('should sample finite weights whose sum overflows like proportional small weights', function () {
+    for (const { weights, reference } of [
+      { weights: [1e308, 1e308], reference: [1, 1] },
+      { weights: [8e307, 1.6e308], reference: [1, 2] },
+      { weights: [0, Number.MAX_VALUE, Number.MAX_VALUE], reference: [0, 1, 1] }
+    ]) {
+      const large = math.create({ randomSeed: 'large weights' })
+      const small = math.create({ randomSeed: 'large weights' })
+      const possibles = weights.map((_, index) => index)
+      const originalWeights = weights.slice()
+      assert.deepStrictEqual(
+        large.pickRandom(possibles, 128, weights),
+        small.pickRandom(possibles, 128, reference)
+      )
+      assert.deepStrictEqual(weights, originalWeights)
+    }
+  })
+
+  it('should preserve single picks, matrices and element-wise options with overflowing totals', function () {
+    const large = math.create({ randomSeed: 'large weights options' })
+    const small = math.create({ randomSeed: 'large weights options' })
+    const weights = [Number.MAX_VALUE, Number.MAX_VALUE]
+    const possibles = ['first', 'second']
+    assert.strictEqual(large.pickRandom(possibles, weights), small.pickRandom(possibles, [1, 1]))
+    assert.deepStrictEqual(
+      large.pickRandom(possibles, math.matrix(weights), 8).valueOf(),
+      small.pickRandom(possibles, [1, 1], 8)
+    )
+    assert.deepStrictEqual(
+      large.pickRandom([[1, 2], [3, 4]], { weights, number: 8, elementWise: false }),
+      small.pickRandom([[1, 2], [3, 4]], { weights: [1, 1], number: 8, elementWise: false })
+    )
+  })
+
   it('should return a single value if no number argument was passed', function () {
     const possibles = [11, 22, 33, 44, 55]
     const weights = [1, 5, 2, 4, 6]
