@@ -22,7 +22,10 @@ Math.js supports two types of matrices:
 
 In most cases, the type of matrix output from functions is determined by the
 function input: An `Array` as input will return an `Array`, a `Matrix` as input
-will return a `Matrix`. In case of mixed input, a `Matrix` is returned.
+will return a `Matrix`. Mixed `Array` and `Matrix` inputs usually produce a
+`Matrix`. [matrixFromRows](../reference/functions/matrixFromRows.md) and
+[matrixFromColumns](../reference/functions/matrixFromColumns.md) each return an
+`Array` if any input vector is an `Array`.
 For functions where the type of output cannot be determined from the
 input, the output is determined by the configuration option `matrix`,
 which can be a string `'Matrix'` (default) or `'Array'`. The function `size` is
