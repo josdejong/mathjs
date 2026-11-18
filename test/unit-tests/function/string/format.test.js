@@ -337,6 +337,20 @@ describe('format', function () {
         assert.strictEqual(math.format(bignumber('13308.0333333333'), { precision: 11, notation: 'engineering' }), '13.308033333e+3')
       })
 
+      it('should format engineering BigNumbers above the Number range', function () {
+        assert.strictEqual(math.format(bignumber('1.23e324'), { notation: 'engineering' }), '1.23e+324')
+        assert.strictEqual(math.format(bignumber('1e325'), { notation: 'engineering' }), '10e+324')
+      })
+
+      it('should format engineering BigNumbers below the Number range', function () {
+        assert.strictEqual(math.format(bignumber('1e-324'), { notation: 'engineering' }), '1e-324')
+        assert.strictEqual(math.format(bignumber('-1.2345e-325'), { notation: 'engineering', precision: 4 }), '-123.5e-327')
+      })
+
+      it('should preserve engineering BigNumber precision near the Number subnormal boundary', function () {
+        assert.strictEqual(math.format(bignumber('1.23456e-309'), { notation: 'engineering', precision: 6 }), '1.23456e-309')
+      })
+
       it('should add or remove zeroes if necessary to output precision sig figs', function () {
         assert.strictEqual(math.format(bignumber(12400), { notation: 'engineering', precision: 2 }), '12e+3')
         assert.strictEqual(math.format(bignumber(12400), { notation: 'engineering', precision: 3 }), '12.4e+3')

@@ -198,7 +198,7 @@ export function toEngineering (value, precision) {
   const newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))
 
   // find difference in exponents, and calculate the value without exponent
-  const valueWithoutExp = value.mul(Math.pow(10, -newExp))
+  const valueWithoutExp = value.mul(`1e${-newExp}`)
 
   let valueStr = valueWithoutExp.toPrecision(precision)
   if (valueStr.includes('e')) {
