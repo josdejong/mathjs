@@ -50,6 +50,10 @@ describe('SymbolNode', function () {
     assert.strictEqual(expr2.evaluate(scope2), math.sqrt)
   })
 
+  it('should resolve a SymbolNode', function () {
+    // TODO
+  })
+
   it('should filter a SymbolNode', function () {
     const n = new SymbolNode('x')
     assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [n])
