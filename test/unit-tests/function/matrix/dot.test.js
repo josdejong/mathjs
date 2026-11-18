@@ -99,6 +99,35 @@ describe('dot', function () {
     assert.strictEqual(dot(sparse([7, 1, 2, 3]), sparse([2, 0, 0, 4])), 26)
   })
 
+  for (const { name, x, y, expected } of [
+    { name: 'complex self-products', x: [[complex(1, 1)], [0], [2]], y: [[complex(1, 1)], [0], [2]], expected: complex(6, 0) },
+    { name: 'imaginary self-products', x: [[complex(0, 1)], [0], [complex(0, 2)]], y: [[complex(0, 1)], [0], [complex(0, 2)]], expected: complex(5, 0) },
+    { name: 'complex products with nonmatching zero positions', x: [[complex(1, 2)], [0], [complex(3, -1)], [0]], y: [[complex(2, -1)], [4], [complex(0, 2)], [0]], expected: complex(-2, 1) }
+  ]) {
+    it('should conjugate the first sparse vector for ' + name, function () {
+      const a = sparse(x)
+      const b = sparse(y)
+      const beforeA = a.clone()
+      const beforeB = b.clone()
+
+      assert.deepStrictEqual(dot(a, b), expected)
+      assert.deepStrictEqual(dot(x, y), expected)
+      assert.deepStrictEqual(dot(matrix(x), matrix(y)), expected)
+      assert.deepStrictEqual(a, beforeA)
+      assert.deepStrictEqual(b, beforeB)
+    })
+  }
+
+  it('should return zero for sparse vectors without overlapping nonzero entries', function () {
+    const a = sparse([[complex(1, 2)], [0], [complex(3, -1)]])
+    const b = sparse([[0], [complex(2, 1)], [0]])
+    const zero = sparse([[0], [0], [0]])
+
+    assert.strictEqual(dot(a, b), 0)
+    assert.strictEqual(dot(a, zero), 0)
+    assert.strictEqual(dot(zero, a), 0)
+  })
+
   it('should throw an error for unsupported types of arguments', function () {
     assert.throws(function () { dot([2, 4, 1], 2) }, TypeError)
   })
