@@ -49,10 +49,10 @@ export const createSlu = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
    * @param {SparseMatrix} A              A two dimensional sparse matrix for which to get the LU decomposition.
    * @param {Number}       order          The Symbolic Ordering and Analysis order:
    *                                       0 - Natural ordering, no permutation vector q is returned
-   *                                       1 - Matrix must be square, symbolic ordering and analisis is performed on M = A + A'
-   *                                       2 - Symbolic ordering and analisis is performed on M = A' * A. Dense columns from A' are dropped, A recreated from A'.
-   *                                           This is appropriatefor LU factorization of unsymmetric matrices.
-   *                                       3 - Symbolic ordering and analisis is performed on M = A' * A. This is best used for LU factorization is matrix M has no dense rows.
+   *                                       1 - Matrix must be square, symbolic ordering and analysis is performed on M = A + A'
+   *                                       2 - Symbolic ordering and analysis is performed on M = A' * A. Dense columns from A' are dropped, A recreated from A'.
+   *                                           This is appropriate for LU factorization of unsymmetric matrices.
+   *                                       3 - Symbolic ordering and analysis is performed on M = A' * A. This is best used for LU factorization is matrix M has no dense rows.
    *                                           A dense row is a row with more than 10*sqr(columns) entries.
    * @param {Number}       threshold       Partial pivoting threshold (1 for partial pivoting)
    *

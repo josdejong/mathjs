@@ -2,7 +2,7 @@
 
 Note that brief mnemonics for the algorithm's operations are given after their
 numbers, and are included in the JavaScript as a suffix, with a separator `x`
-between the number and the suffix. (Linting rules would not alow `_` as the
+between the number and the suffix. (Linting rules would not allow `_` as the
 separator, unfortunately.)
 
 - **Algorithm 01 (DSid) `x(dense, sparse)`**

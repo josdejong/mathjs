@@ -61,7 +61,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
      *   - `maxDelta` (5): maximum ratio of change for the step
      *   - `maxIter` (1e4): maximum number of iterations
      *
-     * The returned value is an object with `{t, y}` please note that even though `t` means time, it can represent any other independant variable like `x`:
+     * The returned value is an object with `{t, y}` please note that even though `t` means time, it can represent any other independent variable like `x`:
      * - `t` an array of size `[n]`
      * - `y` the states array can be in two ways
      *   - **if `y0` is a scalar:** returns an array-like of size `[n]`
@@ -124,7 +124,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
       const tol = options.tol ? options.tol : 1e-4 // define a tolerance (must be an option)
       const minDelta = options.minDelta ? options.minDelta : 0.2
       const maxDelta = options.maxDelta ? options.maxDelta : 5
-      const maxIter = options.maxIter ? options.maxIter : 10_000 // stop inifite evaluation if something goes wrong
+      const maxIter = options.maxIter ? options.maxIter : 10_000 // stop infinite evaluation if something goes wrong
       const hasBigNumbers = [t0, tf, ...y0, maxStep, minStep].some(isBigNumber)
       const [a, c, b, bp] = hasBigNumbers
         ? [

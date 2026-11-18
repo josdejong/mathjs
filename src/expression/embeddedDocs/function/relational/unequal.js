@@ -6,7 +6,7 @@ export const unequalDocs = {
     'unequal(x, y)'
   ],
   description:
-      'Check unequality of two values. Returns true if the values are unequal, and false if they are equal.',
+      'Check inequality of two values. Returns true if the values are unequal, and false if they are equal.',
   examples: [
     '2+2 != 3',
     '2+2 != 4',
