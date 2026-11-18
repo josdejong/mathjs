@@ -90,7 +90,7 @@ export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     while (!b.isZero()) {
       q = a.div(b).floor()
-      r = a.mod(b)
+      r = a.minus(q.times(b))
 
       t = x
       x = lastx.minus(q.times(x))
