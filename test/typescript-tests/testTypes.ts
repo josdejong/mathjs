@@ -429,6 +429,12 @@ Chaining examples
   expectTypeOf(math.chain(math.parse('3 + 4 + 5')).reassociate()).toMatchTypeOf<
     MathJsChain<MathNode>
   >()
+  expectTypeOf(
+    math.chain(math.parse('x y z')).reassociate(math.simplify.positiveContext, {
+      direction: 'right',
+      inplace: true
+    })
+  ).toMatchTypeOf<MathJsChain<MathNode>>()
 
   // parse
   expectTypeOf(math.chain('1 + 1').parse()).toMatchTypeOf<

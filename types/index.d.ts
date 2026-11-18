@@ -4297,8 +4297,10 @@ export const {
   compileDependencies,
   evaluateDependencies,
   helpDependencies,
+  operatorIsDependencies,
   parseDependencies,
   parserDependencies,
+  reassociateDependencies,
 
   // algebra dependencies
   derivativeDependencies,
@@ -5420,7 +5422,7 @@ export interface MathJsChain<TValue> {
   reassociate(
     this: MathJsChain<MathNode>,
     context?: SimplifyContext,
-    options?: { description?: string; inplace?: string }
+    options?: { direction?: string; inplace?: boolean }
   ): MathJsChain<MathNode>
 
   /**
@@ -7889,8 +7891,10 @@ export const {
   compile,
   evaluate,
   help,
+  operatorIs,
   parse,
   parser,
+  reassociate,
 
   // algebra
   derivative,
