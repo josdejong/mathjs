@@ -61,13 +61,19 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     /**
-     * Create a new ConstantNode with children produced by the given callback.
-     * Trivial because there are no children.
-     * @param {function(child: Node, path: string, parent: Node) : Node} callback
-     * @returns {ConstantNode} Returns a clone of the node
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
+     * For ConstantNodes, this method is trivial except that it still checks
+     * the `inplace` option to determine whether to return this node or clone.
+     * @param {function(child: Node, path: string, parent: Node): Node} callback
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {ConstantNode}  The transformed node
      */
-    map (callback) {
-      return this.clone()
+    map (callback, options) {
+      return options?.inplace ? this : this.clone()
     }
 
     /**

@@ -92,13 +92,20 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
     }
 
     /**
-     * Create a new SymbolNode with children produced by the given callback.
-     * Trivial since a SymbolNode has no children
-     * @param {function(child: Node, path: string, parent: Node) : Node} callback
-     * @returns {SymbolNode} Returns a clone of the node
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
+     * Since a SymbolNode has no children, this method is trivial, but
+     * the `inplace` option still determines whether the node itself
+     * (when `inplace` has value true) or a clone (otherwise) is returned.
+     * @param {function(child: Node, path: string, parent: Node): Node} callback
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {SymbolNode}  The node or a clone thereof
      */
-    map (callback) {
-      return this.clone()
+    map (callback, options) {
+      return options?.inplace ? this : this.clone()
     }
 
     /**

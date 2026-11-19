@@ -128,17 +128,23 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ No
     }
 
     /**
-     * Create a new RangeNode whose children are the results of calling
-     * the provided callback function for each child of the original node.
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
      * @param {function(child: Node, path: string, parent: Node): Node} callback
-     * @returns {RangeNode} Returns a transformed copy of the node
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {RangeNode}  The transformed node
      */
-    map (callback) {
-      return new RangeNode(
-        this._ifNode(callback(this.start, 'start', this)),
-        this._ifNode(callback(this.end, 'end', this)),
-        this.step && this._ifNode(callback(this.step, 'step', this))
-      )
+    map (callback, options) {
+      const node = options?.inplace ? this : this.clone()
+      node.start = this._ifNode(callback(node.start, 'start', node))
+      node.end = this._ifNode(callback(node.end, 'end', node))
+      if (node.step) {
+        node.step = this._ifNode(callback(node.step, 'step', node))
+      }
+      return node
     }
 
     /**

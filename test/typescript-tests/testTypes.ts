@@ -420,6 +420,22 @@ Chaining examples
     MathJsChain<any[]>
   >()
 
+  // operatorIs
+  expectTypeOf(
+    math.chain('add').operatorIs('total', { add: { total: false } })
+  ).toMatchTypeOf<MathJsChain<boolean>>()
+
+  // reassociate
+  expectTypeOf(math.chain(math.parse('3 + 4 + 5')).reassociate()).toMatchTypeOf<
+    MathJsChain<MathNode>
+  >()
+  expectTypeOf(
+    math.chain(math.parse('x y z')).reassociate(math.simplify.positiveContext, {
+      direction: 'right',
+      inplace: true
+    })
+  ).toMatchTypeOf<MathJsChain<MathNode>>()
+
   // parse
   expectTypeOf(math.chain('1 + 1').parse()).toMatchTypeOf<
     MathJsChain<MathNode>
@@ -1291,9 +1307,12 @@ Expressions examples
   }
 
   {
-    const node2 = math.parse('x^a')
+    const node2 = math.parse('x^a^b')
     const _code2: EvalFunction = node2.compile()
     node2.toString()
+    math.operatorIs(node2, 'commutative')
+    math.operatorIs('not', 'trivial', { not: { trivial: false } })
+    math.reassociate(node2, math.simplify.defaultContext)
   }
 
   // 3. using function math.compile

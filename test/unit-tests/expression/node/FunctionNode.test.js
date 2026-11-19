@@ -232,14 +232,16 @@ describe('FunctionNode', function () {
     const nodes = []
     const paths = []
     const g = new ConstantNode(3)
+    let lastParent
     const h = f.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, f)
+      lastParent = parent
 
       return node instanceof SymbolNode && node.name === 'x' ? g : node
     })
 
+    assert.strictEqual(lastParent, h)
     assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], s)
     assert.strictEqual(nodes[1], c)
@@ -252,6 +254,16 @@ describe('FunctionNode', function () {
     assert.strictEqual(h.args[0].args[0], a)
     assert.strictEqual(h.args[0].args[1], b)
     assert.strictEqual(h.args[1], g)
+
+    // Now map in place:
+    const j = h.map(
+      node => node instanceof OperatorNode
+        ? new math.ParenthesisNode(node)
+        : node,
+      { inplace: true })
+    assert.strictEqual(j, h)
+    assert.strictEqual(
+      h.toString({ parenthesis: 'keep' }), 'multiply((x + 2), 3)')
   })
 
   it('should throw an error when the map callback does not return a node', function () {

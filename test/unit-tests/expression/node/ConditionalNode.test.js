@@ -141,14 +141,16 @@ describe('ConditionalNode', function () {
     const nodes = []
     const paths = []
     const e = new ConstantNode(4)
+    let lastParent
     const f = n.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, n)
+      lastParent = parent
 
       return node instanceof ConstantNode && node.value === 1 ? e : node
     })
 
+    assert.strictEqual(lastParent, f)
     assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], condition)
     assert.strictEqual(nodes[1], a)
@@ -159,6 +161,13 @@ describe('ConditionalNode', function () {
     assert.strictEqual(f.condition, e)
     assert.strictEqual(f.trueExpr, a)
     assert.strictEqual(f.falseExpr, b)
+
+    // Now map in place:
+    const g = f.map(
+      node => node.value === 2 ? new SymbolNode('y') : node,
+      { inplace: true })
+    assert.strictEqual(g, f)
+    assert.strictEqual(f.toString(), '4 ? y : 3')
   })
 
   it('should throw an error when the map callback does not return a node', function () {

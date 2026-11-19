@@ -211,19 +211,23 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
     }
 
     /**
-     * Create a new AssignmentNode whose children are the results of calling
-     * the provided callback function for each child of the original node.
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
      * @param {function(child: Node, path: string, parent: Node): Node} callback
-     * @returns {AssignmentNode} Returns a transformed copy of the node
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {AssignmentNode}  The transformed node
      */
-    map (callback) {
-      const object = this._ifNode(callback(this.object, 'object', this))
-      const index = this.index
-        ? this._ifNode(callback(this.index, 'index', this))
-        : null
-      const value = this._ifNode(callback(this.value, 'value', this))
-
-      return new AssignmentNode(object, index, value)
+    map (callback, options) {
+      const node = options?.inplace ? this : this.clone()
+      node.object = this._ifNode(callback(node.object, 'object', node))
+      if (node.index) {
+        node.index = this._ifNode(callback(node.index, 'index', node))
+      }
+      node.value = this._ifNode(callback(node.value, 'value', node))
+      return node
     }
 
     /**

@@ -78,14 +78,16 @@ describe('IndexNode', function () {
     const nodes = []
     const paths = []
     const e = new ConstantNode(-1)
+    let lastParent
     const f = n.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, n)
+      lastParent = parent
 
       return node.isConstantNode && node.value === 1 ? e : node
     })
 
+    assert.strictEqual(lastParent, f)
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], b)
     assert.strictEqual(nodes[1], c)
@@ -94,6 +96,13 @@ describe('IndexNode', function () {
     assert.notStrictEqual(f, n)
     assert.deepStrictEqual(f.dimensions[0], b)
     assert.deepStrictEqual(f.dimensions[1], e)
+
+    // Now map in place:
+    const g = f.map(
+      node => node.value === 2 ? new SymbolNode('j') : node,
+      { inplace: true })
+    assert.strictEqual(g, f)
+    assert.strictEqual(f.toString(), '[j, -1]')
   })
 
   it('should copy dotNotation property when mapping an IndexNode', function () {

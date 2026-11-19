@@ -273,7 +273,7 @@ export function generateDoc (name, code) {
     let count = 0
     let match
     do {
-      match = /\s*@param\s*\{(.*)}\s*\[?(\w*)]?\s*(.*)?$/.exec(line)
+      match = /\s*@param\s*\{([^=]*)}\s*\[?(\w*)]?\s*(.*)?$/.exec(line)
       if (match) {
         next()
 

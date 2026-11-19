@@ -108,7 +108,7 @@ describe('BlockNode', function () {
   })
 
   it('should map a BlockNode', function () {
-    // [x, 2]
+    // x; 2 + x
     const x = new SymbolNode('x')
     const two = new ConstantNode(2)
     const c = new OperatorNode('+', 'add', [two, x])
@@ -120,13 +120,16 @@ describe('BlockNode', function () {
     const nodes = []
     const paths = []
     const d = new ConstantNode(3)
+    let lastParent
     const e = a.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, a)
+      lastParent = parent
+
       return node instanceof SymbolNode && node.name === 'x' ? d : node
     })
 
+    assert.strictEqual(lastParent, e)
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], x)
     assert.strictEqual(nodes[1], c)
@@ -139,6 +142,15 @@ describe('BlockNode', function () {
     // should not touch nested nodes
     assert.strictEqual(e.blocks[1].node.args[0], two)
     assert.strictEqual(e.blocks[1].node.args[1], x)
+
+    // Now map in place
+    const f = e.map(
+      node => node instanceof OperatorNode
+        ? new OperatorNode('-', 'subtract', [x, two])
+        : node,
+      { inplace: true })
+    assert.strictEqual(f, e)
+    assert.strictEqual(e.toString(), '3\nx - 2')
   })
 
   it('should throw an error when the map callback does not return a node', function () {
