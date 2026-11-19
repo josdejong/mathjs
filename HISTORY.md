@@ -2,6 +2,14 @@
 
 # unpublished changes since 15.2.0
 
+- Chore: update selected dependencies with a focus on vulnerability
+  reduction (#3818). Thanks @katsugtgz.
+- Fix: Ensure dotPow, dotDivide, and divide evaluate matrix operations
+  on zero entries whenever necessary. Also refactors mathjs code to prefer
+  everywhere isZero() to equalScalar(x,0), reducing dependencies (#3806).
+  Thanks @Ryzuuuu and @gwhitney.
+- Feat: support Fraction and bigint in median (#3809). Thanks @Ryzuuuu.
+- Fix: Properly logically shift matrix entries by zero (#3808). Thanks @Ryzuuuu.
 - Fix: #3802 Disallow too-negative bigint -> number auto conversion (#3803).
   Thanks @spokodev.
 - Feat: Add bigint support to catalan() and fix #3780, significantly improve

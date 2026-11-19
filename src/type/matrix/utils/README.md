@@ -121,9 +121,9 @@ separator, unfortunately.)
     ````
 
 - **Algorithm 12 (Sfs) `x(sparse, scalar)`**
-  * Algorithm should iterate on the zero and nonzero values of matrix A and call `x(Aij, N)`.
-  * Output type is a `DenseMatrix`
-  * `x()` operation invoked MxN times.
+  * Algorithm should call `x(0, N)` once to get the value for the zero items of matrix A, and iterate on the nonzero values of matrix A and call `x(Aij, N)`.
+  * Output type is a `DenseMatrix`. When `x(0, N)` is zero the result is sparse: the algorithm then continues with Algorithm 11 and the output type is a `SparseMatrix`
+  * `x()` operation invoked NZ + 1 times (number of nonzero items)
 
     ````
     Cij = x(Aij, N);    Aij != 0

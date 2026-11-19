@@ -7,7 +7,6 @@ const dependencies = [
   'zeros',
   'identity',
   'isZero',
-  'equal',
   'sign',
   'sqrt',
   'conj',
@@ -26,7 +25,6 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
     zeros,
     identity,
     isZero,
-    equal,
     sign,
     sqrt,
     conj,
@@ -55,25 +53,19 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
    *      [1,  4,  2],
    *      [1,  -1, 0]
    *    ]
-   *    const result = math.qr(m)
-   *    // r = {
-   *    //   Q: [
-   *    //     [0.5, -0.5,   0.5],
-   *    //     [0.5,  0.5,  -0.5],
-   *    //     [0.5,  0.5,   0.5],
-   *    //     [0.5, -0.5,  -0.5],
-   *    //   ],
-   *    //   R: [
-   *    //     [2, 3,  2],
-   *    //     [0, 5, -2],
-   *    //     [0, 0,  4],
-   *    //     [0, 0,  0]
-   *    //   ]
-   *    // }
+   *    const {Q, R}} = math.qr(m)
+   *    Q
+   *    // [[0.5, -0.5, 0.5], [0.5, 0.5, -0.5], [0.5, 0.5, 0.5], [0.5, -0.5, -0.5]] ...
+   *    R
+   *    // [[2, 3, 2], [0, 5, -2], [0, 0, 4], [0, 0,  0]]
    *
    * See also:
    *
    *    lup, lusolve
+   *
+   * History:
+   *
+   *    v3.12  Created
    *
    * @param {Matrix | Array} A    A two dimensional matrix or array
    * for which to get the QR decomposition.
@@ -146,7 +138,7 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
        */
 
       const pivot = Rdata[k][k]
-      const sgn = unaryMinus(equal(pivot, 0) ? 1 : sign(pivot))
+      const sgn = unaryMinus(isZero(pivot) ? 1 : sign(pivot))
       const conjSgn = conj(sgn)
 
       let alphaSquared = 0

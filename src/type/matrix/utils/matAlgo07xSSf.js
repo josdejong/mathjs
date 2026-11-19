@@ -42,8 +42,19 @@ export const createMatAlgo07xSSf = /* #__PURE__ */ factory(name, dependencies, (
     // process data types
     if (typeof adt === 'string' && adt === bdt && adt !== 'mixed') {
       dt = adt
-      zero = typed.convert(0, dt)
-      cf = typed.find(callback, [dt, dt])
+      if (dt === a._datatype) {
+        zero = a.zero
+      } else if (dt === b._datatype) {
+        zero = b.zero
+      } else {
+        zero = typed.convert(0, dt)
+      }
+    }
+    // find callback signature
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      cf = typed.find(callback, [adt, bdt])
     }
 
     // result arrays for sparse format

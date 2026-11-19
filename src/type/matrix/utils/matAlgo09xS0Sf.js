@@ -2,9 +2,9 @@ import { factory } from '../../../utils/factory.js'
 import { DimensionError } from '../../../error/DimensionError.js'
 
 const name = 'matAlgo09xS0Sf'
-const dependencies = ['typed', 'equalScalar']
+const dependencies = ['typed']
 
-export const createMatAlgo09xS0Sf = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
+export const createMatAlgo09xS0Sf = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over SparseMatrix A and invokes the callback function f(Aij, Bij).
    * Callback function invoked NZA times, number of nonzero elements in A.
@@ -49,8 +49,8 @@ export const createMatAlgo09xS0Sf = /* #__PURE__ */ factory(name, dependencies, 
 
     // datatype
     let dt
-    // equal signature to use
-    let eq = equalScalar
+    // isZero signature to use
+    let isZ = a.isZero_Full
     // zero value
     let zero = 0
     // callback signature to use
@@ -58,14 +58,27 @@ export const createMatAlgo09xS0Sf = /* #__PURE__ */ factory(name, dependencies, 
 
     // process data types
     if (typeof adt === 'string' && adt === bdt && adt !== 'mixed') {
-      // datatype
       dt = adt
-      // find signature that matches (dt, dt)
-      eq = typed.find(equalScalar, [dt, dt])
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt)
-      // callback
-      cf = typed.find(callback, [dt, dt])
+      // OK, need a zero of that type
+      if (adt === a._datatype) {
+        zero = a.zero
+      } else if (adt === b._datatype) {
+        zero = b.zero
+      } else {
+        zero = typed.convert(0, adt)
+      }
+    }
+    // try to find an isZero signature:
+    if (dt === a._datatype) {
+      isZ = a.isZero
+    } else if (dt === b._datatype) {
+      isZ = b.isZero
+    }
+    // try to pin down a callback signature:
+    if (typeof adt === 'string' && adt !== 'mixed' &&
+      typeof bdt === 'string' && bdt !== 'mixed'
+    ) {
+      cf = typed.find(callback, [adt, bdt])
     }
 
     // result arrays
@@ -109,7 +122,7 @@ export const createMatAlgo09xS0Sf = /* #__PURE__ */ factory(name, dependencies, 
           // invoke f
           const vc = cf(avalues[k], vb)
           // check zero value
-          if (!eq(vc, zero)) {
+          if (!isZ(vc)) {
             // push index
             cindex.push(i)
             // push value

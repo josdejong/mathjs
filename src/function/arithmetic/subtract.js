@@ -10,17 +10,16 @@ const name = 'subtract'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
   'subtractScalar',
   'DenseMatrix'
 ]
 
-export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, subtractScalar, DenseMatrix }) => {
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtractScalar, DenseMatrix }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
   const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
+  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed })
   const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
