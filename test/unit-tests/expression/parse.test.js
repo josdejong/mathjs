@@ -613,6 +613,8 @@ describe('parse', function () {
         new Unit(10100, 'meters'))
       approxDeepEqual(parseAndEval('10 miles + 10 km to meters'),
         new Unit(26093.44, 'meters').to('meters'))
+      approxDeepEqual(parseAndEval('1 m to cm + 2 m to km'),
+        new Unit(3, 'meters').to('km'))
     })
 
     it('should evaluate operator "in" (alias of "to") ', function () {
@@ -626,6 +628,8 @@ describe('parse', function () {
         new Unit(10100, 'meters'))
       approxDeepEqual(parseAndEval('10 miles + 10 km in meters'),
         new Unit(26093.44, 'meters').to('meters'))
+      approxDeepEqual(parseAndEval('1 m in cm + 2 m in km'),
+        new Unit(3, 'meters').to('km'))
     })
 
     it('should evaluate unit "in" (should not conflict with operator "in")', function () {
