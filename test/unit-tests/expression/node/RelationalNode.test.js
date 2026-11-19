@@ -79,14 +79,16 @@ describe('RelationalNode', function () {
 
     const nodes = []
     const paths = []
+    let lastParent
     const f = n.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, n)
+      lastParent = parent
 
       return node instanceof ConstantNode && node.value === 1 ? four : node
     })
 
+    assert.strictEqual(lastParent, f)
     assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], one)
     assert.strictEqual(nodes[1], two)
@@ -97,6 +99,13 @@ describe('RelationalNode', function () {
     assert.strictEqual(f.params[0], four)
     assert.strictEqual(f.params[1], two)
     assert.strictEqual(f.params[2], three)
+
+    // now map in place:
+    const g = f.map(
+      node => node.value === 4 ? new SymbolNode('i') : node,
+      { inplace: true })
+    assert.strictEqual(g, f)
+    assert.strictEqual(f.toString(), 'i < 2 < 3')
   })
 
   it('should throw an error when the map callback does not return a node', function () {

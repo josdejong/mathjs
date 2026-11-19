@@ -277,20 +277,27 @@ describe('FunctionAssignmentNode', function () {
     const nodes = []
     const paths = []
     const e = new ConstantNode(3)
+    let lastParent
     const f = n.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, n)
+      lastParent = parent
 
       return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
+    assert.strictEqual(lastParent, f)
     assert.strictEqual(nodes.length, 1)
     assert.strictEqual(nodes[0], a)
     assert.deepStrictEqual(paths, ['expr'])
 
     assert.notStrictEqual(f, n)
     assert.deepStrictEqual(f.expr, a)
+
+    // Now map in place:
+    const g = f.map(node => new SymbolNode('x'), { inplace: true })
+    assert.strictEqual(g, f)
+    assert.strictEqual(f.toString(), 'f(x) = x')
   })
 
   it('should throw an error when the map callback does not return a node', function () {

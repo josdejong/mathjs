@@ -55,7 +55,7 @@ export const createReassociate = /* #__PURE__ */ factory(name, dependencies, ({
    *
    * History:
    *
-   *   v15.3  moved to top level, merging flatten, unflattenr, and unflattenl
+   *   v15.4  moved to top level, merging flatten, unflattenr, and unflattenl
    *          from simplify.utils
    *
    * @param {Node} node  The expression tree to reconfigure
@@ -79,14 +79,13 @@ export const createReassociate = /* #__PURE__ */ factory(name, dependencies, ({
     if (!options?.direction) {
       options = Object.assign({ direction: 'flat' }, options)
     }
-    if (!(options.inplace)) node = node.clone()
-    if (isParenthesisNode(node)) {
-      node.content = _reassoc(node.content, context, options)
+    // first reassociate the children; note map handles the cloning if
+    // needed via the `inplace` property of the options:
+    node = node.map(child => _reassoc(child, context, options), options)
+    if (!(node.args?.length && operatorIs(node, 'associative', context))) {
+      // not an associative operator
       return node
     }
-    if (!node.args || node.args.length === 0) return node
-    node.args = node.args.map(child => _reassoc(child, context, options))
-    if (!operatorIs(node, 'associative', context)) return node
     // OK, we need to do one of three things:
     if (options.direction.startsWith('f')) {
       for (let i = node.args.length - 1; i >= 0; --i) {

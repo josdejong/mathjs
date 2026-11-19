@@ -120,14 +120,16 @@ describe('ArrayNode', function () {
     const d = new ConstantNode(3)
     const nodes = []
     const paths = []
+    let lastParent
     const e = c.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, c)
+      lastParent = parent
 
       return (node instanceof SymbolNode) && (node.name === 'x') ? d : node
     })
 
+    assert.strictEqual(lastParent, e)
     assert.deepStrictEqual(paths, ['items[0]', 'items[1]'])
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
@@ -136,6 +138,13 @@ describe('ArrayNode', function () {
     assert.notStrictEqual(e, c)
     assert.deepStrictEqual(e.items[0], d)
     assert.deepStrictEqual(e.items[1], b)
+
+    // Now map inplace:
+    const f = e.map(
+      node => node instanceof ConstantNode ? new ConstantNode(4) : node,
+      { inplace: true })
+    assert.strictEqual(f, e)
+    assert.strictEqual(e.toString(), '[4, 4]')
   })
 
   it('should throw an error when the map callback does not return a node', function () {

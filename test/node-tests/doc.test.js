@@ -376,8 +376,7 @@ const knownUndocumented = new Set([
 // Functions yet to obtain individual History listings:
 const knownNoHistory = new Set([
   'config', 'typed', 'leafCount',
-  'lusolve', 'lyap', 'rationalize', 'resolve', 'schur', 'simplify',
-  'simplifyConstant', 'slu', 'sylvester',
+  'lusolve', 'lyap', 'rationalize', 'resolve', 'schur', 'slu', 'sylvester',
   'abs', 'cube', 'expm', 'hypot', 'log10', 'log1p', 'log2',
   'pow', 'round', 'sign', 'sqrt', 'sqrtm',
   'square', 'unaryMinus', 'unaryPlus', 'bitNot',

@@ -121,19 +121,22 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ No
     }
 
     /**
-     * Create a new IndexNode whose children are the results of calling
-     * the provided callback function for each child of the original node.
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
      * @param {function(child: Node, path: string, parent: Node): Node} callback
-     * @returns {IndexNode} Returns a transformed copy of the node
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {IndexNode}  The transformed node
      */
-    map (callback) {
-      const dimensions = []
-      for (let i = 0; i < this.dimensions.length; i++) {
-        dimensions[i] = this._ifNode(
-          callback(this.dimensions[i], 'dimensions[' + i + ']', this))
+    map (callback, options) {
+      const node = options?.inplace ? this : this.clone()
+      for (let i = 0; i < node.dimensions.length; i++) {
+        node.dimensions[i] = this._ifNode(
+          callback(node.dimensions[i], 'dimensions[' + i + ']', node))
       }
-
-      return new IndexNode(dimensions, this.dotNotation)
+      return node
     }
 
     /**

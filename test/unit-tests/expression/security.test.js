@@ -316,7 +316,7 @@ describe('security', function () {
   it('should not allow creating a bad OperatorNode (2)', function () {
     assert.throws(function () {
       math.evaluate("parse(\"(0)\").map(evaluate(\"f(a,b,c)=d\",{d:{isNode:true,type:\"OperatorNode\",fn:\"__lookupGetter__\",args:{map:evaluate(\"f(a)=b\",{b:{join:evaluate(\"f(a)=\\\"1)||evaluate;}};//\\\"\")}})}}})).compile().evaluate()(\"console.log('hacked...')\")")
-    }, /TypeError: Node expected for parameter "content"/)
+    }, /TypeError: Callback function must return.*Node/)
   })
 
   it('should not allow creating a bad ConstantNode', function () {

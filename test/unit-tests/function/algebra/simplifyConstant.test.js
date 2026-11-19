@@ -83,4 +83,19 @@ describe('simplifyConstant', function () {
     testSimplifyConstant('3 * x * 7 * y', '3 * x * 7 * y', {},
       { context: { multiply: { commutative: false } } })
   })
+
+  it('should simplify constants in all node types', function () {
+    testSimplifyConstant('A[3*4]', 'A[12]')
+    testSimplifyConstant('[max(2,3),min(2,3)]', '[3, 2]')
+    testSimplifyConstant('8/4; sum(7,6)', '2;\n13')
+    testSimplifyConstant('3/2 ? x : y', 'x')
+    testSimplifyConstant('f(x) = x^(1+1) - (2-1) x', 'f(x) = x ^ 2 - 1 x')
+    testSimplifyConstant('hypot(3, 4)', '5')
+    testSimplifyConstant('{a: 9 - 6, b: 8 % 3}', '{"a": 3, "b": 2}')
+    testSimplifyConstant('3+7:2-3:2*2', '10:-1:4')
+    testSimplifyConstant('1 < 2 < x > y > 4 > 3', '2 < x > y > 4')
+    testSimplifyConstant('x < 5 > 3 < 8+1 < z', 'x < 5 != 9 < z')
+    testSimplifyConstant('3+8 > 5+7 < x', 'false')
+    testSimplifyConstant('3 < 4 < 5', 'true')
+  })
 })

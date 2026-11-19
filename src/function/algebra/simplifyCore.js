@@ -1,4 +1,6 @@
-import { isAccessorNode, isArrayNode, isConstantNode, isFunctionNode, isIndexNode, isObjectNode, isOperatorNode } from '../../utils/is.js'
+import {
+  isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode
+} from '../../utils/is.js'
 import { getOperator } from '../../expression/operators.js'
 import { factory } from '../../utils/factory.js'
 
@@ -95,6 +97,8 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
    *     simplify, simplifyConstant, resolve, derivative
    *
    * History:
+   *
+   *     v15.4 Extend to all node types
    *     v11   Remove all constant-merging, moving it to `simplifyConstant`
    *           Convert equivalent function calls into operators
    *     v10.2 Created by moving an internal function of `simplify` to top level
@@ -278,30 +282,8 @@ export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
       }
       return new OperatorNode(node.op, node.fn, [a0, a1])
     }
-    if (isOperatorNode(node)) {
-      return new OperatorNode(
-        node.op, node.fn, node.args.map(a => _simplifyCore(a, options)))
-    }
-    if (isArrayNode(node)) {
-      return new ArrayNode(node.items.map(n => _simplifyCore(n, options)))
-    }
-    if (isAccessorNode(node)) {
-      return new AccessorNode(
-        _simplifyCore(node.object, options), _simplifyCore(node.index, options))
-    }
-    if (isIndexNode(node)) {
-      return new IndexNode(
-        node.dimensions.map(n => _simplifyCore(n, options)))
-    }
-    if (isObjectNode(node)) {
-      const newProps = {}
-      for (const prop in node.properties) {
-        newProps[prop] = _simplifyCore(node.properties[prop], options)
-      }
-      return new ObjectNode(newProps)
-    }
-    // cannot simplify
-    return node
+    if (isSymbolNode(node) || isConstantNode(node)) return node
+    return node.map(child => _simplifyCore(child, options))
   }
 
   return typed(name, { Node: _simplifyCore, 'Node,Object': _simplifyCore })

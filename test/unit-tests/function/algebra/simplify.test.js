@@ -212,6 +212,31 @@ describe('simplify', function () {
     simplifyAndCompare('{a:(x^2+x*x), b:2+6, c:n+0}', '{a:2*x^2, b:8, c:n}')
   })
 
+  it('should simplify inside relational nodes', function () {
+    simplifyAndCompare('0 <= x^2 + 3x^2 + x*x < 1', '0 <= 5 * x^2 < 1')
+  })
+
+  it('should simply RHS of assignment', function () {
+    simplifyAndCompare('a = x^2 + 3x^2 + x*x', 'a = 5 * x^2')
+  })
+
+  it('should simplify expressions of a block', function () {
+    simplifyAndCompare('x^2 + 3x^2 + x*x; y^3/y^2; z z z', '5 * x^2;\ny;\nz^3')
+  })
+
+  it('should simplify conditional expressions', function () {
+    simplifyAndCompare('w ? x^2 + 3x^2 + x*x : z z z', 'w ? 5 * x^2 : z^3')
+    simplifyAndCompare('3x - 3x ? w / z : x^2 + 3x^2 + x*x', '5 * x^2')
+  })
+
+  it('should simplify function assignments', function () {
+    simplifyAndCompare('f(x) = x^2 + 3x^2 + x*x', 'f(x) = 5 * x^2')
+  })
+
+  it('should simplify ranges', function () {
+    simplifyAndCompare('z z z : x^2 + 3x^2 + x*x', 'z^3 : 5 * x^2')
+  })
+
   it('should index an array or object with a constant', function () {
     simplifyAndCompare('[x,y,z][2]', 'y')
     simplifyAndCompare('5+[6*2,3-3][2-1]', '17')

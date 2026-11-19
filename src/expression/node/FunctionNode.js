@@ -317,18 +317,23 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     /**
-     * Create a new FunctionNode whose children are the results of calling
-     * the provided callback function for each child of the original node.
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
      * @param {function(child: Node, path: string, parent: Node): Node} callback
-     * @returns {FunctionNode} Returns a transformed copy of the node
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {FunctionNode}  The transformed node
      */
-    map (callback) {
-      const fn = this._ifNode(callback(this.fn, 'fn', this))
-      const args = []
-      for (let i = 0; i < this.args.length; i++) {
-        args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this))
+    map (callback, options) {
+      const node = options?.inplace ? this : this.clone()
+      node.fn = this._ifNode(callback(node.fn, 'fn', node))
+      for (let i = 0; i < node.args.length; i++) {
+        node.args[i] = this._ifNode(
+          callback(node.args[i], 'args[' + i + ']', node))
       }
-      return new FunctionNode(fn, args)
+      return node
     }
 
     /**

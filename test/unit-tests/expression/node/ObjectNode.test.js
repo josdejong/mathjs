@@ -98,14 +98,16 @@ describe('ObjectNode', function () {
     const d = new ConstantNode(3)
     const nodes = []
     const paths = []
+    let lastParent
     const e = c.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, c)
+      lastParent = parent
 
       return (node instanceof SymbolNode) && (node.name === 'x') ? d : node
     })
 
+    assert.strictEqual(lastParent, e)
     assert.deepStrictEqual(paths, ['properties["a"]', 'properties["b"]'])
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
@@ -114,6 +116,13 @@ describe('ObjectNode', function () {
     assert.notStrictEqual(e, c)
     assert.deepStrictEqual(e.properties.a, d)
     assert.deepStrictEqual(e.properties.b, b)
+
+    // Now map in place:
+    const f = e.map(
+      (node, path) => path === 'properties["b"]' ? new SymbolNode('y') : node,
+      { inplace: true })
+    assert.deepStrictEqual(f, e)
+    assert.strictEqual(e.toString(), '{"a": 3, "b": y}')
   })
 
   it('should throw an error when the map callback does not return a node', function () {

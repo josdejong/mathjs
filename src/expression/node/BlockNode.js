@@ -88,23 +88,23 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
     }
 
     /**
-     * Create a new BlockNode whose children are the results of calling
-     * the provided callback function for each child of the original node.
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
      * @param {function(child: Node, path: string, parent: Node): Node} callback
-     * @returns {BlockNode} Returns a transformed copy of the node
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {BlockNode}  The transformed node
      */
-    map (callback) {
-      const blocks = []
-      for (let i = 0; i < this.blocks.length; i++) {
-        const block = this.blocks[i]
-        const node = this._ifNode(
-          callback(block.node, 'blocks[' + i + '].node', this))
-        blocks[i] = {
-          node,
-          visible: block.visible
-        }
+    map (callback, options) {
+      const node = options?.inplace ? this : this.clone()
+      for (let i = 0; i < node.blocks.length; i++) {
+        const block = node.blocks[i]
+        block.node = this._ifNode(
+          callback(block.node, 'blocks[' + i + '].node', node))
       }
-      return new BlockNode(blocks)
+      return node
     }
 
     /**

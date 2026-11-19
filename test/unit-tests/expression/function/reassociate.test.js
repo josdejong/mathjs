@@ -5,7 +5,7 @@ import math from '../../../../src/defaultInstance.js'
 const reassoc = math.reassociate
 const deflt = math.simplify.defaultContext
 
-describe('ressociate', function () {
+describe('reassociate', function () {
   const parens = { parenthesis: 'all' }
   const crazy = { divide: { associative: true }, add: { associative: false } }
   const deeper = math.parse('3 / 4 / (5 + 6 + 7)')
@@ -61,5 +61,40 @@ describe('ressociate', function () {
     reassoc(orig, crazy, { direction: 'right', inplace: true })
     assert.strictEqual(
       orig.toString(), 'add(x, y, divide(w, divide(z, divide(a, b))))')
+  })
+
+  it('should reassociate within all node types having children', function () {
+    const orig = math.parse('[a + b + c]')
+    let flat = reassoc(orig)
+    assert.strictEqual(orig.toString(parens), '[(a + b) + c]')
+    assert.strictEqual(flat.toString(parens), '[a + b + c]')
+    flat = reassoc(math.parse('A[2*3*4]'))
+    assert.strictEqual(flat.toString(parens), 'A[2 * 3 * 4]')
+    flat = reassoc(math.parse('A = x y z'))
+    assert.strictEqual(flat.toString(parens), 'A = (x y z)')
+    flat = reassoc(math.parse('A; 3 + 2 + 1'))
+    assert.strictEqual(flat.toString(parens), 'A;\n3 + 2 + 1')
+    flat = reassoc(math.parse('A ? 3*2*1 : B'))
+    assert.strictEqual(flat.toString(parens), '(A) ? (3 * 2 * 1) : (B)')
+    flat = reassoc(math.parse('f(x) = z y x'))
+    assert.strictEqual(flat.toString(parens), 'f(x) = (z y x)')
+    flat = reassoc(math.parse('max(4+5+6)'))
+    assert.strictEqual(flat.toString(parens), 'max(4 + 5 + 6)')
+    flat = reassoc(math.parse('{a: 6*5*4}'))
+    assert.strictEqual(flat.toString(parens), '{"a": 6 * 5 * 4}')
+    flat = reassoc(math.parse('(((a + b + c)))'))
+    assert.strictEqual(flat.toString(parens), 'a + b + c')
+    flat = reassoc(math.parse('2:7+6+5'))
+    assert.strictEqual(flat.toString(parens), '(2):(7 + 6 + 5)')
+    flat = reassoc(math.parse('1 <= i+j+k < 10'))
+    assert.strictEqual(flat.toString(parens), '(1) <= (i + j + k) < (10)')
+  })
+
+  it('should avoid aliasing of original and result by default', function () {
+    const orig = math.parse('[a + b + c]')
+    const flat = reassoc(orig)
+    flat.items[0].args[2].name = 'CHANGED'
+    assert.strictEqual(orig.toString(), '[a + b + c]')
+    assert.strictEqual(flat.toString(parens), '[a + b + CHANGED]')
   })
 })

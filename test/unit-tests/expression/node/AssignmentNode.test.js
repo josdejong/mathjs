@@ -262,14 +262,16 @@ describe('AssignmentNode', function () {
     const nodes = []
     const paths = []
     const e = new ConstantNode(4)
+    let lastParent
     const f = n.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, n)
+      lastParent = parent
 
       return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
+    assert.strictEqual(lastParent, f)
     assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], i)
@@ -281,6 +283,14 @@ describe('AssignmentNode', function () {
     assert.deepStrictEqual(f.index.dimensions[0], b)
     assert.deepStrictEqual(f.index.dimensions[1], c) // not replaced, is nested
     assert.deepStrictEqual(f.value, v)
+
+    // now map in place
+    const g = f.map(
+      node => node instanceof SymbolNode ? new SymbolNode('M') : node,
+      { inplace: true })
+    assert.strictEqual(g, f)
+    assert.strictEqual(f.toString(), 'M[2, x] = 3')
+    assert.strictEqual(n.toString(), 'A[2, x] = 3')
   })
 
   it('should map an AssignmentNode without index', function () {
@@ -292,13 +302,16 @@ describe('AssignmentNode', function () {
     const e = new ConstantNode(3)
     const nodes = []
     const paths = []
+    let lastParent
+
     const f = d.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, d)
+      lastParent = parent
       return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
+    assert.strictEqual(lastParent, f)
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], x)

@@ -125,17 +125,35 @@ All nodes have the following methods:
     //   ConstantNode 2
     ```
 
--   `map(callback: function) : Node[]`
+-   `map(callback: function, [options]) : Node`
 
-    Transform a node. Creates a new Node having it's childs be the results of
-    calling the provided callback function for each of the childs of the original
-    node. The `callback` function is called as `callback(child: Node, path: string,
-    parent: Node)` and must return a Node. Parameter `path` is a string containing
-    a relative JSON Path.
+    Replace each child of a node with the result of calling `callback` on it.
+
+    Unless the `options` argument, which must be a plain object, is specified
+    and has an `inplace` property with a truthy value, map returns a clone
+    of the original with the replacement children, leaving the original alone.
+
+    When the `inplace` option is specified, the replacements are done directly
+    to the node on which this method is called, modifying it by side effect,
+    and returning this node itself.
+
+    **Caution:** inplace surgery on a node can be dangerous; it is offered
+    for performance reasons. If used, take care to make certain not to disturb
+    any other aliased nodes or subnodes, create re-entrant expression trees,
+    or the like.
+
+    The `callback` function is called as `callback(child: Node, path: string,
+    parent: Node)` and must return a Node. Parameter `parent` is the node
+    to be returned. Parameter `path` is a string containing a relative
+    JSON Path from the parent to the child. For example, one of the children
+    of an AccessorNode is the value of its `index` property, so when the
+    callback is called for that child, the path will be 'index'. Similarly,
+    the path when the callback is called for the initial item of an ArrayNode
+    will be 'items[0]'.
 
     See also `transform`, which is a recursive version of `map`.
 
--	`toHTML(options: object): string`
+-   `toHTML(options: object): string`
 
 	Get a HTML representation of the parsed expression. Example:
 
