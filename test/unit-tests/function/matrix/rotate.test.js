@@ -33,6 +33,12 @@ describe('rotate', function () {
       [add(cosComplex, multiply(-1.0, sinComplex)), add(cosComplex, sinComplex)])
   })
 
+  it('should rotate a 2D array with Array matrix configuration', function () {
+    const arrayMath = math.create({ matrix: 'Array' })
+    assert.deepStrictEqual(arrayMath.rotate([1, 0], 1), [cos(1), sin(1)])
+    assert.deepStrictEqual(arrayMath.rotate([[1], [0]], 1), [[cos(1)], [sin(1)]])
+  })
+
   it('should return a rotated 1x2 vector when it is provided as matrix', function () {
     assert.deepStrictEqual(rotate(matrix([100, 200]), 0), matrix([100, 200]))
 
