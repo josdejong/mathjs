@@ -41,6 +41,17 @@ describe('tan', function () {
     assert.deepStrictEqual(bigTan(bigPi.div(4)).toString(), '0.999999999999999999999')
   })
 
+  it('should restore BigNumber precision after a decimal.js precision error', function () {
+    const highPrecisionMath = math.create({ number: 'BigNumber', precision: 509 })
+
+    assert.throws(
+      () => highPrecisionMath.evaluate('tan(pi/2)'),
+      /decimal\.js trigonometric functions are limited/
+    )
+    assert.strictEqual(highPrecisionMath.BigNumber.precision, 509)
+    assert.strictEqual(highPrecisionMath.evaluate('1.1 + 2.2').toString(), '3.3')
+  })
+
   it('should return the tangent of a complex number', function () {
     const re = 0.00376402564150425
     const im = 1.00323862735360980
