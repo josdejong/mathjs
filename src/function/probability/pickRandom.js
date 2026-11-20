@@ -11,8 +11,8 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
   let rng = createRng(config.randomSeed)
 
   if (on) {
-    on('config', function (curr, prev) {
-      if (curr.randomSeed !== prev.randomSeed) {
+    on('config', function (curr, prev, changes) {
+      if (Object.prototype.hasOwnProperty.call(changes, 'randomSeed')) {
         rng = createRng(curr.randomSeed)
       }
     })
