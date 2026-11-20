@@ -276,7 +276,7 @@ describe('RangeNode', function () {
 
     const n = new RangeNode(o1, o1, o2)
 
-    assert.strictEqual(n.toString(), '1 + 2:(1 < 2):1 + 2')
+    assert.strictEqual(n.toString(), '1 + 2:1 < 2:1 + 2')
   })
 
   it('should stringify a RangeNode with a RangeNode', function () {

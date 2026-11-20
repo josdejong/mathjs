@@ -7,6 +7,7 @@ import { PartitionedMap } from '../../../src/utils/map.js'
 import { approxDeepEqual, approxEqual } from '../../../tools/approx.js'
 
 const parse = math.parse
+const AssignmentNode = math.AssignmentNode
 const ConditionalNode = math.ConditionalNode
 const ConstantNode = math.ConstantNode
 const OperatorNode = math.OperatorNode
@@ -2205,10 +2206,16 @@ describe('parse', function () {
     })
 
     it(
-      'should allow a range with implicit start as the false expr',
+      'should not allow any range as true/false expr of a conditional',
       function () {
-        assert.strictEqual(parseAndEval('true?0::3'), 0)
-        assert.deepStrictEqual(parseAndEval('false?0::3'), parseAndEval(':3'))
+        assert.deepStrictEqual(
+          parseAndEval('true?1:2:3'), math.matrix([1, 2, 3]))
+        assert.deepStrictEqual(
+          parseAndEval('false?1:2:3'), math.matrix([2, 3]))
+        assert.throws(() => math.parse('true?:1:2'), /Syntax.*Value expected/)
+        assert.throws(() => math.parse('false?0::3'), /Syntax.*Value expected/)
+        assert.throws(() => math.parse('x?::2'), /Syntax.*Value expected/)
+        assert.throws(() => math.parse('x?1::'), /Syntax.*Value expected/)
       })
 
     it('should parse : (range)', function () {
@@ -2416,11 +2423,21 @@ describe('parse', function () {
       })
 
       it('should respect precedence of conditional operator and range operator', function () {
-        const node = math.parse('a ? b : c : d')
-        assert(node instanceof ConditionalNode)
-        assert.strictEqual(node.condition.toString(), 'a')
-        assert.strictEqual(node.trueExpr.toString(), 'b')
-        assert.strictEqual(node.falseExpr.toString(), 'c:d')
+        let node = math.parse('a ? b : c : d')
+        assert(node instanceof RangeNode)
+        assert.strictEqual(node.start.toString(), 'a ? b : c')
+        assert.strictEqual(node.end.toString(), 'd')
+        assert.strictEqual(node.step, null)
+        node = math.parse('a : b ? c : d : e')
+        assert(node instanceof RangeNode)
+        assert.strictEqual(node.start.toString(), 'a')
+        assert.strictEqual(node.end.toString(), 'e')
+        assert.strictEqual(node.step.toString(), 'b ? c : d')
+        node = math.parse('a : b : c ? d : e')
+        assert(node instanceof RangeNode)
+        assert.strictEqual(node.start.toString(), 'a')
+        assert.strictEqual(node.end.toString(), 'c ? d : e')
+        assert.strictEqual(node.step.toString(), 'b')
       })
 
       it('should respect precedence of conditional operator and range operator (2)', function () {
@@ -2439,11 +2456,46 @@ describe('parse', function () {
         assert.strictEqual(node.falseExpr.toString(), '(e ? f : g)')
       })
 
+      it('should respect precedence of assignment and range', function () {
+        let node = math.parse('a = 3 : 5')
+        assert(node instanceof AssignmentNode)
+        assert.strictEqual(node.object.toString(), 'a')
+        assert.strictEqual(node.value.toString(), '3:5')
+        node = math.parse('3 : a = 5')
+        assert(node instanceof RangeNode)
+        assert.strictEqual(node.start.toString(), '3')
+        assert.strictEqual(node.end.toString(), 'a = 5')
+        assert.strictEqual(node.step, null)
+        node = math.parse('3 : a = 2 : 7')
+        assert(node instanceof RangeNode)
+        assert.strictEqual(node.start.toString(), '3')
+        assert.strictEqual(node.end.toString(), '7')
+        assert.strictEqual(node.step.toString(), 'a = 2')
+        node = math.parse('3 : 2 : a = 7')
+        assert(node instanceof RangeNode)
+        assert.strictEqual(node.start.toString(), '3')
+        assert.strictEqual(node.end.toString(), 'a = 7')
+        assert.strictEqual(node.step.toString(), '2')
+      })
+
+      it('should respect precedence of assignment and conditional', function () {
+        let node = math.parse('a = true ? 0 : 1')
+        assert(node instanceof AssignmentNode)
+        assert.strictEqual(node.object.toString(), 'a')
+        assert.strictEqual(node.value.toString(), 'true ? 0 : 1')
+        node = math.parse('cond ? a = 7 : b = 7')
+        assert(node instanceof ConditionalNode)
+        assert.strictEqual(node.condition.toString(), 'cond')
+        assert.strictEqual(node.trueExpr.toString(), 'a = 7')
+        assert.strictEqual(node.falseExpr.toString(), 'b = 7')
+      })
+
       it('should respect precedence of range operator and relational operators', function () {
         const node = math.parse('a:b == c:d')
-        assert(node instanceof OperatorNode)
-        assert.strictEqual(node.args[0].toString(), 'a:b')
-        assert.strictEqual(node.args[1].toString(), 'c:d')
+        assert(node instanceof RangeNode)
+        assert.strictEqual(node.start.toString(), 'a')
+        assert.strictEqual(node.step.toString(), 'b == c')
+        assert.strictEqual(node.end.toString(), 'd')
       })
 
       it('should respect precedence of range operator and operator plus and minus', function () {

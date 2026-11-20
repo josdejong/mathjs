@@ -24,6 +24,9 @@ export const properties = [
     AssignmentNode: {},
     FunctionAssignmentNode: {}
   },
+  { // range
+    RangeNode: {}
+  },
   { // conditional expression
     ConditionalNode: {
       latexLeftParens: false,
@@ -134,9 +137,6 @@ export const properties = [
       associativity: 'left',
       associativeWith: []
     }
-  },
-  { // range
-    RangeNode: {}
   },
   { // addition, subtraction
     'OperatorNode:add': {

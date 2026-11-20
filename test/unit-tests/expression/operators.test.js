@@ -20,7 +20,7 @@ describe('operators', function () {
 
     assert.strictEqual(getPrecedence(n1, 'keep'), 0)
     assert.strictEqual(getPrecedence(n2, 'keep'), 17) // nullish coalescing
-    assert.strictEqual(getPrecedence(n3, 'keep'), 2) // logical or
+    assert.strictEqual(getPrecedence(n3, 'keep'), 3) // logical or
     assert.strictEqual(getPrecedence(n4, 'keep'), 19)
   })
 
