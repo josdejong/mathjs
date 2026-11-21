@@ -27,11 +27,10 @@ error message) from zero-based to one-based.
 
 ```js
 // using plain JavaScript, indices are zero-based:
-const a = [[1, 2], [3, 4]]       // a 2x2 matrix
+const a = [[1, 2], [3, 4]]       // Array, size [2, 2]
 math.subset(a, math.index(0, 1)) // returns 2
 
 // using the expression parser, indices are transformed to one-based:
-const a = [[1, 2], [3, 4]] // a 2x2 matrix
 let scope = {
   a: a
 }
@@ -153,7 +152,7 @@ math.import({
 
 // use the function
 math.evaluate('myFunction(2 + 3, sqrt(4))')
-// returns 'arguments: 2 + 3, sqrt(4), evaluated: 5, 2'
+// returns 'arguments: 2 + 3,sqrt(4), evaluated: 5,2'
 ```
 
 ## Custom LaTeX handlers
@@ -227,10 +226,10 @@ functions of that name.
 ```js
 const expression = math.parse('(1+1+1)')
 
-expression.toString()                      // (1 + 1 + 1)
-expression.toString({parenthesis: 'keep'}) // (1 + 1 + 1)
-expression.toString({parenthesis: 'auto'}) // 1 + 1 + 1
-expression.toString({parenthesis: 'all'})  // (1 + 1) + 1
+expression.toString()                      // '(1 + 1 + 1)'
+expression.toString({parenthesis: 'keep'}) // '(1 + 1 + 1)'
+expression.toString({parenthesis: 'auto'}) // '1 + 1 + 1'
+expression.toString({parenthesis: 'all'})  // '(1 + 1) + 1'
 ```
 
 ### Handler
@@ -272,15 +271,11 @@ const customLaTeX = {
   	return 'factorial\\left(' + node.args[0] + '\\right)'
   }
 }
-```
 
-You can simply use your custom toTex functions by passing them to `toTex`:
-
-```js
+// You can simply use your custom toTex functions by passing them to toTex:
 math.import(customFunctions)
 const expression = math.parse('binomial(factorial(2),1)')
-const latex = expression.toTex({handler: customLaTeX})
-// latex now contains "\binom{factorial\\left(2\\right)}{1}"
+const latex = expression.toTex({handler: customLaTeX}) // '\\binom{factorial\\left(2\\right)}{1}'
 ```
 
 #### Examples for option 2:
@@ -308,8 +303,7 @@ function customLaTeX(node, options) {
 }
 
 const expression = math.parse('1+2')
-const latex = expression.toTex({handler: customLaTeX})
-// latex now contains '\mbox{one} plus \mbox{two}'
+const latex = expression.toTex({handler: customLaTeX}) // '\\mbox{one} plus \\mbox{two}'
 ```
 
 Another example in conjunction with custom functions:
@@ -331,8 +325,7 @@ function customLaTeX(node, options) {
 
 math.import(customFunctions)
 const expression = math.parse('binomial(2,1)')
-const latex = expression.toTex({handler: customLaTeX})
-// latex now contains "\binom{2}{1}"
+const latex = expression.toTex({handler: customLaTeX}) // '\\binom{2}{1}'
 ```
 
 ### Implicit multiplication

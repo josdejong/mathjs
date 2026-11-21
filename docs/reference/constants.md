@@ -24,6 +24,6 @@ Constant        | Description | Value
 Example usage:
 
 ```js
-math.sin(math.pi / 4)          // 0.70711
+math.sin(math.pi / 4)          // 0.7071067811865475
 math.multiply(math.i, math.i)  // -1
 ```
