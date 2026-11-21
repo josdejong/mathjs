@@ -184,6 +184,10 @@ export function nthRootNumber (a, root = 2) {
     throw new Error('Root must be odd when a is negative.')
   }
 
+  if (Number.isNaN(a)) {
+    return NaN
+  }
+
   // edge cases zero and infinity
   if (a === 0) {
     return inv ? Infinity : 0
