@@ -3,6 +3,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const pi = math.pi
 const acsch = math.acsch
 const csch = math.csch
@@ -95,5 +96,39 @@ describe('acsch', function () {
   it('should LaTeX acsch', function () {
     const expression = math.parse('acsch(2)')
     assert.strictEqual(expression.toTex(), '\\mathrm{csch}^{-1}\\left(2\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 1000 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('acsch', acsch, [
+      ['Infinity', 0],
+      ['-Infinity', -0, 'result sign of zero (0, correct -0)'],
+      ['NaN', NaN],
+      ['1e300', 1e-300, 'result underflows to 0 (correct 1e-300)'],
+      ['710', 0.0014084502385606538, 'result 13.5 correct digits (rel err 3.3e-14)'],
+      ['400', 0.0024999973958406575, 'result 13.3 correct digits (rel err 5.4e-14)'],
+      ['-400', -0.0024999973958406575, 'result 13.9 correct digits (rel err 1.1e-14)'],
+      ['-710', -0.0014084502385606538, 'result 13.5 correct digits (rel err 3.1e-14)'],
+      ['-1e300', -1e-300, 'result underflows to 0 (correct -1e-300)'],
+      ['1e-8', 19.11382792451231],
+      ['1e-17', 39.837093761458725],
+      ['1e-200', 461.2101657793691, 'result overflows to Infinity (correct 461.2101657793691)'],
+      ['-1e-8', -19.11382792451231, 'result overflows to -Infinity (correct -19.11382792451231)'],
+      ['-1e-17', -39.837093761458725, 'result overflows to -Infinity (correct -39.837093761458725)'],
+      ['-1e-200', -461.2101657793691, 'result overflows to Infinity (correct -461.2101657793691)'],
+      ['0', Infinity],
+      ['-0', -Infinity, 'result NaN instead of -Infinity'],
+      ['1', 0.881373587019543],
+      ['1-1e-15', 0.8813735870195437],
+      ['1-2^-53', 0.8813735870195432],
+      ['1+2^-52', 0.8813735870195428],
+      ['1+1e-15', 0.8813735870195423],
+      ['-1', -0.881373587019543],
+      ['-(1-1e-15)', -0.8813735870195437],
+      ['-(1-2^-53)', -0.8813735870195432],
+      ['-(1+2^-52)', -0.8813735870195428],
+      ['-(1+1e-15)', -0.8813735870195423]
+    ])
   })
 })

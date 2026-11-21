@@ -3,6 +3,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
@@ -112,5 +113,39 @@ describe('sinh', function () {
   it('should LaTeX sinh', function () {
     const expression = math.parse('sinh(1)')
     assert.strictEqual(expression.toTex(), '\\sinh\\left(1\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 1000 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('sinh', sinh, [
+      ['Infinity', Infinity],
+      ['-Infinity', -Infinity],
+      ['NaN', NaN],
+      ['1e300', Infinity],
+      ['710', 1.1169973830808555e+308],
+      ['400', 2.610734844882072e+173],
+      ['-400', -2.610734844882072e+173],
+      ['-710', -1.1169973830808555e+308],
+      ['-1e300', -Infinity],
+      ['1e-8', 1e-8],
+      ['1e-17', 1e-17],
+      ['1e-200', 1e-200],
+      ['-1e-8', -1e-8],
+      ['-1e-17', -1e-17],
+      ['-1e-200', -1e-200],
+      ['0', 0],
+      ['-0', -0],
+      ['1', 1.1752011936438014],
+      ['1-1e-15', 1.1752011936437998],
+      ['1-2^-53', 1.1752011936438014],
+      ['1+2^-52', 1.1752011936438018],
+      ['1+1e-15', 1.1752011936438032],
+      ['-1', -1.1752011936438014],
+      ['-(1-1e-15)', -1.1752011936437998],
+      ['-(1-2^-53)', -1.1752011936438014],
+      ['-(1+2^-52)', -1.1752011936438018],
+      ['-(1+1e-15)', -1.1752011936438032]
+    ])
   })
 })
