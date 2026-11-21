@@ -8,6 +8,8 @@ const SymbolNode = math.SymbolNode
 const AssignmentNode = math.AssignmentNode
 const ConditionalNode = math.ConditionalNode
 
+const raw = String.raw
+
 describe('ConditionalNode', function () {
   const condition = new ConstantNode(true)
   const zero = new ConstantNode(0)
@@ -344,7 +346,17 @@ describe('ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
 
     // note that b is enclosed in \\mathrm{...} since it's a unit
-    assert.strictEqual(n.toTex(), '\\begin{cases} { a=2}, &\\quad{\\text{if }\\;true}\\\\{\\mathrm{b}=3}, &\\quad{\\text{otherwise}}\\end{cases}')
+    assert.strictEqual(n.toTex(),
+      raw`\begin{cases} { a=2}, &\quad{\text{if }\;true}\\` +
+        raw`{\mathrm{b}=3}, &\quad{\text{otherwise}}\end{cases}`)
+  })
+
+  it('should LaTeX a ConditionalNode with RangeNode branches', function () {
+    assert.strictEqual(
+      math.parse('a ? (b:c) : (d:e)').toTex(),
+      raw`\begin{cases} ` +
+        raw`{\left(\mathrm{b}: c\right)}, &\quad{\text{if }\; a}\\` +
+        raw`{\left( d: e\right)}, &\quad{\text{otherwise}}\end{cases}`)
   })
 
   it('should LaTeX a ConditionalNode with custom toTex', function () {
@@ -365,6 +377,8 @@ describe('ConditionalNode', function () {
 
     const n = new ConditionalNode(a, b, c)
 
-    assert.strictEqual(n.toTex({ handler: customFunction }), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)')
+    assert.strictEqual(n.toTex({ handler: customFunction }),
+      raw`if const\left(1, number\right) then const\left(2, number\right) ` +
+        raw`else const\left(3, number\right)`)
   })
 })
