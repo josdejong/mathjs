@@ -2,8 +2,10 @@
 
 # unpublished changes since 15.2.0
 
+- Docs: Ensure all links in README.md are live (#3821). Thanks @farisbasha.
 - Chore: update selected dependencies with a focus on vulnerability
-  reduction (#3818). Thanks @katsugtgz.
+  reduction (#3818) and update code_editor dependencies (#3828).
+  Thanks @katsugtgz.
 - Fix: Ensure dotPow, dotDivide, and divide evaluate matrix operations
   on zero entries whenever necessary. Also refactors mathjs code to prefer
   everywhere isZero() to equalScalar(x,0), reducing dependencies (#3806).
