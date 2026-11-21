@@ -109,7 +109,7 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
         const max = Math.min(n.toNumber() - 2, Math.floor(2 * Math.pow(n.toFixed(0).length * Math.log(10), 2)))
         bases = []
         for (let i = 2; i <= max; i += 1) {
-          bases.push(max)
+          bases.push(i)
         }
       }
       for (let i = 0; i < bases.length; i += 1) {
