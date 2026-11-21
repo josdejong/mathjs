@@ -115,8 +115,7 @@ const knownProblems = new Set([
   'rationalize', 'lusolve',
   'schur', 'sylvester', 'freqz', 'round',
   'import', 'typed',
-  'unit', 'sparse', 'matrix', 'index', 'bignumber', 'fraction', 'complex',
-  'parse'
+  'unit', 'sparse', 'matrix', 'index', 'bignumber', 'fraction', 'complex'
 ])
 
 let issueCount = 0

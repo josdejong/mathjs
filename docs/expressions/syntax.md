@@ -123,7 +123,6 @@ Operators                         | Description
 See section below                 | Implicit multiplication
 `*`, `/`, `.*`, `./`,`%`, `mod`   | Multiply, divide, modulus
 `+`, `-`                          | Add, subtract
-`:`                               | Range
 `to`, `in`                        | Unit conversion
 `<<`, `>>`, `>>>`                 | Bitwise left shift, bitwise right arithmetic shift, bitwise right logical shift
 `==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
@@ -133,11 +132,22 @@ See section below                 | Implicit multiplication
 `and`                             | Logical and (lazily evaluated)
 `xor`                             | Logical xor
 `or`                              | Logical or (lazily evaluated)
+`=` _leftward_                    | Assignment (left-hand side)
 `?`, `:`                          | Conditional expression
-`=`                               | Assignment
+`:`                               | Range
+`=` _rightward_                   | Assignment (right-hand side)
 `,`                               | Parameter and column separator
 `;`                               | Row separator
 `\n`, `;`                         | Statement separators
+
+Note that assignment has the unusual property of different precedence to its
+left and right: a range or conditional expression on the right-hand of an
+assignment binds more tightly than the assignment, whereas the (left-hand side
+of) the assignment binds more tightly than any range or conditional expression
+that starts before the assignment. These conventions allow `x = a ? 0 : 1`
+to properly assign the result of a conditional to x, while still allowing
+`val > bound ? end = bound : start = val` to select which assignment to execute
+based on the outcome of the condition.
 
 Lazy evaluation is used where logically possible for bitwise and logical
 operators. In the following example, the sub-expression `x` will not even be
