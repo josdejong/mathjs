@@ -3,6 +3,9 @@
 import assert from 'assert'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
 import math from '../../../../src/defaultInstance.js'
+import {
+  createBigNumberPhi
+} from '../../../../src/utils/bignumber/constants.js'
 const bignumber = math.bignumber
 const gamma = math.gamma
 
@@ -68,34 +71,53 @@ describe('gamma', function () {
     assert.deepStrictEqual(gamma(bignumber(-2)).toString(), 'Infinity')
     assert.ok(gamma(bignumber(-Infinity)).isNaN())
   })
-  /*
+
   it('should calculate the gamma of a rational bignumber', function () {
-    assert.deepStrictEqual(gamma(bignumber(0.125)), bignumber('7.5339415987976'))
-    assert.deepStrictEqual(gamma(bignumber(0.25)), bignumber('3.62560990822191'))
-    assert.deepStrictEqual(gamma(bignumber(0.5)), bignumber('1.77245385090552'))
-    assert.deepStrictEqual(gamma(bignumber(1.5)), bignumber('0.886226925452758'))
-    assert.deepStrictEqual(gamma(bignumber(2.5)), bignumber('1.32934038817914'))
+    assert.deepStrictEqual(gamma(bignumber(0.125)), bignumber('7.533941598798'))
+    assert.deepStrictEqual(gamma(bignumber(0.25)), bignumber('3.625609908222'))
+    // gamma(n + 1/2) are special values, so always return lots of digits
+    approxEqual(gamma(bignumber(0.5)), bignumber('1.77245385090552'))
+    approxEqual(gamma(bignumber(1.5)), bignumber('0.886226925452758'))
+    approxEqual(gamma(bignumber(2.5)), bignumber('1.32934038817914'))
 
-    const bigmath = math.create({ precision: 15 })
-    assert.deepStrictEqual(bigmath.gamma(bignumber(30.5)), '4.82269693349091e+31')
+    const bigmath = math.create({ relTol: 1e-15, absTol: 1e-18, precision: 24 })
+    const bigresult = bigmath.gamma(bigmath.bignumber(30.5))
+    approxEqual(bigresult, bigmath.bignumber('4.82269693349091e+31'))
+    assert.deepStrictEqual(
+      bigmath.gamma(bigmath.bignumber(1).div(3)),
+      bigmath.bignumber('2.678938534707748'))
 
-    bigmath.config({ precision: 13 })
-    assert.deepStrictEqual(bigmath.gamma(bignumber(-1.5)), bigmath.bignumber('2.363271801207'))
-    assert.deepStrictEqual(gamma(bignumber(-2.5)), bignumber('-0.9453087205'))
+    bigmath.config({ relTol: 1e-13, absTol: 1e-16, precision: 18 })
+    approxEqual(
+      bigmath.gamma(bigmath.bignumber(-1.5)),
+      bigmath.bignumber('2.363271801207'))
+    assert.deepStrictEqual(
+      bigmath.gamma(bigmath.bignumber(0.2)),
+      bigmath.bignumber('4.5908437119988'))
+
+    bigmath.config({ relTol: 1e-300, absTol: 1e-310, precision: 500 })
+    assert.deepStrictEqual(
+      bigmath.gamma(bigmath.bignumber(2).div(3)),
+      bigmath.bignumber('1.354117939426400416945288028154513785519327266056793698394022467963782965401742541675834147952972911106434823610033058854142261552586211826607191148114322833434155915620917505682592366523385211910858011501770153617023853945368317754599736504155930691384228034622762716150366499013846393144654597536751')
+    )
+    approxEqual(gamma(bignumber(-2.5)), bignumber('-0.9453087205'))
   })
 
   it('should calculate the gamma of an irrational bignumber', function () {
-    assert.deepStrictEqual(gamma(bigUtil.phi(math.precision).neg()), bignumber('2.3258497469'))
-    assert.deepStrictEqual(gamma(bigUtil.phi(math.precision)), bignumber('0.895673151705288'))
+    const phi = createBigNumberPhi(math.BigNumber)
+    assert.deepStrictEqual(gamma(phi.neg()), bignumber('2.325849746874'))
+    assert.deepStrictEqual(gamma(phi), bignumber('0.895673151705'))
 
-    assert.deepStrictEqual(gamma(bigUtil.pi(20)), bignumber('2.28803779534003'))
-    assert.deepStrictEqual(gamma(bigUtil.e(math.precision)), bignumber('1.56746825577405'))
+    const pi = math.acos(math.bignumber(-1))
+    assert.deepStrictEqual(gamma(pi), bignumber('2.2880377953400'))
+    const bige = math.exp(math.bignumber(1))
+    assert.deepStrictEqual(gamma(bige), bignumber('1.5674682557740'))
 
     const bigmath = math.create({ number: 'BigNumber' })
-    assert.deepStrictEqual(gamma(bigmath.SQRT2), bignumber('0.886581428719259'))
-    assert.deepStrictEqual(gamma(bigmath.SQRT2.neg()), bignumber('2.59945990753'))
+    assert.deepStrictEqual(gamma(bigmath.SQRT2), bignumber('0.886581428719'))
+    assert.deepStrictEqual(gamma(bigmath.SQRT2.neg()), bignumber('2.599459907525'))
   })
-*/
+
   it('should calculate the gamma of an imaginary unit', function () {
     approxDeepEqual(gamma(math.i), math.complex(-0.154949828301810685124955130,
       -0.498015668118356042713691117))
