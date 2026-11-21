@@ -2368,6 +2368,34 @@ describe('parse', function () {
         assert.deepStrictEqual(parseAndEval('false ? 1:2:6'), math.matrix([2, 3, 4, 5, 6]))
       })
 
+      it('should parse range with lower precedence than conditional operator (#3621)', function () {
+        const node = math.parse('true ? 3 : -1 : 2 : 5')
+
+        assert(node instanceof RangeNode)
+        assert(node.start instanceof ConditionalNode)
+        assert.strictEqual(node.start.toString(), 'true ? 3 : (-1)')
+        assert.strictEqual(node.step.toString(), '2')
+        assert.strictEqual(node.end.toString(), '5')
+        assert.deepStrictEqual(node.compile().evaluate(), math.matrix([3, 5]))
+      })
+
+      it('should keep conditional lower than logical or', function () {
+        const node = math.parse('false or true ? 1 : 2')
+
+        assert(node instanceof ConditionalNode)
+        assert.strictEqual(node.condition.toString(), 'false or true')
+        assert.strictEqual(node.compile().evaluate(), 1)
+      })
+
+      it('should parse logical or with higher precedence than range (#3621)', function () {
+        const node = math.parse('false or 1:3')
+
+        assert(node instanceof RangeNode)
+        assert.strictEqual(node.start.toString(), 'false or 1')
+        assert.strictEqual(node.end.toString(), '3')
+        assert.deepStrictEqual(node.compile().evaluate(), math.matrix([1, 2, 3]))
+      })
+
       it('should respect precedence between left/right shift and relational operators', function () {
         assert.strictEqual(parseAndEval('32 >> 4 == 2'), true)
         assert.strictEqual(parseAndEval('2 == 32 >> 4'), true)
@@ -2517,6 +2545,63 @@ describe('parse', function () {
         assert(node instanceof OperatorNode)
         assert.strictEqual(node.args[0].toString(), 'a to b')
         assert.strictEqual(node.args[1].toString(), 'c')
+      })
+
+      it('should respect precedence of "to" operator and range operator', function () {
+        const node1 = math.parse('a:b to c')
+        assert(node1 instanceof RangeNode)
+        assert.strictEqual(node1.start.toString(), 'a')
+        assert.strictEqual(node1.end.toString(), 'b to c')
+
+        const node2 = math.parse('a to b:c')
+        assert(node2 instanceof RangeNode)
+        assert.strictEqual(node2.start.toString(), 'a to b')
+        assert.strictEqual(node2.end.toString(), 'c')
+      })
+
+      it('should keep assignment lower than range and conditional operators (#3621)', function () {
+        const scope = {}
+        assert.strictEqual(parseAndEval('true ? a = 1 : 7', scope), 1)
+        assert.strictEqual(scope.a, 1)
+
+        assert.deepStrictEqual(
+          parseAndEval('true ? (a = 1 : 4) : 3', scope), parseAndEval('1:4'))
+        assert.deepStrictEqual(scope.a, math.matrix([1, 2, 3, 4]))
+
+        assert.deepStrictEqual(parseAndEval('a = 1:5', scope), math.matrix([1, 2, 3, 4, 5]))
+        assert.deepStrictEqual(scope.a, math.matrix([1, 2, 3, 4, 5]))
+      })
+
+      it('should still parse ranges in indexes and function arguments (#3621)', function () {
+        const scope = {
+          A: [1, 2, 3, 4],
+          f: x => x
+        }
+
+        assert.deepStrictEqual(parseAndEval('A[1:3]', scope), [1, 2, 3])
+        assert.deepStrictEqual(parseAndEval('f(1:3)', scope), math.matrix([1, 2, 3]))
+      })
+
+      it('should keep nested conditional operators right-associative (#3621)', function () {
+        const node = math.parse('a ? b : c ? d : e')
+
+        assert(node instanceof ConditionalNode)
+        assert.strictEqual(node.condition.toString(), 'a')
+        assert.strictEqual(node.trueExpr.toString(), 'b')
+        assert(node.falseExpr instanceof ConditionalNode)
+        assert.strictEqual(node.falseExpr.toString(), 'c ? d : e')
+      })
+
+      it('should round trip range with conditional start (#3621)', function () {
+        const node = math.parse('(true ? 3 : -1) : 2 : 5')
+        const stringified = node.toString()
+        const reparsed = math.parse(stringified)
+
+        assert.strictEqual(reparsed.toString(), stringified)
+        assert.strictEqual(
+          reparsed.toString({ parenthesis: 'all' }),
+          node.toString({ parenthesis: 'all' })
+        )
       })
 
       // TODO: extensively test operator precedence

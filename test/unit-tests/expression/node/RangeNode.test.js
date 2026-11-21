@@ -7,6 +7,7 @@ const ConstantNode = math.ConstantNode
 const SymbolNode = math.SymbolNode
 const RangeNode = math.RangeNode
 const OperatorNode = math.OperatorNode
+const raw = String.raw
 
 describe('RangeNode', function () {
   it('should create a RangeNode', function () {
@@ -335,7 +336,8 @@ describe('RangeNode', function () {
 
   it('should respect the \'all\' parenthesis option', function () {
     assert.strictEqual(math.parse('1:2:3').toString({ parenthesis: 'all' }), '(1):(2):(3)')
-    assert.strictEqual(math.parse('1:2:3').toTex({ parenthesis: 'all' }), '\\left(1\\right):\\left(2\\right):\\left(3\\right)')
+    assert.strictEqual(math.parse('1:2:3').toTex({ parenthesis: 'all' }),
+      raw`\left(1\right):\left(2\right):\left(3\right)`)
   })
 
   it('toJSON and fromJSON', function () {
@@ -374,6 +376,12 @@ describe('RangeNode', function () {
     assert.strictEqual(n.toTex(), '0:2:10')
   })
 
+  it('should LaTeX a RangeNode with a ConditionalNode', function () {
+    assert.strictEqual(math.parse('(true ? 3 : -1) : 2 : 5').toTex(),
+      raw`\left(\begin{cases} {3}, &\quad{\text{if }\;true}\\` +
+        raw`{-1}, &\quad{\text{otherwise}}\end{cases}\right):2:5`)
+  })
+
   it('should LaTeX a RangeNode with custom toTex', function () {
     // Also checks if the custom functions get passed on to the children
     const customFunction = function (node, options) {
@@ -392,7 +400,9 @@ describe('RangeNode', function () {
 
     const n = new RangeNode(a, b, c)
 
-    assert.strictEqual(n.toTex({ handler: customFunction }), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)')
+    assert.strictEqual(n.toTex({ handler: customFunction }),
+      raw`from const\left(1, number\right) to const\left(2, number\right) ` +
+        raw`with steps of const\left(3, number\right)`)
   })
 
   /**
