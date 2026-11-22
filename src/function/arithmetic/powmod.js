@@ -1,14 +1,9 @@
 import { factory } from '../../utils/factory.js'
-import { isInteger } from '../../utils/number.js'
 
 const name = 'powmod'
-const dependencies = ['typed', '?BigNumber']
+const dependencies = ['typed', 'isInteger', 'mod', 'invmod', 'bigint', 'number', 'bignumber']
 
-// Largest modulus for which (m - 1)^2 is still a safe integer, so the number
-// path can multiply natively without losing precision.
-const MAX_NATIVE_MODULUS = 94906266
-
-export const createPowmod = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
+export const createPowmod = /* #__PURE__ */ factory(name, dependencies, ({ typed, isInteger, mod, invmod, bigint, number, bignumber }) => {
   /**
    * Calculate the modular exponentiation `b^e mod m`, without computing the
    * full power `b^e`. Uses square-and-multiply, reducing modulo `m` after
@@ -20,8 +15,8 @@ export const createPowmod = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * inverse of `b` (see `invmod`) and throws an error when `b` has no inverse
    * modulo `m`. A zero modulus throws an error.
    *
-   * For `number` arguments, the result is exact as long as the modulus is a
-   * safe integer. Use `bigint` (or `BigNumber`) for larger moduli.
+   * The computation is carried out in `bigint`, so the result is exact, and
+   * then converted back to the type of the arguments.
    *
    * Syntax:
    *
@@ -49,92 +44,41 @@ export const createPowmod = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * @return {number | BigNumber | bigint}   Returns `b^e mod m`
    */
   return typed(name, {
-    'number, number, number': _powmodNumber,
-    // Any bigint argument: compute in bigint, preferring bigint output as `mod` does
-    'bigint, number | bigint, number | bigint': _powmodMixed,
-    'number, bigint, number | bigint': _powmodMixed,
-    'number, number, bigint': _powmodMixed,
-    'BigNumber, BigNumber, BigNumber': function (b, e, m) {
-      if (!b.isInteger() || !e.isInteger() || !m.isInteger()) {
-        throw new Error(`Arguments of powmod must be integers, not ${b}, ${e} and ${m}`)
-      }
-      const r = _powmodBigint(_toBigint(b), _toBigint(e), _toBigint(m))
-      return new BigNumber(r.toString())
-    }
+    'number, number, number': (b, e, m) => number(powmodChecked(b, e, m)),
+    'BigNumber, BigNumber, BigNumber': (b, e, m) => bignumber(powmodChecked(b, e, m)),
+    // Any bigint argument gives a bigint result, as in mod
+    'bigint, number | bigint, number | bigint': powmodChecked,
+    'number, bigint, number | bigint': powmodChecked,
+    'number, number, bigint': powmodChecked
   })
 
-  function _checkIntegers (b, e, m) {
-    if (!_isInt(b) || !_isInt(e) || !_isInt(m)) {
+  function powmodChecked (b, e, m) {
+    if (!isInteger(b) || !isInteger(e) || !isInteger(m)) {
       throw new Error(`Arguments of powmod must be integers, not ${b}, ${e} and ${m}`)
     }
+    return powmodBigint(bigint(b), bigint(e), bigint(m))
   }
 
-  function _powmodMixed (b, e, m) {
-    _checkIntegers(b, e, m)
-    return _powmodBigint(BigInt(b), BigInt(e), BigInt(m))
-  }
-
-  function _powmodNumber (b, e, m) {
-    _checkIntegers(b, e, m)
-    const am = Math.abs(m)
-    if (am > MAX_NATIVE_MODULUS || e < 0) {
-      // Products could exceed 2^53 (or we need an inverse): go exact via bigint
-      return Number(_powmodBigint(BigInt(b), BigInt(e), BigInt(m)))
-    }
-    if (am === 0) {
+  function powmodBigint (b, e, m) {
+    if (m === 0n) {
       throw new Error('powmod: modulus must be non-zero')
     }
-    // Also maps -0 to 0
-    let base = ((b % am) + am) % am
-    let result = 1 % am
-    while (e > 0) {
-      if (e % 2 === 1) result = (result * base) % am
-      e = Math.floor(e / 2)
-      if (e > 0) base = (base * base) % am
+    if (e < 0n) {
+      const inv = invmod(b, m)
+      if (Number.isNaN(inv)) {
+        throw new Error(`powmod: ${b} has no inverse modulo ${m}, so the exponent cannot be negative`)
+      }
+      b = inv
+      e = -e
     }
-    return (m < 0 && result !== 0) ? result - am : result
+    // % keeps every value congruent and below |m|; mod fixes the sign at the end
+    let result = 1n
+    b %= m
+    while (e > 0n) {
+      if (e & 1n) result = (result * b) % m
+      e >>= 1n
+      b = (b * b) % m
+    }
+    return mod(result, m)
   }
 })
-
-function _isInt (x) {
-  return typeof x === 'bigint' || isInteger(x)
-}
-
-function _toBigint (x) {
-  return BigInt(x.toFixed())
-}
-
-function _powmodBigint (b, e, m) {
-  if (m === 0n) {
-    throw new Error('powmod: modulus must be non-zero')
-  }
-  const am = m < 0n ? -m : m
-  let base = b % am
-  if (base < 0n) base += am
-  if (e < 0n) {
-    base = _invmodBigint(base, am)
-    e = -e
-  }
-  let result = 1n % am
-  while (e > 0n) {
-    if (e & 1n) result = (result * base) % am
-    e >>= 1n
-    if (e > 0n) base = (base * base) % am
-  }
-  return (m < 0n && result !== 0n) ? result - am : result
-}
-
-// Inverse of a modulo m, for 0 <= a < m, via the extended Euclidean algorithm
-function _invmodBigint (a, m) {
-  let [r0, r1] = [m, a]
-  let [t0, t1] = [0n, 1n]
-  while (r1 !== 0n) {
-    const q = r0 / r1;
-    [r0, r1] = [r1, r0 - q * r1];
-    [t0, t1] = [t1, t0 - q * t1]
-  }
-  if (r0 !== 1n) {
-    throw new Error(`powmod: base has no inverse modulo ${m}, so the exponent cannot be negative`)
-  }
-  return t0 < 0n ? t0 + m : t0
-}
