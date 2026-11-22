@@ -1577,6 +1577,24 @@ export interface MathJsInstance extends MathJsFactory {
   pow(x: MathType, y: number | BigNumber | bigint | Complex): MathType
 
   /**
+   * Calculate the modular exponentiation b^e mod m without computing the
+   * full power. All arguments must be integers and m must be non-zero. The
+   * result has the sign convention of mod. A negative exponent uses the
+   * modular inverse of b.
+   * @param b The base
+   * @param e The exponent
+   * @param m The modulus
+   * @returns b to the power e, modulo m
+   */
+  powmod(b: number, e: number, m: number): number
+  powmod(b: number | bigint, e: number | bigint, m: number | bigint): bigint
+  powmod(
+    b: number | BigNumber | bigint,
+    e: number | BigNumber | bigint,
+    m: number | BigNumber | bigint
+  ): BigNumber
+
+  /**
    * Compute the sign of a value. The sign of a value x is: 1 when x > 1
    * -1 when x < 0 0 when x == 0 For matrices, the function is evaluated
    * element wise.
@@ -4322,6 +4340,7 @@ export const {
   nthRootDependencies,
   nthRootsDependencies,
   powDependencies,
+  powmodDependencies,
   roundDependencies,
   signDependencies,
   sqrtDependencies,
@@ -5959,6 +5978,24 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathType>,
     y: number | BigNumber | bigint | Complex
   ): MathJsChain<MathType>
+
+  /**
+   * Calculate the modular exponentiation b^e mod m without computing the
+   * full power. All arguments must be integers and m must be non-zero.
+   * @param e The exponent
+   * @param m The modulus
+   */
+  powmod(this: MathJsChain<number>, e: number, m: number): MathJsChain<number>
+  powmod(
+    this: MathJsChain<number | bigint>,
+    e: number | bigint,
+    m: number | bigint
+  ): MathJsChain<bigint>
+  powmod(
+    this: MathJsChain<number | BigNumber | bigint>,
+    e: number | BigNumber | bigint,
+    m: number | BigNumber | bigint
+  ): MathJsChain<BigNumber>
 
   /**
    * Compute the sign of a value. The sign of a value x is: 1 when x > 1
@@ -7890,6 +7927,7 @@ export const {
   nthRoot,
   nthRoots,
   pow,
+  powmod,
   round,
   sign,
   sqrt,
