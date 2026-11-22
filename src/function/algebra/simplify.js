@@ -45,7 +45,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     replacer
   }
 ) => {
-  const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction, defaultContext, realContext, positiveContext } =
+  const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, allChildren, unflattenr, unflattenl, createMakeNodeFunction, defaultContext, realContext, positiveContext } =
     createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
   /**
@@ -358,6 +358,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     },
 
     // final ordering of constants
+    orderConstantTerms,
     {
       s: 'ce+ve -> ve+ce',
       assuming: { add: { commutative: true } },
@@ -409,6 +410,33 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'n1/(-n2)', r: '-n1/n2' }
 
   ]
+
+  function orderConstantTerms (node, { context }) {
+    if (!hasProperty('add', 'commutative', context) || !hasProperty('add', 'associative', context)) return node
+
+    function order (node) {
+      if (node.isOperatorNode && node.fn === 'add') {
+        const terms = allChildren(node, context)
+        if (terms.length > 2) {
+          const constants = []
+          const variables = []
+          for (const term of terms) {
+            const group = isConstantExpression(term) ? constants : variables
+            group.push(term)
+          }
+          if (constants.length && variables.length > 1) {
+            return variables.concat(constants).map(order).reduce((sum, term) =>
+              term.isOperatorNode && term.fn === 'unaryMinus'
+                ? new OperatorNode('-', 'subtract', [sum, term.args[0]])
+                : new OperatorNode('+', 'add', [sum, term]))
+          }
+        }
+      }
+      return node.map(order)
+    }
+
+    return order(node)
+  }
 
   /**
    * Takes any rule object as allowed by the specification in simplify
@@ -685,6 +713,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       // Create a new node by cloning the rhs of the matched rule
       // we keep any implicit multiplication state if relevant
       const implicit = res.implicit
+      const implicitNegatedProduct = rule.l.fn === 'unaryMinus' && rule.l.args[0].fn === 'multiply' &&
+        res.args[0].implicit
       res = repl.clone()
       if (implicit && 'implicit' in repl) {
         res.implicit = true
@@ -698,6 +728,12 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           return node
         }
       })
+
+      if (implicitNegatedProduct && repl.fn === 'multiply') {
+        res.implicit = true
+      } else if (implicit && rule.l.fn === 'multiply' && repl.fn === 'unaryMinus' && repl.args[0].fn === 'multiply') {
+        res.args[0].implicit = true
+      }
 
       // const after = res.toString({parenthesis: 'all'})
       // console.log('Simplified ' + before + ' to ' + after)

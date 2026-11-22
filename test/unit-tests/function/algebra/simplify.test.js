@@ -136,6 +136,14 @@ describe('simplify', function () {
     simplifyAndCompare('2 + -x', '2 - x')
   })
 
+  it('should put the constant after the variable terms of a polynomial', function () {
+    simplifyAndCompare('4x^2+6+2x', '4x^2+2x+6')
+    simplifyAndCompare('4x^2+6-2x', '4x^2-2x+6')
+    simplifyAndCompare('4x^2-6-2x', '4x^2-2x-6')
+    simplifyAndCompare('4x^2-2x-6', '4x^2-2x-6')
+    simplifyAndCompare('4x^2+6-2*x', '4x^2-2*x+6')
+  })
+
   it('should simplify exponents', function () {
     // power rule
     simplifyAndCompare('(x^2)^3', 'x^6')
@@ -383,7 +391,7 @@ describe('simplify', function () {
     simplifyAndCompare('16n / 1', '16 n')
     simplifyAndCompare('8 / 5n', 'n * 8 / 5')
     simplifyAndCompare('8n - 4n', '4 * n')
-    simplifyAndCompare('8 - 4n', '8 - 4 * n')
+    simplifyAndCompare('8 - 4n', '8 - 4n')
     simplifyAndCompare('8 - n', '8 - n')
   })
 
@@ -432,7 +440,7 @@ describe('simplify', function () {
 
   it('should remove + before -', function () {
     assert.strictEqual(math.simplify('y + (-x*b) + a * -5').toString(), 'y - 5 * a - x * b')
-    assert.strictEqual(math.simplify('+3y + (-2z) + x * (-3)').toString(), '3 y - 3 * x - 2 * z')
+    assert.strictEqual(math.simplify('+3y + (-2z) + x * (-3)').toString(), '3 y - 3 * x - 2 z')
   })
 
   it('options parameters', function () {
