@@ -21,6 +21,31 @@ describe('setDifference', function () {
     assert.deepStrictEqual(math.setDifference([1, 2, 1, 3, 4, 4], [1, 2, 4, 3, 4, 4]), [1])
   })
 
+  it('should subtract an empty array from an array', function () {
+    const values = [3, 1, 3, 2]
+    assert.deepStrictEqual(math.setDifference(values, []), [1, 2, 3, 3])
+    assert.deepStrictEqual(values, [3, 1, 3, 2])
+    assert.deepStrictEqual(math.setDifference([[3, 1], [3, 2]], []), [1, 2, 3, 3])
+  })
+
+  it('should subtract an empty matrix from an array', function () {
+    assert.deepStrictEqual(
+      math.setDifference([3, 1, 3, 2], math.matrix([])),
+      math.matrix([1, 2, 3, 3]))
+  })
+
+  it('should subtract an empty array from a matrix', function () {
+    assert.deepStrictEqual(
+      math.setDifference(math.matrix([3, 1, 3, 2]), []),
+      math.matrix([1, 2, 3, 3]))
+  })
+
+  it('should subtract an empty matrix from a matrix', function () {
+    assert.deepStrictEqual(
+      math.setDifference(math.matrix([[3, 1], [3, 2]]), math.matrix([])),
+      math.matrix([1, 2, 3, 3]))
+  })
+
   it('should return the same type of output as the inputs', function () {
     assert.strictEqual(math.typeOf(math.setDifference([1, 2, 3], [3, 4, 5])), 'Array')
     assert.strictEqual(
