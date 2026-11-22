@@ -3,7 +3,7 @@
 # unpublished changes since 15.2.0
 
 - Feat: #2734 add function `powmod` for modular exponentiation `b^e mod m`,
-  supporting number, bigint and BigNumber (#TBD). Thanks @TheNetherWatcher.
+  supporting number, bigint and BigNumber (#3835). Thanks @TheNetherWatcher.
 - Docs: Ensure all links in README.md are live (#3821). Thanks @farisbasha.
 - Chore: update selected dependencies with a focus on vulnerability
   reduction (#3818) and update code_editor dependencies (#3828).
