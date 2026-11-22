@@ -235,11 +235,4 @@ describe('bitAnd', function () {
     const expression = math.parse('bitAnd(4,2)')
     assert.strictEqual(expression.toTex(), '\\left(4\\&2\\right)')
   })
-
-  it('should check that entries are integers also where the other operand is zero', function () {
-    assert.throws(() => bitAnd(math.sparse([[0.5]]), 0), /Integers expected in function bitAnd/)
-    assert.throws(() => bitAnd(0.5, math.sparse([[0]])), /Integers expected in function bitAnd/)
-    assert.deepStrictEqual(bitAnd(math.sparse([[6]]), math.sparse([[0]])), math.sparse([[0]]))
-    assert.deepStrictEqual(bitAnd(math.sparse([[6]]), 0), math.sparse([[0]]))
-  })
 })

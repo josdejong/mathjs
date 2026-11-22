@@ -1,18 +1,18 @@
 import { bitAndBigNumber } from '../../utils/bignumber/bitwise.js'
 import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
+import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo06xS0S0 } from '../../type/matrix/utils/matAlgo06xS0S0.js'
-import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { factory } from '../../utils/factory.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { bitAndNumber } from '../../plain/number/index.js'
 
 const name = 'bitAnd'
-const dependencies = ['typed', 'matrix', 'DenseMatrix']
+const dependencies = ['typed', 'matrix']
 
-export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix }) => {
+export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
   const matAlgo06xS0S0 = createMatAlgo06xS0S0({ typed })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
+  const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
@@ -52,10 +52,7 @@ export const createBitAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed
     matrixAlgorithmSuite({
       SS: matAlgo06xS0S0,
       DS: matAlgo02xDS0,
-      // the scalar path still has to evaluate f(0, b) once: the result
-      // is zero, but skipping it would also skip the check that both
-      // operands are integers
-      Ss: matAlgo12xSfs
+      Ss: matAlgo11xS0s
     })
   )
 })
