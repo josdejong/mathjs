@@ -198,4 +198,16 @@ describe('rightArithShift', function () {
     const expression = math.parse('rightArithShift(3,2)')
     assert.strictEqual(expression.toTex(), '\\left(3>>2\\right)')
   })
+
+  it('should convert values to 32-bit integers when shifting by zero, also for sparse matrices', function () {
+    // x >> 0 is the 32-bit conversion of x, not x itself
+    assert.deepStrictEqual(rightArithShift(sparse([[2147483648]]), 0), sparse([[-2147483648]]))
+    assert.deepStrictEqual(rightArithShift(matrix([[2147483648]]), 0), matrix([[-2147483648]]))
+    assert.deepStrictEqual(rightArithShift([2147483648], 0), [-2147483648])
+    assert.deepStrictEqual(rightArithShift(sparse([[2147483648]]), sparse([[0]])), sparse([[-2147483648]]))
+    assert.deepStrictEqual(rightArithShift(matrix([[2147483648]]), sparse([[0]])), matrix([[-2147483648]]))
+    assert.deepStrictEqual(rightArithShift(2147483648, sparse([[0]])), matrix([[-2147483648]]))
+    assert.deepStrictEqual(rightArithShift(4294967296, sparse([[0]])), sparse([[0]]))
+    assert.throws(() => rightArithShift(sparse([[0.5]]), 0), /Integers expected in function rightArithShift/)
+  })
 })

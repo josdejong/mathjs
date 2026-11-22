@@ -3,6 +3,14 @@
 # unpublished changes since 15.2.0
 
 - Docs: Ensure all links in README.md are live (#3821). Thanks @farisbasha.
+- Fix: Evaluate bitwise and shift operations on sparse matrix entries
+  where the other operand is zero instead of copying an operand or
+  returning the input unchanged. The bitwise operators convert their
+  operands to 32-bit integers first, so for example
+  `bitOr(sparse([[2147483648]]), sparse([[0]]))` returned `2147483648`
+  instead of `-2147483648`, shifting a matrix by a scalar zero returned
+  its entries unchanged, and `rightLogShift(-4, sparse([[0]]))` returned
+  `-4` instead of `4294967292`.
 - Chore: update selected dependencies with a focus on vulnerability
   reduction (#3818) and update code_editor dependencies (#3828).
   Thanks @katsugtgz.

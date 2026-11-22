@@ -238,4 +238,16 @@ describe('bitOr', function () {
     const expression = math.parse('bitOr(2,3)')
     assert.strictEqual(expression.toTex(), '\\left(2|3\\right)')
   })
+
+  it('should convert values to 32-bit integers where the other operand is zero, also for sparse matrices', function () {
+    // x | 0 is the 32-bit conversion of x, not x itself
+    assert.deepStrictEqual(bitOr(math.sparse([[2147483648]]), math.sparse([[0]])), math.sparse([[-2147483648]]))
+    assert.deepStrictEqual(bitOr(math.sparse([[0]]), math.sparse([[2147483648]])), math.sparse([[-2147483648]]))
+    assert.deepStrictEqual(bitOr(math.matrix([[2147483648]]), math.sparse([[0]])), math.matrix([[-2147483648]]))
+    assert.deepStrictEqual(bitOr(math.sparse([[2147483648]]), math.matrix([[0]])), math.matrix([[-2147483648]]))
+    assert.deepStrictEqual(bitOr(math.sparse([[2147483648]]), 0), math.sparse([[-2147483648]]))
+    assert.deepStrictEqual(bitOr(2147483648, math.sparse([[0]])), math.matrix([[-2147483648]]))
+    assert.deepStrictEqual(bitOr(4294967296, math.sparse([[0]])), math.sparse([[0]]))
+    assert.throws(() => bitOr(math.sparse([[0.5]]), math.sparse([[0]])), /Integers expected in function bitOr/)
+  })
 })

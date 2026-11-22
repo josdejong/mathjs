@@ -4,11 +4,11 @@ import { isCollection } from '../../utils/is.js'
 
 const name = 'bitAnd'
 const dependencies = [
-  'typed', 'matrix', 'zeros', 'add', 'equalScalar', 'isZero', 'not', 'concat'
+  'typed', 'matrix', 'zeros', 'add', 'equalScalar', 'isZero', 'not', 'concat', 'DenseMatrix'
 ]
 
-export const createBitAndTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, isZero, zeros, not, concat }) => {
-  const bitAnd = createBitAnd({ typed, matrix, equalScalar, isZero, zeros, not, concat })
+export const createBitAndTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, isZero, zeros, not, concat, DenseMatrix }) => {
+  const bitAnd = createBitAnd({ typed, matrix, equalScalar, isZero, zeros, not, concat, DenseMatrix })
 
   function bitAndTransform (args, math, scope) {
     const condition1 = args[0].compile().evaluate(scope)
