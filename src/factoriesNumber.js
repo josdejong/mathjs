@@ -132,6 +132,7 @@ export const createLog = /* #__PURE__ */
 export const createLog1p = /* #__PURE__ */ createNumberFactory('log1p', log1pNumber)
 export const createAdd = /* #__PURE__ */ createNumberFactory('add', addNumber)
 export { createHypot } from './function/arithmetic/hypot.js'
+export { createPowmod } from './function/arithmetic/powmod.js'
 export const createNorm = /* #__PURE__ */ createNumberFactory('norm', normNumber)
 export const createDivide = /* #__PURE__ */ createNumberFactory('divide', divideNumber)
 
