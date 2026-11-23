@@ -80,7 +80,7 @@ describe('sec', function () {
   })
 
   it('should throw an error if called with an invalid unit', function () {
-    assert.throws(function () { sec(unit('5 celsius')) })
+    assert.throws(function () { sec(unit('5 celsius')) }, /Unit in function sec is no angle/)
   })
 
   it('should throw an error if called with a string', function () {
