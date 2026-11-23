@@ -82,6 +82,7 @@ export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    * @private
    */
   function _ones (size, format) {
+    size = size.slice()
     const hasBigNumbers = _normalize(size)
     const defaultValue = hasBigNumbers ? new BigNumber(1) : 1
     _validate(size)
