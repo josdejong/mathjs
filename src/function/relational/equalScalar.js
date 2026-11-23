@@ -15,6 +15,7 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * @param  {number | BigNumber | bigint | Fraction | boolean | Complex | Unit} x   First value to compare
    * @param  {number | BigNumber | bigint | Fraction | boolean | Complex} y          Second value to compare
+   * @param  {number}                                                   Relative tolerance, overriding config.
    * @return {boolean}                                                  Returns true when the compared values are equal, else returns false
    * @private
    */
@@ -27,9 +28,15 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
     'number, number': function (x, y) {
       return nearlyEqual(x, y, config.relTol, config.absTol)
     },
+    'number, number, number': function (x, y, relTol) {
+      return nearlyEqual(x, y, relTol, config.absTol)
+    },
 
     'BigNumber, BigNumber': function (x, y) {
       return x.eq(y) || bigNearlyEqual(x, y, config.relTol, config.absTol)
+    },
+    'BigNumber, BigNumber, number': function (x, y, relTol) {
+      return x.eq(y) || bigNearlyEqual(x, y, relTol, config.absTol)
     },
 
     'bigint, bigint': function (x, y) {
@@ -42,6 +49,9 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
 
     'Complex, Complex': function (x, y) {
       return complexEquals(x, y, config.relTol, config.absTol)
+    },
+    'Complex, Complex, number': function (x, y, relTol) {
+      return complexEquals(x, y, config.absTol)
     }
   }, compareUnits)
 })
@@ -50,6 +60,9 @@ export const createEqualScalarNumber = factory(name, ['typed', 'config'], ({ typ
   return typed(name, {
     'number, number': function (x, y) {
       return nearlyEqual(x, y, config.relTol, config.absTol)
+    },
+    'number, number, number': function (x, y, relTol) {
+      return nearlyEqual(x, y, relTol, config.absTol)
     }
   })
 })

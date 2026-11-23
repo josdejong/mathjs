@@ -35,10 +35,10 @@ export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    *    const A = [[1, 2], [5, 6]]
    *    const B = [[3, 4], [7, 8]]
+   *    math.concat(A, B, 0)    // returns [[1, 2], [5, 6], [3, 4], [7, 8]] ...
+   *    math.concat(A, B, 1)    // returns [[1, 2, 3, 4], [5, 6, 7, 8]] ...
+   *    math.concat(A, B)       // returns [[1, 2, 3, 4], [5, 6, 7, 8]] ...
    *
-   *    math.concat(A, B, 0)              // returns [[1, 2], [5, 6], [3, 4], [7, 8]]
-   *    math.concat(A, B, 1)              // returns [[1, 2, 3, 4], [5, 6, 7, 8]]
-   *    math.concat(A, B)                 // returns [[1, 2, 3, 4], [5, 6, 7, 8]]
    *    math.concat('hello', ' ', 'world') // returns 'hello world'
    *
    * See also:

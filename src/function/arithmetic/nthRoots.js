@@ -79,7 +79,7 @@ export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typ
    *    math.nthRoots(1) // returns [ {re: 1, im: 0}, {re: -1, im: 0} ]
    *
    *    math.nthRoots(1, 3)
-   *    // Complex [1, "-0.5+0.866025403784439i", "-0.5-0.866025403784439i"]
+   *    // returns Complex [1, "-0.5+0.866025403784439i", "-0.5-0.866025403784439i"]
    *
    * See also:
    *

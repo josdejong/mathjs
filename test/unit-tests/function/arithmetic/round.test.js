@@ -226,10 +226,13 @@ describe('round', function () {
 
     it('should round sparse matrix and scalar', function () {
       assert.deepStrictEqual(round(sparse([[1.7777, 2.3456], [-90.8272, 0]]), 3), sparse([[1.778, 2.346], [-90.827, 0]]))
-      assert.deepStrictEqual(round(3.12385, sparse([[2, 3], [0, 2]])), matrix([[3.12, 3.124], [3, 3.12]]))
-      assert.deepStrictEqual(round(0.0, sparse([2, 3])), sparse([0, 0]))
+      assert.deepStrictEqual(
+        round(3.12385, sparse([[2, 3], [0, 2]])),
+        sparse([[3.12, 3.124], [3, 3.12]]))
+      assert.deepStrictEqual(
+        round(0.0, sparse([2, 3])), sparse([0, 0], 'number'))
       assert.deepStrictEqual(round(bignumber(6.28318), sparse([0, 4])),
-        matrix([[bignumber(6)], [bignumber(6.2832)]]))
+        sparse([[bignumber(6)], [bignumber(6.2832)]]))
     })
   })
 

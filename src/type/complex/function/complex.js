@@ -29,13 +29,13 @@ export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ type
    * Examples:
    *
    *    const a = math.complex(3, -4)
-   *    a                                 // Complex 3 - 4i
+   *    a                                 // Complex 3 - 4i ...
    *    a.re = 5
-   *    a                                 // Complex 5 - 4i
-   *    a.im                              // Number -4
+   *    a                                 // Complex 5 - 4i ...
+   *    a.im                              // Number -4 ...
    *    const b = math.complex('2 + 6i')
-   *    b                                 // Complex 2 + 6i
-   *    math.complex()                    // Complex 0 + 0i
+   *    b                                 // Complex 2 + 6i ...
+   *    math.complex()                    // Complex 0 + 0i ...
    *    math.add(a, b)                    // Complex 7 + 2i
    *
    * See also:

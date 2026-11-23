@@ -33,18 +33,19 @@ export const createSlu = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
    * Examples:
    *
    *    const A = math.sparse([[4,3], [6, 3]])
-   *    math.slu(A, 1, 0.001)
-   *    // returns:
-   *    // {
-   *    //   L: [[1, 0], [1.5, 1]]
-   *    //   U: [[4, 3], [0, -1.5]]
-   *    //   p: [0, 1]
-   *    //   q: [0, 1]
-   *    // }
+   *    const {L, U, p, q} = math.slu(A, 1, 0.001)
+   *    L   //   [[1, 0], [1.5, 1]] ...
+   *    U   //   [[4, 3], [0, -1.5]] ...
+   *    p   //   [0, 1] ...
+   *    q   //   [0, 1]
    *
    * See also:
    *
    *    lup, lsolve, usolve, lusolve
+   *
+   * History:
+   *
+   *    v2  Created
    *
    * @param {SparseMatrix} A              A two dimensional sparse matrix for which to get the LU decomposition.
    * @param {Number}       order          The Symbolic Ordering and Analysis order:

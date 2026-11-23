@@ -41,7 +41,7 @@ export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *    math.dotPow(2, 3)            // returns number 8
    *
    *    const a = [[1, 2], [4, 3]]
-   *    math.dotPow(a, 2)            // returns Array [[1, 4], [16, 9]]
+   *    math.dotPow(a, 2)            // returns Array [[1, 4], [16, 9]] ...
    *    math.pow(a, 2)               // returns Array [[9, 8], [16, 17]]
    *
    * See also:

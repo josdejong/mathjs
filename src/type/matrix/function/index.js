@@ -26,12 +26,13 @@ export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed,
    * Examples:
    *
    *    const b = [1, 2, 3, 4, 5]
-   *    math.subset(b, math.index([1, 2, 3]))                         // returns [2, 3, 4]
-   *    math.subset(b, math.index([false, true, true, true, false]))  // returns [2, 3, 4]
+   *    math.subset(b, math.index([1, 2, 3]))    // returns [2, 3, 4] ...
+   *    math.subset(b, math.index([false, true, true, true, false]))
+   *    // returns [2, 3, 4]
    *
    *    const a = math.matrix([[1, 2], [3, 4]])
-   *    a.subset(math.index(0, 1))             // returns 2
-   *    a.subset(math.index(0, [false, true])) // returns [[2]]
+   *    a.subset(math.index(0, 1))             // returns 2 ...
+   *    a.subset(math.index(0, [false, true])) // returns [2]
    *
    * See also:
    *

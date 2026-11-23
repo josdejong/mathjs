@@ -119,8 +119,8 @@ const knownProblems = new Set([
   'parser', 'compile',
   'subset', 'squeeze', 'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
-  'getMatrixDataType', 'diff', 'slu', 'lusolve',
-  'schur', 'sylvester', 'freqz',
+  'getMatrixDataType', 'diff', 'lusolve',
+  'schur', 'sylvester', 'freqz'
 ])
 
 let issueCount = 0
@@ -141,7 +141,9 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
     try {
       checkExpectation(expected, got)
     } catch (err) {
-      console.error(`DOC ERROR: '${gotFrom}' was supposed to '${expectedFrom}'`)
+      console.error(
+        `DOC ERROR: '${gotFrom}' was supposed to '${expectedFrom}', but `,
+        'produced', got, 'not', expected)
       throw err
     }
   }
@@ -368,16 +370,16 @@ const knownUndocumented = new Set([
 const knownNoHistory = new Set([
   'config', 'typed', 'leafCount',
   'lusolve', 'lyap', 'rationalize', 'resolve', 'schur', 'simplify',
-  'simplifyConstant', 'slu', 'sylvester',
+  'simplifyConstant', 'sylvester',
   'abs', 'cube', 'expm', 'hypot', 'log10', 'log1p', 'log2',
-  'pow', 'round', 'sign', 'sqrt', 'sqrtm',
+  'pow', 'sign', 'sqrt', 'sqrtm',
   'square', 'unaryMinus', 'unaryPlus', 'bitNot',
   'bellNumbers', 'composition', 'arg', 'conj',
   'compile', 'evaluate', 'help', 'parser', 'distance', 'intersect',
   'not', 'nullish', 'column', 'count', 'cross',
   'ctranspose', 'det', 'diag', 'diff', 'dot', 'fft', 'filter',
   'flatten', 'forEach', 'getMatrixDataType', 'identity', 'ifft', 'inv', 'kron',
-  'mapSlices', 'matrixFromColumns', 'matrixFromFunction', 'matrixFromRows',
+  'matrixFromColumns', 'matrixFromFunction', 'matrixFromRows',
   'ones', 'partitionSelect', 'pinv', 'range', 'reshape', 'resize', 'rotate',
   'rotationMatrix', 'row', 'size', 'sort', 'squeeze', 'subset', 'trace',
   'transpose', 'zeros', 'solveODE', 'bernoulli', 'combinations',
@@ -391,9 +393,9 @@ const knownNoHistory = new Set([
   'acos', 'acosh', 'acot', 'acoth', 'acsc', 'acsch', 'asec', 'asech', 'asin',
   'asinh', 'atan', 'atanh', 'cos', 'cosh', 'cot', 'coth', 'csc',
   'csch', 'sec', 'sech', 'sin', 'sinh', 'tan', 'tanh', 'toBest', 'bin',
-  'clone', 'hasNumericValue', 'hex', 'isBounded', 'isInteger',
+  'clone', 'hasNumericValue', 'hex', 'isBounded',
   'isNaN', 'isNegative', 'isNumeric', 'isPositive', 'isPrime', 'isZero',
-  'oct', 'print', 'typeOf', 'bignumber', 'chain', 'number', 'splitUnit'
+  'oct', 'print', 'typeOf', 'bignumber', 'chain', 'number'
 ])
 
 describe('Testing examples from (jsdoc) comments', function () {
@@ -458,6 +460,9 @@ describe('Testing examples from (jsdoc) comments', function () {
               let parts = line.split('//')
               if (!parts[0].trim() && !/^\s*(returns|throws)/.test(parts[1])) {
                 // Only a comment without "returns/throws" so ignore it
+                if (debug && parts[1].trim()) {
+                  console.warn(`     Ignoring comment ${parts[1]}`)
+                }
                 continue
               }
               // Comment specifying a future value or the return of prior code
@@ -476,7 +481,6 @@ describe('Testing examples from (jsdoc) comments', function () {
                 expectation = extractExpectation(expectationFrom)
                 parts[1] = ''
               }
-              let clearAccumulation = false
               if (accumulation && !accumulation.includes('console.log(')) {
                 // note: we ignore examples that contain a console.log to keep the output of the tests clean
                 let value

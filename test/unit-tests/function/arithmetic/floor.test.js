@@ -224,9 +224,13 @@ describe('floor', function () {
   it('should floor when number of decimals is provided in a matrix', function () {
     assert.deepStrictEqual(floor(3.12385, matrix([2, 3])), matrix([3.12, 3.123]))
     assert.deepStrictEqual(floor(0, matrix([2, 3])), matrix([0, 0]))
-    assert.deepStrictEqual(floor(bignumber(3.12385), sparse([2, 3])), bignumber(matrix([[3.12], [3.123]])))
+    assert.deepStrictEqual(
+      floor(bignumber(3.12385), sparse([2, 3])),
+      bignumber(sparse([[3.12], [3.123]])))
     assert.deepStrictEqual(floor(complex(3.12385, -1.6789), matrix([2, 3])), matrix([complex(3.12, -1.68), complex(3.123, -1.679)]))
-    assert.deepStrictEqual(floor(fraction(44, 7), sparse([2, 3])), matrix([[fraction(628, 100)], [fraction(6285, 1000)]]))
+    assert.deepStrictEqual(
+      floor(fraction(44, 7), sparse([2, 3])),
+      sparse([[fraction(628, 100)], [fraction(6285, 1000)]]))
   })
 
   it('should floor dense matrix', function () {

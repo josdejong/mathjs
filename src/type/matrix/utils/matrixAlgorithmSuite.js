@@ -19,6 +19,7 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
      * matrix algorithms, based on a plain options object with the
      * following properties:
      *   elop: function -- the elementwise operation to use, defaults to self
+     *   withElop: boolean -- whether to pull in elop signatures, defaults true
      *   SS: function -- the algorithm to apply for two sparse matrices
      *   DS: function -- the algorithm to apply for a dense and a sparse matrix
      *   SD: function -- algo for a sparse and a dense; defaults to SD flipped
@@ -33,6 +34,7 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
      */
     return function matrixAlgorithmSuite (options) {
       const elop = options.elop
+      const withElop = 'withElop' in options ? options.withElop : true
       const SD = options.SD || options.DS
       let matrixSignatures
       if (elop) {
@@ -164,7 +166,7 @@ export const createMatrixAlgorithmSuite = /* #__PURE__ */ factory(
         }
       }
       // Also pull in the scalar signatures if the operator is a typed function
-      if (elop && elop.signatures) {
+      if (elop && withElop && elop.signatures) {
         extend(matrixSignatures, elop.signatures)
       }
       return matrixSignatures

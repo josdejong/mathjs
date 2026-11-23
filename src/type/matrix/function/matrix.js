@@ -22,10 +22,10 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * Examples:
    *
    *    let m = math.matrix([[1, 2], [3, 4]])
-   *    m.size()                        // Array [2, 2]
+   *    m.size()                        // Array [2, 2] ...
    *    m.resize([3, 2], 5)
-   *    m.valueOf()                     // Array [[1, 2], [3, 4], [5, 5]]
-   *    m.get([1, 0])                    // number 3
+   *    m.valueOf()                     // Array [[1, 2], [3, 4], [5, 5]] ...
+   *    m.get([1, 0])                   // number 3
    *
    * See also:
    *

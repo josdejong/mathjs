@@ -4,11 +4,12 @@ import { deepMap } from '../../utils/collection.js'
 import { isInteger, nearlyEqual } from '../../utils/number.js'
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
-import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 
 const name = 'floor'
-const dependencies = ['typed', 'config', 'round', 'matrix', 'isZero', 'zeros', 'DenseMatrix']
+const dependencies = [
+  'typed', 'config', 'round', 'isZero', 'typeOf', 'DenseMatrix'
+]
 
 const bigTen = new Decimal(10)
 
@@ -53,9 +54,8 @@ export const createFloorNumber = /* #__PURE__ */ factory(
   }
 )
 
-export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, matrix, isZero, zeros, DenseMatrix }) => {
+export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, round, isZero, typeOf, DenseMatrix }) => {
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
-  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
 
   const floorNumber = createFloorNumber({ typed, config, round })
@@ -198,17 +198,24 @@ export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     'number | Complex | Fraction | BigNumber, Array':
       typed.referToSelf(self => (x, y) => {
-        // use matrix implementation
-        return matAlgo14xDs(matrix(y), x, self, true).valueOf()
+        if (isZero(x)) {
+          const zx = self(x) // get true zero, in case we're just off a bit
+          return deepMap(y, () => zx, false)
+        }
+        return deepMap(y, yi => self(x, yi), false) // don't skip zeros on right
       }),
 
-    'number | Complex | Fraction | BigNumber, Matrix':
+    'number | Complex | Fraction | BigNumber, DenseMatrix':
+      typed.referToSelf(self => (x, y) => y.create(self(x, y.valueOf()))),
+
+    'number | Complex | Fraction | BigNumber, SparseMatrix':
       typed.referToSelf(self => (x, y) => {
-        if (isZero(x)) return zeros(y.size(), y.storage())
-        if (y.storage() === 'dense') {
-          return matAlgo14xDs(y, x, self, true)
-        }
-        return matAlgo12xSfs(y, x, self, true)
+        if (isZero(x)) return y.zeros(y.size(), typeOf(x))
+        // use the array algorithm. Yes, it exapands out the sparse matrix,
+        // But on the other hand, rounding a nonzero number to many different
+        // amounts of decimal places will mostly return lots of nonzero
+        // entries anyway.
+        return y.create(self(x, y.valueOf()))
       })
   })
 })

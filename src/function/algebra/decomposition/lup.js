@@ -46,10 +46,10 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
    * Example:
    *
    *    const m = [[2, 1], [1, 4]]
-   *    const {L, U, P} = math.lup(m)
+   *    const {L, U, p} = math.lup(m)
    *    L  // [[1, 0], [0.5, 1]] ...
    *    U  // [[2, 1], [0, 3.5]] ...
-   *    P  // [0, 1]
+   *    p  // [0, 1]
    *
    * See also:
    *
@@ -61,7 +61,7 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
    *
    * @param {Matrix | Array} A    A two dimensional matrix or array for which to get the LUP decomposition.
    *
-   * @return {{L: Array | Matrix, U: Array | Matrix, P: Array.<number>}} The lower triangular matrix, the upper triangular matrix and the permutation matrix.
+   * @return {{L: Array | Matrix, U: Array | Matrix, p: Array.<number>}} The lower triangular matrix, the upper triangular matrix and the permutation matrix.
    */
   return typed(name, {
 

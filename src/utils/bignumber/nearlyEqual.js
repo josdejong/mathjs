@@ -2,7 +2,7 @@
  * Compares two BigNumbers.
  * @param {BigNumber} a - First value to compare
  * @param {BigNumber} b - Second value to compare
- * @param {number} [relTol=1e-09] - The relative tolerance, indicating the maximum allowed difference relative to the larger absolute value. Must be greater than 0.
+ * @param {number} [relTol=1e-09] - The relative tolerance, indicating the maximum allowed difference relative to the larger absolute value. Must be at least 0.
  * @param {number} [absTol=0] - The minimum absolute tolerance, useful for comparisons near zero. Must be at least 0.
  * @returns {boolean} whether the two numbers are nearly equal
  * @throws {Error} If `relTol` is less than or equal to 0.
@@ -15,8 +15,8 @@
  * nearlyEqual(0.000000001, 0.0, undefined, 1e-8); // true
  */
 export function nearlyEqual (a, b, relTol = 1e-9, absTol = 0) {
-  if (relTol <= 0) {
-    throw new Error('Relative tolerance must be greater than 0')
+  if (relTol < 0) {
+    throw new Error('Relative tolerance must be at least 0')
   }
 
   if (absTol < 0) {

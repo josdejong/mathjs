@@ -259,6 +259,22 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
   }
 
   /**
+   * Create a new all-zero SparseMatrix
+   * @memberof SparseMatrix
+   * @param {Array} size
+   * @param {string} [datatype]
+   */
+  SparseMatrix.prototype.zeros = function (size, datatype) {
+    return new SparseMatrix({
+      values: [],
+      index: [],
+      ptr: Array(size[1] + 1).fill(0),
+      size,
+      datatype
+    })
+  }
+
+  /**
    * Get the matrix density.
    *
    * Usage:

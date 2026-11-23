@@ -24,12 +24,17 @@ export const createMapSlices = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    const A = [[1, 2], [3, 4]]
    *    const sum = math.sum
-   *    math.mapSlices(A, 0, sum)             // returns [4, 6]
+   *    math.mapSlices(A, 0, sum)             // returns [4, 6] ...
    *    math.mapSlices(A, 1, sum)             // returns [3, 7]
    *
    * See also:
    *
    *    map, filter, forEach
+   *
+   * History:
+   *
+   *    v14.2  Created by renaming of `apply`.
+   *    v5.8   Creation of `apply`.
    *
    * Note:
    *

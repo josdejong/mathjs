@@ -58,7 +58,18 @@ Create a new SparseMatrix
 | Param | Type |
 | --- | --- |
 | data | <code>Array</code> | 
-| [datatype] | <code>string</code> | 
+| [datatype] | <code>string</code> |
+
+<a name="SparseMatrix+zeros"></a>
+### sparseMatrix.zeros(size, [datatype])
+Create a new all-zero SparseMatrix of the given size and datatype
+
+**Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  
+
+| Param | Type |
+| --- | --- |
+| size | <code>Array</code> (must be 1-dim with 2 entries: [rows, cols]) | 
+| [datatype] | <code>string</code> |
 
 <a name="SparseMatrix+density"></a>
 ### sparseMatrix.density() ⇒ <code>number</code>

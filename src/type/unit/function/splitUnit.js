@@ -13,12 +13,17 @@ export const createSplitUnit = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * Example:
    *
-   *     math.splitUnit(new Unit(1, 'm'), ['feet', 'inch'])
-   *     // [ 3 feet, 3.3700787401575 inch ]
+   *     let u = math.splitUnit(math.unit(1, 'm'), ['feet', 'inch'])
+   *     u = u.map(part => part.toString())
+   *     // returns [ '3 feet', '3.3700787401574765 inch' ]
    *
    * See also:
    *
    *     unit
+   *
+   * History:
+   *
+   *     v3.4  Created
    *
    * @param {Array} [parts] An array of strings or valueless units.
    * @return {Array} An array of units.

@@ -2,10 +2,10 @@ import { deepMap } from '../../utils/collection.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'isInteger'
-const dependencies = ['typed', 'equal']
+const dependencies = ['typed', 'equalScalar']
 
 export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({
-  typed, equal
+  typed, equalScalar
 }) => {
   /**
    * Test whether a value is an integer number.
@@ -32,14 +32,23 @@ export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({
    *
    *    isNumeric, isPositive, isNegative, isZero
    *
+   * History:
+   *
+   *    v16    Only respect the absolute tolerance, not the relative
+   *    v15.1  Respect the config tolerances in determining whether a value
+   *           is an integer
+   *    v2     Created
+   *
    * @param {number | BigNumber | bigint | Fraction | Array | Matrix} x   Value to be tested
    * @return {boolean}  Returns true when `x` contains a numeric, integer value.
    *                    Throws an error in case of an unknown data type.
    */
   return typed(name, {
-    number: n => Number.isFinite(n) ? equal(n, Math.round(n)) : false,
+    // Don't use any relative tolerance when deciding on integer-ness,
+    // only absolute.
+    number: n => Number.isFinite(n) ? equalScalar(n, Math.round(n), 0) : false,
 
-    BigNumber: b => b.isFinite() ? equal(b.round(), b) : false,
+    BigNumber: b => b.isFinite() ? equalScalar(b.round(), b, 0) : false,
 
     bigint: b => true,
 
