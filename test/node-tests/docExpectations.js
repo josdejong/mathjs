@@ -15,16 +15,8 @@ import { approxEqual, approxDeepEqual } from '../../tools/approx.js'
 export function valueFromComment (math, comment, optional = false, proseIsNoValue = false) {
   comment = comment.split(';')[0].trim()
   if (comment === '') return undefined
-  // "result: 5" is another way to write "returns 5"
-  if (comment.startsWith('result:')) comment = 'returns' + comment.slice('result:'.length)
-  const returnsParts = comment.split('eturns').map(s => s.trim())
-  if (returnsParts.length > 1) return extractValue(math, returnsParts[1], proseIsNoValue)
-  const outputsParts = comment.split('utputs')
-  if (outputsParts.length > 1) {
-    let output = outputsParts[1]
-    if (output[0] === ':') output = output.substring(1)
-    return extractValue(math, output.trim(), proseIsNoValue)
-  }
+  const signalMatch = comment.match(/^(?:the following\s+)?(?:returns|result|outputs)(?::\s*|\s+)(.+)$/i)
+  if (signalMatch) return extractValue(math, signalMatch[1].trim(), proseIsNoValue)
   // None of the usual flags; if we need a value,
   // assume the whole comment is the desired value. Otherwise return undefined
   if (optional) return undefined
@@ -158,7 +150,10 @@ export function compareWithExpected (math, want, got, onIssue = () => {}) {
     assert.strictEqual(got.formatUnits(), want.formatUnits())
     return approxEqual(got.value, want.value, 1e-9)
   }
-  if (want?.isNode && got?.isNode) { // parentheses in the comment are not nodes
+  if (want?.isNode && got?.isNode) {
+    // math.parse() wraps parenthesized subexpressions in ParenthesisNode
+    // (e.g. '(2*x^2+2*x-y^2)/(x*y+y)'), whereas functions like rationalize()
+    // build OperatorNodes directly without ParenthesisNodes; compare rendered form.
     return assert.strictEqual(got.toString(), want.toString())
   }
   if (want?.isComplex && got?.isComplex) {

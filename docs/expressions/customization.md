@@ -271,8 +271,11 @@ const customLaTeX = {
   	return 'factorial\\left(' + node.args[0] + '\\right)'
   }
 }
+```
 
-// You can simply use your custom toTex functions by passing them to toTex:
+You can simply use your custom toTex functions by passing them to `toTex`:
+
+```js
 math.import(customFunctions)
 const expression = math.parse('binomial(factorial(2),1)')
 const latex = expression.toTex({handler: customLaTeX}) // '\\binom{factorial\\left(2\\right)}{1}'

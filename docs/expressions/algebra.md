@@ -110,8 +110,10 @@ math.rationalize('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')
 math.rationalize('x+x+x+y',{y:1}) // Node '3 * x + 1'
 math.rationalize('x+x+x+y',{})    // Node '3 * x + y'
 
-const ret = math.rationalize('x+x+x+y',{},true)
+let ret = math.rationalize('x+x+x+y', {}, true)
               // ret.expression=3*x+y, ret.variables = ["x","y"]
-const ret = math.rationalize('-2+5x^2',{},true)
-              // ret.expression=5*x^2-2, ret.variables = ["x"], ret.coefficients=[-2,0,5]
+ret = math.rationalize('-2+5x^2', {}, true)
+ret.expression   // Node '5 * x ^ 2 - 2'
+ret.variables    // ['x']
+ret.coefficients // [-2, 0, 5]
 ```

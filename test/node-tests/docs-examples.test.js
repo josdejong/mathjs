@@ -15,14 +15,15 @@
 // the result of the line before it, when that line has no comment.
 //
 // How the examples are run:
-// - Each code block runs on its own. To check a line, the block is run with
-//   eval from its first line through that line, and the value of that last
-//   line is compared with the comment. For a line that declares one variable,
-//   the value of that variable is compared; for a console.log line, the
-//   logged value. A line that throws is left out when later lines are run.
-// - Every run starts with a fresh `math = create(all)`. Import statements are
-//   left out; instead the names the docs import from 'mathjs' (create, all,
-//   factory, sqrt) are available, and require('mathjs') returns mathjs.
+// - Each code block runs once top-to-bottom on its own (except blocks listed
+//   in continuePreviousBlock, which share scope with the preceding block).
+//   Each checked statement is recorded via a tiny `_check` helper: for a
+//   declaration of one variable we record that variable, for a console.log
+//   call we record the logged value, and for an expression we record its
+//   value (or err.toString() if it throws) so later lines still run.
+// - Every block starts with a fresh `math = create(all)`. Import statements
+//   are left out; instead the names the docs use without importing (create,
+//   all, factory, sqrt, Range) are available, and require('mathjs') returns mathjs.
 //   Blocks that import from another module, like 'mathjs/number', are not run.
 // - Not checked: the examples listed in skipExamples.
 import assert from 'node:assert'
@@ -42,10 +43,15 @@ const showIgnored = process.argv.includes('--ignored-docs')
 const skipExamples = {
   "custom_bundling.md: console.log('c =', format(c))": 'imports the dependency collections',
   "custom_bundling.md: console.log('d =', format(d))": 'imports the dependency collections',
-  // TODO: check these two again once the dimension in the broadcasting error is fixed (see #3778)
+  // TODO: check these two again once the dimension in the broadcasting error is fixed (see #3839)
   'datatypes/matrices.md: math.add([1, 2], [3, 4, 5])': 'known issue: wrong dimension in the error',
   'datatypes/matrices.md: math.add([[1], [2], [3]], [[4], [5]])': 'known issue: wrong dimension in the error'
 }
+
+// Blocks that continue directly from the preceding block on the same page
+const continuePreviousBlock = new Set([
+  'expressions/customization.md: math.import(customFunctions)'
+])
 
 function listPages (dir) {
   const pages = []
@@ -80,17 +86,39 @@ function jsBlocks (markdown) {
   return blocks
 }
 
-// Run example code with eval and return the value of its last line. The
-// constants below are the names the code can use without importing them.
-// console.log calls are collected in `logged` instead of being printed.
-function run (code, logged) {
+// Run a block script once with eval. The constants below are the names the
+// docs can use without importing them; _check verifies each checked statement
+// immediately when it runs (before later lines can mutate the result) and
+// catches thrown errors so subsequent lines still run.
+function runBlock (code, checks, standardMath, failures) {
+  const logged = []
   /* eslint-disable no-unused-vars */
   const { create, all, factory, sqrt } = mathjs
   const math = create(all)
+  const { Range } = math
   const require = () => mathjs
   const console = { log: value => logged.push(value) }
+  const _check = (id, fn) => {
+    const { number, statement, comment, expected, size, type } = checks[id]
+    let actual
+    try {
+      actual = fn()
+    } catch (err) {
+      actual = err.toString()
+    }
+    try {
+      compareWithExpected(standardMath, expected, actual)
+      if (size !== undefined) {
+        assert.deepStrictEqual(standardMath.size(actual), size)
+      }
+      if (type === 'Matrix') assert.ok(standardMath.isMatrix(actual))
+      if (type === 'Array') assert.ok(Array.isArray(actual))
+    } catch (err) {
+      failures.push(`line ${number}: ${statement}  // ${comment}\n    got: ${mathjs.format(actual)}`)
+    }
+  }
   /* eslint-enable no-unused-vars */
-  return eval(code) // eslint-disable-line no-eval
+  eval(code) // eslint-disable-line no-eval
 }
 
 function runPage (file, page) {
@@ -98,17 +126,31 @@ function runPage (file, page) {
   const failures = []
   const ignored = []
   const ignore = (number, text, reason) => ignored.push(`${page}:${number}  ${text.trim()}  (${reason})`)
+
+  // Merge blocks explicitly marked as continuing the preceding block
+  const blocks = []
   for (const block of jsBlocks(fs.readFileSync(file, 'utf8'))) {
-    let code = ''
-    let codeBefore = '' // the code before the last line with a statement
+    const first = block.find(l => l.text.trim() !== '')?.text.trim()
+    if (first && continuePreviousBlock.has(`${page}: ${first}`) && blocks.length > 0) {
+      blocks[blocks.length - 1] = [...blocks[blocks.length - 1], ...block]
+    } else {
+      blocks.push(block)
+    }
+  }
+
+  for (const block of blocks) {
+    const scriptLines = []
+    const checks = []
     let uncommented = null // the statement of the line before, if it has no comment
     let inImport = false
+    let skipBlock = false
     for (const { text, number } of block) {
       // leave out import statements, which can span several lines
       if (text.startsWith('import ')) inImport = true
       if (inImport) {
         if (text.includes(' from ') && !text.includes(" from 'mathjs'")) {
           ignore(number, text, 'block imports from another module, not run')
+          skipBlock = true
           break
         }
         inImport = !text.includes(' from ')
@@ -117,11 +159,12 @@ function runPage (file, page) {
 
       const at = text.indexOf('//')
       const ownStatement = (at === -1 ? text : text.slice(0, at)).trim()
-      if (ownStatement !== '') codeBefore = code
-      code += text + '\n'
       const previous = uncommented
       uncommented = (at === -1 && ownStatement !== '') ? ownStatement : null
-      if (at === -1) continue
+      if (at === -1) {
+        scriptLines.push(text)
+        continue
+      }
 
       // A comment on a line of its own states the result of the line before
       // it, when that line has no comment of its own
@@ -129,51 +172,59 @@ function runPage (file, page) {
       const comment = text.slice(at + 2).trim()
       if (!statement) {
         ignore(number, text, 'comment on its own line')
+        scriptLines.push(text)
         continue
       }
       if (`${page}: ${statement}` in skipExamples) {
         ignore(number, text, skipExamples[`${page}: ${statement}`])
+        if (!ownStatement) scriptLines.pop()
         continue
-      }
-
-      // For a declaration like `const a = ...`, check the value of `a`
-      let codeToCheck = code
-      if (/^(const|let|var) /.test(statement)) {
-        const name = statement.split(' ')[1]
-        if (!/^\w+$/.test(name)) {
-          ignore(number, text, 'declares more than one name')
-          continue
-        }
-        codeToCheck = code + name + '\n'
       }
 
       const { size, type, comment: valueComment } = sizeFromComment(comment)
       const expected = valueFromComment(math, valueComment, false, true)
       if (expected === undefined && size === undefined && type === undefined) {
         ignore(number, text, 'no value stated')
+        scriptLines.push(text)
         continue
       }
 
-      const logged = []
-      let actual
-      try {
-        actual = run(codeToCheck, logged)
-        if (statement.startsWith('console.log(')) actual = logged[logged.length - 1]
-      } catch (err) {
-        actual = err.toString()
-        code = codeBefore // later lines run without the line that throws
-      }
-      try {
-        compareWithExpected(math, expected, actual)
-        if (size !== undefined) {
-          assert.deepStrictEqual(math.size(actual), size)
+      const id = checks.length
+      if (/^(const|let|var) /.test(statement)) {
+        const name = statement.split(' ')[1]
+        if (!/^\w+$/.test(name)) {
+          ignore(number, text, 'declares more than one name')
+          scriptLines.push(text)
+          continue
         }
-        if (type === 'Matrix') assert.ok(math.isMatrix(actual))
-        if (type === 'Array') assert.ok(Array.isArray(actual))
-      } catch (err) {
-        failures.push(`line ${number}: ${statement}  // ${comment}\n    got: ${mathjs.format(actual)}`)
+        if (ownStatement) scriptLines.push(text)
+        scriptLines.push(`;_check(${id}, () => ${name});`)
+      } else if (statement.startsWith('console.log(')) {
+        if (!ownStatement) scriptLines.pop()
+        scriptLines.push(`;_check(${id}, () => { ${statement}; return logged[logged.length - 1] });`)
+      } else {
+        let expr = ownStatement
+        if (!ownStatement) {
+          expr = scriptLines.pop().trim()
+        } else if (ownStatement.startsWith('.')) {
+          // Multi-line chained call, e.g. math.chain(3)\n  .add(4)\n  .done()
+          const parts = [ownStatement]
+          while (scriptLines.length > 0 && scriptLines[scriptLines.length - 1].trim() !== '') {
+            const line = scriptLines.pop().trim()
+            parts.unshift(line)
+            if (!line.startsWith('.')) break
+          }
+          expr = parts.join('\n')
+        }
+        expr = expr.replace(/;+$/, '')
+        scriptLines.push(`;_check(${id}, () => (${expr}));`)
       }
+      checks.push({ id, number, statement, comment, expected, size, type })
     }
+
+    if (skipBlock || checks.length === 0) continue
+
+    runBlock(scriptLines.join('\n'), checks, math, failures)
   }
   if (showIgnored) ignored.forEach(line => console.log('IGNORED ' + line))
   return failures

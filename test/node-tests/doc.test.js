@@ -378,7 +378,7 @@ describe('Testing examples from (jsdoc) comments', function () {
               expectationFrom = parts[1]
               expectation = extractExpectation(expectationFrom, 'requireSignal')
               if (expectation === undefined && expectationFrom) {
-                // only a comment with 'returns' or 'outputs' states the
+                // only a comment with 'returns', 'result', or 'outputs' states the
                 // value of the code after it
                 ignore(doc.name, expectationFrom, 'no value stated')
               }
