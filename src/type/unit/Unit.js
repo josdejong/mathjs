@@ -1,6 +1,7 @@
 import { isComplex, isUnit, typeOf } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { memoize } from '../../utils/function.js'
+import { nearlyEqual } from '../../utils/number.js'
 import { endsWith } from '../../utils/string.js'
 import { clone, hasOwnProperty } from '../../utils/object.js'
 import { createBigNumberPi as createPi } from '../../utils/bignumber/constants.js'
@@ -1175,7 +1176,12 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   Unit.prototype.format = function (options) {
     const { simp, valueStr, unitStr } = formatBest(this, options)
     let str = valueStr
-    if (simp.value && isComplex(simp.value)) {
+    if (
+      simp.value &&
+      isComplex(simp.value) &&
+      !nearlyEqual(simp.value.re, 0) &&
+      !nearlyEqual(simp.value.im, 0)
+    ) {
       str = '(' + str + ')' // Surround complex values with ( ) to enable better parsing
     }
     if (unitStr.length > 0 && str.length > 0) {
