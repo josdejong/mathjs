@@ -150,7 +150,7 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
         continue
       }
       if (I === J) {
-        c = add(c, mul(xvalues[i], yvalues[j]))
+        c = add(c, mul(conj(xvalues[i]), yvalues[j]))
         i++
         j++
       }
