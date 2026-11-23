@@ -977,6 +977,34 @@ export interface MathJsInstance extends MathJsFactory {
   help(search: () => any): Help
 
   /**
+   * Retrieve a property, like commutative, of an operator.
+   * @param {Node | string} op  The operator being queried
+   * @param {string} property  The property being queried
+   * @param {Context} [context = simplify.defaultContext]
+   *    An object encoding properties of operators
+   * @return {boolean}  Whether op has the given property in context
+   */
+  operatorIs(
+    operator: MathNode | string,
+    property: string,
+    context?: SimplifyContext
+  ): boolean
+
+  /**
+   * Reconfigure associative operators in an expression tree
+   * @param {Node} node  The expression tree
+   * @param {Context} [context = simplify.defaultContext]
+   *    An object encoding properties of operators
+   * @param {Object} [options = {direction: 'flat'}]  how to reassociate
+   * @return {Node}  Reconfigured expression tree
+   */
+  reassociate(
+    node: MathNode,
+    context?: SimplifyContext,
+    options?: { direction?: string; inplace?: boolean }
+  ): MathNode
+
+  /**
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.evaluate();
    */
@@ -4269,8 +4297,10 @@ export const {
   compileDependencies,
   evaluateDependencies,
   helpDependencies,
+  operatorIsDependencies,
   parseDependencies,
   parserDependencies,
+  reassociateDependencies,
 
   // algebra dependencies
   derivativeDependencies,
@@ -4755,12 +4785,12 @@ export interface CreateUnitOptions {
 export type SimplifyContext = Partial<
   Record<
     OperatorNodeFn,
-    {
+    Partial<{
       trivial: boolean
       total: boolean
       commutative: boolean
       associative: boolean
-    }
+    }>
   >
 >
 
@@ -4817,6 +4847,9 @@ export interface Simplify {
   ): MathNode
 
   rules: SimplifyRule[]
+  defaultContext: SimplifyContext
+  realContext: SimplifyContext
+  positiveContext: SimplifyContext
 }
 
 export interface UnitDefinition {
@@ -5373,6 +5406,24 @@ export interface MathJsChain<TValue> {
    * from the documentation in math.expression.docs.
    */
   help(this: MathJsChain<unknown>): MathJsChain<unknown>
+
+  /**
+   * Retrieve an operator property
+   */
+  operatorIs(
+    this: MathJsChain<MathNode> | MathJsChain<string>,
+    property: string,
+    context?: SimplifyContext
+  ): MathJsChain<boolean>
+
+  /**
+   * Reconfigure associative subtrees
+   */
+  reassociate(
+    this: MathJsChain<MathNode>,
+    context?: SimplifyContext,
+    options?: { direction?: string; inplace?: boolean }
+  ): MathJsChain<MathNode>
 
   /**
    * @param options Available options: nodes - a set of custome nodes
@@ -7840,8 +7891,10 @@ export const {
   compile,
   evaluate,
   help,
+  operatorIs,
   parse,
   parser,
+  reassociate,
 
   // algebra
   derivative,

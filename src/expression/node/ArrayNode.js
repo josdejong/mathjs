@@ -76,17 +76,22 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
     }
 
     /**
-     * Create a new ArrayNode whose children are the results of calling
-     * the provided callback function for each child of the original node.
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
      * @param {function(child: Node, path: string, parent: Node): Node} callback
-     * @returns {ArrayNode} Returns a transformed copy of the node
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {ArrayNode}  The transformed node
      */
-    map (callback) {
-      const items = []
-      for (let i = 0; i < this.items.length; i++) {
-        items[i] = this._ifNode(callback(this.items[i], 'items[' + i + ']', this))
+    map (callback, options) {
+      const node = options?.inplace ? this : this.clone()
+      for (let i = 0; i < node.items.length; i++) {
+        node.items[i] = this._ifNode(
+          callback(node.items[i], 'items[' + i + ']', node))
       }
-      return new ArrayNode(items)
+      return node
     }
 
     /**

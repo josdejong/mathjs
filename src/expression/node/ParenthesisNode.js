@@ -64,14 +64,19 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
     }
 
     /**
-     * Create a new ParenthesisNode whose child is the result of calling
-     * the provided callback function on the child of this node.
-     * @param {function(child: Node, path: string, parent: Node) : Node} callback
-     * @returns {ParenthesisNode} Returns a clone of the node
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
+     * @param {function(child: Node, path: string, parent: Node): Node} callback
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {ParenthesisNode}  The transformed node
      */
-    map (callback) {
-      const content = callback(this.content, 'content', this)
-      return new ParenthesisNode(content)
+    map (callback, options) {
+      const node = options?.inplace ? this : this.clone()
+      node.content = this._ifNode(callback(node.content, 'content', node))
+      return node
     }
 
     /**

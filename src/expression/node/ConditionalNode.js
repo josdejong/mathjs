@@ -1,4 +1,6 @@
-import { isBigNumber, isComplex, isNode, isUnit, typeOf } from '../../utils/is.js'
+import {
+  isBigNumber, isComplex, isFraction, isNode, isUnit, typeOf
+} from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 import { getPrecedence } from '../operators.js'
 
@@ -7,40 +9,44 @@ const dependencies = [
   'Node'
 ]
 
+export function testCondition (condition) {
+  if (typeof condition === 'number' ||
+    typeof condition === 'boolean' ||
+    typeof condition === 'string') {
+    return !!condition
+  }
+
+  if (condition) {
+    if (isBigNumber(condition)) {
+      return !condition.isZero()
+    }
+
+    if (isFraction(condition)) {
+      return !condition.equals(0)
+    }
+
+    if (isComplex(condition)) {
+      return !!((condition.re || condition.im))
+    }
+
+    if (isUnit(condition)) {
+      return !!condition.value
+    }
+  }
+
+  if (condition === null || condition === undefined) {
+    return false
+  }
+
+  throw new TypeError('Unsupported type of condition "' + typeOf(condition) + '"')
+}
+
 export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * Test whether a condition is met
    * @param {*} condition
    * @returns {boolean} true if condition is true or non-zero, else false
    */
-  function testCondition (condition) {
-    if (typeof condition === 'number' ||
-        typeof condition === 'boolean' ||
-        typeof condition === 'string') {
-      return !!condition
-    }
-
-    if (condition) {
-      if (isBigNumber(condition)) {
-        return !condition.isZero()
-      }
-
-      if (isComplex(condition)) {
-        return !!((condition.re || condition.im))
-      }
-
-      if (isUnit(condition)) {
-        return !!condition.value
-      }
-    }
-
-    if (condition === null || condition === undefined) {
-      return false
-    }
-
-    throw new TypeError('Unsupported type of condition "' + typeOf(condition) + '"')
-  }
-
   class ConditionalNode extends Node {
     /**
      * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'
@@ -103,17 +109,21 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
     }
 
     /**
-     * Create a new ConditionalNode whose children are the results of calling
-     * the provided callback function for each child of the original node.
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
      * @param {function(child: Node, path: string, parent: Node): Node} callback
-     * @returns {ConditionalNode} Returns a transformed copy of the node
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {ConditionalNode}  The transformed node
      */
-    map (callback) {
-      return new ConditionalNode(
-        this._ifNode(callback(this.condition, 'condition', this)),
-        this._ifNode(callback(this.trueExpr, 'trueExpr', this)),
-        this._ifNode(callback(this.falseExpr, 'falseExpr', this))
-      )
+    map (callback, options) {
+      const node = options?.inplace ? this : this.clone()
+      node.condition = this._ifNode(callback(node.condition, 'condition', node))
+      node.trueExpr = this._ifNode(callback(node.trueExpr, 'trueExpr', node))
+      node.falseExpr = this._ifNode(callback(node.falseExpr, 'falseExpr', node))
+      return node
     }
 
     /**

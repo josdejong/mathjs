@@ -91,21 +91,25 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ N
     }
 
     /**
-     * Create a new ObjectNode whose children are the results of calling
-     * the provided callback function for each child of the original node.
+     * Replace each child of this node by the result of calling the
+     * provided callback function. By default the node is cloned and
+     * the replacements are performed on the clone, leaving this node
+     * unchanged.
      * @param {function(child: Node, path: string, parent: Node): Node} callback
-     * @returns {ObjectNode} Returns a transformed copy of the node
+     * @param {Object} options  Currently, only the `inplace` property of
+     *     options is checked; if true, modifies this node by side effect.
+     * @returns {ObjectNode}  The transformed node
      */
-    map (callback) {
-      const properties = {}
-      for (const key in this.properties) {
-        if (hasOwnProperty(this.properties, key)) {
-          properties[key] = this._ifNode(
+    map (callback, options) {
+      const node = options?.inplace ? this : this.clone()
+      for (const key in node.properties) {
+        if (hasOwnProperty(node.properties, key)) {
+          node.properties[key] = this._ifNode(
             callback(
-              this.properties[key], 'properties[' + stringify(key) + ']', this))
+              node.properties[key], 'properties[' + stringify(key) + ']', node))
         }
       }
-      return new ObjectNode(properties)
+      return node
     }
 
     /**

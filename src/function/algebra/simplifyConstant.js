@@ -3,6 +3,7 @@ import { factory } from '../../utils/factory.js'
 import { safeNumberType } from '../../utils/number.js'
 import { createUtil } from './simplify/util.js'
 import { noBignumber, noFraction } from '../../utils/noop.js'
+import { testCondition } from '../../expression/node/ConditionalNode.js'
 
 const name = 'simplifyConstant'
 const dependencies = [
@@ -11,15 +12,24 @@ const dependencies = [
   'mathWithTransform',
   'matrix',
   'isBounded',
+  'operatorIs',
+  'equal',
+  'unequal',
+  'smaller',
+  'larger',
+  'smallerEq',
+  'largerEq',
   '?fraction',
   '?bignumber',
   'AccessorNode',
   'ArrayNode',
+  'AssignmentNode',
   'ConstantNode',
   'FunctionNode',
   'IndexNode',
   'ObjectNode',
   'OperatorNode',
+  'RelationalNode',
   'SymbolNode'
 ]
 
@@ -29,19 +39,29 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
   mathWithTransform,
   matrix,
   isBounded,
+  operatorIs,
+  equal,
+  unequal,
+  smaller,
+  larger,
+  smallerEq,
+  largerEq,
   fraction,
   bignumber,
   AccessorNode,
   ArrayNode,
+  AssignmentNode,
   ConstantNode,
   FunctionNode,
   IndexNode,
   ObjectNode,
   OperatorNode,
+  RelationalNode,
   SymbolNode
 }) => {
-  const { isCommutative, isAssociative, allChildren, createMakeNodeFunction } =
-    createUtil({ FunctionNode, OperatorNode, SymbolNode })
+  const { allChildren, createMakeNodeFunction } =
+        createUtil({ FunctionNode, OperatorNode, SymbolNode, operatorIs })
+  const condFn = { equal, unequal, smaller, larger, smallerEq, largerEq }
 
   /**
    * simplifyConstant() takes a mathjs expression (either a Node representing
@@ -63,6 +83,11 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
    * See also:
    *
    *     simplify, simplifyCore, resolve, derivative
+   *
+   * History:
+   *
+   *     v15.4  Extend to all Node types
+   *     v11    Created
    *
    * @param {Node | string} node
    *     The expression to be simplified
@@ -415,11 +440,11 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
           } else {
             res = makeNode(args)
           }
-        } else if (isAssociative(node, options.context)) {
+        } else if (operatorIs(node, 'associative', options.context)) {
           args = allChildren(node, options.context)
           args = args.map(arg => foldFraction(arg, options))
 
-          if (isCommutative(fn, options.context)) {
+          if (operatorIs(fn, 'commutative', options.context)) {
             // commutative binary operator
             const consts = []
             const vars = []
@@ -452,7 +477,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         return res
       }
       case 'ParenthesisNode':
-        // remove the uneccessary parenthesis
+        // remove the unnecessary parenthesis
         return foldFraction(node.content, options)
       case 'AccessorNode':
         return _foldAccessor(
@@ -467,29 +492,79 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         /* All literals -- return a Matrix so we can operate on it */
         return matrix(foldItems)
       }
-      case 'IndexNode': {
-        return new IndexNode(
-          node.dimensions.map(n => simplifyConstant(n, options)))
-      }
-      case 'ObjectNode': {
-        const foldProps = {}
-        for (const prop in node.properties) {
-          foldProps[prop] = simplifyConstant(node.properties[prop], options)
-        }
-        return new ObjectNode(foldProps)
-      }
       case 'AssignmentNode':
-        /* falls through */
-      case 'BlockNode':
-        /* falls through */
-      case 'FunctionAssignmentNode':
-        /* falls through */
-      case 'RangeNode':
-        /* falls through */
-      case 'ConditionalNode':
-        /* falls through */
+        return new AssignmentNode(
+          simplifyConstant(node.object),
+          node.index ? simplifyConstant(node.index) : null,
+          simplifyConstant(node.value))
+      case 'ConditionalNode': {
+        const foldCondition = foldFraction(node.condition, options)
+        if (isNode(foldCondition)) {
+          return node.map(child => simplifyConstant(child, options))
+        }
+        // We can evaluate the conditional now
+        if (testCondition(foldCondition)) return simplifyConstant(node.trueExpr)
+        return simplifyConstant(node.falseExpr)
+      }
+      case 'RelationalNode': {
+        const foldParams = node.params.map(
+          param => foldFraction(param, options))
+        // initalize array of falses same length as conditionals
+        const always = node.conditionals.map(() => false)
+        for (let i = 0; i < node.conditionals.length; ++i) {
+          const left = foldParams[i]
+          const right = foldParams[i + 1]
+          if (isNode(left) || isNode(right)) continue
+          // OK, both have been folded.
+          if (condFn[node.conditionals[i]](left, right)) {
+            always[i] = true
+          } else {
+            // one of the conditions is always false, making the whole
+            // thing false
+            return new ConstantNode(false)
+          }
+        }
+        // Now prune any unnecessary conditions:
+        const newCond = node.conditionals.slice()
+        while (newCond.length && always[always.length - 1]) {
+          always.pop()
+          foldParams.pop()
+          newCond.pop()
+        }
+        // check if every condition was true:
+        if (newCond.length === 0) return new ConstantNode(true)
+        // OK, there are some non-constant params, so we can't
+        // ever whittle this down to nothing
+        while (always[0]) {
+          always.shift()
+          foldParams.shift()
+          newCond.shift()
+        }
+        // OK, now we start and end with indeterminate relations.
+        // But there might be two adjacent always-true conditions in between
+        // That would be three constants in a row, and we can drop the middle
+        let i = 1
+        while (i < newCond.length - 1) {
+          if (always[i] && always[i + 1]) {
+            // remove the (i+1)st foldParam:
+            foldParams.splice(i + 1, 1)
+            // replace the i-th and (i+1)st conditionals by something true:
+            newCond.splice(i, 2,
+              equal(foldParams[i], foldParams[i + 1]) ? 'equal' : 'unequal')
+            // and remove one always:
+            always.splice(i, 1)
+            // don't increment i
+          } else ++i
+        }
+        // Finally, reconstitute the relational node:
+        return new RelationalNode(newCond, foldParams.map(_ensureNode))
+      }
+      case 'IndexNode': case 'ObjectNode': case 'BlockNode':
+      case 'FunctionAssignmentNode': case 'RangeNode':
+        return node.map(child => simplifyConstant(child, options))
       default:
-        throw new Error(`Unimplemented node type in simplifyConstant: ${node.type}`)
+        throw new Error(
+          `Unimplemented node type in simplifyConstant: ${node.type}`)
     }
   }
 

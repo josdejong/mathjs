@@ -120,14 +120,16 @@ describe('OperatorNode', function () {
 
     const nodes = []
     const paths = []
+    let lastParent
     const g = e.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, e)
+      lastParent = parent
 
       return node instanceof SymbolNode && node.name === 'x' ? three : node
     })
 
+    assert.strictEqual(lastParent, g)
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], c)
     assert.strictEqual(nodes[1], d)
@@ -138,6 +140,15 @@ describe('OperatorNode', function () {
     assert.strictEqual(g.args[0].args[0], xsym) // nested x is not replaced
     assert.deepStrictEqual(g.args[0].args[1], two)
     assert.deepStrictEqual(g.args[1], three)
+
+    // Now map in place:
+    const h = g.map(
+      node => node instanceof OperatorNode
+        ? new OperatorNode('/', 'divide', [xsym, two])
+        : node,
+      { inplace: true })
+    assert.strictEqual(h, g)
+    assert.strictEqual(g.toString(), 'x / 2 - 3')
   })
 
   it('should map an implicit OperatorNode', function () {

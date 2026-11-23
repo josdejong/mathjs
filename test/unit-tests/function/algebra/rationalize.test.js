@@ -39,7 +39,7 @@ describe('rationalize', function () {
   })
 
   it('valid expression but not appropriate', function () {
-    assert.throws(function () { math.rationalize('a=2') }, /Unimplemented node type in simplifyConstant: AssignmentNode/)
+    assert.throws(function () { math.rationalize('a=2') }, /type AssignmentNode.*not allowed in polynomial/)
     assert.throws(function () { math.rationalize('sin(x)+x') }, /There is an unsolved function call/)
     assert.throws(function () { math.rationalize('(x+2)/(x % 2)') }, /Operator % invalid in polynomial expression/)
   })

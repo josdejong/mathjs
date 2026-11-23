@@ -340,13 +340,15 @@ describe('AccessorNode', function () {
     const nodes = []
     const paths = []
     const e = new SymbolNode('c')
+    let lastParent
     const f = n.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, n)
+      lastParent = parent
 
       return node instanceof SymbolNode ? e : node
     })
+    assert.strictEqual(lastParent, f)
 
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
@@ -357,6 +359,14 @@ describe('AccessorNode', function () {
     assert.deepStrictEqual(f.object, e)
     assert.deepStrictEqual(f.index.dimensions[0], b)
     assert.deepStrictEqual(f.index.dimensions[1], c)
+
+    // Now map inplace:
+    const g = f.map(
+      node => node instanceof IndexNode ? new IndexNode([b]) : node,
+      { inplace: true })
+    assert.strictEqual(f, g)
+    assert.strictEqual(g.object, e)
+    assert.strictEqual(f.toString(), 'c[2]')
   })
 
   it('should throw an error when the map callback does not return a node', function () {

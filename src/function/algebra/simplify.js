@@ -1,7 +1,11 @@
 import { isParenthesisNode } from '../../utils/is.js'
-import { isConstantNode, isVariableNode, isNumericNode, isConstantExpression } from './simplify/wildcards.js'
+import {
+  isConstantNode, isVariableNode, isNumericNode, isConstantExpression
+} from './simplify/wildcards.js'
 import { factory } from '../../utils/factory.js'
-import { createUtil } from './simplify/util.js'
+import {
+  createUtil, defaultContext, realContext, positiveContext
+} from './simplify/util.js'
 import { hasOwnProperty } from '../../utils/object.js'
 import { createEmptyMap, createMap } from '../../utils/map.js'
 
@@ -10,17 +14,25 @@ const dependencies = [
   'typed',
   'parse',
   'equal',
+  'operatorIs',
+  'reassociate',
   'resolve',
   'simplifyConstant',
   'simplifyCore',
   'AccessorNode',
   'ArrayNode',
+  'AssignmentNode',
+  'BlockNode',
+  'ConditionalNode',
   'ConstantNode',
   'FunctionNode',
+  'FunctionAssignmentNode',
   'IndexNode',
   'ObjectNode',
   'OperatorNode',
   'ParenthesisNode',
+  'RangeNode',
+  'RelationalNode',
   'SymbolNode',
   'replacer'
 ]
@@ -30,23 +42,37 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     typed,
     parse,
     equal,
+    operatorIs,
+    reassociate,
     resolve,
     simplifyConstant,
     simplifyCore,
     AccessorNode,
     ArrayNode,
+    AssignmentNode,
+    BlockNode,
+    ConditionalNode,
     ConstantNode,
     FunctionNode,
+    FunctionAssignmentNode,
     IndexNode,
     ObjectNode,
     OperatorNode,
     ParenthesisNode,
+    RangeNode,
+    RelationalNode,
     SymbolNode,
     replacer
   }
 ) => {
-  const { hasProperty, isCommutative, isAssociative, mergeContext, flatten, unflattenr, unflattenl, createMakeNodeFunction, defaultContext, realContext, positiveContext } =
-    createUtil({ FunctionNode, OperatorNode, SymbolNode })
+  function isCommutative (node, context = defaultContext) {
+    return operatorIs(node, 'commutative', context)
+  }
+  function isAssociative (node, context = defaultContext) {
+    return operatorIs(node, 'associative', context)
+  }
+  const { mergeContext, createMakeNodeFunction } =
+        createUtil({ FunctionNode, OperatorNode, SymbolNode, operatorIs })
 
   /**
    * Simplify an expression tree.
@@ -153,6 +179,20 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    * See also:
    *
    *     simplifyCore, derivative, evaluate, parse, rationalize, resolve
+   *
+   * History:
+   *
+   *     v15.4    Extend to all node types
+   *     v11.4    Add new wildcards to allow new ways for rules to match
+   *     v11      Convert equivalent function calls into operators
+   *     v10.2    Add context option to control which simplifications allowed
+   *     v10.1.1  Add consoleDebug option
+   *     v10.1    Simplify arrays and objects
+   *     v8.1     Add fractionsLimit option
+   *     v5.1     Add options argument
+   *     v3.16    Add scope argument
+   *     v3.13    Support BigNumbers
+   *     v3.9     Created
    *
    * @param {Node | string} expr
    *            The expression to be simplified
@@ -451,8 +491,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       newRule.expanded.l = makeNode([newRule.l, expandsym])
       // Push the expandsym into the deepest possible branch.
       // This helps to match the newRule against nodes returned from getSplits() later on.
-      flatten(newRule.expanded.l, context)
-      unflattenr(newRule.expanded.l, context)
+      reassociate(newRule.expanded.l, context, { inplace: true })
+      reassociate(newRule.expanded.l,
+        context,
+        { direction: 'right', inplace: true })
       newRule.expanded.r = makeNode([newRule.r, expandsym])
 
       // In and for a non-commutative context, attempting with yet additional expansion rules makes
@@ -539,7 +581,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           res = rules[i](res, options)
           if (debug) rulestr = rules[i].name
         } else {
-          flatten(res, options.context)
+          reassociate(res, options.context, { inplace: true })
           res = applyRule(res, rules[i], options.context)
           if (debug) {
             rulestr = `${rules[i].l.toString()} -> ${rules[i].r.toString()}`
@@ -555,7 +597,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         /* Use left-heavy binary tree internally,
          * since custom rule functions may expect it
          */
-        unflattenl(res, options.context)
+        reassociate(res, options.context, { direction: 'left', inplace: true })
       }
       str = res.toString({ parenthesis: 'all' })
     }
@@ -594,7 +636,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     if (rule.assuming) {
       for (const symbol in rule.assuming) {
         for (const property in rule.assuming[symbol]) {
-          if (hasProperty(symbol, property, context) !==
+          if (operatorIs(symbol, property, context) !==
               rule.assuming[symbol][property]) {
             return node
           }
@@ -628,6 +670,14 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       if (newItems !== res.items) {
         res = new ArrayNode(newItems)
       }
+    } else if (res instanceof AssignmentNode) {
+      const obj = applyRule(res.object, rule, context)
+      const val = applyRule(res.value, rule, context)
+      let ix = res.index
+      if (ix) ix = applyRule(ix, rule, context)
+      if (obj !== res.object || val !== res.value || ix !== res.index) {
+        res = new AssignmentNode(obj, ix, val)
+      }
     } else if (res instanceof AccessorNode) {
       let newObj = res.object
       if (res.object) {
@@ -639,6 +689,30 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       }
       if (newObj !== res.object || newIndex !== res.index) {
         res = new AccessorNode(newObj, newIndex)
+      }
+    } else if (res instanceof BlockNode) {
+      const newBlocks = []
+      let changed = false
+      for (const block of res.blocks) {
+        const newNode = applyRule(block.node, rule, context)
+        if (newNode !== block.node) {
+          newBlocks.push({ node: newNode, visible: block.visible })
+          changed = true
+        } else newBlocks.push(block)
+      }
+      if (changed) res = new BlockNode(newBlocks)
+    } else if (res instanceof ConditionalNode) {
+      const q = applyRule(res.condition, rule, context)
+      const t = applyRule(res.trueExpr, rule, context)
+      const f = applyRule(res.falseExpr, rule, context)
+      if (q !== res.condition || t !== res.trueExpr || f !== res.falseExpr) {
+        res = new ConditionalNode(q, t, f)
+      }
+    } else if (res instanceof FunctionAssignmentNode) {
+      const newExpr = applyRule(res.expr, rule, context)
+      if (newExpr !== res.expr) {
+        res = node.clone()
+        res.expr = newExpr
       }
     } else if (res instanceof IndexNode) {
       const newDims = mapRule(res.dimensions, rule, context)
@@ -656,6 +730,19 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       }
       if (changed) {
         res = new ObjectNode(newProps)
+      }
+    } else if (res instanceof RangeNode) {
+      const beg = applyRule(res.start, rule, context)
+      const en = applyRule(res.end, rule, context)
+      let stp = res.step
+      if (stp) stp = applyRule(stp, rule, context)
+      if (beg !== res.start || en !== res.end || stp !== res.step) {
+        res = new RangeNode(beg, en, stp)
+      }
+    } else if (res instanceof RelationalNode) {
+      const newPars = mapRule(res.params, rule, context)
+      if (newPars !== res.params) {
+        res = new RelationalNode(res.conditionals.slice(), newPars)
       }
     }
 

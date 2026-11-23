@@ -96,14 +96,16 @@ describe('RangeNode', function () {
     const nodes = []
     const paths = []
     const e = new ConstantNode(3)
+    let lastParent
     const f = n.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
-      assert.strictEqual(parent, n)
+      lastParent = parent
 
       return node instanceof ConstantNode && node.value === 0 ? e : node
     })
 
+    assert.strictEqual(lastParent, f)
     assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], start)
     assert.strictEqual(nodes[1], end)
@@ -114,6 +116,13 @@ describe('RangeNode', function () {
     assert.deepStrictEqual(f.start, e)
     assert.deepStrictEqual(f.end, end)
     assert.deepStrictEqual(f.step, step)
+
+    // now map in place:
+    const g = f.map(
+      (node, path) => path === 'step' ? new SymbolNode('k') : node,
+      { inplace: true })
+    assert.strictEqual(g, f)
+    assert.strictEqual(f.toString(), '3:k:10')
   })
 
   it('should throw an error when the map callback does not return a node', function () {
