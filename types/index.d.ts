@@ -678,6 +678,16 @@ export interface MathJsInstance extends MathJsFactory {
    ************************************************************************/
 
   /**
+   * Create an array
+   * @param x  Value to convert
+   * @returns The created array
+   */
+  array(s: string): Array<string>
+  array(z: Complex): Array<number>
+  array<T extends MathNumericType>(m: MathCollection<T>): MathArray<T>
+  array(n?: MathNumericType): Array<MathNumericType>
+
+  /**
    * Create a BigNumber, which can store numbers with arbitrary precision.
    * When a matrix is provided, all elements will be converted to
    * BigNumber.
@@ -4249,6 +4259,7 @@ export const {
   UnitDependencies,
 
   // construction function dependencies
+  arrayDependencies,
   bignumberDependencies,
   bigintDependencies,
   booleanDependencies,
@@ -5146,6 +5157,18 @@ export interface MathJsChain<TValue> {
   /*************************************************************************
    * Construction functions
    ************************************************************************/
+
+  /**
+   * Create an array
+   * @param x  Value to convert
+   * @returns The created array
+   */
+  array(this: MathJsChain<string>): MathJsChain<Array<string>>
+  array(this: MathJsChain<Complex>): MathJsChain<Array<number>>
+  array<T extends MathNumericType>(
+    this: MathJsChain<MathCollection<T>>
+  ): MathJsChain<MathArray<T>>
+  array(this: MathJsChain<MathNumericType>): MathJsChain<Array<MathNumericType>>
 
   /**
    * Create a BigNumber, which can store numbers with arbitrary precision.
@@ -7820,6 +7843,7 @@ export const {
   replacer,
 
   // Construction functions
+  array,
   bignumber,
   bigint,
   boolean,

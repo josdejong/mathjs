@@ -286,6 +286,17 @@ Chaining examples
     math.chain('x + y').parse().resolve().done()
   ).toMatchTypeOf<MathNode>()
 
+  // array
+  expectTypeOf(math.chain(math.matrix([1, 2, 3])).array()).toMatchTypeOf<
+    MathJsChain<MathArray<number>>
+  >()
+  expectTypeOf(math.chain('foo').array()).toMatchTypeOf<
+    MathJsChain<Array<string>>
+  >()
+  expectTypeOf(math.chain(7).array()).toMatchTypeOf<
+    MathJsChain<MathArray<MathNumericType>>
+  >()
+
   // bignum
   expectTypeOf(math.chain(math.bignumber(12))).toMatchTypeOf<
     MathJsChain<BigNumber>
@@ -1403,6 +1414,12 @@ Matrices examples
   const a: Matrix = math.matrix([1, 4, 9, 16, 25])
   const b: Matrix = math.matrix(math.ones([2, 3]))
   b.size()
+
+  const astr: Array<string> = math.array('test')
+  astr[1] = 'o'
+  const empta = math.array(3)
+  empta[2] = math.fraction(2, 3)
+  a.create(math.array(a)) // funny way to clone
 
   // @ts-expect-error ... ones() in a chain cannot take more dimensions
   assert.throws(() => math.chain(3).ones(2, 'dense').done(), /Error:.*ones/)
