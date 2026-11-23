@@ -914,6 +914,15 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
+   * Return true/false as to whether the unit is dimensionless.
+   * @memberof Unit
+   * @return {boolean}
+   */
+  Unit.prototype.dimensionless = function () {
+    return this.equalBase(BASE_UNITS.NONE)
+  }
+
+  /**
    * Get a JSON representation of the unit
    * @memberof Unit
    * @returns {Object} Returns a JSON object structured as:

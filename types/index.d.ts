@@ -858,10 +858,14 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created number
    */
   number(
-    value?:
-      string | number | BigNumber | bigint | Fraction | boolean | Unit | null
+    value?: string | number | BigNumber | bigint | Fraction | boolean | null,
+    options?: ConversionOptions
   ): number
-  number(value?: MathCollection): number | MathCollection
+  number(value?: Unit, options?: ConversionOptions): number | Unit
+  number(
+    value?: MathCollection,
+    options?: ConversionOptions
+  ): number | MathCollection<number>
   /**
    * @param value Value to be converted
    * @param valuelessUnit A valueless unit, used to convert a unit to a
@@ -4763,6 +4767,11 @@ export interface CreateUnitOptions {
   override?: boolean
 }
 
+export type ConversionOptions = {
+  safe?: boolean
+  uniformType?: boolean
+}
+
 export type SimplifyContext = Partial<
   Record<
     OperatorNodeFn,
@@ -5294,14 +5303,23 @@ export interface MathJsChain<TValue> {
    */
   number(
     this: MathJsChain<
-      string | number | BigNumber | bigint | Fraction | boolean | Unit | null
+      string | number | BigNumber | bigint | Fraction | boolean | null
     >,
+    options?: ConversionOptions
+  ): MathJsChain<number>
+  number(
+    this: MathJsChain<Unit>,
     valuelessUnit?: Unit | string
   ): MathJsChain<number>
   number(
+    this: MathJsChain<Unit>,
+    options?: ConversionOptions
+  ): MathJsChain<number> | MathJsChain<Unit>
+  number(this: MathJsChain<MathCollection>): MathJsChain<MathCollection<number>>
+  number(
     this: MathJsChain<MathCollection>,
-    valuelessUnit?: Unit | string
-  ): MathJsChain<MathCollection>
+    options?: ConversionOptions
+  ): MathJsChain<MathCollection<number>> | MathJsChain<number>
 
   /**
    * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.

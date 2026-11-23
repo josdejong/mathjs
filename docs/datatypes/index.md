@@ -36,7 +36,7 @@ Note that booleans will implicitly convert to any other scalar type,
 and strings will implicitly convert to any other scalar type except boolean,
 by interpreting the string as the printed representation of a numerical value.
 And here is an ASCII art diagram of all other implicit conversions in effect
-as of mathjs 14:
+as of mathjs 16:
 
 ```
         /------------> Fraction
@@ -70,8 +70,8 @@ constructor/converter is always the name of the type with all letters
 changed to lower case.
 
 Note that such an explicit conversion will throw an error if it would
-discard some portion of the content of the value to be converted. So for
-example, converting `'6.2831853'` to `number` will succeed, but
+completely discard some portion of the content of the value to be converted.
+So for example, converting `'6.2831853'` to `number` will succeed, but
 `'6.2831853 ~= tau'` to `number` will fail because the non-numeric
 characters would be discarded. Similarly, `bigint(complex(-12, 0))` will
 succeed and return `-12n` because there is no imaginary part to "-12 + 0i",

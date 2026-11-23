@@ -395,7 +395,7 @@ const knownNoHistory = new Set([
   'csch', 'sec', 'sech', 'sin', 'sinh', 'tan', 'tanh', 'toBest', 'bin',
   'clone', 'hasNumericValue', 'hex', 'isBounded',
   'isNaN', 'isNegative', 'isNumeric', 'isPositive', 'isPrime', 'isZero',
-  'oct', 'print', 'typeOf', 'bignumber', 'chain', 'number'
+  'oct', 'print', 'typeOf', 'bignumber', 'chain'
 ])
 
 describe('Testing examples from (jsdoc) comments', function () {

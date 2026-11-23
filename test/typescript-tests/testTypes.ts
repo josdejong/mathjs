@@ -75,6 +75,11 @@ Basic usage examples
     [4, 5, 6]
   ]
 
+  // conversions
+  math.number('123e-45')
+  math.number(math.bigint(397), { safe: true })
+  math.number(math.unit('1 in/mm'), { uniformType: true })
+
   // functions and constants
   math.round(math.e, 3)
   math.round(100.123, 3)
@@ -387,6 +392,9 @@ Chaining examples
   expectTypeOf(math.chain([12, 13, 14]).number()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.fraction('99/701')).number({ safe: true })
+  ).toMatchTypeOf<MathJsChain<number>>()
 
   // numeric
   expectTypeOf(math.chain('12').numeric('bigint')).toMatchTypeOf<
