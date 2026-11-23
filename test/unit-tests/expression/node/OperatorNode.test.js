@@ -440,6 +440,21 @@ describe('OperatorNode', function () {
     ex({ n: n2, s: '1 - (2 + 3)', l: '1-\\left(2+3\\right)' })
   })
 
+  it('should keep parentheses around a comparison inside another comparison', function () {
+    // a < b == c would be parsed as the chain a < b and b == c
+    const ltab = new OperatorNode('<', 'smaller', [asym, bsym])
+    const n1 = new OperatorNode('==', 'equal', [ltab, csym])
+    const n2 = new OperatorNode('==', 'equal', [csym, ltab])
+
+    ex({ n: n1, s: '(a < b) == c', l: '\\left( a<\\mathrm{b}\\right)= c' })
+    ex({ n: n2, s: 'c == (a < b)', l: ' c=\\left( a<\\mathrm{b}\\right)' })
+
+    const scope = { a: 1, b: 2, c: 1 }
+    assert.strictEqual(n1.evaluate(scope), true)
+    assert.strictEqual(math.parse(n1.toString()).evaluate(scope), true)
+    assert.strictEqual(math.parse('(a < b) == c').toString({ parenthesis: 'auto' }), '(a < b) == c')
+  })
+
   it('should format fractions with operators that are enclosed in parenthesis', function () {
     ex({ n: new OperatorNode('/', 'divide', [add23, four]), s: '(2 + 3) / 4', l: '\\frac{2+3}{4}' })
   })

@@ -32,6 +32,9 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
     return false
   }
 
+  // precedence level of the relational operators (==, !=, <, >, <=, >=)
+  const relationalPrecedence = properties.findIndex(group => 'OperatorNode:equal' in group)
+
   /**
    * Calculate which parentheses are necessary. Gets an OperatorNode
    * (which is the root of the tree) and an Array of Nodes
@@ -131,6 +134,11 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
             // parens are **never** necessary for the left hand side.
             // If it is right associative however, parens are necessary
             // if the root node isn't associative with the left hand side
+            lhsParens = true
+          } else if ((lhsPrecedence === precedence) && (precedence === relationalPrecedence)) {
+            // The parser turns chained comparisons like a < b == c into
+            // a < b and b == c, so a comparison on the left hand side of
+            // another comparison needs parens to keep its meaning
             lhsParens = true
           } else if (lhsPrecedence < precedence) {
             lhsParens = true
