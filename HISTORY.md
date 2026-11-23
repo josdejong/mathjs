@@ -1,6 +1,6 @@
 # History
 
-# unpublished changes since 15.2.0
+# 2026-11-23, 15.3.0
 
 - Docs: Ensure all links in README.md are live (#3821). Thanks @farisbasha.
 - Chore: update selected dependencies with a focus on vulnerability
