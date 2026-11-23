@@ -1,4 +1,4 @@
-import Emitter from 'tiny-emitter'
+import Emitter from 'tiny-emitter-next'
 
 /**
  * Extend given object with emitter functions `on`, `off`, `once`, `emit`

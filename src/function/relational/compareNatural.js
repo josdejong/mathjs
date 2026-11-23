@@ -1,4 +1,4 @@
-import naturalSort from 'javascript-natural-sort'
+import naturalSort from 'javascript-natural-sort-next'
 import { isDenseMatrix, isSparseMatrix, typeOf } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
 

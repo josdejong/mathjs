@@ -28,11 +28,10 @@
     "@babel/runtime": "^7.26.10",
     "complex.js": "2.4.2",
     "decimal.js": "^10.6.0",
-    "escape-latex": "^1.2.0",
     "fraction.js": "5.2.1",
-    "javascript-natural-sort": "^0.7.1",
-    "seedrandom": "^3.0.5",
-    "tiny-emitter": "^2.1.0",
+    "javascript-natural-sort-next": "^0.8.0",
+    "seedrandom-next": "^3.1.0",
+    "tiny-emitter-next": "^2.2.0",
     "typed-function": "4.2.1"
   },
   "devDependencies": {

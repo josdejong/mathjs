@@ -1,4 +1,4 @@
-import seedrandom from 'seedrandom'
+import seedrandom from 'seedrandom-next'
 
 const singletonRandom = /* #__PURE__ */ seedrandom(Date.now())
 

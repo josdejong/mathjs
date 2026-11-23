@@ -1,6 +1,5 @@
 /* eslint no-template-curly-in-string: "off" */
 
-import escapeLatexLib from 'escape-latex'
 import { hasOwnProperty } from './object.js'
 
 export const latexSymbols = {
@@ -299,8 +298,28 @@ const latexUnits = {
   deg: '^\\circ'
 }
 
+// Same output as escape-latex with { preserveFormatting: true }
+const latexEscapes = {
+  '{': '\\{',
+  '}': '\\}',
+  '\\': '\\textbackslash{}',
+  '#': '\\#',
+  $: '\\$',
+  '%': '\\%',
+  '&': '\\&',
+  '^': '\\textasciicircum{}',
+  _: '\\_',
+  '~': '\\textasciitilde{}',
+  '–': '\\--',
+  '—': '\\---',
+  ' ': '~',
+  '\t': '\\qquad{}',
+  '\r\n': '\\newline{}',
+  '\n': '\\newline{}'
+}
+
 export function escapeLatex (string) {
-  return escapeLatexLib(string, { preserveFormatting: true })
+  return String(string).replace(/\r\n|[{}\\#$%&^_~–— \t\n]/g, (char) => latexEscapes[char])
 }
 
 // @param {string} name
