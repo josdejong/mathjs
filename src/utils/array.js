@@ -749,6 +749,20 @@ export function broadcastSizes (...sizes) {
   return sizeMax
 }
 
+export const BROADCAST_ERROR_DATA = Symbol('broadcastErrorData')
+
+/**
+ * Format a broadcasting shape mismatch error message.
+ * @param {number[]} size
+ * @param {number} dim
+ * @param {number} fromSize
+ * @param {number} toSize
+ * @returns {string}
+ */
+export function formatBroadcastErrorMessage (size, dim, fromSize, toSize) {
+  return `shape mismatch: mismatch is found in arg with shape (${size}) not possible to broadcast dimension ${dim} with size ${fromSize} to size ${toSize}`
+}
+
 /**
  * Checks if it's possible to broadcast a size to another size
  * @param {number[]} size The size of the array to check
@@ -760,9 +774,14 @@ export function checkBroadcastingRules (size, toSize) {
   for (let j = 0; j < dim; j++) {
     const n = N - dim + j
     if ((size[j] < toSize[n] && size[j] > 1) || (size[j] > toSize[n])) {
-      throw new Error(
-        `shape mismatch: mismatch is found in arg with shape (${size}) not possible to broadcast dimension ${dim} with size ${size[j]} to size ${toSize[n]}`
-      )
+      const err = new Error(formatBroadcastErrorMessage(size, j, size[j], toSize[n]))
+      err[BROADCAST_ERROR_DATA] = {
+        size: size.slice(),
+        dimension: j,
+        fromSize: size[j],
+        toSize: toSize[n]
+      }
+      throw err
     }
   }
 }

@@ -4,6 +4,7 @@ import { keywords } from '../keywords.js'
 import { deepStrictEqual } from '../../utils/object.js'
 import { factory } from '../../utils/factory.js'
 import { createMap } from '../../utils/map.js'
+import { transformBroadcastError } from '../transform/utils/errorTransform.js'
 
 const name = 'Node'
 const dependencies = ['mathWithTransform']
@@ -51,7 +52,11 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ mathWit
       function evaluate (scope) {
         const s = createMap(scope)
         _validateScope(s)
-        return expr(s, args, context)
+        try {
+          return expr(s, args, context)
+        } catch (err) {
+          throw transformBroadcastError(err)
+        }
       }
 
       return {

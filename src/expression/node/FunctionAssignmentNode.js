@@ -6,6 +6,7 @@ import { forEach, join } from '../../utils/array.js'
 import { toSymbol } from '../../utils/latex.js'
 import { getPrecedence } from '../operators.js'
 import { factory } from '../../utils/factory.js'
+import { transformBroadcastError } from '../transform/utils/errorTransform.js'
 
 const name = 'FunctionAssignmentNode'
 const dependencies = [
@@ -113,7 +114,11 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
             childArgs[params[i]] = arguments[i]
           }
 
-          return evalExpr(scope, childArgs, context)
+          try {
+            return evalExpr(scope, childArgs, context)
+          } catch (err) {
+            throw transformBroadcastError(err)
+          }
         }
         const fn = typed(name, signatures)
         fn.syntax = syntax

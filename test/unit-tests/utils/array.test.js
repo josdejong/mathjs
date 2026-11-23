@@ -606,6 +606,25 @@ describe('util.array', function () {
     it('should throw an error when the broadcasting rules are not followed', function () {
       assert.throws(function () { broadcastSizes([2, 2], [3, 2]) }, /Error: shape mismatch: mismatch is found in arg with shape.*/)
     })
+
+    it('should throw an error with the mismatched dimension index when broadcasting rules are not followed', function () {
+      assert.throws(
+        function () { checkBroadcastingRules([2], [3]) },
+        /shape mismatch: mismatch is found in arg with shape \(2\) not possible to broadcast dimension 0 with size 2 to size 3/
+      )
+      assert.throws(
+        function () { broadcastSizes([3, 1], [2, 1]) },
+        /shape mismatch: mismatch is found in arg with shape \(2,1\) not possible to broadcast dimension 0 with size 2 to size 3/
+      )
+      assert.throws(
+        function () { broadcastSizes([2, 2], [2, 3]) },
+        /shape mismatch: mismatch is found in arg with shape \(2,2\) not possible to broadcast dimension 1 with size 2 to size 3/
+      )
+      assert.throws(
+        function () { broadcastSizes([2], [4, 3]) },
+        /shape mismatch: mismatch is found in arg with shape \(2\) not possible to broadcast dimension 0 with size 2 to size 3/
+      )
+    })
   })
 
   describe('broadcastTo', function () {

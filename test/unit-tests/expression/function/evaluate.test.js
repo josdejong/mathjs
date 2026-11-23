@@ -279,4 +279,59 @@ describe('evaluate', function () {
       assert.strictEqual(called, 1)
     })
   })
+
+  describe('broadcasting shape mismatch errors', function () {
+    it('should report 0-based dimension index via JS API and 1-based dimension index via evaluate', function () {
+      assert.throws(
+        () => math.add([1, 2], [3, 4, 5]),
+        /shape mismatch: mismatch is found in arg with shape \(2\) not possible to broadcast dimension 0 with size 2 to size 3/
+      )
+      assert.throws(
+        () => math.add([[1], [2], [3]], [[4], [5]]),
+        /shape mismatch: mismatch is found in arg with shape \(2,1\) not possible to broadcast dimension 0 with size 2 to size 3/
+      )
+      assert.throws(
+        () => math.add([[1, 2], [3, 4]], [[5, 6, 7], [8, 9, 10]]),
+        /shape mismatch: mismatch is found in arg with shape \(2,2\) not possible to broadcast dimension 1 with size 2 to size 3/
+      )
+
+      assert.throws(
+        () => math.evaluate('[1, 2] + [3, 4, 5]'),
+        /shape mismatch: mismatch is found in arg with shape \(2\) not possible to broadcast dimension 1 with size 2 to size 3/
+      )
+      assert.throws(
+        () => math.evaluate('[[1], [2], [3]] + [[4], [5]]'),
+        /shape mismatch: mismatch is found in arg with shape \(2,1\) not possible to broadcast dimension 1 with size 2 to size 3/
+      )
+      assert.throws(
+        () => math.evaluate('[[1, 2], [3, 4]] + [[5, 6, 7], [8, 9, 10]]'),
+        /shape mismatch: mismatch is found in arg with shape \(2,2\) not possible to broadcast dimension 2 with size 2 to size 3/
+      )
+      assert.throws(
+        () => math.evaluate('[1, 2] + [[1, 2, 3], [4, 5, 6]]'),
+        /shape mismatch: mismatch is found in arg with shape \(2\) not possible to broadcast dimension 1 with size 2 to size 3/
+      )
+    })
+
+    it('should not double-increment broadcast dimension index in nested evaluations or expression functions', function () {
+      assert.throws(
+        () => math.evaluate('map([1, 2] + [3, 4, 5], f(x) = x)'),
+        /shape mismatch: mismatch is found in arg with shape \(2\) not possible to broadcast dimension 1 with size 2 to size 3/
+      )
+
+      const fn = math.evaluate('f(a, b) = a + b')
+      assert.throws(
+        () => fn([1, 2], [3, 4, 5]),
+        /shape mismatch: mismatch is found in arg with shape \(2\) not possible to broadcast dimension 1 with size 2 to size 3/
+      )
+      assert.throws(
+        () => math.evaluate('f([1, 2], [3, 4, 5])', { f: fn }),
+        /shape mismatch: mismatch is found in arg with shape \(2\) not possible to broadcast dimension 1 with size 2 to size 3/
+      )
+      assert.throws(
+        () => math.evaluate('map([1, 2], [3, 4, 5], f(a, b) = a + b)'),
+        /shape mismatch: mismatch is found in arg with shape \(2\) not possible to broadcast dimension 1 with size 2 to size 3/
+      )
+    })
+  })
 })
