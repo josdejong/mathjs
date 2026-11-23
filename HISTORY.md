@@ -2,6 +2,28 @@
 
 # unpublished changes since 15.2.0
 
+- Docs: Ensure all links in README.md are live (#3821). Thanks @farisbasha.
+- Chore: update selected dependencies with a focus on vulnerability
+  reduction (#3818) and update code_editor dependencies (#3828).
+  Thanks @katsugtgz.
+- Fix: Ensure dotPow, dotDivide, and divide evaluate matrix operations
+  on zero entries whenever necessary. Also refactors mathjs code to prefer
+  everywhere isZero() to equalScalar(x,0), reducing dependencies (#3806).
+  Thanks @Ryzuuuu and @gwhitney.
+- Feat: support Fraction and bigint in median (#3809). Thanks @Ryzuuuu.
+- Fix: Properly logically shift matrix entries by zero (#3808). Thanks @Ryzuuuu.
+- Fix: #3802 Disallow too-negative bigint -> number auto conversion (#3803).
+  Thanks @spokodev.
+- Feat: Add bigint support to catalan() and fix #3780, significantly improve
+  catalan() accuracy by computing with exact-division recurrence (#3781).
+  Thanks @rahul05ranjan.
+- Fix: #3779 Use one-based dimension index in parsed expressions with
+  std and variance (#3770). Thanks @jayhemnani9910.
+- Feat: multinomial allows zero arguments and direct list of arguments.
+  Reduce overflow-related accuracy issues by using formula based on
+  combinations, with no division needed. Throw on likely erroneous
+  multidimensional input. Improve documentation and TypeScript typing (#3790).
+  Thanks @Dx-Alz-xD and @chatman-media.
 - Docs: fix miscellaneous errors in examples on doc pages, in partial
   preparation for a systematic test harness on all such examples (#3741).
   Thanks @yxshee.

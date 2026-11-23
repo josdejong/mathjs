@@ -8,14 +8,13 @@ const name = 'atan2'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
   'BigNumber',
   'DenseMatrix'
 ]
 
-export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix }) => {
+export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, BigNumber, DenseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
+  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 

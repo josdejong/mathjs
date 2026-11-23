@@ -6,16 +6,11 @@ import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgori
 import { orNumber } from '../../plain/number/index.js'
 
 const name = 'or'
-const dependencies = [
-  'typed',
-  'matrix',
-  'equalScalar',
-  'DenseMatrix'
-]
+const dependencies = ['typed', 'matrix', 'DenseMatrix']
 
-export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
+export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix }) => {
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
-  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed, equalScalar })
+  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 

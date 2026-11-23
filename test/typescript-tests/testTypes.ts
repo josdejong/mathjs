@@ -173,6 +173,7 @@ Basic usage examples
     math.matrix([6, 8])
   ) // Matrix + Array
 
+  expectTypeOf(math.matrix([6, 8])).toMatchTypeOf<MathCollection<number>>()
   // narrowed type inference
   const _b: Matrix = math.add(math.matrix([2]), math.matrix([3]))
   const _c: Matrix = math.subtract(math.matrix([4]), math.matrix([5]))
@@ -1418,6 +1419,13 @@ Matrices examples
   math.map(a, math.sqrt)
   math.mapSlices(b, 1, math.sum)
   math.factorial(a)
+  math.multinomial(a)
+  math.multinomial(1, 4, 9)
+  const B: MathCollection<BigNumber> = math.matrix([
+    math.bignumber(7),
+    math.bignumber(8)
+  ])
+  math.multinomial(B)
 
   // create and manipulate matrices. Arrays and Matrices can be used mixed.
   {

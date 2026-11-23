@@ -152,6 +152,13 @@ describe('dotDivide', function () {
       assert.deepStrictEqual(dotDivide(math.sparse(), 2), math.sparse())
     })
 
+    it('should divide the zeros of a sparse matrix by zero or NaN', function () {
+      const a = math.sparse([[2, 0], [0, -4]])
+      assert.deepStrictEqual(dotDivide(a, 0), math.matrix([[Infinity, NaN], [NaN, -Infinity]]))
+      assert.deepStrictEqual(dotDivide(a, NaN), math.matrix([[NaN, NaN], [NaN, NaN]]))
+      assert.deepStrictEqual(dotDivide(a, Infinity), math.sparse([[0, 0], [0, 0]]))
+    })
+
     it('should divide 1 over a sparse matrix element-wise', function () {
       approxDeepEqual(dotDivide(1, math.sparse([[1, 4, 7], [3, 0, 5], [-1, 9, 11]])), math.matrix([[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]]))
     })

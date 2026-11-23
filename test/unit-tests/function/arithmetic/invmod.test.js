@@ -67,8 +67,8 @@ describe('invmod', function () {
   })
 
   it('should throw an error for non-integer numbers', function () {
-    assert.throws(function () { invmod(2, 4.1) }, /Parameters in function invmod must be integer numbers/)
-    assert.throws(function () { invmod(2.3, 4) }, /Parameters in function invmod must be integer numbers/)
+    assert.throws(function () { invmod(2, 4.1) }, /invmod must be integer.*4.1/)
+    assert.throws(function () { invmod(2.3, 4) }, /invmod must be integer.*2.3/)
   })
 
   it('should throw an error with complex numbers', function () {

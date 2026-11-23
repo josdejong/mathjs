@@ -27,6 +27,13 @@ describe('variance.transform', function () {
       [[18050, 50, 50], [50, 50, 1800], [50, 50, 1800], [14450, 50, 50]])
   })
 
+  it('should use a one based dimension together with a normalization', function () {
+    assert.deepStrictEqual(variance([[2, 6], [4, 10]], 1, 'uncorrected'), [1, 4])
+    assert.deepStrictEqual(variance([[2, 6], [4, 10]], 2, 'uncorrected'), [4, 9])
+    assert.deepStrictEqual(math.evaluate('variance([[2, 6], [4, 10]], 1, "unbiased")'), math.evaluate('variance([[2, 6], [4, 10]], 1)'))
+    assert.throws(function () { variance([[2, 6], [4, 10]], 0, 'biased') }, /Index out of range/)
+  })
+
   it('should throw an error if called with an invalid one based index', function () {
     assert.throws(function () { variance(inputMatrix, 0) }, /Index out of range/)
     assert.throws(function () { variance(inputMatrix, 4) }, /Index out of range/)
