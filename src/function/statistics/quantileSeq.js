@@ -8,18 +8,20 @@ const dependencies = ['typed', '?bignumber', 'add', 'subtract', 'divide', 'multi
 export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, bignumber, add, subtract, divide, multiply, partitionSelect, compare, isInteger, smaller, smallerEq, larger, mapSlices }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
-   * The sequence is sorted and the middle value is returned.
+   * Quantiles are computed by linear interpolation between adjacent values
+   * in the sorted sequence.
    * Supported types of sequence values are: Number, BigNumber, Unit
    * Supported types of probability are: Number, BigNumber
    *
    * In case of a multidimensional array or matrix, the prob order quantile
-   * of all elements will be calculated.
+   * of all elements will be calculated by default. Specify a dimension to
+   * calculate quantiles along that dimension instead.
    *
    * Syntax:
    *
-   *     math.quantileSeq(A, prob[, sorted])
-   *     math.quantileSeq(A, [prob1, prob2, ...][, sorted])
-   *     math.quantileSeq(A, N[, sorted])
+   *     math.quantileSeq(A, prob[, sorted][, dimension])
+   *     math.quantileSeq(A, [prob1, prob2, ...][, sorted][, dimension])
+   *     math.quantileSeq(A, N[, sorted][, dimension])
    *
    * Examples:
    *
@@ -27,6 +29,7 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
    *     math.quantileSeq([3, -1, 5, 7], [1/3, 2/3])  // returns [3, 5]
    *     math.quantileSeq([3, -1, 5, 7], 2)           // returns [3, 5]
    *     math.quantileSeq([-1, 3, 5, 7], 0.5, true)   // returns 4
+   *     math.quantileSeq([[1, 2], [3, 4]], 0.25, 0) // returns [1.5, 2.5]
    *
    * See also:
    *
@@ -38,6 +41,7 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
    *                                            probabilities; only one of these options can
    *                                            be provided
    * @param {Boolean} sorted=false              is data sorted in ascending order
+   * @param {number} [dimension]                Zero-based dimension along which to calculate quantiles
    * @return {Number, BigNumber, Unit, Array}   Quantile(s)
    */
   return typed(name, {
