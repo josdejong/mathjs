@@ -4848,6 +4848,7 @@ export interface EvalFunction {
 export interface ResultSet {
   entries: unknown[]
   valueOf(): unknown[]
+  clone(): ResultSet
   toString(): string
   toJSON(): MathJSON
 }

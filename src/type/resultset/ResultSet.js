@@ -1,4 +1,5 @@
 import { factory } from '../../utils/factory.js'
+import { clone } from '../../utils/object.js'
 
 const name = 'ResultSet'
 const dependencies = []
@@ -31,6 +32,15 @@ export const createResultSet = /* #__PURE__ */ factory(name, dependencies, () =>
    */
   ResultSet.prototype.valueOf = function () {
     return this.entries
+  }
+
+  /**
+   * Create a deep clone of the ResultSet
+   * @memberof ResultSet
+   * @returns {ResultSet} clone
+   */
+  ResultSet.prototype.clone = function () {
+    return new ResultSet(clone(this.entries))
   }
 
   /**

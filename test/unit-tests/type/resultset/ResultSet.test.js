@@ -26,6 +26,25 @@ describe('ResultSet', function () {
     assert.deepStrictEqual(r.valueOf(), [1, 2, 3])
   })
 
+  it('should create a deep clone', function () {
+    const m = math.matrix([1, 2])
+    const r = new ResultSet([m, 3])
+    const c = r.clone()
+    assert(c instanceof ResultSet)
+    assert.notStrictEqual(c, r)
+    assert.notStrictEqual(c.entries, r.entries)
+    assert.notStrictEqual(c.entries[0], m)
+    assert.deepStrictEqual(c, r)
+  })
+
+  it('should be cloneable via math.clone', function () {
+    const r = math.evaluate('a = [1, 2]\nb = 3')
+    const c = math.clone(r)
+    assert(c instanceof ResultSet)
+    assert.notStrictEqual(c, r)
+    assert.deepStrictEqual(c, r)
+  })
+
   it('should return a string when calling toString()', function () {
     const r = new ResultSet([1, 2, 3, new Complex(4, 5)])
     assert.deepStrictEqual(r.toString(), '[1, 2, 3, 4 + 5i]')
