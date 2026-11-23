@@ -65,6 +65,7 @@ import { floorDocs } from './function/arithmetic/floor.js'
 import { gcdDocs } from './function/arithmetic/gcd.js'
 import { hypotDocs } from './function/arithmetic/hypot.js'
 import { invmodDocs } from './function/arithmetic/invmod.js'
+import { powmodDocs } from './function/arithmetic/powmod.js'
 import { lcmDocs } from './function/arithmetic/lcm.js'
 import { logDocs } from './function/arithmetic/log.js'
 import { log10Docs } from './function/arithmetic/log10.js'
@@ -410,6 +411,7 @@ export const embeddedDocs = {
   unaryPlus: unaryPlusDocs,
   xgcd: xgcdDocs,
   invmod: invmodDocs,
+  powmod: powmodDocs,
   num: numDocs,
   den: denDocs,
 

@@ -3377,3 +3377,38 @@ Numerator and Denominator examples
   assert.strictEqual(math.chain(math.fraction(2, 3)).num().done(), BigInt(2))
   assert.strictEqual(math.chain(math.fraction(2, 3)).den().done(), BigInt(3))
 }
+
+/*
+Modular exponentiation examples
+*/
+{
+  const math = create(all, {})
+
+  expectTypeOf(math.powmod(10, 58, 531)).toMatchTypeOf<number>()
+  assert.strictEqual(math.powmod(10, 58, 531), 1)
+  assert.strictEqual(math.powmod(3, -1, 7), 5)
+
+  expectTypeOf(
+    math.powmod(BigInt(2), BigInt(10), BigInt(1000))
+  ).toMatchTypeOf<bigint>()
+  expectTypeOf(math.powmod(2, BigInt(10), 1000)).toMatchTypeOf<bigint>()
+  assert.strictEqual(math.powmod(2, BigInt(10), 1000), BigInt(24))
+
+  expectTypeOf(
+    math.powmod(math.bignumber(10), 58, 531)
+  ).toMatchTypeOf<BigNumber>()
+  assert.deepStrictEqual(
+    math.powmod(math.bignumber(10), 58, 531),
+    math.bignumber(1)
+  )
+
+  // Chaining
+  expectTypeOf(math.chain(10).powmod(58, 531).done()).toMatchTypeOf<number>()
+  expectTypeOf(
+    math.chain(BigInt(2)).powmod(BigInt(10), BigInt(1000)).done()
+  ).toMatchTypeOf<bigint>()
+  expectTypeOf(
+    math.chain(math.bignumber(10)).powmod(58, 531).done()
+  ).toMatchTypeOf<BigNumber>()
+  assert.strictEqual(math.chain(10).powmod(58, 531).done(), 1)
+}
