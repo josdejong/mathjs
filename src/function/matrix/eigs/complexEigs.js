@@ -1,6 +1,6 @@
 import { clone } from '../../../utils/object.js'
 
-export function createComplexEigs ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, size, reshape, inv, qr, usolve, usolveAll, equal, complex, larger, smaller, matrixFromColumns, dot }) {
+export function createComplexEigs ({ addScalar, subtract, flatten, multiply, multiplyScalar, divideScalar, sqrt, abs, bignumber, diag, size, reshape, inv, qr, usolve, usolveAll, equalScalar, isZero, complex, larger, smaller, matrixFromColumns, dot }) {
   /**
    * @param {number[][]} arr the matrix to find eigenvalues of
    * @param {number} N size of the matrix
@@ -94,7 +94,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
           rowNorm = addScalar(rowNorm, abs(arr[i][j]))
         }
 
-        if (!equal(colNorm, 0) && !equal(rowNorm, 0)) {
+        if (!isZero(colNorm) && !isZero(rowNorm)) {
           // find integer power closest to balancing the matrix
           // (we want to scale only by integer powers of radix,
           // so that we don't lose any precision due to round-off)
@@ -411,7 +411,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
     const multiplicities = []
 
     for (const lambda of values) {
-      const i = indexOf(uniqueValues, lambda, equal)
+      const i = indexOf(uniqueValues, lambda, equalScalar)
 
       if (i === -1) {
         uniqueValues.push(lambda)

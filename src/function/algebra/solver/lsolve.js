@@ -8,11 +8,11 @@ const dependencies = [
   'divideScalar',
   'multiplyScalar',
   'subtractScalar',
-  'equalScalar',
+  'isZero',
   'DenseMatrix'
 ]
 
-export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtractScalar, equalScalar, DenseMatrix }) => {
+export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtractScalar, isZero, DenseMatrix }) => {
   const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**
@@ -33,6 +33,10 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * See also:
    *
    *    lsolveAll, lup, slu, usolve, lusolve
+   *
+   * History:
+   *
+   *    v7.3  Created
    *
    * @param {Matrix, Array} L       A N x N matrix or array (L)
    * @param {Matrix, Array} b       A column vector with the b values
@@ -74,12 +78,12 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
       const bj = bdata[j][0] || 0
       let xj
 
-      if (!equalScalar(bj, 0)) {
+      if (!isZero(bj)) {
         // non-degenerate row, find solution
 
         const vjj = mdata[j][j]
 
-        if (equalScalar(vjj, 0)) {
+        if (isZero(vjj)) {
           throw new Error('Linear system cannot be solved since matrix is singular')
         }
 
@@ -123,7 +127,7 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
     for (let j = 0; j < columns; j++) {
       const bj = bdata[j][0] || 0
 
-      if (!equalScalar(bj, 0)) {
+      if (!isZero(bj)) {
         // non-degenerate row, find solution
 
         let vjj = 0
@@ -150,7 +154,7 @@ export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
         }
 
         // at this point we must have a value in vjj
-        if (equalScalar(vjj, 0)) {
+        if (isZero(vjj)) {
           throw new Error('Linear system cannot be solved since matrix is singular')
         }
 

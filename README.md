@@ -181,7 +181,7 @@ To test the type definitions:
 
     npm run test:types
 
-Additionally, the tests can be run on FireFox using [headless mode](https://developer.mozilla.org/en-US/Firefox/Headless_mode):
+Additionally, the tests can be run on FireFox using [headless mode](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/):
 
     npm run test:browser
 

@@ -2,11 +2,17 @@ export const multinomialDocs = {
   name: 'multinomial',
   category: 'Probability',
   syntax: [
+    'multinomial(a1, a2, ..., an)',
     'multinomial(A)'
   ],
-  description: 'Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities. multinomial takes one array of integers as an argument. The following condition must be enforced: every ai > 0.',
+  description: 'Computes the number of ways of dividing a1 + a2 + ... + an ' +
+    'distinct items into n unordered groups of sizes a1, a2, ..., an: ' +
+    'the multinomial coefficient (a1 + ... + an)! / (a1! ... an!). ' +
+    'Takes the ai as argument list, or one one-dimensional array or Matrix ' +
+    'of nonnegative integers.',
   examples: [
-    'multinomial([1, 2, 1])'
+    'multinomial([1, 2, 1])',
+    'multinomial([2, 0, 1])'
   ],
   seealso: ['combinations', 'factorial']
 }

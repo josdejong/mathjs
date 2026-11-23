@@ -2,7 +2,6 @@ import { factory } from '../../utils/factory.js'
 import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatAlgo07xSSf } from '../../type/matrix/utils/matAlgo07xSSf.js'
-import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 
@@ -10,17 +9,15 @@ const name = 'dotDivide'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
   'divideScalar',
   'DenseMatrix',
   'SparseMatrix'
 ]
 
-export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, DenseMatrix, SparseMatrix }) => {
-  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed, equalScalar })
+export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, DenseMatrix, SparseMatrix }) => {
+  const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo07xSSf = createMatAlgo07xSSf({ typed, SparseMatrix })
-  const matAlgo11xS0s = createMatAlgo11xS0s({ typed, equalScalar })
   const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
@@ -61,7 +58,7 @@ export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ ty
     SS: matAlgo07xSSf,
     DS: matAlgo03xDSf,
     SD: matAlgo02xDS0,
-    Ss: matAlgo11xS0s,
+    Ss: matAlgo12xSfs,
     sS: matAlgo12xSfs
   }))
 })

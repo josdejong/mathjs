@@ -1,7 +1,7 @@
 import { factory } from '../../../utils/factory.js'
 
 const name = 'matAlgo11xS0s'
-const dependencies = ['typed', 'equalScalar']
+const dependencies = ['typed']
 
 export const createMatAlgo11xS0s = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
@@ -17,13 +17,13 @@ export const createMatAlgo11xS0s = /* #__PURE__ */ factory(name, dependencies, (
    * @param {Matrix}   s                 The SparseMatrix instance (S)
    * @param {Scalar}   b                 The Scalar value
    * @param {Function} callback          The f(Aij,b) operation to invoke
-   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Sij)
+   * @param {boolean}  flip              A true value indicates callback should be invoked f(b,Sij)
    *
    * @return {Matrix}                    SparseMatrix (C)
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
    */
-  return function matAlgo11xS0s (s, b, callback, inverse) {
+  return function matAlgo11xS0s (s, b, callback, flip) {
     // sparse matrix arrays
     const avalues = s._values
     const aindex = s._index
@@ -41,9 +41,7 @@ export const createMatAlgo11xS0s = /* #__PURE__ */ factory(name, dependencies, (
     // datatype
     let dt
     // equal signature to use
-    let eq = equalScalar
-    // zero value
-    let zero = 0
+    const isZ = s.isZero
     // callback signature to use
     let cf = callback
 
@@ -51,14 +49,12 @@ export const createMatAlgo11xS0s = /* #__PURE__ */ factory(name, dependencies, (
     if (typeof adt === 'string') {
       // datatype
       dt = adt
-      // find signature that matches (dt, dt)
-      eq = typed.find(equalScalar, [dt, dt])
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt)
-      // convert b to the same datatype
-      b = typed.convert(b, dt)
       // callback
-      cf = typed.find(callback, [dt, dt])
+      if (flip) {
+        cf = typed.resolve(callback, [b, s.zero]).implementation
+      } else {
+        cf = typed.resolve(callback, [s.zero, b]).implementation
+      }
     }
 
     // result arrays
@@ -75,9 +71,9 @@ export const createMatAlgo11xS0s = /* #__PURE__ */ factory(name, dependencies, (
         // row
         const i = aindex[k]
         // invoke callback
-        const v = inverse ? cf(b, avalues[k]) : cf(avalues[k], b)
+        const v = flip ? cf(b, avalues[k]) : cf(avalues[k], b)
         // check value is zero
-        if (!eq(v, zero)) {
+        if (!isZ(v)) {
           // push index & value
           cindex.push(i)
           cvalues.push(v)

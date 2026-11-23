@@ -51,6 +51,20 @@ describe('SparseMatrix', function () {
       assert(m._datatype === 'number')
     })
 
+    it('Sparse Matrix from an array, fraction datatype', function () {
+      const m = new SparseMatrix(
+        [
+          [1.5, 0, 0],
+          [0, 0, 2 / 3]
+        ], 'Fraction')
+      assert.deepStrictEqual(m._size, [2, 3])
+      assert.deepStrictEqual(
+        m._values, [math.fraction(3, 2), math.fraction(2, 3)])
+      assert.deepStrictEqual(m._index, [0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 1, 1, 2])
+      assert.deepStrictEqual(m.zero, math.fraction(0))
+    })
+
     it('should create a Sparse Matrix from an array, empty column', function () {
       const m = new SparseMatrix(
         [
@@ -134,6 +148,20 @@ describe('SparseMatrix', function () {
       const m2 = new SparseMatrix(m1)
       assert.deepStrictEqual(m1.size(), m2.size())
       assert.deepStrictEqual(m1.toArray(), m2.toArray())
+    })
+
+    it('BigNumber Sparse Matrix from a Dense Matrix, ', function () {
+      const m1 = math.matrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6]
+        ])
+      const m2 = new SparseMatrix(m1, 'BigNumber')
+      assert.deepStrictEqual(m1.size(), m2.size())
+      const bn = math.bignumber
+      assert.deepStrictEqual(m2.valueOf(),
+        [[bn(1), bn(2), bn(3)], [bn(4), bn(5), bn(6)]])
+      assert.deepStrictEqual(m2.zero, bn(0))
     })
 
     it('should create a Sparse Matrix from a Dense Matrix, number datatype', function () {
@@ -1818,6 +1846,24 @@ describe('SparseMatrix', function () {
           [0, 0, 0],
           [1, 0, 0],
           [0, 2, 0]
+        ])
+    })
+
+    it('should create bigint Sparse (n x n), vector value, k < 0', function () {
+      const m = SparseMatrix.diagonal([3, 3], [1, 2], -1, 0n, 'bigint')
+
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1n, 2n])
+      assert.deepStrictEqual(m._index, [1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 2])
+      assert.strictEqual(m.zero, 0n)
+
+      assert.deepStrictEqual(
+        m.toArray(),
+        [
+          [0n, 0n, 0n],
+          [1n, 0n, 0n],
+          [0n, 2n, 0n]
         ])
     })
 

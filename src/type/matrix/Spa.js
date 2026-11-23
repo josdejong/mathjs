@@ -1,9 +1,9 @@
 import { factory } from '../../utils/factory.js'
 
 const name = 'Spa'
-const dependencies = ['addScalar', 'equalScalar', 'FibonacciHeap']
+const dependencies = ['addScalar', 'isZero', 'FibonacciHeap']
 
-export const createSpaClass = /* #__PURE__ */ factory(name, dependencies, ({ addScalar, equalScalar, FibonacciHeap }) => {
+export const createSpaClass = /* #__PURE__ */ factory(name, dependencies, ({ addScalar, isZero, FibonacciHeap }) => {
   /**
    * An ordered Sparse Accumulator is a representation for a sparse vector that includes a dense array
    * of the vector elements and an ordered list of non-zero elements.
@@ -75,7 +75,7 @@ export const createSpaClass = /* #__PURE__ */ factory(name, dependencies, ({ add
       // check it is in range
       if (node.key >= from) {
         // check value is not zero
-        if (!equalScalar(node.value, 0)) {
+        if (!isZero(node.value)) {
           // invoke callback
           callback(node.key, node.value, this)
         }
