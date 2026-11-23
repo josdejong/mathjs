@@ -371,6 +371,36 @@ describe('simplify', function () {
     simplifyAndCompare('-2 * (-2 * x + y)', '-(2 * (y - 2 * x))') // Failed before introduction of vd in #1915
   })
 
+  it('should collect like terms across a separated numerical factor', function () {
+    simplifyAndCompare('7*(-x-13) -4 -12x', '-(19 * x) - 95')
+    simplifyAndCompare('3*(-x-5)-8*x+2', '-(11 * x) - 13')
+    simplifyAndCompare('5*(2*x-4)-3*x+9', '7 * x - 11')
+    simplifyAndCompare('2*(x+3)+4*x', '6 * (x + 1)')
+    simplifyAndCompare('2*(x-3)+4*x', '6 * x - 6')
+    simplifyAndCompare('2*(x+3)+x', '3 * x + 6')
+    simplifyAndCompare('2*(2*x+3)+x', '5 * x + 6')
+    simplifyAndCompare('x+2*(x+3)', '3 * x + 6')
+    simplifyAndCompare('2*(x+3)+x+2*x', '5 * x + 6')
+    simplifyAndCompare('-3*(2*x+5)+x-8', '-(5 * x) - 23')
+    simplifyAndCompare('-3*(x+5)+4*x', 'x - 15')
+  })
+
+  it('should not distribute numerical factors without like terms to collect', function () {
+    simplifyAndCompare('2*(x+3)', '2 * (x + 3)')
+    simplifyAndCompare('2*(x-3)', '2 * (x - 3)')
+    simplifyAndCompare('2*(x+3)+y', '2 * (x + 3) + y')
+    simplifyAndCompare('2*(x-3)*y', '2 * (x - 3) * y')
+    simplifyAndCompare('x*(y-2)', 'x * (y - 2)')
+  })
+
+  it('should only collect embedded like terms in commutative contexts', function () {
+    const expression = '2*(x+3)+4*x'
+    for (const operator of ['add', 'multiply']) {
+      const options = { context: { [operator]: { commutative: false } } }
+      simplifyAndCompare(expression, '2 * (x + 3) + 4 * x', {}, options)
+    }
+  })
+
   it('should handle nested exponentiation', function () {
     simplifyAndCompare('(x^2)^3', 'x^6')
     simplifyAndCompare('(x^y)^z', 'x^(y*z)')
