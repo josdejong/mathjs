@@ -3,10 +3,41 @@ import { factory } from '../../utils/factory.js'
 
 const name = 'BigNumber'
 const dependencies = ['?on', 'config']
+const trigonometricMethods = [
+  'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
+  'cos', 'cosh', 'sin', 'sinh', 'tan', 'tanh',
+  'cosine', 'hyperbolicCosine', 'hyperbolicSine', 'hyperbolicTangent',
+  'inverseCosine', 'inverseHyperbolicCosine', 'inverseHyperbolicSine',
+  'inverseHyperbolicTangent', 'inverseSine', 'inverseTangent', 'sine', 'tangent'
+]
 
 export const createBigNumberClass = /* #__PURE__ */ factory(name, dependencies, ({ on, config }) => {
   const BigNumber = Decimal.clone({ precision: config.precision, modulo: Decimal.EUCLID })
   BigNumber.prototype = Object.create(BigNumber.prototype)
+
+  trigonometricMethods.forEach(method => {
+    const originalMethod = BigNumber.prototype[method]
+
+    BigNumber.prototype[method] = function (...args) {
+      const precision = BigNumber.precision
+      const rounding = BigNumber.rounding
+
+      try {
+        return originalMethod.apply(this, args)
+      } catch (error) {
+        if (error instanceof Error &&
+          error.message.includes('Precision limit exceeded') &&
+          !error.message.includes('decimal.js trigonometric functions are limited')) {
+          error.message += '; decimal.js trigonometric functions are limited to approximately ' +
+            `1000 digits of working precision (configured precision is ${config.precision})`
+        }
+        throw error
+      } finally {
+        BigNumber.precision = precision
+        BigNumber.rounding = rounding
+      }
+    }
+  })
 
   /**
    * Attach type information
