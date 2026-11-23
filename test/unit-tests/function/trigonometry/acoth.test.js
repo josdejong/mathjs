@@ -3,6 +3,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const pi = math.pi
 const acoth = math.acoth
 const coth = math.coth
@@ -114,5 +115,41 @@ describe('acoth', function () {
   it('should LaTeX acoth', function () {
     const expression = math.parse('acoth(2)')
     assert.strictEqual(expression.toTex(), '\\coth^{-1}\\left(2\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 1000 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('acoth', acoth, [
+      ['Infinity', 0],
+      ['-Infinity', -0, 'result sign of zero (0, correct -0)'],
+      ['NaN', NaN, 'returns Complex NaN + NaNi instead of NaN'],
+      ['1e300', 1e-300, 'result underflows to 0 (correct 1e-300)'],
+      ['710', 0.0014084516355566889, 'result 14.9 correct digits (rel err 1.4e-15)'],
+      ['400', 0.0025000052083528645, 'result 13.7 correct digits (rel err 2.2e-14)'],
+      ['-400', -0.0025000052083528645, 'result 13.7 correct digits (rel err 2.0e-14)'],
+      ['-710', -0.0014084516355566889, 'result 13.7 correct digits (rel err 2.0e-14)'],
+      ['-1e300', -1e-300, 'result underflows to 0 (correct -1e-300)'],
+      ['1e-8', complex(1e-8, -1.5707963267948966), 'real part 8.3 correct digits (rel err 5.0e-09)'],
+      ['1e-17', complex(1e-17, -1.5707963267948966), 'real part underflows to 0 (correct 1e-17)'],
+      // mpmath at 60 digits cancels the real part to 0; requires higher precision.
+      ['1e-200', complex(1e-200, -1.5707963267948966), 'real part NaN instead of 1e-200'],
+      ['-1e-8', complex(-1e-8, 1.5707963267948966), 'real part 8.8 correct digits (rel err 1.6e-09)'],
+      ['-1e-17', complex(-1e-17, 1.5707963267948966), 'real part underflows to 0 (correct -1e-17)'],
+      // mpmath at 60 digits cancels the real part to 0; requires higher precision.
+      ['-1e-200', complex(-1e-200, 1.5707963267948966), 'real part NaN instead of -1e-200'],
+      ['0', complex(0, 1.5707963267948966)],
+      ['-0', complex(0, 1.5707963267948966)],
+      ['1', Infinity],
+      ['1-1e-15', complex(17.616361586450413, -1.5707963267948966), 'real part 2.5 correct digits (rel err 3.0e-03)'],
+      ['1-2^-53', complex(18.714973875118524, -1.5707963267948966), 'real part 1.7 correct digits (rel err 1.9e-02)'],
+      ['1+2^-52', 18.36840028483855],
+      ['1+1e-15', 17.563681328621502],
+      ['-1', -Infinity],
+      ['-(1-1e-15)', complex(-17.616361586450413, 1.5707963267948966), 'real part 2.5 correct digits (rel err 3.0e-03)'],
+      ['-(1-2^-53)', complex(-18.714973875118524, 1.5707963267948966), 'real part 1.7 correct digits (rel err 1.9e-02)'],
+      ['-(1+2^-52)', -18.36840028483855],
+      ['-(1+1e-15)', -17.563681328621502]
+    ])
   })
 })

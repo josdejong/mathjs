@@ -3,6 +3,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const pi = math.pi
 const acosh = math.acosh
 const cosh = math.cosh
@@ -111,5 +112,39 @@ describe('acosh', function () {
   it('should LaTeX acosh', function () {
     const expression = math.parse('acosh(1)')
     assert.strictEqual(expression.toTex(), '\\cosh^{-1}\\left(1\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 1000 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('acosh', acosh, [
+      ['Infinity', Infinity],
+      ['-Infinity', complex(Infinity, 3.141592653589793)],
+      ['NaN', NaN, 'returns Complex 0 + NaNi instead of NaN'],
+      ['1e300', 691.4686750787737],
+      ['710', 7.258411654661591],
+      ['400', 6.6846101651642655],
+      ['-400', complex(6.6846101651642655, 3.141592653589793)],
+      ['-710', complex(7.258411654661591, 3.141592653589793)],
+      ['-1e300', complex(691.4686750787737, 3.141592653589793), 'real part overflows to Infinity (correct 691.4686750787737)'],
+      ['1e-8', complex(0, 1.5707963167948966), 'complex.js 2.4.2: real part 5.6e-17 instead of 0 (ok with 2.4.3)'],
+      ['1e-17', complex(0, 1.5707963267948966)],
+      ['1e-200', complex(0, 1.5707963267948966)],
+      ['-1e-8', complex(0, 1.5707963367948967), 'complex.js 2.4.2: real part 5.6e-17 instead of 0 (ok with 2.4.3)'],
+      ['-1e-17', complex(0, 1.5707963267948966)],
+      ['-1e-200', complex(0, 1.5707963267948966)],
+      ['0', complex(0, 1.5707963267948966)],
+      ['-0', complex(0, 1.5707963267948966)],
+      ['1', 0],
+      ['1-1e-15', complex(0, 4.4703483581542975e-8)],
+      ['1-2^-53', complex(0, 1.4901161193847656e-8)],
+      ['1+2^-52', 2.1073424255447014e-8],
+      ['1+1e-15', 4.7121609153872417e-8],
+      ['-1', complex(0, 3.141592653589793)],
+      ['-(1-1e-15)', complex(0, 3.1415926088863095)],
+      ['-(1-2^-53)', complex(0, 3.141592638688632)],
+      ['-(1+2^-52)', complex(2.1073424255447014e-8, 3.141592653589793), 'real part 8.4 correct digits (rel err 4.0e-09)'],
+      ['-(1+1e-15)', complex(4.7121609153872417e-8, 3.141592653589793), 'real part 8.7 correct digits (rel err 2.0e-09)']
+    ])
   })
 })

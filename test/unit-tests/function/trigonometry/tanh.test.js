@@ -1,6 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -84,5 +85,39 @@ describe('tanh', function () {
   it('should LaTeX tanh', function () {
     const expression = math.parse('tanh(1)')
     assert.strictEqual(expression.toTex(), '\\tanh\\left(1\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 1000 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('tanh', tanh, [
+      ['Infinity', 1],
+      ['-Infinity', -1],
+      ['NaN', NaN],
+      ['1e300', 1],
+      ['710', 1],
+      ['400', 1],
+      ['-400', -1],
+      ['-710', -1],
+      ['-1e300', -1],
+      ['1e-8', 1e-8],
+      ['1e-17', 1e-17],
+      ['1e-200', 1e-200],
+      ['-1e-8', -1e-8],
+      ['-1e-17', -1e-17],
+      ['-1e-200', -1e-200],
+      ['0', 0],
+      ['-0', -0],
+      ['1', 0.7615941559557649],
+      ['1-1e-15', 0.7615941559557645],
+      ['1-2^-53', 0.7615941559557649],
+      ['1+2^-52', 0.761594155955765],
+      ['1+1e-15', 0.7615941559557654],
+      ['-1', -0.7615941559557649],
+      ['-(1-1e-15)', -0.7615941559557645],
+      ['-(1-2^-53)', -0.7615941559557649],
+      ['-(1+2^-52)', -0.761594155955765],
+      ['-(1+1e-15)', -0.7615941559557654]
+    ])
   })
 })

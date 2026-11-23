@@ -1,6 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -76,5 +77,39 @@ describe('csch', function () {
   it('should LaTeX csch', function () {
     const expression = math.parse('csch(1)')
     assert.strictEqual(expression.toTex(), '\\mathrm{csch}\\left(1\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 1000 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('csch', csch, [
+      ['Infinity', 0],
+      ['-Infinity', -0],
+      ['NaN', NaN],
+      ['1e300', 0],
+      ['710', 8.95257245135026e-309, 'result underflows to 0 (correct 8.95257245135026e-309)'],
+      ['400', 3.8303391934280114e-174],
+      ['-400', -3.8303391934280114e-174],
+      ['-710', -8.95257245135026e-309, 'result underflows to 0 (correct -8.95257245135026e-309)'],
+      ['-1e300', -0],
+      ['1e-8', 100000000, 'result 8.2 correct digits (rel err 6.1e-09)'],
+      ['1e-17', 1e+17, 'result overflows to Infinity (correct 1e+17)'],
+      ['1e-200', 1e+200, 'result overflows to Infinity (correct 1e+200)'],
+      ['-1e-8', -100000000, 'result 8.2 correct digits (rel err 6.1e-09)'],
+      ['-1e-17', -1e+17, 'result overflows to -Infinity (correct -1e+17)'],
+      ['-1e-200', -1e+200, 'result overflows to -Infinity (correct -1e+200)'],
+      ['0', Infinity],
+      ['-0', -Infinity, 'result Infinity instead of -Infinity'],
+      ['1', 0.8509181282393216],
+      ['1-1e-15', 0.8509181282393227],
+      ['1-2^-53', 0.8509181282393217],
+      ['1+2^-52', 0.8509181282393213],
+      ['1+1e-15', 0.8509181282393203],
+      ['-1', -0.8509181282393216],
+      ['-(1-1e-15)', -0.8509181282393227],
+      ['-(1-2^-53)', -0.8509181282393217],
+      ['-(1+2^-52)', -0.8509181282393213],
+      ['-(1+1e-15)', -0.8509181282393203]
+    ])
   })
 })

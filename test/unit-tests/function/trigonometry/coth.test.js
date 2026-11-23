@@ -1,6 +1,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix
@@ -73,5 +74,39 @@ describe('coth', function () {
   it('should LaTeX coth', function () {
     const expression = math.parse('coth(1)')
     assert.strictEqual(expression.toTex(), '\\coth\\left(1\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 1000 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('coth', coth, [
+      ['Infinity', 1, 'result NaN instead of 1'],
+      ['-Infinity', -1],
+      ['NaN', NaN],
+      ['1e300', 1, 'result NaN instead of 1'],
+      ['710', 1, 'result NaN instead of 1'],
+      ['400', 1, 'result NaN instead of 1'],
+      ['-400', -1],
+      ['-710', -1],
+      ['-1e300', -1],
+      ['1e-8', 100000000, 'result 8.3 correct digits (rel err 5.0e-09)'],
+      ['1e-17', 1e+17, 'result overflows to Infinity (correct 1e+17)'],
+      ['1e-200', 1e+200, 'result overflows to Infinity (correct 1e+200)'],
+      ['-1e-8', -100000000, 'result 8.8 correct digits (rel err 1.6e-09)'],
+      ['-1e-17', -1e+17, 'result overflows to Infinity (correct -1e+17)'],
+      ['-1e-200', -1e+200, 'result overflows to Infinity (correct -1e+200)'],
+      ['0', Infinity],
+      ['-0', -Infinity, 'result Infinity instead of -Infinity'],
+      ['1', 1.3130352854993312],
+      ['1-1e-15', 1.3130352854993321],
+      ['1-2^-53', 1.3130352854993315],
+      ['1+2^-52', 1.3130352854993312],
+      ['1+1e-15', 1.3130352854993306],
+      ['-1', -1.3130352854993312],
+      ['-(1-1e-15)', -1.3130352854993321],
+      ['-(1-2^-53)', -1.3130352854993315],
+      ['-(1+2^-52)', -1.3130352854993312],
+      ['-(1+1e-15)', -1.3130352854993306]
+    ])
   })
 })

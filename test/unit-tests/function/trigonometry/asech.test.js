@@ -3,6 +3,7 @@
 import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 import { approxEqual, approxDeepEqual } from '../../../../tools/approx.js'
+import { testEdgeCases } from '../../../../tools/edgeCases.js'
 const pi = math.pi
 const asech = math.asech
 const sech = math.sech
@@ -115,5 +116,39 @@ describe('asech', function () {
   it('should LaTeX asech', function () {
     const expression = math.parse('asech(1)')
     assert.strictEqual(expression.toTex(), '\\mathrm{sech}^{-1}\\left(1\\right)')
+  })
+
+  describe('edge cases (#3754)', function () {
+    // expected: correctly rounded value (mpmath, 1000 digits), within 4 ulp.
+    // Cases with a third entry are known issues and are skipped until fixed.
+    testEdgeCases('asech', asech, [
+      ['Infinity', complex(0, 1.5707963267948966), 'imag part NaN instead of 1.5707963267948966'],
+      ['-Infinity', complex(0, 1.5707963267948966), 'imag part NaN instead of 1.5707963267948966'],
+      ['NaN', NaN, 'returns Complex NaN + NaNi instead of NaN'],
+      ['1e300', complex(0, 1.5707963267948966)],
+      ['710', complex(0, 1.5693878756250057), 'complex.js 2.4.2: real part 5.6e-17 instead of 0 (ok with 2.4.3)'],
+      ['400', complex(0, 1.5682963241907226), 'complex.js 2.4.2: real part 5.6e-17 instead of 0 (ok with 2.4.3)'],
+      ['-400', complex(0, 1.5732963293990707), 'complex.js 2.4.2: real part 5.6e-17 instead of 0 (ok with 2.4.3)'],
+      ['-710', complex(0, 1.5722047779647874), 'complex.js 2.4.2: real part 5.6e-17 instead of 0 (ok with 2.4.3)'],
+      ['-1e300', complex(0, 1.5707963267948966)],
+      ['1e-8', 19.11382792451231],
+      ['1e-17', 39.837093761458725],
+      ['1e-200', 461.2101657793691, 'result overflows to Infinity (correct 461.2101657793691)'],
+      ['-1e-8', complex(19.11382792451231, 3.141592653589793)],
+      ['-1e-17', complex(39.837093761458725, 3.141592653589793)],
+      ['-1e-200', complex(461.2101657793691, 3.141592653589793), 'real part overflows to Infinity (correct 461.2101657793691)'],
+      ['0', Infinity],
+      ['-0', complex(Infinity, 3.141592653589793)],
+      ['1', 0],
+      ['1-1e-15', 4.470348358154299e-8, 'result 1.3 correct digits (rel err 5.4e-02)'],
+      ['1-2^-53', 1.4901161193847656e-8, 'result 0.4 correct digits (rel err 4.1e-01)'],
+      ['1+2^-52', complex(0, 2.1073424255447014e-8), 'complex.js 2.4.2: imag part 8.2 correct digits (ok with 2.4.3)'],
+      ['1+1e-15', complex(0, 4.71216091538724e-8), 'complex.js 2.4.2: imag part 8.7 correct digits (ok with 2.4.3)'],
+      ['-1', complex(0, 3.141592653589793)],
+      ['-(1-1e-15)', complex(4.470348358154299e-8, 3.141592653589793), 'real part 1.3 correct digits (rel err 5.4e-02)'],
+      ['-(1-2^-53)', complex(1.4901161193847656e-8, 3.141592653589793), 'real part 0.4 correct digits (rel err 4.1e-01)'],
+      ['-(1+2^-52)', complex(0, 3.1415926325163688)],
+      ['-(1+1e-15)', complex(0, 3.1415926064681843)]
+    ])
   })
 })
