@@ -4,7 +4,7 @@ import { hasOwnProperty } from '../../utils/object.js'
 import { getSafeProperty, getSafeMethod } from '../../utils/customs.js'
 import { createSubScope } from '../../utils/scope.js'
 import { factory } from '../../utils/factory.js'
-import { defaultTemplate, latexFunctions } from '../../utils/latex.js'
+import { appendLatex, defaultTemplate, latexFunctions } from '../../utils/latex.js'
 
 const name = 'FunctionNode'
 const dependencies = [
@@ -55,15 +55,15 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
               break
             case 'object':
               if (isNode(property)) {
-                latex += property.toTex(options)
+                latex = appendLatex(latex, property.toTex(options))
               } else if (Array.isArray(property)) {
                 // make array of Nodes into comma separated list
-                latex += property.map(function (arg, index) {
+                latex = appendLatex(latex, property.map(function (arg, index) {
                   if (isNode(arg)) {
                     return arg.toTex(options)
                   }
                   throw new TypeError('Template: ' + match[1] + '[' + index + '] is not a Node.')
-                }).join(',')
+                }).join(','))
               } else {
                 throw new TypeError('Template: ' + match[1] + ' has to be a Node, String or array of Nodes')
               }
@@ -73,7 +73,7 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
           }
         } else { // with square brackets
           if (isNode(property[match[2]] && property[match[2]])) {
-            latex += property[match[2]].toTex(options)
+            latex = appendLatex(latex, property[match[2]].toTex(options))
           } else {
             throw new TypeError('Template: ' + match[1] + '[' + match[2] + '] is not a Node.')
           }

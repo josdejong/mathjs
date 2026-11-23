@@ -1,7 +1,7 @@
 import { getPrecedence } from '../operators.js'
 import { escape } from '../../utils/string.js'
 import { getSafeProperty } from '../../utils/customs.js'
-import { latexOperators } from '../../utils/latex.js'
+import { appendLatex, latexOperators } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'RelationalNode'
@@ -220,7 +220,7 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
 
       let ret = paramStrings[0]
       for (let i = 0; i < this.conditionals.length; i++) {
-        ret += latexOperators[this.conditionals[i]] + paramStrings[i + 1]
+        ret = appendLatex(ret + latexOperators[this.conditionals[i]], paramStrings[i + 1])
       }
 
       return ret

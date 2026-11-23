@@ -704,4 +704,20 @@ describe('OperatorNode', function () {
     assert.strictEqual(b.toHTML({ implicit: 'hide', parenthesis: 'auto' }), '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-symbol">b</span><span class="math-operator math-binary-operator math-explicit-binary-operator">*</span><span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span>')
     assert.strictEqual(c.toHTML({ implicit: 'hide', parenthesis: 'auto' }), '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-parenthesis math-round-parenthesis">)</span>')
   })
+
+  it('should separate LaTeX control sequences from symbolic constants', function () {
+    assert.strictEqual(math.parse('true and false').toTex(), 'true\\wedge false')
+    assert.strictEqual(math.parse('true or false').toTex(), 'true\\vee false')
+    assert.strictEqual(math.parse('true xor false').toTex(), 'true\\veebar false')
+    assert.strictEqual(math.parse('not true').toTex(), '\\neg true')
+    assert.strictEqual(math.parse('not false').toTex(), '\\neg false')
+    assert.strictEqual(math.parse('x != true').toTex(), ' x\\neq true')
+    assert.strictEqual(math.parse('null != undefined').toTex(), 'null\\neq undefined')
+    assert.strictEqual(math.parse('and(true, false)').toTex(), '\\left(true\\wedge false\\right)')
+    const multi = new OperatorNode('*', 'multiply', [one, two, new ConstantNode(true)])
+    assert.strictEqual(multi.toTex(), '1\\cdot2\\cdot true')
+    // Non-letter or already-spaced operands stay unchanged
+    assert.strictEqual(math.parse('not x').toTex(), '\\neg x')
+    assert.strictEqual(math.parse('not (true)').toTex(), '\\neg\\left(true\\right)')
+  })
 })

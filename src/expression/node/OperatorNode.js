@@ -4,7 +4,7 @@ import { createSubScope } from '../../utils/scope.js'
 import { escape } from '../../utils/string.js'
 import { getSafeProperty, isSafeMethod } from '../../utils/customs.js'
 import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '../operators.js'
-import { latexOperators } from '../../utils/latex.js'
+import { appendLatex, latexOperators } from '../../utils/latex.js'
 import { factory } from '../../utils/factory.js'
 
 const name = 'OperatorNode'
@@ -617,7 +617,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
         }
 
         if (assoc === 'right') { // prefix operator
-          return op + operand
+          return appendLatex(op, operand)
         } else if (assoc === 'left') { // postfix operator
           return operand + op
         }
@@ -663,7 +663,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
               return lhsTex + '~' + rhsTex
             }
         }
-        return lhsTex + op + rhsTex
+        return appendLatex(lhsTex + op, rhsTex)
       } else if ((args.length > 2) &&
                  ((this.getIdentifier() === 'OperatorNode:add') ||
                      (this.getIdentifier() === 'OperatorNode:multiply'))) {
@@ -680,7 +680,7 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
           return texifiedArgs.join('~')
         }
 
-        return texifiedArgs.join(op)
+        return texifiedArgs.reduce((acc, arg) => appendLatex(acc + op, arg))
       } else {
         // fall back to formatting as a function call
         // as this is a fallback, it doesn't use

@@ -303,6 +303,23 @@ export function escapeLatex (string) {
   return escapeLatexLib(string, { preserveFormatting: true })
 }
 
+/**
+ * Concatenate two LaTeX fragments, inserting a space when `left` ends with a
+ * LaTeX control word (e.g. `\neg`, `\wedge`) and `right` starts with an ASCII
+ * letter (e.g. `true`, `false`), so TeX does not merge them into a single
+ * undefined control sequence.
+ *
+ * @param {string} left
+ * @param {string} right
+ * @returns {string}
+ */
+export function appendLatex (left, right) {
+  if (/(?:^|[^\\])(?:\\\\)*\\[a-zA-Z]+$/.test(left) && /^[a-zA-Z]/.test(right)) {
+    return left + ' ' + right
+  }
+  return left + right
+}
+
 // @param {string} name
 // @param {boolean} isUnit
 export function toSymbol (name, isUnit) {
