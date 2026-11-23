@@ -579,7 +579,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   }
 
   /**
-   * Returns a simplfied form of node, or the original node if no simplification was possible.
+   * Returns a simplified form of node, or the original node if no simplification was possible.
    *
    * @param  {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode} node
    * @param  {Object | Function} rule
@@ -919,7 +919,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     } else if (rule instanceof SymbolNode) {
       // If the rule is a SymbolNode, then it carries a special meaning
       // according to the first one or two characters of the symbol node name.
-      // These meanings are expalined in the documentation for simplify()
+      // These meanings are explained in the documentation for simplify()
       if (rule.name.length === 0) {
         throw new Error('Symbol in rule has 0 length...!?')
       }

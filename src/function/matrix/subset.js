@@ -113,7 +113,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
   function _broadcastReplacement (replacement, index) {
     if (typeof replacement === 'string') {
-      throw new Error('can\'t boradcast a string')
+      throw new Error('can\'t broadcast a string')
     }
     if (index.isScalar()) {
       return replacement
