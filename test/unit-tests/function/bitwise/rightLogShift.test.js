@@ -166,4 +166,11 @@ describe('rightLogShift', function () {
     const expression = math.parse('rightLogShift(1,2)')
     assert.strictEqual(expression.toTex(), '\\left(1>>>2\\right)')
   })
+
+  it('should convert a negative scalar shifted by the zero entries of a sparse matrix', function () {
+    // x >>> 0 is the unsigned 32-bit conversion of x, not x itself
+    assert.deepStrictEqual(rightLogShift(-4, sparse([[0]])), matrix([[4294967292]]))
+    assert.deepStrictEqual(rightLogShift(-4, sparse([[0, 2]])), matrix([[4294967292, 1073741823]]))
+    assert.deepStrictEqual(rightLogShift(4294967296, sparse([[0]])), sparse([[0]]))
+  })
 })

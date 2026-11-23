@@ -2,7 +2,7 @@ import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
-import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
 import { createMatAlgo09xS0Sf } from '../../type/matrix/utils/matAlgo09xS0Sf.js'
 import { createMatAlgo15xAs } from '../../type/matrix/utils/matAlgo15xAs.js'
 import { factory } from '../../utils/factory.js'
@@ -23,7 +23,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
   const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed })
-  const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
   const matAlgo15xAs = createMatAlgo15xAs()
@@ -84,7 +84,7 @@ export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, (
         if (isZero(x)) {
           return zeros(y.size(), y.storage())
         }
-        return matAlgo10xSids(y, x, self, true)
+        return matAlgo12xSfs(y, x, self, true)
       }),
 
       'number | BigNumber, DenseMatrix': typed.referToSelf(self => (x, y) => {

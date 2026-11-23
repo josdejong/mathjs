@@ -198,4 +198,16 @@ describe('leftShift', function () {
     const expression = math.parse('leftShift(2,3)')
     assert.strictEqual(expression.toTex(), '\\left(2<<3\\right)')
   })
+
+  it('should convert values to 32-bit integers when shifting by zero, also for sparse matrices', function () {
+    // x << 0 is the 32-bit conversion of x, not x itself
+    assert.deepStrictEqual(leftShift(sparse([[2147483648]]), 0), sparse([[-2147483648]]))
+    assert.deepStrictEqual(leftShift(matrix([[2147483648]]), 0), matrix([[-2147483648]]))
+    assert.deepStrictEqual(leftShift([2147483648], 0), [-2147483648])
+    assert.deepStrictEqual(leftShift(sparse([[2147483648]]), sparse([[0]])), sparse([[-2147483648]]))
+    assert.deepStrictEqual(leftShift(matrix([[2147483648]]), sparse([[0]])), matrix([[-2147483648]]))
+    assert.deepStrictEqual(leftShift(2147483648, sparse([[0]])), matrix([[-2147483648]]))
+    assert.deepStrictEqual(leftShift(4294967296, sparse([[0]])), sparse([[0]]))
+    assert.throws(() => leftShift(sparse([[0.5]]), 0), /Integers expected in function leftShift/)
+  })
 })

@@ -2,14 +2,14 @@ import { createMatAlgo02xDS0 } from '../../type/matrix/utils/matAlgo02xDS0.js'
 import { createMatAlgo11xS0s } from '../../type/matrix/utils/matAlgo11xS0s.js'
 import { createMatAlgo14xDs } from '../../type/matrix/utils/matAlgo14xDs.js'
 import { createMatAlgo15xAs } from '../../type/matrix/utils/matAlgo15xAs.js'
-import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
-import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
-import { createMatAlgo08xS0Sid } from '../../type/matrix/utils/matAlgo08xS0Sid.js'
+import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatAlgo09xS0Sf } from '../../type/matrix/utils/matAlgo09xS0Sf.js'
 import { factory } from '../../utils/factory.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { leftShiftNumber } from '../../plain/number/index.js'
 import { leftShiftBigNumber } from '../../utils/bignumber/bitwise.js'
-import { deepMap, clone } from '../../utils/array.js'
+import { deepMap } from '../../utils/array.js'
 
 const name = 'leftShift'
 const dependencies = [
@@ -21,10 +21,10 @@ const dependencies = [
 ]
 
 export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, isZero, zeros, DenseMatrix }) => {
-  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
+  const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
   const matAlgo02xDS0 = createMatAlgo02xDS0({ typed })
-  const matAlgo08xS0Sid = createMatAlgo08xS0Sid({ typed })
-  const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
+  const matAlgo09xS0Sf = createMatAlgo09xS0Sf({ typed })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matAlgo11xS0s = createMatAlgo11xS0s({ typed })
   const matAlgo14xDs = createMatAlgo14xDs({ typed })
   const matAlgo15xAs = createMatAlgo15xAs()
@@ -67,27 +67,18 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
       'bigint, bigint': (x, y) => x << y,
 
+      // note that shifting by zero is not a no-op: the shift operators
+      // convert the value to a 32-bit integer first, so there is no
+      // shortcut for a scalar shift of zero
       'SparseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
-        // check scalar
-        if (isZero(y)) {
-          return x.clone()
-        }
         return matAlgo11xS0s(x, y, self, false)
       }),
 
       'DenseMatrix, number | BigNumber': typed.referToSelf(self => (x, y) => {
-        // check scalar
-        if (isZero(y)) {
-          return x.clone()
-        }
         return matAlgo14xDs(x, y, self, false)
       }),
 
       'Array, number | BigNumber': typed.referToSelf(self => (x, y) => {
-        // check scalar
-        if (isZero(y)) {
-          return clone(x)
-        }
         return matAlgo15xAs(x, y, self, false)
       }),
 
@@ -96,7 +87,7 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
         if (isZero(x)) {
           return zeros(y.size(), y.storage())
         }
-        return matAlgo10xSids(y, x, self, true)
+        return matAlgo12xSfs(y, x, self, true)
       }),
 
       'number | BigNumber, DenseMatrix': typed.referToSelf(self => (x, y) => {
@@ -115,8 +106,12 @@ export const createLeftShift = /* #__PURE__ */ factory(name, dependencies, ({ ty
       })
     },
     matrixAlgorithmSuite({
-      SS: matAlgo08xS0Sid,
-      DS: matAlgo01xDSid,
+      // a shift by zero still converts the shifted value to a 32-bit
+      // integer, so entries where the shift is zero have to be evaluated,
+      // not copied; entries where the shifted value is zero are always
+      // zero, so they can be skipped
+      SS: matAlgo09xS0Sf,
+      DS: matAlgo03xDSf,
       SD: matAlgo02xDS0
     })
   )

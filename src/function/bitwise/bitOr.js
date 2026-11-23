@@ -1,8 +1,8 @@
 import { bitOrBigNumber } from '../../utils/bignumber/bitwise.js'
 import { factory } from '../../utils/factory.js'
-import { createMatAlgo10xSids } from '../../type/matrix/utils/matAlgo10xSids.js'
-import { createMatAlgo04xSidSid } from '../../type/matrix/utils/matAlgo04xSidSid.js'
-import { createMatAlgo01xDSid } from '../../type/matrix/utils/matAlgo01xDSid.js'
+import { createMatAlgo12xSfs } from '../../type/matrix/utils/matAlgo12xSfs.js'
+import { createMatAlgo05xSfSf } from '../../type/matrix/utils/matAlgo05xSfSf.js'
+import { createMatAlgo03xDSf } from '../../type/matrix/utils/matAlgo03xDSf.js'
 import { createMatrixAlgorithmSuite } from '../../type/matrix/utils/matrixAlgorithmSuite.js'
 import { bitOrNumber } from '../../plain/number/index.js'
 
@@ -10,9 +10,9 @@ const name = 'bitOr'
 const dependencies = ['typed', 'matrix', 'DenseMatrix']
 
 export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix }) => {
-  const matAlgo01xDSid = createMatAlgo01xDSid({ typed })
-  const matAlgo04xSidSid = createMatAlgo04xSidSid({ typed })
-  const matAlgo10xSids = createMatAlgo10xSids({ typed, DenseMatrix })
+  const matAlgo03xDSf = createMatAlgo03xDSf({ typed })
+  const matAlgo05xSfSf = createMatAlgo05xSfSf({ typed })
+  const matAlgo12xSfs = createMatAlgo12xSfs({ typed, DenseMatrix })
   const matrixAlgorithmSuite = createMatrixAlgorithmSuite({ typed, matrix })
 
   /**
@@ -51,9 +51,12 @@ export const createBitOr = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       'bigint, bigint': (x, y) => x | y
     },
     matrixAlgorithmSuite({
-      SS: matAlgo04xSidSid,
-      DS: matAlgo01xDSid,
-      Ss: matAlgo10xSids
+      // x | 0 and 0 | y are not x and y in general: the bitwise operators
+      // convert their operands to 32-bit integers first, so entries where
+      // one operand is zero have to be evaluated, not copied
+      SS: matAlgo05xSfSf,
+      DS: matAlgo03xDSf,
+      Ss: matAlgo12xSfs
     })
   )
 })
