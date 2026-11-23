@@ -82,12 +82,11 @@ Otherwise, the explicit conversions are by default "unsafe", in that they
 will produce the value of the requested type that most closely approximates
 the numeric value of the supplied argument, even if rounding must occur or
 (apparent) precision is lost or gained. Thus, `bigint(6.283)` will return
-`6n`. However, you may supply an options object as a final argument to the
-conversion, and if it includes the key "safe" with a true value, a safe
-conversion, equivalent to that used in implicit conversion, will be
-performed instead. See the documentation pages for the individual
-constructor functions for details on any other options available in
-specific cases.
+`6n`. However, if you want to perform an explicit conversion with the same
+safety provisions as implicit conversion, you can pass an options object
+like `{safe: true}` as an extra argument to the conversion. See the
+documentation pages for the individual constructor functions for details on
+any other options available  for conversions to specific types.
 
 ## Examples of using types with mathjs functions:
 
