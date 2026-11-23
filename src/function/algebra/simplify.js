@@ -13,6 +13,7 @@ const dependencies = [
   'resolve',
   'simplifyConstant',
   'simplifyCore',
+  'compareNatural',
   'AccessorNode',
   'ArrayNode',
   'ConstantNode',
@@ -33,6 +34,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     resolve,
     simplifyConstant,
     simplifyCore,
+    compareNatural,
     AccessorNode,
     ArrayNode,
     ConstantNode,
@@ -107,8 +109,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *
    *  An optional `options` argument can be passed as last argument of `simplify`.
    *  Currently available options (defaults in parentheses):
-   *  - `consoleDebug` (false): whether to write the expression being simplified
-   *    and any changes to it, along with the rule responsible, to console
+   *  - `consoleDebug` (0): Positive integer values turn on successively deeper
+   *    levels of debugging messages written to the console. For example,
+   *    debug level 1 will write the expression being simplified
+   *    and any changes to it, along with the rule responsible. Debug
+   *    level 2 shows the subexpression values of any rule matched, etc.
    *  - `context` (simplify.defaultContext): an object giving properties of
    *    each operator, which determine what simplifications are allowed. The
    *    currently meaningful properties are commutative, associative,
@@ -130,6 +135,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *  - `fractionsLimit` (10000): when `exactFractions` is true, constants will
    *    be expressed as fractions only when both numerator and denominator
    *    are smaller than `fractionsLimit`.
+   *  - `passLimit` (32): if simplify runs this many passes without settling,
+   *    throws an error.
    *
    * Syntax:
    *
@@ -178,6 +185,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   simplify.realContext = realContext
   simplify.positiveContext = positiveContext
 
+  const allP = { parenthesis: 'all' } // for convenience
   function removeParens (node) {
     return node.transform(function (node) {
       return isParenthesisNode(node)
@@ -218,19 +226,18 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   // To evaluate lhs constants for rhs constants, use: { l: 'c1+c2', r: 'c3', evaluate: 'c3 = c1 + c2' }. Multiple assignments are separated by ';' in block format.
   // It is possible to get into an infinite loop with conflicting rules
   simplify.rules = [
-    simplifyCore,
-    // { l: 'n+0', r: 'n' },     // simplifyCore
-    // { l: 'n^0', r: '1' },     // simplifyCore
-    // { l: '0*n', r: '0' },     // simplifyCore
-    // { l: 'n/n', r: '1'},      // simplifyCore
-    // { l: 'n^1', r: 'n' },     // simplifyCore
-    // { l: '+n1', r:'n1' },     // simplifyCore
-    // { l: 'n--n1', r:'n+n1' }, // simplifyCore
+    simplifyCore, // converts functions to operators and elminates trivial ops
     { l: 'log(e)', r: '1' },
 
-    // temporary rules
+    // Temporary rules
+    // ---------------
+    // These expand an expression into an unsimplified form in which we
+    // will be more likely to find common terms and/or cancellations
+    // They will be undone at the end to return to a more standard
+    // simplified form.
     // Note initially we tend constants to the right because like-term
-    // collection prefers the left, and we would rather collect nonconstants
+    // collection prefers the left, and we would rather collect nonconstants.
+    // At the end, we will move constants to the left of terms.
     {
       s: 'n-n1 -> n+-n1', // temporarily replace 'subtract' so we can further flatten the 'add' operator
       assuming: { subtract: { total: true } }
@@ -251,20 +258,34 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: '-(v*cl) -> v * (-cl)', // non-commutative version, part 2
       assuming: { multiply: { commutative: false }, subtract: { total: true } }
     },
-    { l: '-(n1/n2)', r: '-n1/n2' },
+    { l: '-(n1/n2)', r: '-n1/n2', assuming: { subtract: { total: true } } },
     { l: '-v', r: 'v * (-1)' }, // finish making non-constant terms positive
-    { l: '(n1 + n2)*(-1)', r: 'n1*(-1) + n2*(-1)', repeat: true }, // expand negations to achieve as much sign cancellation as possible
-    { l: 'n/n1^n2', r: 'n*n1^-n2' }, // temporarily replace 'divide' so we can further flatten the 'multiply' operator
-    { l: 'n/n1', r: 'n*n1^-1' },
+    // expand negations to achieve as much sign cancellation as possible:
+    {
+      s: '(n1 + n2)*(-1) -> n1*(-1) + n2*(-1)',
+      repeat: true,
+      assuming: { subtract: { total: true } }
+    },
+    // temporarily replace 'divide' so we can further flatten the 'multiply'
+    // operator:
+    { l: 'n/n1^n2', r: 'n*n1^-n2', assuming: { subtract: { total: true } } },
+    { l: 'n/n', r: '1', assuming: { divide: { total: true } } },
+    { l: 'n/n1', r: 'n*n1^-1', assuming: { subtract: { total: true } } },
+    { s: '1*n -> n' }, // If any of the above introduced factor of 1, remove it
     {
       s: '(n1*n2)^n3 -> n1^n3 * n2^n3',
-      assuming: { multiply: { commutative: true } }
+      assuming: { multiply: { commutative: true } },
+      repeat: true // over every factor, as this is undone again at the end of the pass
     },
     {
       s: '(n1*n2)^(-1) -> n2^(-1) * n1^(-1)',
       assuming: { multiply: { commutative: false } }
     },
 
+    // Main simplification rules
+    // -------------------------
+    // These are the heart of what makes progress on simplifying complex
+    // expressions.
     // expand nested exponentiation
     {
       s: '(n ^ n1) ^ n2 -> n ^ (n1 * n2)',
@@ -272,7 +293,6 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     },
 
     // collect like factors; into a sum, only do this for nonconstants
-    { l: ' vd   * ( vd   * n1 + n2)', r: 'vd^2       * n1 +  vd   * n2' },
     {
       s: ' vd   * (vd^n4 * n1 + n2)   ->  vd^(1+n4)  * n1 +  vd   * n2',
       assuming: { divide: { total: true } } // v*1/v = v^(1+-1) needs 1/v
@@ -285,7 +305,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: 'vd^n3 * (vd^n4 * n1 + n2)   ->  vd^(n3+n4) * n1 + vd^n3 * n2',
       assuming: { divide: { total: true } }
     },
-    { l: 'n*n', r: 'n^2' },
+    { l: ' vd   * ( vd   * n1 + n2)', r: 'vd^2       * n1 +  vd   * n2' },
+    // collect like factors
     {
       s: 'n * n^n1 -> n^(n1+1)',
       assuming: { divide: { total: true } } // n*1/n = n^(-1+1) needs 1/n
@@ -294,6 +315,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: 'n^n1 * n^n2 -> n^(n1+n2)',
       assuming: { divide: { total: true } } // ditto for n^2*1/n^2
     },
+    { l: 'n*n', r: 'n^2' },
 
     // Unfortunately, to deal with more complicated cancellations, it
     // becomes necessary to simplify constants twice per pass. It's not
@@ -310,7 +332,12 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'vd*n + vd', r: 'vd*(n+1)' }, // NOTE: leftmost position is special:
     { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
     { l: 'n3^(-n4)*n1 +   n3  * n2', r: 'n3^(-n4)*(n1 + n3^(n4+1) *n2)' },
-    { l: 'n3^(-n4)*n1 + n3^n5 * n2', r: 'n3^(-n4)*(n1 + n3^(n4+n5)*n2)' },
+    {
+      s: 'n3^(-n4)*n1 + n3^n5 * n2  ->  n3^(-n4)*(n1 + n3^(n4+n5)*n2)',
+      prefer: 'n4' // want compareNatural greatest value for n4
+    },
+    // same with a bare power as the other term: by now 1/y is y^-1, not 1*y^-1
+    { l: 'n3^(-n4)*n1 + n3^n5', r: 'n3^(-n4)*(n1 + n3^(n4+n5))' },
     // noncommutative additional cases (term collection & factoring)
     {
       s: 'n*vd + vd -> (n+1)*vd',
@@ -345,6 +372,17 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       s: 'cd + cd*n -> cd*(1+n)',
       assuming: { multiply: { commutative: false } }
     },
+
+    // Undo the distribution of powers over products (the last of the
+    // temporary rules) here, in front of the second constant simplification,
+    // so that the products and exponents this builds (2*3, -1*2, x*(-1)) still
+    // get their constants folded, their signs fixed and their constants ordered.
+    {
+      s: 'n1^vd * n2^vd -> (n1*n2)^vd', // note customary to leave constant
+      assuming: { multiply: { commutative: true } }, // exponents distributed
+      repeat: true
+    },
+
     simplifyConstant, // Second: before returning expressions to "standard form"
 
     // make factors positive (and undo 'make non-constant terms positive')
@@ -369,45 +407,75 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       imposeContext: { multiply: { commutative: false } }
     },
 
-    // undo temporary rules
-    // { l: '(-1) * n', r: '-n' }, // #811 added test which proved this is redundant
-    { l: 'n+-n1', r: 'n-n1' }, // undo replace 'subtract'
-    { l: 'n+-(n1)', r: 'n-(n1)' },
+    // Undo temporary rules
+    // --------------------
+    // Should proceed in reverse order of the temporary rules (the power
+    // distribution was already undone above, before the second
+    // simplifyConstant)
+
+    {
+      // Merge reciprocal factors before they are turned back into divisions:
+      // 'n*(n1^-1) -> n/n1' below takes the first of them out, so one at a
+      // time they would come back in reverse order, x*y^-1*z^-1 as x/(z*y).
+      s: 'n1^-1 * n2^-1 -> (n1*n2)^-1',
+      assuming: { multiply: { commutative: true } },
+      repeat: true
+    },
     {
       s: 'n*(n1^-1) -> n/n1', // undo replace 'divide'; for * commutative
       assuming: { multiply: { commutative: true } } // o.w. / not conventional
     },
     {
       s: 'n*n1^-n2 -> n/n1^n2',
-      assuming: { multiply: { commutative: true } } // o.w. / not conventional
+      assuming: { multiply: { commutative: true } }, // o.w. / not conventional
+      repeat: true // a product may hold several negative powers
     },
     {
       s: 'n^-1 -> 1/n',
       assuming: { multiply: { commutative: true } } // o.w. / not conventional
     },
+    {
+      s: 'n^-n1 -> 1/n^n1',
+      assuming: { multiply: { commutative: true } } // o.w. / not conventional
+    },
     { l: 'n^1', r: 'n' }, // can be produced by power cancellation
+    // { l: '(-1) * n', r: '-n' }, // #811 added test which proved this is redundant
     {
       s: 'n*(n1/n2) -> (n*n1)/n2', // '*' before '/'
       assuming: { multiply: { associative: true } }
     },
-    {
-      s: 'n-(n1+n2) -> n-n1-n2', // '-' before '+'
-      assuming: { addition: { associative: true, commutative: true } }
-    },
-    // { l: '(n1/n2)/n3', r: 'n1/(n2*n3)' },
-    // { l: '(n*n1)/(n*n2)', r: 'n1/n2' },
-
     // simplifyConstant can leave an extra factor of 1, which can always
     // be eliminated, since the identity always commutes
     { l: '1*n', r: 'n', imposeContext: { multiply: { commutative: true } } },
-
+    {
+      // A power of a quotient was distributed over numerator and denominator
+      // above; put it back together, (x/2)^y rather than x^y/2^y
+      s: 'n1^vd / n2^vd -> (n1/n2)^vd',
+      assuming: { multiply: { commutative: true } }
+    },
     {
       s: 'n1/(n2/n3) -> (n1*n3)/n2',
       assuming: { multiply: { associative: true } }
     },
+    {
+      s: 'n1/n2/n3 -> n1/(n2*n3)',
+      assuming: { multiply: { commutative: true } }
+    },
+    {
+      s: 'n1/n2/n3 -> n1/(n3*n2)',
+      assuming: { multiply: { commutative: false } }
+    },
+    { l: 'n1/(-n2)', r: '-n1/n2', assuming: { subtract: { total: true } } },
 
-    { l: 'n1/(-n2)', r: '-n1/n2' }
-
+    { l: 'n+-n1', r: 'n-n1', assuming: { subtract: { total: true } } },
+    { l: 'n+-(n1)', r: 'n-(n1)', assuming: { subtract: { total: true } } },
+    {
+      s: 'n-(n1+n2) -> n-n1-n2', // '-' before '+'
+      assuming: {
+        addition: { associative: true, commutative: true },
+        subtract: { total: true }
+      }
+    }
   ]
 
   /**
@@ -430,11 +498,15 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     }
     newRule.l = removeParens(parse(newRule.l))
     newRule.r = removeParens(parse(newRule.r))
-    for (const prop of ['imposeContext', 'repeat', 'assuming']) {
+    const copyProps = 'imposeContext repeat assuming ruleName prefer'.split(' ')
+    for (const prop of copyProps) {
       if (prop in ruleObject) {
         newRule[prop] = ruleObject[prop]
       }
     }
+    newRule.ruleName = newRule.ruleName ? newRule.ruleName + ': ' : ''
+    newRule.ruleName +=
+      `${newRule.l.toString(allP)} -> ${newRule.r.toString(allP)}`
     if (ruleObject.evaluate) {
       newRule.evaluate = parse(ruleObject.evaluate)
     }
@@ -505,6 +577,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           break
         case 'function':
           newRule = rule
+          newRule.ruleName = rule.ruleName || rule.name || '<Anonymous>'
           break
         default:
           throw TypeError('Unsupported type of rule: ' + ruleType)
@@ -522,33 +595,40 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   }
 
   function _simplify (expr, rules, scope = createEmptyMap(), options = {}) {
-    const debug = options.consoleDebug
+    const debug = options.consoleDebug || 0
+    if (debug) options.consoleDebug = debug - 1 // reduce level for calls
     rules = _buildRules(rules || simplify.rules, options.context)
     let res = resolve(expr, scope)
     res = removeParens(res)
     const visited = {}
-    let str = res.toString({ parenthesis: 'all' })
+    let str = res.toString(allP)
+    const passLimit = options.passLimit || 32
+    let passesRemaining = passLimit
     while (!visited[str]) {
+      if (passesRemaining-- === 0) {
+        throw new Error(`More than ${passLimit} passes needed ` +
+          `to simplify '${expr.toString()}'`)
+      }
       visited[str] = true
       _lastsym = 0 // counter for placeholder symbols
       let laststr = str
       if (debug) console.log('Working on: ', str)
       for (let i = 0; i < rules.length; i++) {
-        let rulestr = ''
         if (typeof rules[i] === 'function') {
           res = rules[i](res, options)
-          if (debug) rulestr = rules[i].name
         } else {
           flatten(res, options.context)
-          res = applyRule(res, rules[i], options.context)
-          if (debug) {
-            rulestr = `${rules[i].l.toString()} -> ${rules[i].r.toString()}`
+          const flatstr = res.toString(allP)
+          if (debug && flatstr !== laststr) {
+            console.log('Flattens to:\n', flatstr)
+            laststr = flatstr
           }
+          res = applyRule(res, rules[i], options)
         }
         if (debug) {
-          const newstr = res.toString({ parenthesis: 'all' })
+          const newstr = res.toString(allP)
           if (newstr !== laststr) {
-            console.log('Applying', rulestr, 'produced', newstr)
+            console.log('Applying', rules[i].ruleName, 'produced:\n', newstr)
             laststr = newstr
           }
         }
@@ -557,16 +637,17 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
          */
         unflattenl(res, options.context)
       }
-      str = res.toString({ parenthesis: 'all' })
+      str = res.toString(allP)
+      if (debug) { console.log('Pass completed:', str, '\n') }
     }
     return res
   }
 
-  function mapRule (nodes, rule, context) {
+  function mapRule (nodes, rule, options) {
     let resNodes = nodes
     if (nodes) {
       for (let i = 0; i < nodes.length; ++i) {
-        const newNode = applyRule(nodes[i], rule, context)
+        const newNode = applyRule(nodes[i], rule, options)
         if (newNode !== nodes[i]) {
           if (resNodes === nodes) {
             resNodes = nodes.slice()
@@ -583,11 +664,16 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *
    * @param  {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode} node
    * @param  {Object | Function} rule
-   * @param  {Object} context -- information about assumed properties of operators
+   * @param  {Object} options -- simplification options
    * @return {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode} The simplified form of `expr`, or the original node if no simplification was possible.
    */
-  function applyRule (node, rule, context) {
-    //    console.log('Entering applyRule("', rule.l.toString({parenthesis:'all'}), '->', rule.r.toString({parenthesis:'all'}), '",', node.toString({parenthesis:'all'}),')')
+  function applyRule (node, rule, options) {
+    const { context, consoleDebug: debug } = options
+    if (debug) {
+      options = Object.assign({}, options)
+      options.consoleDebug = debug - 1 // reduce level for calls
+    }
+    //    console.log('Entering applyRule("', rule.l.toString(allP), '->', rule.r.toString(allP), '",', node.toString(allP),')')
 
     // check that the assumptions for this rule are satisfied by the current
     // context:
@@ -611,37 +697,37 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     // If a child could not be simplified, applying the rule to it
     // will have no effect since the node is returned unchanged
     if (res instanceof OperatorNode || res instanceof FunctionNode) {
-      const newArgs = mapRule(res.args, rule, context)
+      const newArgs = mapRule(res.args, rule, options)
       if (newArgs !== res.args) {
         res = res.clone()
         res.args = newArgs
       }
     } else if (res instanceof ParenthesisNode) {
       if (res.content) {
-        const newContent = applyRule(res.content, rule, context)
+        const newContent = applyRule(res.content, rule, options)
         if (newContent !== res.content) {
           res = new ParenthesisNode(newContent)
         }
       }
     } else if (res instanceof ArrayNode) {
-      const newItems = mapRule(res.items, rule, context)
+      const newItems = mapRule(res.items, rule, options)
       if (newItems !== res.items) {
         res = new ArrayNode(newItems)
       }
     } else if (res instanceof AccessorNode) {
       let newObj = res.object
       if (res.object) {
-        newObj = applyRule(res.object, rule, context)
+        newObj = applyRule(res.object, rule, options)
       }
       let newIndex = res.index
       if (res.index) {
-        newIndex = applyRule(res.index, rule, context)
+        newIndex = applyRule(res.index, rule, options)
       }
       if (newObj !== res.object || newIndex !== res.index) {
         res = new AccessorNode(newObj, newIndex)
       }
     } else if (res instanceof IndexNode) {
-      const newDims = mapRule(res.dimensions, rule, context)
+      const newDims = mapRule(res.dimensions, rule, options)
       if (newDims !== res.dimensions) {
         res = new IndexNode(newDims)
       }
@@ -649,7 +735,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       let changed = false
       const newProps = {}
       for (const prop in res.properties) {
-        newProps[prop] = applyRule(res.properties[prop], rule, context)
+        newProps[prop] = applyRule(res.properties[prop], rule, options)
         if (newProps[prop] !== res.properties[prop]) {
           changed = true
         }
@@ -661,26 +747,47 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
     // Try to match a rule against this node
     let repl = rule.r
-    let matches = _ruleMatch(rule.l, res, mergedContext)[0]
+    let matches = _ruleMatch(rule.l, res, mergedContext)
 
     // If the rule is associative operator, we can try matching it while allowing additional terms.
     // This allows us to match rules like 'n+n' to the expression '(1+x)+x' or even 'x+1+x' if the operator is commutative.
-    if (!matches && rule.expanded) {
+    if (!matches.length && rule.expanded) {
       repl = rule.expanded.r
-      matches = _ruleMatch(rule.expanded.l, res, mergedContext)[0]
+      matches = _ruleMatch(rule.expanded.l, res, mergedContext)
     }
     // Additional, non-commutative context expansion-rules
-    if (!matches && rule.expandedNC1) {
+    if (!matches.length && rule.expandedNC1) {
       repl = rule.expandedNC1.r
-      matches = _ruleMatch(rule.expandedNC1.l, res, mergedContext)[0]
-      if (!matches) { // Existence of NC1 implies NC2
+      matches = _ruleMatch(rule.expandedNC1.l, res, mergedContext)
+      if (!matches.length) { // Existence of NC1 implies NC2
         repl = rule.expandedNC2.r
-        matches = _ruleMatch(rule.expandedNC2.l, res, mergedContext)[0]
+        matches = _ruleMatch(rule.expandedNC2.l, res, mergedContext)
       }
     }
 
-    if (matches) {
-      // const before = res.toString({parenthesis: 'all'})
+    if (matches.length) {
+      let order = ''
+      if (rule.prefer && matches.length > 1) {
+        order = ' sorted by ' + rule.prefer
+        matches.sort((a, b) => compareNatural( // reverse order
+          b.placeholders[rule.prefer], a.placeholders[rule.prefer]))
+      }
+      if (debug) {
+        if (matches.length === 1) {
+          console.log(
+            `Rule ${rule.ruleName} matched with`, matches[0].placeholders)
+        } else {
+          console.log(`Rule ${rule.ruleName} had multiple matches${order}.`)
+          if (!rule.repeat) {
+            let m = 0
+            for (const match of matches) {
+              console.log(`Match ${++m}:`, match.placeholders)
+            }
+          }
+        }
+      }
+      const match = matches[0]
+      // const before = res.toString(allP)
 
       // Create a new node by cloning the rhs of the matched rule
       // we keep any implicit multiplication state if relevant
@@ -692,19 +799,19 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
 
       // Replace placeholders with their respective nodes without traversing deeper into the replaced nodes
       res = res.transform(function (node) {
-        if (node.isSymbolNode && hasOwnProperty(matches.placeholders, node.name)) {
-          return matches.placeholders[node.name].clone()
+        if (node.isSymbolNode && hasOwnProperty(match.placeholders, node.name)) {
+          return match.placeholders[node.name].clone()
         } else {
           return node
         }
       })
 
-      // const after = res.toString({parenthesis: 'all'})
+      // const after = res.toString(allP)
       // console.log('Simplified ' + before + ' to ' + after)
     }
 
     if (rule.repeat && res !== node) {
-      res = applyRule(res, rule, context)
+      res = applyRule(res, rule, options)
     }
 
     return res
@@ -843,7 +950,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     //    console.log('rule = ' + rule)
     //    console.log('node = ' + node)
 
-    //    console.log('Entering _ruleMatch(', rule.toString({parenthesis:'all'}), ', ', node.toString({parenthesis:'all'}), ', ', context, ')')
+    //    console.log('Entering _ruleMatch(', rule.toString(allP), ', ', node.toString(allP), ', ', context, ')')
     let res = [{ placeholders: {} }]
 
     if ((rule instanceof OperatorNode && node instanceof OperatorNode) ||

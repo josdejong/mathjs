@@ -94,6 +94,29 @@ describe('simplifyCore', function () {
     })
   })
 
+  it('should reduce powers of one', function () {
+    testSimplifyCore('1^x', '1')
+    testSimplifyCore('1^(x+y)', '1')
+    testSimplifyCore('1^x^y', '1')
+    testSimplifyCore('(1*1)^x', '1')
+    testSimplifyCore('pow(1, x)', '1')
+    testSimplifyCore('y*1^x', 'y')
+    testSimplifyCore('sin(1^x)', 'sin(1)')
+    testSimplifyCore('2^x', '2 ^ x')
+    testSimplifyCore('(-1)^x', '(-1) ^ x')
+  })
+
+  it('should not reduce powers of zero', function () {
+    // Unlike 1^x, the value of 0^x depends on x: it is 0 for positive x,
+    // but 1 for x = 0 and Infinity for negative x.
+    testSimplifyCore('0^x', '0 ^ x')
+    testSimplifyCore('0^(-x)', '0 ^ (-x)')
+    testSimplifyCore('y*0^x', 'y * 0 ^ x')
+    testSimplifyCore('0^0', '1')
+    assert.strictEqual(math.simplifyCore('0^x').evaluate({ x: 0 }), 1)
+    assert.strictEqual(math.simplifyCore('0^x').evaluate({ x: -1 }), Infinity)
+  })
+
   it('should not alter order of multiplication when noncommutative', function () {
     testSimplifyCore('5*x*3', '5 * x * 3', {}, { context: { multiply: { commutative: false } } })
   })

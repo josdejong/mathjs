@@ -48,6 +48,14 @@ describe('simplify', function () {
     assert.strictEqual(math.simplify(left).evaluate(scope), math.parse(right).evaluate(scope))
   }
 
+  describe('safety limit', function () {
+    it('should throw if simplification takes too many passes', function () {
+      assert.throws(
+        () => math.simplify('2/x^2 - x^(2*z)', {}, { passLimit: 2 }),
+        /[Mm]ore.*2 passes needed/)
+    })
+  })
+
   describe('wildcard types', function () {
     it('should match constants (\'c\' and \'cl\') correctly', function () {
       // c, cl - ConstantNode
@@ -387,6 +395,119 @@ describe('simplify', function () {
     simplifyAndCompare('8 - n', '8 - n')
   })
 
+  it('should remove unit factors raised to a power', function () {
+    simplifyAndCompare('1^x', '1')
+    simplifyAndCompare('1^(2*x)', '1')
+    simplifyAndCompare('1^x*y', 'y')
+    simplifyAndCompare('(1*x)^y', 'x^y')
+    simplifyAndCompare('(x/2)^y', '(x/2)^y')
+    simplifyAndCompare('(1/x)^y', '1/x^y')
+  })
+
+  it('should leave powers of zero alone, as their value depends on the exponent', function () {
+    simplifyAndCompare('0^x', '0^x')
+    simplifyAndCompare('0^(x-x)', '1')
+    simplifyAndCompare('0^(-1)', 'Infinity')
+  })
+
+  it('should terminate when simplifying symbolic powers of reciprocals', function () {
+    const expressions = [
+      ['(1/(x*(y-1)))^(1/(y-1))', {
+        default: '1/(x*(y-1))^(1/(y-1))',
+        real: '(1/(x*(y-1)))^(1/(y-1))',
+        positive: '(1/(x*(y-1)))^(1/(y-1))',
+        addNoCommute: '1/(x*(y-1))^(1/(y-1))'
+      }],
+      ['(1/(x*y))^z', {
+        default: '1/(x*y)^z',
+        real: '(1/(x*y))^z',
+        positive: '(1/(x*y))^z',
+        addNoCommute: '1/(x*y)^z'
+      }],
+      ['(2/(x*y))^z', '(2/(x*y))^z'],
+      ['(1/(2*x))^y', {
+        default: '1/(2*x)^y',
+        real: '(1/(2*x))^y',
+        positive: '(1/(2*x))^y',
+        addNoCommute: '1/(2*x)^y'
+      }],
+      ['(1/(x*y*z))^w', {
+        default: '1/(x * y * z)^w',
+        real: '(1/(x * y * z))^w',
+        positive: '(1/(x * y * z))^w',
+        addNoCommute: '1/(x * y * z)^w'
+      }],
+      ['(1/(x*y))^z*(1/(a*b))^z', {
+        default: '1/(x*y*a*b)^z',
+        real: '(1/(x*y*a*b))^z',
+        positive: '(1/(x*y*a*b))^z',
+        addNoCommute: '1/(x*y*a*b)^z'
+      }]
+    ]
+    const contexts = {
+      default: math.simplify.defaultContext,
+      real: math.simplify.realContext,
+      positive: math.simplify.positiveContext,
+      addNoCommute: { add: { commutative: false } }
+    }
+    const scope = { x: 2, y: 3, z: 0.5, w: 1.5, a: 5, b: 7 }
+    for (const [name, context] of Object.entries(contexts)) {
+      for (const [expression, expected] of expressions) {
+        const label = `${expression} (${name} context)`
+        let passes = 0
+        const rules = [node => {
+          // Fail a non-terminating rule cycle without hanging the test runner.
+          assert.ok(++passes < 20, 'Simplification did not converge: ' + label)
+          return node
+        }, ...math.simplify.rules]
+        const simplified = math.simplify(expression, rules, {}, { context })
+        // No 1^n factor may be left behind in the result either.
+        const expectation =
+          typeof expected === 'string' ? expected : expected[name]
+        assert.strictEqual(
+          simplified.toString(), math.parse(expectation).toString(), label)
+        assert.ok(
+          Math.abs(simplified.evaluate(scope) - math.evaluate(expression, scope)) < 1e-14,
+          label)
+      }
+    }
+  })
+
+  it('should keep the order of the factors it collects in a denominator', function () {
+    simplifyAndCompare('x/y/z', 'x/(y*z)')
+    simplifyAndCompare('x/y/z/w', 'x/(y*z*w)')
+    simplifyAndCompare('1/(x*y)', '1/(x*y)')
+    simplifyAndCompare('(z/(x*y))^w', '(z/(x*y))^w')
+  })
+
+  it('should simplify a product under a symbolic power', function () {
+    simplifyAndCompare('(x*y/x)^z', 'y^z')
+    simplifyAndCompare('(x*y*x)^z', 'x^(2*z)*y^z')
+    simplifyAndCompare('(2*x/2)^z', 'x^z')
+    simplifyAndCompare('(2*3)^z', '6^z')
+    simplifyAndCompare('(1/2/3)^z', '1/6^z')
+    simplifyAndCompare('2^x*3^x', '6^x')
+    simplifyAndCompare('x^z/y^z', '(x/y)^z')
+    simplifyAndCompare('(-x)^x', '(-x)^x')
+    // The following represent a somewhat subjective choice of what is most
+    // simple. For example, the first could also simplify to `y/x^2 - 1/x` or
+    // even (y/x - 1)/x. After some consideration of the options, and reference
+    // to other simplifiers like symbolab, the conclusion was reached to
+    // consider a single fraction with the largest power of the common factor
+    // in the denominator as simplest.
+    simplifyAndCompare('(y-x)/(x*x)', '(y-x)/x^2')
+    simplifyAndCompare('(y+x)/(x*x)', '(y+x)/x^2')
+    simplifyAndCompare('(x-y)/(x*x)', '(x-y)/x^2')
+    simplifyAndCompare('(x+y)/(x*x)', '(x+y)/x^2')
+    simplifyAndCompare('(x^2-y*x)/x^3', '(x-y)/x^2')
+    simplifyAndCompare('(x^2+x*y)/x^3', '(y+x)/x^2') // TODO: why numerator swap?
+  })
+
+  it('should collect a bare reciprocal power with a term of the same base', function () {
+    simplifyAndCompare('x/y^2 + 1/y', '(x+y)/y^2')
+    simplifyAndCompare('x/y^3 + 1/y^2', '(x+y)/y^3')
+  })
+
   it('should handle non-existing functions like a pro', function () {
     simplifyAndCompare('foo(x)', 'foo(x)')
     simplifyAndCompare('foo(1)', 'foo(1)')
@@ -466,6 +587,7 @@ describe('simplify', function () {
       simplifyAndCompare('x*y*x^(-1)', 'x*y*x^(-1)', {}, optsNCM)
       simplifyAndCompare('x*y/x', 'x*y*x^(-1)', {}, optsNCM)
       simplifyAndCompare('x*y*(1/x)', 'x*y*x^(-1)', {}, optsNCM)
+      simplifyAndCompare('(1/(x*y))^z', '(y^(-1)*x^(-1))^z', {}, optsNCM)
       // 'n+n->2*n' & 'n1*n3+n2*n3 -> (n1+n2)*n3' cannot apply for NCA
       simplifyAndCompare('z+2+z', 'z+2+z', {}, optsNCA)
       simplifyAndCompare('2*z+3+2*z', '2*z+3+2*z', {}, optsNCA)

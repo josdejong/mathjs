@@ -141,7 +141,7 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
       return naturalSort(x, y)
     }
 
-    if (typeX === 'Object') {
+    if (typeX === 'Object' || typeX.endsWith('Node')) {
       return compareObjects(_compareNatural, x, y)
     }
 
