@@ -64,4 +64,17 @@ describe('isPrime', function () {
     assert.strictEqual(isPrime(bignumber('2305843009213693951')), true)
     assert.strictEqual(isPrime(bignumber('230584300921369395')), false)
   })
+
+  it('should work fast for huge bigint values', function () {
+    assert.strictEqual(isPrime(2n ** 61n - 1n), true)
+    assert.strictEqual(isPrime(2n ** 89n - 1n), true)
+    assert.strictEqual(isPrime(4294967311n), true)
+    assert.strictEqual(isPrime(4294967297n), false) // 641 * 6700417
+    assert.strictEqual(isPrime(6467763037867n * 12935526075733n), false)
+    // strong pseudoprimes to the smaller base sets
+    assert.strictEqual(isPrime(3215031751n), false)
+    assert.strictEqual(isPrime(3825123056546413051n), false)
+    assert.strictEqual(isPrime(318665857834031151167461n), false)
+    assert.strictEqual(isPrime(3317044064679887385961981n), false)
+  })
 })

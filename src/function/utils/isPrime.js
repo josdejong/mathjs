@@ -4,6 +4,17 @@ import { factory } from '../../utils/factory.js'
 const name = 'isPrime'
 const dependencies = ['typed']
 
+function modPowBigInt (base, exponent, modulus) {
+  let result = 1n
+  base %= modulus
+  while (exponent > 0n) {
+    if (exponent & 1n) result = (result * base) % modulus
+    exponent >>= 1n
+    base = (base * base) % modulus
+  }
+  return result
+}
+
 export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is prime: has no divisors other than itself and one.
@@ -56,10 +67,45 @@ export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ type
       if (x % 2n === 0n || x % 3n === 0n) {
         return false
       }
-      for (let i = 5n; i * i <= x; i += 6n) {
-        if (x % i === 0n || x % (i + 2n) === 0n) {
-          return false
+      if (x < 4294967296n) {
+        for (let i = 5n; i * i <= x; i += 6n) {
+          if (x % i === 0n || x % (i + 2n) === 0n) {
+            return false
+          }
         }
+        return true
+      }
+
+      // Deterministic Miller-Rabin, same bases as the BigNumber implementation
+      let d = x - 1n
+      let r = 0
+      while ((d & 1n) === 0n) {
+        d >>= 1n
+        r += 1
+      }
+      let bases
+      if (x < 3317044064679887385961981n) {
+        bases = [2n, 3n, 5n, 7n, 11n, 13n, 17n, 19n, 23n, 29n, 31n, 37n, 41n]
+      } else {
+        const digits = x.toString().length
+        const max = Math.floor(2 * Math.pow(digits * Math.log(10), 2))
+        bases = []
+        for (let i = 2; i <= max; i += 1) {
+          bases.push(BigInt(i))
+        }
+      }
+      for (const a of bases) {
+        let y = modPowBigInt(a, d, x)
+        if (y === 1n || y === x - 1n) continue
+        let composite = true
+        for (let i = 1; i < r; i += 1) {
+          y = (y * y) % x
+          if (y === x - 1n) {
+            composite = false
+            break
+          }
+        }
+        if (composite) return false
       }
       return true
     },
