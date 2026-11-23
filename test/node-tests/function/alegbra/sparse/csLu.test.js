@@ -7,9 +7,9 @@ import { createCsLu } from '../../../../../lib/esm/function/algebra/sparse/csLu.
 import { createCsSqr } from '../../../../../lib/esm/function/algebra/sparse/csSqr.js'
 
 const math = create(all)
-const { abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, SparseMatrix } = math
+const { typed, abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, SparseMatrix } = math
 
-const csLu = createCsLu({ abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })
+const csLu = createCsLu({ typed, abs, divideScalar, multiply, subtract, larger, largerEq, SparseMatrix })
 const csSqr = createCsSqr({ add, multiply, transpose })
 
 describe('csLu', function () {
