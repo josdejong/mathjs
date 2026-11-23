@@ -62,6 +62,11 @@ describe('nthRoot', function () {
     approxEqual(nthRoot(Infinity, -3), 0)
   })
 
+  it('should preserve number NaN for negative roots', function () {
+    assert.ok(Number.isNaN(nthRoot(NaN, -2)))
+    assert.ok(Number.isNaN(nthRoot(NaN, -3)))
+  })
+
   it('should throw an error when n is zero', function () {
     assert.throws(function () { nthRoot(4, 0) }, /Root must be non-zero/)
   })
@@ -107,6 +112,21 @@ describe('nthRoot', function () {
     assert.deepStrictEqual(nthRoot(big(Infinity), big(2)).toString(), 'Infinity')
     assert.deepStrictEqual(nthRoot(big(-Infinity), big(3)).toString(), '-Infinity')
     assert.deepStrictEqual(nthRoot(big(Infinity), big(-3)), big(0))
+  })
+
+  it('should preserve BigNumber NaN for negative roots', function () {
+    assert.ok(nthRoot(big(NaN), big(-2)).isNaN())
+    assert.ok(nthRoot(big(NaN), big(-3)).isNaN())
+  })
+
+  it('should preserve NaN for negative roots in collections', function () {
+    const result = nthRoot([NaN, 16], -2)
+    assert.ok(Number.isNaN(result[0]))
+    assert.strictEqual(result[1], 0.25)
+
+    const bigResult = nthRoot(matrix([big(NaN), big(16)]), big(-2)).toArray()
+    assert.ok(bigResult[0].isNaN())
+    assert.deepStrictEqual(bigResult[1], big(0.25))
   })
 
   it('should throw an error when used with a complex number', function () {
