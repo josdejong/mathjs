@@ -21,6 +21,9 @@ describe('coth', function () {
     approxEqual(coth(1), 1.3130352854993)
     approxEqual(coth(2), 1.0373147207275)
     approxEqual(coth(3), 1.0049698233137)
+    assert.strictEqual(coth(400), 1)
+    assert.strictEqual(coth(-400), -1)
+    approxEqual(coth(1e-8), 1e8, 1e-12)
   })
 
   it('should return the coth of a bignumber', function () {

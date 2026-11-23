@@ -33,6 +33,10 @@ describe('acoth', function () {
     assert.strictEqual(acoth(1), Infinity)
     approxEqual(acoth(2), 0.54930614433405484569762261846)
     assert.strictEqual(acoth(Infinity), 0)
+    assert.strictEqual(acoth(-Infinity), -0)
+    approxEqual(acoth(1e8), 1e-8, 1e-12)
+    approxEqual(acoth(-1e8), -1e-8, 1e-12)
+    approxEqual(acoth(1e15), 1e-15, 1e-12)
   })
 
   it('should return the hyperbolic arccot of a number when predictable:true', function () {
