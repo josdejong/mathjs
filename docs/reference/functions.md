@@ -165,7 +165,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.column(value,&nbsp;index)](functions/column.html) | Return a column from a Matrix.
-[math.concat(a,&nbsp;b,&nbsp;c,&nbsp;...&nbsp;[,&nbsp;dim])](functions/concat.html) | Concatenate two or more matrices.
+[math.concat(a,&nbsp;b,&nbsp;c,&nbsp;...&nbsp;[,&nbsp;dim])](functions/concat.html) | Concatenate two or more arrays or matrices, or two or more strings.
 [math.count(x)](functions/count.html) | Count the number of elements of a matrix, array or string.
 [math.cross(x,&nbsp;y)](functions/cross.html) | Calculate the cross product for two vectors in three dimensional space.
 [math.ctranspose(x)](functions/ctranspose.html) | Transpose and complex conjugate a matrix.
@@ -224,7 +224,7 @@ Function | Description
 [math.gamma(n)](functions/gamma.html) | Compute the gamma function of a value using Lanczos approximation for small values, and an extended Stirling approximation for large values.
 [math.kldivergence(x,&nbsp;y)](functions/kldivergence.html) | Calculate the Kullback-Leibler (KL) divergence  between two distributions.
 [math.lgamma(n)](functions/lgamma.html) | Logarithm of the gamma function for real, positive numbers and complex numbers, using Lanczos approximation for numbers and Stirling series for complex numbers.
-[math.multinomial(a)](functions/multinomial.html) | Multinomial Coefficients compute the number of ways of picking a1, a2, .
+[math.multinomial(a1,&nbsp;a2,&nbsp;...,&nbsp;an)](functions/multinomial.html) | Computes the number of ways of dividing a1 + a2 + .
 [math.permutations(n&nbsp;[,&nbsp;k])](functions/permutations.html) | Compute the number of ways of obtaining an ordered subset of `k` elements from a set of `n` elements.
 [math.pickRandom(array)](functions/pickRandom.html) | Random pick one or more values from a one dimensional array.
 [math.random([min,&nbsp;max])](functions/random.html) | Return a random number larger or equal to `min` and smaller than `max` using a uniform distribution.
@@ -298,6 +298,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.bin(value)](functions/bin.html) | Format a number as binary.
+[math.concat(str1,&nbsp;str2,&nbsp;...)](functions/concat.html) | Concatenate two or more arrays or matrices, or two or more strings.
 [math.format(value&nbsp;[,&nbsp;precision])](functions/format.html) | Format a value of any type into a string.
 [math.hex(value)](functions/hex.html) | Format a number as hexadecimal.
 [math.oct(value)](functions/oct.html) | Format a number as octal.

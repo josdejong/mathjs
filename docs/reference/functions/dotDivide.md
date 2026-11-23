@@ -54,3 +54,10 @@ math.divide(a, b)      // returns [[1.75, 0.75], [-1.75, 2.25]]
 [divide](divide.html),
 [multiply](multiply.html),
 [dotMultiply](dotMultiply.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v14.0.0 | Return a sparse matrix for sparse inputs
+v11.6 | Support matrix broadcasting
+v0.23 | Renamed from `edivide`

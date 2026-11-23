@@ -9,10 +9,16 @@ layout: default
 Compute the median of a matrix or a list with values. The values are
 sorted and the middle value is returned. In case of an even number of
 values, the average of the two middle values is returned.
-Supported types of values are: Number, BigNumber, Unit
+All types of values that can be compared, added, and divided by two
+are supported.
 
 In case of a (multi dimensional) array or matrix, the median of all
 elements will be calculated.
+
+The median of bigints is a bigint. For an even number of bigints it is
+the average of the two middle values rounded towards zero, so it is not
+always the exact midpoint and can be equal to one of the two middle
+values.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -46,6 +52,7 @@ Type | Description
 ```js
 math.median(5, 2, 7)        // returns 5
 math.median([3, -1, 5, 7])  // returns 4
+math.median(2n, 3n)         // returns 2n
 ```
 
 
@@ -59,3 +66,9 @@ math.median([3, -1, 5, 7])  // returns 4
 [std](std.html),
 [variance](variance.html),
 [quantileSeq](quantileSeq.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v15.3 | Support Fraction and bigint arguments
+v0.19 | Created

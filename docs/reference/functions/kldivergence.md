@@ -38,8 +38,13 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.kldivergence([0.7,0.5,0.4], [0.2,0.9,0.5])   //returns 0.24376698773121153
+math.kldivergence([0.7,0.5,0.4], [0.2,0.9,0.5])   //returns 0.3086145781062587
 
 ```
 
 
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v2.1 | Created

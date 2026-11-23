@@ -21,8 +21,7 @@ math.usolveAll(U, b)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`U` | Matrix, Array | A N x N matrix or array (U)
-`b` | Matrix, Array | A column vector with the b values
+
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -53,3 +52,8 @@ const x = usolveAll(a, b)  // [ [[8], [9]] ]
 [slu](slu.html),
 [usolve](usolve.html),
 [lusolve](lusolve.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+@param | {Matrix, Array} b       A column vector with the b values

@@ -55,3 +55,10 @@ math.xor(a, c)   // returns [true, false, false]
 [and](and.html),
 [not](not.html),
 [or](or.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v14.0.0 | Return a sparse matrix for sparse inputs
+v11.6 | Support matrix broadcasting
+v1.2 | Created

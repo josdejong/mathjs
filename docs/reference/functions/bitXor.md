@@ -53,3 +53,10 @@ math.bitXor([2, 3, 4], 4)       // returns Array [6, 7, 0]
 [leftShift](leftShift.html),
 [rightArithShift](rightArithShift.html),
 [rightLogShift](rightLogShift.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v14.0.0 | Return a sparse matrix for sparse inputs
+v11.6 | Support matrix broadcasting
+v1.2 | Created

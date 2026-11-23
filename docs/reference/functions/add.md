@@ -65,7 +65,6 @@ math.add("2.3", "4")         // returns number 6.3
 
 Version | Comment
 ------- | -------
-v13 | Handle bigint arguments
 v11.6 | Support matrix broadcasting
+v5.0.3 | Support matrices with a `datatype` defined
 v3.8 | Allow more than two arguments
-v0.0.2 | Created

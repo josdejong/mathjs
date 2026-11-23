@@ -20,8 +20,8 @@ math.xgcd(a, b)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`a` | number &#124; BigNumber | An integer number
-`b` | number &#124; BigNumber | An integer number
+`a` | number &#124; BigNumber &#124; bigint | An integer number
+`b` | number &#124; BigNumber &#124; bigint | An integer number
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -49,3 +49,10 @@ math.xgcd(36163, 21199)      // returns [1247, -7, 12]
 
 [gcd](gcd.html),
 [lcm](lcm.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v15.3 | Added bigint support
+v0.26 | Added BigNumber support
+v0.7 | Created

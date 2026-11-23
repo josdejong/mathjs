@@ -56,3 +56,11 @@ math.lcm([4, 6], [6, 21])    // returns [12, 42]
 
 [gcd](gcd.html),
 [xgcd](xgcd.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11.6 | Support matrix broadcasting
+v2.3 | Support Fractions
+v0.26 | Implement BigNumber support
+v0.6 | Created

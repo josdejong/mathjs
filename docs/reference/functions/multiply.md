@@ -62,3 +62,15 @@ math.multiply(3, e)          // returns Unit 6.3 km
 [prod](prod.html),
 [cross](cross.html),
 [dot](dot.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v13 | Support bigint
+v11.6 | Support matrix broadcasting
+v3.8 | Support more than two arguments
+v2 | Support Fraction
+v0.17 | Support Complex arguments
+v0.16 | Support BigNumber
+v0.15 | Support matrix times vector
+v0.0.2 | Created

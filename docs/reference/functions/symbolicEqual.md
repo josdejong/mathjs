@@ -55,7 +55,7 @@ math.symbolicEqual('x*y', 'y*x') // Returns true
 math.symbolicEqual('x*y', 'y*x', {context: {multiply: {commutative: false}}}) // Returns false
 math.symbolicEqual('x/y', '(y*x^(-1))^(-1)') // Returns true
 math.symbolicEqual('abs(x)','x') // Returns false
-math.symbolicEqual('abs(x)','x', simplify.positiveContext) // Returns true
+math.symbolicEqual('abs(x)','x', {context: math.simplify.positiveContext}) // Returns true
 ```
 
 
@@ -63,3 +63,8 @@ math.symbolicEqual('abs(x)','x', simplify.positiveContext) // Returns true
 
 [simplify](simplify.html),
 [evaluate](evaluate.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v10.3 | Created

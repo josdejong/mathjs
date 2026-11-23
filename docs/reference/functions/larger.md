@@ -62,3 +62,13 @@ math.larger(a, b)             // returns false
 [smallerEq](smallerEq.html),
 [largerEq](largerEq.html),
 [compare](compare.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v14.1 | Support bigints
+v14 | Return a sparse matrix for sparse inputs
+v11.6 | Support matrix broadcasting
+v4 | Compare strings by numerical value, allow tolerance in comparison
+v3 | Use nearly-equal comparison for BigNumbers
+v0.15 | Removed support for complex numbers

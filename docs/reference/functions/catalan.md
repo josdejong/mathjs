@@ -10,6 +10,10 @@ The Catalan Numbers enumerate combinatorial structures of many different types.
 catalan only takes integer arguments.
 The following condition must be enforced: n >= 0
 
+Note that if n is supplied as a bigint, the result will be a bigint as
+well. If n is a BigNumber, the result will be a BigNumber. Otherwise the
+result will be a plain JavaScript number.
+
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
@@ -21,13 +25,13 @@ math.catalan(n)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`n` | Number &#124; BigNumber | nth Catalan number
+`n` | number &#124; BigNumber &#124; bigint | nonnegative integer index
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber | Cn(n)
+number &#124; BigNumber &#124; bigint | nth Catalan number Cn(n)
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -41,9 +45,16 @@ Type | Description
 ```js
 math.catalan(3) // returns 5
 math.catalan(8) // returns 1430
+math.catalan(8n) // returns 1430n
 ```
 
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [bellNumbers](bellNumbers.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v15.3 | Add bigint support
+v0.14 | Created

@@ -53,3 +53,8 @@ const x = usolve(a, b)  // [[8], [9]]
 [slu](slu.html),
 [usolve](usolve.html),
 [lusolve](lusolve.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v7.3 | Created

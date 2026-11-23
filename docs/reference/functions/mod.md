@@ -64,7 +64,9 @@ isOdd(3)                      // returns true
 
 Version | Comment
 ------- | -------
+v15.3 | Prefer bigint output if possible for mixed number/bigint input
 v13 | Handle bigints
+v12.1 | Support negative divisors for BigNumber and Fraction
 v11.6 | Support matrix broadcasting
 v2 | Handle Fractions
 v0.2 | Created

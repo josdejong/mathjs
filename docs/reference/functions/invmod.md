@@ -20,14 +20,14 @@ math.invmod(a, b)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`a` | number &#124; BigNumber | An integer number
-`b` | number &#124; BigNumber | An integer number
+`a` | number &#124; BigNumber &#124; bigint | An integer number
+`b` | number &#124; BigNumber &#124; bigint | An integer number
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber | Returns an integer number where `invmod(a,b)*a ≣ 1 (mod b)`
+number &#124; BigNumber &#124; bigint | Returns an integer number where `invmod(a,b)*a ≣ 1 (mod b)`
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -49,3 +49,9 @@ math.invmod(15151, 15122)      // returns 10429
 
 [gcd](gcd.html),
 [xgcd](xgcd.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v15.3 | Added bigint support
+v10.1 | Created

@@ -48,13 +48,13 @@ Type | Description
 
 ```js
 math.derivative('x^2', 'x')                     // Node '2 * x'
-math.derivative('x^2', 'x', {simplify: false})  // Node '2 * 1 * x ^ (2 - 1)'
-math.derivative('sin(2x)', 'x'))                // Node '2 * cos(2 * x)'
+math.derivative('x^2', 'x', {simplify: false}).toString() // string '2 * 1 * x ^ (2 - 1)'
+math.derivative('sin(2x)', 'x')                 // Node '2 * cos(2 x)'
 math.derivative('2*x', 'x').evaluate()          // number 2
 math.derivative('x^2', 'x').evaluate({x: 4})    // number 8
 const f = math.parse('x^2')
 const x = math.parse('x')
-math.derivative(f, x)                           // Node {2 * x}
+math.derivative(f, x)                           // Node '2 * x'
 ```
 
 
@@ -63,3 +63,11 @@ math.derivative(f, x)                           // Node {2 * x}
 [simplify](simplify.html),
 [parse](parse.html),
 [evaluate](evaluate.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v5.7 | Support `pow()`
+v3.20 | Support `+` and `*` with more than two arguments
+v3.13 | Support `abs()`
+v3.9 | Created

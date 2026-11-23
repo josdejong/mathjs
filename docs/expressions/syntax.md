@@ -203,7 +203,7 @@ parser.evaluate('twice(f, 2)')         // 18
 
 // a simplistic "numerical derivative":
 parser.evaluate('eps = 1e-10')
-parser.evaluate('nd(f, x) = (f(x+eps) - func(x-eps))/(2*eps)')
+parser.evaluate('nd(f, x) = (f(x+eps) - f(x-eps))/(2*eps)')
 parser.evaluate('nd(square,2)')        // 4.000000330961484
 ```
 
@@ -574,6 +574,12 @@ Units can also be converted from one to another.
 An overview of all available units can be found on the page
 [Units](../datatypes/units.html).
 
+In expressions, `min` and `sec` resolve by default to the minimum and secant
+functions instead of abbreviations for the minute and second units. Use
+`minute`, `second`, or `s` for those units in an expression, or parse the
+abbreviations with `math.unit('5 min')` and `math.unit('5 sec')`. A scope can
+explicitly override these symbols.
+
 Units can be converted using the operator `to` or `in`.
 
 ```js
@@ -700,9 +706,10 @@ parser.evaluate('a = [1, 2; 3, 4]')       // Matrix, [[1, 2], [3, 4]]
 parser.evaluate('b = zeros(2, 2)')        // Matrix, [[0, 0], [0, 0]]
 parser.evaluate('c = 5:9')                // Matrix, [5, 6, 7, 8, 9]
 
-// replace a subset in a matrix
-parser.evaluate('b[1, 1:2] = [5, 6]')     // Matrix, [[5, 6], [0, 0]]
-parser.evaluate('b[2, :] = [7, 8]')       // Matrix, [[5, 6], [7, 8]]
+// replace a subset in a matrix (returns the assigned value)
+parser.evaluate('b[1, 1:2] = [5, 6]')     // Matrix, [5, 6]
+parser.evaluate('b[2, :] = [7, 8]')       // Matrix, [7, 8]
+parser.evaluate('b')                      // Matrix, [[5, 6], [7, 8]]
 
 // perform a matrix calculation
 parser.evaluate('d = a * b')              // Matrix, [[19, 22], [43, 50]]
@@ -761,8 +768,8 @@ math.evaluate('{a: 2, b: {c: 3, d: 4}}')  // {a: 2, b: {c: 3, d: 4}}
 ```
 
 Object properties can be retrieved or replaced using dot notation or bracket
-notation. Unlike JavaScript, when setting a property value, the whole object
-is returned, not the property value
+notation. Like in JavaScript, setting a property value returns the assigned
+value, not the whole object
 
 ```js
 let scope = {
@@ -775,9 +782,9 @@ let scope = {
 math.evaluate('obj.prop', scope)          // 42
 math.evaluate('obj["prop"]', scope)       // 42
 
-// set properties (returns the whole object, not the property value!)
-math.evaluate('obj.prop = 43', scope)     // {prop: 43}
-math.evaluate('obj["prop"] = 43', scope)  // {prop: 43}
+// set properties (returns the assigned value, not the whole object)
+math.evaluate('obj.prop = 43', scope)     // 43
+math.evaluate('obj["prop"] = 43', scope)  // 43
 scope.obj                                 // {prop: 43}
 ```
 

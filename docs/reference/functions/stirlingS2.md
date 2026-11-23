@@ -6,16 +6,17 @@ layout: default
 
 <h1 id="function-stirlings2">Function stirlingS2 <a href="#function-stirlings2" title="Permalink">#</a></h1>
 
-The Stirling numbers of the second kind, counts the number of ways to partition
-a set of n labelled objects into k nonempty unlabelled subsets.
+The Stirling numbers of the second kind, counts the number of ways to
+partition a set of n labelled objects into k nonempty unlabelled subsets.
 stirlingS2 only takes integer arguments.
 The following condition must be enforced: k <= n.
 
  If n = k or k = 1 <= n, then s(n,k) = 1
  If k = 0 < n, then s(n,k) = 0
 
-Note that if either n or k is supplied as a BigNumber, the result will be
-as well.
+Note that if either n or k is supplied as a bigint, the result will be as
+well. If not, and if either is a BigNumber, the result will be a BigNumber.
+Otherwise, the result will be a plain JavaScript number.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -28,14 +29,14 @@ math.stirlingS2(n, k)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`n` | Number &#124; BigNumber | Total number of objects in the set
-`k` | Number &#124; BigNumber | Number of objects in the subset
+`n` | Number &#124; BigNumber &#124; bigint | Total number of objects in the set
+`k` | Number &#124; BigNumber &#124; bigint | Number of subsets
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber | S(n,k)
+Number &#124; BigNumber | S2(n,k)
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -47,10 +48,18 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.stirlingS2(5, 3) //returns 25
+math.stirlingS2(5, 3) // returns 25
+math.stirlingS2(math.bignumber(8), 3) // returns BigNumber 966
+math.stirlingS2(18n, 3) // returns 64439010n
 ```
 
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [bellNumbers](bellNumbers.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v15.3 | added bigint support
+v1.7 | created

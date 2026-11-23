@@ -16,10 +16,13 @@ dense and sparse matrices.
 Math.js supports two types of matrices:
 
 - `Array`, a regular JavaScript array. A multidimensional array can be created
-  by nesting arrays.
+  by nesting arrays. The following terminology will be used to define different kinds of nested arrays.
+  - **Rectangular array**: All elements of an array are arrays of the same size. Like `[[1, 2], [3, 4]]`
+  - **Jagged arrays**: All elements of an array are arrays but not of the same size. Like `[[1, 2], [3, 4, 5]]`
+  - **Heterogeneous arrays**: If not all the elements inside an array are arrays. Like `[[1, 2], 3]`.
 - `Matrix`, a matrix implementation by math.js. A `Matrix` is an object wrapped
   around a regular JavaScript `Array`, providing utility functions for easy
-  matrix manipulation such as `subset`, `size`, `resize`, `clone`, and more.
+  matrix manipulation such as `subset`, `size`, `resize`, `clone`, and more. Nested arrays must be rectangular to be converted to a `Matrix`.
 
 In most cases, the type of matrix output from functions is determined by the
 function input: An `Array` as input will return an `Array`, a `Matrix` as input
@@ -114,9 +117,12 @@ determined by the option `matrix` as discussed in section
 
 ```js
 // Array as input gives Array as output
-math.ones([2, 3])               // Array,  size [3, 2], [[1, 1, 1], [1, 1, 1]]
-math.ones(math.matrix([2, 3]))  // Matrix, size [3, 2], [[1, 1, 1], [1, 1, 1]]
+math.ones([2, 3])               // Array,  size [2, 3], [[1, 1, 1], [1, 1, 1]]
+math.ones(math.matrix([2, 3]))  // Matrix, size [2, 3], [[1, 1, 1], [1, 1, 1]]
 ```
+
+(Note the contrast with the function `size` described below, which always
+returns an Array, even when its argument is a Matrix.)
 
 Ranges can be created using the function `range`. The function `range` is
 called with parameters start and end, and optionally a parameter step.
@@ -213,10 +219,10 @@ const c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]
 math.size(c)                                  // Array, [2, 2, 3]
 ```
 
-Note that the dimensions themselves do not have a meaning attached. 
-When creating and printing a two-dimensional matrix, the first dimension is 
-normally rendered as the _column_, and the second dimension is rendered as 
-the _row_. For example:
+Note that the dimensions themselves do not have a meaning attached.
+When creating and printing a two-dimensional matrix, the first dimension is
+normally rendered as the _row_, and the second dimension is rendered as
+the _column_. For example:
 
 ```js
 console.table(math.zeros([2, 4]))
@@ -224,10 +230,31 @@ console.table(math.zeros([2, 4]))
 // 0 0 0 0
 ```
 
-If you have a matrix where the first dimension means `x` and the second 
-means `y`, this will look confusing since `x` is printed as _column_ 
+If you have a matrix where the first dimension means `x` and the second
+means `y`, this will look confusing since `x` is printed as _column_
 (vertically) and `y` as _row_ (horizontally).
 
+<h2 id="nonrectangular-arrays">Non-rectangular arrays <a href="#nonrectangular-arrays" title="Permalink">#</a></h2>
+
+By nesting arrays it is possible to have arrays that are not rectangular, for example.
+```js
+[[1, 2], [3, 4]]    // rectangular of size [2, 2]
+[[1, 2], [3, 4, 5]] // jagged
+[[1, 2], 3]         // heterogeneous
+```
+
+Jagged and heterogeneous arrays can't be converted to a matrix, but many operations are available for them.
+```js
+const A = [[1, 2], 3]
+math.add(A, 1)
+math.map(A, a => a+1)
+math.forEach(A, a => console.log(a))
+```
+Some matrix functions expect a rectangular array and might provide unexpected results with non rectangular arrays, for example.
+```js
+math.size([[1, 2], [3]]) // [2, 2]
+```
+The process of validation for rectangularity is expensive and is mandatory to create a `Matrix`, thus there might be a performance benefit of not converting an `Array` to a `Matrix`.
 
 <h2 id="resizing">Resizing <a href="#resizing" title="Permalink">#</a></h2>
 

@@ -68,19 +68,36 @@ Type | Description
 ```js
 const { eigs, multiply, column, transpose, matrixFromColumns } = math
 const H = [[5, 2.3], [2.3, 1]]
-const ans = eigs(H) // returns {values: [E1,E2...sorted], eigenvectors: [{value: E1, vector: v2}, {value: e, vector: v2}, ...]
+const ans = eigs(H)
 const E = ans.values
 const V = ans.eigenvectors
-multiply(H, V[0].vector)) // returns multiply(E[0], V[0].vector))
+E            // [-0.04795013082563382, 6.04795013082563382] ...
+V[0].value   // -0.04795013082563382 ...
+V[0].vector  // [-0.41462108308382806, 0.9099941524330766] ...
+V[1].value   // 6.04795013082563382 ...
+V[1].vector  // [0.9099941524330766, 0.41462108308382806] ...
+const v0 = V[0].vector
+math.deepEqual(multiply(H, v0), multiply(E[0], v0)) // true ...
 const U = matrixFromColumns(...V.map(obj => obj.vector))
-const UTxHxU = multiply(transpose(U), H, U) // diagonalizes H if possible
-E[0] == UTxHxU[0][0]  // returns true always
+const UTxHxU = multiply(transpose(U), H, U)
+UTxHxU       // [[-0.04795013082563382, 0], [0, 6.04795013082563382]] ...
+math.equalScalar(E[0], UTxHxU[0][0])  // true
 
 // Compute only approximate eigenvalues:
-const {values} = eigs(H, {eigenvectors: false, precision: 1e-6})
+const M = [[-2, -2, 4], [-4, 1, 2], [2, 2, 5]]
+const E = math.eigs(M, {eigenvectors: false, precision: 1e-6})
+Object.keys(E)   // ['values'] ...
+E.values         // [3, -5, 6]
 ```
 
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [inv](inv.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v12 | Changed return type to split the eigenvectors into individual 1D vectors, each associated with its eigenvalue. Added option to turn of eigenvector calculation.
+v9.4 | Support general Complex matrices
+v6.6 | Created

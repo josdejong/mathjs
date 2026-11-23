@@ -55,3 +55,10 @@ math.and(a, c)   // returns [false, false, false]
 [not](not.html),
 [or](or.html),
 [xor](xor.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v12.2 | Lazy evaluation
+v11.6 | Support matrix broadcasting
+v1.2 | Created

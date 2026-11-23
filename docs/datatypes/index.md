@@ -11,7 +11,7 @@ Complex number or Array.
 
 The supported data types are:
 
-- Boolean
+- [Boolean](booleans.html)
 - [Number](numbers.html)
 - [BigNumber](bignumbers.html)
 - [Complex](complex_numbers.html)
@@ -19,7 +19,7 @@ The supported data types are:
 - [Array](matrices.html)
 - [Matrix](matrices.html)
 - [Unit](units.html)
-- String
+- [String](strings.html)
 
 Function [`math.typeOf(x)`](../reference/functions/typeOf.html) can be used to get
 the type of a variable.

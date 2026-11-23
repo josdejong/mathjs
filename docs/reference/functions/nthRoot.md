@@ -60,5 +60,8 @@ math.nthRoot(64, 3)   // returns 4
 Version | Comment
 ------- | -------
 v11.6 | Support matrix broadcasting
-v2 | Handle Complex
+v5.0.0 | Improve consistency with sqrt and pow
+v3.1.1 | Support negative roots of zero
+v2.4.1 | Support negative values like `nthRoot(-2, 3)`
+v2 | Support roots of Complex
 v1.1 | Created

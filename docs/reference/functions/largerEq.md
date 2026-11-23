@@ -58,3 +58,14 @@ math.largerEq(2, 1 + 1)       // returns true
 [smallerEq](smallerEq.html),
 [larger](larger.html),
 [compare](compare.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v14.0.0 | Return a sparse matrix for sparse inputs
+v11.6 | Support matrix broadcasting
+v4 | Compare strings by numerical value, allow tolerance in comparison
+v3 | Use nearly-equal comparison for BigNumbers
+0.23 | Renamed from `largereq`to `largerEq`
+v0.15 | Removed support for complex numbers
+v0.2 | Created

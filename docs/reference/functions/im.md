@@ -22,13 +22,13 @@ math.im(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  A complex number or array with complex numbers
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix |  A complex number or array with complex numbers
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Array &#124; Matrix | The imaginary part of x
+number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | The imaginary part of x
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -41,11 +41,11 @@ Type | Description
 
 ```js
 const a = math.complex(2, 3)
-math.re(a)                     // returns number 2
+math.re(a)                     // returns number 2 ...
 math.im(a)                     // returns number 3
 
-math.re(math.complex('-5.2i')) // returns number -5.2
-math.re(math.complex(2.4))     // returns number 0
+math.im(math.complex('-5.2i')) // returns number -5.2
+math.im(math.complex(2.4))     // returns number 0
 ```
 
 
@@ -55,3 +55,10 @@ math.re(math.complex(2.4))     // returns number 0
 [conj](conj.html),
 [abs](abs.html),
 [arg](arg.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v9.4 | Support Fraction
+v0.16 | Support BigNumber
+v0.2 | Created

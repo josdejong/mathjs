@@ -71,3 +71,9 @@ math.simplify('2 * 1 * x ^ (1 - 0)', [math.simplifyCore]) // Node "2 * x"
 [simplifyConstant](simplifyConstant.html),
 [resolve](resolve.html),
 [derivative](derivative.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11 | Remove all constant-merging, moving it to `simplifyConstant` Convert equivalent function calls into operators
+v10.2 | Created by moving an internal function of `simplify` to top level

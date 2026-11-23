@@ -6,29 +6,42 @@ layout: default
 
 <h1 id="function-multinomial">Function multinomial <a href="#function-multinomial" title="Permalink">#</a></h1>
 
-Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities.
+Computes the number of ways of dividing a1 + a2 + ... + an distinct items
+into n groups of sizes a1, a2, ..., an, where the order of the items
+within each group does not matter. These numbers are known as the
+multinomial coefficients, (a1 + a2 + ... + an)! / (a1! a2! ... an!).
 
-multinomial takes one array of integers as an argument.
-The following condition must be enforced: every ai <= 0
+The multinomial function takes either the list of a1 through an directly
+as an arbitrary number of arguments, or a single one-dimensional array or
+Matrix. It throws an error if any entry is negative or not an integer.
+Any zero entry corresponds to a group with no items, so it does not change
+the result.
+
+The multinomial coefficient equals the product of the binomial
+coefficients combinations(a1 + ... + ai, ai) for i = 1, ..., n, which is
+how it is computed here. The entries can be of any numeric type that
+combinations() handles, written as Numeric below, and the result has the
+type that combinations() returns for them.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.multinomial(a) // a is an array type
+math.multinomial(a1, a2, ..., an)  // ai are nonnegative integers
+math.multinomial(a) // a is a one-dimensional array or matrix
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`a` | number[] &#124; BigNumber[] | Integer numbers of objects in the subset
+`a` | Numeric[] &#124; Matrix &#124; ...Numeric |  Nonnegative integer sizes of the groups
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber | Multinomial coefficient.
+Numeric |  Multinomial coefficient
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -40,7 +53,9 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.multinomial([1,2,1]) // returns 12
+math.multinomial(3, 5, 3)   // returns 9240
+math.multinomial([1, 2, 1]) // returns 12
+math.multinomial([2, 0, 1]) // returns 3
 ```
 
 
@@ -48,3 +63,9 @@ math.multinomial([1,2,1]) // returns 12
 
 [combinations](combinations.html),
 [factorial](factorial.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v15.3 | Allow arguments as list of numbers; allow zero inputs; disallow input of more than one dimension
+v1.7 | Created

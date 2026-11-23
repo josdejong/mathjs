@@ -53,3 +53,8 @@ const x = lsolveAll(a, b)  // [ [[-5.5], [20]] ]
 [slu](slu.html),
 [usolve](usolve.html),
 [lusolve](lusolve.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v7.3 | Created

@@ -4,6 +4,75 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20261123-1530">2026-11-23, 15.3.0 <a href="#20261123-1530" title="Permalink">#</a></h1>
+
+- Docs: Ensure all links in README.md are live (<a href="https://github.com/josdejong/mathjs/issues/3821">#3821</a>). Thanks <a href="https://github.com/farisbasha">@farisbasha</a>.
+- Chore: update selected dependencies with a focus on vulnerability
+  reduction (<a href="https://github.com/josdejong/mathjs/issues/3818">#3818</a>) and update code_editor dependencies (<a href="https://github.com/josdejong/mathjs/issues/3828">#3828</a>).
+  Thanks <a href="https://github.com/katsugtgz">@katsugtgz</a>.
+- Fix: Ensure dotPow, dotDivide, and divide evaluate matrix operations
+  on zero entries whenever necessary. Also refactors mathjs code to prefer
+  everywhere isZero() to equalScalar(x,0), reducing dependencies (<a href="https://github.com/josdejong/mathjs/issues/3806">#3806</a>).
+  Thanks <a href="https://github.com/Ryzuuuu">@Ryzuuuu</a> and <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Feat: support Fraction and bigint in median (<a href="https://github.com/josdejong/mathjs/issues/3809">#3809</a>). Thanks <a href="https://github.com/Ryzuuuu">@Ryzuuuu</a>.
+- Fix: Properly logically shift matrix entries by zero (<a href="https://github.com/josdejong/mathjs/issues/3808">#3808</a>). Thanks <a href="https://github.com/Ryzuuuu">@Ryzuuuu</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3802">#3802</a> Disallow too-negative bigint -> number auto conversion (<a href="https://github.com/josdejong/mathjs/issues/3803">#3803</a>).
+  Thanks <a href="https://github.com/spokodev">@spokodev</a>.
+- Feat: Add bigint support to catalan() and fix <a href="https://github.com/josdejong/mathjs/issues/3780">#3780</a>, significantly improve
+  catalan() accuracy by computing with exact-division recurrence (<a href="https://github.com/josdejong/mathjs/issues/3781">#3781</a>).
+  Thanks <a href="https://github.com/rahul05ranjan">@rahul05ranjan</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3779">#3779</a> Use one-based dimension index in parsed expressions with
+  std and variance (<a href="https://github.com/josdejong/mathjs/issues/3770">#3770</a>). Thanks <a href="https://github.com/jayhemnani9910">@jayhemnani9910</a>.
+- Feat: multinomial allows zero arguments and direct list of arguments.
+  Reduce overflow-related accuracy issues by using formula based on
+  combinations, with no division needed. Throw on likely erroneous
+  multidimensional input. Improve documentation and TypeScript typing (<a href="https://github.com/josdejong/mathjs/issues/3790">#3790</a>).
+  Thanks <a href="https://github.com/Dx-Alz-xD">@Dx-Alz-xD</a> and <a href="https://github.com/chatman-media">@chatman-media</a>.
+- Docs: fix miscellaneous errors in examples on doc pages, in partial
+  preparation for a systematic test harness on all such examples (<a href="https://github.com/josdejong/mathjs/issues/3741">#3741</a>).
+  Thanks <a href="https://github.com/yxshee">@yxshee</a>.
+- Docs: chip away five more functions with JSDoc errors: re, im, derivative,
+  kldivergence, and symbolicEqual (<a href="https://github.com/josdejong/mathjs/issues/3731">#3731</a>). Thanks <a href="https://github.com/yxshee">@yxshee</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3768">#3768</a> Units: `rd` should always have been an alias for `rod` (<a href="https://github.com/josdejong/mathjs/issues/3772">#3772</a>).
+  Thanks <a href="https://github.com/Narek-Khachikyan">@Narek-Khachikyan</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3637">#3637</a> TypeScript: allow a Unit value as second argument of `unit`
+  method (<a href="https://github.com/josdejong/mathjs/issues/3699">#3699</a>). Thanks <a href="https://github.com/jakezwang">@jakezwang</a>.
+- Docs: update values of physical constants in units doc page, and
+  institute a check that they match the values in the math instance (<a href="https://github.com/josdejong/mathjs/issues/3740">#3740</a>).
+  Thanks <a href="https://github.com/YashG1836">@YashG1836</a>.
+- Feat: support bigint in stirlingS2(n,k) and ensure that result is
+  always of correct type (<a href="https://github.com/josdejong/mathjs/issues/3663">#3663</a>). Thanks <a href="https://github.com/JSap0914">@JSap0914</a> and <a href="https://github.com/gwhitney">@gwhitney</a>.
+- Docs: <a href="https://github.com/josdejong/mathjs/issues/3401">#3401</a> add pages for String and Boolean types, clarify that concat
+  works on strings, and correct obsolete string manipulation examples (<a href="https://github.com/josdejong/mathjs/issues/3745">#3745</a>)
+  Thanks <a href="https://github.com/Hugohong258">@Hugohong258</a>.
+- Fix: Adjust <a href="https://github.com/josdejong/mathjs/issues/3710">#3710</a> to ensure that mod of bigints ends up in intended
+  range for all sign combinations (<a href="https://github.com/josdejong/mathjs/issues/3684">#3684</a>). Thanks <a href="https://github.com/spokodev">@spokodev</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3758">#3758</a> correct gcd and atan2 when computed on arguments including
+  sparse matrices (<a href="https://github.com/josdejong/mathjs/issues/3751">#3751</a>). Thanks <a href="https://github.com/waw666waw666">@waw666waw666</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3160">#3160</a>, <a href="https://github.com/josdejong/mathjs/issues/3202">#3202</a> correct TypeScript types for various cases of matrix
+  functions that return statistics (e.g., sum, variance, etc.) (<a href="https://github.com/josdejong/mathjs/issues/3735">#3735</a>).
+  Thanks <a href="https://github.com/b84330808">@b84330808</a> and <a href="https://github.com/WenJing95">@WenJing95</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3756">#3756</a> ensure invmod returns canonical negative representive for
+  inverse when modulus is negative. Also adds bigint support to invmod and
+  xgcd and prefers bigint results with mixed integer number - bigint arguments.
+  Conforms mod to these same conventions (<a href="https://github.com/josdejong/mathjs/issues/3710">#3710</a>). Thanks <a href="https://github.com/kevin9327">@kevin9327</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3704">#3704</a> avoid double-processing the first node in simplifyCore (<a href="https://github.com/josdejong/mathjs/issues/3698">#3698</a>).
+  Thanks <a href="https://github.com/Wu-Li">@Wu-Li</a>.
+- Fix: <a href="https://github.com/josdejong/mathjs/issues/3736">#3736</a> don't throw error when reducing 1-D Matrix along dim 0 (<a href="https://github.com/josdejong/mathjs/issues/3734">#3734</a>).
+  Thanks <a href="https://github.com/b84330808">@b84330808</a>.
+- Docs: <a href="https://github.com/josdejong/mathjs/issues/3559">#3559</a> clarify composition of number bundle (<a href="https://github.com/josdejong/mathjs/issues/3716">#3716</a>). Thanks <a href="https://github.com/Hugohong258">@Hugohong258</a>.
+- Fix: Units: exact values for several more units (<a href="https://github.com/josdejong/mathjs/issues/3739">#3739</a>). Thanks <a href="https://github.com/YashG1836">@YashG1836</a>.
+- Fix: Units: use exact value for `acre` unit (<a href="https://github.com/josdejong/mathjs/issues/3665">#3665</a>). Thanks <a href="https://github.com/spokodev">@spokodev</a>.
+- Docs: <a href="https://github.com/josdejong/mathjs/issues/2095">#2095</a>,#2771 Units: unit parser limitations and min/sec functions vs
+  unit abbreviations (<a href="https://github.com/josdejong/mathjs/issues/3714">#3714</a>). Thanks <a href="https://github.com/Hugohong258">@Hugohong258</a>.
+- Feat: document and allow more operations on non-rectangular nested arrays,
+  along with speedup matrix/array w. scalar operations (<a href="https://github.com/josdejong/mathjs/issues/3607">#3607</a>). Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+- Fix: correct the sign of the derivative of acoth (<a href="https://github.com/josdejong/mathjs/issues/3727">#3727</a>) Thanks <a href="https://github.com/chuanghiduoc">@chuanghiduoc</a>.
+- Chore: fix spelling errors in various comments etc. (<a href="https://github.com/josdejong/mathjs/issues/3666">#3666</a>-#3670). Thanks
+  <a href="https://github.com/rrbharath">@rrbharath</a>.
+- Docs: fix the browser example `rocket_trajectory_optimization.html` (<a href="https://github.com/josdejong/mathjs/issues/3654">#3654</a>).
+  Thanks <a href="https://github.com/dvd101x">@dvd101x</a>.
+
 <h1 id="20260407-1520">2026-04-07, 15.2.0 <a href="#20260407-1520" title="Permalink">#</a></h1>
 
 - Feat: Add amp-hour charge unit `Ah` (<a href="https://github.com/josdejong/mathjs/issues/3617">#3617</a>). Thanks <a href="https://github.com/adrfantini">@adrfantini</a>.
@@ -1693,7 +1762,7 @@ Breaking changes:
 - Dropped support for (non-primitive) instances of `Number`, `Boolean`, and
   `String` from functions `clone` and `typeof`.
 - Dropped official support for IE9 (probably still works, but it's not tested).
-- Fixed <a href="https://github.com/josdejong/mathjs/issues/851">#851</a>: More consistent behavior of sqrt, nthRoot, and pow.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/851">#851</a>: More consistent behavior of `sqrt`, `nthRoot`, and `pow`.
   Thanks <a href="https://github.com/dakotablair">@dakotablair</a>.
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1103">#1103</a>: Calling `toTex` on node that contains `derivative` causing
   an exception. Thanks <a href="https://github.com/joelhoover">@joelhoover</a>.
@@ -2526,7 +2595,7 @@ Non breaking changes:
 
 <h2 id="20150712-version-171">2015-07-12, version 1.7.1 <a href="#20150712-version-171" title="Permalink">#</a></h2>
 
-- Fixed <a href="https://github.com/josdejong/mathjs/issues/397">#397</a>: Inaccuracies in nthRoot for very large values, and wrong results
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/397">#397</a>: Inaccuracies in `nthRoot` for very large values, and wrong results
   for very small values. (backported from v2)
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/405">#405</a>: Parser throws error when defining a function in a multiline
   expression.
@@ -3067,7 +3136,7 @@ Non breaking changes:
 
 - Extended the import function and some other minor improvements.
 - Fixed a bug in merging one dimensional vectors into a matrix.
-- Fixed a bug in function subtract, when subtracting a complex number from a
+- Fixed a bug in function `subtract`, when subtracting a complex number from a
   real number.
 
 <h2 id="20130510-version-081">2013-05-10, version 0.8.1 <a href="#20130510-version-081" title="Permalink">#</a></h2>

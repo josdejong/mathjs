@@ -51,3 +51,10 @@ math.pow(a, 2)               // returns Array [[9, 8], [16, 17]]
 [pow](pow.html),
 [sqrt](sqrt.html),
 [multiply](multiply.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v14.0.0 | Return a sparse matrix for sparse inputs
+v11.6 | Support matrix broadcasting
+v0.23 | Renamed from `epow`

@@ -73,6 +73,7 @@ math.compare(2, [1, 2, 3])   // returns [1, 0, -1]
 
 Version | Comment
 ------- | -------
-v0.19 | Created
-v4 | Changed to compare strings by numerical value
 v13 | Change to use separate relative and absolute tolerances
+v11.6 | Support matrix broadcasting
+v4 | Changed to compare strings by numerical value
+v0.19 | Created

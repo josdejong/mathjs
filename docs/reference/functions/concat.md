@@ -6,32 +6,42 @@ layout: default
 
 <h1 id="function-concat">Function concat <a href="#function-concat" title="Permalink">#</a></h1>
 
-Concatenate two or more matrices.
+Concatenate two or more arrays or matrices, or two or more strings.
+A single input is also accepted: an array or matrix is copied, and a string
+is returned unchanged.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.concat(A, B, C, ...)
-math.concat(A, B, C, ..., dim)
+math.concat(A, B, ...)
+math.concat(A, B, ..., dim)
+math.concat(str1, str2, ...)
 ```
 
 <h3 id="where">Where <a href="#where" title="Permalink">#</a></h3>
 
-- `dim: number` is a zero-based dimension over which to concatenate the matrices.
-  By default the last dimension of the matrices.
+- `A, B, ...` are arrays or Matrix objects with the same number of dimensions.
+  Arrays and Matrix objects can be combined in one call.
+- `dim: number | BigNumber` is an optional final argument for arrays and
+  matrices. It is the integer index of the dimension to extend, defaulting
+  to the last dimension. For two-dimensional inputs, dimension 0 appends rows
+  and dimension 1 appends columns. The JavaScript API uses zero-based
+  dimensions; the expression parser uses one-based dimensions instead.
+- `str1, str2, ...` are strings. String concatenation has no dimension argument.
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | ... Array &#124; Matrix | Two or more matrices
+`args` | ... Array &#124; Matrix &#124; string | Items to concatenate. Arrays and matrices may be mixed; strings must be separate.
+`dimension` | number &#124; BigNumber | Optional final dimension for arrays and matrices, defaulting to the last dimension. String arguments do not accept a dimension.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Array &#124; Matrix | Concatenated matrix
+Array &#124; Matrix &#124; string | Concatenated array, matrix, or string
 
 
 <h3 id="throws">Throws <a href="#throws" title="Permalink">#</a></h3>
@@ -46,8 +56,9 @@ Type | Description
 const A = [[1, 2], [5, 6]]
 const B = [[3, 4], [7, 8]]
 
-math.concat(A, B)                  // returns [[1, 2, 3, 4], [5, 6, 7, 8]]
-math.concat(A, B, 0)               // returns [[1, 2], [5, 6], [3, 4], [7, 8]]
+math.concat(A, B, 0)              // returns [[1, 2], [5, 6], [3, 4], [7, 8]]
+math.concat(A, B, 1)              // returns [[1, 2, 3, 4], [5, 6, 7, 8]]
+math.concat(A, B)                 // returns [[1, 2, 3, 4], [5, 6, 7, 8]]
 math.concat('hello', ' ', 'world') // returns 'hello world'
 ```
 
@@ -58,3 +69,11 @@ math.concat('hello', ' ', 'world') // returns 'hello world'
 [squeeze](squeeze.html),
 [subset](subset.html),
 [transpose](transpose.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v2.0 | Support string concatenation
+v0.26 | Support BigNumber dimensions; use one-based dimensions in expressions
+v0.11 | Use zero-based dimensions in the JavaScript API
+v0.5 | Created

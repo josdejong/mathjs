@@ -56,3 +56,10 @@ math.subtract(c, d)          // returns Unit 1.6 km
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [add](add.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11.6 | Support matrix broadcasting
+v5.0.3 | Support matrices with a `datatype` defined
+v0.8.2 | Support complex - real mixed subtraction

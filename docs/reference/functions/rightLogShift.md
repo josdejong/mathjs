@@ -54,3 +54,9 @@ math.rightLogShift([16, 32, 64], 4)    // returns Array [1, 2, 4]
 [bitXor](bitXor.html),
 [leftShift](leftShift.html),
 [rightLogShift](rightLogShift.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11.6 | Support matrix broadcasting
+v1.2 | Created

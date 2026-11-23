@@ -49,3 +49,10 @@ math.to(math.unit(16, 'bytes'), 'bits')        // returns Unit 128 bits
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [unit](unit.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11.6 | Support matrix broadcasting
+v2.2 | Fix simplified unit conversions
+v0.18 | Renamed from `in` to `to`

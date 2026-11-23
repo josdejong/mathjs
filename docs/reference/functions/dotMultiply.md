@@ -54,3 +54,9 @@ math.multiply(a, b)    // returns [[52, 28], [23, 14]]
 [multiply](multiply.html),
 [divide](divide.html),
 [dotDivide](dotDivide.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11.6 | Support matrix broadcasting
+v0.23 | Renamed from `emultiply`

@@ -1,5 +1,5 @@
 /*!
- *  decimal.js v10.5.0
+ *  decimal.js v10.6.0
  *  An arbitrary-precision Decimal type for JavaScript.
  *  https://github.com/MikeMcl/decimal.js
  *  Copyright (c) 2025 Michael Mclaughlin <M8ch88l@gmail.com>
@@ -14,8 +14,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 15.2.0
- * @date    2026-04-07
+ * @version 15.3.0
+ * @date    2026-11-23
  *
  * @license
  * Copyright (C) 2013-2026 Jos de Jong <wjosdejong@gmail.com>

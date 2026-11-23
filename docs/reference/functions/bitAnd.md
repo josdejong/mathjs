@@ -53,3 +53,9 @@ math.bitAnd([1, 12, 31], 42)       // returns Array [0, 8, 10]
 [leftShift](leftShift.html),
 [rightArithShift](rightArithShift.html),
 [rightLogShift](rightLogShift.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11.6 | Support matrix broadcasting
+v1.2 | Created

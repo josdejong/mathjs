@@ -59,3 +59,9 @@ math.atan(2)             // returns number 1.1071487177940904
 [atan](atan.html),
 [sin](sin.html),
 [cos](cos.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11.6 | Support matrix broadcasting
+v1.5 | Support BigNumber arguments

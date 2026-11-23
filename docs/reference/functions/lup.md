@@ -39,12 +39,10 @@ Type | Description
 
 ```js
 const m = [[2, 1], [1, 4]]
-const r = math.lup(m)
-// r = {
-//   L: [[1, 0], [0.5, 1]],
-//   U: [[2, 1], [0, 3.5]],
-//   P: [0, 1]
-// }
+const {L, U, P} = math.lup(m)
+L  // [[1, 0], [0.5, 1]] ...
+U  // [[2, 1], [0, 3.5]] ...
+P  // [0, 1]
 ```
 
 
@@ -54,3 +52,8 @@ const r = math.lup(m)
 [lsolve](lsolve.html),
 [lusolve](lusolve.html),
 [usolve](usolve.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v2 | Created

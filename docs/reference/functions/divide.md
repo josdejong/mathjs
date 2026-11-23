@@ -57,3 +57,11 @@ math.divide(e, 4.5)          // returns Unit 4 km
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [multiply](multiply.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v13 | Handle bigints
+v2 | Support Fractions
+v0.16 | Support BigNumbers
+v0.0.2 | Created

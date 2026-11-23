@@ -83,6 +83,7 @@ math.unequal(0, null)        // returns true
 
 Version | Comment
 ------- | -------
+v14.0.0 | Return a sparse matrix for sparse inputs
 v13 | Handle bigints
 v11.6 | Support matrix broadcasting
 v4 | Compare strings by their numeric values

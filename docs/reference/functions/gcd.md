@@ -52,3 +52,11 @@ math.gcd([8, -4], [12, 6])   // returns [4, 2]
 
 [lcm](lcm.html),
 [xgcd](xgcd.html)
+<h2 id="history">History <a href="#history" title="Permalink">#</a></h2>
+
+Version | Comment
+------- | -------
+v11.7 | Accept arrays as input
+v11.6 | Support matrix broadcasting
+v0.26 | Implement BigNumber support
+v0.6 | Created
