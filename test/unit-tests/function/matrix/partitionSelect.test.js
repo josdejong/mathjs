@@ -104,4 +104,86 @@ describe('partitionSelect', function () {
     assert.strictEqual(expression.toTex(), '\\mathrm{sort}\\left(\\begin{bmatrix}3\\\\2\\\\1\\\\\\end{bmatrix}\\right)')
   })
   */
+
+  describe('with a numeric index of any type', function () {
+    it('should accept a bigint index', function () {
+      assert.strictEqual(partitionSelect([5, 10, 1], 1n), 5)
+      assert.strictEqual(partitionSelect([5, 10, 1], 0n), 1)
+      assert.strictEqual(partitionSelect([5, 10, 1], 2n), 10)
+    })
+
+    it('should accept a BigNumber index', function () {
+      assert.strictEqual(partitionSelect([5, 10, 1], math.bignumber(1)), 5)
+      assert.strictEqual(partitionSelect([5, 10, 1], math.bignumber(0)), 1)
+      assert.strictEqual(partitionSelect([5, 10, 1], math.bignumber(2)), 10)
+    })
+
+    it('should accept a Fraction index', function () {
+      assert.strictEqual(partitionSelect([5, 10, 1], math.fraction(1, 1)), 5)
+      assert.strictEqual(partitionSelect([5, 10, 1], math.fraction(2, 2)), 5)
+      assert.strictEqual(partitionSelect([5, 10, 1], math.fraction(4, 2)), 10)
+    })
+
+    it('should accept a Matrix together with a BigNumber index', function () {
+      assert.strictEqual(partitionSelect(matrix([5, 10, 1]), math.bignumber(1)), 5)
+    })
+
+    it('should accept a numeric index together with a compare string', function () {
+      assert.strictEqual(partitionSelect([5, 10, 1], math.bignumber(0), 'asc'), 1)
+      assert.strictEqual(partitionSelect([5, 10, 1], math.bignumber(1), 'desc'), 5)
+      assert.strictEqual(partitionSelect([5, 10, 1], 1n, 'desc'), 5)
+      assert.strictEqual(partitionSelect([5, 10, 1], math.fraction(1, 1), 'asc'), 5)
+    })
+
+    it('should accept a numeric index together with a custom compare function', function () {
+      function sortByLength (a, b) {
+        return a.length - b.length
+      }
+      assert.strictEqual(partitionSelect(['Langdon', 'Tom', 'Sara'], math.bignumber(0), sortByLength), 'Tom')
+      assert.strictEqual(partitionSelect(['Langdon', 'Tom', 'Sara'], 1n, sortByLength), 'Sara')
+      assert.strictEqual(partitionSelect(['Langdon', 'Tom', 'Sara'], math.fraction(2, 1), sortByLength), 'Langdon')
+    })
+
+    it('should validate a numeric index that is not a non-negative integer', function () {
+      assert.throws(function () { partitionSelect([1], math.bignumber(-2)) }, /k must be a non-negative integer/)
+      assert.throws(function () { partitionSelect([1], -2n) }, /k must be a non-negative integer/)
+      assert.throws(function () { partitionSelect([3, 2, 1], math.bignumber(3)) }, /k out of bounds/)
+      assert.throws(function () { partitionSelect([], 0n) }, /k out of bounds/)
+    })
+  })
+
+  describe('error messages', function () {
+    it('should report the offending index in the non-negative integer error', function () {
+      assert.throws(function () { partitionSelect([1], -2) }, /k must be a non-negative integer, but got -2/)
+      assert.throws(function () { partitionSelect([3, 2, 1], 1.5) }, /k must be a non-negative integer, but got 1.5/)
+      assert.throws(function () { partitionSelect([3, 2, 1], math.bignumber(-4)) }, /k must be a non-negative integer, but got -4/)
+    })
+
+    it('should report the offending index and the number of elements in the out of bounds error', function () {
+      assert.throws(function () { partitionSelect([3, 2, 1], 3) }, /k out of bounds: index 3 is larger than the number of elements \(3\)/)
+      assert.throws(function () { partitionSelect([3, 2, 1], 7) }, /k out of bounds: index 7 is larger than the number of elements \(3\)/)
+      assert.throws(function () { partitionSelect([], 0) }, /k out of bounds: index 0 is larger than the number of elements \(0\)/)
+      assert.throws(function () { partitionSelect([1], math.bignumber(5)) }, /k out of bounds: index 5 is larger than the number of elements \(1\)/)
+    })
+  })
+
+  describe('with NaN and a custom compare function', function () {
+    it('should not short-circuit on NaN when a custom compare function is given', function () {
+      // a custom comparator that puts NaN last
+      function nanLast (a, b) {
+        if (isNaN(a)) return 1
+        if (isNaN(b)) return -1
+        return a - b
+      }
+
+      const result = partitionSelect([3, NaN, 1, 2], 1, nanLast)
+      assert.strictEqual(result, 2)
+    })
+
+    it('should still short-circuit on NaN for the default, asc and desc comparators', function () {
+      assert(isNaN(partitionSelect([1, NaN, 3], 1)))
+      assert(isNaN(partitionSelect([1, NaN, 3], 1, 'asc')))
+      assert(isNaN(partitionSelect([1, NaN, 3], 1, 'desc')))
+    })
+  })
 })
