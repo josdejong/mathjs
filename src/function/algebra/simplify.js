@@ -309,8 +309,8 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     { l: 'n+-n', r: '0' },
     { l: 'vd*n + vd', r: 'vd*(n+1)' }, // NOTE: leftmost position is special:
     { l: 'n3*n1 + n3*n2', r: 'n3*(n1+n2)' }, // All sub-monomials tried there.
-    { l: 'n3^(-n4)*n1 +   n3  * n2', r: 'n3^(-n4)*(n1 + n3^(n4+1) *n2)' },
-    { l: 'n3^(-n4)*n1 + n3^n5 * n2', r: 'n3^(-n4)*(n1 + n3^(n4+n5)*n2)' },
+    { l: 'n3^(-cd1)*n1 +   n3   * n2', r: 'n3^(-cd1)*(n1 + n3^(cd1+1)  *n2)' },
+    { l: 'n3^(-cd1)*n1 + n3^cd2 * n2', r: 'n3^(-cd1)*(n1 + n3^(cd1+cd2)*n2)' },
     // noncommutative additional cases (term collection & factoring)
     {
       s: 'n*vd + vd -> (n+1)*vd',
@@ -329,11 +329,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       assuming: { divide: { total: true }, multiply: { commutative: false } }
     },
     {
-      s: 'n1*n3^(-n4) + n2 * n3    -> (n1 + n2*n3^(n4 +  1))*n3^(-n4)',
+      s: 'n1*n3^(-cd1) + n2 * n3     -> (n1 + n2*n3^(cd1 +   1))*n3^(-cd1)',
       assuming: { multiply: { commutative: false } }
     },
     {
-      s: 'n1*n3^(-n4) + n2 * n3^n5 -> (n1 + n2*n3^(n4 + n5))*n3^(-n4)',
+      s: 'n1*n3^(-cd1) + n2 * n3^cd2 -> (n1 + n2*n3^(cd1 + cd2))*n3^(-cd1)',
       assuming: { multiply: { commutative: false } }
     },
     { l: 'n*cd + cd', r: '(n+1)*cd' },

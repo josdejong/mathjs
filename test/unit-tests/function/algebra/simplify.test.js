@@ -385,6 +385,22 @@ describe('simplify', function () {
     simplifyAndCompare('8n - 4n', '4 * n')
     simplifyAndCompare('8 - 4n', '8 - 4 * n')
     simplifyAndCompare('8 - n', '8 - n')
+
+    // Negative power combined with a symbolic power of the same base (#3764)
+    const scope = { x: 2, y: 3, z: 1.5 }
+    for (const expr of [
+      '2/x^2 - x^(2*z)',
+      '2/x^3 - x^(3*z)',
+      'x/y^2 - y^(2*z)',
+      '1/(z*x)^(y+x) + (x*y)^x',
+      '1/x^2 - x^(2*z)',
+      '(1 - y^x) + (4/y)^(x+y)',
+      '2/x^(2*z + 1) - x'
+    ]) {
+      const simplified = math.simplify(expr)
+      assert(Math.abs(simplified.evaluate(scope) - math.evaluate(expr, scope)) < 1e-12,
+        `value changed for ${expr}: ${simplified.toString()}`)
+    }
   })
 
   it('should handle non-existing functions like a pro', function () {
