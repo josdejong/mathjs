@@ -216,9 +216,30 @@ describe('or', function () {
     })
   })
 
+  describe('multiple arguments', function () {
+    it('should or more than two scalars', function () {
+      assert.strictEqual(or(0, 0, 4), true)
+      assert.strictEqual(or(0, 0, 0), false)
+      assert.strictEqual(or(false, false, false, true), true)
+      assert.strictEqual(or(false, false, false, false), false)
+      assert.strictEqual(or(0, bignumber(0), 6n, false), true)
+      assert.strictEqual(or(0, bignumber(0), 0n, false), false)
+      assert.strictEqual(or(complex(0, 0), complex(0, 1), 0, bignumber(0)), true)
+      assert.strictEqual(or(unit('0cm'), unit('0inch'), 0, bignumber(0)), false)
+    })
+
+    it('should or more than two collections element wise', function () {
+      assert.deepStrictEqual(or([0, 1, 0], [0, 0, 0], [1, 0, 0]), [true, true, false])
+      assert.deepStrictEqual(or([0, 1, 0], 0, [1, 0, 0]), [true, true, false])
+      assert.deepStrictEqual(or([0, 1, 0], [0, 0, 0], 1), [true, true, true])
+      assert.deepStrictEqual(or(matrix([0, 1, 0]), matrix([0, 0, 0]), matrix([1, 0, 0])), matrix([true, true, false]))
+      assert.deepStrictEqual(or(sparse([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]]), sparse([[0, 0], [0, 0]])), sparse([[false, true], [true, true]]))
+    })
+  })
+
   it('should throw an error in case of invalid number of arguments', function () {
+    assert.throws(function () { or() }, /TypeError: Too few arguments/)
     assert.throws(function () { or(1) }, /TypeError: Too few arguments/)
-    assert.throws(function () { or(1, 2, 3) }, /TypeError: Too many arguments/)
   })
 
   it('should throw an error in case of invalid type of arguments', function () {
