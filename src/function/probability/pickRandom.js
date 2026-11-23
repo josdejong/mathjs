@@ -43,6 +43,10 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
    *     math.pickRandom([{x: 1.0, y: 2.0}, {x: 1.1, y: 2.0}], { elementWise: false })
    *         // returns one of the items in the array
    *
+   * History:
+   *
+   *     unreleased  Handle overflowing sums of finite weights
+   *
    * See also:
    *
    *     random, randomInt
@@ -124,6 +128,15 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
         }
 
         totalWeights += weights[i]
+      }
+
+      if (totalWeights === Infinity) {
+        const maxWeight = weights.reduce((max, weight) => Math.max(max, weight), 0)
+        if (Number.isFinite(maxWeight)) {
+          // Scaling every finite weight by the same factor preserves the distribution.
+          weights = weights.map(weight => weight / maxWeight)
+          totalWeights = weights.reduce((total, weight) => total + weight, 0)
+        }
       }
     }
 
