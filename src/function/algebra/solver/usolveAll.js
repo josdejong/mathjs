@@ -26,15 +26,17 @@ export const createUsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * Examples:
    *
-   *    const a = [[-2, 3], [2, 1]]
-   *    const b = [11, 9]
-   *    const x = usolveAll(a, b)  // [ [[8], [9]] ]
+   *    const U = [[-2, 3], [0, 1]]
+   *    const b = [11, 5]
+   *    const x = math.usolveAll(U, b)  // [[[2], [5]]]
    *
    * See also:
    *
    *    usolve, lup, slu, usolve, lusolve
    *
    * History:
+   *
+   *    v7.3  Created
    *
    * @param {Matrix, Array} U       A N x N matrix or array (U)
    * @param {Matrix, Array} b       A column vector with the b values
