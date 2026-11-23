@@ -269,7 +269,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       function _mapIndex (dim, callback) {
         // applies a callback for when the index is a Number or a Matrix
         if (isNumber(dim)) return callback(dim)
-        else return dim.map(callback).valueOf()
+        else return dim.map(callback, false, true).valueOf()
       }
 
       if (isNumber(dims)) {
