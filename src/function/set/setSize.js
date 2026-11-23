@@ -36,7 +36,7 @@ export const createSetSize = /* #__PURE__ */ factory(name, dependencies, ({ type
         return Array.isArray(a) ? flatten(a).length : flatten(a.toArray()).length
       } else {
         const b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
-        let count = 1
+        let count = b.length === 0 ? 0 : 1
         for (let i = 1; i < b.length; i++) {
           if (compareNatural(b[i], b[i - 1]) !== 0) {
             count++
