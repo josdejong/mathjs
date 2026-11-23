@@ -64,4 +64,9 @@ describe('isPrime', function () {
     assert.strictEqual(isPrime(bignumber('2305843009213693951')), true)
     assert.strictEqual(isPrime(bignumber('230584300921369395')), false)
   })
+
+  it('should not report large BigNumber composites as prime', function () {
+    // 6467763037867 * 12935526075733, above the fixed-bases threshold
+    assert.strictEqual(isPrime(bignumber('83663917427990661188781511')), false)
+  })
 })
