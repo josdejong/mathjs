@@ -77,7 +77,13 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
       'number, number': _modNumber,
 
       'BigNumber, BigNumber': function (x, y) {
-        return y.isZero() ? x : x.sub(y.mul(floor(x.div(y))))
+        if (y.isZero()) {
+          return x
+        }
+        if (x.isInteger() && y.isInteger()) {
+          return _modBigNumberInteger(x, y)
+        }
+        return x.sub(y.mul(floor(x.div(y))))
       },
 
       'bigint, bigint': _modBigint,
@@ -116,9 +122,40 @@ export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     // correctly for x < 0 and x === 0
     // see https://en.wikipedia.org/wiki/Modulo_operation
 
+    if (y === 0) {
+      return x
+    }
+
+    // Integers have no round-off for the tolerant floor below to absorb, and
+    // it would round a quotient like 1.999999999999 up to 2, giving a negative
+    // remainder. JavaScript's % is exact for integers, so use it there.
+    if (isInteger(x) && isInteger(y)) {
+      const m = x % y
+      if (m === 0) {
+        return 0
+      }
+      return ((m < 0) === (y < 0)) ? m : m + y
+    }
+
     // We use mathjs floor to handle errors associated with
     // precision float approximation
-    return (y === 0) ? x : x - y * floor(x / y)
+    return x - y * floor(x / y)
+  }
+
+  /**
+   * Calculate the modulus of two integer BigNumbers exactly, with the sign of
+   * the divisor
+   * @param {BigNumber} x
+   * @param {BigNumber} y
+   * @returns {BigNumber} res
+   * @private
+   */
+  function _modBigNumberInteger (x, y) {
+    const m = x.mod(y)
+    if (m.isZero()) {
+      return m.abs()
+    }
+    return (m.isNegative() === y.isNegative()) ? m : m.add(y)
   }
 
   function _modBigint (x, y) {

@@ -160,7 +160,21 @@ export function modNumber (x, y) {
   // We don't use JavaScript's % operator here as this doesn't work
   // correctly for x < 0 and x === 0
   // see https://en.wikipedia.org/wiki/Modulo_operation
-  return (y === 0) ? x : x - y * Math.floor(x / y)
+  if (y === 0) {
+    return x
+  }
+
+  // x / y is rounded for large integers, so x - y * Math.floor(x / y) can
+  // lose the remainder (mod(1e17, 7) gave 0). % is exact for integers.
+  if (Number.isInteger(x) && Number.isInteger(y)) {
+    const m = x % y
+    if (m === 0) {
+      return 0
+    }
+    return ((m < 0) === (y < 0)) ? m : m + y
+  }
+
+  return x - y * Math.floor(x / y)
 }
 modNumber.signature = n2
 
