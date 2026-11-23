@@ -101,6 +101,129 @@ describe('AssignmentNode', function () {
     assert.deepStrictEqual(scope, { a: { b: { c: 3 } } })
   })
 
+  describe('nested indexed assignment', function () {
+    for (const object of ['parent.child', 'parent["child"]', 'root.parent.child']) {
+      it(`should update ${object} without reassigning its parent property`, function () {
+        const calls = []
+        const child = new Proxy({ x: 4 }, {
+          set (target, key, value) {
+            calls.push(['child', key, value])
+            return Reflect.set(target, key, value)
+          }
+        })
+        const parent = {
+          get child () {
+            calls.push('get child')
+            return child
+          },
+          set child (value) {
+            calls.push(['parent', value])
+          }
+        }
+        const scope = {
+          parent,
+          root: { parent },
+          key: () => { calls.push('key'); return 'x' },
+          value: () => { calls.push('value'); return 5 }
+        }
+
+        assert.strictEqual(math.evaluate(`${object}[key()] = value()`, scope), 5)
+        assert.strictEqual(child.x, 5)
+        assert.deepStrictEqual(calls, ['get child', 'key', 'value', ['child', 'x', 5]])
+      })
+    }
+
+    it('should update a child through a getter-only parent property', function () {
+      const child = { x: 4 }
+      const parent = { get child () { return child } }
+
+      assert.strictEqual(math.evaluate('parent.child[key] = 5', { parent, key: 'x' }), 5)
+      assert.strictEqual(child.x, 5)
+    })
+
+    for (const type of ['Array', 'DenseMatrix', 'SparseMatrix']) {
+      it(`should update a nested ${type} in place without a parent setter`, function () {
+        const data = [[1, 2], [3, 4]]
+        const child = type === 'Array' ? data : math.matrix(data, type === 'DenseMatrix' ? 'dense' : 'sparse')
+        const parent = { get child () { return child } }
+
+        assert.strictEqual(math.evaluate('parent.child[1, end] = 5', { parent }), 5)
+        assert.deepStrictEqual(child.valueOf(), [[1, 5], [3, 4]])
+        assert.strictEqual(parent.child, child)
+      })
+
+      it(`should write back a detached ${type} subset`, function () {
+        const data = [[1, 2], [3, 4]]
+        const parent = type === 'Array' ? data : math.matrix(data, type === 'DenseMatrix' ? 'dense' : 'sparse')
+
+        assert.strictEqual(math.evaluate('parent[1:2, 1:2][1, 2] = 5', { parent }), 5)
+        assert.deepStrictEqual(parent.valueOf(), [[1, 5], [3, 4]])
+      })
+    }
+
+    it('should write back a changed string exactly once', function () {
+      let child = 'abc'
+      const assigned = []
+      const parent = {
+        get child () { return child },
+        set child (value) { assigned.push(value); child = value }
+      }
+
+      assert.strictEqual(math.evaluate('parent.child[end] = "d"', { parent }), 'd')
+      assert.strictEqual(child, 'abd')
+      assert.deepStrictEqual(assigned, ['abd'])
+    })
+
+    it('should preserve string writeback even when the value is unchanged', function () {
+      const assigned = []
+      const parent = {
+        get child () { return 'abc' },
+        set child (value) { assigned.push(value) }
+      }
+
+      assert.strictEqual(math.evaluate('parent.child[1] = "a"', { parent }), 'a')
+      assert.deepStrictEqual(assigned, ['abc'])
+    })
+
+    it('should write back a replacement returned by subset', function () {
+      const replacement = { value: 5 }
+      const child = { subset: () => replacement }
+      const parent = { child }
+
+      assert.strictEqual(math.evaluate('parent.child[1] = 5', { parent }), 5)
+      assert.strictEqual(parent.child, replacement)
+    })
+
+    it('should preserve dynamic parent property and string replacement', function () {
+      const parent = { child: 'abc' }
+
+      assert.strictEqual(math.evaluate('parent[key][end] = "d"', { parent, key: 'child' }), 'd')
+      assert.strictEqual(parent.child, 'abd')
+    })
+
+    it('should reject unsafe child properties', function () {
+      const parent = { child: {} }
+      assert.throws(() => math.evaluate('parent.child[key] = 5', { parent, key: '__proto__' }), /No access to property/)
+      assert.deepStrictEqual(parent.child, {})
+    })
+
+    it('should propagate a child setter error without calling the parent setter', function () {
+      const error = new Error('child setter failed')
+      const child = {
+        get x () { return 4 },
+        set x (value) { throw error }
+      }
+      let parentCalls = 0
+      const parent = {
+        get child () { return child },
+        set child (value) { parentCalls++ }
+      }
+
+      assert.throws(() => math.evaluate('parent.child[key] = 5', { parent, key: 'x' }), err => err === error)
+      assert.strictEqual(parentCalls, 0)
+    })
+  })
+
   it('should compile an AssignmentNode with matrix index', function () {
     const object = new SymbolNode('a')
     const index = new IndexNode([
