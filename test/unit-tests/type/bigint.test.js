@@ -121,12 +121,18 @@ describe('bigint', function () {
     assert.strictEqual(bigint(math.fraction(-37, 2), { round: 'round' }), -18n)
   })
 
-  it('should convert the elements of a matrix to numbers', function () {
+  it('should convert the elements of a matrix to bigints', function () {
     assert.deepStrictEqual(bigint(math.matrix(['123', true])), math.matrix([123n, 1n]))
   })
 
-  it('should convert the elements of an array to numbers', function () {
+  it('should convert the elements of an array to bigints', function () {
     assert.deepStrictEqual(bigint(['123', true]), [123n, 1n])
+  })
+
+  it('should respect the uniformType option', function () {
+    assert.deepStrictEqual(
+      bigint([math.bignumber('99999')], { uniformType: true }), 99999n)
+    assert.throws(() => bigint([1, 2], { uniformType: true }), TypeError)
   })
 
   it('should throw an error if called with a wrong number of arguments', function () {

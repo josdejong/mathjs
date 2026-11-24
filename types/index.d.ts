@@ -702,14 +702,21 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Create a bigint, which can store integers with arbitrary precision.
    * When a matrix is provided, all elements will be converted to
-   * bigint.
+   * bigint, unless the `uniformType` option is true.
    * @param x Value for the integer, 0 by default.
    * @returns The created bigint
    */
   bigint(
-    x?: number | string | Fraction | BigNumber | bigint | boolean | null
+    x?: number | string | Fraction | BigNumber | bigint | boolean | null,
+    options?: ConversionOptions
   ): bigint
-  bigint<T extends MathCollection>(x: T): T
+  bigint<T extends MathNumericType>(
+    x: MathCollection<T>
+  ): MathCollection<bigint>
+  bigint<T extends MathNumericType, U extends ConversionOptions>(
+    x: MathCollection<T>,
+    options: U
+  ): (U extends { uniformType: true } ? never : MathCollection<bigint>) | bigint
 
   /**
    * Create a boolean or convert a string or number to a boolean. In case
@@ -861,7 +868,11 @@ export interface MathJsInstance extends MathJsFactory {
     value?: string | number | BigNumber | bigint | Fraction | boolean | null,
     options?: ConversionOptions
   ): number
-  number(value?: Unit, options?: ConversionOptions): number | Unit
+  number(value: Unit): Unit
+  number<U extends ConversionOptions>(
+    value: Unit,
+    options: U
+  ): U extends { uniformType: true } ? number : Unit
   number(
     value?: MathCollection,
     options?: ConversionOptions
@@ -4769,6 +4780,7 @@ export interface CreateUnitOptions {
 
 export type ConversionOptions = {
   safe?: boolean
+  round?: string
   uniformType?: boolean
 }
 
@@ -5198,9 +5210,16 @@ export interface MathJsChain<TValue> {
   bigint(
     this: MathJsChain<
       number | string | Fraction | BigNumber | bigint | boolean | null
-    >
+    >,
+    options?: ConversionOptions
   ): MathJsChain<bigint>
-  bigint<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
+  bigint<T extends MathNumericType>(
+    this: MathJsChain<MathCollection<T>>
+  ): MathJsChain<MathCollection<bigint>>
+  bigint<T extends MathNumericType>(
+    this: MathJsChain<MathCollection<T>>,
+    options: ConversionOptions
+  ): MathJsChain<MathCollection<bigint>> | MathJsChain<bigint>
 
   /**
    * Create a boolean or convert a string or number to a boolean. In case

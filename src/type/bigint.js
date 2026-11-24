@@ -37,6 +37,12 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *        - `'ceil'` -- convert to the smallest bigint greater than _value_
    *        - `'fix'` -- convert to the nearest bigint closer to zero
    *          than _value_
+   *      - `uniformType: boolean`
+   *        If true, then this method is guaranteed to return a bigint (if it
+   *        doesn't throw), no matter what the value to be converted is.
+   *        In particular, if `value`cis a Matrix or array, the conversion
+   *        will throw unless there is only one entry, which will be converted
+   *        to bigint and returned.
    *
    * Examples:
    *
@@ -70,8 +76,8 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * History:
    *
-   *    v14.2.1  Added conversion options
-   *    v13      Created
+   *    v16  Added conversion options
+   *    v13  Created
    *
    * @param {string | number | BigNumber | bigint | Fraction | boolean | Array | Matrix | null} [value]  Value to be converted
    * @param {Object} [options]  Conversion options with keys `safe` and/or `round`
@@ -112,7 +118,20 @@ export const createBigint = /* #__PURE__ */ factory(name, dependencies, ({ typed
     Complex: complexToBigint,
     'Complex, Object': complexToBigint,
 
-    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))
+    'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self)),
+    'Array | Matrix, Object': typed.referToSelf(self => (x, options) => {
+      if (options.uniformType) {
+        let arr = x.valueOf()
+        while (Array.isArray(arr)) {
+          if (arr.length !== 1) {
+            throw new TypeError("can't convert multiple entries to single bigint")
+          }
+          arr = arr[0]
+        }
+        return self(arr, options)
+      }
+      return deepMap(x, entry => self(entry, options))
+    })
   })
 
   // reviver function to parse a JSON object like:

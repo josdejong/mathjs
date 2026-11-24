@@ -79,6 +79,7 @@ Basic usage examples
   math.number('123e-45')
   math.number(math.bigint(397), { safe: true })
   math.number(math.unit('1 in/mm'), { uniformType: true })
+  math.square(math.bigint([17], { uniformType: true }) / BigInt(2))
 
   // functions and constants
   math.round(math.e, 3)
@@ -319,6 +320,9 @@ Chaining examples
   expectTypeOf(math.chain([12, 13, 14]).bigint()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.bignumber('12.7')).bigint({ round: 'round' })
+  ).toMatchTypeOf<MathJsChain<bigint>>()
 
   // chain
   expectTypeOf(math.chain(12).bignumber().clone()).toMatchTypeOf<
