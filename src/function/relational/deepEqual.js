@@ -23,8 +23,7 @@ export const createDeepEqual = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    *    const a = [2, 5, 1]
    *    const b = [2, 7, 1]
-   *
-   *    math.deepEqual(a, b)   // returns false...
+   *    math.deepEqual(a, b)   // returns false ...
    *    math.equal(a, b)       // returns [true, false, true]
    *
    * See also:

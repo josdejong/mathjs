@@ -13,7 +13,6 @@ describe('numeric', function () {
   })
 
   it('should throw if called with invalid argument', function () {
-    assert.throws(() => { numeric(true, 'number') }, /Cannot convert/)
     assert.throws(() => { numeric(null, 'number') }, /Cannot convert/)
     assert.throws(() => { numeric([], 'number') }, /Cannot convert/)
     assert.throws(() => { numeric({}, 'number') }, /Cannot convert/)
@@ -83,6 +82,31 @@ describe('numeric', function () {
 
   it('should throw an error if called with a complex number', function () {
     assert.throws(function () { numeric(math.complex(2, 3), 'number') }, TypeError)
+  })
+
+  it('should convert various types to bigint', function () {
+    const tobi = x => numeric(x, 'bigint')
+    const big = 12345678901234567890n
+    const bigs = big.toString()
+    assert.strictEqual(tobi('-5723'), -5723n)
+    assert.strictEqual(tobi(bigs), big)
+    assert.strictEqual(tobi(2e10), 20000000000n)
+    assert.strictEqual(tobi(big), big)
+    assert.strictEqual(tobi(math.bignumber(bigs)), big)
+    assert.strictEqual(
+      tobi(math.bignumber('123456789012345678901234567890')),
+      123456789012345678901234567890n)
+    assert.strictEqual(tobi(math.fraction(18, -3)), -6n)
+    assert.strictEqual(
+      tobi(math.fraction('1234567890123456789012345678901234567890/2')),
+      617283945061728394506172839450617283945n
+    )
+
+    assert.strictEqual(tobi(math.bignumber(27.4)), 27n)
+    assert.strictEqual(tobi(math.bignumber(27.8)), 28n)
+    assert.strictEqual(
+      tobi(math.fraction('123456789012345678901234567890123456789/2')),
+      61728394506172839450617283945061728395n)
   })
 
   it('should LaTeX numeric', function () {

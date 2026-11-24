@@ -247,7 +247,9 @@ describe('fix', function () {
   it('should round correctly with decimals provided in a matrix', function () {
     assert.deepStrictEqual(fix(1.234567, matrix([0, 1, 2, 3, 4])), matrix([1, 1.2, 1.23, 1.234, 1.2345]))
     assert.deepStrictEqual(fix(0, matrix([0, 2, 4])), matrix([0, 0, 0]))
-    assert.deepStrictEqual(fix(bignumber(math.pi), sparse([0, 1, 2, 3, 4])), matrix(bignumber([[3], [3.1], [3.14], [3.141], [3.1415]])))
+    assert.deepStrictEqual(
+      fix(bignumber(math.pi), sparse([0, 1, 2, 3, 4])),
+      sparse(bignumber([[3], [3.1], [3.14], [3.141], [3.1415]])))
     assert.deepStrictEqual(fix(complex(1.335, 2.835), matrix([1, 2])), matrix([complex(1.3, 2.8), complex(1.33, 2.83)]))
   })
 

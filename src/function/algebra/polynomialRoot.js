@@ -52,6 +52,7 @@ export const createPolynomialRoot = /* #__PURE__ */ factory(name, dependencies, 
    *     math.polynomialRoot(-2, 0, 1)                                    // [1.4142135623730951, -1.4142135623730951]
    *     math.polynomialRoot(2, -2, 1)                                    // [1 + i, 1 - i]
    *     math.polynomialRoot(math.complex(1,3), math.complex(-3, -2), 1)  // [2 + i, 1 + i]
+   *
    *     // cubic
    *     math.polynomialRoot(-6, 11, -6, 1)                               // [1, 3, 2]
    *     math.polynomialRoot(-8, 0, 0, 1)                                 // [-1 - 1.7320508075688774i, 2, -1 + 1.7320508075688774i]

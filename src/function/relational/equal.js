@@ -82,6 +82,7 @@ export const createEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     createEqualNumber({ typed, equalScalar }),
     matrixAlgorithmSuite({
       elop: equalScalar,
+      withElop: false, // covered by equalNumber
       SS: matAlgo07xSSf,
       DS: matAlgo03xDSf,
       Ss: matAlgo12xSfs

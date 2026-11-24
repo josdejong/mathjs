@@ -17,6 +17,8 @@ describe('isInteger', function () {
     assert.strictEqual(isInteger(0.1 + 0.2), false)
     assert.strictEqual(isInteger((0.1 + 0.2) * 10), true)
     assert.strictEqual(isInteger((0.1 + 0.2) * 10 - 3), true)
+    assert.strictEqual(isInteger(123456789012345), true)
+    assert.strictEqual(isInteger(123456789012345.5), false)
   })
 
   it('should test whether a bigint is an integer', function () {
@@ -41,6 +43,10 @@ describe('isInteger', function () {
     assert.strictEqual(isInteger(bignumber(NaN)), false)
     assert.strictEqual(isInteger(bignumber((0.1 + 0.2) * 10)), true)
     assert.strictEqual(isInteger(bignumber((0.1 + 0.2) * 10 - 3)), true)
+    assert.strictEqual(isInteger(bignumber('-12345678901234567890.5')), false)
+    assert.strictEqual(isInteger(bignumber('912345678901234567890.5')), false)
+    assert.strictEqual(isInteger(bignumber('-12345678901234567890.0')), true)
+    assert.strictEqual(isInteger(bignumber('912345678901234567890.0')), true)
   })
 
   it('should test whether a Fraction is an integer', function () {

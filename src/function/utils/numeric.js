@@ -3,12 +3,14 @@ import { factory } from '../../utils/factory.js'
 import { noBignumber, noFraction } from '../../utils/noop.js'
 
 const name = 'numeric'
-const dependencies = ['number', '?bignumber', '?fraction']
+const dependencies = ['number', 'bigint', '?bignumber', '?fraction']
 
-export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ number, bignumber, fraction }) => {
+export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ number, bigint, bignumber, fraction }) => {
   const validInputTypes = {
+    boolean: true,
     string: true,
     number: true,
+    bigint: true,
     BigNumber: true,
     Fraction: true
   }
@@ -19,7 +21,7 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
     BigNumber: bignumber
       ? (x) => bignumber(x)
       : noBignumber,
-    bigint: (x) => BigInt(x),
+    bigint: (x) => bigint(x, { safe: false }),
     Fraction: fraction
       ? (x) => fraction(x)
       : noFraction
@@ -49,9 +51,9 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
    *
    * History:
    *
-   *    v6       Created
-   *    v13      Added `bigint` support
    *    v14.2.1  Prefer mathjs `bigint()` to built-in `BigInt()`
+   *    v13      Added `bigint` support
+   *    v6       Created
    *
    * @param {string | number | BigNumber | bigint | Fraction } value
    *              A numeric value or a string containing a numeric value

@@ -678,6 +678,16 @@ export interface MathJsInstance extends MathJsFactory {
    ************************************************************************/
 
   /**
+   * Create an array
+   * @param x  Value to convert
+   * @returns The created array
+   */
+  array(s: string): Array<string>
+  array(z: Complex): Array<number>
+  array<T extends MathNumericType>(m: MathCollection<T>): MathArray<T>
+  array(n?: MathNumericType): Array<MathNumericType>
+
+  /**
    * Create a BigNumber, which can store numbers with arbitrary precision.
    * When a matrix is provided, all elements will be converted to
    * BigNumber.
@@ -692,14 +702,21 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Create a bigint, which can store integers with arbitrary precision.
    * When a matrix is provided, all elements will be converted to
-   * bigint.
+   * bigint, unless the `uniformType` option is true.
    * @param x Value for the integer, 0 by default.
    * @returns The created bigint
    */
   bigint(
-    x?: number | string | Fraction | BigNumber | bigint | boolean | null
+    x?: number | string | Fraction | BigNumber | bigint | boolean | null,
+    options?: ConversionOptions
   ): bigint
-  bigint<T extends MathCollection>(x: T): T
+  bigint<T extends MathNumericType>(
+    x: MathCollection<T>
+  ): MathCollection<bigint>
+  bigint<T extends MathNumericType, U extends ConversionOptions>(
+    x: MathCollection<T>,
+    options: U
+  ): (U extends { uniformType: true } ? never : MathCollection<bigint>) | bigint
 
   /**
    * Create a boolean or convert a string or number to a boolean. In case
@@ -848,10 +865,18 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created number
    */
   number(
-    value?:
-      string | number | BigNumber | bigint | Fraction | boolean | Unit | null
+    value?: string | number | BigNumber | bigint | Fraction | boolean | null,
+    options?: ConversionOptions
   ): number
-  number(value?: MathCollection): number | MathCollection
+  number(value: Unit): Unit
+  number<U extends ConversionOptions>(
+    value: Unit,
+    options: U
+  ): U extends { uniformType: true } ? number : Unit
+  number(
+    value?: MathCollection,
+    options?: ConversionOptions
+  ): number | MathCollection<number>
   /**
    * @param value Value to be converted
    * @param valuelessUnit A valueless unit, used to convert a unit to a
@@ -4249,6 +4274,7 @@ export const {
   UnitDependencies,
 
   // construction function dependencies
+  arrayDependencies,
   bignumberDependencies,
   bigintDependencies,
   booleanDependencies,
@@ -4752,6 +4778,12 @@ export interface CreateUnitOptions {
   override?: boolean
 }
 
+export type ConversionOptions = {
+  safe?: boolean
+  round?: string
+  uniformType?: boolean
+}
+
 export type SimplifyContext = Partial<
   Record<
     OperatorNodeFn,
@@ -5148,6 +5180,18 @@ export interface MathJsChain<TValue> {
    ************************************************************************/
 
   /**
+   * Create an array
+   * @param x  Value to convert
+   * @returns The created array
+   */
+  array(this: MathJsChain<string>): MathJsChain<Array<string>>
+  array(this: MathJsChain<Complex>): MathJsChain<Array<number>>
+  array<T extends MathNumericType>(
+    this: MathJsChain<MathCollection<T>>
+  ): MathJsChain<MathArray<T>>
+  array(this: MathJsChain<MathNumericType>): MathJsChain<Array<MathNumericType>>
+
+  /**
    * Create a BigNumber, which can store numbers with arbitrary precision.
    * When a matrix is provided, all elements will be converted to
    * BigNumber.
@@ -5166,9 +5210,16 @@ export interface MathJsChain<TValue> {
   bigint(
     this: MathJsChain<
       number | string | Fraction | BigNumber | bigint | boolean | null
-    >
+    >,
+    options?: ConversionOptions
   ): MathJsChain<bigint>
-  bigint<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
+  bigint<T extends MathNumericType>(
+    this: MathJsChain<MathCollection<T>>
+  ): MathJsChain<MathCollection<bigint>>
+  bigint<T extends MathNumericType>(
+    this: MathJsChain<MathCollection<T>>,
+    options: ConversionOptions
+  ): MathJsChain<MathCollection<bigint>> | MathJsChain<bigint>
 
   /**
    * Create a boolean or convert a string or number to a boolean. In case
@@ -5271,14 +5322,23 @@ export interface MathJsChain<TValue> {
    */
   number(
     this: MathJsChain<
-      string | number | BigNumber | bigint | Fraction | boolean | Unit | null
+      string | number | BigNumber | bigint | Fraction | boolean | null
     >,
+    options?: ConversionOptions
+  ): MathJsChain<number>
+  number(
+    this: MathJsChain<Unit>,
     valuelessUnit?: Unit | string
   ): MathJsChain<number>
   number(
+    this: MathJsChain<Unit>,
+    options?: ConversionOptions
+  ): MathJsChain<number> | MathJsChain<Unit>
+  number(this: MathJsChain<MathCollection>): MathJsChain<MathCollection<number>>
+  number(
     this: MathJsChain<MathCollection>,
-    valuelessUnit?: Unit | string
-  ): MathJsChain<MathCollection>
+    options?: ConversionOptions
+  ): MathJsChain<MathCollection<number>> | MathJsChain<number>
 
   /**
    * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
@@ -7820,6 +7880,7 @@ export const {
   replacer,
 
   // Construction functions
+  array,
   bignumber,
   bigint,
   boolean,

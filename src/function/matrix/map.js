@@ -41,15 +41,15 @@ export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed })
    *    // It can also be called with 2N + 1 arguments: for N arrays
    *    //    callback(value1, value2, index, BroadcastedArray1, BroadcastedArray2)
    *
-   * History:
-   *
-   *    v0.13  Created
-   *    v1.1   Clone the indices on each callback in case callback mutates
-   *    v13.1  Support multiple inputs to the callback
-   *
    * See also:
    *
    *    filter, forEach, sort
+   *
+   * History:
+   *
+   *    v13.1  Support multiple inputs to the callback
+   *    v1.1   Clone the indices on each callback in case callback mutates
+   *    v0.13  Created
    *
    * @param {Matrix | Array} x    The input to iterate on.
    * @param {Function} callback

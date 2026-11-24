@@ -530,6 +530,23 @@ export function sortFactories (factories) {
 
   if (leftOverFactories.length > 0) {
     const first = leftOverFactories[0]
+    console.warn(`Possible recursive dependency loop in ${first.fn}:`)
+    console.warn(`    Depends on ${first.dependencies.join(', ')}`)
+    const want = first.dependencies.slice()
+    const showed = new Set()
+    while (want.length > 0 && !showed.has(first)) {
+      let next = want.pop()
+      next = stripOptionalNotation(next)
+      if (showed.has(next)) continue
+      showed.add(next)
+      const nextFac = factories[findFactoryName(factories, next)]
+      if (!nextFac) {
+        console.warn(`    ${next}: NOT FOUND`)
+        continue
+      }
+      console.warn(`    ${next}: ${nextFac.dependencies.join(', ')}`)
+      want.unshift(...nextFac.dependencies)
+    }
     throw new Error('Cannot resolve dependencies of factory "' + first.fn + '". ' +
       'Dependencies: ' + first.dependencies.map(d => '"' + d + '"').join(', '))
   }

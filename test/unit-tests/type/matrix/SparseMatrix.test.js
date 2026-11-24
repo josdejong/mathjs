@@ -223,6 +223,13 @@ describe('SparseMatrix', function () {
       assert.deepStrictEqual(c, new SparseMatrix([[7, 8, 9]], 'number'))
     })
 
+    it('should create all-zero SparseMatrix using method zeros', function () {
+      const a = new SparseMatrix([[1, 2, 3]])
+      const b = a.zeros([2, 2])
+      assert.strictEqual(b.isSparseMatrix, true)
+      assert.deepStrictEqual(b, new SparseMatrix([[0, 0], [0, 0]]))
+    })
+
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { SparseMatrix() }, /Constructor must be called with the new operator/)
     })

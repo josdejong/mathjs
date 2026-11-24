@@ -643,7 +643,7 @@ export function digits (value) {
  * Compares two floating point numbers.
  * @param {number} a - First value to compare
  * @param {number} b - Second value to compare
- * @param {number} [relTol=1e-09] - The relative tolerance, indicating the maximum allowed difference relative to the larger absolute value. Must be greater than 0.
+ * @param {number} [relTol=1e-09] - The relative tolerance, indicating the maximum allowed difference relative to the larger absolute value. Must be at least 0.
  * @param {number} [absTol=1e-12] - The minimum absolute tolerance, useful for comparisons near zero. Must be at least 0.
  * @return {boolean} whether the two numbers are nearly equal
  *
@@ -657,7 +657,7 @@ export function digits (value) {
  * nearlyEqual(0.000000001, 0.0, undefined, 1e-8); // true
  */
 export function nearlyEqual (a, b, relTol = 1e-8, absTol = 0) {
-  if (relTol <= 0) {
+  if (relTol < 0) {
     throw new Error('Relative tolerance must be greater than 0')
   }
 

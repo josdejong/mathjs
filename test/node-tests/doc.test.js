@@ -4,9 +4,16 @@ import { fileURLToPath } from 'node:url'
 import { approxEqual, approxDeepEqual } from '../../tools/approx.js'
 import { collectDocs } from '../../tools/docgenerator.js'
 import { create, all } from '../../lib/esm/index.js'
+import { isNode } from '../../src/utils/is.js'
+
+// Really stupid mock of the numbers module, for the core import.js doc test:
+const numbers = {
+  fibonacci: x => 13
+}
+numbers.useItForLint = true
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const math = create(all)
+let math = create(all)
 const debug = process.argv.includes('--debug-docs')
 
 function extractExpectation (comment, optional = false) {
@@ -52,7 +59,8 @@ function extractValue (spec) {
   }
   const keywords = {
     number: 'Number(_)',
-    BigNumber: 'math.bignumber(_)',
+    Number: 'Number(_)',
+    BigNumber: "math.bignumber('_')",
     Fraction: 'math.fraction(_)',
     Complex: "math.complex('_')",
     Unit: "math.unit('_')",
@@ -111,11 +119,8 @@ const knownProblems = new Set([
   'parser', 'compile',
   'subset', 'squeeze', 'rotationMatrix',
   'rotate', 'reshape', 'partitionSelect', 'matrixFromFunction',
-  'matrixFromColumns', 'getMatrixDataType', 'diff', 'slu',
-  'rationalize', 'lusolve',
-  'schur', 'sylvester', 'freqz', 'round',
-  'import', 'typed',
-  'unit', 'sparse', 'matrix', 'index', 'bignumber', 'fraction', 'complex'
+  'getMatrixDataType', 'diff', 'lusolve',
+  'schur', 'sylvester', 'freqz'
 ])
 
 let issueCount = 0
@@ -136,7 +141,9 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
     try {
       checkExpectation(expected, got)
     } catch (err) {
-      console.error(`DOC ERROR: '${gotFrom}' was supposed to '${expectedFrom}'`)
+      console.error(
+        `DOC ERROR: '${gotFrom}' was supposed to '${expectedFrom}', but `,
+        'produced', got, 'not', expected)
       throw err
     }
   }
@@ -145,7 +152,7 @@ function maybeCheckExpectation (name, expected, expectedFrom, got, gotFrom) {
 function checkExpectation (want, got) {
   if (Array.isArray(want)) {
     if (!Array.isArray(got)) {
-      got = want.valueOf()
+      got = got.valueOf()
     }
     return approxDeepEqual(got, want, 1e-9)
   }
@@ -171,6 +178,9 @@ function checkExpectation (want, got) {
       console.log(`  Note: return value ${got} not exactly as expected: ${want}`)
     }
     return approxEqual(got, want, 1e-9)
+  }
+  if (typeof want === 'string' && isNode(got)) {
+    return got.toString() === want
   }
   if (
     typeof want === 'string' &&
@@ -246,9 +256,7 @@ const knownUndocumented = new Set([
   'off',
   'once',
   'emit',
-  'config',
   'expression',
-  'import',
   'create',
   'factory',
   'AccessorNode',
@@ -257,16 +265,12 @@ const knownUndocumented = new Set([
   'atomicMass',
   'avogadro',
   'BigNumber',
-  'bignumber',
   'BlockNode',
   'bohrMagneton',
   'bohrRadius',
   'boltzmann',
-  'boolean',
-  'chain',
   'Chain',
   'classicalElectronRadius',
-  'complex',
   'Complex',
   'ConditionalNode',
   'conductanceQuantum',
@@ -286,7 +290,6 @@ const knownUndocumented = new Set([
   'fermiCoupling',
   'fineStructure',
   'firstRadiation',
-  'fraction',
   'Fraction',
   'FunctionAssignmentNode',
   'FunctionNode',
@@ -297,7 +300,6 @@ const knownUndocumented = new Set([
   'Help',
   'i',
   'ImmutableDenseMatrix',
-  'index',
   'Index',
   'IndexNode',
   'Infinity',
@@ -310,7 +312,6 @@ const knownUndocumented = new Set([
   'loschmidt',
   'magneticConstant',
   'magneticFluxQuantum',
-  'matrix',
   'Matrix',
   'molarMass',
   'molarMassC12',
@@ -321,12 +322,9 @@ const knownUndocumented = new Set([
   'Node',
   'nuclearMagneton',
   'null',
-  'number',
-  'bigint',
   'ObjectNode',
   'OperatorNode',
   'ParenthesisNode',
-  'parse',
   'Parser',
   'phi',
   'pi',
@@ -351,19 +349,15 @@ const knownUndocumented = new Set([
   'sackurTetrode',
   'secondRadiation',
   'Spa',
-  'sparse',
   'SparseMatrix',
   'speedOfLight',
   'splitUnit',
   'stefanBoltzmann',
-  'string',
   'SymbolNode',
   'tau',
   'thomsonCrossSection',
   'true',
-  'typed',
   'Unit',
-  'unit',
   'E',
   'PI',
   'vacuumImpedance',
@@ -376,16 +370,16 @@ const knownUndocumented = new Set([
 const knownNoHistory = new Set([
   'config', 'typed', 'leafCount',
   'lusolve', 'lyap', 'rationalize', 'resolve', 'schur', 'simplify',
-  'simplifyConstant', 'slu', 'sylvester',
+  'simplifyConstant', 'sylvester',
   'abs', 'cube', 'expm', 'hypot', 'log10', 'log1p', 'log2',
-  'pow', 'round', 'sign', 'sqrt', 'sqrtm',
+  'pow', 'sign', 'sqrt', 'sqrtm',
   'square', 'unaryMinus', 'unaryPlus', 'bitNot',
   'bellNumbers', 'composition', 'arg', 'conj',
   'compile', 'evaluate', 'help', 'parser', 'distance', 'intersect',
   'not', 'nullish', 'column', 'count', 'cross',
   'ctranspose', 'det', 'diag', 'diff', 'dot', 'fft', 'filter',
   'flatten', 'forEach', 'getMatrixDataType', 'identity', 'ifft', 'inv', 'kron',
-  'mapSlices', 'matrixFromColumns', 'matrixFromFunction', 'matrixFromRows',
+  'matrixFromColumns', 'matrixFromFunction', 'matrixFromRows',
   'ones', 'partitionSelect', 'pinv', 'range', 'reshape', 'resize', 'rotate',
   'rotationMatrix', 'row', 'size', 'sort', 'squeeze', 'subset', 'trace',
   'transpose', 'zeros', 'solveODE', 'bernoulli', 'combinations',
@@ -399,9 +393,9 @@ const knownNoHistory = new Set([
   'acos', 'acosh', 'acot', 'acoth', 'acsc', 'acsch', 'asec', 'asech', 'asin',
   'asinh', 'atan', 'atanh', 'cos', 'cosh', 'cot', 'coth', 'csc',
   'csch', 'sec', 'sech', 'sin', 'sinh', 'tan', 'tanh', 'toBest', 'bin',
-  'clone', 'hasNumericValue', 'hex', 'isBounded', 'isInteger',
+  'clone', 'hasNumericValue', 'hex', 'isBounded',
   'isNaN', 'isNegative', 'isNumeric', 'isPositive', 'isPrime', 'isZero',
-  'oct', 'print', 'typeOf', 'bignumber', 'chain', 'number', 'splitUnit'
+  'oct', 'print', 'typeOf', 'bignumber', 'chain'
 ])
 
 describe('Testing examples from (jsdoc) comments', function () {
@@ -452,6 +446,7 @@ describe('Testing examples from (jsdoc) comments', function () {
         }
 
         it('satisfies ' + doc.name, function () {
+          math = create(all)
           if (debug) {
             console.log(`      Testing ${doc.name} ...`) // can remove once no known failures; for now it clarifies "PLEASE RESOLVE"
           }
@@ -463,10 +458,11 @@ describe('Testing examples from (jsdoc) comments', function () {
           for (const line of lines) {
             if (line.includes('//')) {
               let parts = line.split('//')
-              if (parts[0] && !parts[0].trim()) {
-                // Indented comment, unusual in examples
-                // assume this is a comment within some code to evaluate
-                // i.e., ignore it
+              if (!parts[0].trim() && !/^\s*(returns|throws)/.test(parts[1])) {
+                // Only a comment without "returns/throws" so ignore it
+                if (debug && parts[1].trim()) {
+                  console.warn(`     Ignoring comment ${parts[1]}`)
+                }
                 continue
               }
               // Comment specifying a future value or the return of prior code
@@ -492,6 +488,7 @@ describe('Testing examples from (jsdoc) comments', function () {
                   value = eval(accumulation) // eslint-disable-line no-eval
                 } catch (err) {
                   value = err.toString()
+                  discardAccumulation = true
                 }
                 maybeCheckExpectation(
                   doc.name, expectation, expectationFrom, value, accumulation)
@@ -503,6 +500,8 @@ describe('Testing examples from (jsdoc) comments', function () {
               if (line !== '') {
                 if (accumulation) { accumulation += '\n' }
                 accumulation += line
+              } else {
+                accumulation = ''
               }
             }
           }

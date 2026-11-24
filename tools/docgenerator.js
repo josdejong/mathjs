@@ -611,6 +611,7 @@ export function collectDocs (functionNames, inputPath) {
       } else if (/\/src\/core\/function/.test(fullPath)) {
         category = 'core'
       } else {
+        // typical case, e.g. src/function/algebra/lsolve.js
         category = path[functionIndex + 1]
       }
     } else if (fullPath.endsWith('/src/expression/parse.js')) {

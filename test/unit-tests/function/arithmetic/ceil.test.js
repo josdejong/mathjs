@@ -224,7 +224,8 @@ describe('ceil', function () {
   it('should ceil when number of decimals is provided in a matrix', function () {
     assert.deepStrictEqual(ceil(3.12385, matrix([2, 3])), matrix([3.13, 3.124]))
     assert.deepStrictEqual(ceil(0, matrix([2, 9, 12])), matrix([0, 0, 0]))
-    assert.deepStrictEqual(ceil(3.12385, sparse([0, 4])), matrix([[4], [3.1239]]))
+    assert.deepStrictEqual(
+      ceil(3.12385, sparse([0, 4])), sparse([[4], [3.1239]]))
   })
 
   it('should ceil dense matrix', function () {

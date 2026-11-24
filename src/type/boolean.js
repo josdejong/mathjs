@@ -27,13 +27,13 @@ export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ type
    *
    * See also:
    *
-   *    bignumber, complex, index, matrix, string, unit
+   *    bigint, bignumber, complex, index, matrix, string, unit
    *
    * History:
    *
-   *    v0.11    Created
-   *    v0.16    Added conversion from BigNumber
    *    v14.2.1  Added conversion from bigint
+   *    v0.16    Added conversion from BigNumber
+   *    v0.11    Created
    *
    * @param {string | number | boolean | Array | Matrix | null} value  A value of any type
    * @return {boolean | Array | Matrix} The boolean value
@@ -49,6 +49,10 @@ export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ type
 
     number: function (x) {
       return !!x
+    },
+
+    bigint: function (x) {
+      return x !== 0n
     },
 
     null: function (x) {

@@ -22,20 +22,20 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * Examples:
    *
    *    let m = math.matrix([[1, 2], [3, 4]])
-   *    m.size()                        // Array [2, 2]
+   *    m.size()                        // Array [2, 2] ...
    *    m.resize([3, 2], 5)
-   *    m.valueOf()                     // Array [[1, 2], [3, 4], [5, 5]]
-   *    m.get([1, 0])                    // number 3
+   *    m.valueOf()                     // Array [[1, 2], [3, 4], [5, 5]] ...
+   *    m.get([1, 0])                   // number 3
    *
    * See also:
    *
-   *    bignumber, boolean, complex, index, number, string, unit, sparse
+   *    bigint, bignumber, boolean, complex, index, number, string, unit, sparse
    *
    * History:
    *
-   *    v0.5  Created
    *    v1.5  Support dense or sparse Matrix types; allow construction
    *          from string, Array, or another Matrix.
+   *    v0.5  Created
    *
    * @param {Array | Matrix} [data]    A multi dimensional array
    * @param {string} [format]          The Matrix storage format, either `'dense'` or `'sparse'`

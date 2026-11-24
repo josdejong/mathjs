@@ -75,6 +75,12 @@ Basic usage examples
     [4, 5, 6]
   ]
 
+  // conversions
+  math.number('123e-45')
+  math.number(math.bigint(397), { safe: true })
+  math.number(math.unit('1 in/mm'), { uniformType: true })
+  math.square(math.bigint([17], { uniformType: true }) / BigInt(2))
+
   // functions and constants
   math.round(math.e, 3)
   math.round(100.123, 3)
@@ -286,6 +292,17 @@ Chaining examples
     math.chain('x + y').parse().resolve().done()
   ).toMatchTypeOf<MathNode>()
 
+  // array
+  expectTypeOf(math.chain(math.matrix([1, 2, 3])).array()).toMatchTypeOf<
+    MathJsChain<MathArray<number>>
+  >()
+  expectTypeOf(math.chain('foo').array()).toMatchTypeOf<
+    MathJsChain<Array<string>>
+  >()
+  expectTypeOf(math.chain(7).array()).toMatchTypeOf<
+    MathJsChain<MathArray<MathNumericType>>
+  >()
+
   // bignum
   expectTypeOf(math.chain(math.bignumber(12))).toMatchTypeOf<
     MathJsChain<BigNumber>
@@ -303,6 +320,9 @@ Chaining examples
   expectTypeOf(math.chain([12, 13, 14]).bigint()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.bignumber('12.7')).bigint({ round: 'round' })
+  ).toMatchTypeOf<MathJsChain<bigint>>()
 
   // chain
   expectTypeOf(math.chain(12).bignumber().clone()).toMatchTypeOf<
@@ -376,6 +396,9 @@ Chaining examples
   expectTypeOf(math.chain([12, 13, 14]).number()).toMatchTypeOf<
     MathJsChain<MathCollection>
   >()
+  expectTypeOf(
+    math.chain(math.fraction('99/701')).number({ safe: true })
+  ).toMatchTypeOf<MathJsChain<number>>()
 
   // numeric
   expectTypeOf(math.chain('12').numeric('bigint')).toMatchTypeOf<
@@ -1403,6 +1426,12 @@ Matrices examples
   const a: Matrix = math.matrix([1, 4, 9, 16, 25])
   const b: Matrix = math.matrix(math.ones([2, 3]))
   b.size()
+
+  const astr: Array<string> = math.array('test')
+  astr[1] = 'o'
+  const empta = math.array(3)
+  empta[2] = math.fraction(2, 3)
+  a.create(math.array(a)) // funny way to clone
 
   // @ts-expect-error ... ones() in a chain cannot take more dimensions
   assert.throws(() => math.chain(3).ones(2, 'dense').done(), /Error:.*ones/)
