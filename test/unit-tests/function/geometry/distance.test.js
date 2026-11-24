@@ -2,6 +2,66 @@ import assert from 'assert'
 import math from '../../../../src/defaultInstance.js'
 
 describe('distance', function () {
+  describe('extreme number coordinates', function () {
+    for (const scale of [1e200, 1e307, 1e-200, 1e-160]) {
+      it(`should preserve a 3-4-5 distance at scale ${scale}`, function () {
+        const actual = math.distance([0, 0], [3 * scale, 4 * scale])
+        const expected = 5 * scale
+        assert.ok(Number.isFinite(actual) && actual > 0)
+        assert.ok(Math.abs(actual / expected - 1) < 1e-14)
+      })
+    }
+
+    it('should avoid overflowing the sum of individually finite squares', function () {
+      const actual = math.distance([0, 0], [1e154, 1e154])
+      assert.ok(Number.isFinite(actual))
+      assert.ok(Math.abs(actual / (Math.SQRT2 * 1e154) - 1) < 1e-14)
+    })
+
+    it('should preserve the smallest positive distance', function () {
+      assert.strictEqual(math.distance([0], [Number.MIN_VALUE]), Number.MIN_VALUE)
+    })
+
+    it('should accumulate subnormal components before rounding the distance', function () {
+      const size = 1000
+      assert.strictEqual(math.distance(Array(size).fill(0), Array(size).fill(Number.MIN_VALUE)), Math.sqrt(size) * Number.MIN_VALUE)
+    })
+
+    it('should handle matrix and object coordinates', function () {
+      const matrixDistance = math.distance(math.matrix([0, 0]), math.matrix([3e200, 4e200]))
+      const objectDistance = math.distance({ pointOneX: 0, pointOneY: 0 }, { pointTwoX: 3e200, pointTwoY: 4e200 })
+      assert.ok(Math.abs(matrixDistance / 5e200 - 1) < 1e-14)
+      assert.ok(Math.abs(objectDistance / 5e200 - 1) < 1e-14)
+    })
+
+    it('should calculate pairwise distances at small scales', function () {
+      const actual = math.distance([[0, 0], [3e-200, 0], [0, 4e-200]])
+      for (const [i, expected] of [3e-200, 4e-200, 5e-200].entries()) {
+        assert.ok(Math.abs(actual[i] / expected - 1) < 1e-14)
+      }
+    })
+
+    it('should not spread high-dimensional points into a function call', function () {
+      const size = 150000
+      const actual = math.distance(Array(size).fill(0), Array(size).fill(1e-200))
+      assert.ok(Math.abs(actual / (Math.sqrt(size) * 1e-200) - 1) < 1e-12)
+    })
+
+    it('should retain zero and non-finite coordinate behavior', function () {
+      assert.strictEqual(math.distance([0, 0], [0, 0]), 0)
+      assert.strictEqual(math.distance([0, 0], [Infinity, 1]), Infinity)
+      assert.strictEqual(math.distance([0, 0], [-Infinity, 1]), Infinity)
+      assert.ok(Number.isNaN(math.distance([Infinity, 0], [Infinity, 0])))
+      assert.ok(Number.isNaN(math.distance([NaN, 0], [0, Infinity])))
+    })
+
+    it('should retain BigNumber and mixed-coordinate arithmetic', function () {
+      const expected = math.bignumber('5e200')
+      assert.ok(math.distance([math.bignumber(0), math.bignumber(0)], [math.bignumber('3e200'), math.bignumber('4e200')]).eq(expected))
+      assert.ok(math.distance([0, math.bignumber(0)], [math.bignumber('3e200'), 4e200]).eq(expected))
+    })
+  })
+
   it('should calculate the distance of two 1D points', function () {
     assert.strictEqual(math.distance([1], [2]), 1)
   })

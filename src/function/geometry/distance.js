@@ -286,6 +286,20 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
       diff = subtractScalar(x[i], y[i])
       result = addScalar(multiplyScalar(diff, diff), result)
     }
+    // Squaring can overflow or lose subnormal values while the distance is representable.
+    if (typeof result === 'number' && (result === Infinity || result < Number.MIN_VALUE / Number.EPSILON)) {
+      let scale = 0
+      for (let i = 0; i < vectorSize; i++) {
+        scale = Math.max(scale, Math.abs(subtractScalar(x[i], y[i])))
+      }
+      if (scale === 0 || scale === Infinity) return scale
+
+      let distance = 0
+      for (let i = 0; i < vectorSize; i++) {
+        distance = Math.hypot(distance, subtractScalar(x[i], y[i]) / scale)
+      }
+      return distance * scale
+    }
     return sqrt(result)
   }
 
