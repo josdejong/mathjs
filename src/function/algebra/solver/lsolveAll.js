@@ -26,9 +26,9 @@ export const createLsolveAll = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * Examples:
    *
-   *    const a = [[-2, 3], [2, 1]]
-   *    const b = [11, 9]
-   *    const x = lsolveAll(a, b)  // [ [[-5.5], [20]] ]
+   *    const L = [[-2, 0], [2, 1]]
+   *    const b = [-4, 9]
+   *    const x = math.lsolveAll(L, b)  // [[[2], [5]]]
    *
    * See also:
    *
