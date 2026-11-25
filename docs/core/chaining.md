@@ -43,7 +43,7 @@ Note that a "rest" or "..." parameter may not be broken across the value
 in the chain and a function call. For example
 
 ```js
-math.chain(3).median(4,5).done() // throws error
+math.chain(3).median(4,5).done() // throws Error
 ```
 
 does not compute the median of 3, 4, and 5.

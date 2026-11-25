@@ -67,7 +67,7 @@ math.import({
   'resolve':    function () { throw new Error('Function resolve is disabled') },
 }, { override: true })
 
-console.log(limitedEvaluate('sqrt(16)'))     // Ok, 4
+console.log(limitedEvaluate('sqrt(16)'))     // 4
 console.log(limitedEvaluate('parse("2+3")')) // Error: Function parse is disabled
 ```
 
