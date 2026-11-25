@@ -152,9 +152,20 @@ export function compareWithExpected (math, want, got, onIssue = () => {}) {
   }
   if (want?.isNode && got?.isNode) {
     // math.parse() wraps parenthesized subexpressions in ParenthesisNode
-    // (e.g. '(2*x^2+2*x-y^2)/(x*y+y)'), whereas functions like rationalize()
-    // build OperatorNodes directly without ParenthesisNodes; compare rendered form.
-    return assert.strictEqual(got.toString(), want.toString())
+    // (e.g. '(2*x^2+2*x-y^2)/(x*y+y)') and parses negative literals as
+    // unaryMinus(ConstantNode), whereas functions like rationalize() build
+    // OperatorNodes and negative ConstantNodes directly. Normalize negative
+    // ConstantNodes and compare with { parenthesis: 'all' } so tree structure
+    // still has to match.
+    const normalizeNegativeConstants = node => node.transform(n =>
+      n.isConstantNode && typeof n.value === 'number' && n.value < 0
+        ? new math.OperatorNode('-', 'unaryMinus', [new math.ConstantNode(-n.value)])
+        : n
+    )
+    return assert.strictEqual(
+      normalizeNegativeConstants(got).toString({ parenthesis: 'all' }),
+      normalizeNegativeConstants(want).toString({ parenthesis: 'all' })
+    )
   }
   if (want?.isComplex && got?.isComplex) {
     return approxDeepEqual(got, want, 1e-9)
